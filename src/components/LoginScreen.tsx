@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
-  auth,
   loginWithGooglePopup,
   loginWithGoogleRedirect,
   getLoginResult,
   loginWithEmail,
   registerWithEmail,
   sendPasswordReset
-} from '../lib/firebase';
+} from "../lib/auth";
 import { SysLogo } from './SysLogo';
 import { LoginLeaderboardModal } from './LoginLeaderboardModal';
 import { TermsAndConditionsModal } from './TermsAndConditionsModal';
