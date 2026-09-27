@@ -1,375 +1,355 @@
 import {
-  eq,
-} from "drizzle-orm";
+  withDb,
+  json,
+  readJson,
+} from '../_lib/db';
 
 import {
-  users,
-} from "../../../src/db/schema";
+  requireAuth,
+} from '../_lib/auth';
 
-import {
-  createDb,
-  CloudflareEnv,
-} from "../_shared/db";
+interface Env {
+  HYPERDRIVE: Hyperdrive;
+  JWT_SECRET: string;
+}
 
-import {
-  generateToken,
-} from "../_shared/auth";
+interface SyncBody {
+  uid?: string;
+  email?: string;
+  displayName?: string;
+  role?: string;
+  walletBalance?: number;
+}
 
-export const onRequestPost: PagesFunction<CloudflareEnv> = async (
-  context
-) => {
-  let pool: ReturnType<typeof createDb>["pool"] | null = null;
+export const onRequestPost:
+  PagesFunction<Env> = async ({
+    request,
+    env,
+  }) => {
+    const auth =
+      requireAuth(
+        request,
+        env
+      );
 
-  try {
-    const body = await context.request.json<{
-      uid?: string;
-      email?: string;
-      displayName?: string;
-      role?: string;
-      walletBalance?: number;
-      saldo?: number;
-      photoURL?: string | null;
-    }>();
+    if (!auth.ok) {
+      return auth.response;
+    }
 
-    const uid =
-      body.uid?.trim() || null;
+    try {
+      const body =
+        await readJson<SyncBody>(
+          request
+        );
 
-    const email =
-      body.email?.trim().toLowerCase();
+      const uid =
+        String(
+          body.uid ||
+            auth.user.uid ||
+            ''
+        ).trim();
 
-    const displayName =
-      body.displayName?.trim() ||
-      null;
+      const email =
+        String(
+          body.email ||
+            auth.user.email ||
+            ''
+        )
+          .trim()
+          .toLowerCase();
 
-    const photoURL =
-      body.photoURL || null;
+      if (!uid || !email) {
+        return json(
+          {
+            success: false,
+            message:
+              'UID dan email wajib tersedia.',
+          },
+          400
+        );
+      }
 
-    if (!email && !uid) {
-      return Response.json(
+      const result =
+        await withDb(
+          env,
+          async (client) => {
+            /*
+             * Cari berdasarkan UID.
+             */
+            let found =
+              await client.query(
+                `
+                SELECT *
+                FROM users
+                WHERE uid = $1
+                LIMIT 1
+                `,
+                [uid]
+              );
+
+            /*
+             * Jika belum ada, cari berdasarkan email.
+             */
+            if (
+              !found.rows.length
+            ) {
+              found =
+                await client.query(
+                  `
+                  SELECT *
+                  FROM users
+                  WHERE LOWER(email) = $1
+                  LIMIT 1
+                  `,
+                  [email]
+                );
+            }
+
+            /*
+             * User sudah ada.
+             */
+            if (
+              found.rows.length
+            ) {
+              const existing =
+                found.rows[0];
+
+              const updated =
+                await client.query(
+                  `
+                  UPDATE users
+                  SET
+                    uid = COALESCE($1, uid),
+                    email = LOWER($2),
+                    display_name =
+                      COALESCE(
+                        NULLIF($3, ''),
+                        display_name
+                      ),
+                    updated_at = NOW()
+                  WHERE id = $4
+                  RETURNING *
+                  `,
+                  [
+                    uid,
+                    email,
+                    body.displayName ||
+                      '',
+                    existing.id,
+                  ]
+                );
+
+              return updated.rows[0];
+            }
+
+            /*
+             * Ini hanya fallback.
+             * Biasanya user sudah dibuat melalui
+             * /register.
+             */
+            const username =
+              email
+                .split('@')[0]
+                .replace(
+                  /[^a-zA-Z0-9_]/g,
+                  ''
+                )
+                .slice(0, 20) ||
+              'user';
+
+            const cuid =
+              `c_${crypto
+                .randomUUID()
+                .replace(
+                  /-/g,
+                  ''
+                )}`;
+
+            const referralCode =
+              `SYS-${crypto
+                .randomUUID()
+                .replace(
+                  /-/g,
+                  ''
+                )
+                .slice(0, 10)
+                .toUpperCase()}`;
+
+            const inserted =
+              await client.query(
+                `
+                INSERT INTO users (
+                  uid,
+                  cuid,
+                  username,
+                  email,
+                  password,
+                  display_name,
+                  referral_code,
+                  balance,
+                  saldo,
+                  wallet_balance,
+                  locked_saldo,
+                  affiliate_earnings,
+                  affiliate_withdrawn,
+                  is_subscribed,
+                  subscription_plan,
+                  is_lifetime,
+                  role,
+                  is_blacklisted,
+                  is_banned,
+                  force_jackpot_next
+                )
+                VALUES (
+                  $1,
+                  $2,
+                  $3,
+                  $4,
+                  $5,
+                  $6,
+                  $7,
+                  100000,
+                  15000,
+                  15000,
+                  0,
+                  0,
+                  0,
+                  true,
+                  'Akses Bebas Gratis (Permanen)',
+                  true,
+                  'USER',
+                  false,
+                  false,
+                  false
+                )
+                RETURNING *
+                `,
+                [
+                  uid,
+                  cuid,
+                  `${username}_${crypto
+                    .randomUUID()
+                    .replace(
+                      /-/g,
+                      ''
+                    )
+                    .slice(0, 6)}`,
+                  email,
+                  '',
+                  body.displayName ||
+                    username,
+                  referralCode,
+                ]
+              );
+
+            return inserted.rows[0];
+          }
+        );
+
+      return json({
+        success: true,
+        user: {
+          id: Number(result.id),
+          uid: result.uid,
+          cuid: result.cuid,
+          username:
+            result.username,
+          email:
+            result.email,
+          displayName:
+            result.display_name,
+          photoURL:
+            result.photo_url,
+          streamerHandle:
+            result.streamer_handle,
+          bio:
+            result.bio,
+          referralCode:
+            result.referral_code,
+          referredBy:
+            result.referred_by,
+          referralCount:
+            Number(
+              result.referral_count ||
+                0
+            ),
+          balance:
+            Number(
+              result.balance || 0
+            ),
+          saldo:
+            Number(
+              result.saldo || 0
+            ),
+          walletBalance:
+            Number(
+              result.wallet_balance ||
+                0
+            ),
+          lockedSaldo:
+            Number(
+              result.locked_saldo ||
+                0
+            ),
+          affiliateEarnings:
+            Number(
+              result.affiliate_earnings ||
+                0
+            ),
+          affiliateWithdrawn:
+            Number(
+              result.affiliate_withdrawn ||
+                0
+            ),
+          isSubscribed:
+            Boolean(
+              result.is_subscribed
+            ),
+          subscriptionPlan:
+            result.subscription_plan,
+          subscriptionExpiresAt:
+            result.subscription_expires_at,
+          isLifetime:
+            Boolean(
+              result.is_lifetime
+            ),
+          subscribedAt:
+            result.subscribed_at,
+          role:
+            result.role,
+          isBlacklisted:
+            Boolean(
+              result.is_blacklisted
+            ),
+          isBanned:
+            Boolean(
+              result.is_banned
+            ),
+          bannedReason:
+            result.banned_reason,
+          forceJackpotNext:
+            Boolean(
+              result.force_jackpot_next
+            ),
+          createdAt:
+            result.created_at,
+          updatedAt:
+            result.updated_at,
+        },
+      });
+    } catch (error) {
+      console.error(
+        'Sync session error:',
+        error
+      );
+
+      return json(
         {
           success: false,
-          error:
-            "UID atau email wajib diberikan.",
+          message:
+            'Gagal melakukan sinkronisasi session.',
         },
-        { status: 400 }
+        500
       );
     }
-
-    const { db, pool: createdPool } =
-      createDb(context.env);
-
-    pool = createdPool;
-
-    let user;
-
-    /**
-     * First try UID.
-     */
-    if (uid) {
-      const result = await db
-        .select()
-        .from(users)
-        .where(eq(users.uid, uid))
-        .limit(1);
-
-      user = result[0];
-    }
-
-    /**
-     * If UID does not find a user,
-     * try email.
-     */
-    if (!user && email) {
-      const result = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email))
-        .limit(1);
-
-      user = result[0];
-    }
-
-    /**
-     * Create a new account when no matching
-     * PostgreSQL user exists.
-     */
-    if (!user) {
-      const now = new Date();
-
-      const [createdUser] = await db
-        .insert(users)
-        .values({
-          uid,
-          email:
-            email || `${uid}@local.sys-stream`,
-
-          displayName:
-            displayName ||
-            "Host Streamer",
-
-          photoURL,
-
-          username:
-            createUsername(
-              displayName,
-              email,
-              uid
-            ),
-
-          balance:
-            typeof body.walletBalance ===
-            "number"
-              ? body.walletBalance
-              : 0,
-
-          saldo:
-            typeof body.saldo ===
-            "number"
-              ? body.saldo
-              : typeof body.walletBalance ===
-                "number"
-                ? body.walletBalance
-                : 0,
-
-          walletBalance:
-            typeof body.walletBalance ===
-            "number"
-              ? body.walletBalance
-              : 0,
-
-          lockedSaldo: 0,
-
-          affiliateEarnings: 0,
-          affiliateWithdrawn: 0,
-
-          referralCount: 0,
-
-          isSubscribed: false,
-          isLifetime: false,
-
-          role:
-            body.role ||
-            "USER",
-
-          isBlacklisted: false,
-          isBanned: false,
-
-          forceJackpotNext: false,
-
-          createdAt: now,
-          updatedAt: now,
-        })
-        .returning();
-
-      user = createdUser;
-    } else {
-      /**
-       * Update only identity/profile fields.
-       *
-       * IMPORTANT:
-       * We intentionally do NOT trust walletBalance
-       * from the client during normal session sync.
-       *
-       * Monetary balances must remain server/database
-       * controlled.
-       */
-      const [updatedUser] =
-        await db
-          .update(users)
-          .set({
-            ...(uid
-              ? { uid }
-              : {}),
-
-            ...(email
-              ? { email }
-              : {}),
-
-            ...(displayName
-              ? { displayName }
-              : {}),
-
-            ...(photoURL
-              ? { photoURL }
-              : {}),
-
-            updatedAt: new Date(),
-          })
-          .where(eq(users.id, user.id))
-          .returning();
-
-      user =
-        updatedUser || user;
-    }
-
-    if (!user) {
-      throw new Error(
-        "User gagal dibuat atau diperbarui."
-      );
-    }
-
-    const token = generateToken(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        username: user.username,
-      },
-      context.env
-    );
-
-    return Response.json({
-      success: true,
-      message:
-        "Session berhasil disinkronkan.",
-      token,
-
-      user: {
-        id: user.id,
-        cuid: user.cuid,
-        uid: user.uid,
-
-        username:
-          user.username,
-
-        email:
-          user.email,
-
-        displayName:
-          user.displayName,
-
-        photoURL:
-          user.photoURL,
-
-        streamerHandle:
-          user.streamerHandle,
-
-        bio:
-          user.bio,
-
-        referralCode:
-          user.referralCode,
-
-        referredBy:
-          user.referredBy,
-
-        referralCount:
-          user.referralCount,
-
-        balance:
-          user.balance,
-
-        saldo:
-          user.saldo,
-
-        walletBalance:
-          user.walletBalance,
-
-        lockedSaldo:
-          user.lockedSaldo,
-
-        affiliateEarnings:
-          user.affiliateEarnings,
-
-        affiliateWithdrawn:
-          user.affiliateWithdrawn,
-
-        isSubscribed:
-          user.isSubscribed,
-
-        subscriptionPlan:
-          user.subscriptionPlan,
-
-        subscriptionExpiresAt:
-          user.subscriptionExpiresAt,
-
-        isLifetime:
-          user.isLifetime,
-
-        subscribedAt:
-          user.subscribedAt,
-
-        role:
-          user.role,
-
-        isBlacklisted:
-          user.isBlacklisted,
-
-        isBanned:
-          user.isBanned,
-
-        bannedReason:
-          user.bannedReason,
-
-        forceJackpotNext:
-          user.forceJackpotNext,
-
-        targetJackpotNominal:
-          user.targetJackpotNominal,
-
-        createdAt:
-          user.createdAt,
-
-        updatedAt:
-          user.updatedAt,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Cloudflare sync-session error:",
-      error
-    );
-
-    return Response.json(
-      {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Gagal sinkronisasi session.",
-      },
-      { status: 500 }
-    );
-  } finally {
-    if (pool) {
-      try {
-        await pool.end();
-      } catch {
-        // Ignore pool close errors.
-      }
-    }
-  }
-};
-
-/**
- * Generate a username for users coming from
- * the old Firebase session system.
- */
-function createUsername(
-  displayName?: string | null,
-  email?: string | null,
-  uid?: string | null
-): string {
-  let source =
-    displayName?.trim() ||
-    email
-      ?.split("@")[0]
-      ?.trim() ||
-    uid?.substring(0, 12) ||
-    "user";
-
-  source = source
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "_")
-    .replace(/-+/g, "_")
-    .replace(/_+/g, "_")
-    .replace(/^_+|_+$/g, "");
-
-  if (!source) {
-    source = "user";
-  }
-
-  return source.substring(0, 30);
-}
+  };
