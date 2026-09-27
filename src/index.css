@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* ANTI-BALIK & SCROLL FIX RULES */
+html, body {
+  scroll-behavior: auto !important;
+  overscroll-behavior: none;
+  scroll-snap-type: none !important;
+}
+
+* {
+  scroll-snap-align: none !important;
+  scroll-snap-stop: normal !important;
+}
+
+/* Utility to ensure isolated column scrolling */
+.col-scroll-contain {
+  overflow-y: auto !important;
+  overflow-anchor: none !important;
+  overscroll-behavior: contain !important;
+}

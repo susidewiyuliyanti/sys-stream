@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSuperOwner() {
+      return request.auth != null && request.auth.token.email != null && request.auth.token.email.lower() == 'susidewiyuliyanti@gmail.com';
+    }
+
+    function isOwner() {
+      return request.auth != null && request.auth.token.email != null &&
+        (request.auth.token.email.lower() == 'susidewiyuliyanti@gmail.com' ||
+         exists(/databases/$(database)/documents/vip_hosts/$(request.auth.token.email.lower())));
+    }
+
+    match /users/{userId} {
+      allow read, write: if request.auth != null;
+      allow delete: if isSuperOwner();
+    }
+
+    match /subscription_orders/{orderId} {
+      allow read, write: if request.auth != null;
+      allow delete: if isSuperOwner();
+    }
+
+    match /streaming_sessions/{sessionId} {
+      allow read, write: if request.auth != null;
+      allow delete: if isSuperOwner();
+    }
+
+    match /referrals/{referralId} {
+      allow read, write: if request.auth != null;
+      allow delete: if isSuperOwner();
+    }
+
+    match /affiliate_withdrawals/{withdrawalId} {
+      allow read, write: if request.auth != null;
+      allow delete: if isSuperOwner();
+    }
+
+    match /vip_hosts/{emailKey} {
+      allow read: if request.auth != null;
+      allow write, delete: if isSuperOwner();
+    }
+
+    match /banned_users/{emailKey} {
+      allow read: if request.auth != null;
+      allow write, delete: if isSuperOwner();
+    }
+
+    match /admins/{emailKey} {
+      allow read: if request.auth != null;
+      allow write, delete: if isSuperOwner();
+    }
+
+    match /system_settings/{settingId} {
+      allow read: if request.auth != null;
+      allow write: if isOwner();
+    }
+
+    match /jackpot_history/{historyId} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /user_activities/{activityId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+

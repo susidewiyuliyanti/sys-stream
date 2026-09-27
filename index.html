@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        // Prevent browser wallet extension crashes (e.g. MetaMask, Coinbase, Rabby, Phantom)
+        // when multiple extensions or iframes try to redefine window.ethereum
+        try {
+          var _ethereumVal = window.ethereum;
+          Object.defineProperty(window, 'ethereum', {
+            configurable: true,
+            enumerable: true,
+            get: function() { return _ethereumVal; },
+            set: function(v) { _ethereumVal = v; }
+          });
+        } catch (_) {}
+
+        try {
+          var originalDefineProperty = Object.defineProperty;
+          Object.defineProperty = function(obj, prop, descriptor) {
+            if (obj === window && prop === 'ethereum') {
+              try {
+                return originalDefineProperty.call(Object, obj, prop, Object.assign({}, descriptor, {
+                  configurable: true
+                }));
+              } catch (e) {
+                try {
+                  if (descriptor && 'value' in descriptor) {
+                    window.ethereum = descriptor.value;
+                  }
+                } catch (_) {}
+                return obj;
+              }
+            }
+            return originalDefineProperty.call(Object, obj, prop, descriptor);
+          };
+        } catch (_) {}
+
+        // Global capture of extension injection errors
+        window.addEventListener('error', function(event) {
+          var msg = (event && (event.message || (event.error && event.error.message))) || '';
+          if (typeof msg === 'string' && msg.toLowerCase().indexOf('ethereum') !== -1) {
+            if (event.preventDefault) event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(event) {
+          var reasonMsg = (event && event.reason && (event.reason.message || event.reason)) || '';
+          if (typeof reasonMsg === 'string' && reasonMsg.toLowerCase().indexOf('ethereum') !== -1) {
+            if (event.preventDefault) event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+    <title>SYS Streamer - Tebak Nomor Seri, Spinner & Live Suite by SYS Agency</title>
+    <meta name="description" content="SYS Streamer : Aplikasi game interaktif broadcast OBS Studio & TikTok Live: Tebak Nomor Seri Uang 3D, Lucky Spinner Roda Putar, dan Game 3D Blind Box Deposit dengan Cloud Database & JWT Auth." />
+    <meta property="og:title" content="SYS Streamer - Live Stream Suite by SYS Agency" />
+    <meta property="og:description" content="SYS Streamer: Platform game interaktif OBS Studio & TikTok Live. All Reserve @SYS Agency." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231a0f0d' stroke='%23eab308' stroke-width='4'/%3E%3Ctext x='50%25' y='65%25' font-size='44' font-weight='900' fill='%23fde047' font-family='serif' text-anchor='middle'%3ESyS%3C/text%3E%3C/svg%3E" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-black text-white antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
