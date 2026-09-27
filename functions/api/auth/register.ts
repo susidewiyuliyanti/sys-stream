@@ -1,324 +1,450 @@
 import {
-  eq,
-  or,
-} from "drizzle-orm";
+  withDb,
+  json,
+  readJson,
+} from '../_lib/db';
 
 import {
-  users,
-} from "../../../src/db/schema";
-
-import {
-  createDb,
-  CloudflareEnv,
-} from "../_shared/db";
-
-import {
-  generateToken,
   hashPassword,
-} from "../_shared/auth";
+  createToken,
+  type AuthUser,
+} from '../_lib/auth';
 
-export const onRequestPost: PagesFunction<CloudflareEnv> = async (
-  context
-) => {
-  let pool: ReturnType<typeof createDb>["pool"] | null = null;
+interface Env {
+  HYPERDRIVE: Hyperdrive;
+  JWT_SECRET: string;
+}
 
-  try {
-    const body = await context.request.json<{
-      username?: string;
-      email?: string;
-      password?: string;
-      displayName?: string;
-    }>();
+interface RegisterBody {
+  email?: string;
+  password?: string;
+  displayName?: string;
+  username?: string;
+  referredBy?: string;
+}
 
-    const username = body.username?.trim();
-    const email = body.email?.trim().toLowerCase();
-    const password = body.password;
-    const displayName =
-      body.displayName?.trim() || username;
+function createUid(): string {
+  return crypto.randomUUID();
+}
 
-    if (!username || !email || !password) {
-      return Response.json(
-        {
-          success: false,
-          error:
-            "Username, email, dan password wajib diisi.",
-        },
-        { status: 400 }
-      );
-    }
+function createCuid(): string {
+  return `c_${crypto
+    .randomUUID()
+    .replace(/-/g, '')}`;
+}
 
-    if (password.length < 5) {
-      return Response.json(
-        {
-          success: false,
-          error:
-            "Password minimal 5 karakter.",
-        },
-        { status: 400 }
-      );
-    }
-
-    if (username.length < 3) {
-      return Response.json(
-        {
-          success: false,
-          error:
-            "Username minimal 3 karakter.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return Response.json(
-        {
-          success: false,
-          error: "Format email tidak valid.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const { db, pool: createdPool } = createDb(context.env);
-    pool = createdPool;
-
-    const existingUsers = await db
-      .select()
-      .from(users)
-      .where(
-        or(
-          eq(users.email, email),
-          eq(users.username, username)
-        )
+function createReferralCode(
+  username: string
+): string {
+  const clean =
+    username
+      .replace(
+        /[^a-zA-Z0-9]/g,
+        ''
       )
-      .limit(1);
+      .toUpperCase()
+      .slice(0, 8);
 
-    if (existingUsers.length > 0) {
-      const existing = existingUsers[0];
+  const suffix =
+    crypto
+      .randomUUID()
+      .replace(/-/g, '')
+      .slice(0, 5)
+      .toUpperCase();
 
-      if (
-        existing.email?.toLowerCase() ===
-        email
-      ) {
-        return Response.json(
+  return `SYS-${clean}-${suffix}`;
+}
+
+function createUsername(
+  email: string,
+  supplied?: string
+): string {
+  if (supplied?.trim()) {
+    return supplied
+      .trim()
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9_]/g,
+        ''
+      )
+      .slice(0, 30);
+  }
+
+  const prefix =
+    email
+      .split('@')[0]
+      ?.toLowerCase()
+      .replace(
+        /[^a-z0-9_]/g,
+        ''
+      )
+      .slice(0, 20) ||
+    'user';
+
+  return `${prefix}_${crypto
+    .randomUUID()
+    .replace(/-/g, '')
+    .slice(0, 6)}`;
+}
+
+function mapUser(row: any): AuthUser {
+  return {
+    id: Number(row.id),
+    uid: row.uid,
+    cuid: row.cuid,
+    username: row.username,
+    email: row.email,
+    displayName: row.display_name,
+    photoURL: row.photo_url,
+    streamerHandle: row.streamer_handle,
+    bio: row.bio,
+    referralCode: row.referral_code,
+    referredBy: row.referred_by,
+    referralCount:
+      Number(row.referral_count || 0),
+    balance:
+      Number(row.balance || 0),
+    saldo:
+      Number(row.saldo || 0),
+    walletBalance:
+      Number(row.wallet_balance || 0),
+    lockedSaldo:
+      Number(row.locked_saldo || 0),
+    affiliateEarnings:
+      Number(
+        row.affiliate_earnings || 0
+      ),
+    affiliateWithdrawn:
+      Number(
+        row.affiliate_withdrawn || 0
+      ),
+    isSubscribed:
+      Boolean(row.is_subscribed),
+    subscriptionPlan:
+      row.subscription_plan,
+    subscriptionExpiresAt:
+      row.subscription_expires_at,
+    isLifetime:
+      Boolean(row.is_lifetime),
+    subscribedAt:
+      row.subscribed_at,
+    role:
+      row.role,
+    isBlacklisted:
+      Boolean(row.is_blacklisted),
+    isBanned:
+      Boolean(row.is_banned),
+    bannedReason:
+      row.banned_reason,
+    forceJackpotNext:
+      Boolean(
+        row.force_jackpot_next
+      ),
+    createdAt:
+      row.created_at,
+    updatedAt:
+      row.updated_at,
+  };
+}
+
+export const onRequestPost:
+  PagesFunction<Env> = async ({
+    request,
+    env,
+  }) => {
+    try {
+      const body =
+        await readJson<RegisterBody>(
+          request
+        );
+
+      const email =
+        String(
+          body.email || ''
+        )
+          .trim()
+          .toLowerCase();
+
+      const password =
+        String(
+          body.password || ''
+        );
+
+      const displayName =
+        String(
+          body.displayName ||
+            ''
+        ).trim();
+
+      if (!email) {
+        return json(
           {
             success: false,
-            error: "Email sudah terdaftar.",
+            message:
+              'Email wajib diisi.',
           },
-          { status: 409 }
+          400
         );
       }
 
       if (
-        existing.username?.toLowerCase() ===
-        username.toLowerCase()
+        !email.includes('@')
       ) {
-        return Response.json(
+        return json(
           {
             success: false,
-            error: "Username sudah digunakan.",
+            message:
+              'Format email tidak valid.',
           },
-          { status: 409 }
+          400
         );
       }
-    }
 
-    const hashedPassword =
-      await hashPassword(password);
+      if (
+        password.length < 6
+      ) {
+        return json(
+          {
+            success: false,
+            message:
+              'Password minimal 6 karakter.',
+          },
+          400
+        );
+      }
 
-    /**
-     * Admin tidak boleh dibuat sembarangan melalui
-     * endpoint register.
-     *
-     * Hanya OWNER_EMAIL yang disimpan sebagai
-     * environment variable yang dapat diberikan
-     * role admin.
-     */
-    const ownerEmail =
-      context.env.OWNER_EMAIL
-        ?.trim()
-        .toLowerCase();
+      const passwordHash =
+        await hashPassword(
+          password
+        );
 
-    const isOwner =
-      !!ownerEmail &&
-      email === ownerEmail;
+      const uid =
+        createUid();
 
-    const role =
-      isOwner ? "ADMIN" : "USER";
+      const cuid =
+        createCuid();
 
-    const now = new Date();
+      const username =
+        createUsername(
+          email,
+          body.username
+        );
 
-    const [createdUser] = await db
-      .insert(users)
-      .values({
-        username,
-        email,
-        password: hashedPassword,
-        displayName:
-          displayName || username,
+      const referralCode =
+        createReferralCode(
+          username
+        );
 
-        balance: 100000,
-        saldo: 100000,
-        walletBalance: 100000,
-        lockedSaldo: 0,
+      const referredBy =
+        body.referredBy
+          ?.trim() || null;
 
-        affiliateEarnings: 0,
-        affiliateWithdrawn: 0,
+      const user =
+        await withDb(
+          env,
+          async (client) => {
+            /*
+             * Cegah email duplikat.
+             */
+            const existingEmail =
+              await client.query(
+                `
+                SELECT id
+                FROM users
+                WHERE LOWER(email) = $1
+                LIMIT 1
+                `,
+                [email]
+              );
 
-        referralCount: 0,
+            if (
+              existingEmail.rows.length
+            ) {
+              throw new Error(
+                'EMAIL_ALREADY_REGISTERED'
+              );
+            }
 
-        isSubscribed: false,
-        isLifetime: false,
+            /*
+             * Cegah collision username.
+             */
+            let finalUsername =
+              username;
 
-        role,
+            for (let i = 0; i < 5; i++) {
+              const existingUsername =
+                await client.query(
+                  `
+                  SELECT id
+                  FROM users
+                  WHERE username = $1
+                  LIMIT 1
+                  `,
+                  [finalUsername]
+                );
 
-        isBlacklisted: false,
-        isBanned: false,
+              if (
+                !existingUsername
+                  .rows.length
+              ) {
+                break;
+              }
 
-        forceJackpotNext: false,
+              finalUsername =
+                `${username}_${crypto
+                  .randomUUID()
+                  .replace(
+                    /-/g,
+                    ''
+                  )
+                  .slice(0, 5)}`;
+            }
 
-        createdAt: now,
-        updatedAt: now,
-      })
-      .returning();
+            const result =
+              await client.query(
+                `
+                INSERT INTO users (
+                  uid,
+                  cuid,
+                  username,
+                  email,
+                  password,
+                  display_name,
+                  referral_code,
+                  referred_by,
+                  balance,
+                  saldo,
+                  wallet_balance,
+                  locked_saldo,
+                  affiliate_earnings,
+                  affiliate_withdrawn,
+                  is_subscribed,
+                  subscription_plan,
+                  is_lifetime,
+                  role,
+                  is_blacklisted,
+                  is_banned,
+                  force_jackpot_next
+                )
+                VALUES (
+                  $1,
+                  $2,
+                  $3,
+                  $4,
+                  $5,
+                  $6,
+                  $7,
+                  $8,
+                  100000,
+                  15000,
+                  15000,
+                  0,
+                  0,
+                  0,
+                  true,
+                  'Akses Bebas Gratis (Permanen)',
+                  true,
+                  'USER',
+                  false,
+                  false,
+                  false
+                )
+                RETURNING
+                  id,
+                  uid,
+                  cuid,
+                  username,
+                  email,
+                  display_name,
+                  photo_url,
+                  streamer_handle,
+                  bio,
+                  referral_code,
+                  referred_by,
+                  referral_count,
+                  balance,
+                  saldo,
+                  wallet_balance,
+                  locked_saldo,
+                  affiliate_earnings,
+                  affiliate_withdrawn,
+                  is_subscribed,
+                  subscription_plan,
+                  subscription_expires_at,
+                  is_lifetime,
+                  subscribed_at,
+                  role,
+                  is_blacklisted,
+                  is_banned,
+                  banned_reason,
+                  force_jackpot_next,
+                  created_at,
+                  updated_at
+                `,
+                [
+                  uid,
+                  cuid,
+                  finalUsername,
+                  email,
+                  passwordHash,
+                  displayName ||
+                    finalUsername,
+                  referralCode,
+                  referredBy,
+                ]
+              );
 
-    if (!createdUser) {
-      throw new Error(
-        "User gagal dibuat."
+            return result.rows[0];
+          }
+        );
+
+      const mappedUser =
+        mapUser(user);
+
+      const token =
+        createToken(
+          mappedUser,
+          env
+        );
+
+      return json(
+        {
+          success: true,
+          token,
+          user: mappedUser,
+          verificationSent: false,
+        },
+        201
+      );
+    } catch (error: any) {
+      if (
+        error?.message ===
+        'EMAIL_ALREADY_REGISTERED'
+      ) {
+        return json(
+          {
+            success: false,
+            message:
+              'Email tersebut sudah terdaftar.',
+            code:
+              'EMAIL_ALREADY_REGISTERED',
+          },
+          409
+        );
+      }
+
+      console.error(
+        'Register API error:',
+        error
+      );
+
+      return json(
+        {
+          success: false,
+          message:
+            'Gagal membuat akun.',
+        },
+        500
       );
     }
-
-    const token = generateToken(
-      {
-        id: createdUser.id,
-        email: createdUser.email,
-        role: createdUser.role,
-        username:
-          createdUser.username,
-      },
-      context.env
-    );
-
-    return Response.json(
-      {
-        success: true,
-        message:
-          "Registrasi berhasil.",
-        token,
-        verificationSent: false,
-
-        user: {
-          id: createdUser.id,
-          cuid: createdUser.cuid,
-          uid: createdUser.uid,
-
-          username:
-            createdUser.username,
-
-          email:
-            createdUser.email,
-
-          displayName:
-            createdUser.displayName,
-
-          photoURL:
-            createdUser.photoURL,
-
-          balance:
-            createdUser.balance,
-
-          saldo:
-            createdUser.saldo,
-
-          walletBalance:
-            createdUser.walletBalance,
-
-          lockedSaldo:
-            createdUser.lockedSaldo,
-
-          affiliateEarnings:
-            createdUser.affiliateEarnings,
-
-          affiliateWithdrawn:
-            createdUser.affiliateWithdrawn,
-
-          referralCode:
-            createdUser.referralCode,
-
-          referredBy:
-            createdUser.referredBy,
-
-          referralCount:
-            createdUser.referralCount,
-
-          isSubscribed:
-            createdUser.isSubscribed,
-
-          subscriptionPlan:
-            createdUser.subscriptionPlan,
-
-          subscriptionExpiresAt:
-            createdUser.subscriptionExpiresAt,
-
-          isLifetime:
-            createdUser.isLifetime,
-
-          subscribedAt:
-            createdUser.subscribedAt,
-
-          role:
-            createdUser.role,
-
-          isBlacklisted:
-            createdUser.isBlacklisted,
-
-          isBanned:
-            createdUser.isBanned,
-
-          bannedReason:
-            createdUser.bannedReason,
-
-          forceJackpotNext:
-            createdUser.forceJackpotNext,
-
-          targetJackpotNominal:
-            createdUser.targetJackpotNominal,
-
-          createdAt:
-            createdUser.createdAt,
-
-          updatedAt:
-            createdUser.updatedAt,
-        },
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error(
-      "Cloudflare register error:",
-      error
-    );
-
-    return Response.json(
-      {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Registrasi gagal.",
-      },
-      { status: 500 }
-    );
-  } finally {
-    if (pool) {
-      try {
-        await pool.end();
-      } catch {
-        // Ignore pool close errors.
-      }
-    }
-  }
-};
+  };
