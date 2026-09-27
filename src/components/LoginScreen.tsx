@@ -1,24 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  loginWithGooglePopup,
-  loginWithGoogleRedirect,
-  getLoginResult,
-  loginWithEmail,
-  registerWithEmail,
-  sendPasswordReset
-} from "../lib/auth";
-import { SysLogo } from './SysLogo';
-import { LoginLeaderboardModal } from './LoginLeaderboardModal';
-import { TermsAndConditionsModal } from './TermsAndConditionsModal';
-
-import {
-  Crown,
   Trophy,
-  ChevronRight,
   AlertTriangle,
-  ExternalLink,
-  Copy,
-  Check,
   Gift,
   FileText,
   LogIn,
@@ -33,959 +16,1137 @@ import {
   KeyRound,
 } from 'lucide-react';
 
+import {
+  loginWithGooglePopup,
+  loginWithGoogleRedirect,
+  getLoginResult,
+  loginWithEmail,
+  registerWithEmail,
+  sendPasswordReset,
+} from '../lib/auth';
+
 interface LoginScreenProps {
-  onViewPricing: () => void;
-  onHostInstantLogin?: (customName?: string, customEmail?: string) => void;
-  onLoginSuccess?: (profile?: any) => void;
-  onOpenBlindBoxGame?: () => void;
+  onLoginSuccess: (user: any) => void;
+  onViewPricing?: () => void;
+  currentHost?: string;
 }
 
-interface LoginErrorInfo {
+interface ErrorInfo {
   code?: string;
-  message: string;
-  isUnauthorizedDomain?: boolean;
+  message?: string;
   domain?: string;
+  isUnauthorizedDomain?: boolean;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({
-  onViewPricing,
+const LoginScreen: React.FC<LoginScreenProps> = ({
   onLoginSuccess,
-  onOpenBlindBoxGame,
+  onViewPricing,
+  currentHost,
 }) => {
-  // Auth Form State
-  const [authTab, setAuthTab] = useState<'login' | 'register'>('login');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [displayName, setDisplayName] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [mode, setMode] = useState<'login' | 'register'>('login');
 
-  // Mandatory Terms & Conditions Checkbox
-  const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
-  const [termsError, setTermsError] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
 
-  // Status & Error Messages
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loginMode, setLoginMode] = useState<'popup' | 'redirect' | 'email'>('popup');
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorInfo, setErrorInfo] = useState<LoginErrorInfo | null>(null);
-  const [copiedDomain, setCopiedDomain] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Modals
-  const [isTermsOpen, setIsTermsOpen] = useState<boolean>(false);
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState<boolean>(false);
-  const [isForgotPassOpen, setIsForgotPassOpen] = useState<boolean>(false);
-  const [forgotEmail, setForgotEmail] = useState<string>('');
-  const [forgotStatus, setForgotStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-  const [isForgotLoading, setIsForgotLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const currentHost = typeof window !== 'undefined' ? window.location.hostname : '';
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
 
-  // 1. Handle getRedirectResult saat kembali dari Google Login redirect
+  const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null);
+
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
+  const [resetError, setResetError] = useState('');
+
+  /*
+   * ============================================================
+   * AUTH REDIRECT RESULT
+   * ============================================================
+   *
+   * Dipakai jika browser kembali dari proses OAuth redirect.
+   *
+   * Tidak lagi menggunakan Firebase.
+   */
   useEffect(() => {
     let isMounted = true;
 
     getLoginResult()
       .then((result) => {
         if (!isMounted) return;
-        if (result && result.user) {
+
+        if (result) {
           setIsLoading(false);
+
           if (onLoginSuccess) {
-            onLoginSuccess();
-          } else {
-            try {
-              window.history.pushState(null, '', '/dashboard');
-            } catch {}
+            onLoginSuccess(result);
           }
         }
       })
       .catch((err: any) => {
         if (!isMounted) return;
-        console.error('Error handling redirect login result:', err);
+
+        console.error(
+          'Error handling authentication result:',
+          err
+        );
+
         const errCode = err?.code || '';
-        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
-        if (
-          errCode === 'auth/unauthorized-domain' ||
-          (err?.message && err.message.toLowerCase().includes('unauthorized domain'))
-        ) {
-          const msg = `Domain '${currentDomain}' is not authorized in Firebase Authentication. Please add this domain in Firebase Console > Authentication > Settings > Authorized domains.`;
-          setLoginError(msg);
-          setErrorInfo({
-            code: 'auth/unauthorized-domain',
-            isUnauthorizedDomain: true,
-            domain: currentDomain,
-            message: msg
-          });
-        } else {
-          const msg = err?.message || 'Failed to process Google redirect authentication.';
-          setLoginError(msg);
-          setErrorInfo({
-            code: errCode,
-            message: msg,
-            domain: currentDomain
-          });
-        }
+
+        const msg =
+          err?.message ||
+          'Gagal memproses hasil autentikasi.';
+
+        setLoginError(msg);
+
+        setErrorInfo({
+          code: errCode || 'auth/unknown',
+          message: msg,
+          domain: currentHost,
+          isUnauthorizedDomain:
+            errCode === 'auth/unauthorized-domain',
+        });
+
+        setIsLoading(false);
       });
 
-    // Pop up leaderboard tampilkan 5 detik setelah user berada di halaman log in
+    /*
+     * Leaderboard otomatis tampil setelah 5 detik.
+     */
     const timer = setTimeout(() => {
-      if (isMounted) setIsLeaderboardOpen(true);
+      if (isMounted) {
+        setIsLeaderboardOpen(true);
+      }
     }, 5000);
 
     return () => {
       isMounted = false;
       clearTimeout(timer);
     };
-  }, [onLoginSuccess]);
+  }, [onLoginSuccess, currentHost]);
 
-  // Validasi wajib ceklis Terms & Conditions
-  const validateTerms = (): boolean => {
-    if (!isTermsAccepted) {
-      setTermsError('Harap centang ceklis Term & condition terlebih dahulu. Gagal log in atau daftar jika belum disetujui.');
-      return false;
-    }
-    setTermsError(null);
-    return true;
+  /*
+   * ============================================================
+   * RESET STATE
+   * ============================================================
+   */
+
+  const clearMessages = () => {
+    setLoginError('');
+    setSuccessMessage('');
+    setErrorInfo(null);
+    setIsAlreadyRegistered(false);
+    setResetMessage('');
+    setResetError('');
   };
 
-  // Handler: Log In dengan Email & Password
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError(null);
-    setIsAlreadyRegistered(false);
-    setSuccessMessage(null);
-    setErrorInfo(null);
+  /*
+   * ============================================================
+   * EMAIL LOGIN
+   * ============================================================
+   */
 
-    // Wajib ceklis Term & condition
-    if (!validateTerms()) {
-      return;
-    }
+  const handleEmailLogin = async (
+    event?: React.FormEvent
+  ) => {
+    event?.preventDefault();
 
-    if (!email.trim() || !password) {
-      setLoginError('Harap masukkan alamat email dan kata sandi.');
-      return;
-    }
+    clearMessages();
 
-    setIsLoading(true);
-    setLoginMode('email');
-
-    try {
-      const cleanEmail = email.trim().toLowerCase();
-      const credential = await loginWithEmail(cleanEmail, password);
-      if (credential && credential.user) {
-        setSuccessMessage('Log in berhasil! Mengalihkan ke dashboard...');
-        if (onLoginSuccess) {
-          onLoginSuccess(credential.user);
-        }
-      }
-    } catch (err: any) {
-      console.error('Email login error:', err);
-      const errCode = err?.code || '';
-      const errMsg = err?.message || '';
-
-      if (
-        errCode === 'auth/user-not-found' ||
-        errCode === 'auth/invalid-credential' ||
-        errMsg.includes('invalid-credential')
-      ) {
-        setLoginError('Email atau kata sandi tidak cocok. Jika belum punya akun, silakan klik tab Daftar.');
-      } else if (errCode === 'auth/wrong-password') {
-        setLoginError('Kata sandi yang Anda masukkan salah. Silakan coba lagi.');
-      } else if (errCode === 'auth/invalid-email') {
-        setLoginError('Format email tidak valid.');
-      } else if (errCode === 'auth/too-many-requests') {
-        setLoginError('Terlalu banyak percobaan gagal. Silakan coba kembali beberapa saat lagi.');
-      } else {
-        setLoginError(errMsg || 'Gagal log in. Silakan periksa kembali koneksi atau data akun Anda.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handler: Daftar Akun Baru dengan Email & Password
-  const handleEmailRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError(null);
-    setIsAlreadyRegistered(false);
-    setSuccessMessage(null);
-    setErrorInfo(null);
-
-    // Wajib ceklis Term & condition
-    if (!validateTerms()) {
-      return;
-    }
-
-    const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail) {
-      setLoginError('Harap masukkan alamat email yang valid.');
+    if (!email.trim()) {
+      setLoginError('Silakan masukkan alamat email.');
       return;
     }
 
     if (!password) {
-      setLoginError('Harap tentukan kata sandi akun Anda.');
+      setLoginError('Silakan masukkan kata sandi.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const result = await loginWithEmail(
+        email.trim(),
+        password
+      );
+
+      if (!result) {
+        throw new Error(
+          'Login gagal. Server tidak mengembalikan data pengguna.'
+        );
+      }
+
+      /*
+       * Simpan hasil melalui parent.
+       */
+      onLoginSuccess(result);
+    } catch (err: any) {
+      console.error('Email login error:', err);
+
+      const code =
+        err?.code ||
+        err?.response?.data?.code ||
+        'auth/login-failed';
+
+      const message =
+        err?.message ||
+        err?.response?.data?.message ||
+        'Email atau kata sandi tidak valid.';
+
+      setLoginError(message);
+
+      setErrorInfo({
+        code,
+        message,
+        domain: currentHost,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /*
+   * ============================================================
+   * REGISTER
+   * ============================================================
+   */
+
+  const handleRegister = async (
+    event?: React.FormEvent
+  ) => {
+    event?.preventDefault();
+
+    clearMessages();
+
+    if (!displayName.trim()) {
+      setLoginError('Silakan masukkan nama Anda.');
+      return;
+    }
+
+    if (!email.trim()) {
+      setLoginError('Silakan masukkan alamat email.');
+      return;
+    }
+
+    if (!password) {
+      setLoginError('Silakan masukkan kata sandi.');
       return;
     }
 
     if (password.length < 6) {
-      setLoginError('Kata sandi terlalu pendek. Gunakan minimal 6 karakter.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setLoginError('Konfirmasi kata sandi tidak cocok. Harap periksa kembali.');
+      setLoginError(
+        'Kata sandi minimal 6 karakter.'
+      );
       return;
     }
 
     setIsLoading(true);
-    setLoginMode('email');
 
     try {
-      const { credential } = await registerWithEmail(cleanEmail, password, displayName.trim() || undefined);
-      if (credential && credential.user) {
-        setSuccessMessage('Pendaftaran berhasil! Akun Anda aktif dengan bonus saldo selamat datang.');
-        if (onLoginSuccess) {
-          onLoginSuccess(credential.user);
-        }
-      }
-    } catch (err: any) {
-      console.error('Email registration error:', err);
-      const errCode = err?.code || '';
-      const errMsg = err?.message || '';
+      const result = await registerWithEmail(
+        email.trim(),
+        password,
+        displayName.trim()
+      );
 
-      // Tampilan khusus jika email sudah terdaftar
+      if (!result) {
+        throw new Error(
+          'Registrasi gagal. Server tidak mengembalikan data pengguna.'
+        );
+      }
+
+      /*
+       * Jika backend langsung membuat session,
+       * pengguna dapat langsung masuk.
+       */
       if (
-        errCode === 'auth/email-already-in-use' ||
-        errMsg.toLowerCase().includes('email-already-in-use') ||
-        errMsg.toLowerCase().includes('already in use')
+        result.user ||
+        result.credential ||
+        result.token
+      ) {
+        onLoginSuccess(result);
+        return;
+      }
+
+      /*
+       * Jika backend meminta login setelah register.
+       */
+      setSuccessMessage(
+        'Registrasi berhasil. Silakan login menggunakan akun Anda.'
+      );
+
+      setMode('login');
+      setPassword('');
+    } catch (err: any) {
+      console.error('Register error:', err);
+
+      const code =
+        err?.code ||
+        err?.response?.data?.code ||
+        'auth/register-failed';
+
+      const message =
+        err?.message ||
+        err?.response?.data?.message ||
+        'Registrasi gagal. Silakan coba lagi.';
+
+      setLoginError(message);
+
+      setErrorInfo({
+        code,
+        message,
+        domain: currentHost,
+      });
+
+      /*
+       * Deteksi email sudah digunakan.
+       */
+      const lowerMessage = String(message).toLowerCase();
+
+      if (
+        lowerMessage.includes('already') ||
+        lowerMessage.includes('exist') ||
+        lowerMessage.includes('terdaftar') ||
+        lowerMessage.includes('sudah digunakan')
       ) {
         setIsAlreadyRegistered(true);
-        setLoginError('email sudah terdaftar,silahkan log in');
-      } else if (errCode === 'auth/invalid-email') {
-        setLoginError('Format alamat email tidak valid.');
-      } else if (errCode === 'auth/weak-password') {
-        setLoginError('Kata sandi terlalu lemah. Gunakan minimal 6 karakter.');
-      } else {
-        setLoginError(errMsg || 'Gagal mendaftar akun baru. Silakan coba beberapa saat lagi.');
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Handler: Google Sign-in
-  const handleGoogleLogin = async (forceRedirect: boolean = false) => {
-    // Wajib ceklis Term & condition
-    if (!validateTerms()) {
-      return;
-    }
+  /*
+   * ============================================================
+   * GOOGLE LOGIN
+   * ============================================================
+   *
+   * Fungsi ini sudah tidak menggunakan Firebase secara langsung.
+   * Implementasi backend Google OAuth akan dilakukan di tahap berikutnya.
+   */
+
+  const handleGoogleLogin = async (
+    forceRedirect = false
+  ) => {
+    clearMessages();
 
     setIsLoading(true);
-    setLoginError(null);
-    setIsAlreadyRegistered(false);
-    setErrorInfo(null);
-    const activeDomain = typeof window !== 'undefined' ? window.location.hostname : '';
 
     try {
+      let result;
+
       if (forceRedirect) {
-        setLoginMode('redirect');
-        await loginWithGoogleRedirect();
+        result = await loginWithGoogleRedirect();
       } else {
-        setLoginMode('popup');
-        const result = await loginWithGooglePopup();
-        if (result && result.user) {
-          setIsLoading(false);
-          if (onLoginSuccess) {
-            onLoginSuccess();
-          }
-        }
+        result = await loginWithGooglePopup();
+      }
+
+      /*
+       * Beberapa OAuth flow menggunakan redirect sehingga
+       * result bisa kosong.
+       */
+      if (result) {
+        onLoginSuccess(result);
       }
     } catch (err: any) {
-      console.error('Login error details:', err);
-      const errCode = err?.code || '';
-      const errMsg = err?.message || '';
+      console.error('Google login error:', err);
 
-      if (errCode === 'auth/popup-blocked') {
-        const msg = 'Login popup was blocked by your browser or extension. Please allow popups or open the app in a new tab.';
-        setLoginError(msg);
-        setErrorInfo({
-          code: 'auth/popup-blocked',
-          message: msg,
-          domain: activeDomain
-        });
-      } else if (errCode === 'auth/popup-closed-by-user') {
-        const msg = 'Google login window was closed before completion. Please click the Sign In button again.';
-        setLoginError(msg);
-        setErrorInfo({
-          code: 'auth/popup-closed-by-user',
-          message: msg,
-          domain: activeDomain
-        });
-      } else if (errCode === 'auth/unauthorized-domain' || errMsg.toLowerCase().includes('unauthorized domain')) {
-        const fullMsg = `Domain '${activeDomain}' is not registered in Firebase Authorized Domains. Add '${activeDomain}' in Firebase Console > Authentication > Settings > Authorized domains.`;
-        setLoginError(fullMsg);
-        setErrorInfo({
-          code: 'auth/unauthorized-domain',
-          isUnauthorizedDomain: true,
-          domain: activeDomain,
-          message: fullMsg
-        });
-      } else if (errCode === 'auth/operation-not-allowed') {
-        const msg = 'Google provider is not enabled in Firebase Console. Please go to Firebase Console > Authentication > Sign-in method > Enable Google provider.';
-        setLoginError(msg);
-        setErrorInfo({
-          code: 'auth/operation-not-allowed',
-          message: msg,
-          domain: activeDomain
-        });
-      } else {
-        const fullMsg = errMsg || 'Failed to sign in with Google. Please check your internet connection.';
-        setLoginError(fullMsg);
-        setErrorInfo({
-          code: errCode || 'auth/unknown',
-          message: fullMsg,
-          domain: activeDomain
-        });
-      }
+      const code =
+        err?.code ||
+        err?.response?.data?.code ||
+        'auth/google-login-failed';
+
+      const message =
+        err?.message ||
+        err?.response?.data?.message ||
+        'Login dengan Google belum tersedia atau gagal diproses.';
+
+      setLoginError(message);
+
+      setErrorInfo({
+        code,
+        message,
+        domain: currentHost,
+      });
+    } finally {
       setIsLoading(false);
     }
   };
 
-  // Handler: Lupa Kata Sandi (Password Reset)
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!forgotEmail.trim()) {
-      setForgotStatus({ type: 'error', message: 'Harap masukkan alamat email Anda.' });
+  /*
+   * ============================================================
+   * FORGOT PASSWORD
+   * ============================================================
+   */
+
+  const handleForgotPassword = async (
+    event?: React.FormEvent
+  ) => {
+    event?.preventDefault();
+
+    setResetError('');
+    setResetMessage('');
+
+    if (!resetEmail.trim()) {
+      setResetError(
+        'Silakan masukkan alamat email.'
+      );
       return;
     }
 
-    setIsForgotLoading(true);
-    setForgotStatus(null);
+    setResetLoading(true);
+
     try {
-      await sendPasswordReset(forgotEmail.trim().toLowerCase());
-      setForgotStatus({
-        type: 'success',
-        message: 'Tautan pemulihan kata sandi telah dikirim ke email Anda. Silakan cek kotak masuk atau spam.'
-      });
+      await sendPasswordReset(
+        resetEmail.trim()
+      );
+
+      setResetMessage(
+        'Jika email tersebut terdaftar, tautan pemulihan kata sandi akan dikirim ke email Anda.'
+      );
     } catch (err: any) {
-      const errCode = err?.code || '';
-      if (errCode === 'auth/user-not-found') {
-        setForgotStatus({
-          type: 'error',
-          message: 'Akun dengan email ini belum terdaftar di sistem.'
-        });
-      } else {
-        setForgotStatus({
-          type: 'error',
-          message: err?.message || 'Gagal mengirim tautan reset kata sandi.'
-        });
-      }
+      console.error(
+        'Forgot password error:',
+        err
+      );
+
+      setResetError(
+        err?.message ||
+          'Gagal mengirim tautan pemulihan kata sandi.'
+      );
     } finally {
-      setIsForgotLoading(false);
+      setResetLoading(false);
     }
   };
 
-  const copyDomainToClipboard = (text: string) => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text);
-      setCopiedDomain(true);
-      setTimeout(() => setCopiedDomain(false), 3000);
-    }
+  /*
+   * ============================================================
+   * SWITCH LOGIN / REGISTER
+   * ============================================================
+   */
+
+  const switchMode = (
+    nextMode: 'login' | 'register'
+  ) => {
+    clearMessages();
+
+    setMode(nextMode);
+    setPassword('');
   };
 
-  return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#0a0e17] via-[#05070c] to-[#020408] text-white flex flex-col items-center justify-between p-4 sm:p-8 font-['Poppins'] select-none">
-      {/* Top Brand Bar */}
-      <div className="w-full max-w-5xl flex items-center justify-between py-2">
-        <SysLogo size="md" showText={true} />
+  /*
+   * ============================================================
+   * FORGOT PASSWORD SCREEN
+   * ============================================================
+   */
 
-        <div className="flex items-center gap-2">
-          <button
-            id="view-leaderboard-top-btn"
-            type="button"
-            onClick={() => setIsLeaderboardOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-xs font-bold text-amber-300 border border-amber-500/40 transition-all hover:scale-105 shadow-sm shadow-amber-500/10 cursor-pointer"
-            title="View Leaderboard & Rewards"
-          >
-            <Trophy className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Prize Leaderboard</span>
-            <span className="sm:hidden">Leaderboard</span>
-          </button>
-        </div>
-      </div>
+  if (showForgotPassword) {
+    return (
+      <div className="min-h-screen w-full bg-slate-950 text-white flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-md">
 
-      {/* Main Card - AUTH CARD (LOGIN & DAFTAR) */}
-      <div className="w-full max-w-md my-auto flex flex-col items-center text-center py-4">
-        {/* Brand Emblem */}
-        <div className="mb-4">
-          <SysLogo size="xl" showText={false} />
-        </div>
-
-        {/* Title */}
-        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
-          {authTab === 'login' ? 'SYS Streamer Log In' : 'Daftar Akun SYS Streamer'}
-        </h2>
-        <p className="text-xs sm:text-sm text-white/60 mt-1 max-w-sm">
-          {authTab === 'login'
-            ? 'Masuk ke studio siaran interaktif & kelola games streaming Anda.'
-            : 'Daftar akun gratis sekarang & nikmati bonus saldo selamat datang!'}
-        </p>
-
-        {/* TAMPILAN KHUSUS: EMAIL SUDAH TERDAFTAR */}
-        {isAlreadyRegistered && (
-          <div
-            id="email-already-registered-box"
-            className="mt-4 w-full p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-yellow-500/25 to-amber-500/20 border-2 border-amber-400 text-amber-100 text-xs flex flex-col gap-2.5 text-left shadow-xl shadow-amber-500/15 animate-in fade-in"
-          >
-            <div className="flex items-start gap-2.5">
-              <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-              <div className="space-y-1 flex-1">
-                <div className="text-sm font-black text-amber-300 tracking-wide">
-                  email sudah terdaftar,silahkan log in
-                </div>
-                <p className="text-[11px] text-white/85 leading-relaxed">
-                  Email <span className="font-mono text-amber-200 font-bold underline">{email}</span> sudah terdaftar dalam sistem SYS Streamer. Silakan klik tombol di bawah untuk langsung log in.
-                </p>
-              </div>
-            </div>
-            <div className="pt-2 border-t border-amber-400/30 flex items-center justify-end">
-              <button
-                type="button"
-                id="switch-to-login-from-warning-btn"
-                onClick={() => {
-                  setAuthTab('login');
-                  setIsAlreadyRegistered(false);
-                  setLoginError(null);
-                }}
-                className="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
-              >
-                <LogIn className="w-3.5 h-3.5" />
-                <span>Beralih ke Log In Sekarang</span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* SUCCESS NOTIFICATION */}
-        {successMessage && (
-          <div className="mt-4 w-full text-left rounded-2xl bg-emerald-950/70 border border-emerald-500/40 p-3.5 shadow-xl text-xs space-y-1 text-emerald-200 animate-in fade-in">
-            <div className="flex items-center gap-2 font-bold text-emerald-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Berhasil!</span>
-            </div>
-            <p className="text-[11px] text-emerald-100">{successMessage}</p>
-          </div>
-        )}
-
-        {/* GENERAL ERROR NOTIFICATION */}
-        {loginError && !isAlreadyRegistered && (
-          <div className="mt-4 w-full text-left rounded-2xl bg-gradient-to-b from-red-950/70 to-red-900/40 border border-red-500/40 p-4 shadow-xl text-xs space-y-2.5 animate-in fade-in">
-            <div className="flex items-start gap-2.5">
-              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-              <div className="space-y-1 flex-1">
-                <div className="font-bold text-red-200 text-sm flex items-center gap-2 flex-wrap">
-                  <span>
-                    {errorInfo?.isUnauthorizedDomain
-                      ? 'Domain Not Authorized in Firebase'
-                      : 'Pemberitahuan Akun'}
-                  </span>
-                  {errorInfo?.code && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-red-500/30 text-red-300 border border-red-500/40">
-                      {errorInfo.code}
-                    </span>
-                  )}
-                </div>
-                <p className="text-red-100/90 leading-relaxed">{loginError}</p>
-              </div>
+          <div className="text-center mb-8">
+            <div className="mx-auto mb-5 w-16 h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">
+              <KeyRound className="w-8 h-8 text-white" />
             </div>
 
-            {/* Special Interactive Guide for Firebase Authorized Domains */}
-            {errorInfo?.isUnauthorizedDomain && (
-              <div className="pt-2 border-t border-red-500/30 space-y-2">
-                <div className="p-2.5 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between gap-2">
-                  <div className="truncate">
-                    <span className="text-[10px] text-white/50 block">Your current active domain:</span>
-                    <span className="font-mono font-bold text-amber-300 text-xs truncate select-all">
-                      {errorInfo.domain || currentHost || 'your domain'}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => copyDomainToClipboard(errorInfo.domain || currentHost || '')}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[11px] border border-amber-500/40 transition-all shrink-0 active:scale-95 cursor-pointer"
-                  >
-                    {copiedDomain ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-emerald-300">Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copy Domain</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+            <h1 className="text-2xl font-bold">
+              Lupa Kata Sandi?
+            </h1>
 
-                <a
-                  href="https://console.firebase.google.com/project/spherical-reporter-qgmzr/authentication/settings"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition-all shadow-md active:scale-95"
-                >
-                  <span>Open Firebase Authorized Domains</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* AUTH BOX */}
-        <div className="w-full mt-5 p-5 sm:p-6 rounded-3xl bg-neutral-900/90 border border-white/15 shadow-2xl space-y-4">
-          {/* TAB TOGGLE: LOG IN VS DAFTAR */}
-          <div className="grid grid-cols-2 p-1 rounded-2xl bg-black/50 border border-white/10">
-            <button
-              id="tab-login-btn"
-              type="button"
-              onClick={() => {
-                setAuthTab('login');
-                setLoginError(null);
-                setTermsError(null);
-                setIsAlreadyRegistered(false);
-              }}
-              className={`py-2.5 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                authTab === 'login'
-                  ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/20 scale-[1.01]'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Log In</span>
-            </button>
-
-            <button
-              id="tab-register-btn"
-              type="button"
-              onClick={() => {
-                setAuthTab('register');
-                setLoginError(null);
-                setTermsError(null);
-                setIsAlreadyRegistered(false);
-              }}
-              className={`py-2.5 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                authTab === 'register'
-                  ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/20 scale-[1.01]'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <UserPlus className="w-4 h-4" />
-              <span>Daftar</span>
-            </button>
+            <p className="mt-2 text-sm text-white/50">
+              Masukkan alamat email Anda untuk menerima
+              tautan pemulihan kata sandi.
+            </p>
           </div>
 
-          {/* FORM: LOG IN ATAU DAFTAR */}
           <form
-            onSubmit={authTab === 'login' ? handleEmailLogin : handleEmailRegister}
-            className="space-y-3.5 text-left"
+            onSubmit={handleForgotPassword}
+            className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl"
           >
-            {/* Input Display Name (Khusus Form Daftar) */}
-            {authTab === 'register' && (
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-white/70 block">
-                  Nama Streamer / Panggilan (Opsional)
-                </label>
-                <div className="relative">
-                  <UserIcon className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    id="register-name-input"
-                    type="text"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Contoh: Alex Streamer"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-xs text-white placeholder-white/30 outline-none transition-all"
-                  />
-                </div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Email
+            </label>
+
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) =>
+                  setResetEmail(e.target.value)
+                }
+                placeholder="nama@email.com"
+                autoComplete="email"
+                className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-4 outline-none focus:border-white/30 transition"
+              />
+            </div>
+
+            {resetError && (
+              <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200 flex gap-2">
+                <AlertCircle className="w-5 h-5 shrink-0" />
+                <span>{resetError}</span>
               </div>
             )}
 
-            {/* Input Email */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-white/70 block">
-                Alamat Email <span className="text-amber-400">*</span>
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  id="auth-email-input"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (isAlreadyRegistered) setIsAlreadyRegistered(false);
-                    if (loginError) setLoginError(null);
-                  }}
-                  placeholder="nama@email.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-xs text-white placeholder-white/30 outline-none transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Input Password */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <label className="text-[11px] font-semibold text-white/70 block">
-                  Kata Sandi <span className="text-amber-400">*</span>
-                </label>
-                {authTab === 'login' && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setForgotEmail(email);
-                      setIsForgotPassOpen(true);
-                      setForgotStatus(null);
-                    }}
-                    className="text-[11px] text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
-                  >
-                    Lupa kata sandi?
-                  </button>
-                )}
-              </div>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  id="auth-password-input"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={authTab === 'register' ? 'Minimal 6 karakter' : 'Masukkan kata sandi'}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-xs text-white placeholder-white/30 outline-none transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white cursor-pointer"
-                  tabIndex={-1}
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Input Konfirmasi Password (Khusus Form Daftar) */}
-            {authTab === 'register' && (
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-white/70 block">
-                  Konfirmasi Kata Sandi <span className="text-amber-400">*</span>
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    id="register-confirm-password-input"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Ulangi kata sandi Anda"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-xs text-white placeholder-white/30 outline-none transition-all"
-                  />
-                </div>
+            {resetMessage && (
+              <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-200 flex gap-2">
+                <CheckCircle2 className="w-5 h-5 shrink-0" />
+                <span>{resetMessage}</span>
               </div>
             )}
 
-            {/* CEK BOX PADA SAMPING TERM & CONDITION (WAJIB DICEKLIS) */}
-            <div
-              id="terms-checkbox-container"
-              className={`p-3 rounded-2xl border transition-all ${
-                termsError
-                  ? 'bg-red-950/40 border-red-500/70 ring-2 ring-red-500/40'
-                  : 'bg-black/40 border-white/10 hover:border-white/20'
-              }`}
-            >
-              <label htmlFor="terms-agree-checkbox" className="flex items-start gap-2.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  id="terms-agree-checkbox"
-                  checked={isTermsAccepted}
-                  onChange={(e) => {
-                    setIsTermsAccepted(e.target.checked);
-                    if (e.target.checked) {
-                      setTermsError(null);
-                    }
-                  }}
-                  className="mt-0.5 w-4 h-4 rounded border-white/30 text-amber-500 focus:ring-amber-400 bg-neutral-900 cursor-pointer accent-amber-500 shrink-0"
-                />
-                <span className="text-xs text-white/90 leading-snug">
-                  Saya telah membaca dan menyetujui{' '}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsTermsOpen(true);
-                    }}
-                    className="text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 cursor-pointer inline-flex items-center gap-1"
-                  >
-                    <FileText className="w-3.5 h-3.5 inline text-amber-400" />
-                    <span>Term & condition</span>
-                  </button>
-                  <span className="text-red-400 font-bold ml-1">*</span>
-                </span>
-              </label>
-
-              {/* Tampilkan pesan peringatan jika cek box tidak diceklis */}
-              {termsError && (
-                <div className="mt-2 flex items-start gap-1.5 text-[11px] font-semibold text-red-300 pl-6 animate-in fade-in">
-                  <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-red-400 mt-0.5" />
-                  <span>{termsError}</span>
-                </div>
-              )}
-            </div>
-
-            {/* SUBMIT BUTTON: LOG IN ATAU DAFTAR */}
             <button
-              id={authTab === 'login' ? 'email-login-btn' : 'email-register-btn'}
               type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-[0.98] text-slate-950 font-black text-sm tracking-wide flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 transition-all disabled:opacity-60 cursor-pointer"
+              disabled={resetLoading}
+              className="mt-5 w-full h-12 rounded-xl bg-white text-black font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/90 transition"
             >
-              {isLoading && loginMode === 'email' ? (
-                <div className="flex items-center gap-2 text-slate-950 font-bold">
-                  <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                  <span>{authTab === 'login' ? 'Memproses Log In...' : 'Mendaftarkan Akun...'}</span>
-                </div>
-              ) : (
-                <>
-                  {authTab === 'login' ? <LogIn className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
-                  <span>{authTab === 'login' ? 'Log In Sekarang' : 'Daftar Akun Baru'}</span>
-                </>
-              )}
+              {resetLoading
+                ? 'Mengirim...'
+                : 'Kirim Tautan Pemulihan'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowForgotPassword(false);
+                setResetError('');
+                setResetMessage('');
+              }}
+              className="mt-3 w-full h-11 rounded-xl border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition"
+            >
+              Kembali ke Login
             </button>
           </form>
-
-          {/* DIVIDER: ATAU MASUK DENGAN GOOGLE */}
-          <div className="relative my-3">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10" />
-            </div>
-            <div className="relative flex justify-center text-[10px] uppercase font-bold text-white/40 tracking-wider">
-              <span className="bg-neutral-900 px-3">atau lanjutkan dengan</span>
-            </div>
-          </div>
-
-          {/* GOOGLE SIGN IN BUTTON */}
-          <button
-            id="google-signin-btn"
-            type="button"
-            onClick={() => handleGoogleLogin(false)}
-            disabled={isLoading}
-            className="w-full py-3 px-5 rounded-2xl bg-white hover:bg-neutral-100 active:bg-neutral-200 text-neutral-900 font-extrabold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-3 shadow-md hover:shadow-amber-500/10 transition-all hover:scale-[1.01] active:scale-[0.99] border border-neutral-200 disabled:opacity-60 cursor-pointer"
-          >
-            {isLoading && loginMode === 'popup' ? (
-              <div className="flex items-center gap-2 text-neutral-800">
-                <span className="w-4 h-4 border-2 border-neutral-800 border-t-transparent rounded-full animate-spin" />
-                <span>Membuka Jendela Google...</span>
-              </div>
-            ) : (
-              <>
-                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  />
-                </svg>
-                <span>Masuk Cepat dengan Google</span>
-              </>
-            )}
-          </button>
-
-          {/* TOGGLE BOTTOM LINK */}
-          <div className="pt-2 text-center text-xs text-white/60">
-            {authTab === 'login' ? (
-              <p>
-                Belum punya akun?{' '}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthTab('register');
-                    setLoginError(null);
-                    setTermsError(null);
-                    setIsAlreadyRegistered(false);
-                  }}
-                  className="font-bold text-amber-400 hover:text-amber-300 underline underline-offset-2 cursor-pointer"
-                >
-                  Daftar sekarang
-                </button>
-              </p>
-            ) : (
-              <p>
-                Sudah punya akun?{' '}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthTab('login');
-                    setLoginError(null);
-                    setTermsError(null);
-                    setIsAlreadyRegistered(false);
-                  }}
-                  className="font-bold text-amber-400 hover:text-amber-300 underline underline-offset-2 cursor-pointer"
-                >
-                  Log In di sini
-                </button>
-              </p>
-            )}
-          </div>
-
-          {/* BLIND BOX GAME SHORTCUT BUTTON */}
-          {onOpenBlindBoxGame && (
-            <div className="pt-2 border-t border-white/10">
-              <button
-                type="button"
-                onClick={onOpenBlindBoxGame}
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500/15 via-yellow-500/25 to-amber-500/15 hover:from-amber-500/25 hover:to-yellow-500/35 border border-amber-400/50 text-amber-300 font-bold text-xs tracking-wide flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-              >
-                <Gift className="w-3.5 h-3.5 text-yellow-300 animate-bounce" />
-                <span>🎁 Main "Blind Box Game" Win BIG</span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* FOOTER TERMS & CONDITIONS LINK */}
-        <div className="w-full mt-3 pt-3 flex flex-col items-center justify-center text-center">
-          <button
-            type="button"
-            onClick={() => setIsTermsOpen(true)}
-            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/40 text-amber-300 hover:text-amber-200 text-xs font-semibold transition-all cursor-pointer shadow-sm"
-          >
-            <FileText className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span className="underline underline-offset-4">Buka Halaman Term & condition</span>
-          </button>
-          <span className="text-[10px] text-white/40 mt-1">
-            Klik untuk membaca ketentuan layanan, integritas fair play, dan kebijakan saldo streamer
-          </span>
         </div>
       </div>
+    );
+  }
 
-      {/* Footer info */}
-      <div className="w-full max-w-5xl py-4 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/40 gap-2">
-        <p>© 2026 SYS Streamer. All rights reserved.</p>
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-            Broadcast Server Online
-          </span>
-          <span>Version 3.8.0</span>
-        </div>
+  /*
+   * ============================================================
+   * MAIN LOGIN SCREEN
+   * ============================================================
+   */
+
+  return (
+    <div className="min-h-screen w-full bg-slate-950 text-white overflow-y-auto">
+
+      {/* Background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl" />
+        <div className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-emerald-500/5 blur-3xl" />
       </div>
 
-      {/* Modal Lupa Kata Sandi */}
-      {isForgotPassOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-sm rounded-3xl bg-neutral-900 border border-white/15 p-6 shadow-2xl space-y-4 text-left">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2">
-                <KeyRound className="w-5 h-5 text-amber-400" />
-                <h3 className="text-base font-black text-white">Reset Kata Sandi</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsForgotPassOpen(false)}
-                className="text-white/40 hover:text-white text-sm p-1 rounded-lg hover:bg-white/10 cursor-pointer"
-              >
-                ✕
-              </button>
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-10">
+
+        <div className="w-full max-w-md">
+
+          {/* ================================================== */}
+          {/* HEADER */}
+          {/* ================================================== */}
+
+          <div className="text-center mb-8">
+
+            <div className="mx-auto mb-5 w-20 h-20 rounded-3xl bg-gradient-to-br from-white/15 to-white/5 border border-white/10 shadow-2xl flex items-center justify-center">
+              <Trophy className="w-10 h-10 text-yellow-300" />
             </div>
 
-            <p className="text-xs text-white/70 leading-relaxed">
-              Masukkan alamat email Anda untuk menerima tautan pemulihan kata sandi resmi dari Firebase.
+            <h1 className="text-3xl font-black tracking-tight">
+              SYS STREAM
+            </h1>
+
+            <p className="mt-2 text-white/45 text-sm">
+              Streaming • Game • Reward Platform
             </p>
 
-            {forgotStatus && (
-              <div
-                className={`p-3 rounded-xl text-xs ${
-                  forgotStatus.type === 'success'
-                    ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-200'
-                    : 'bg-red-950/60 border border-red-500/40 text-red-200'
+          </div>
+
+          {/* ================================================== */}
+          {/* MAIN CARD */}
+          {/* ================================================== */}
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.045] backdrop-blur-xl shadow-2xl overflow-hidden">
+
+            {/* ================================================= */}
+            {/* TABS */}
+            {/* ================================================= */}
+
+            <div className="grid grid-cols-2 border-b border-white/10">
+
+              <button
+                type="button"
+                onClick={() => switchMode('login')}
+                className={`h-14 font-bold text-sm transition flex items-center justify-center gap-2 ${
+                  mode === 'login'
+                    ? 'text-white bg-white/[0.06]'
+                    : 'text-white/40 hover:text-white/70'
                 }`}
               >
-                {forgotStatus.message}
+                <LogIn className="w-4 h-4" />
+                Login
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchMode('register')}
+                className={`h-14 font-bold text-sm transition flex items-center justify-center gap-2 ${
+                  mode === 'register'
+                    ? 'text-white bg-white/[0.06]'
+                    : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                <UserPlus className="w-4 h-4" />
+                Daftar
+              </button>
+
+            </div>
+
+            <div className="p-6">
+
+              {/* ================================================= */}
+              {/* SUCCESS */}
+              {/* ================================================= */}
+
+              {successMessage && (
+                <div className="mb-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 flex gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+
+                  <p className="text-sm text-emerald-200">
+                    {successMessage}
+                  </p>
+                </div>
+              )}
+
+              {/* ================================================= */}
+              {/* GENERAL ERROR */}
+              {/* ================================================= */}
+
+              {loginError && !isAlreadyRegistered && (
+                <div className="mb-5 rounded-2xl bg-gradient-to-b from-red-950/70 to-red-900/40 border border-red-500/40 p-4 shadow-xl text-xs space-y-2.5">
+
+                  <div className="flex items-start gap-2.5">
+
+                    <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+
+                    <div className="space-y-1 flex-1">
+
+                      <div className="font-bold text-red-200 text-sm flex items-center gap-2 flex-wrap">
+
+                        <span>
+                          {errorInfo?.isUnauthorizedDomain
+                            ? 'Domain Authentication'
+                            : 'Pemberitahuan Akun'}
+                        </span>
+
+                        {errorInfo?.code && (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-red-500/30 text-red-300 border border-red-500/40">
+                            {errorInfo.code}
+                          </span>
+                        )}
+
+                      </div>
+
+                      <p className="text-red-100/90 leading-relaxed">
+                        {loginError}
+                      </p>
+
+                      {errorInfo?.domain && (
+                        <p className="text-[10px] text-white/40 font-mono mt-2">
+                          Domain: {errorInfo.domain}
+                        </p>
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </div>
+              )}
+
+              {/* ================================================= */}
+              {/* ALREADY REGISTERED */}
+              {/* ================================================= */}
+
+              {isAlreadyRegistered && (
+                <div className="mb-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-4">
+
+                  <div className="flex gap-3">
+
+                    <AlertCircle className="w-5 h-5 text-yellow-400 shrink-0" />
+
+                    <div>
+
+                      <div className="font-bold text-yellow-200">
+                        Email sudah terdaftar
+                      </div>
+
+                      <p className="mt-1 text-sm text-yellow-100/70">
+                        Gunakan email dan kata sandi tersebut
+                        untuk login.
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsAlreadyRegistered(false);
+                          setLoginError('');
+                          setMode('login');
+                        }}
+                        className="mt-3 text-sm font-bold text-yellow-300 hover:text-yellow-200"
+                      >
+                        Kembali ke Login →
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              )}
+
+              {/* ================================================= */}
+              {/* GOOGLE LOGIN */}
+              {/* ================================================= */}
+
+              <button
+                type="button"
+                onClick={() => handleGoogleLogin(false)}
+                disabled={isLoading}
+                className="w-full h-12 rounded-xl border border-white/10 bg-white text-black font-bold flex items-center justify-center gap-3 hover:bg-white/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+
+                <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center font-black text-sm">
+                  G
+                </span>
+
+                {isLoading
+                  ? 'Memproses...'
+                  : 'Lanjutkan dengan Google'}
+
+              </button>
+
+              <div className="flex items-center gap-3 my-6">
+
+                <div className="h-px flex-1 bg-white/10" />
+
+                <span className="text-[11px] uppercase tracking-widest text-white/30">
+                  atau
+                </span>
+
+                <div className="h-px flex-1 bg-white/10" />
+
               </div>
+
+              {/* ================================================= */}
+              {/* LOGIN FORM */}
+              {/* ================================================= */}
+
+              {mode === 'login' ? (
+
+                <form
+                  onSubmit={handleEmailLogin}
+                  className="space-y-4"
+                >
+
+                  {/* Email */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Email
+                    </label>
+
+                    <div className="relative">
+
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) =>
+                          setEmail(e.target.value)
+                        }
+                        placeholder="nama@email.com"
+                        autoComplete="email"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-4 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  {/* Password */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Kata Sandi
+                    </label>
+
+                    <div className="relative">
+
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type={
+                          showPassword
+                            ? 'text'
+                            : 'password'
+                        }
+                        value={password}
+                        onChange={(e) =>
+                          setPassword(e.target.value)
+                        }
+                        placeholder="Masukkan kata sandi"
+                        autoComplete="current-password"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-12 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowPassword(
+                            !showPassword
+                          )
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/30 hover:text-white/70"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  {/* Forgot password */}
+
+                  <div className="flex justify-end">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowForgotPassword(true)
+                      }
+                      className="text-xs font-semibold text-white/50 hover:text-white transition"
+                    >
+                      Lupa kata sandi?
+                    </button>
+
+                  </div>
+
+                  {/* Login */}
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full h-12 rounded-xl bg-gradient-to-r from-white to-white/90 text-black font-black flex items-center justify-center gap-2 hover:from-white hover:to-white/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+
+                    <LogIn className="w-5 h-5" />
+
+                    {isLoading
+                      ? 'Memproses...'
+                      : 'Login'}
+
+                  </button>
+
+                </form>
+
+              ) : (
+
+                /* ================================================= */
+                /* REGISTER FORM */
+                /* ================================================= */
+
+                <form
+                  onSubmit={handleRegister}
+                  className="space-y-4"
+                >
+
+                  {/* Name */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Nama
+                    </label>
+
+                    <div className="relative">
+
+                      <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) =>
+                          setDisplayName(
+                            e.target.value
+                          )
+                        }
+                        placeholder="Nama Anda"
+                        autoComplete="name"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-4 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  {/* Email */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Email
+                    </label>
+
+                    <div className="relative">
+
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) =>
+                          setEmail(e.target.value)
+                        }
+                        placeholder="nama@email.com"
+                        autoComplete="email"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-4 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  {/* Password */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Kata Sandi
+                    </label>
+
+                    <div className="relative">
+
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type={
+                          showPassword
+                            ? 'text'
+                            : 'password'
+                        }
+                        value={password}
+                        onChange={(e) =>
+                          setPassword(e.target.value)
+                        }
+                        placeholder="Minimal 6 karakter"
+                        autoComplete="new-password"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-12 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowPassword(
+                            !showPassword
+                          )
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/30 hover:text-white/70"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  {/* Register */}
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full h-12 rounded-xl bg-gradient-to-r from-white to-white/90 text-black font-black flex items-center justify-center gap-2 hover:from-white hover:to-white/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+
+                    <UserPlus className="w-5 h-5" />
+
+                    {isLoading
+                      ? 'Mendaftarkan...'
+                      : 'Buat Akun'}
+
+                  </button>
+
+                </form>
+
+              )}
+
+              {/* ================================================= */}
+              {/* BOTTOM INFORMATION */}
+              {/* ================================================= */}
+
+              <div className="mt-6 pt-5 border-t border-white/10">
+
+                <div className="grid grid-cols-2 gap-3">
+
+                  <div className="rounded-xl bg-white/[0.03] border border-white/5 p-3">
+
+                    <Gift className="w-5 h-5 text-yellow-300 mb-2" />
+
+                    <p className="text-xs font-bold text-white/70">
+                      Reward
+                    </p>
+
+                    <p className="text-[10px] text-white/35 mt-1">
+                      Nikmati berbagai reward
+                      dan event.
+                    </p>
+
+                  </div>
+
+                  <div className="rounded-xl bg-white/[0.03] border border-white/5 p-3">
+
+                    <FileText className="w-5 h-5 text-blue-300 mb-2" />
+
+                    <p className="text-xs font-bold text-white/70">
+                      Platform
+                    </p>
+
+                    <p className="text-[10px] text-white/35 mt-1">
+                      Kelola akun dan aktivitas
+                      Anda.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          {/* ================================================== */}
+          {/* FOOTER */}
+          {/* ================================================== */}
+
+          <div className="mt-6 text-center">
+
+            <p className="text-[11px] text-white/25">
+              Dengan melanjutkan, Anda menyetujui
+              ketentuan penggunaan platform.
+            </p>
+
+            {currentHost && (
+              <p className="mt-2 text-[10px] text-white/15 font-mono">
+                {currentHost}
+              </p>
             )}
 
-            <form onSubmit={handleForgotPassword} className="space-y-3">
-              <div>
-                <label className="text-[11px] font-semibold text-white/70 block mb-1">
-                  Email Akun Anda
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={forgotEmail}
-                  onChange={(e) => setForgotEmail(e.target.value)}
-                  placeholder="nama@email.com"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-xs text-white placeholder-white/30 outline-none"
-                />
-              </div>
+          </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2">
+        </div>
+      </div>
+
+      {/* ==================================================== */}
+      {/* LEADERBOARD MODAL */}
+      {/* ==================================================== */}
+
+      {isLeaderboardOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-slate-950 shadow-2xl overflow-hidden">
+
+            <div className="p-6">
+
+              <div className="flex items-start justify-between gap-4">
+
+                <div>
+
+                  <div className="flex items-center gap-2">
+
+                    <Trophy className="w-6 h-6 text-yellow-300" />
+
+                    <h2 className="text-xl font-black">
+                      Leaderboard
+                    </h2>
+
+                  </div>
+
+                  <p className="text-sm text-white/40 mt-2">
+                    Lihat peringkat pengguna dan
+                    aktivitas platform.
+                  </p>
+
+                </div>
+
                 <button
                   type="button"
-                  onClick={() => setIsForgotPassOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold cursor-pointer"
+                  onClick={() =>
+                    setIsLeaderboardOpen(false)
+                  }
+                  className="text-white/40 hover:text-white text-xl"
                 >
-                  Batal
+                  ×
                 </button>
-                <button
-                  type="submit"
-                  disabled={isForgotLoading}
-                  className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-md disabled:opacity-60 cursor-pointer"
-                >
-                  {isForgotLoading ? 'Mengirim...' : 'Kirim Tautan'}
-                </button>
+
               </div>
-            </form>
+
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-center">
+
+                <Trophy className="w-10 h-10 mx-auto text-yellow-300 mb-3" />
+
+                <p className="text-sm text-white/60">
+                  Leaderboard akan tersedia
+                  setelah Anda login.
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setIsLeaderboardOpen(false)
+                }
+                className="mt-5 w-full h-11 rounded-xl bg-white text-black font-bold hover:bg-white/90 transition"
+              >
+                Tutup
+              </button>
+
+            </div>
+
           </div>
+
         </div>
       )}
 
-      {/* Terms & Conditions Modal */}
-      <TermsAndConditionsModal
-        isOpen={isTermsOpen}
-        onClose={() => setIsTermsOpen(false)}
-      />
-
-      {/* Leaderboard Modal */}
-      <LoginLeaderboardModal
-        isOpen={isLeaderboardOpen}
-        onClose={() => setIsLeaderboardOpen(false)}
-        onLoginClick={() => {
-          if (!isTermsAccepted) {
-            setTermsError('Harap centang ceklis Term & condition terlebih dahulu. Gagal log in atau daftar jika belum disetujui.');
-            setIsLeaderboardOpen(false);
-            return;
-          }
-          handleGoogleLogin(false);
-        }}
-      />
     </div>
   );
 };
-
