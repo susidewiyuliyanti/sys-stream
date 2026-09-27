@@ -1,207 +1,254 @@
 import {
-  eq,
-  or,
-} from "drizzle-orm";
+  withDb,
+  json,
+  readJson,
+} from '../_lib/db';
 
 import {
-  users,
-} from "../../../src/db/schema";
+  verifyPassword,
+  createToken,
+  type AuthUser,
+} from '../_lib/auth';
 
-import {
-  createDb,
-  CloudflareEnv,
-} from "../_shared/db";
+interface Env {
+  HYPERDRIVE: Hyperdrive;
+  JWT_SECRET: string;
+}
 
-import {
-  comparePassword,
-  generateToken,
-} from "../_shared/auth";
+interface LoginBody {
+  email?: string;
+  password?: string;
+}
 
-export const onRequestPost: PagesFunction<CloudflareEnv> = async (
-  context
-) => {
-  let pool: ReturnType<typeof createDb>["pool"] | null = null;
+function mapUser(row: any): AuthUser {
+  return {
+    id: Number(row.id),
+    uid: row.uid,
+    cuid: row.cuid,
+    username: row.username,
+    email: row.email,
+    displayName: row.display_name,
+    photoURL: row.photo_url,
+    streamerHandle: row.streamer_handle,
+    bio: row.bio,
+    referralCode: row.referral_code,
+    referredBy: row.referred_by,
+    referralCount:
+      Number(row.referral_count || 0),
 
-  try {
-    const body = await context.request.json<{
-      login?: string;
-      email?: string;
-      username?: string;
-      password?: string;
-    }>();
+    balance:
+      Number(row.balance || 0),
 
-    const login =
-      body.login?.trim() ||
-      body.email?.trim() ||
-      body.username?.trim();
+    saldo:
+      Number(row.saldo || 0),
 
-    const password = body.password;
+    walletBalance:
+      Number(row.wallet_balance || 0),
 
-    if (!login || !password) {
-      return Response.json(
-        {
-          success: false,
-          error: "Username/email dan password wajib diisi.",
-        },
-        { status: 400 }
-      );
-    }
+    lockedSaldo:
+      Number(row.locked_saldo || 0),
 
-    const { db, pool: createdPool } = createDb(context.env);
-    pool = createdPool;
+    affiliateEarnings:
+      Number(row.affiliate_earnings || 0),
 
-    const normalizedLogin = login.toLowerCase();
+    affiliateWithdrawn:
+      Number(row.affiliate_withdrawn || 0),
 
-    const result = await db
-      .select()
-      .from(users)
-      .where(
-        or(
-          eq(users.email, normalizedLogin),
-          eq(users.username, login)
+    isSubscribed:
+      Boolean(row.is_subscribed),
+
+    subscriptionPlan:
+      row.subscription_plan,
+
+    subscriptionExpiresAt:
+      row.subscription_expires_at,
+
+    isLifetime:
+      Boolean(row.is_lifetime),
+
+    subscribedAt:
+      row.subscribed_at,
+
+    role:
+      row.role,
+
+    isBlacklisted:
+      Boolean(row.is_blacklisted),
+
+    isBanned:
+      Boolean(row.is_banned),
+
+    bannedReason:
+      row.banned_reason,
+
+    forceJackpotNext:
+      Boolean(row.force_jackpot_next),
+
+    createdAt:
+      row.created_at,
+
+    updatedAt:
+      row.updated_at,
+  };
+}
+
+export const onRequestPost:
+  PagesFunction<Env> = async ({
+    request,
+    env,
+  }) => {
+    try {
+      const body =
+        await readJson<LoginBody>(
+          request
+        );
+
+      const email =
+        String(
+          body.email || ''
         )
-      )
-      .limit(1);
+          .trim()
+          .toLowerCase();
 
-    const user = result[0];
+      const password =
+        String(
+          body.password || ''
+        );
 
-    if (!user) {
-      return Response.json(
-        {
-          success: false,
-          error: "Email/username atau password salah.",
-        },
-        { status: 401 }
-      );
-    }
-
-    if (user.isBanned) {
-      return Response.json(
-        {
-          success: false,
-          error:
-            user.bannedReason ||
-            "Akun Anda telah diblokir.",
-        },
-        { status: 403 }
-      );
-    }
-
-    if (user.isBlacklisted) {
-      return Response.json(
-        {
-          success: false,
-          error: "Akun Anda masuk daftar blacklist.",
-        },
-        { status: 403 }
-      );
-    }
-
-    if (!user.password) {
-      return Response.json(
-        {
-          success: false,
-          error:
-            "Akun ini belum memiliki password login.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const passwordValid = await comparePassword(
-      password,
-      user.password
-    );
-
-    if (!passwordValid) {
-      return Response.json(
-        {
-          success: false,
-          error: "Email/username atau password salah.",
-        },
-        { status: 401 }
-      );
-    }
-
-    const token = generateToken(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        username: user.username,
-      },
-      context.env
-    );
-
-    return Response.json({
-      success: true,
-      message: "Login berhasil.",
-      token,
-      user: {
-        id: user.id,
-        cuid: user.cuid,
-        uid: user.uid,
-        username: user.username,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-
-        streamerHandle: user.streamerHandle,
-        bio: user.bio,
-
-        referralCode: user.referralCode,
-        referredBy: user.referredBy,
-        referralCount: user.referralCount,
-
-        balance: user.balance,
-        saldo: user.saldo,
-        walletBalance: user.walletBalance,
-        lockedSaldo: user.lockedSaldo,
-
-        affiliateEarnings: user.affiliateEarnings,
-        affiliateWithdrawn: user.affiliateWithdrawn,
-
-        isSubscribed: user.isSubscribed,
-        subscriptionPlan: user.subscriptionPlan,
-        subscriptionExpiresAt:
-          user.subscriptionExpiresAt,
-        isLifetime: user.isLifetime,
-        subscribedAt: user.subscribedAt,
-
-        role: user.role,
-
-        isBlacklisted: user.isBlacklisted,
-        isBanned: user.isBanned,
-        bannedReason: user.bannedReason,
-
-        forceJackpotNext: user.forceJackpotNext,
-        targetJackpotNominal:
-          user.targetJackpotNominal,
-
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-    });
-  } catch (error) {
-    console.error("Cloudflare login error:", error);
-
-    return Response.json(
-      {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Login gagal.",
-      },
-      { status: 500 }
-    );
-  } finally {
-    if (pool) {
-      try {
-        await pool.end();
-      } catch {
-        // Ignore pool close errors.
+      if (!email || !password) {
+        return json(
+          {
+            success: false,
+            message:
+              'Email dan password wajib diisi.',
+          },
+          400
+        );
       }
+
+      const user =
+        await withDb(
+          env,
+          async (client) => {
+            const result =
+              await client.query(
+                `
+                SELECT
+                  id,
+                  uid,
+                  cuid,
+                  username,
+                  email,
+                  password,
+                  display_name,
+                  photo_url,
+                  streamer_handle,
+                  bio,
+                  referral_code,
+                  referred_by,
+                  referral_count,
+                  balance,
+                  saldo,
+                  wallet_balance,
+                  locked_saldo,
+                  affiliate_earnings,
+                  affiliate_withdrawn,
+                  is_subscribed,
+                  subscription_plan,
+                  subscription_expires_at,
+                  is_lifetime,
+                  subscribed_at,
+                  role,
+                  is_blacklisted,
+                  is_banned,
+                  banned_reason,
+                  force_jackpot_next,
+                  created_at,
+                  updated_at
+                FROM users
+                WHERE LOWER(email) = $1
+                LIMIT 1
+                `,
+                [email]
+              );
+
+            return result.rows[0];
+          }
+        );
+
+      if (!user) {
+        return json(
+          {
+            success: false,
+            message:
+              'Email atau password salah.',
+            code: 'INVALID_CREDENTIALS',
+          },
+          401
+        );
+      }
+
+      if (
+        Boolean(user.is_banned) ||
+        Boolean(user.is_blacklisted)
+      ) {
+        return json(
+          {
+            success: false,
+            message:
+              user.banned_reason ||
+              'Akun Anda tidak dapat digunakan.',
+            code: 'ACCOUNT_BLOCKED',
+          },
+          403
+        );
+      }
+
+      const passwordValid =
+        await verifyPassword(
+          password,
+          user.password
+        );
+
+      if (!passwordValid) {
+        return json(
+          {
+            success: false,
+            message:
+              'Email atau password salah.',
+            code: 'INVALID_CREDENTIALS',
+          },
+          401
+        );
+      }
+
+      const mappedUser =
+        mapUser(user);
+
+      const token =
+        createToken(
+          mappedUser,
+          env
+        );
+
+      return json({
+        success: true,
+        token,
+        user: mappedUser,
+      });
+    } catch (error) {
+      console.error(
+        'Login API error:',
+        error
+      );
+
+      return json(
+        {
+          success: false,
+          message:
+            'Terjadi kesalahan pada server.',
+        },
+        500
+      );
     }
-  }
-};
+  };
