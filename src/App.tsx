@@ -1,5 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { GameTab, BackgroundMode, PlayerScore, UserProfile } from './types';
+import React, {
+  useState,
+  useEffect
+} from 'react';
+
+import {
+  GameTab,
+  BackgroundMode,
+  PlayerScore,
+  UserProfile
+} from './types';
+
 import { Navbar } from './components/Navbar';
 import { TebakNomorSeri } from './components/TebakNomorSeri';
 import { LuckyWheel } from './components/LuckyWheel';
@@ -14,36 +24,48 @@ import { SysLogo } from './components/SysLogo';
 import { BlindBoxDashboard } from './components/blindbox/BlindBoxDashboard';
 import { OwnerAdminDashboard } from './components/OwnerAdminDashboard';
 import { StreamMasterDashboard } from './components/StreamMasterDashboard';
-import { db, auth, syncUserProfile, subscribeToUserProfile, logoutUser, updateUserProfile } from './services/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, onSnapshot } from 'firebase/firestore';
+
+import {
+  getCurrentUser,
+  logoutUser,
+  updateUserProfile,
+  syncSession,
+  type AuthUser
+} from './lib/auth';
+
 import { sound } from './services/sound';
-import { Banknote, X, ArrowLeft } from 'lucide-react';
+
+import {
+  Banknote,
+  X,
+  ArrowLeft
+} from 'lucide-react';
+
 import { isOwnerUser } from './utils/memberBadge';
 
 const INITIAL_PLAYERS: PlayerScore[] = [];
 
 export default function App() {
   // Firebase Auth & Member Subscription State
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [saldo, setSaldo] = useState<number>(0);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
-    const saved = localStorage.getItem('sys_streamer_emergency_user');
+  try {
+    const saved = localStorage.getItem('sys_stream_auth_user');
+
     if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed) {
-          // Biaya member dinonaktifkan: Semua akun aktif gratis
-          parsed.isSubscribed = true;
-          parsed.subscriptionPlan = parsed.subscriptionPlan || 'Akses Bebas Gratis';
-          delete parsed.walletBalance;
-          delete parsed.saldo;
-        }
-        return parsed;
-      } catch {}
+      const parsed = JSON.parse(saved);
+
+      if (parsed && typeof parsed === 'object') {
+        return parsed as UserProfile;
+      }
     }
-    return null;
-  });
+  } catch (error) {
+    console.warn('Could not restore saved auth user:', error);
+  }
+
+  return null;
+});
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [showVipManagerModal, setShowVipManagerModal] = useState<boolean>(false);
   const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
@@ -119,117 +141,141 @@ export default function App() {
     setUserProfile(ownerProfile);
   };
 
-  // Firebase Auth Listener & Profile Sync
-  useEffect(() => {
-    let unsubscribeProfile: (() => void) | null = null;
-    let unsubscribeSaldo: (() => void) | null = null;
+ // Cloudflare API Authentication & PostgreSQL Profile Sync
+useEffect(() => {
+  let mounted = true;
 
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setCurrentUser(user);
+  const loadAuthenticatedUser = async () => {
+    try {
+      setAuthLoading(true);
 
-        // 3. Dashboard saldo WAJIB pakai onSnapshot realtime:
-        try {
-          unsubscribeSaldo = onSnapshot(doc(db, "users", user.uid), (d) => {
-            if (d.exists()) {
-              const data = d.data();
-              const liveSaldo = typeof data?.saldo === 'number'
-                ? data.saldo
-                : (typeof data?.walletBalance === 'number' ? data.walletBalance : 0);
-              setSaldo(liveSaldo);
-              setUserProfile((prev) => {
-                if (!prev) return null;
-                return {
-                  ...prev,
-                  ...data,
-                  saldo: liveSaldo,
-                  walletBalance: liveSaldo
-                };
-              });
-            }
-          }, (err) => {
-            console.warn('Realtime onSnapshot saldo warning:', err);
-          });
-        } catch (snapErr) {
-          console.warn('Could not attach realtime saldo listener:', snapErr);
-        }
+      const user = await getCurrentUser();
 
-        try {
-          const profile = await syncUserProfile(user);
-          setUserProfile(profile);
-          if (profile) {
-            const initialBal = typeof profile.saldo === 'number'
-              ? profile.saldo
-              : (typeof profile.walletBalance === 'number' ? profile.walletBalance : 0);
-            setSaldo(initialBal);
-          }
+      if (!mounted) return;
 
-          // Realtime listener for subscription updates
-          unsubscribeProfile = subscribeToUserProfile(user.uid, (updatedProfile) => {
-            if (updatedProfile) {
-              setUserProfile(updatedProfile);
-              const updatedBal = typeof updatedProfile.saldo === 'number'
-                ? updatedProfile.saldo
-                : (typeof updatedProfile.walletBalance === 'number' ? updatedProfile.walletBalance : 0);
-              setSaldo(updatedBal);
-            }
-          });
-        } catch (err) {
-          console.error('Error syncing user profile, generating secure fallback profile:', err);
-          const cleanEmail = user.email ? user.email.trim().toLowerCase() : '';
-          const isOwner = cleanEmail === 'susidewiyuliyanti@gmail.com';
-          const fallbackProfile: UserProfile = {
-            uid: user.uid,
-            email: user.email || '',
-            displayName: user.displayName || (isOwner ? 'Susi Dewi Yuliyanti (Owner)' : 'Streamer Host'),
-            photoURL: user.photoURL || '',
-            referralCode: `SYS-${user.uid.slice(0, 5).toUpperCase()}`,
-            referralCount: 0,
-            affiliateEarnings: 0,
-            affiliateWithdrawn: 0,
-            isSubscribed: isOwner,
-            subscriptionPlan: isOwner ? 'Sultan VIP Host (Owner Permanen)' : 'none',
-            subscriptionExpiresAt: isOwner ? 'LIFETIME' : '',
-            isLifetime: isOwner,
-            role: isOwner ? 'admin' : 'member',
-            ...(isOwner ? { subscribedAt: new Date().toISOString() } : {}),
-            createdAt: new Date().toISOString()
-          };
-          setUserProfile(fallbackProfile);
-        } finally {
-          setAuthLoading(false);
-        }
-      } else {
+      if (!user) {
         setCurrentUser(null);
         setUserProfile(null);
         setSaldo(0);
+
         try {
+          localStorage.removeItem('sys_stream_auth_user');
           localStorage.removeItem('sys_streamer_emergency_user');
-          sessionStorage.clear();
         } catch {}
 
-        if (unsubscribeProfile) {
-          unsubscribeProfile();
-          unsubscribeProfile = null;
-        }
-        if (unsubscribeSaldo) {
-          unsubscribeSaldo();
-          unsubscribeSaldo = null;
-        }
+        return;
+      }
+
+      // Backend API user
+      setCurrentUser(user);
+
+      const profile: UserProfile = {
+        ...(user as any),
+
+        uid: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || '',
+
+        referralCode: user.referralCode || '',
+        referralCount: Number(user.referralCount || 0),
+
+        saldo: Number(
+          user.saldo ??
+          user.walletBalance ??
+          0
+        ),
+
+        walletBalance: Number(
+          user.walletBalance ??
+          user.saldo ??
+          0
+        ),
+
+        lockedSaldo: Number(user.lockedSaldo || 0),
+
+        affiliateEarnings: Number(
+          user.affiliateEarnings || 0
+        ),
+
+        affiliateWithdrawn: Number(
+          user.affiliateWithdrawn || 0
+        ),
+
+        isSubscribed: Boolean(user.isSubscribed),
+
+        subscriptionPlan:
+          user.subscriptionPlan || 'none',
+
+        subscriptionExpiresAt:
+          user.subscriptionExpiresAt || '',
+
+        isLifetime:
+          Boolean(user.isLifetime),
+
+        role:
+          user.role || 'member',
+
+        isBanned:
+          Boolean(user.isBanned),
+
+        createdAt:
+          user.createdAt || new Date().toISOString(),
+
+        updatedAt:
+          user.updatedAt || new Date().toISOString()
+      };
+
+      setUserProfile(profile);
+
+      const currentBalance = Number(
+        profile.saldo ??
+        profile.walletBalance ??
+        0
+      );
+
+      setSaldo(currentBalance);
+
+      // Simpan profile terbaru untuk pemulihan UI.
+      try {
+        localStorage.setItem(
+          'sys_stream_auth_user',
+          JSON.stringify(profile)
+        );
+      } catch (storageError) {
+        console.warn(
+          'Could not save auth user:',
+          storageError
+        );
+      }
+    } catch (error) {
+      console.error(
+        'Cloudflare authentication check failed:',
+        error
+      );
+
+      if (!mounted) return;
+
+      setCurrentUser(null);
+      setUserProfile(null);
+      setSaldo(0);
+
+      try {
+        localStorage.removeItem('sys_stream_auth_user');
+      } catch {}
+    } finally {
+      if (mounted) {
         setAuthLoading(false);
       }
-    });
+    }
+  };
 
-    return () => {
-      unsubscribeAuth();
-      if (unsubscribeProfile) {
-        unsubscribeProfile();
-      }
-      if (unsubscribeSaldo) {
-        unsubscribeSaldo();
-      }
-    };
-  }, []);
+  loadAuthenticatedUser();
+
+  return () => {
+    mounted = false;
+  };
+}, []);
 
   // Persist prize nominal & players
   useEffect(() => {
@@ -263,30 +309,47 @@ export default function App() {
     };
   }, []);
 
-  // Automatically synchronize unified session and wallet to PostgreSQL backend for all games
-  useEffect(() => {
-    if (!userProfile) return;
-    fetch('/api/auth/sync-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        uid: userProfile.uid,
-        email: userProfile.email,
-        displayName: userProfile.displayName,
-        role: userProfile.role,
-        walletBalance: userProfile.walletBalance ?? 15000,
-      }),
+ // Synchronize authenticated session with Cloudflare API
+useEffect(() => {
+  if (!userProfile) return;
+
+  syncSession({
+    uid: userProfile.uid,
+    email: userProfile.email,
+    displayName: userProfile.displayName,
+    role: userProfile.role,
+    photoURL: userProfile.photoURL
+  })
+    .then((result) => {
+      if (result?.token) {
+        localStorage.setItem(
+          'sys_stream_auth_token',
+          result.token
+        );
+
+        // Compatibility token untuk kode lama.
+        localStorage.setItem(
+          'blindbox_jwt_token',
+          result.token
+        );
+      }
+
+      if (result?.user) {
+        try {
+          localStorage.setItem(
+            'sys_stream_auth_user',
+            JSON.stringify(result.user)
+          );
+        } catch {}
+      }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.token) {
-          localStorage.setItem('blindbox_jwt_token', data.token);
-        }
-      })
-      .catch((err) => {
-        console.warn('Backend sync-session notice:', err);
-      });
-  }, [userProfile?.uid, userProfile?.email, userProfile?.walletBalance, userProfile?.displayName, userProfile?.role]);
+    .catch((error) => {
+      console.warn(
+        'Cloudflare session synchronization failed:',
+        error
+      );
+    });
+}, [userProfile?.uid]);
 
   // Update Prize Nominal
   const handleUpdatePrizeNominal = (nominal: number) => {
@@ -334,60 +397,102 @@ export default function App() {
       if (cleanName === userDisplay || cleanName === userEmail || cleanName.includes('host') || cleanName.includes('susi')) {
         const newBal = (userProfile.walletBalance ?? 15000) + rupiah;
         setUserProfile((prev) => prev ? { ...prev, walletBalance: newBal } : prev);
-        updateUserProfile(userProfile.uid, { walletBalance: newBal }).catch(console.warn);
-        fetch('/api/user/sync-wallet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userProfile.email, walletBalance: newBal }),
-        }).catch(console.warn);
-      }
-    }
-  };
+        updateUserProfile(userProfile.uid, {
+  walletBalance: newBal,
+  saldo: newBal
+}).catch((error) => {
+  console.warn(
+    'Failed to update wallet through API:',
+    error
+   );
+  });
+}
+}
+};
 
   // Award prize from Lucky Wheel
-  const handleAwardPrize = (playerName: string, rupiah: number) => {
-    setPlayers((prev) => {
-      const existingIdx = prev.findIndex((p) => p.name.toLowerCase() === playerName.toLowerCase());
-      if (existingIdx !== -1) {
-        const updated = [...prev];
-        updated[existingIdx] = {
-          ...updated[existingIdx],
-          score: updated[existingIdx].score + 10,
-          rupiah: updated[existingIdx].rupiah + rupiah,
-          lastWin: 'Lucky Wheel'
-        };
-        return updated;
-      } else {
-        return [
-          {
-            id: `p-${Date.now()}`,
-            name: playerName,
-            score: 10,
-            rupiah: rupiah,
-            lastWin: 'Lucky Wheel'
-          },
-          ...prev
-        ];
-      }
-    });
+const handleAwardPrize = (playerName: string, rupiah: number) => {
+  setPlayers((prev) => {
+    const existingIdx = prev.findIndex(
+      (p) => p.name.toLowerCase() === playerName.toLowerCase()
+    );
 
-    // If winner matches the current user or host, credit the unified wallet
-    if (userProfile && rupiah > 0) {
-      const cleanName = playerName.toLowerCase().replace('@', '');
-      const userDisplay = (userProfile.displayName || '').toLowerCase().replace('@', '');
-      const userEmail = (userProfile.email || '').toLowerCase();
-      if (cleanName === userDisplay || cleanName === userEmail || cleanName.includes('host') || cleanName.includes('susi')) {
-        const newBal = (userProfile.walletBalance ?? 15000) + rupiah;
-        setUserProfile((prev) => prev ? { ...prev, walletBalance: newBal } : prev);
-        updateUserProfile(userProfile.uid, { walletBalance: newBal }).catch(console.warn);
-        fetch('/api/user/sync-wallet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userProfile.email, walletBalance: newBal }),
-        }).catch(console.warn);
-      }
+    if (existingIdx !== -1) {
+      const updated = [...prev];
+
+      updated[existingIdx] = {
+        ...updated[existingIdx],
+        score: updated[existingIdx].score + 10,
+        rupiah: updated[existingIdx].rupiah + rupiah,
+        lastWin: 'Lucky Wheel'
+      };
+
+      return updated;
     }
-  };
+
+    return [
+      {
+        id: `p-${Date.now()}`,
+        name: playerName,
+        score: 10,
+        rupiah,
+        lastWin: 'Lucky Wheel'
+      },
+      ...prev
+    ];
+  });
+
+  // Credit unified wallet
+  if (userProfile && rupiah > 0) {
+    const cleanName = playerName
+      .toLowerCase()
+      .replace('@', '');
+
+    const userDisplay = (userProfile.displayName || '')
+      .toLowerCase()
+      .replace('@', '');
+
+    const userEmail = (userProfile.email || '')
+      .toLowerCase();
+
+    if (
+      cleanName === userDisplay ||
+      cleanName === userEmail ||
+      cleanName.includes('host') ||
+      cleanName.includes('susi')
+    ) {
+      const currentBalance = Number(
+        userProfile.walletBalance ??
+        userProfile.saldo ??
+        0
+      );
+
+      const newBal = currentBalance + rupiah;
+
+      setUserProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              walletBalance: newBal,
+              saldo: newBal
+            }
+          : prev
+      );
+
+      setSaldo(newBal);
+
+      updateUserProfile(userProfile.uid, {
+        walletBalance: newBal,
+        saldo: newBal
+      }).catch((error) => {
+        console.warn(
+          'Failed to synchronize wallet:',
+          error
+        );
+      });
+    }
+  }
+};
 
   // Leaderboard management
   const handleAddPlayer = (name: string) => {
@@ -426,29 +531,45 @@ export default function App() {
   };
 
   // Logout handler
-  const handleLogout = async () => {
+const handleLogout = async () => {
+  try {
+    await logoutUser();
+  } catch (error) {
+    console.warn(
+      'Backend logout request failed:',
+      error
+    );
+  } finally {
     try {
-      localStorage.removeItem('sys_streamer_emergency_user');
-      localStorage.removeItem('blindbox_jwt_token');
-      sessionStorage.clear();
-      setShowProfileModal(false);
-      setShowVipManagerModal(false);
-      setShowReferralModal(false);
-      setIsLeaderboardOpen(false);
+      localStorage.removeItem(
+        'sys_stream_auth_token'
+      );
 
-      await logoutUser();
+      localStorage.removeItem(
+        'sys_stream_auth_user'
+      );
 
-      setCurrentUser(null);
-      setUserProfile(null);
-    } catch (err) {
-      console.error('Logout error:', err);
-      localStorage.removeItem('sys_streamer_emergency_user');
-      localStorage.removeItem('blindbox_jwt_token');
+      localStorage.removeItem(
+        'sys_streamer_emergency_user'
+      );
+
+      localStorage.removeItem(
+        'blindbox_jwt_token'
+      );
+
       sessionStorage.clear();
-      setCurrentUser(null);
-      setUserProfile(null);
-    }
-  };
+    } catch {}
+
+    setShowProfileModal(false);
+    setShowVipManagerModal(false);
+    setShowReferralModal(false);
+    setIsLeaderboardOpen(false);
+
+    setCurrentUser(null);
+    setUserProfile(null);
+    setSaldo(0);
+  }
+};
 
   // Get active tab display title
   const getTabTitle = () => {
@@ -508,7 +629,7 @@ export default function App() {
     );
   }
 
-  // 1. Loading screen while Firebase Auth checks session
+  // 1. Loading screen while Cloudflare API checks session
   if (authLoading && !userProfile) {
     return (
       <div className="min-h-screen w-full bg-[#090d16] text-white flex flex-col items-center justify-center p-4 font-['Poppins']">
