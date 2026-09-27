@@ -5,7 +5,7 @@ import { db } from '../db/index.ts';
 import { users } from '../db/schema.ts';
 import { eq } from 'drizzle-orm';
 
-export const JWT_SECRET = process.env.JWT_SECRET || 'blind-box-3d-secret-jwt-key-2026-sys';
+export const JWT_SECRET = process.env.JWT_SECRET!;
 
 export interface TokenPayload {
   id: number;
