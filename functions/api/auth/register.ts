@@ -29,10 +29,35 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const password = String(body.password ?? '');
 
+    // =========================
+    // VALIDATION
+    // =========================
+
     if (!username) {
       return json(
         {
+          success: false,
           error: 'Username wajib diisi.',
+        },
+        400
+      );
+    }
+
+    if (username.length < 3) {
+      return json(
+        {
+          success: false,
+          error: 'Username minimal 3 karakter.',
+        },
+        400
+      );
+    }
+
+    if (username.length > 30) {
+      return json(
+        {
+          success: false,
+          error: 'Username maksimal 30 karakter.',
         },
         400
       );
@@ -41,16 +66,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!email) {
       return json(
         {
+          success: false,
           error: 'Email wajib diisi.',
-        },
-        400
-      );
-    }
-
-    if (!password || password.length < 6) {
-      return json(
-        {
-          error: 'Password minimal 6 karakter.',
         },
         400
       );
@@ -62,38 +79,79 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!emailPattern.test(email)) {
       return json(
         {
+          success: false,
           error: 'Format email tidak valid.',
         },
         400
       );
     }
 
-    const passwordHash =
-      await hashPassword(password);
+    if (!password || password.length < 6) {
+      return json(
+        {
+          success: false,
+          error: 'Password minimal 6 karakter.',
+        },
+        400
+      );
+    }
 
-    const cuid =
-      `usr_${crypto.randomUUID()}`;
+    // =========================
+    // PASSWORD HASH
+    // =========================
+
+    const passwordHash = await hashPassword(password);
+
+    // CUID kompatibel dengan kolom text/varchar
+    const cuid = `usr_${crypto.randomUUID()}`;
+
+    // =========================
+    // DATABASE
+    // =========================
 
     const result = await withDb(
       context.env,
       async (client) => {
+
+        // Cek email / username
         const existing = await client.query(
           `
-          SELECT id
+          SELECT
+            id,
+            email,
+            username
           FROM users
           WHERE LOWER(email) = $1
              OR LOWER(username) = $2
           LIMIT 1
           `,
-          [email, username.toLowerCase()]
+          [
+            email,
+            username.toLowerCase(),
+          ]
         );
 
         if (existing.rows.length > 0) {
+          const existingUser = existing.rows[0];
+
+          if (
+            String(existingUser.email).toLowerCase() === email
+          ) {
+            return {
+              duplicate: 'email' as const,
+              user: null,
+            };
+          }
+
           return {
-            duplicate: true,
+            duplicate: 'username' as const,
             user: null,
           };
         }
+
+        // =========================
+        // CREATE USER
+        // =========================
 
         const inserted = await client.query(
           `
@@ -129,62 +187,92 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             email,
             passwordHash,
 
-            // Pertahankan perilaku bonus awal
-            // dari sistem game sebelumnya.
+            // Saldo awal game
             100000,
 
+            // User biasa yang baru mendaftar
             'USER',
           ]
         );
 
         return {
-          duplicate: false,
+          duplicate: false as const,
           user: inserted.rows[0],
         };
       }
     );
 
-    if (result.duplicate) {
+    // =========================
+    // DUPLICATE
+    // =========================
+
+    if (result.duplicate === 'email') {
       return json(
         {
+          success: false,
           error:
-            'Email atau username sudah terdaftar. Silakan login.',
+            'Email sudah terdaftar. Silakan gunakan email lain atau login.',
         },
         409
       );
     }
+
+    if (result.duplicate === 'username') {
+      return json(
+        {
+          success: false,
+          error:
+            'Username sudah digunakan. Silakan pilih username lain.',
+        },
+        409
+      );
+    }
+
+    // =========================
+    // SAFETY CHECK
+    // =========================
 
     const dbUser = result.user;
 
     if (!dbUser) {
       return json(
         {
-          error:
-            'Gagal membuat akun.',
+          success: false,
+          error: 'Gagal membuat akun.',
         },
         500
       );
     }
+
+    // =========================
+    // AUTH USER
+    // =========================
 
     const user: AuthUser = {
       id: Number(dbUser.id),
       cuid: String(dbUser.cuid),
       username: String(dbUser.username),
       email: String(dbUser.email),
-      role: dbUser.role,
+      role: String(dbUser.role) as AuthUser['role'],
     };
 
-    const token =
-      createToken(
-        user,
-        context.env
-      );
+    // =========================
+    // JWT
+    // =========================
+
+    const token = createToken(
+      user,
+      context.env
+    );
+
+    // =========================
+    // RESPONSE
+    // =========================
 
     return json(
       {
         success: true,
-        message:
-          'Pendaftaran berhasil.',
+        message: 'Pendaftaran berhasil.',
         token,
         user: {
           id: user.id,
@@ -199,16 +287,32 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
       201
     );
+
   } catch (error) {
+
     console.error(
       'Register error:',
       error
     );
 
+    // Jangan sembunyikan detail error
+    // ketika development/debugging.
+    const message =
+      error instanceof Error
+        ? error.message
+        : String(error);
+
+    console.error(
+      'Register database/message:',
+      message
+    );
+
     return json(
       {
+        success: false,
         error:
           'Terjadi kesalahan saat membuat akun.',
+        detail: message,
       },
       500
     );
