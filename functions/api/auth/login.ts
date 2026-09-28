@@ -1,254 +1,128 @@
+import { withDb, json, readJson } from '../_lib/db';
 import {
-  withDb,
-  json,
-  readJson,
-} from '../_lib/db';
-
-import {
-  verifyPassword,
   createToken,
+  verifyPassword,
+  type Env,
   type AuthUser,
 } from '../_lib/auth';
 
-interface Env {
-  HYPERDRIVE: Hyperdrive;
-  JWT_SECRET: string;
-}
-
 interface LoginBody {
+  login?: string;
   email?: string;
   password?: string;
 }
 
-function mapUser(row: any): AuthUser {
-  return {
-    id: Number(row.id),
-    uid: row.uid,
-    cuid: row.cuid,
-    username: row.username,
-    email: row.email,
-    displayName: row.display_name,
-    photoURL: row.photo_url,
-    streamerHandle: row.streamer_handle,
-    bio: row.bio,
-    referralCode: row.referral_code,
-    referredBy: row.referred_by,
-    referralCount:
-      Number(row.referral_count || 0),
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+  try {
+    const body = await readJson<LoginBody>(context.request);
 
-    balance:
-      Number(row.balance || 0),
+    const login = String(
+      body.login ?? body.email ?? ''
+    )
+      .trim()
+      .toLowerCase();
 
-    saldo:
-      Number(row.saldo || 0),
+    const password = String(body.password ?? '');
 
-    walletBalance:
-      Number(row.wallet_balance || 0),
-
-    lockedSaldo:
-      Number(row.locked_saldo || 0),
-
-    affiliateEarnings:
-      Number(row.affiliate_earnings || 0),
-
-    affiliateWithdrawn:
-      Number(row.affiliate_withdrawn || 0),
-
-    isSubscribed:
-      Boolean(row.is_subscribed),
-
-    subscriptionPlan:
-      row.subscription_plan,
-
-    subscriptionExpiresAt:
-      row.subscription_expires_at,
-
-    isLifetime:
-      Boolean(row.is_lifetime),
-
-    subscribedAt:
-      row.subscribed_at,
-
-    role:
-      row.role,
-
-    isBlacklisted:
-      Boolean(row.is_blacklisted),
-
-    isBanned:
-      Boolean(row.is_banned),
-
-    bannedReason:
-      row.banned_reason,
-
-    forceJackpotNext:
-      Boolean(row.force_jackpot_next),
-
-    createdAt:
-      row.created_at,
-
-    updatedAt:
-      row.updated_at,
-  };
-}
-
-export const onRequestPost:
-  PagesFunction<Env> = async ({
-    request,
-    env,
-  }) => {
-    try {
-      const body =
-        await readJson<LoginBody>(
-          request
-        );
-
-      const email =
-        String(
-          body.email || ''
-        )
-          .trim()
-          .toLowerCase();
-
-      const password =
-        String(
-          body.password || ''
-        );
-
-      if (!email || !password) {
-        return json(
-          {
-            success: false,
-            message:
-              'Email dan password wajib diisi.',
-          },
-          400
-        );
-      }
-
-      const user =
-        await withDb(
-          env,
-          async (client) => {
-            const result =
-              await client.query(
-                `
-                SELECT
-                  id,
-                  uid,
-                  cuid,
-                  username,
-                  email,
-                  password,
-                  display_name,
-                  photo_url,
-                  streamer_handle,
-                  bio,
-                  referral_code,
-                  referred_by,
-                  referral_count,
-                  balance,
-                  saldo,
-                  wallet_balance,
-                  locked_saldo,
-                  affiliate_earnings,
-                  affiliate_withdrawn,
-                  is_subscribed,
-                  subscription_plan,
-                  subscription_expires_at,
-                  is_lifetime,
-                  subscribed_at,
-                  role,
-                  is_blacklisted,
-                  is_banned,
-                  banned_reason,
-                  force_jackpot_next,
-                  created_at,
-                  updated_at
-                FROM users
-                WHERE LOWER(email) = $1
-                LIMIT 1
-                `,
-                [email]
-              );
-
-            return result.rows[0];
-          }
-        );
-
-      if (!user) {
-        return json(
-          {
-            success: false,
-            message:
-              'Email atau password salah.',
-            code: 'INVALID_CREDENTIALS',
-          },
-          401
-        );
-      }
-
-      if (
-        Boolean(user.is_banned) ||
-        Boolean(user.is_blacklisted)
-      ) {
-        return json(
-          {
-            success: false,
-            message:
-              user.banned_reason ||
-              'Akun Anda tidak dapat digunakan.',
-            code: 'ACCOUNT_BLOCKED',
-          },
-          403
-        );
-      }
-
-      const passwordValid =
-        await verifyPassword(
-          password,
-          user.password
-        );
-
-      if (!passwordValid) {
-        return json(
-          {
-            success: false,
-            message:
-              'Email atau password salah.',
-            code: 'INVALID_CREDENTIALS',
-          },
-          401
-        );
-      }
-
-      const mappedUser =
-        mapUser(user);
-
-      const token =
-        createToken(
-          mappedUser,
-          env
-        );
-
-      return json({
-        success: true,
-        token,
-        user: mappedUser,
-      });
-    } catch (error) {
-      console.error(
-        'Login API error:',
-        error
-      );
-
+    if (!login || !password) {
       return json(
         {
-          success: false,
-          message:
-            'Terjadi kesalahan pada server.',
+          error: 'Email/username dan password wajib diisi.',
         },
-        500
+        400
       );
     }
-  };
+
+    const result = await withDb(context.env, async (client) => {
+      const query = await client.query(
+        `
+        SELECT
+          id,
+          cuid,
+          username,
+          email,
+          password,
+          role,
+          balance,
+          "isBlacklisted"
+        FROM users
+        WHERE LOWER(email) = $1
+           OR LOWER(username) = $1
+        LIMIT 1
+        `,
+        [login]
+      );
+
+      return query.rows[0] ?? null;
+    });
+
+    if (!result) {
+      return json(
+        {
+          error: 'Email atau username tidak ditemukan.',
+        },
+        401
+      );
+    }
+
+    const passwordValid = await verifyPassword(
+      password,
+      result.password
+    );
+
+    if (!passwordValid) {
+      return json(
+        {
+          error: 'Password salah.',
+        },
+        401
+      );
+    }
+
+    if (result.isBlacklisted === true) {
+      return json(
+        {
+          error: 'Akun Anda sedang diblokir.',
+        },
+        403
+      );
+    }
+
+    const user: AuthUser = {
+      id: Number(result.id),
+      cuid: String(result.cuid),
+      username: String(result.username),
+      email: String(result.email),
+      role: result.role,
+    };
+
+    const token = createToken(
+      user,
+      context.env
+    );
+
+    return json({
+      success: true,
+      message: 'Login berhasil.',
+      token,
+      user: {
+        id: user.id,
+        cuid: user.cuid,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        balance: Number(result.balance ?? 0),
+        isBlacklisted: Boolean(result.isBlacklisted),
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+
+    return json(
+      {
+        error: 'Terjadi kesalahan saat login.',
+      },
+      500
+    );
+  }
+};
