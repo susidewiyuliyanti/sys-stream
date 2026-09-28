@@ -15,7 +15,7 @@ import { TebakNomorSeri } from './components/TebakNomorSeri';
 import { LuckyWheel } from './components/LuckyWheel';
 import { LeaderboardModal } from './components/LeaderboardModal';
 import { BroadcastTicker } from './components/BroadcastTicker';
-import { LoginScreen } from './components/LoginScreen';
+import LoginScreen from './components/LoginScreen';
 import { VipHostManagerModal } from './components/VipHostManagerModal';
 import { UserProfileModal } from './components/UserProfileModal';
 import { LeaderboardPage } from './components/LeaderboardPage';
@@ -29,6 +29,7 @@ import {
   getCurrentUser,
   logoutUser,
   updateUserProfile,
+
   type AuthUser
 } from './lib/auth';
 
@@ -852,4 +853,5 @@ const handleLogout = async () => {
     </>
   );
 }
+
 

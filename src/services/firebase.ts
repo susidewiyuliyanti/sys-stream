@@ -44,7 +44,6 @@ import {
 import {
   getCurrentUser,
   logoutUser as authLogoutUser,
-  syncSession,
 } from '../lib/auth';
 
 /* ============================================================
@@ -1914,7 +1913,6 @@ export async function getLoginResult(): Promise<any> {
  * Re-export helper authentication.
  */
 export {
-  syncSession,
 };
 
 

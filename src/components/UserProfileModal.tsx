@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
 import { UserProfile, TransactionOrder, StreamingSessionLog } from '../types';
 import {
@@ -172,35 +171,68 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isProfileLangModalOpen, setIsProfileLangModalOpen] = useState<boolean>(false);
 
-  // Realtime Firestore Saldo State via onSnapshot (Dashboard saldo WAJIB pakai onSnapshot realtime)
+   // Realtime saldo via API / Neon PostgreSQL.
+  // Firebase Firestore tidak lagi digunakan.
   const [realtimeSaldo, setRealtimeSaldo] = useState<number | null>(null);
   const [realtimeLockedSaldo, setRealtimeLockedSaldo] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
-    const targetUid = auth.currentUser?.uid || userProfile?.uid;
-    if (!targetUid) return;
 
-    const unsub = onSnapshot(
-      doc(db, "users", targetUid),
-      (d) => {
-        if (d.exists()) {
-          const data = d.data();
-          const liveSaldo = typeof data?.saldo === 'number'
-            ? data.saldo
-            : (typeof data?.walletBalance === 'number' ? data.walletBalance : 0);
-          setRealtimeSaldo(liveSaldo);
+    let cancelled = false;
 
-          const liveLocked = typeof data?.lockedSaldo === 'number' ? data.lockedSaldo : 0;
-          setRealtimeLockedSaldo(liveLocked);
-        }
-      },
-      (err) => {
-        console.warn('Realtime onSnapshot error in UserProfileModal:', err);
+    const loadRealtimeSaldo = async () => {
+      try {
+        const token = localStorage.getItem('sys_stream_auth_token');
+        if (!token) return;
+
+        const response = await fetch('/api/auth/me', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-store',
+        });
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const user = data?.user;
+
+        if (cancelled || !user) return;
+
+        const liveSaldo =
+          typeof user.balance === 'number'
+            ? user.balance
+            : typeof user.saldo === 'number'
+              ? user.saldo
+              : typeof user.walletBalance === 'number'
+                ? user.walletBalance
+                : 0;
+
+        setRealtimeSaldo(liveSaldo);
+
+        const liveLocked =
+          typeof user.lockedSaldo === 'number'
+            ? user.lockedSaldo
+            : 0;
+
+        setRealtimeLockedSaldo(liveLocked);
+      } catch (err) {
+        console.warn('Realtime saldo API error in UserProfileModal:', err);
       }
-    );
+    };
 
-    return () => unsub();
+    loadRealtimeSaldo();
+
+    // Refresh saldo secara berkala tanpa Firebase.
+    const intervalId = window.setInterval(loadRealtimeSaldo, 5000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
   }, [isOpen, userProfile?.uid]);
 
   // Profile Form States

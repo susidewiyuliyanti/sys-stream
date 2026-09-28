@@ -238,3 +238,42 @@ export async function sendPasswordReset(
 
   return data;
 }
+export async function updateUserProfile(
+  uid: string,
+  updates: Record<string, unknown>
+): Promise<AuthUser | null> {
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('Sesi login tidak ditemukan.');
+  }
+
+  const response = await fetch('/api/auth/profile', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      uid,
+      ...updates,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Gagal memperbarui profil.');
+  }
+
+  if (data.user) {
+    localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(data.user)
+    );
+
+    return data.user as AuthUser;
+  }
+
+  return null;
+}

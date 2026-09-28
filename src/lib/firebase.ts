@@ -1,146 +1,97 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
 import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  updateProfile,
-  setPersistence,
-  browserLocalPersistence,
-  UserCredential,
-  User
-} from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+  getStoredUser,
+  getAuthToken,
+  type AuthUser,
+} from './auth';
 
-// Inisialisasi Firebase App
-export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-// Inisialisasi Firestore dengan database key resmi yang sama dengan admin
-export const db = getFirestore(app, "ai-studio-streammasterinte-ecab4a17-e81c-4ff1-9972-d570bcf4652c");
-
-// Inisialisasi Firebase Auth dengan Browser Local Persistence agar sesi awet
-export const auth = getAuth(app);
-try {
-  setPersistence(auth, browserLocalPersistence).catch((err) => {
-    console.warn('Set persistence warning:', err);
-  });
-} catch (e) {
-  console.warn('Could not initialize local persistence:', e);
+export interface CompatibilityAuthUser {
+  uid: string;
+  email: string;
+  displayName: string;
 }
 
-// Inisialisasi Google Auth Provider
-export const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  prompt: 'select_account'
-});
+function buildAuthUser(user: AuthUser | null): CompatibilityAuthUser | null {
+  if (!user) return null;
+
+  return {
+    uid: user.cuid || String(user.id),
+    email: user.email || '',
+    displayName: user.username || user.email || 'Host Streamer',
+  };
+}
+
+function getCurrentCompatibilityUser(): CompatibilityAuthUser | null {
+  return buildAuthUser(getStoredUser());
+}
 
 /**
- * Login dengan Google menggunakan Popup (Metode paling stabil di Vercel & Desktop)
+ * Compatibility layer untuk kode lama yang masih membaca auth.currentUser.
+ *
+ * Firebase Auth sudah tidak digunakan.
+ * Sumber sesi sekarang adalah JWT + localStorage melalui src/lib/auth.ts.
  */
-export const loginWithGooglePopup = async (): Promise<UserCredential> => {
-  return await signInWithPopup(auth, googleProvider);
+export const auth = {
+  get currentUser(): CompatibilityAuthUser | null {
+    return getCurrentCompatibilityUser();
+  },
+
+  get token(): string | null {
+    return getAuthToken();
+  },
 };
 
 /**
- * Login dengan Google menggunakan Redirect (Alternatif jika popup diblokir oleh browser HP)
+ * db hanya dipertahankan sebagai compatibility export
+ * untuk file lama yang masih mengimpor { db }.
+ *
+ * Jangan digunakan untuk query Firestore baru.
  */
-export const loginWithGoogleRedirect = async (): Promise<void> => {
-  return await signInWithRedirect(auth, googleProvider);
-};
+export const db = null;
 
 /**
- * Smart Google Login: Coba Popup terlebih dahulu, jika popup diblokir browser, fallback ke Redirect
+ * Google Login sengaja tidak tersedia.
+ * Fungsi-fungsi berikut dipertahankan hanya agar file legacy
+ * tidak langsung menyebabkan import error selama migrasi.
  */
-export const loginWithGoogle = async (): Promise<UserCredential | void> => {
-  try {
-    return await signInWithPopup(auth, googleProvider);
-  } catch (err: any) {
-    const errCode = err?.code || '';
-    if (errCode === 'auth/popup-blocked' || errCode === 'auth/cancelled-popup-request') {
-      console.warn('Popup login diblokir browser, mengalihkan ke mode Redirect...');
-      return await signInWithRedirect(auth, googleProvider);
-    }
-    throw err;
-  }
-};
+export async function loginWithGooglePopup(): Promise<never> {
+  throw new Error('Google Login sudah dinonaktifkan.');
+}
+
+export async function loginWithGoogleRedirect(): Promise<never> {
+  throw new Error('Google Login sudah dinonaktifkan.');
+}
+
+export async function loginWithGoogle(): Promise<never> {
+  throw new Error('Google Login sudah dinonaktifkan.');
+}
 
 /**
- * Memeriksa dan mengambil hasil login redirect saat pengguna kembali dari halaman Google
+ * Auth email lama diarahkan ke sistem auth baru.
  */
-export const getLoginResult = async (): Promise<UserCredential | null> => {
-  try {
-    return await getRedirectResult(auth);
-  } catch (err) {
-    console.warn('getRedirectResult caught error:', err);
-    throw err;
-  }
-};
+export async function loginWithEmail(
+  email: string,
+  password: string
+) {
+  const { loginWithEmail: login } = await import('./auth');
+  return login(email, password);
+}
 
-/**
- * Login manual dengan Email dan Kata Sandi
- */
-export const loginWithEmail = async (email: string, password: string): Promise<UserCredential> => {
-  const cleanEmail = email.trim().toLowerCase();
-  return await signInWithEmailAndPassword(auth, cleanEmail, password);
-};
-
-/**
- * Registrasi akun baru dengan Email dan Kata Sandi, serta otomatis mengirimkan link verifikasi email
- */
-export const registerWithEmail = async (
+export async function registerWithEmail(
   email: string,
   password: string,
   displayName?: string
-): Promise<{ credential: UserCredential; verificationSent: boolean }> => {
-  const cleanEmail = email.trim().toLowerCase();
-  const credential = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+) {
+  const { registerWithEmail: register } = await import('./auth');
+  return register(email, password, displayName);
+}
 
-  // Update Nama Profil jika diisi
-  if (displayName && credential.user) {
-    try {
-      await updateProfile(credential.user, { displayName: displayName.trim() });
-    } catch (profileErr) {
-      console.warn('Update displayName warning:', profileErr);
-    }
-  }
+export async function sendPasswordReset(email: string) {
+  const { sendPasswordReset: reset } = await import('./auth');
+  return reset(email);
+}
 
-  // Kirim email verifikasi resmi Firebase
-  let verificationSent = false;
-  if (credential.user) {
-    try {
-      await sendEmailVerification(credential.user);
-      verificationSent = true;
-    } catch (verifErr) {
-      console.warn('Gagal mengirim email verifikasi otomatis:', verifErr);
-    }
-  }
-
-  return { credential, verificationSent };
-};
-
-/**
- * Kirim ulang email verifikasi ke user yang sedang login
- */
-export const resendVerificationEmail = async (user?: User | null): Promise<void> => {
-  const targetUser = user || auth.currentUser;
-  if (!targetUser) {
-    throw new Error('Tidak ada akun yang sedang aktif untuk diverifikasi.');
-  }
-  await sendEmailVerification(targetUser);
-};
-
-/**
- * Kirim tautan reset kata sandi ke email
- */
-export const sendPasswordReset = async (email: string): Promise<void> => {
-  const cleanEmail = email.trim().toLowerCase();
-  await sendPasswordResetEmail(auth, cleanEmail);
-};
-
-
+export async function resendVerificationEmail(): Promise<void> {
+  throw new Error(
+    'Email verification Firebase sudah tidak digunakan.'
+  );
+}
