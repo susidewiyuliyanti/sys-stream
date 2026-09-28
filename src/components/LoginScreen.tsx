@@ -250,7 +250,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       setIsLoading(false);
     }
   };
-
+  /*
    * ============================================================
    * FORGOT PASSWORD
    * ============================================================
@@ -583,39 +583,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
                 </div>
               )}
-
-              {/* ================================================= */}
-              {/* GOOGLE LOGIN */}
-              {/* ================================================= */}
-
-              <button
-                type="button"
-                onClick={() => handleGoogleLogin(false)}
-                disabled={isLoading}
-                className="w-full h-12 rounded-xl border border-white/10 bg-white text-black font-bold flex items-center justify-center gap-3 hover:bg-white/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-
-                <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center font-black text-sm">
-                  G
-                </span>
-
-                {isLoading
-                  ? 'Memproses...'
-                  : 'Lanjutkan dengan Google'}
-
-              </button>
-
-              <div className="flex items-center gap-3 my-6">
-
-                <div className="h-px flex-1 bg-white/10" />
-
-                <span className="text-[11px] uppercase tracking-widest text-white/30">
-                  atau
-                </span>
-
-                <div className="h-px flex-1 bg-white/10" />
-
-              </div>
 
               {/* ================================================= */}
               {/* LOGIN FORM */}
