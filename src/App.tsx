@@ -308,46 +308,44 @@ useEffect(() => {
     };
   }, []);
 
- // Synchronize authenticated session with Cloudflare API
+ // Refresh authenticated user from Cloudflare API
 useEffect(() => {
   if (!userProfile) return;
 
-  syncSession({
-    uid: userProfile.uid,
-    email: userProfile.email,
-    displayName: userProfile.displayName,
-    role: userProfile.role,
-    photoURL: userProfile.photoURL
-  })
-    .then((result) => {
-      if (result?.token) {
-        localStorage.setItem(
-          'sys_stream_auth_token',
-          result.token
-        );
+  let cancelled = false;
 
-        // Compatibility token untuk kode lama.
-        localStorage.setItem(
-          'blindbox_jwt_token',
-          result.token
-        );
-      }
+  const refreshSession = async () => {
+    try {
+      const currentUser = await getCurrentUser();
 
-      if (result?.user) {
-        try {
-          localStorage.setItem(
-            'sys_stream_auth_user',
-            JSON.stringify(result.user)
-          );
-        } catch {}
+      if (cancelled || !currentUser) return;
+
+      try {
+        localStorage.setItem(
+          'sys_stream_auth_user',
+          JSON.stringify(currentUser)
+        );
+      } catch {}
+
+      // Compatibility token untuk kode lama.
+      const token = localStorage.getItem('sys_stream_auth_token');
+
+      if (token) {
+        localStorage.setItem('blindbox_jwt_token', token);
       }
-    })
-    .catch((error) => {
+    } catch (error) {
       console.warn(
-        'Cloudflare session synchronization failed:',
+        'Cloudflare session refresh failed:',
         error
       );
-    });
+    }
+  };
+
+  refreshSession();
+
+  return () => {
+    cancelled = true;
+  };
 }, [userProfile?.uid]);
 
   // Update Prize Nominal
