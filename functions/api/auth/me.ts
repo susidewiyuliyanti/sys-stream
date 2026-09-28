@@ -5,101 +5,51 @@ import {
 
 import {
   requireAuth,
+  type Env,
 } from '../_lib/auth';
 
-interface Env {
-  HYPERDRIVE: Hyperdrive;
-  JWT_SECRET: string;
-}
-
-export const onRequestGet:
-  PagesFunction<Env> = async ({
-    request,
-    env,
-  }) => {
-    const auth =
-      requireAuth(
-        request,
-        env
-      );
-
-    if (!auth.ok) {
-      return auth.response;
-    }
-
+export const onRequestGet: PagesFunction<Env> =
+  async (context) => {
     try {
-      const result =
-        await withDb(
-          env,
-          async (client) => {
-            return client.query(
-              `
-              SELECT
-                id,
-                uid,
-                cuid,
-                username,
-                email,
-                display_name,
-                photo_url,
-                streamer_handle,
-                bio,
-                referral_code,
-                referred_by,
-                referral_count,
-                balance,
-                saldo,
-                wallet_balance,
-                locked_saldo,
-                affiliate_earnings,
-                affiliate_withdrawn,
-                is_subscribed,
-                subscription_plan,
-                subscription_expires_at,
-                is_lifetime,
-                subscribed_at,
-                role,
-                is_blacklisted,
-                is_banned,
-                banned_reason,
-                force_jackpot_next,
-                created_at,
-                updated_at
-              FROM users
-              WHERE id = $1
-              LIMIT 1
-              `,
-              [Number(auth.user.sub)]
-            );
-          }
+      const authUser =
+        requireAuth(
+          context.request,
+          context.env
         );
 
       const user =
-        result.rows[0];
+        await withDb(
+          context.env,
+          async (client) => {
+            const result =
+              await client.query(
+                `
+                SELECT
+                  id,
+                  cuid,
+                  username,
+                  email,
+                  balance,
+                  role,
+                  "isBlacklisted"
+                FROM users
+                WHERE id = $1
+                LIMIT 1
+                `,
+                [authUser.id]
+              );
+
+            return result.rows[0] ?? null;
+          }
+        );
 
       if (!user) {
         return json(
           {
-            success: false,
-            message:
+            error:
               'User tidak ditemukan.',
           },
           404
-        );
-      }
-
-      if (
-        user.is_banned ||
-        user.is_blacklisted
-      ) {
-        return json(
-          {
-            success: false,
-            message:
-              user.banned_reason ||
-              'Akun diblokir.',
-          },
-          403
         );
       }
 
@@ -107,89 +57,24 @@ export const onRequestGet:
         success: true,
         user: {
           id: Number(user.id),
-          uid: user.uid,
-          cuid: user.cuid,
-          username: user.username,
-          email: user.email,
-          displayName:
-            user.display_name,
-          photoURL:
-            user.photo_url,
-          streamerHandle:
-            user.streamer_handle,
-          bio: user.bio,
-          referralCode:
-            user.referral_code,
-          referredBy:
-            user.referred_by,
-          referralCount:
-            Number(
-              user.referral_count || 0
-            ),
-          balance:
-            Number(
-              user.balance || 0
-            ),
-          saldo:
-            Number(
-              user.saldo || 0
-            ),
-          walletBalance:
-            Number(
-              user.wallet_balance ||
-                0
-            ),
-          lockedSaldo:
-            Number(
-              user.locked_saldo ||
-                0
-            ),
-          affiliateEarnings:
-            Number(
-              user.affiliate_earnings ||
-                0
-            ),
-          affiliateWithdrawn:
-            Number(
-              user.affiliate_withdrawn ||
-                0
-            ),
-          isSubscribed:
-            Boolean(
-              user.is_subscribed
-            ),
-          subscriptionPlan:
-            user.subscription_plan,
-          subscriptionExpiresAt:
-            user.subscription_expires_at,
-          isLifetime:
-            Boolean(
-              user.is_lifetime
-            ),
-          subscribedAt:
-            user.subscribed_at,
+          cuid: String(user.cuid),
+          username: String(user.username),
+          email: String(user.email),
+          balance: Number(
+            user.balance ?? 0
+          ),
           role: user.role,
           isBlacklisted:
             Boolean(
-              user.is_blacklisted
+              user.isBlacklisted
             ),
-          isBanned:
-            Boolean(
-              user.is_banned
-            ),
-          bannedReason:
-            user.banned_reason,
-          forceJackpotNext:
-            Boolean(
-              user.force_jackpot_next
-            ),
-          createdAt:
-            user.created_at,
-          updatedAt:
-            user.updated_at,
         },
       });
     } catch (error) {
+      if (error instanceof Response) {
+        return error;
+      }
+
       console.error(
         'Auth me error:',
         error
@@ -197,9 +82,8 @@ export const onRequestGet:
 
       return json(
         {
-          success: false,
-          message:
-            'Gagal mengambil session user.',
+          error:
+            'Gagal mengambil data akun.',
         },
         500
       );
