@@ -17,9 +17,6 @@ import {
 } from 'lucide-react';
 
 import {
-  loginWithGooglePopup,
-  loginWithGoogleRedirect,
-  getLoginResult,
   loginWithEmail,
   registerWithEmail,
   sendPasswordReset,
