@@ -980,7 +980,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
         </div>
       )}
-
+      
     </div>
   );
 };
+
+export default LoginScreen;
