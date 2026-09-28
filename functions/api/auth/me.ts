@@ -1,4 +1,4 @@
-import {
+﻿import {
   withDb,
   json,
 } from '../_lib/db';
@@ -31,7 +31,7 @@ export const onRequestGet: PagesFunction<Env> =
                   email,
                   balance,
                   role,
-                  "isBlacklisted"
+                  is_blacklisted AS "isBlacklisted"
                 FROM users
                 WHERE id = $1
                 LIMIT 1
@@ -89,3 +89,4 @@ export const onRequestGet: PagesFunction<Env> =
       );
     }
   };
+

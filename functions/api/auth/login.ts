@@ -1,4 +1,4 @@
-import { withDb, json, readJson } from '../_lib/db';
+﻿import { withDb, json, readJson } from '../_lib/db';
 import {
   createToken,
   verifyPassword,
@@ -44,7 +44,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           password,
           role,
           balance,
-          "isBlacklisted"
+          is_blacklisted AS "isBlacklisted"
         FROM users
         WHERE LOWER(email) = $1
            OR LOWER(username) = $1
@@ -126,3 +126,4 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 };
+
