@@ -1,11 +1,12 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import type { Env } from './db';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import type { Env } from "./db";
 
 export interface AuthUser {
   id?: number;
   uid: string;
   email: string;
+
   displayName?: string | null;
   photoURL?: string | null;
   streamerHandle?: string | null;
@@ -27,9 +28,10 @@ export interface AuthUser {
   affiliateWithdrawn?: number;
 
   isSubscribed?: boolean;
-  subscriptionPlan?: string;
+  subscriptionPlan?: string | null;
   subscriptionExpiresAt?: string | null;
   isLifetime?: boolean;
+  subscribedAt?: string | null;
 
   role?: string;
 
@@ -38,308 +40,318 @@ export interface AuthUser {
   bannedReason?: string | null;
 
   forceJackpotNext?: boolean;
+  targetJackpotNominal?: number | null;
+
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
-const TOKEN_KEY =
-  'sys_stream_auth_token';
+export interface TokenPayload {
+  sub: string;
+  uid?: string;
+  email: string;
+  role?: string;
 
-const USER_KEY =
-  'sys_stream_auth_user';
+  iss?: string;
+  aud?: string;
 
+  iat?: number;
+  exp?: number;
+}
 
-async function apiRequest<T>(
-  path: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const token =
-    localStorage.getItem(
-      TOKEN_KEY
-    );
+/**
+ * ============================================================
+ * PASSWORD
+ * ============================================================
+ */
 
-  const headers =
-    new Headers(
-      options.headers || {}
-    );
-
-  headers.set(
-    'Content-Type',
-    'application/json'
-  );
-
-  if (token) {
-    headers.set(
-      'Authorization',
-      `Bearer ${token}`
+export async function hashPassword(
+  password: string
+): Promise<string> {
+  if (!password || password.length < 6) {
+    throw new Error(
+      "Password minimal 6 karakter."
     );
   }
 
-  const response =
-    await fetch(
-      path,
-      {
-        ...options,
-        headers,
-      }
+  return bcrypt.hash(password, 12);
+}
+
+export async function verifyPassword(
+  password: string,
+  passwordHash: string
+): Promise<boolean> {
+  if (!password || !passwordHash) {
+    return false;
+  }
+
+  try {
+    return await bcrypt.compare(
+      password,
+      passwordHash
+    );
+  } catch (error) {
+    console.error(
+      "Password verification error:",
+      error
     );
 
-  const data =
-    await response
-      .json()
-      .catch(() => ({}));
+    return false;
+  }
+}
 
-  if (!response.ok) {
-    const error: any =
-      new Error(
-        data?.message ||
-          'Request gagal.'
+/**
+ * ============================================================
+ * JWT
+ * ============================================================
+ */
+
+export function createToken(
+  user: AuthUser,
+  env: Env
+): string {
+  const secret = env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error(
+      "JWT_SECRET belum dikonfigurasi di Cloudflare."
+    );
+  }
+
+  if (!user.id) {
+    throw new Error(
+      "User ID tidak tersedia untuk membuat token."
+    );
+  }
+
+  const payload: TokenPayload = {
+    sub: String(user.id),
+    uid: user.uid,
+    email: user.email,
+    role: user.role,
+  };
+
+  return jwt.sign(
+    payload,
+    secret,
+    {
+      expiresIn: "7d",
+      issuer: "sys-stream",
+      audience: "sys-stream-app",
+    }
+  );
+}
+
+/**
+ * ============================================================
+ * READ TOKEN
+ * ============================================================
+ */
+
+export function getBearerToken(
+  request: Request
+): string | null {
+  const authorization =
+    request.headers.get(
+      "Authorization"
+    );
+
+  if (!authorization) {
+    return null;
+  }
+
+  const [scheme, token] =
+    authorization.split(" ");
+
+  if (
+    scheme?.toLowerCase() !==
+      "bearer" ||
+    !token
+  ) {
+    return null;
+  }
+
+  return token.trim();
+}
+
+/**
+ * ============================================================
+ * VERIFY TOKEN
+ * ============================================================
+ */
+
+export function verifyToken(
+  token: string,
+  env: Env
+): TokenPayload | null {
+  const secret = env.JWT_SECRET;
+
+  if (!secret) {
+    console.error(
+      "JWT_SECRET belum dikonfigurasi."
+    );
+
+    return null;
+  }
+
+  try {
+    const decoded =
+      jwt.verify(
+        token,
+        secret,
+        {
+          issuer: "sys-stream",
+          audience: "sys-stream-app",
+        }
       );
 
-    error.code =
-      data?.code;
+    if (
+      typeof decoded !==
+      "object"
+    ) {
+      return null;
+    }
 
-    error.status =
-      response.status;
+    if (
+      !decoded.sub ||
+      !decoded.email
+    ) {
+      return null;
+    }
 
-    throw error;
+    return decoded as TokenPayload;
+  } catch (error) {
+    console.error(
+      "JWT verification failed:",
+      error
+    );
+
+    return null;
   }
-
-  return data;
 }
 
+/**
+ * ============================================================
+ * AUTH RESULT
+ * ============================================================
+ */
 
-/* ============================================================
-   LOGIN EMAIL
-   ============================================================ */
+export type AuthSuccess = {
+  ok: true;
+  user: TokenPayload;
+};
 
-export async function loginWithEmail(
-  email: string,
-  password: string
-) {
-  const response =
-    await apiRequest<{
-      success: boolean;
-      token: string;
-      user: AuthUser;
-    }>(
-      '/api/auth/login',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      }
-    );
+export type AuthFailure = {
+  ok: false;
+  response: Response;
+};
 
-  localStorage.setItem(
-    TOKEN_KEY,
-    response.token
-  );
+export type AuthResult =
+  | AuthSuccess
+  | AuthFailure;
 
-  localStorage.setItem(
-    USER_KEY,
-    JSON.stringify(
-      response.user
-    )
-  );
+/**
+ * ============================================================
+ * REQUIRE AUTH
+ * ============================================================
+ */
 
-  return {
-    user: response.user,
-    token: response.token,
-  };
-}
-
-
-/* ============================================================
-   REGISTER
-   ============================================================ */
-
-export async function registerWithEmail(
-  email: string,
-  password: string,
-  displayName?: string
-) {
-  const response =
-    await apiRequest<{
-      success: boolean;
-      token: string;
-      user: AuthUser;
-      verificationSent?: boolean;
-    }>(
-      '/api/auth/register',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password,
-          displayName,
-        }),
-      }
-    );
-
-  localStorage.setItem(
-    TOKEN_KEY,
-    response.token
-  );
-
-  localStorage.setItem(
-    USER_KEY,
-    JSON.stringify(
-      response.user
-    )
-  );
-
-  return {
-    credential: {
-      user: response.user,
-    },
-    user: response.user,
-    verificationSent:
-      response.verificationSent ??
-      false,
-  };
-}
-
-
-/* ============================================================
-   CURRENT USER
-   ============================================================ */
-
-export async function getCurrentUser(): Promise<AuthUser | null> {
+export function requireAuth(
+  request: Request,
+  env: Env
+): AuthResult {
   const token =
-    localStorage.getItem(
-      TOKEN_KEY
-    );
+    getBearerToken(request);
 
   if (!token) {
-    return null;
-  }
-
-  try {
-    const response =
-      await apiRequest<{
-        success: boolean;
-        user: AuthUser;
-      }>(
-        '/api/auth/me'
-      );
-
-    if (response.user) {
-      localStorage.setItem(
-        USER_KEY,
-        JSON.stringify(
-          response.user
-        )
-      );
-    }
-
-    return response.user;
-  } catch {
-    localStorage.removeItem(
-      TOKEN_KEY
-    );
-
-    localStorage.removeItem(
-      USER_KEY
-    );
-
-    return null;
-  }
-}
-
-
-/* ============================================================
-   SESSION SYNC
-   ============================================================ */
-
-export async function syncSession(
-  data: {
-    uid: string;
-    email: string;
-    displayName?: string;
-    role?: string;
-    walletBalance?: number;
-  }
-) {
-  return apiRequest(
-    '/api/auth/sync-session',
-    {
-      method: 'POST',
-      body: JSON.stringify(
-        data
+    return {
+      ok: false,
+      response: new Response(
+        JSON.stringify({
+          success: false,
+          message:
+            "Authentication required.",
+          code: "AUTH_REQUIRED",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type":
+              "application/json; charset=utf-8",
+            "Cache-Control":
+              "no-store",
+          },
+        }
       ),
-    }
-  );
-}
-
-
-/* ============================================================
-   LOGOUT
-   ============================================================ */
-
-export async function logoutUser(): Promise<void> {
-  try {
-    await apiRequest(
-      '/api/auth/logout',
-      {
-        method: 'POST',
-      }
-    );
-  } catch {
-    // Local logout tetap dilakukan.
+    };
   }
 
-  localStorage.removeItem(
-    TOKEN_KEY
-  );
+  const user =
+    verifyToken(
+      token,
+      env
+    );
 
-  localStorage.removeItem(
-    USER_KEY
+  if (!user) {
+    return {
+      ok: false,
+      response: new Response(
+        JSON.stringify({
+          success: false,
+          message:
+            "Token autentikasi tidak valid atau sudah kedaluwarsa.",
+          code: "INVALID_TOKEN",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type":
+              "application/json; charset=utf-8",
+            "Cache-Control":
+              "no-store",
+          },
+        }
+      ),
+    };
+  }
+
+  return {
+    ok: true,
+    user,
+  };
+}
+
+/**
+ * ============================================================
+ * ROLE HELPERS
+ * ============================================================
+ */
+
+export function isAdminRole(
+  role?: string | null
+): boolean {
+  const normalized =
+    String(role || "")
+      .trim()
+      .toUpperCase();
+
+  return (
+    normalized === "ADMIN" ||
+    normalized === "OWNER" ||
+    normalized === "SUPER_ADMIN"
   );
 }
 
+export function isOwnerRole(
+  role?: string | null
+): boolean {
+  const normalized =
+    String(role || "")
+      .trim()
+      .toUpperCase();
 
-/* ============================================================
-   FORGOT PASSWORD
-   ============================================================ */
-
-export async function sendPasswordReset(
-  email: string
-) {
-  return apiRequest(
-    '/api/auth/forgot-password',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-      }),
-    }
+  return (
+    normalized === "OWNER" ||
+    normalized === "SUPER_ADMIN"
   );
-}
-
-
-/* ============================================================
-   GOOGLE
-   ============================================================ */
-
-export async function loginWithGooglePopup() {
-  throw new Error(
-    'Login Google belum dikonfigurasi pada backend Cloudflare.'
-  );
-}
-
-export async function loginWithGoogleRedirect() {
-  throw new Error(
-    'Login Google belum dikonfigurasi pada backend Cloudflare.'
-  );
-}
-
-export async function loginWithGoogle() {
-  throw new Error(
-    'Login Google belum dikonfigurasi pada backend Cloudflare.'
-  );
-}
-
-export async function getLoginResult() {
-  return null;
 }
