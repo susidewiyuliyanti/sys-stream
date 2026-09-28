@@ -208,3 +208,33 @@ export function logout(): void {
 export async function logoutUser(): Promise<void> {
   logout();
 }
+export async function sendPasswordReset(
+  email: string
+): Promise<{ success: boolean; message: string }> {
+  const response = await fetch(
+    '/api/auth/forgot-password',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+          'application/json',
+      },
+      body: JSON.stringify({
+        email:
+          email.trim().toLowerCase(),
+      }),
+    }
+  );
+
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.error ||
+        'Gagal mengirim permintaan reset password.'
+    );
+  }
+
+  return data;
+}
