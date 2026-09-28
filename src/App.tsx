@@ -29,7 +29,6 @@ import {
   getCurrentUser,
   logoutUser,
   updateUserProfile,
-  syncSession,
   type AuthUser
 } from './lib/auth';
 
