@@ -4,85 +4,76 @@ import {
   readJson,
 } from '../_lib/db';
 
-interface Env {
-  HYPERDRIVE: Hyperdrive;
-  JWT_SECRET: string;
-}
+import type { Env } from '../_lib/auth';
 
-interface Body {
+interface ForgotPasswordBody {
   email?: string;
 }
 
-export const onRequestPost:
-  PagesFunction<Env> = async ({
-    request,
-    env,
-  }) => {
+export const onRequestPost: PagesFunction<Env> =
+  async (context) => {
     try {
       const body =
-        await readJson<Body>(
-          request
+        await readJson<ForgotPasswordBody>(
+          context.request
         );
 
       const email =
-        String(
-          body.email || ''
-        )
+        String(body.email ?? '')
           .trim()
           .toLowerCase();
 
       if (!email) {
         return json(
           {
-            success: false,
-            message:
+            error:
               'Email wajib diisi.',
           },
           400
         );
       }
 
-      const result =
+      const user =
         await withDb(
-          env,
+          context.env,
           async (client) => {
-            return client.query(
-              `
-              SELECT id, email
-              FROM users
-              WHERE LOWER(email) = $1
-              LIMIT 1
-              `,
-              [email]
-            );
+            const result =
+              await client.query(
+                `
+                SELECT id, email
+                FROM users
+                WHERE LOWER(email) = $1
+                LIMIT 1
+                `,
+                [email]
+              );
+
+            return result.rows[0] ?? null;
           }
         );
 
       /*
-       * Jangan membocorkan apakah email
+       * Jangan mengungkapkan apakah email
        * terdaftar atau tidak.
+       *
+       * Email reset sebenarnya akan
+       * diaktifkan pada tahap berikutnya
+       * setelah SMTP/email provider
+       * dikonfigurasi.
        */
-      if (!result.rows.length) {
+
+      if (!user) {
         return json({
           success: true,
           message:
-            'Jika email terdaftar, instruksi pemulihan akan diproses.',
+            'Jika email tersebut terdaftar, instruksi pemulihan akan dikirim.'
         });
       }
 
-      /*
-       * Email delivery belum dipasang.
-       *
-       * Endpoint sengaja dibuat terlebih dahulu
-       * agar frontend tidak lagi bergantung
-       * pada Firebase.
-       */
       return json({
         success: true,
         message:
-          'Permintaan pemulihan diterima.',
-        emailDelivery:
-          'pending_configuration',
+          'Jika email tersebut terdaftar, instruksi pemulihan akan dikirim.'
       });
     } catch (error) {
       console.error(
@@ -92,9 +83,8 @@ export const onRequestPost:
 
       return json(
         {
-          success: false,
-          message:
-            'Gagal memproses permintaan.',
+          error:
+            'Gagal memproses permintaan reset password.',
         },
         500
       );
