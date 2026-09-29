@@ -139,7 +139,7 @@ router.post('/auth/register', async (req, res) => {
         username: username.trim(),
         email: email.trim().toLowerCase(),
         password: hashedPassword,
-        balance: 100000,
+        balance: 15000,
         role: isSpecialAdmin ? 'ADMIN' : 'USER',
       })
       .returning();
@@ -153,7 +153,7 @@ router.post('/auth/register', async (req, res) => {
     });
 
     res.status(201).json({
-      message: 'Registration successful! You received an initial balance bonus of Rp 100,000.',
+      message: 'Registration successful! You received an initial registration bonus of Rp 15,000.',
       token,
       user: {
         id: newUser.id,
@@ -1304,3 +1304,4 @@ router.post('/admin/blacklist', authenticateToken, requireAdmin, async (req, res
 });
 
 export default router;
+

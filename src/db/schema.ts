@@ -44,7 +44,7 @@ export const users = pgTable(
     referralCount: integer('referral_count').default(0).notNull(),
 
     // Saldo
-    balance: integer('balance').default(100000).notNull(),
+    balance: integer('balance').default(0).notNull(),
     saldo: integer('saldo').default(0).notNull(),
     walletBalance: integer('wallet_balance').default(0).notNull(),
     lockedSaldo: integer('locked_saldo').default(0).notNull(),
@@ -643,5 +643,7 @@ export const withdrawalsRelations = relations(
     }),
   })
 );
+
+
 
 
