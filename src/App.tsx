@@ -172,7 +172,7 @@ useEffect(() => {
       const profile: UserProfile = {
         ...(user as any),
 
-        uid: user.uid,
+        uid: user.cuid,
         email: user.email || '',
         displayName: user.displayName || '',
         photoURL: user.photoURL || '',
@@ -853,5 +853,7 @@ const handleLogout = async () => {
     </>
   );
 }
+
+
 
 

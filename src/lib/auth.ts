@@ -1,6 +1,7 @@
 export interface AuthUser {
   id: number;
   cuid: string;
+  uid?: string;
   username: string;
   email: string;
   role: 'OWNER' | 'ADMIN' | 'USER';
