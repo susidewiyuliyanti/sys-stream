@@ -66,6 +66,21 @@ export async function loginWithEmail(
   return data;
 }
 
+
+function getBrowserCountryCode(): string {
+  try {
+    const locale = Intl.DateTimeFormat().resolvedOptions().locale || 'id-ID';
+    const parts = locale.replace('_', '-').split('-');
+
+    const region = parts.find(
+      (part) => part.length === 2 && part === part.toUpperCase()
+    );
+
+    return region || 'ID';
+  } catch {
+    return 'ID';
+  }
+}
 export async function registerWithEmail(
   email: string,
   password: string,
@@ -278,3 +293,4 @@ export async function updateUserProfile(
 
   return null;
 }
+

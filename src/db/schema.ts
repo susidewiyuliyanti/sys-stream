@@ -9,6 +9,8 @@ import {
   timestamp,
   uniqueIndex,
   index,
+  numeric,
+  unique,
 } from 'drizzle-orm/pg-core';
 
 /* =========================================================
@@ -88,6 +90,47 @@ export const users = pgTable(
    DEPOSITS
    ========================================================= */
 
+/**
+ * One-time registration bonus.
+ * Base value: IDR 15,000.
+ */
+export const registrationBonuses = pgTable(
+  'registration_bonuses',
+  {
+    id: serial('id').primaryKey(),
+
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+
+    baseAmountIdr: integer('base_amount_idr')
+      .notNull()
+      .default(15000),
+
+    currency: text('currency')
+      .notNull()
+      .default('IDR'),
+
+    amount: integer('amount')
+      .notNull()
+      .default(15000),
+
+    exchangeRate: numeric('exchange_rate', {
+      precision: 20,
+      scale: 8,
+    })
+      .notNull()
+      .default('1'),
+
+    createdAt: timestamp('created_at')
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    userIdUnique: unique('registration_bonuses_user_id_unique')
+      .on(table.userId),
+  }),
+);
 export const deposits = pgTable(
   'deposits',
   {
@@ -600,3 +643,5 @@ export const withdrawalsRelations = relations(
     }),
   })
 );
+
+

@@ -8,6 +8,13 @@
       "when": 1790575748201,
       "tag": "0000_bouncy_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790661856078,
+      "tag": "0001_exotic_red_wolf",
+      "breakpoints": true
     }
   ]
 }

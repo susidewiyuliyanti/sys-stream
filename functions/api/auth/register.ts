@@ -1,157 +1,231 @@
-import crypto from 'crypto';
+@'
+import { hashPassword, createToken, type UserRole } from '../_lib/auth';
+import { json, readJson, withDb, type Env } from '../_lib/db';
 
-import { withDb, json, readJson } from '../_lib/db';
-import {
-  createToken,
-  hashPassword,
-  type Env,
-  type AuthUser,
-} from '../_lib/auth';
+const BASE_BONUS_IDR = 15000;
 
-interface RegisterBody {
-  username?: string;
-  email?: string;
-  password?: string;
-  displayName?: string;
+const FALLBACK_RATES: Record<string, number> = {
+  IDR: 1,
+  USD: 0.000058,
+  SGD: 0.000074,
+  MYR: 0.000241,
+  JPY: 0.0091,
+  EUR: 0.000049,
+  GBP: 0.000043,
+  AUD: 0.000087,
+  CAD: 0.000079,
+  CNY: 0.00042,
+  KRW: 0.077,
+  THB: 0.00187,
+  PHP: 0.0034,
+  VND: 1.47,
+  HKD: 0.00045,
+  TWD: 0.00182,
+};
+
+const COUNTRY_CURRENCY: Record<string, string> = {
+  ID: 'IDR',
+  US: 'USD',
+  SG: 'SGD',
+  MY: 'MYR',
+  JP: 'JPY',
+  GB: 'GBP',
+  AU: 'AUD',
+  CA: 'CAD',
+  CN: 'CNY',
+  KR: 'KRW',
+  TH: 'THB',
+  PH: 'PHP',
+  VN: 'VND',
+  HK: 'HKD',
+  TW: 'TWD',
+
+  AT: 'EUR',
+  BE: 'EUR',
+  CY: 'EUR',
+  DE: 'EUR',
+  EE: 'EUR',
+  ES: 'EUR',
+  FI: 'EUR',
+  FR: 'EUR',
+  GR: 'EUR',
+  IE: 'EUR',
+  IT: 'EUR',
+  LT: 'EUR',
+  LU: 'EUR',
+  LV: 'EUR',
+  MT: 'EUR',
+  NL: 'EUR',
+  PT: 'EUR',
+  SI: 'EUR',
+  SK: 'EUR',
+};
+
+function normalizeCountryCode(value: unknown): string {
+  if (typeof value !== 'string') return 'ID';
+
+  const code = value.trim().toUpperCase();
+
+  if (/^[A-Z]{2}$/.test(code)) {
+    return code;
+  }
+
+  return 'ID';
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+function getCurrency(countryCode: string, requestedCurrency?: unknown): string {
+  if (
+    typeof requestedCurrency === 'string' &&
+    /^[A-Z]{3}$/.test(requestedCurrency.trim().toUpperCase())
+  ) {
+    return requestedCurrency.trim().toUpperCase();
+  }
+
+  return COUNTRY_CURRENCY[countryCode] || 'IDR';
+}
+
+async function getRegistrationRate(currency: string): Promise<number> {
+  if (currency === 'IDR') {
+    return 1;
+  }
+
   try {
-    const body = await readJson<RegisterBody>(context.request);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3500);
 
-    const username = String(
-      body.username ?? body.displayName ?? ''
-    ).trim();
-
-    const email = String(body.email ?? '')
-      .trim()
-      .toLowerCase();
-
-    const password = String(body.password ?? '');
-
-    // =========================
-    // VALIDATION
-    // =========================
-
-    if (!username) {
-      return json(
+    try {
+      const response = await fetch(
+        'https://open.er-api.com/v6/latest/IDR',
         {
-          success: false,
-          error: 'Username wajib diisi.',
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+          signal: controller.signal,
         },
-        400
       );
+
+      if (response.ok) {
+        const data = (await response.json()) as {
+          result?: string;
+          rates?: Record<string, number>;
+        };
+
+        const liveRate = data.rates?.[currency];
+
+        if (
+          data.result === 'success' &&
+          typeof liveRate === 'number' &&
+          Number.isFinite(liveRate) &&
+          liveRate > 0
+        ) {
+          return liveRate;
+        }
+      }
+    } finally {
+      clearTimeout(timeout);
     }
+  } catch {
+    // Gunakan fallback jika layanan kurs tidak tersedia.
+  }
 
-    if (username.length < 3) {
-      return json(
-        {
-          success: false,
-          error: 'Username minimal 3 karakter.',
-        },
-        400
-      );
-    }
+  return FALLBACK_RATES[currency] ?? 1;
+}
 
-    if (username.length > 30) {
-      return json(
-        {
-          success: false,
-          error: 'Username maksimal 30 karakter.',
-        },
-        400
-      );
-    }
+function calculateBonus(baseIdr: number, rate: number): number {
+  const converted = baseIdr * rate;
 
-    if (!email) {
-      return json(
-        {
-          success: false,
-          error: 'Email wajib diisi.',
-        },
-        400
-      );
-    }
+  if (!Number.isFinite(converted) || converted <= 0) {
+    return baseIdr;
+  }
 
-    const emailPattern =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return Math.max(1, Math.round(converted));
+}
 
-    if (!emailPattern.test(email)) {
-      return json(
-        {
-          success: false,
-          error: 'Format email tidak valid.',
-        },
-        400
-      );
-    }
+export const onRequestPost = async ({
+  request,
+  env,
+}: {
+  request: Request;
+  env: Env;
+}) => {
+  const body = await readJson<{
+    username?: string;
+    email?: string;
+    password?: string;
+    displayName?: string;
+    countryCode?: string;
+    currency?: string;
+  }>(request);
 
-    if (!password || password.length < 6) {
-      return json(
-        {
-          success: false,
-          error: 'Password minimal 6 karakter.',
-        },
-        400
-      );
-    }
+  const username = String(body.username || '').trim();
+  const email = String(body.email || '').trim().toLowerCase();
+  const password = String(body.password || '');
+  const displayName = String(body.displayName || username).trim();
 
-    // =========================
-    // PASSWORD HASH
-    // =========================
+  const countryCode = normalizeCountryCode(body.countryCode);
+  const currency = getCurrency(countryCode, body.currency);
 
-    const passwordHash = await hashPassword(password);
+  if (username.length < 3 || username.length > 30) {
+    return json(
+      { error: 'Username harus terdiri dari 3-30 karakter.' },
+      400,
+    );
+  }
 
-    // CUID kompatibel dengan kolom text/varchar
-    const cuid = `usr_${crypto.randomUUID()}`;
+  if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
+    return json(
+      { error: 'Username hanya boleh menggunakan huruf, angka, titik, garis bawah, dan tanda hubung.' },
+      400,
+    );
+  }
 
-    // =========================
-    // DATABASE
-    // =========================
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json(
+      { error: 'Format email tidak valid.' },
+      400,
+    );
+  }
 
-    const result = await withDb(
-      context.env,
-      async (client) => {
+  if (password.length < 6) {
+    return json(
+      { error: 'Password minimal 6 karakter.' },
+      400,
+    );
+  }
 
-        // Cek email / username
-        const existing = await client.query(
+  const passwordHash = await hashPassword(password);
+  const cuid = `usr_${crypto.randomUUID()}`;
+
+  const exchangeRate = await getRegistrationRate(currency);
+  const registrationBonus = calculateBonus(
+    BASE_BONUS_IDR,
+    exchangeRate,
+  );
+
+  try {
+    const result = await withDb(env, async (client) => {
+      await client.query('BEGIN');
+
+      try {
+        const duplicate = await client.query(
           `
-          SELECT
-            id,
-            email,
-            username
+          SELECT id
           FROM users
-          WHERE LOWER(email) = $1
-             OR LOWER(username) = $2
+          WHERE LOWER(email) = LOWER($1)
+             OR LOWER(username) = LOWER($2)
           LIMIT 1
           `,
-          [
-            email,
-            username.toLowerCase(),
-          ]
+          [email, username],
         );
 
-        if (existing.rows.length > 0) {
-          const existingUser = existing.rows[0];
-
-          if (
-            String(existingUser.email).toLowerCase() === email
-          ) {
-            return {
-              duplicate: 'email' as const,
-              user: null,
-            };
-          }
+        if (duplicate.rows.length > 0) {
+          await client.query('ROLLBACK');
 
           return {
-            duplicate: 'username' as const,
-            user: null,
+            duplicate: true,
           };
         }
-
-        // =========================
-        // CREATE USER
-        // =========================
 
         const inserted = await client.query(
           `
@@ -161,23 +235,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             username,
             email,
             password,
+            display_name,
             balance,
             role
           )
           VALUES
-          (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5,
-            $6
-          )
+          ($1, $2, $3, $4, $5, $6, $7)
           RETURNING
             id,
             cuid,
             username,
             email,
+            display_name,
             balance,
             role
           `,
@@ -186,135 +255,108 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             username,
             email,
             passwordHash,
-
-            // Saldo awal game
-            100000,
-
-            // User biasa yang baru mendaftar
+            displayName,
+            registrationBonus,
             'USER',
-          ]
+          ],
         );
 
+        const user = inserted.rows[0];
+
+        await client.query(
+          `
+          INSERT INTO registration_bonuses
+          (
+            user_id,
+            base_amount_idr,
+            currency,
+            amount,
+            exchange_rate
+          )
+          VALUES
+          ($1, $2, $3, $4, $5)
+          `,
+          [
+            user.id,
+            BASE_BONUS_IDR,
+            currency,
+            registrationBonus,
+            exchangeRate,
+          ],
+        );
+
+        await client.query('COMMIT');
+
         return {
-          duplicate: false as const,
-          user: inserted.rows[0],
+          duplicate: false,
+          user,
         };
+      } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
       }
+    });
+
+    if (result.duplicate) {
+      return json(
+        { error: 'Email atau username sudah digunakan.' },
+        409,
+      );
+    }
+
+    const user = result.user;
+
+    const role = String(user.role || 'USER') as UserRole;
+
+    const token = await createToken(
+      {
+        id: Number(user.id),
+        cuid: String(user.cuid),
+        username: String(user.username),
+        email: String(user.email),
+        role,
+      },
+      env.JWT_SECRET,
     );
-
-    // =========================
-    // DUPLICATE
-    // =========================
-
-    if (result.duplicate === 'email') {
-      return json(
-        {
-          success: false,
-          error:
-            'Email sudah terdaftar. Silakan gunakan email lain atau login.',
-        },
-        409
-      );
-    }
-
-    if (result.duplicate === 'username') {
-      return json(
-        {
-          success: false,
-          error:
-            'Username sudah digunakan. Silakan pilih username lain.',
-        },
-        409
-      );
-    }
-
-    // =========================
-    // SAFETY CHECK
-    // =========================
-
-    const dbUser = result.user;
-
-    if (!dbUser) {
-      return json(
-        {
-          success: false,
-          error: 'Gagal membuat akun.',
-        },
-        500
-      );
-    }
-
-    // =========================
-    // AUTH USER
-    // =========================
-
-    const user: AuthUser = {
-      id: Number(dbUser.id),
-      cuid: String(dbUser.cuid),
-      username: String(dbUser.username),
-      email: String(dbUser.email),
-      role: String(dbUser.role) as AuthUser['role'],
-    };
-
-    // =========================
-    // JWT
-    // =========================
-
-    const token = createToken(
-      user,
-      context.env
-    );
-
-    // =========================
-    // RESPONSE
-    // =========================
 
     return json(
       {
         success: true,
-        message: 'Pendaftaran berhasil.',
         token,
         user: {
-          id: user.id,
-          cuid: user.cuid,
-          username: user.username,
-          email: user.email,
-          role: user.role,
-          balance: Number(
-            dbUser.balance ?? 100000
-          ),
+          id: Number(user.id),
+          cuid: String(user.cuid),
+          uid: String(user.cuid),
+          username: String(user.username),
+          email: String(user.email),
+          displayName: String(user.display_name || ''),
+          role,
+          balance: Number(user.balance),
+          countryCode,
+          currency,
+          registrationBonus,
+          registrationBonusBaseIdr: BASE_BONUS_IDR,
         },
       },
-      201
+      201,
     );
-
   } catch (error) {
+    console.error('Register error:', error);
 
-    console.error(
-      'Register error:',
-      error
-    );
-
-    // Jangan sembunyikan detail error
-    // ketika development/debugging.
     const message =
       error instanceof Error
         ? error.message
         : String(error);
 
-    console.error(
-      'Register database/message:',
-      message
-    );
+    console.error('Register database/message:', message);
 
     return json(
       {
-        success: false,
-        error:
-          'Terjadi kesalahan saat membuat akun.',
+        error: 'Terjadi kesalahan saat membuat akun.',
         detail: message,
       },
-      500
+      500,
     );
   }
 };
+'@ | Set-Content .\functions\api\auth\register.ts
