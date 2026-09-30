@@ -178,11 +178,21 @@ router.post('/auth/register', async (req, res) => {
     });
 
     res.status(201).json({
-  message: `Deposit of Rp ${depositAmount.toLocaleString('id-ID')} with ${durationDays}-day duration successfully activated!`,
-  deposit: newDeposit,
-  remainingBalance: updatedUser.balance,
-  userBalance: updatedUser.balance,
-});
+      success: true,
+      message: 'Registrasi berhasil.',
+      token,
+      user: {
+        id: newUser.id,
+        uid: newUser.cuid,
+        cuid: newUser.cuid,
+        username: newUser.username,
+        email: newUser.email,
+        role: newUser.role,
+        balance: newUser.balance,
+        saldo: newUser.saldo,
+        walletBalance: newUser.walletBalance,
+      },
+    });
   } catch (err: any) {
     console.error('Register error:', err);
     res.status(500).json({ error: err.message || 'Gagal mendaftarkan akun.' });
