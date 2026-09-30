@@ -639,7 +639,25 @@ function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
     });
   });
 
-  Object.entries(LEGACY_COMMON_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {\n    const translated = translationsByLanguage[targetLanguage];\n    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);\n  });\n\n  Object.entries(LEGACY_ADMIN_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {\n    const translated = translationsByLanguage[targetLanguage];\n    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);\n  });\n\n  Object.entries(LEGACY_REFERRAL_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {\n    const translated = translationsByLanguage[targetLanguage];\n    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);\n  });\n\n  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+  Object.entries(LEGACY_COMMON_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+    const translated = translationsByLanguage[targetLanguage];
+    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
+  });
+
+  Object.entries(LEGACY_ADMIN_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+    const translated = translationsByLanguage[targetLanguage];
+    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
+  });
+
+  Object.entries(LEGACY_REFERRAL_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+    const translated = translationsByLanguage[targetLanguage];
+    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
+  });\n\n  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+    const translated = translationsByLanguage[targetLanguage];
+    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
+  });
+
+  Object.entries(CATALOG_TRANSLATION_PATCHES).forEach(([sourceText, translationsByLanguage]) => {
     const translated = translationsByLanguage[targetLanguage];
     if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
   });
