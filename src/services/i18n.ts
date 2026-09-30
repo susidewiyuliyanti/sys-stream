@@ -374,10 +374,40 @@ const GLOBAL_TRANSLATABLE_ATTRIBUTES = [
   'aria-placeholder'
 ] as const;
 
+function normalizeTranslationText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[0-9]+(?:[.,][0-9]+)*/g, '#')
+    .replace(/[^\\p{L}#]+/gu, ' ')
+    .replace(/\\s+/g, ' ')
+    .trim();
+}
+
+function translationSimilarity(a: string, b: string): number {
+  const left = normalizeTranslationText(a);
+  const right = normalizeTranslationText(b);
+  if (!left || !right) return 0;
+  if (left === right) return 1;
+
+  const aWords = new Set(left.split(' '));
+  const bWords = new Set(right.split(' '));
+  const intersection = [...aWords].filter((word) => bWords.has(word)).length;
+  const union = new Set([...aWords, ...bWords]).size;
+  const jaccard = union ? intersection / union : 0;
+
+  // Prefer contained phrases, but require enough content to avoid translating
+  // arbitrary user text accidentally.
+  const containment =
+    left.length >= 8 && (left.includes(right) || right.includes(left)) ? 0.82 : 0;
+
+  return Math.max(jaccard, containment);
+}
+
 function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
   const targetLanguage = (languageCode || 'en').toLowerCase().split('-')[0];
   const target = TRANSLATIONS[targetLanguage] || TRANSLATIONS.en || TRANSLATIONS.id;
   const map = new Map<string, string>();
+  const sourceEntries: Array<{ text: string; target: string }> = [];
 
   Object.keys(TRANSLATIONS).forEach((sourceLanguage) => {
     const source = TRANSLATIONS[sourceLanguage];
@@ -385,10 +415,56 @@ function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
       const sourceText = source[key];
       const targetText = target?.[key];
       if (!sourceText || !targetText || sourceText === targetText) return;
+      sourceEntries.push({ text: sourceText, target: targetText });
       if (!map.has(sourceText)) map.set(sourceText, targetText);
     });
   });
 
+  // Legacy UI contains some phrases which pre-date the translation catalog.
+  // Add conservative fuzzy aliases for those phrases. A high threshold and
+  // word-overlap requirement prevent usernames, chat messages and free-form
+  // user content from being translated accidentally.
+  const aliases = new Map<string, string>();
+  const candidates = [...new Map(sourceEntries.map((entry) => [entry.text, entry])).values()];
+
+  const addAlias = (sourceText: string) => {
+    if (map.has(sourceText) || aliases.has(sourceText)) return;
+    const normalized = normalizeTranslationText(sourceText);
+    if (normalized.length < 6 || normalized.split(' ').length < 2) return;
+
+    let best: { text: string; target: string; score: number } | null = null;
+    for (const candidate of candidates) {
+      const score = translationSimilarity(sourceText, candidate.text);
+      if (!best || score > best.score) {
+        best = { ...candidate, score };
+      }
+    }
+
+    if (best && best.score >= 0.78) {
+      aliases.set(sourceText, best.target);
+    }
+  };
+
+  // Only strings that are already present in the rendered DOM are considered.
+  // This keeps the catalog authoritative while allowing legacy labels to catch up.
+  if (typeof document !== 'undefined') {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node: Node | null = walker.nextNode();
+    while (node) {
+      const text = (node.nodeValue || '').trim();
+      if (text) addAlias(text);
+      node = walker.nextNode();
+    }
+
+    document.body.querySelectorAll('*').forEach((element) => {
+      GLOBAL_TRANSLATABLE_ATTRIBUTES.forEach((attribute) => {
+        const text = element.getAttribute(attribute)?.trim();
+        if (text) addAlias(text);
+      });
+    });
+  }
+
+  aliases.forEach((value, key) => map.set(key, value));
   return map;
 }
 
