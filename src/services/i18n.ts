@@ -481,7 +481,22 @@ function translateTextNode(node: Text, translations: Map<string, string>): void 
   if (!original.trim()) return;
   if (!globalTextSources.has(node)) globalTextSources.set(node, original);
 
-  const translated = translations.get(original.trim());
+  let translated = translations.get(original.trim());
+
+  // Dynamic legacy nodes can be mounted after the observer starts. Reuse the
+  // same conservative similarity rules against the known catalog aliases.
+  if (!translated) {
+    const normalized = normalizeTranslationText(original.trim());
+    if (normalized.length >= 6 && normalized.split(' ').length >= 2) {
+      let best: { target: string; score: number } | null = null;
+      translations.forEach((target, source) => {
+        const score = translationSimilarity(original.trim(), source);
+        if (!best || score > best.score) best = { target, score };
+      });
+      if (best && best.score >= 0.84) translated = best.target;
+    }
+  }
+
   if (!translated) return;
 
   const leading = original.match(/^\\s*/)?.[0] || '';
