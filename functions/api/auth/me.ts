@@ -17,6 +17,10 @@ export const onRequestGet: PagesFunction<Env> =
           context.env
         );
 
+      if (authUser.ok === false) {
+        return authUser.response;
+      }
+
       const user =
         await withDb(
           context.env,
