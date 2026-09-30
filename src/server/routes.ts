@@ -966,12 +966,6 @@ router.post('/claim/:depositId', authenticateToken, async (req: AuthenticatedReq
       .set({ totalClaimed: newTotalClaimed })
       .where(eq(deposits.id, depositId));
 
-// Add Blind Box reward to the user's Current Balance
-    const [updatedUser] = await db
-      .update(users)
-      .set({ balance: sql`${users.balance} + ${totalPrizeAmount}` })
-      .where(eq(users.id, userId))
-      .returning();
 
     // 6. Save to BlindBoxClaim
     const [claimRecord] = await db
@@ -994,7 +988,7 @@ router.post('/claim/:depositId', authenticateToken, async (req: AuthenticatedReq
       prizeAmount: totalPrizeAmount,
       isJackpot: hasAnyJackpot,
       totalClaimed: newTotalClaimed,
-      userBalance: updatedUser.balance,
+      userBalance: user.balance,
       tier: tierInfo.tier,
       tierName: tierInfo.tierName,
       boxType: tierInfo.boxType,
