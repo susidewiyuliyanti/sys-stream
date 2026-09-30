@@ -42,10 +42,13 @@ import {
 } from 'lucide-react';
 
 import { isOwnerUser } from './utils/memberBadge';
+import { useAppConfig } from './context/AppConfigContext';
 
 const INITIAL_PLAYERS: PlayerScore[] = [];
 
 export default function App() {
+  const { t } = useAppConfig();
+
   // Firebase Auth & Member Subscription State
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [saldo, setSaldo] = useState<number>(0);
@@ -577,7 +580,7 @@ const handleLogout = async () => {
       case 'spinner-roda':
         return 'Lucky Prize Wheel';
       case 'blind-box-deposit':
-        return '�YZ� "Blind Box Game" Win BIG';
+        return t('blind_box_game_win_big', '🎁 "Blind Box Game" Win BIG');
       case 'leaderboard':
         return 'Streamer Leaderboard & Prizes';
       default:
@@ -608,7 +611,7 @@ const handleLogout = async () => {
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all shadow-md cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Return to SYS Live Stream Suite</span>
+            <span>{t('return_to_sys_stream_suite', 'Return to SYS Live Stream Suite')}</span>
           </button>
         </div>
         <BlindBoxDashboard
@@ -636,7 +639,7 @@ const handleLogout = async () => {
         </div>
         <div className="w-8 h-8 border-3 border-amber-400 border-t-transparent rounded-full animate-spin mb-3" />
         <p className="text-xs text-white/60 font-semibold tracking-wide">
-          Verifying SYS Streamer Authentication & Session...
+          {t('verifying_auth_session', 'Verifying SYS Streamer Authentication & Session...')}
         </p>
       </div>
     );
@@ -663,24 +666,24 @@ const handleLogout = async () => {
     return (
       <div className="min-h-screen w-full bg-[#090d16] text-white flex flex-col items-center justify-center p-6 text-center font-['Poppins']">
         <div className="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center text-2xl shadow-xl shadow-red-500/20 mb-4 animate-pulse">
-          �Ys�
+          ⚠️
         </div>
         <h2 className="text-xl sm:text-2xl font-black text-red-400 tracking-wide mb-2">
-          ACCOUNT SUSPENDED / BANNED
+          {t('account_suspended_banned', 'ACCOUNT SUSPENDED / BANNED')}
         </h2>
         <p className="text-sm text-white/70 max-w-md mb-2">
-          Google Account (<span className="text-white font-mono">{userProfile.email}</span>) has been banned by the Administrator (<span className="text-amber-300 font-mono">susidewiyuliyanti@gmail.com</span>).
+          {t('account_banned_by_administrator', 'Google Account')} (<span className="text-white font-mono">{userProfile.email}</span>) {t('has_been_banned_by_administrator', 'has been banned by the Administrator')} (<span className="text-amber-300 font-mono">susidewiyuliyanti@gmail.com</span>).
         </p>
         {userProfile.bannedReason && (
           <div className="px-4 py-2 rounded-xl bg-red-950/40 border border-red-500/30 text-xs text-red-300 font-medium mb-5 max-w-md">
-            Reason: {userProfile.bannedReason}
+            {t('reason', 'Reason')}: {userProfile.bannedReason}
           </div>
         )}
         <button
           onClick={handleLogout}
           className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-2 cursor-pointer"
         >
-          <span>Log Out & Use Another Account</span>
+          <span>{t('logout_use_another_account', 'Log Out & Use Another Account')}</span>
         </button>
       </div>
     );
