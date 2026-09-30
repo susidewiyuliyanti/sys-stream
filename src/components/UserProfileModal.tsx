@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { db, auth } from '../lib/firebase';
 import { UserProfile, TransactionOrder, StreamingSessionLog } from '../types';
 import {
@@ -391,7 +391,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       confetti({ particleCount: 60, spread: 60 });
       setApprovalFeedback({
         type: 'success',
-        text: `✅ Deposit of ${formatCurrency(order.price)} from ${order.userEmail} was approved! Account balance has been credited to ${formatCurrency(res.newTargetBalance)}.`
+        text: `âœ… Deposit of ${formatCurrency(order.price)} from ${order.userEmail} was approved! Account balance has been credited to ${formatCurrency(res.newTargetBalance)}.`
       });
     } catch (err: any) {
       sound.playWrong();
@@ -803,7 +803,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
       sound.playDing();
       setWithdrawSuccessMessage(
-        `Pengajuan penarikan dana ${formatCurrency(withdrawAmount)} (Potongan: ${formatCurrency(feeAmount)} [3% + Gas Fee ${selectedCrypto.network}] | Bersih Diterima: ${formatCurrency(netPayout)} ≈ ${netCryptoEst} ${selectedCrypto.symbol}) berhasil diajukan! Permintaan berstatus PENDING dan segera diproses oleh Admin/Owner ke alamat dompet Anda.`
+        `Pengajuan penarikan dana ${formatCurrency(withdrawAmount)} (Potongan: ${formatCurrency(feeAmount)} [3% + Gas Fee ${selectedCrypto.network}] | Bersih Diterima: ${formatCurrency(netPayout)} â‰ˆ ${netCryptoEst} ${selectedCrypto.symbol}) berhasil diajukan! Permintaan berstatus PENDING dan segera diproses oleh Admin/Owner ke alamat dompet Anda.`
       );
       setWithdrawCryptoAddress('');
       setWithdrawCryptoMemo('');
@@ -1146,7 +1146,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         {activeTab === 'profile' && (
           <div className="space-y-6 animate-in fade-in duration-200">
             {/* Saldo Dompet & Tombol Deposit, Withdrawal, Histori Transaksi */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-[#0c1322] via-[#090d16] to-[#12101e] border border-white/15 shadow-2xl relative overflow-hidden space-y-6">
+            <div className="p-6 sm:p-7 rounded-2xl bg-[#0d131f] border border-white/10 shadow-lg relative overflow-hidden space-y-6">
               {/* Subtle ambient lighting glow */}
               <div className="absolute -top-24 -right-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -1185,7 +1185,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       setActiveTab('deposit');
                       sound.playClick();
                     }}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs shadow-lg shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer"
                     title="Deposit crypto balance"
                   >
                     <ArrowDownLeft className="w-4 h-4" />
@@ -1198,7 +1198,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       setActiveTab('withdrawal');
                       sound.playClick();
                     }}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer"
                     title="Withdraw funds to crypto wallet"
                   >
                     <ArrowUpRight className="w-4 h-4" />
@@ -1211,7 +1211,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       setActiveTab('transactions');
                       sound.playClick();
                     }}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer"
                     title="View transaction history"
                   >
                     <FileText className="w-4 h-4 text-white/70" />
@@ -1343,7 +1343,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       onClick={() => setActiveTab('withdrawal')}
                       className="text-[11px] text-amber-300 hover:text-white underline font-bold cursor-pointer"
                     >
-                      Buka Tab Penarikan →
+                      Buka Tab Penarikan â†’
                     </button>
                   </div>
 
@@ -1361,7 +1361,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                             </span>
                           </div>
                           <div className="text-[11px] text-white/60">
-                            {ord.paymentMethod || 'Crypto Withdrawal'} • {ord.bankDetails?.accountNumber ? `Alamat: ${ord.bankDetails.accountNumber.slice(0, 16)}...` : ''}
+                            {ord.paymentMethod || 'Crypto Withdrawal'} â€¢ {ord.bankDetails?.accountNumber ? `Alamat: ${ord.bankDetails.accountNumber.slice(0, 16)}...` : ''}
                           </div>
                         </div>
 
@@ -1381,7 +1381,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
 
             {/* Profile Information & Avatar Card */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-[#0c121e]/90 border border-white/10 shadow-xl space-y-6">
+            <div className="p-6 sm:p-7 rounded-2xl bg-[#0c121e]/90 border border-white/10 shadow-xl space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-white/10">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
@@ -1401,7 +1401,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <div className={`w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 shadow-2xl bg-neutral-950 flex items-center justify-center transition-all ${
                     isMemberActive(userProfile)
                       ? 'border-amber-400/70 shadow-amber-500/20 ring-4 ring-amber-400/10'
-                      : 'border-white/20'
+                      : 'border-white/10'
                   }`}>
                     {photoURL ? (
                       <img
@@ -1576,7 +1576,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     <span>{userProfile.referralCode || 'SYS-HOSTVIP'}</span>
                     {copiedId === 'refCode' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-amber-400/70" />}
                   </button>
-                  <span className="text-white/40">•</span>
+                  <span className="text-white/40">â€¢</span>
                   <span>Saldo Komisi: <strong className="text-emerald-400 font-mono">Rp {((userProfile.affiliateEarnings || 0) - (userProfile.affiliateWithdrawn || 0)).toLocaleString('id-ID')}</strong></span>
                 </div>
               </div>
@@ -1588,9 +1588,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     onClose();
                     onOpenReferral();
                   }}
-                  className="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs transition-all self-start sm:self-auto whitespace-nowrap cursor-pointer hover:scale-105 active:scale-95"
+                  className="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs transition-all self-start sm:self-auto whitespace-nowrap cursor-pointer active:scale-95"
                 >
-                  Kelola Komisi & Hadiah →
+                  Kelola Komisi & Hadiah â†’
                 </button>
               )}
             </div>
@@ -1615,7 +1615,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 type="button"
                 onClick={handleSaveProfile}
                 disabled={isSavingProfile}
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 disabled:opacity-50 transition-all ml-auto cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-md active:scale-95 disabled:opacity-50 transition-all ml-auto cursor-pointer"
               >
                 {isSavingProfile ? (
                   <>
@@ -1637,7 +1637,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         {activeTab === 'deposit' && (
           <div className="space-y-5 animate-in fade-in duration-200">
             {/* Header Card */}
-            <div className="p-5 rounded-3xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-yellow-950/40 border-2 border-amber-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-yellow-950/40 border-2 border-amber-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
                   <Zap className="w-6 h-6 text-amber-400" />
@@ -1668,7 +1668,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             <div className="space-y-4">
                 {/* 1.1 Success Screen (Status: PENDING Menunggu Verifikasi Administrator) */}
                 {nowPaymentSuccess && (
-                  <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-950/80 via-neutral-900 to-amber-950/40 border-2 border-amber-500/50 shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-950/80 via-neutral-900 to-amber-950/40 border-2 border-amber-500/50 shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
                         <Clock className="w-7 h-7 animate-pulse" />
@@ -1710,7 +1710,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                     <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-white/80 space-y-1">
                       <p className="font-semibold text-amber-200">
-                        💡 Pemberitahuan Verifikasi:
+                        ðŸ’¡ Pemberitahuan Verifikasi:
                       </p>
                       <p className="text-[11px] text-white/70">
                         Order deposit ini telah diteruskan ke Admin Panel dengan status <strong>PENDING</strong>. Begitu Administrator menyetujui, saldo dompet Anda akan otomatis bertambah secara realtime.
@@ -1752,7 +1752,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                 {/* 1.2 Active Payment Waiting Screen */}
                 {activeNowPayment && !nowPaymentSuccess && (
-                  <div className="p-5 sm:p-6 rounded-3xl bg-neutral-900/90 border-2 border-amber-500/40 shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
+                  <div className="p-5 sm:p-6 rounded-2xl bg-neutral-900/90 border-2 border-amber-500/40 shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
                     {/* Status Beacon Bar */}
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/30">
                       <div className="flex items-center gap-2.5">
@@ -1837,7 +1837,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                             <button
                               type="button"
                               onClick={() => copyToClipboard(activeNowPayment.pay_address, 'np-addr')}
-                              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-white text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
                             >
                               {copiedId === 'np-addr' ? (
                                 <>
@@ -1862,8 +1862,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                         {/* Order ID & Security Notice */}
                         <div className="text-[11px] text-white/60 space-y-1">
-                          <p>• Transaksi diverifikasi secara otomatis oleh gateway blockchain NOWPayments (Produksi).</p>
-                          <p>• Demi kepatuhan dan keamanan akun, status deposit adalah PENDING hingga diverifikasi Administrator.</p>
+                          <p>â€¢ Transaksi diverifikasi secara otomatis oleh gateway blockchain NOWPayments (Produksi).</p>
+                          <p>â€¢ Demi kepatuhan dan keamanan akun, status deposit adalah PENDING hingga diverifikasi Administrator.</p>
                           <p className="font-mono text-[10px] text-white/40">Payment ID: {activeNowPayment.payment_id}</p>
                         </div>
                       </div>
@@ -1875,7 +1875,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         type="button"
                         onClick={handleManualCheckStatus}
                         disabled={isPollingNowPayment}
-                        className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                         title="Periksa konfirmasi transaksi di blockchain sekarang"
                       >
                         {isPollingNowPayment ? (
@@ -1907,7 +1907,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                 {/* 1.3 Create Payment Form (When no active payment) */}
                 {!activeNowPayment && !nowPaymentSuccess && (
-                  <div className="p-5 rounded-3xl bg-neutral-900/80 border border-white/10 space-y-4">
+                  <div className="p-5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-4">
                     {/* Error Alert */}
                     {nowPaymentError && (
                       <div className="p-3.5 rounded-2xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-bold flex items-center gap-2.5">
@@ -1968,7 +1968,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                           step={10000}
                           value={depositAmount}
                           onChange={(e) => setDepositAmount(Math.max(0, parseInt(e.target.value) || 0))}
-                          className="w-full bg-black/50 border border-white/15 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white font-mono font-bold focus:outline-none focus:border-amber-400"
+                          className="w-full bg-black/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white font-mono font-bold focus:outline-none focus:border-amber-400"
                           placeholder="Contoh: 100000"
                         />
                       </div>
@@ -2049,7 +2049,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               <div className="flex items-center justify-between pt-1 border-t border-white/5">
                                 <span className="text-[10px] text-white/40">Min: Rp {(coin.minDepositIdr / 1000).toFixed(0)}rb</span>
                                 <span className="text-[11px] font-mono font-bold text-amber-300">
-                                  ≈ {estVal} {coin.symbol}
+                                  â‰ˆ {estVal} {coin.symbol}
                                 </span>
                               </div>
                             </button>
@@ -2064,7 +2064,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         type="button"
                         onClick={handleCreateNowPayment}
                         disabled={isCreatingNowPayment || isDepositBelowMin}
-                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                       >
                         {isCreatingNowPayment ? (
                           <>
@@ -2079,7 +2079,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         ) : (
                           <>
                             <Zap className="w-4 h-4 fill-slate-950" />
-                            <span>⚡ Buat Pembayaran Otomatis via NOWPayments</span>
+                            <span>âš¡ Buat Pembayaran Otomatis via NOWPayments</span>
                           </>
                         )}
                       </button>
@@ -2094,7 +2094,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         {activeTab === 'withdrawal' && (
           <div className="space-y-5 animate-in fade-in duration-200">
             {/* Header Card */}
-            <div className="p-5 rounded-3xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-yellow-950/40 border-2 border-amber-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-yellow-950/40 border-2 border-amber-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
                   <Coins className="w-6 h-6" />
@@ -2164,7 +2164,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* If balance is less than minimum Rp 100.000 */}
             {currentBalance < 100000 ? (
-              <div className="p-6 rounded-3xl bg-neutral-900/80 border border-amber-500/30 space-y-4 text-center">
+              <div className="p-6 rounded-2xl bg-neutral-900/80 border border-amber-500/30 space-y-4 text-center">
                 <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
                   <AlertTriangle className="w-7 h-7" />
                 </div>
@@ -2173,7 +2173,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     Balance Below Minimum Withdrawal Threshold
                   </h4>
                   <p className="text-xs text-white/70 leading-relaxed">
-                    Your current wallet balance is <strong className="text-amber-300">Rp {currentBalance.toLocaleString('id-ID')}</strong> (including Rp 15,000 registration bonus). Per policy, <strong>minimum withdrawal is Rp 100,000</strong> (≈6.25 USDT).
+                    Your current wallet balance is <strong className="text-amber-300">Rp {currentBalance.toLocaleString('id-ID')}</strong> (including Rp 15,000 registration bonus). Per policy, <strong>minimum withdrawal is Rp 100,000</strong> (â‰ˆ6.25 USDT).
                   </p>
                   <p className="text-xs text-emerald-400 font-bold pt-1">
                     You need Rp {(100000 - currentBalance).toLocaleString('id-ID')} more to be eligible for withdrawal.
@@ -2199,7 +2199,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       setActiveTab('deposit');
                       sound.playClick();
                     }}
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all hover:scale-105 cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl bg-amber-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-md transition-all hover:scale-105 cursor-pointer"
                   >
                     Deposit Crypto Sekarang
                   </button>
@@ -2220,13 +2220,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               </div>
             ) : (
               /* If balance >= 100.000, show full multi-crypto withdrawal form */
-              <form onSubmit={handleWithdrawalSubmit} className="p-5 rounded-3xl bg-neutral-900/80 border border-white/10 space-y-5">
+              <form onSubmit={handleWithdrawalSubmit} className="p-5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-5">
                 {/* Nominal Input & Presets */}
                 <div className="space-y-2">
                   <label className="block text-xs font-bold text-white/80 flex items-center justify-between">
                     <span>Nominal Penarikan Dana (IDR) - Minimal Rp 100.000</span>
                     <span className="text-amber-400 font-mono text-xs font-bold">
-                      ≈ {calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol}
+                      â‰ˆ {calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol}
                     </span>
                   </label>
                   <div className="relative">
@@ -2240,7 +2240,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       step={10000}
                       value={withdrawAmount}
                       onChange={(e) => setWithdrawAmount(Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full bg-black/50 border border-white/15 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white font-mono font-bold focus:outline-none focus:border-amber-400"
+                      className="w-full bg-black/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white font-mono font-bold focus:outline-none focus:border-amber-400"
                     />
                   </div>
 
@@ -2330,7 +2330,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                             className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
                               isSelected
                                 ? 'bg-amber-500/15 border-amber-400 text-white ring-2 ring-amber-400/50 shadow-lg shadow-amber-500/10'
-                                : 'bg-black/40 border-white/10 text-white/70 hover:border-white/20 hover:bg-white/5'
+                                : 'bg-black/40 border-white/10 text-white/70 hover:border-white/10 hover:bg-white/5'
                             }`}
                           >
                             <div className="flex items-start justify-between gap-1 w-full">
@@ -2377,7 +2377,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <div className="text-right shrink-0 hidden sm:block">
                     <div className="text-[10px] text-white/40">Estimasi Kurs Referensi</div>
                     <div className="text-xs font-mono font-bold text-amber-300">
-                      1 {selectedCrypto.symbol} ≈ Rp {selectedCrypto.approxRateIdr.toLocaleString('id-ID')}
+                      1 {selectedCrypto.symbol} â‰ˆ Rp {selectedCrypto.approxRateIdr.toLocaleString('id-ID')}
                     </div>
                   </div>
                 </div>
@@ -2396,7 +2396,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     value={withdrawCryptoAddress}
                     onChange={(e) => setWithdrawCryptoAddress(e.target.value)}
                     placeholder={selectedCrypto.placeholderAddress}
-                    className="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400"
                     required
                   />
                   <div className="flex items-center justify-between text-[10px] text-white/40">
@@ -2428,7 +2428,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         ? 'Contoh: 104928374 (Wajib untuk wallet Indodax / Binance / Telegram)'
                         : 'Contoh: Personal Wallet / Binance Tag (Opsional)'
                     }
-                    className="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400"
                   />
                 </div>
 
@@ -2437,7 +2437,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <div className="flex items-center justify-between font-medium text-white/70">
                     <span>Nominal Penarikan Kotor (Gross):</span>
                     <span className="font-mono font-bold text-white">
-                      {formatCurrency(withdrawAmount)} (≈{calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol})
+                      {formatCurrency(withdrawAmount)} (â‰ˆ{calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol})
                     </span>
                   </div>
                   
@@ -2457,7 +2457,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       Gas Fee Blockchain Jaringan ({selectedCrypto.network}):
                     </span>
                     <span className="font-mono font-bold text-rose-400">
-                      - {formatCurrency(getCryptoGasFee(selectedCrypto))} (≈{calculateCryptoEstimate(getCryptoGasFee(selectedCrypto), selectedCrypto)} {selectedCrypto.symbol})
+                      - {formatCurrency(getCryptoGasFee(selectedCrypto))} (â‰ˆ{calculateCryptoEstimate(getCryptoGasFee(selectedCrypto), selectedCrypto)} {selectedCrypto.symbol})
                     </span>
                   </div>
 
@@ -2478,7 +2478,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         {formatCurrency(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)))}
                       </div>
                       <div className="text-xs font-mono font-bold text-amber-300">
-                        ≈ {calculateCryptoEstimate(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)), selectedCrypto)} {selectedCrypto.symbol}
+                        â‰ˆ {calculateCryptoEstimate(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)), selectedCrypto)} {selectedCrypto.symbol}
                       </div>
                     </div>
                   </div>
@@ -2492,7 +2492,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <button
                     type="submit"
                     disabled={isProcessingWithdraw || withdrawAmount < 100000 || withdrawAmount > currentBalance}
-                    className="w-full sm:flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                    className="w-full sm:flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                   >
                     {isProcessingWithdraw ? (
                       <>
@@ -2522,7 +2522,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* Pending Withdrawals List (Status: PENDING - Saldo Terkunci) */}
             {pendingWithdrawalsList.length > 0 && (
-              <div className="p-5 rounded-3xl bg-neutral-900/90 border border-amber-500/40 space-y-3.5 shadow-xl">
+              <div className="p-5 rounded-2xl bg-neutral-900/90 border border-amber-500/40 space-y-3.5 shadow-xl">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <div className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-amber-400 animate-spin" />
@@ -2531,7 +2531,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         Daftar Penarikan Menunggu Approval Admin
                       </h4>
                       <p className="text-[10px] text-amber-300">
-                        Status: PENDING • Total Saldo Terkunci: Rp {pendingWithdrawalsSum.toLocaleString('id-ID')}
+                        Status: PENDING â€¢ Total Saldo Terkunci: Rp {pendingWithdrawalsSum.toLocaleString('id-ID')}
                       </p>
                     </div>
                   </div>
@@ -2594,7 +2594,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         {activeTab === 'transfer' && (
           <div className="space-y-5 animate-in fade-in duration-200">
             {/* Header Card */}
-            <div className="p-5 rounded-3xl bg-gradient-to-r from-blue-950/70 via-slate-900 to-indigo-950/40 border-2 border-blue-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-950/70 via-slate-900 to-indigo-950/40 border-2 border-blue-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
                   <Send className="w-6 h-6" />
@@ -2622,8 +2622,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* If transfer was successful, show Receipt */}
             {transferSuccessData ? (
-              <div className="p-6 rounded-3xl bg-neutral-900/90 border-2 border-emerald-500/40 shadow-2xl space-y-5 text-center animate-in zoom-in-95 duration-200">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20">
+              <div className="p-6 rounded-2xl bg-neutral-900/90 border-2 border-emerald-500/40 shadow-2xl space-y-5 text-center animate-in zoom-in-95 duration-200">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-md">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
 
@@ -2688,7 +2688,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
               </div>
             ) : currentBalance < 100000 ? (
-              <div className="p-6 rounded-3xl bg-neutral-900/80 border border-blue-500/30 space-y-4 text-center">
+              <div className="p-6 rounded-2xl bg-neutral-900/80 border border-blue-500/30 space-y-4 text-center">
                 <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center mx-auto">
                   <AlertTriangle className="w-7 h-7" />
                 </div>
@@ -2709,13 +2709,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     setActiveTab('deposit');
                     sound.playClick();
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs shadow-lg shadow-emerald-500/25 transition-all"
+                  className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-black text-xs shadow-lg shadow-emerald-500/25 transition-all"
                 >
                   Deposit Balance Now
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleTransferSubmit} className="p-5 sm:p-6 rounded-3xl bg-neutral-900/80 border border-white/10 space-y-5">
+              <form onSubmit={handleTransferSubmit} className="p-5 sm:p-6 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-5">
                 {transferErrorMessage && (
                   <div className="p-4 rounded-2xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-center gap-3 animate-in fade-in">
                     <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
@@ -2739,7 +2739,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       value={transferRecipient}
                       onChange={(e) => setTransferRecipient(e.target.value)}
                       placeholder="Example: host_streamer or user@gmail.com"
-                      className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-400 font-medium"
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-400 font-medium"
                       required
                     />
                   </div>
@@ -2772,7 +2772,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       step={10000}
                       value={transferAmount}
                       onChange={(e) => setTransferAmount(Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full bg-black/50 border border-white/15 rounded-xl pl-12 pr-4 py-3 text-base sm:text-lg font-black text-white focus:outline-none focus:border-blue-400 font-['Poppins']"
+                      className="w-full bg-black/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-base sm:text-lg font-black text-white focus:outline-none focus:border-blue-400 font-['Poppins']"
                       required
                     />
                   </div>
@@ -2821,7 +2821,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     value={transferNotes}
                     onChange={(e) => setTransferNotes(e.target.value)}
                     placeholder="Example: Stream revenue share, banknote guess reward, etc."
-                    className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-400"
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-400"
                   />
                 </div>
 
@@ -3092,11 +3092,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               </p>
                               <p className="text-[10px] text-white/50 flex items-center gap-2 mt-0.5 flex-wrap">
                                 <span>{new Date(order.createdAt).toLocaleString('id-ID')}</span>
-                                <span>•</span>
+                                <span>â€¢</span>
                                 <span className="text-cyan-300 font-medium">{order.paymentMethod}</span>
                                 {isWithdrawal && order.feeAmount && (
                                   <>
-                                    <span>•</span>
+                                    <span>â€¢</span>
                                     <span className="text-amber-400 font-medium">Fee (3%): {formatCurrency(order.feeAmount)}</span>
                                   </>
                                 )}
@@ -3184,13 +3184,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             {/* Receipt Modal View */}
             {selectedReceipt && (
               <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-                <div className="w-full max-w-md rounded-3xl bg-[#0e1422] border-2 border-amber-500/40 p-5 shadow-2xl text-white space-y-4">
+                <div className="w-full max-w-md rounded-2xl bg-[#0e1422] border-2 border-amber-500/40 p-5 shadow-2xl text-white space-y-4">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <div className="flex items-center gap-2">
                       <SysLogo size="sm" showText={false} />
                       <div>
                         <h4 className="font-black text-sm text-white">STRUK BUKTI PEMBAYARAN</h4>
-                        <p className="text-[10px] text-amber-300/80">SYS Streamer • @SYS Agency</p>
+                        <p className="text-[10px] text-amber-300/80">SYS Streamer â€¢ @SYS Agency</p>
                       </div>
                     </div>
                     <button
@@ -3495,9 +3495,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         </h4>
                         <div className="flex flex-wrap items-center gap-3 text-[10px] text-white/50 mt-1">
                           <span>{new Date(session.startedAt).toLocaleString('id-ID')}</span>
-                          <span>•</span>
+                          <span>â€¢</span>
                           <span>Duration: {session.durationMinutes} Minutes</span>
-                          <span>•</span>
+                          <span>â€¢</span>
                           <span>{session.totalRounds} Rounds</span>
                         </div>
                       </div>
@@ -3636,11 +3636,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                                 </span>
                               </div>
                               <p className="text-[11px] text-white/50 font-mono mt-0.5">
-                                User: <strong className="text-white/80">{order.userEmail}</strong> • Order: {order.orderId}
+                                User: <strong className="text-white/80">{order.userEmail}</strong> â€¢ Order: {order.orderId}
                               </p>
                               <p className="text-[10px] text-white/40 flex items-center gap-2 mt-0.5">
                                 <span>{new Date(order.createdAt).toLocaleString('id-ID')}</span>
-                                <span>•</span>
+                                <span>â€¢</span>
                                 <span className="text-cyan-300 font-semibold">{order.paymentMethod}</span>
                               </p>
                             </div>
@@ -3651,7 +3651,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               +{formatCurrency(order.price)}
                             </div>
                             <span className="text-[11px] text-white/60 font-semibold">
-                              ≈ {(order.price / 16000).toFixed(2)} USDT
+                              â‰ˆ {(order.price / 16000).toFixed(2)} USDT
                             </span>
                           </div>
                         </div>
@@ -3750,7 +3750,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
           {/* Footer */}
           <footer className="pt-6 mt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-            <span>All Reserve @SYS Agency • SYS Streamer Suite</span>
+            <span>All Reserve @SYS Agency â€¢ SYS Streamer Suite</span>
             <button
               type="button"
               onClick={onClose}
@@ -3779,3 +3779,4 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     </div>
   );
 };
+
