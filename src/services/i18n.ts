@@ -652,7 +652,9 @@ function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
   Object.entries(LEGACY_REFERRAL_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
     const translated = translationsByLanguage[targetLanguage];
     if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
-  });\n\n  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+  });
+
+  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
     const translated = translationsByLanguage[targetLanguage];
     if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
   });
