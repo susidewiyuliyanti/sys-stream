@@ -124,10 +124,95 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
   onOpenAppAuth,
   onLogoutApp,
 }) => {
-  // Auth state
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
-  const [currentUser, setCurrentUser] = useState<BlindBoxUser | null>(null);
+  // Synchronous token initialization from existing unified session
+  const [jwtToken, setJwtToken] = useState<string | null>(() => {
+    try {
+      return (
+        localStorage.getItem('sys_stream_auth_token') ||
+        localStorage.getItem('blindbox_jwt_token') ||
+        null
+      );
+    } catch {
+      return null;
+    }
+  });
+
+  // Synchronous user initialization from userProfile or cached session
+  const [currentUser, setCurrentUser] = useState<BlindBoxUser | null>(() => {
+    if (userProfile) {
+      const isOwner =
+        userProfile.email?.toLowerCase() === 'susidewiyuliyanti@gmail.com' ||
+        userProfile.role === 'admin' ||
+        (userProfile as any).role === 'OWNER';
+      const isAdmin =
+        userProfile.email?.toLowerCase() === 'dadifirmansyah8572@gmail.com' ||
+        (userProfile as any).role === 'ADMIN';
+      return {
+        id: typeof (userProfile as any).id === 'number' ? (userProfile as any).id : 1,
+        cuid: userProfile.uid,
+        uid: userProfile.uid,
+        username: userProfile.streamerHandle || userProfile.displayName || userProfile.email?.split('@')[0] || 'streamer',
+        email: userProfile.email || '',
+        displayName: userProfile.displayName || 'Streamer Host',
+        photoURL: userProfile.photoURL || '',
+        balance: userProfile.walletBalance ?? userProfile.saldo ?? 100000,
+        role: isOwner ? 'OWNER' : isAdmin ? 'ADMIN' : 'USER',
+        isBlacklisted: false,
+        isBanned: false,
+        subscriptionPlan: userProfile.subscriptionPlan || 'Akses Bebas Gratis',
+        isSubscribed: true,
+      };
+    }
+    try {
+      const cached = localStorage.getItem('sys_stream_auth_user');
+      if (cached) {
+        const u = JSON.parse(cached);
+        return {
+          id: u.id || 1,
+          cuid: u.cuid || u.uid,
+          uid: u.uid || u.cuid,
+          username: u.username || u.displayName || u.email?.split('@')[0] || 'streamer',
+          email: u.email || '',
+          displayName: u.displayName || 'Streamer Host',
+          photoURL: u.photoURL || '',
+          balance: u.balance ?? u.walletBalance ?? u.saldo ?? 100000,
+          role: u.role || 'USER',
+          isBlacklisted: false,
+          isBanned: false,
+          subscriptionPlan: u.subscriptionPlan || 'Akses Bebas Gratis',
+          isSubscribed: true,
+        };
+      }
+    } catch {}
+    return null;
+  });
+
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Helper: check if user is already authenticated
+  const isUserLoggedIn = Boolean(
+    userProfile ||
+    currentUser ||
+    jwtToken ||
+    (typeof window !== 'undefined' && (
+      localStorage.getItem('sys_stream_auth_token') ||
+      localStorage.getItem('blindbox_jwt_token') ||
+      localStorage.getItem('sys_stream_auth_user')
+    ))
+  );
+
+  const getActiveToken = () => {
+    try {
+      return (
+        jwtToken ||
+        localStorage.getItem('sys_stream_auth_token') ||
+        localStorage.getItem('blindbox_jwt_token') ||
+        null
+      );
+    } catch {
+      return null;
+    }
+  };
 
   // Game data state
   const [activeDeposit, setActiveDeposit] = useState<BlindBoxDeposit | null>(null);
@@ -227,13 +312,41 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
   // Fetch current user & active deposit data
   const fetchUserData = async (token = jwtToken) => {
-    if (!token) return;
+    let activeTok = token || getActiveToken();
+    if (!activeTok) {
+      if (userProfile || currentUser) {
+        try {
+          const u = userProfile || currentUser;
+          const syncRes = await fetch('/api/auth/sync-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              uid: u?.uid || (u as any)?.cuid,
+              email: u?.email,
+              displayName: (u as any)?.displayName || (u as any)?.username,
+              role: (u as any)?.role,
+              walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 100000,
+            }),
+          });
+          if (syncRes.ok) {
+            const syncData = await syncRes.json();
+            activeTok = syncData.token;
+            if (syncData.token) {
+              setJwtToken(syncData.token);
+              localStorage.setItem('blindbox_jwt_token', syncData.token);
+              localStorage.setItem('sys_stream_auth_token', syncData.token);
+            }
+          }
+        } catch {}
+      }
+    }
+    if (!activeTok) return;
     try {
       const res = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${activeTok}` },
       });
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
+        if ((res.status === 401 || res.status === 403) && !userProfile && !currentUser) {
           handleLogout();
         }
         return;
@@ -310,11 +423,15 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
   // Top-up instant balance (khusus Owner)
   const handleTopUpDemo = async (amount = 500000, targetUserId?: number) => {
-    if (!jwtToken) {
-      if (onOpenAppAuth) {
-        onOpenAppAuth();
-      } else {
-        setShowAuthModal(true);
+    let activeTok = getActiveToken();
+    if (!activeTok && (userProfile || currentUser)) {
+      await fetchUserData();
+      activeTok = getActiveToken();
+    }
+    if (!activeTok) {
+      if (!isUserLoggedIn) {
+        if (onOpenAppAuth) onOpenAppAuth();
+        else setShowAuthModal(true);
       }
       return;
     }
@@ -323,7 +440,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${activeTok}`,
         },
         body: JSON.stringify({ amount, targetUserId }),
       });
@@ -366,11 +483,37 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
   // Action: Make Deposit (Tanpa batasan nominal, minimal Rp 50.000)
   const handleMakeDeposit = async () => {
-    if (!jwtToken) {
-      if (onOpenAppAuth) {
-        onOpenAppAuth();
-      } else {
-        setShowAuthModal(true);
+    let token = getActiveToken();
+    if (!token && (userProfile || currentUser)) {
+      try {
+        const u = userProfile || currentUser;
+        const syncRes = await fetch('/api/auth/sync-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            uid: u?.uid || (u as any)?.cuid,
+            email: u?.email,
+            displayName: (u as any)?.displayName || (u as any)?.username,
+            role: (u as any)?.role,
+            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 100000,
+          }),
+        });
+        if (syncRes.ok) {
+          const syncData = await syncRes.json();
+          token = syncData.token;
+          setJwtToken(syncData.token);
+          if (syncData.token) {
+            localStorage.setItem('blindbox_jwt_token', syncData.token);
+            localStorage.setItem('sys_stream_auth_token', syncData.token);
+          }
+        }
+      } catch {}
+    }
+
+    if (!token) {
+      if (!isUserLoggedIn) {
+        if (onOpenAppAuth) onOpenAppAuth();
+        else setShowAuthModal(true);
       }
       return;
     }
@@ -398,7 +541,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           amount: customDepositAmount,
@@ -448,11 +591,37 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
   // Action: Claim Blind Box
   const handleClaimBlindBox = async () => {
-    if (!jwtToken) {
-      if (onOpenAppAuth) {
-        onOpenAppAuth();
-      } else {
-        setShowAuthModal(true);
+    let token = getActiveToken();
+    if (!token && (userProfile || currentUser)) {
+      try {
+        const u = userProfile || currentUser;
+        const syncRes = await fetch('/api/auth/sync-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            uid: u?.uid || (u as any)?.cuid,
+            email: u?.email,
+            displayName: (u as any)?.displayName || (u as any)?.username,
+            role: (u as any)?.role,
+            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 100000,
+          }),
+        });
+        if (syncRes.ok) {
+          const syncData = await syncRes.json();
+          token = syncData.token;
+          setJwtToken(syncData.token);
+          if (syncData.token) {
+            localStorage.setItem('blindbox_jwt_token', syncData.token);
+            localStorage.setItem('sys_stream_auth_token', syncData.token);
+          }
+        }
+      } catch {}
+    }
+
+    if (!token) {
+      if (!isUserLoggedIn) {
+        if (onOpenAppAuth) onOpenAppAuth();
+        else setShowAuthModal(true);
       }
       return;
     }
@@ -471,7 +640,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
@@ -656,7 +825,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
           {/* User Status / 1 Master Menu Button ("Rapihkan menu dalam 1 button") */}
           <div className="flex items-center gap-2">
-            {currentUser || userProfile ? (
+            {isUserLoggedIn ? (
               <div className="flex items-center gap-2">
                 {/* Quick Saldo Pill */}
                 <button
@@ -928,7 +1097,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
             {/* ACTION CTA BUTTON */}
             <div className="mt-4 space-y-2">
-              {!currentUser ? (
+              {!isUserLoggedIn ? (
                 <button
                   onClick={() => setShowAuthModal(true)}
                   className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-base shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
@@ -1519,16 +1688,19 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       </div>
 
       {/* MODALS */}
-      <BlindBoxAuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onAuthSuccess={(token, user) => {
-          setJwtToken(token);
-          setCurrentUser(user);
-          showToast('success', `Selamat datang, @${user.username}!`);
-          fetchUserData(token);
-        }}
-      />
+      {!isUserLoggedIn && (
+        <BlindBoxAuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={(token, user) => {
+            setJwtToken(token);
+            setCurrentUser(user);
+            showToast('success', `Selamat datang, @${user.username}!`);
+            setShowAuthModal(false);
+            fetchUserData(token);
+          }}
+        />
+      )}
 
       <BlindBoxOpenModal
         isOpen={showOpenModal}

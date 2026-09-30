@@ -76,7 +76,7 @@ export interface StreamMasterDashboardProps {
   onSwitchToOwnerDashboard?: () => void;
 }
 
-type NavMenu = 'dashboard' | 'live-control' | 'games' | 'analytics' | 'settings';
+type NavMenu = 'dashboard' | 'games' | 'settings';
 type ActiveGame = 'tebak-angka' | 'roda-keberuntungan' | 'blind-box';
 
 interface LiveChatMessage {
@@ -376,21 +376,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
 
             <button
               onClick={() => {
-                setActiveMenu('live-control');
-                setIsMobileSidebarOpen(false);
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition-all cursor-pointer ${
-                activeMenu === 'live-control'
-                  ? 'bg-[#FE2C55] text-white shadow-lg shadow-[#FE2C55]/25 font-bold'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <Radio className="w-4 h-4" />
-              <span>{t('nav_live_control')}</span>
-            </button>
-
-            <button
-              onClick={() => {
                 setActiveMenu('games');
                 setIsMobileSidebarOpen(false);
               }}
@@ -402,21 +387,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
             >
               <Gamepad2 className="w-4 h-4" />
               <span>{t('nav_games')}</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveMenu('analytics');
-                setIsMobileSidebarOpen(false);
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition-all cursor-pointer ${
-                activeMenu === 'analytics'
-                  ? 'bg-[#FE2C55] text-white shadow-lg shadow-[#FE2C55]/25 font-bold'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span>{t('nav_analytics')}</span>
             </button>
 
             <button
@@ -532,52 +502,11 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
             )}
           </div>
 
-          {/* Di Bawah: Status Live [ON/OFF] indikator hijau/merah */}
+          {/* Quick Balance Preview in Sidebar */}
           <div className="p-4 border-t border-white/10 space-y-3 bg-white/[0.02]">
-            <div className="p-3 rounded-2xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <div>
-                <div className="text-[10px] text-white/50 uppercase tracking-wider font-bold">
-                  {t('status_live_stream')}
-                </div>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span
-                    className={`w-2.5 h-2.5 rounded-full ${
-                      isLive
-                        ? 'bg-emerald-500 shadow-md shadow-emerald-500/80 animate-ping'
-                        : 'bg-rose-500'
-                    }`}
-                  />
-                  <span className="font-extrabold text-xs tracking-wide">
-                    {isLive ? t('status_live_on') : t('status_live_off')}
-                  </span>
-                </div>
-                {isLive && (
-                  <div className="text-[10px] text-white/60 font-mono mt-0.5">
-                    {t('live_duration')} {formatDuration(liveDuration)}
-                  </div>
-                )}
-              </div>
-
-              {/* Status Switcher Toggle Button */}
-              <button
-                onClick={() => {
-                  setIsLive(!isLive);
-                  sound.playClick();
-                }}
-                className={`px-3 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer ${
-                  isLive
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30'
-                    : 'bg-rose-500/20 text-rose-400 border border-rose-500/40 hover:bg-rose-500/30'
-                }`}
-              >
-                {isLive ? t('switch_on') : t('switch_off')}
-              </button>
-            </div>
-
-            {/* Quick Balance Preview in Sidebar */}
             <div
               onClick={onOpenProfile}
-              className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors"
+              className="px-3.5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors shadow-sm"
             >
               <span className="text-white/60">{t('wallet_balance')}</span>
               <span className="font-mono font-bold text-amber-300">
@@ -659,21 +588,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                 title={isMuted ? t('toggle_sound_on') : t('toggle_sound_off')}
               >
                 {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4" />}
-              </button>
-
-              {/* Tombol "Go Live" warna merah mencolok */}
-              <button
-                onClick={() => {
-                  setIsLive(!isLive);
-                  sound.playAlert();
-                }}
-                className="px-3.5 sm:px-4 py-2 rounded-2xl bg-gradient-to-r from-[#FE2C55] via-rose-600 to-[#FE2C55] hover:brightness-110 text-white font-black text-xs flex items-center gap-2 shadow-lg shadow-[#FE2C55]/40 animate-pulse transition-all cursor-pointer"
-              >
-                <Radio className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {isLive ? t('btn_currently_live') : t('btn_go_live')}
-                </span>
-                <span className="sm:hidden">{isLive ? 'LIVE' : 'GO LIVE'}</span>
               </button>
 
               {/* Profile Seller Dropdown Pill */}
@@ -793,98 +707,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                       onLogoutApp={onLogout}
                     />
                   )}
-                </div>
-              </div>
-            )}
-
-            {activeMenu === 'live-control' && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-white">{t('live_control_title')}</h2>
-                    <p className="text-xs text-white/60">
-                      {t('live_control_subtitle')}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setActiveMenu('dashboard')}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold cursor-pointer"
-                  >
-                    {t('back_to_dashboard')}
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* OBS Browser Source URL Card */}
-                  <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                        <Tv className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white">{t('obs_browser_source_title')}</h4>
-                        <p className="text-xs text-white/50">{t('obs_browser_source_desc')}</p>
-                      </div>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-black/60 border border-white/15 flex items-center justify-between gap-2">
-                      <span className="font-mono text-xs text-amber-300 truncate">
-                        {window.location.origin}/?overlay=1&game={activeGame}
-                      </span>
-                      <button
-                        onClick={handleCopyOverlay}
-                        className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold flex items-center gap-1.5 shrink-0 cursor-pointer"
-                      >
-                        {copiedOverlayUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        <span>{copiedOverlayUrl ? t('copied') : t('copy_url_btn')}</span>
-                      </button>
-                    </div>
-
-                    <div className="text-xs text-white/60 space-y-1">
-                      <div>• {t('obs_rec_res')}</div>
-                      <div>• {t('obs_rec_check')}</div>
-                    </div>
-                  </div>
-
-                  {/* Sound FX & Alerts Controller */}
-                  <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                        <Volume2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white">{t('sound_effects_title')}</h4>
-                        <p className="text-xs text-white/50">{t('sound_effects_desc')}</p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => sound.playWinner()}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
-                      >
-                        <span>🎉</span> {t('sound_effect_winner')}
-                      </button>
-                      <button
-                        onClick={() => sound.playAlert()}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
-                      >
-                        <span>🚨</span> {t('sound_effect_enrage')}
-                      </button>
-                      <button
-                        onClick={() => sound.playDrumroll()}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
-                      >
-                        <span>🥁</span> {t('sound_effect_drumroll')}
-                      </button>
-                      <button
-                        onClick={() => sound.playWheelSpin()}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
-                      >
-                        <span>🎡</span> {t('sound_effect_wheel')}
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -1012,104 +834,8 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
             )}
 
             {/* DEFAULT VIEW: DASHBOARD (MAIN REQUIRED LAYOUT) */}
-            {(activeMenu === 'dashboard' || activeMenu === 'analytics') && (
+            {activeMenu === 'dashboard' && (
               <>
-                {/* 3. MAIN CONTENT - 4 KARTU STATS DI ATAS (Grid 4 kolom):
-                    - Penonton Saat Ini
-                    - Total Komen
-                    - Total Gift (Roses)
-                    - Order Masuk
-                    Design: Card putih, shadow halus, icon besar, angka besar bold.
-                */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                  {/* Card 1: Penonton Saat Ini */}
-                  <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 hover:shadow-md transition-shadow border border-gray-100 flex flex-col justify-between text-[#0A0A0A]">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        {t('stats_viewers_title')}
-                      </span>
-                      <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#FE2C55] flex items-center justify-center">
-                        <Eye className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <div className="text-3xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
-                        {viewerCount.toLocaleString()}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-emerald-600">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        <span>+18.4%</span>
-                        <span className="text-gray-400 font-normal">{t('stats_viewers_trend')}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 2: Total Komen */}
-                  <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 hover:shadow-md transition-shadow border border-gray-100 flex flex-col justify-between text-[#0A0A0A]">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        {t('stats_comments_title')}
-                      </span>
-                      <div className="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
-                        <MessageSquare className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <div className="text-3xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
-                        {commentCount.toLocaleString()}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-cyan-700">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>58 {t('stats_comments_speed')}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 3: Total Gift (Roses) */}
-                  <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 hover:shadow-md transition-shadow border border-gray-100 flex flex-col justify-between text-[#0A0A0A]">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        {t('stats_gifts_title')}
-                      </span>
-                      <div className="w-12 h-12 rounded-2xl bg-pink-50 text-[#FE2C55] flex items-center justify-center">
-                        <Gift className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <div className="text-3xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
-                        {giftCount.toLocaleString()}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-[#FE2C55]">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        <span>≈ {formatCurrency(giftCount * 100)}</span>
-                        <span className="text-gray-400 font-normal">{t('stats_gifts_sub')}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 4: Order Masuk */}
-                  <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 hover:shadow-md transition-shadow border border-gray-100 flex flex-col justify-between text-[#0A0A0A]">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        {t('stats_orders_title')}
-                      </span>
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                        <ShoppingBag className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <div className="text-3xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
-                        {orderCount.toLocaleString()}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-emerald-700">
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                        <span>{formatCurrency(totalLiveGmv)}</span>
-                        <span className="text-gray-400 font-normal">{t('stats_orders_sub')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* 4. TENGAH - 2 KOLOM:
                     - Kiri (60%): Live Preview + Kontrol Game. Ada tombol besar: [Mulai Tebak angka] [Putar Roda] [Buka Blind Box]
                     - Kanan (40%): Live Chat Feed real-time, scroll otomatis.
@@ -1126,33 +852,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                           <h3 className="text-base font-black text-[#0A0A0A] tracking-tight">
                             {t('live_preview_title')}
                           </h3>
-                        </div>
-
-                        {/* Top quick overlay buttons */}
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={handleCopyOverlay}
-                            className="px-2.5 py-1 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#0A0A0A] text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                            title="OBS Link"
-                          >
-                            {copiedOverlayUrl ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                            <span>{copiedOverlayUrl ? t('obs_link_copied') : t('obs_link_btn')}</span>
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              const newWindow = window.open(
-                                `${window.location.origin}/?overlay=1&game=${activeGame}`,
-                                '_blank'
-                              );
-                              if (newWindow) newWindow.focus();
-                            }}
-                            className="px-2.5 py-1 rounded-xl bg-[#FE2C55]/10 hover:bg-[#FE2C55]/20 text-[#FE2C55] text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                            title="Pop-out"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>{t('popout_btn')}</span>
-                          </button>
                         </div>
                       </div>
 
@@ -1483,235 +1182,6 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                           <Send className="w-4 h-4" />
                         </button>
                       </form>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 5. BAWAH - TABEL ANALYTICS:
-                    - Tabel: Game paling menghasilkan, Jam paling rame, Produk paling laku.
-                    Design: Modern SaaS Tables, card putih, rounded-2xl, shadow halus.
-                */}
-                <div className="space-y-5 pt-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-[#FE2C55]" />
-                        {t('analytics_section_title')}
-                      </h3>
-                      <p className="text-xs text-white/50">
-                        {t('analytics_section_subtitle')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                    {/* Tabel 1: Game Paling Menghasilkan */}
-                    <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 border border-gray-100 text-[#0A0A0A] flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                          <h4 className="text-sm font-black text-[#0A0A0A] flex items-center gap-1.5">
-                            <span>🎮</span> {t('table_games_title')}
-                          </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-extrabold">
-                            {t('table_games_badge')}
-                          </span>
-                        </div>
-
-                        <div className="divide-y divide-gray-100 text-xs mt-1">
-                          {/* Game 1: Tebak Nomor Seri */}
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-full bg-amber-400 text-black flex items-center justify-center font-black text-[10px]">
-                                1
-                              </span>
-                              <div>
-                                <div className="font-bold text-[#0A0A0A]">{t('game_guess_number')}</div>
-                                <div className="text-[10px] text-gray-400">
-                                  {players.length} {t('winners_recorded')} • {formatCurrency(activePrizeNominal)} / ronde
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#FE2C55]">
-                                {formatCurrency(players.reduce((sum, p) => sum + (p.score || 0), 0) * 1000 || activePrizeNominal * Math.max(1, players.length))}
-                              </div>
-                              <div className="text-[10px] text-emerald-600 font-semibold">Aktif Live</div>
-                            </div>
-                          </div>
-
-                          {/* Game 2: Lucky Wheel / Roda Putar */}
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center font-black text-[10px]">
-                                2
-                              </span>
-                              <div>
-                                <div className="font-bold text-[#0A0A0A]">{t('game_lucky_wheel')}</div>
-                                <div className="text-[10px] text-gray-400">
-                                  {Math.max(1, players.length)} {t('rounds_label')} • Roda Berputar
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#FE2C55]">
-                                {formatCurrency(Math.max(1, players.length) * 100000)}
-                              </div>
-                              <div className="text-[10px] text-emerald-600 font-semibold">Aktif Live</div>
-                            </div>
-                          </div>
-
-                          {/* Game 3: Blind Box 3D */}
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-full bg-amber-700/20 text-amber-800 flex items-center justify-center font-black text-[10px]">
-                                3
-                              </span>
-                              <div>
-                                <div className="font-bold text-[#0A0A0A]">{t('tab_blind_box')}</div>
-                                <div className="text-[10px] text-gray-400">
-                                  {realOrders.filter(o => o.planName?.toLowerCase().includes('blind') || o.planName?.toLowerCase().includes('deposit')).length || 0} box deposit
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#FE2C55]">
-                                {formatCurrency(realOrders.reduce((sum, o) => sum + (o.price || 0), 0) || 0)}
-                              </div>
-                              <div className="text-[10px] text-amber-600 font-semibold">Daily Reward</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => {
-                          setActiveGame('tebak-angka');
-                          sound.playClick();
-                        }}
-                        className="mt-3 w-full py-2 rounded-xl bg-gray-100 hover:bg-[#FE2C55] hover:text-white text-[#0A0A0A] font-bold text-xs transition-colors cursor-pointer"
-                      >
-                        {t('play_popular_game')}
-                      </button>
-                    </div>
-
-                    {/* Tabel 2: Jam Paling Rame */}
-                    <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 border border-gray-100 text-[#0A0A0A] flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                          <h4 className="text-sm font-black text-[#0A0A0A] flex items-center gap-1.5">
-                            <span>⏰</span> {t('table_hours_title')}
-                          </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-rose-50 text-[#FE2C55] text-[10px] font-extrabold">
-                            {t('table_hours_badge')}
-                          </span>
-                        </div>
-
-                        <div className="divide-y divide-gray-100 text-xs mt-1">
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div>
-                              <div className="font-bold text-[#0A0A0A]">19:30 - 21:30</div>
-                              <div className="text-[10px] text-emerald-600 font-semibold">
-                                ★ Prime Flash Sale
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#0A0A0A]">Live Peak</div>
-                              <div className="text-[10px] text-gray-400">{commentCount > 0 ? commentCount : 68} {t('stats_comments_speed')}</div>
-                            </div>
-                          </div>
-
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div>
-                              <div className="font-bold text-[#0A0A0A]">12:00 - 13:30</div>
-                              <div className="text-[10px] text-gray-500">Lunch Break</div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#0A0A0A]">Siang</div>
-                              <div className="text-[10px] text-gray-400">Regular</div>
-                            </div>
-                          </div>
-
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div>
-                              <div className="font-bold text-[#0A0A0A]">21:30 - 23:00</div>
-                              <div className="text-[10px] text-gray-500">Gifting Peak</div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#0A0A0A]">Malam</div>
-                              <div className="text-[10px] text-[#FE2C55] font-semibold">Spike 🔥</div>
-                            </div>
-                          </div>
-
-                          <div className="py-2.5 flex items-center justify-between">
-                            <div>
-                              <div className="font-bold text-[#0A0A0A]">08:30 - 10:00</div>
-                              <div className="text-[10px] text-gray-500">Morning Live</div>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-extrabold text-[#0A0A0A]">Pagi</div>
-                              <div className="text-[10px] text-gray-400">Warmup</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 p-2.5 rounded-xl bg-gray-50 border border-gray-100 text-[11px] text-gray-600 flex items-center gap-2">
-                        <span>💡</span>
-                        <span>{t('peak_hours_advice')}</span>
-                      </div>
-                    </div>
-
-                    {/* Tabel 3: Produk Terjual Live (Data Realtime Firestore) */}
-                    <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 border border-gray-100 text-[#0A0A0A] flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                          <h4 className="text-sm font-black text-[#0A0A0A] flex items-center gap-1.5">
-                            <span>🛍️</span> {t('table_products_title')}
-                          </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-700 text-[10px] font-extrabold">
-                            {t('table_products_badge')}
-                          </span>
-                        </div>
-
-                        <div className="divide-y divide-gray-100 text-xs mt-1">
-                          {realOrders.length > 0 ? (
-                            realOrders.slice(0, 4).map((order, idx) => (
-                              <div key={order.id || idx} className="py-2.5 flex items-center justify-between">
-                                <div className="flex items-center gap-2.5">
-                                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-sm font-bold">
-                                    🛍️
-                                  </div>
-                                  <div>
-                                    <div className="font-bold text-[#0A0A0A] truncate max-w-[140px]">
-                                      {order.planName || order.paymentMethod || 'Produk Live Stream'}
-                                    </div>
-                                    <div className="text-[10px] text-gray-400">
-                                      {order.userName || `@${order.userEmail?.split('@')[0] || 'buyer'}`} • {formatCurrency(order.price || 0)}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="font-extrabold text-emerald-600">1 {t('sold_units')}</div>
-                                  <div className="text-[10px] text-gray-500">{formatCurrency(order.price || 0)}</div>
-                                </div>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="py-8 text-center text-gray-400 text-xs space-y-1">
-                              <div className="text-2xl">📦</div>
-                              <div className="font-semibold text-gray-600">Belum ada pesanan live masuk</div>
-                              <div className="text-[10px] text-gray-400">Transaksi checkout baru dari database Firestore akan otomatis tercatat di sini.</div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between text-xs pt-1 border-t border-gray-100">
-                        <span className="text-gray-500">{t('total_live_sales')}</span>
-                        <span className="font-extrabold text-[#0A0A0A]">
-                          {formatCurrency(totalLiveGmv)}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
