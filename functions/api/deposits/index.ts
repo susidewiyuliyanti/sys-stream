@@ -30,7 +30,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         `
         SELECT
           id,
-          id,
           deposit_code AS "depositCode",
           amount,
           duration_days AS "durationDays",
