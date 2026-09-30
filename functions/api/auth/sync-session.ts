@@ -32,7 +32,7 @@ export const onRequestPost:
         env
       );
 
-    if (!auth.ok) {
+    if (auth.ok === false) {
       return auth.response;
     }
 
