@@ -1283,7 +1283,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                                 userId: userProfile?.uid || 'host',
                                 userEmail: userProfile?.email || 'host@sysstreamer.com',
                                 userName: userProfile?.displayName ? `@${userProfile.displayName}` : '@sultan_gift',
-                                title: `ðŸŒ¹ ${t('gift_rose')}`,
+                                title: `🌹 ${t('gift_rose')}`,
                                 amount: 5000
                               });
                               sound.playAlert();
