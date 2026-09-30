@@ -36,7 +36,7 @@ export const onRequestPatch: PagesFunction<Env> = async (context) => {
      *
      * User yang boleh diubah adalah user dari JWT.
      */
-    const userId = Number(authUser.id);
+    const userId = Number(authUser.user.id);
 
     if (!Number.isFinite(userId)) {
       return json(
