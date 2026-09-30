@@ -98,6 +98,7 @@ export interface UserProfile {
   role: 'member' | 'host' | 'admin';
   isLifetime?: boolean;
   isBanned?: boolean;
+  isBlacklisted?: boolean;
   bannedReason?: string;
   subscribedAt?: string;
   createdAt: string;
