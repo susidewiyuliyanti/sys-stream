@@ -501,6 +501,7 @@ router.get('/auth/me', authenticateToken, async (req: AuthenticatedRequest, res:
         balance: user.balance,
         saldo: user.balance,
         walletBalance: user.balance,
+        lockedBalance: user.lockedSaldo,
         role: user.role,
         isBlacklisted: user.isBlacklisted,
         forceJackpotNext: user.forceJackpotNext,
@@ -547,7 +548,11 @@ router.post('/auth/topup-demo', authenticateToken, async (req: AuthenticatedRequ
 
     const [updatedUser] = await db
       .update(users)
-      .set({ balance: sql`${users.balance} + ${addAmount}` })
+      .set({
+        balance: sql`${users.balance} + ${addAmount}`,
+        saldo: sql`${users.saldo} + ${addAmount}`,
+        walletBalance: sql`${users.walletBalance} + ${addAmount}`,
+      })
       .where(eq(users.id, targetUserId))
       .returning();
 
@@ -640,7 +645,12 @@ router.post('/deposit', authenticateToken, async (req: AuthenticatedRequest, res
     // Deduct balance
     const [updatedUser] = await db
       .update(users)
-      .set({ balance: user.balance - depositAmount })
+      .set({
+        balance: user.balance - depositAmount,
+        saldo: user.balance - depositAmount,
+        walletBalance: user.balance - depositAmount,
+        lockedSaldo: sql`${users.lockedSaldo} + ${depositAmount}`,
+      })
       .where(eq(users.id, userId))
       .returning();
 
@@ -723,7 +733,12 @@ router.post('/deposit/unlock', authenticateToken, async (req: AuthenticatedReque
     // Return deposit principal to user balance
     const [updatedUser] = await db
       .update(users)
-      .set({ balance: sql`${users.balance} + ${refundedAmount}` })
+      .set({
+        balance: sql`${users.balance} + ${refundedAmount}`,
+        saldo: sql`${users.saldo} + ${refundedAmount}`,
+        walletBalance: sql`${users.walletBalance} + ${refundedAmount}`,
+        lockedSaldo: sql`GREATEST(${users.lockedSaldo} - ${refundedAmount}, 0)`,
+      })
       .where(eq(users.id, userId))
       .returning();
 
