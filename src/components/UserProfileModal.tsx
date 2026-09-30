@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { db, auth } from '../lib/firebase';
 import { UserProfile, TransactionOrder, StreamingSessionLog } from '../types';
 import {
@@ -803,7 +803,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
       sound.playDing();
       setWithdrawSuccessMessage(
-        `Pengajuan penarikan dana ${formatCurrency(withdrawAmount)} (Potongan: ${formatCurrency(feeAmount)} [3% + Gas Fee ${selectedCrypto.network}] | Bersih Diterima: ${formatCurrency(netPayout)} â‰ˆ ${netCryptoEst} ${selectedCrypto.symbol}) berhasil diajukan! Permintaan berstatus PENDING dan segera diproses oleh Admin/Owner ke alamat dompet Anda.`
+        `Pengajuan penarikan dana ${formatCurrency(withdrawAmount)} (Potongan: ${formatCurrency(feeAmount)} [3% + Gas Fee ${selectedCrypto.network}] | Bersih Diterima: ${formatCurrency(netPayout)} �?^ ${netCryptoEst} ${selectedCrypto.symbol}) berhasil diajukan! Permintaan berstatus PENDING dan segera diproses oleh Admin/Owner ke alamat dompet Anda.`
       );
       setWithdrawCryptoAddress('');
       setWithdrawCryptoMemo('');
@@ -1361,7 +1361,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                             </span>
                           </div>
                           <div className="text-[11px] text-white/60">
-                            {ord.paymentMethod || 'Crypto Withdrawal'} â€¢ {ord.bankDetails?.accountNumber ? `Alamat: ${ord.bankDetails.accountNumber.slice(0, 16)}...` : ''}
+                            {ord.paymentMethod || 'Crypto Withdrawal'} �?� {ord.bankDetails?.accountNumber ? `Alamat: ${ord.bankDetails.accountNumber.slice(0, 16)}...` : ''}
                           </div>
                         </div>
 
@@ -1576,7 +1576,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     <span>{userProfile.referralCode || 'SYS-HOSTVIP'}</span>
                     {copiedId === 'refCode' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-amber-400/70" />}
                   </button>
-                  <span className="text-white/40">â€¢</span>
+                  <span className="text-white/40">�?�</span>
                   <span>Saldo Komisi: <strong className="text-emerald-400 font-mono">Rp {((userProfile.affiliateEarnings || 0) - (userProfile.affiliateWithdrawn || 0)).toLocaleString('id-ID')}</strong></span>
                 </div>
               </div>
@@ -1710,7 +1710,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                     <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-white/80 space-y-1">
                       <p className="font-semibold text-amber-200">
-                        ðŸ’¡ Pemberitahuan Verifikasi:
+                        �Y'� Pemberitahuan Verifikasi:
                       </p>
                       <p className="text-[11px] text-white/70">
                         Order deposit ini telah diteruskan ke Admin Panel dengan status <strong>PENDING</strong>. Begitu Administrator menyetujui, saldo dompet Anda akan otomatis bertambah secara realtime.
@@ -1862,8 +1862,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                         {/* Order ID & Security Notice */}
                         <div className="text-[11px] text-white/60 space-y-1">
-                          <p>â€¢ Transaksi diverifikasi secara otomatis oleh gateway blockchain NOWPayments (Produksi).</p>
-                          <p>â€¢ Demi kepatuhan dan keamanan akun, status deposit adalah PENDING hingga diverifikasi Administrator.</p>
+                          <p>�?� Transaksi diverifikasi secara otomatis oleh gateway blockchain NOWPayments (Produksi).</p>
+                          <p>�?� Demi kepatuhan dan keamanan akun, status deposit adalah PENDING hingga diverifikasi Administrator.</p>
                           <p className="font-mono text-[10px] text-white/40">Payment ID: {activeNowPayment.payment_id}</p>
                         </div>
                       </div>
@@ -2049,7 +2049,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               <div className="flex items-center justify-between pt-1 border-t border-white/5">
                                 <span className="text-[10px] text-white/40">Min: Rp {(coin.minDepositIdr / 1000).toFixed(0)}rb</span>
                                 <span className="text-[11px] font-mono font-bold text-amber-300">
-                                  â‰ˆ {estVal} {coin.symbol}
+                                  �?^ {estVal} {coin.symbol}
                                 </span>
                               </div>
                             </button>
@@ -2079,7 +2079,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         ) : (
                           <>
                             <Zap className="w-4 h-4 fill-slate-950" />
-                            <span>âš¡ Buat Pembayaran Otomatis via NOWPayments</span>
+                            <span>�s� Buat Pembayaran Otomatis via NOWPayments</span>
                           </>
                         )}
                       </button>
@@ -2173,7 +2173,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     Balance Below Minimum Withdrawal Threshold
                   </h4>
                   <p className="text-xs text-white/70 leading-relaxed">
-                    Your current wallet balance is <strong className="text-amber-300">Rp {currentBalance.toLocaleString('id-ID')}</strong> (including Rp 15,000 registration bonus). Per policy, <strong>minimum withdrawal is Rp 100,000</strong> (â‰ˆ6.25 USDT).
+                    Your current wallet balance is <strong className="text-amber-300">Rp {currentBalance.toLocaleString('id-ID')}</strong> (including Rp 15,000 registration bonus). Per policy, <strong>minimum withdrawal is Rp 100,000</strong> (�?^6.25 USDT).
                   </p>
                   <p className="text-xs text-emerald-400 font-bold pt-1">
                     You need Rp {(100000 - currentBalance).toLocaleString('id-ID')} more to be eligible for withdrawal.
@@ -2226,7 +2226,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <label className="block text-xs font-bold text-white/80 flex items-center justify-between">
                     <span>Nominal Penarikan Dana (IDR) - Minimal Rp 100.000</span>
                     <span className="text-amber-400 font-mono text-xs font-bold">
-                      â‰ˆ {calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol}
+                      �?^ {calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol}
                     </span>
                   </label>
                   <div className="relative">
@@ -2377,7 +2377,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <div className="text-right shrink-0 hidden sm:block">
                     <div className="text-[10px] text-white/40">Estimasi Kurs Referensi</div>
                     <div className="text-xs font-mono font-bold text-amber-300">
-                      1 {selectedCrypto.symbol} â‰ˆ Rp {selectedCrypto.approxRateIdr.toLocaleString('id-ID')}
+                      1 {selectedCrypto.symbol} �?^ Rp {selectedCrypto.approxRateIdr.toLocaleString('id-ID')}
                     </div>
                   </div>
                 </div>
@@ -2437,7 +2437,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <div className="flex items-center justify-between font-medium text-white/70">
                     <span>Nominal Penarikan Kotor (Gross):</span>
                     <span className="font-mono font-bold text-white">
-                      {formatCurrency(withdrawAmount)} (â‰ˆ{calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol})
+                      {formatCurrency(withdrawAmount)} (�?^{calculateCryptoEstimate(withdrawAmount, selectedCrypto)} {selectedCrypto.symbol})
                     </span>
                   </div>
                   
@@ -2457,7 +2457,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       Gas Fee Blockchain Jaringan ({selectedCrypto.network}):
                     </span>
                     <span className="font-mono font-bold text-rose-400">
-                      - {formatCurrency(getCryptoGasFee(selectedCrypto))} (â‰ˆ{calculateCryptoEstimate(getCryptoGasFee(selectedCrypto), selectedCrypto)} {selectedCrypto.symbol})
+                      - {formatCurrency(getCryptoGasFee(selectedCrypto))} (�?^{calculateCryptoEstimate(getCryptoGasFee(selectedCrypto), selectedCrypto)} {selectedCrypto.symbol})
                     </span>
                   </div>
 
@@ -2478,7 +2478,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         {formatCurrency(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)))}
                       </div>
                       <div className="text-xs font-mono font-bold text-amber-300">
-                        â‰ˆ {calculateCryptoEstimate(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)), selectedCrypto)} {selectedCrypto.symbol}
+                        �?^ {calculateCryptoEstimate(Math.max(0, withdrawAmount - Math.round(withdrawAmount * 0.03) - getCryptoGasFee(selectedCrypto)), selectedCrypto)} {selectedCrypto.symbol}
                       </div>
                     </div>
                   </div>
@@ -2531,7 +2531,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         Daftar Penarikan Menunggu Approval Admin
                       </h4>
                       <p className="text-[10px] text-amber-300">
-                        Status: PENDING â€¢ Total Saldo Terkunci: Rp {pendingWithdrawalsSum.toLocaleString('id-ID')}
+                        Status: PENDING �?� Total Saldo Terkunci: Rp {pendingWithdrawalsSum.toLocaleString('id-ID')}
                       </p>
                     </div>
                   </div>
@@ -3092,11 +3092,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               </p>
                               <p className="text-[10px] text-white/50 flex items-center gap-2 mt-0.5 flex-wrap">
                                 <span>{new Date(order.createdAt).toLocaleString('id-ID')}</span>
-                                <span>â€¢</span>
+                                <span>�?�</span>
                                 <span className="text-cyan-300 font-medium">{order.paymentMethod}</span>
                                 {isWithdrawal && order.feeAmount && (
                                   <>
-                                    <span>â€¢</span>
+                                    <span>�?�</span>
                                     <span className="text-amber-400 font-medium">Fee (3%): {formatCurrency(order.feeAmount)}</span>
                                   </>
                                 )}
@@ -3190,7 +3190,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       <SysLogo size="sm" showText={false} />
                       <div>
                         <h4 className="font-black text-sm text-white">STRUK BUKTI PEMBAYARAN</h4>
-                        <p className="text-[10px] text-amber-300/80">SYS Streamer â€¢ @SYS Agency</p>
+                        <p className="text-[10px] text-amber-300/80">SYS Streamer �?� @SYS Agency</p>
                       </div>
                     </div>
                     <button
@@ -3495,9 +3495,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         </h4>
                         <div className="flex flex-wrap items-center gap-3 text-[10px] text-white/50 mt-1">
                           <span>{new Date(session.startedAt).toLocaleString('id-ID')}</span>
-                          <span>â€¢</span>
+                          <span>�?�</span>
                           <span>Duration: {session.durationMinutes} Minutes</span>
-                          <span>â€¢</span>
+                          <span>�?�</span>
                           <span>{session.totalRounds} Rounds</span>
                         </div>
                       </div>
@@ -3636,11 +3636,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                                 </span>
                               </div>
                               <p className="text-[11px] text-white/50 font-mono mt-0.5">
-                                User: <strong className="text-white/80">{order.userEmail}</strong> â€¢ Order: {order.orderId}
+                                User: <strong className="text-white/80">{order.userEmail}</strong> �?� Order: {order.orderId}
                               </p>
                               <p className="text-[10px] text-white/40 flex items-center gap-2 mt-0.5">
                                 <span>{new Date(order.createdAt).toLocaleString('id-ID')}</span>
-                                <span>â€¢</span>
+                                <span>�?�</span>
                                 <span className="text-cyan-300 font-semibold">{order.paymentMethod}</span>
                               </p>
                             </div>
@@ -3651,7 +3651,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                               +{formatCurrency(order.price)}
                             </div>
                             <span className="text-[11px] text-white/60 font-semibold">
-                              â‰ˆ {(order.price / 16000).toFixed(2)} USDT
+                              �?^ {(order.price / 16000).toFixed(2)} USDT
                             </span>
                           </div>
                         </div>
@@ -3750,7 +3750,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
           {/* Footer */}
           <footer className="pt-6 mt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-            <span>All Reserve @SYS Agency â€¢ SYS Streamer Suite</span>
+            <span>All Reserve @SYS Agency �?� SYS Streamer Suite</span>
             <button
               type="button"
               onClick={onClose}

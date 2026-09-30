@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Sliders,
@@ -445,12 +445,12 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
       )}
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/10 pb-2">
+      <div className="flex gap-1.5 border-b border-white/10 pb-2 overflow-x-auto custom-scrollbar">
         <button
           onClick={() => setActiveTab('settings')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'settings'
-              ? 'bg-amber-500 text-slate-950 font-extrabold shadow'
+              ? 'bg-amber-400 text-slate-950 font-extrabold shadow-sm'
               : 'bg-white/5 hover:bg-white/10 text-white/70'
           }`}
         >
@@ -462,7 +462,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           onClick={() => setActiveTab('deposits')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'deposits'
-              ? 'bg-amber-500 text-slate-950 font-extrabold shadow'
+              ? 'bg-amber-400 text-slate-950 font-extrabold shadow-sm'
               : 'bg-white/5 hover:bg-white/10 text-white/70'
           }`}
         >
@@ -474,7 +474,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           onClick={() => setActiveTab('stats')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'stats'
-              ? 'bg-amber-500 text-slate-950 font-extrabold shadow'
+              ? 'bg-amber-400 text-slate-950 font-extrabold shadow-sm'
               : 'bg-white/5 hover:bg-white/10 text-white/70'
           }`}
         >
@@ -486,7 +486,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           onClick={() => setActiveTab('topup')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'topup'
-              ? 'bg-emerald-500 text-slate-950 font-extrabold shadow'
+              ? 'bg-emerald-400 text-slate-950 font-extrabold shadow-sm'
               : 'bg-white/5 hover:bg-white/10 text-white/70'
           }`}
         >
@@ -498,8 +498,8 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           onClick={() => setActiveTab('approvals')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'approvals'
-              ? 'bg-rose-500 text-white font-extrabold shadow'
-              : 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25'
+              ? 'bg-rose-500 text-white font-extrabold shadow-sm'
+              : 'bg-rose-500/10 text-rose-300 border border-rose-500/20 hover:bg-rose-500/20'
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
@@ -605,7 +605,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-sm shadow-md transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm shadow-md transition-all flex items-center justify-center gap-2"
             >
               <Save className="w-4 h-4" />
               <span>Save Game Settings</span>
@@ -689,14 +689,14 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 onClick={() => setSelectedLockDurationGroup(selectedLockDurationGroup === 30 ? 'ALL' : 30)}
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 30
-                    ? 'bg-slate-800/90 border-slate-300 ring-2 ring-slate-300/40 shadow-lg shadow-slate-500/10'
+                    ? 'bg-neutral-800 border-slate-400 ring-1 ring-slate-400/40 shadow-md'
                     : 'bg-neutral-900 border-white/10 hover:border-slate-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-400/20 text-slate-200 border border-slate-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>ðŸ¥‰ Group 1</span>
-                    <span>â€¢</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-slate-200 border border-white/10 text-[10px] font-black uppercase flex items-center gap-1">
+                    <span>🥈 Group 1</span>
+                    <span>•</span>
                     <span>Lock 30 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-slate-300 font-mono">
@@ -722,14 +722,14 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 onClick={() => setSelectedLockDurationGroup(selectedLockDurationGroup === 60 ? 'ALL' : 60)}
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 60
-                    ? 'bg-cyan-950/80 border-cyan-400 ring-2 ring-cyan-400/40 shadow-lg shadow-cyan-500/10'
+                    ? 'bg-neutral-800 border-cyan-400 ring-1 ring-cyan-400/30 shadow-md'
                     : 'bg-neutral-900 border-white/10 hover:border-cyan-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 text-cyan-200 border border-cyan-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>ðŸ¥ˆ Group 2</span>
-                    <span>â€¢</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-200 border border-cyan-500/20 text-[10px] font-black uppercase flex items-center gap-1">
+                    <span>🥇 Group 2</span>
+                    <span>•</span>
                     <span>Lock 60 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-cyan-300 font-mono">
@@ -755,14 +755,14 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 onClick={() => setSelectedLockDurationGroup(selectedLockDurationGroup === 90 ? 'ALL' : 90)}
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 90
-                    ? 'bg-amber-950/80 border-amber-400 ring-2 ring-amber-400/40 shadow-lg shadow-amber-500/10'
+                    ? 'bg-neutral-800 border-amber-400 ring-1 ring-amber-400/30 shadow-md'
                     : 'bg-neutral-900 border-white/10 hover:border-amber-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>ðŸ¥‡ Group 3</span>
-                    <span>â€¢</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-200 border border-amber-500/20 text-[10px] font-black uppercase flex items-center gap-1">
+                    <span>🏆 Group 3</span>
+                    <span>•</span>
                     <span>Lock 90 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-amber-300 font-mono">
@@ -810,7 +810,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                ðŸ¥‰ Group Lock 30 Hari ({group30.length})
+                🥈 Group Lock 30 Hari ({group30.length})
               </button>
               <button
                 type="button"
@@ -821,7 +821,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                ðŸ¥ˆ Group Lock 60 Hari ({group60.length})
+                🥇 Group Lock 60 Hari ({group60.length})
               </button>
               <button
                 type="button"
@@ -832,7 +832,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                ðŸ¥‡ Group Lock 90 Hari ({group90.length})
+                🏆 Group Lock 90 Hari ({group90.length})
               </button>
             </div>
 
@@ -883,15 +883,15 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                           <td className="py-3 px-3">
                             {dep.durationDays === 90 ? (
                               <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/10 text-[10px] font-black">
-                                ðŸ¥‡ Lock 90 Hari (10 Box Emas)
+                                🏆 Lock 90 Hari (10 Box Emas)
                               </span>
                             ) : dep.durationDays === 60 ? (
                               <span className="px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-black">
-                                ðŸ¥ˆ Lock 60 Hari (5 Box Platinum)
+                                🥇 Lock 60 Hari (5 Box Platinum)
                               </span>
                             ) : (
                               <span className="px-2.5 py-1 rounded-full bg-slate-500/20 text-slate-200 border border-slate-500/40 text-[10px] font-black">
-                                ðŸ¥‰ Lock 30 Hari (3 Box Silver)
+                                🥈 Lock 30 Hari (3 Box Silver)
                               </span>
                             )}
                           </td>
@@ -924,7 +924,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                                   title="Klik untuk mengubah nominal atau membatalkan otorisasi jackpot"
                                 >
                                   <Flame className="w-3.5 h-3.5 text-yellow-300" />
-                                  <span>ðŸ”¥ Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
+                                  <span>�Y"� Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
                                 </button>
                               ) : (
                                 <button
@@ -1392,11 +1392,11 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                             </span>
                           </div>
                           <p className="text-xs text-white/50 font-mono mt-0.5">
-                            User: <strong className="text-white/80">{order.userEmail}</strong> â€¢ Order ID: {order.orderId}
+                            User: <strong className="text-white/80">{order.userEmail}</strong> • Order ID: {order.orderId}
                           </p>
                           <p className="text-[10px] text-white/40 flex items-center gap-2 mt-0.5">
                             <span>{new Date(order.createdAt).toLocaleString('en-US')}</span>
-                            <span>â€¢</span>
+                            <span>•</span>
                             <span className="text-cyan-300 font-semibold">{order.paymentMethod}</span>
                           </p>
                         </div>
@@ -1407,7 +1407,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                           +{formatCurrency(order.price)}
                         </div>
                         <span className="text-xs text-white/60 font-semibold">
-                          â‰ˆ {(order.price / 16000).toFixed(2)} USDT
+                          �?^ {(order.price / 16000).toFixed(2)} USDT
                         </span>
                       </div>
                     </div>
@@ -1505,4 +1505,5 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
     </div>
   );
 };
+
 

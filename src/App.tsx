@@ -1,4 +1,4 @@
-﻿import React, {
+import React, {
   useState,
   useEffect
 } from 'react';
@@ -577,7 +577,7 @@ const handleLogout = async () => {
       case 'spinner-roda':
         return 'Lucky Prize Wheel';
       case 'blind-box-deposit':
-        return 'ðŸŽ "Blind Box Game" Win BIG';
+        return '�YZ� "Blind Box Game" Win BIG';
       case 'leaderboard':
         return 'Streamer Leaderboard & Prizes';
       default:
@@ -663,7 +663,7 @@ const handleLogout = async () => {
     return (
       <div className="min-h-screen w-full bg-[#090d16] text-white flex flex-col items-center justify-center p-6 text-center font-['Poppins']">
         <div className="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center text-2xl shadow-xl shadow-red-500/20 mb-4 animate-pulse">
-          ðŸš«
+          �Ys�
         </div>
         <h2 className="text-xl sm:text-2xl font-black text-red-400 tracking-wide mb-2">
           ACCOUNT SUSPENDED / BANNED

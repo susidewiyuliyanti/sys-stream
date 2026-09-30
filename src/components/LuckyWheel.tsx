@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { sound } from '../services/sound';
 import confetti from 'canvas-confetti';
 import {
@@ -74,7 +74,7 @@ const TANTANGAN_PRESETS = [
   'Imitate an Angry Cat',
   'Share a Spooky Story',
   'Drink a Glass of Water',
-  'Send Lion Emote ðŸ¦'
+  'Send Lion Emote �Y��'
 ];
 
 const SEGMENT_COLORS = [
@@ -258,7 +258,7 @@ export const LuckyWheel: React.FC<LuckyWheelProps> = ({
 
       // Truncate long names cleanly
       const maxLen = segments.length > 16 ? 12 : 18;
-      const label = item.length > maxLen ? item.slice(0, maxLen) + 'â€¦' : item;
+      const label = item.length > maxLen ? item.slice(0, maxLen) + '�?�' : item;
       ctx.fillText(label, radius - 24, 0);
       ctx.restore();
     });

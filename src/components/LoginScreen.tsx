@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Trophy,
   AlertTriangle,
@@ -438,7 +438,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             </h1>
 
             <p className="mt-2 text-white/45 text-sm">
-              Streaming â€¢ Game â€¢ Reward Platform
+              Streaming �?� Game �?� Reward Platform
             </p>
 
           </div>
@@ -976,7 +976,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                   }
                   className="text-white/40 hover:text-white text-xl"
                 >
-                  Ã—
+                  �-
                 </button>
 
               </div>

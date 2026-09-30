@@ -181,7 +181,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: `order-${o.id || o.orderId}`,
         user: o.userName || (o.userEmail ? `@${o.userEmail.split('@')[0]}` : '@pembeli_live'),
-        avatar: 'ðŸ›ï¸',
+        avatar: '🛒',
         text: `Checkout: ${o.planName || o.paymentMethod || 'Pesanan Live'}`,
         orderProduct: o.planName || 'Produk Live',
         orderPrice: o.price || 0,
@@ -195,7 +195,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: `act-${act.id}`,
         user: act.userName || (act.userEmail ? `@${act.userEmail.split('@')[0]}` : '@user_live'),
-        avatar: act.type === 'deposit' ? 'ðŸ’³' : act.type === 'jackpot_win' ? 'ðŸ†' : act.type === 'gift' ? 'ðŸŒ¹' : 'ðŸ’¬',
+        avatar: act.type === 'deposit' ? '💎' : act.type === 'jackpot_win' ? '🎉' : act.type === 'gift' ? '🎁' : '💬',
         text: act.title || 'Aktivitas streaming baru',
         type: act.type === 'gift' ? 'gift' : act.type === 'deposit' || act.type === 'order' ? 'order' : act.type === 'system' ? 'system' : 'comment',
         orderPrice: act.amount,
@@ -214,7 +214,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: 'sys-welcome',
         user: 'SYS System',
-        avatar: 'ðŸ’Ž',
+          avatar: '🎙️',
         text: 'Live stream aktif! Aktivitas penonton, gift, dan order pesanan dari database Firestore akan otomatis muncul di sini.',
         type: 'system',
         badge: 'SYS Host',
@@ -281,7 +281,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     const hostMsg: LiveChatMessage = {
       id: String(Date.now()),
       user: userProfile?.displayName || t('chat_host_name'),
-      avatar: 'ðŸŽ™ï¸',
+      avatar: '🎙️',
       text: customChatMessage.trim(),
       type: 'system',
       badge: t('chat_host_badge'),
@@ -660,7 +660,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">ðŸ”¢</div>
+                    <div className="text-2xl mb-1">🎯</div>
                     <div className="font-bold text-xs">{t('game_guess_number')}</div>
                     <div className="text-[10px] text-white/50">{t('game_guess_number_sub')}</div>
                   </button>
@@ -673,7 +673,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">ðŸŽ¡</div>
+                    <div className="text-2xl mb-1">🎡</div>
                     <div className="font-bold text-xs">{t('game_lucky_wheel')}</div>
                     <div className="text-[10px] text-white/50">{t('game_lucky_wheel_sub')}</div>
                   </button>
@@ -686,7 +686,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">ðŸŽ</div>
+                    <div className="text-2xl mb-1">🎡</div>
                     <div className="font-bold text-xs">{t('tab_blind_box')}</div>
                     <div className="text-[10px] text-white/50">{t('game_blind_box_sub')}</div>
                   </button>
@@ -773,8 +773,8 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                     </div>
 
                     <div className="text-xs text-white/60 space-y-1">
-                      <div>â€¢ {t('obs_rec_res')}</div>
-                      <div>â€¢ {t('obs_rec_check')}</div>
+                      <div>📺 {t('obs_rec_res')}</div>
+                      <div>🔍 {t('obs_rec_check')}</div>
                     </div>
                   </div>
 
@@ -795,25 +795,25 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         onClick={() => sound.playWinner()}
                         className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
                       >
-                        <span>ðŸŽ‰</span> {t('sound_effect_winner')}
+                        <span>🏆</span> {t('sound_effect_winner')}
                       </button>
                       <button
                         onClick={() => sound.playAlert()}
                         className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
                       >
-                        <span>ðŸš¨</span> {t('sound_effect_enrage')}
+                        <span>🔥</span> {t('sound_effect_enrage')}
                       </button>
                       <button
                         onClick={() => sound.playDrumroll()}
                         className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
                       >
-                        <span>ðŸ¥</span> {t('sound_effect_drumroll')}
+                        <span>🥁</span> {t('sound_effect_drumroll')}
                       </button>
                       <button
                         onClick={() => sound.playWheelSpin()}
                         className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
                       >
-                        <span>ðŸŽ¡</span> {t('sound_effect_wheel')}
+                        <span>🎡</span> {t('sound_effect_wheel')}
                       </button>
                     </div>
                   </div>
@@ -891,7 +891,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                     <div className="space-y-2 text-xs">
                       <div className="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span>ðŸŽµ</span>
+                          <span>🎵</span>
                           <span className="font-bold">TikTok Shop Live</span>
                         </div>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
@@ -901,7 +901,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
 
                       <div className="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span>ðŸ›ï¸</span>
+                            <span>🛒</span>
                           <span className="font-bold">Shopee Live Partner</span>
                         </div>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
@@ -1282,7 +1282,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                                 userId: userProfile?.uid || 'host',
                                 userEmail: userProfile?.email || 'host@sysstreamer.com',
                                 userName: userProfile?.displayName ? `@${userProfile.displayName}` : '@sultan_gift',
-                                title: `🌹 ${t('gift_rose')}`,
+                                title: `ðŸŒ¹ ${t('gift_rose')}`,
                                 amount: 5000
                               });
                               sound.playAlert();
@@ -1359,6 +1359,10 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     </div>
   );
 };
+
+
+
+
 
 
 
