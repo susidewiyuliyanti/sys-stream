@@ -364,6 +364,36 @@ export function getCountryByCode(code: string): CountryCurrencyConfig {
  * Existing components should still prefer t(), but this catches exact
  * catalog strings rendered directly by legacy components.
  */
+const LEGACY_UI_TRANSLATIONS: Record<string, Record<string, string>> = {
+  Loading: { en: 'Loading', id: 'Memuat', ms: 'Memuatkan', ja: '読み込み中', zh: '加载中', ar: 'جارٍ التحميل', tl: 'Naglo-load', th: 'กำลังโหลด', vi: 'Đang tải', ko: '로딩 중', es: 'Cargando', pt: 'Carregando', ru: 'Загрузка', tr: 'Yükleniyor', hi: 'लोड हो रहा है' },
+  Search: { en: 'Search', id: 'Cari', ms: 'Cari', ja: '検索', zh: '搜索', ar: 'بحث', tl: 'Maghanap', th: 'ค้นหา', vi: 'Tìm kiếm', ko: '검색', es: 'Buscar', pt: 'Pesquisar', ru: 'Поиск', tr: 'Ara', hi: 'खोजें' },
+  Settings: { en: 'Settings', id: 'Pengaturan', ms: 'Tetapan', ja: '設定', zh: '设置', ar: 'الإعدادات', tl: 'Mga Setting', th: 'การตั้งค่า', vi: 'Cài đặt', ko: '설정', es: 'Configuración', pt: 'Configurações', ru: 'Настройки', tr: 'Ayarlar', hi: 'सेटिंग्स' },
+  Menu: { en: 'Menu', id: 'Menu', ms: 'Menu', ja: 'メニュー', zh: '菜单', ar: 'القائمة', tl: 'Menu', th: 'เมนู', vi: 'Menu', ko: '메뉴', es: 'Menú', pt: 'Menu', ru: 'Меню', tr: 'Menü', hi: 'मेनू' },
+  Add: { en: 'Add', id: 'Tambah', ms: 'Tambah', ja: '追加', zh: '添加', ar: 'إضافة', tl: 'Idagdag', th: 'เพิ่ม', vi: 'Thêm', ko: '추가', es: 'Añadir', pt: 'Adicionar', ru: 'Добавить', tr: 'Ekle', hi: 'जोड़ें' },
+  Close: { en: 'Close', id: 'Tutup', ms: 'Tutup', ja: '閉じる', zh: '关闭', ar: 'إغلاق', tl: 'Isara', th: 'ปิด', vi: 'Đóng', ko: '닫기', es: 'Cerrar', pt: 'Fechar', ru: 'Закрыть', tr: 'Kapat', hi: 'बंद करें' },
+  Cancel: { en: 'Cancel', id: 'Batal', ms: 'Batal', ja: 'キャンセル', zh: '取消', ar: 'إلغاء', tl: 'Kanselahin', th: 'ยกเลิก', vi: 'Hủy', ko: '취소', es: 'Cancelar', pt: 'Cancelar', ru: 'Отмена', tr: 'İptal', hi: 'रद्द करें' },
+  Confirm: { en: 'Confirm', id: 'Konfirmasi', ms: 'Sahkan', ja: '確認', zh: '确认', ar: 'تأكيد', tl: 'Kumpirmahin', th: 'ยืนยัน', vi: 'Xác nhận', ko: '확인', es: 'Confirmar', pt: 'Confirmar', ru: 'Подтвердить', tr: 'Onayla', hi: 'पुष्टि करें' },
+  Save: { en: 'Save', id: 'Simpan', ms: 'Simpan', ja: '保存', zh: '保存', ar: 'حفظ', tl: 'I-save', th: 'บันทึก', vi: 'Lưu', ko: '저장', es: 'Guardar', pt: 'Salvar', ru: 'Сохранить', tr: 'Kaydet', hi: 'सहेजें' },
+  Delete: { en: 'Delete', id: 'Hapus', ms: 'Padam', ja: '削除', zh: '删除', ar: 'حذف', tl: 'Tanggalin', th: 'ลบ', vi: 'Xóa', ko: '삭제', es: 'Eliminar', pt: 'Excluir', ru: 'Удалить', tr: 'Sil', hi: 'हटाएं' },
+  Reset: { en: 'Reset', id: 'Atur Ulang', ms: 'Tetapkan Semula', ja: 'リセット', zh: '重置', ar: 'إعادة ضبط', tl: 'I-reset', th: 'รีเซ็ต', vi: 'Đặt lại', ko: '초기화', es: 'Restablecer', pt: 'Redefinir', ru: 'Сбросить', tr: 'Sıfırla', hi: 'रीसेट' },
+  Open: { en: 'Open', id: 'Buka', ms: 'Buka', ja: '開く', zh: '打开', ar: 'فتح', tl: 'Buksan', th: 'เปิด', vi: 'Mở', ko: '열기', es: 'Abrir', pt: 'Abrir', ru: 'Открыть', tr: 'Aç', hi: 'खोलें' },
+  Remove: { en: 'Remove', id: 'Hapus', ms: 'Alih Keluar', ja: '削除', zh: '移除', ar: 'إزالة', tl: 'Alisin', th: 'ลบออก', vi: 'Xóa', ko: '제거', es: 'Quitar', pt: 'Remover', ru: 'Удалить', tr: 'Kaldır', hi: 'हटाएं' },
+  'Weekly Leaderboard': { en: 'Weekly Leaderboard', id: 'Papan Peringkat Mingguan', ms: 'Papan Pendahulu Mingguan', ja: '週間ランキング', zh: '每周排行榜', ar: 'لوحة المتصدرين الأسبوعية', tl: 'Lingguhang Leaderboard', th: 'กระดานผู้นำรายสัปดาห์', vi: 'Bảng xếp hạng hàng tuần', ko: '주간 리더보드', es: 'Clasificación semanal', pt: 'Ranking semanal', ru: 'Еженедельный рейтинг', tr: 'Haftalık Liderlik Tablosu', hi: 'साप्ताहिक लीडरबोर्ड' },
+  'Sign In as Streamer': { en: 'Sign In as Streamer', id: 'Masuk sebagai Streamer', ms: 'Log Masuk sebagai Streamer', ja: 'ストリーマーとしてログイン', zh: '以主播身份登录', ar: 'تسجيل الدخول كستريمر', tl: 'Mag-sign In bilang Streamer', th: 'เข้าสู่ระบบในฐานะสตรีมเมอร์', vi: 'Đăng nhập với tư cách Streamer', ko: '스트리머로 로그인', es: 'Iniciar sesión como streamer', pt: 'Entrar como streamer', ru: 'Войти как стример', tr: 'Streamer olarak giriş yap', hi: 'स्ट्रीमर के रूप में साइन इन करें' },
+  'Set Timer': { en: 'Set Timer', id: 'Atur Timer', ms: 'Tetapkan Pemasa', ja: 'タイマー設定', zh: '设置计时器', ar: 'ضبط المؤقت', tl: 'Itakda ang Timer', th: 'ตั้งเวลา', vi: 'Đặt hẹn giờ', ko: '타이머 설정', es: 'Configurar temporizador', pt: 'Definir temporizador', ru: 'Установить таймер', tr: 'Zamanlayıcıyı ayarla', hi: 'टाइमर सेट करें' },
+  'Apply Timer': { en: 'Apply Timer', id: 'Terapkan Timer', ms: 'Gunakan Pemasa', ja: 'タイマーを適用', zh: '应用计时器', ar: 'تطبيق المؤقت', tl: 'Ilapat ang Timer', th: 'ใช้ตัวจับเวลา', vi: 'Áp dụng hẹn giờ', ko: '타이머 적용', es: 'Aplicar temporizador', pt: 'Aplicar temporizador', ru: 'Применить таймер', tr: 'Zamanlayıcıyı uygula', hi: 'टाइमर लागू करें' },
+  'DIGITAL BROADCAST TIMER': { en: 'DIGITAL BROADCAST TIMER', id: 'TIMER SIARAN DIGITAL', ms: 'PEMASA SIARAN DIGITAL', ja: 'デジタル配信タイマー', zh: '数字直播计时器', ar: 'مؤقت البث الرقمي', tl: 'DIGITAL BROADCAST TIMER', th: 'ตัวจับเวลาการถ่ายทอดดิจิทัล', vi: 'BỘ HẸN GIỜ PHÁT SÓNG KỸ THUẬT SỐ', ko: '디지털 방송 타이머', es: 'TEMPORIZADOR DE TRANSMISIÓN DIGITAL', pt: 'TEMPORIZADOR DE TRANSMISSÃO DIGITAL', ru: 'ЦИФРОВОЙ ТАЙМЕР ТРАНСЛЯЦИИ', tr: 'DİJİTAL YAYIN ZAMANLAYICI', hi: 'डिजिटल ब्रॉडकास्ट टाइमर' },
+  'ON AIR': { en: 'ON AIR', id: 'SEDANG SIARAN', ms: 'SEDANG BERSIARAN', ja: '放送中', zh: '直播中', ar: 'على الهواء', tl: 'ON AIR', th: 'กำลังออกอากาศ', vi: 'ĐANG PHÁT SÓNG', ko: '방송 중', es: 'EN VIVO', pt: 'NO AR', ru: 'В ЭФИРЕ', tr: 'YAYINDA', hi: 'लाइव' },
+  'Secret Digits:': { en: 'Secret Digits:', id: 'Digit Rahasia:', ms: 'Digit Rahsia:', ja: '秘密の数字:', zh: '秘密数字：', ar: 'الأرقام السرية:', tl: 'Lihim na Digit:', th: 'ตัวเลขลับ:', vi: 'Chữ số bí mật:', ko: '비밀 숫자:', es: 'Dígitos secretos:', pt: 'Dígitos secretos:', ru: 'Секретные цифры:', tr: 'Gizli rakamlar:', hi: 'गुप्त अंक:' },
+  'Key Details': { en: 'Key Details', id: 'Detail Kunci', ms: 'Butiran Kunci', ja: 'キーの詳細', zh: '密钥详情', ar: 'تفاصيل المفتاح', tl: 'Mga Detalye ng Key', th: 'รายละเอียดคีย์', vi: 'Chi tiết khóa', ko: '키 세부정보', es: 'Detalles de clave', pt: 'Detalhes da chave', ru: 'Детали ключа', tr: 'Anahtar ayrıntıları', hi: 'कुंजी विवरण' },
+  'Live Screen Safe': { en: 'Live Screen Safe', id: 'Layar Live Aman', ms: 'Skrin Langsung Selamat', ja: 'ライブ画面は安全', zh: '直播画面安全', ar: 'شاشة البث آمنة', tl: 'Ligtas ang Live Screen', th: 'หน้าจอไลฟ์ปลอดภัย', vi: 'Màn hình trực tiếp an toàn', ko: '라이브 화면 안전', es: 'Pantalla en vivo segura', pt: 'Tela ao vivo segura', ru: 'Безопасный экран трансляции', tr: 'Canlı ekran güvenli', hi: 'लाइव स्क्रीन सुरक्षित' },
+  'Full Serial Number:': { en: 'Full Serial Number:', id: 'Nomor Seri Lengkap:', ms: 'Nombor Siri Penuh:', ja: '完全なシリアル番号:', zh: '完整序列号：', ar: 'الرقم التسلسلي الكامل:', tl: 'Buong Serial Number:', th: 'หมายเลขซีเรียลทั้งหมด:', vi: 'Số sê-ri đầy đủ:', ko: '전체 일련번호:', es: 'Número de serie completo:', pt: 'Número de série completo:', ru: 'Полный серийный номер:', tr: 'Tam seri numarası:', hi: 'पूरा सीरियल नंबर:' },
+  'Currency:': { en: 'Currency:', id: 'Mata Uang:', ms: 'Mata Wang:', ja: '通貨:', zh: '货币：', ar: 'العملة:', tl: 'Pera:', th: 'สกุลเงิน:', vi: 'Tiền tệ:', ko: '통화:', es: 'Moneda:', pt: 'Moeda:', ru: 'Валюта:', tr: 'Para birimi:', hi: 'मुद्रा:' },
+  'Figure / Design:': { en: 'Figure / Design:', id: 'Figur / Desain:', ms: 'Tokoh / Reka Bentuk:', ja: '図柄 / デザイン:', zh: '图案/设计：', ar: 'الشكل / التصميم:', tl: 'Larawan / Disenyo:', th: 'รูปภาพ / การออกแบบ:', vi: 'Hình / Thiết kế:', ko: '인물 / 디자인:', es: 'Figura / Diseño:', pt: 'Figura / Design:', ru: 'Фигура / дизайн:', tr: 'Figür / Tasarım:', hi: 'चित्र / डिज़ाइन:' },
+  'Validate Correct!': { en: 'Validate Correct!', id: 'Validasi Benar!', ms: 'Sahkan Betul!', ja: '正解を検証！', zh: '验证正确！', ar: 'تحقق من صحة الإجابة!', tl: 'Patunayan ang Tama!', th: 'ตรวจสอบว่าถูกต้อง!', vi: 'Xác nhận đúng!', ko: '정답 확인!', es: '¡Validar correcto!', pt: 'Validar correto!', ru: 'Проверить правильность!', tr: 'Doğruluğu doğrula!', hi: 'सही होने की पुष्टि करें!' },
+  'Add viewer name / @username...': { en: 'Add viewer name / @username...', id: 'Tambah nama penonton / @username...', ms: 'Tambah nama penonton / @username...', ja: '視聴者名 / @ユーザー名を追加...', zh: '添加观众姓名 / @用户名...', ar: 'أضف اسم المشاهد / @اسم المستخدم...', tl: 'Magdagdag ng pangalan / @username...', th: 'เพิ่มชื่อผู้ชม / @username...', vi: 'Thêm tên người xem / @username...', ko: '시청자 이름 / @username 추가...', es: 'Añadir nombre del espectador / @username...', pt: 'Adicionar nome do espectador / @username...', ru: 'Добавить имя зрителя / @username...', tr: 'İzleyici adı / @username ekle...', hi: 'दर्शक का नाम / @username जोड़ें...' }
+};
+
 const globalTextSources = new WeakMap<Text, string>();
 const globalAttributeSources = new WeakMap<Element, Record<string, string>>();
 
@@ -418,6 +448,11 @@ function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
       sourceEntries.push({ text: sourceText, target: targetText });
       if (!map.has(sourceText)) map.set(sourceText, targetText);
     });
+  });
+
+  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+    const translated = translationsByLanguage[targetLanguage];
+    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
   });
 
   // Legacy UI contains some phrases which pre-date the translation catalog.
