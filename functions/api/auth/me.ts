@@ -36,7 +36,7 @@ export const onRequestGet: PagesFunction<Env> =
                 WHERE id = $1
                 LIMIT 1
                 `,
-                [authUser.id]
+                [authUser.user.id]
               );
 
             return result.rows[0] ?? null;
