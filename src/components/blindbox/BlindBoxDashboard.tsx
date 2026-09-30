@@ -1707,3 +1707,38 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* MODALS */}
+      <BlindBoxOpenModal
+        isOpen={showOpenModal}
+        onClose={() => setShowOpenModal(false)}
+        prizeAmount={claimResult?.prizeAmount || 0}
+        isJackpot={claimResult?.isJackpot || false}
+        totalClaimed={claimResult?.totalClaimed || 0}
+        tier={claimResult?.tier || depositTier?.tier || 'BRONZE'}
+        tierName={claimResult?.tierName || depositTier?.tierName || 'Bronze'}
+        boxType={claimResult?.boxType || depositTier?.boxType || 'Box Regular'}
+        boxCount={claimResult?.boxCount || depositTier?.boxCount || 1}
+        boxes={claimResult?.boxes || []}
+      />
+
+      <BlindBoxWithdrawModal
+        isOpen={showWithdrawModal}
+        onClose={() => setShowWithdrawModal(false)}
+        deposit={activeDeposit}
+        jwtToken={jwtToken || ''}
+        onSuccess={handleWithdrawSuccess}
+      />
+
+      <BlindBoxUnlockModal
+        isOpen={showUnlockModal}
+        onClose={() => setShowUnlockModal(false)}
+        deposit={activeDeposit}
+        jwtToken={jwtToken || ''}
+        onSuccess={handleUnlockSuccess}
+      />
+    </div>
+  );
+};
+
