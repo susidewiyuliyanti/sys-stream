@@ -30,18 +30,19 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         `
         SELECT
           id,
-          "depositCode",
+          id,
+          deposit_code AS "depositCode",
           amount,
-          "durationDays",
-          "startDate",
-          "endDate",
+          duration_days AS "durationDays",
+          start_date AS "startDate",
+          end_date AS "endDate",
           status,
-          "totalClaimed",
-          "forceJackpot",
-          "createdAt"
+          total_claimed AS "totalClaimed",
+          force_jackpot AS "forceJackpot",
+          created_at AS "createdAt"
         FROM deposits
-        WHERE "userId" = $1
-        ORDER BY "createdAt" DESC
+        WHERE user_id = $1
+        ORDER BY created_at DESC
         `,
         [userId]
       );
@@ -112,7 +113,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             id,
             COALESCE(balance, 0) AS balance,
             COALESCE(saldo, 0) AS saldo,
-            COALESCE("walletBalance", 0) AS "walletBalance",
+            COALESCE(wallet_balance, 0) AS wallet_balance,
             COALESCE(locked_saldo, 0) AS locked_saldo
           FROM users
           WHERE id = $1
@@ -132,7 +133,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const availableBalance = Math.max(
           Number(user.balance || 0),
           Number(user.saldo || 0),
-          Number(user.walletBalance || 0)
+          Number(user.wallet_balance || 0)
         );
 
         if (availableBalance < amount) {
@@ -143,7 +144,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT id
           FROM deposits
-          WHERE "userId" = $1 AND status = 'ACTIVE'
+          WHERE user_id = $1 AND status = 'ACTIVE'
           LIMIT 1
           `,
           [userId]
@@ -169,7 +170,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SET
             balance = $1,
             saldo = $1,
-            "walletBalance" = $1,
+            wallet_balance = $1,
             locked_saldo = $2,
             updated_at = NOW()
           WHERE id = $3
@@ -180,31 +181,31 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const depositResult = await client.query(
           `
           INSERT INTO deposits (
-            "depositCode",
-            "userId",
+            deposit_code,
+            user_id,
             amount,
-            "durationDays",
-            "startDate",
-            "endDate",
+            duration_days,
+            start_date,
+            end_date,
             status,
-            "totalClaimed",
-            "forceJackpot",
-            "createdAt"
+            total_claimed,
+            force_jackpot,
+            created_at
           )
           VALUES (
             $1, $2, $3, $4, $5, $6, 'ACTIVE', 0, false, NOW()
           )
           RETURNING
             id,
-            "depositCode",
+            deposit_code AS "depositCode",
             amount,
-            "durationDays",
-            "startDate",
-            "endDate",
+            duration_days AS "durationDays",
+            start_date AS "startDate",
+            end_date AS "endDate",
             status,
-            "totalClaimed",
-            "forceJackpot",
-            "createdAt"
+            total_claimed AS "totalClaimed",
+            force_jackpot AS "forceJackpot",
+            created_at AS "createdAt"
           `,
           [
             depositCode,
