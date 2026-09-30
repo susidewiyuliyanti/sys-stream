@@ -315,7 +315,7 @@ export const onRequestPost = async ({
         email: String(user.email),
         role,
       },
-      env.JWT_SECRET,
+      env,
     );
 
     return json(
