@@ -139,7 +139,7 @@ export const onRequestGet:
         env
       );
 
-    if (!auth.ok) {
+    if (auth.ok === false) {
       return auth.response;
     }
 
@@ -243,7 +243,7 @@ export const onRequestPatch:
         env
       );
 
-    if (!auth.ok) {
+    if (auth.ok === false) {
       return auth.response;
     }
 
