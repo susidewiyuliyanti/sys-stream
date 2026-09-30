@@ -18,14 +18,8 @@ export const onRequestPatch: PagesFunction<Env> = async (context) => {
   try {
     const authUser = await requireAuth(context.request, context.env);
 
-    if (!authUser) {
-      return json(
-        {
-          success: false,
-          error: 'Unauthorized',
-        },
-        401
-      );
+    if (authUser.ok === false) {
+      return authUser.response;
     }
 
     const body = (await context.request.json()) as ProfileUpdate;
