@@ -423,6 +423,77 @@ const LEGACY_UI_TRANSLATIONS: Record<string, Record<string, string>> = {
 
 };
 
+
+// Broad legacy labels still rendered directly by older screens.
+const LEGACY_COMMON_TRANSLATIONS: Record<string, Record<string, string>> = {
+  'Profile': {en:'Profile',id:'Profil',ms:'Profil',ja:'プロフィール',zh:'个人资料',ar:'الملف الشخصي',tl:'Profile',th:'โปรไฟล์',vi:'Hồ sơ',ko:'프로필',es:'Perfil',pt:'Perfil',ru:'Профиль',tr:'Profil',hi:'प्रोफ़ाइल'},
+  'Logout': {en:'Logout',id:'Keluar',ms:'Log Keluar',ja:'ログアウト',zh:'退出登录',ar:'تسجيل الخروج',tl:'Mag-log out',th:'ออกจากระบบ',vi:'Đăng xuất',ko:'로그아웃',es:'Cerrar sesión',pt:'Sair',ru:'Выйти',tr:'Çıkış',hi:'लॉग आउट'},
+  'Login': {en:'Login',id:'Masuk',ms:'Log Masuk',ja:'ログイン',zh:'登录',ar:'تسجيل الدخول',tl:'Mag-login',th:'เข้าสู่ระบบ',vi:'Đăng nhập',ko:'로그인',es:'Iniciar sesión',pt:'Entrar',ru:'Войти',tr:'Giriş',hi:'लॉगिन'},
+  'Register': {en:'Register',id:'Daftar',ms:'Daftar',ja:'登録',zh:'注册',ar:'تسجيل',tl:'Magrehistro',th:'สมัครสมาชิก',vi:'Đăng ký',ko:'회원가입',es:'Registrarse',pt:'Cadastrar',ru:'Регистрация',tr:'Kayıt',hi:'पंजीकरण'},
+  'Email': {en:'Email',id:'Email',ms:'E-mel',ja:'メール',zh:'电子邮件',ar:'البريد الإلكتروني',tl:'Email',th:'อีเมล',vi:'Email',ko:'이메일',es:'Correo electrónico',pt:'E-mail',ru:'Электронная почта',tr:'E-posta',hi:'ईमेल'},
+  'Password': {en:'Password',id:'Kata Sandi',ms:'Kata Laluan',ja:'パスワード',zh:'密码',ar:'كلمة المرور',tl:'Password',th:'รหัสผ่าน',vi:'Mật khẩu',ko:'비밀번호',es:'Contraseña',pt:'Senha',ru:'Пароль',tr:'Şifre',hi:'पासवर्ड'},
+  'Username': {en:'Username',id:'Nama Pengguna',ms:'Nama Pengguna',ja:'ユーザー名',zh:'用户名',ar:'اسم المستخدم',tl:'Username',th:'ชื่อผู้ใช้',vi:'Tên người dùng',ko:'사용자 이름',es:'Nombre de usuario',pt:'Nome de usuário',ru:'Имя пользователя',tr:'Kullanıcı adı',hi:'उपयोगकर्ता नाम'},
+  'Balance': {en:'Balance',id:'Saldo',ms:'Baki',ja:'残高',zh:'余额',ar:'الرصيد',tl:'Balanse',th:'ยอดคงเหลือ',vi:'Số dư',ko:'잔액',es:'Saldo',pt:'Saldo',ru:'Баланс',tr:'Bakiye',hi:'शेष राशि'},
+  'Available Balance': {en:'Available Balance',id:'Saldo Tersedia',ms:'Baki Tersedia',ja:'利用可能残高',zh:'可用余额',ar:'الرصيد المتاح',tl:'Available na Balanse',th:'ยอดคงเหลือที่ใช้ได้',vi:'Số dư khả dụng',ko:'사용 가능 잔액',es:'Saldo disponible',pt:'Saldo disponível',ru:'Доступный баланс',tr:'Kullanılabilir bakiye',hi:'उपलब्ध शेष राशि'},
+  'Current Balance': {en:'Current Balance',id:'Saldo Saat Ini',ms:'Baki Semasa',ja:'現在の残高',zh:'当前余额',ar:'الرصيد الحالي',tl:'Kasalukuyang Balanse',th:'ยอดคงเหลือปัจจุบัน',vi:'Số dư hiện tại',ko:'현재 잔액',es:'Saldo actual',pt:'Saldo atual',ru:'Текущий баланс',tr:'Mevcut bakiye',hi:'वर्तमान शेष राशि'},
+  'Deposit': {en:'Deposit',id:'Deposit',ms:'Deposit',ja:'入金',zh:'充值',ar:'إيداع',tl:'Deposito',th:'ฝากเงิน',vi:'Nạp tiền',ko:'입금',es:'Depósito',pt:'Depósito',ru:'Пополнение',tr:'Para yatırma',hi:'जमा'},
+  'Withdraw': {en:'Withdraw',id:'Tarik',ms:'Pengeluaran',ja:'出金',zh:'提现',ar:'سحب',tl:'Mag-withdraw',th:'ถอนเงิน',vi:'Rút tiền',ko:'출금',es:'Retirar',pt:'Sacar',ru:'Вывод',tr:'Para çekme',hi:'निकासी'},
+  'History': {en:'History',id:'Riwayat',ms:'Sejarah',ja:'履歴',zh:'历史记录',ar:'السجل',tl:'Kasaysayan',th:'ประวัติ',vi:'Lịch sử',ko:'내역',es:'Historial',pt:'Histórico',ru:'История',tr:'Geçmiş',hi:'इतिहास'},
+  'Status': {en:'Status',id:'Status',ms:'Status',ja:'ステータス',zh:'状态',ar:'الحالة',tl:'Status',th:'สถานะ',vi:'Trạng thái',ko:'상태',es:'Estado',pt:'Status',ru:'Статус',tr:'Durum',hi:'स्थिति'},
+  'Active': {en:'Active',id:'Aktif',ms:'Aktif',ja:'有効',zh:'活跃',ar:'نشط',tl:'Aktibo',th:'ใช้งานอยู่',vi:'Đang hoạt động',ko:'활성',es:'Activo',pt:'Ativo',ru:'Активен',tr:'Aktif',hi:'सक्रिय'},
+  'Pending': {en:'Pending',id:'Menunggu',ms:'Menunggu',ja:'保留中',zh:'待处理',ar:'قيد الانتظار',tl:'Nakabinbin',th:'รอดำเนินการ',vi:'Đang chờ',ko:'대기 중',es:'Pendiente',pt:'Pendente',ru:'Ожидание',tr:'Beklemede',hi:'लंबित'},
+  'Success': {en:'Success',id:'Berhasil',ms:'Berjaya',ja:'成功',zh:'成功',ar:'نجاح',tl:'Tagumpay',th:'สำเร็จ',vi:'Thành công',ko:'성공',es:'Éxito',pt:'Sucesso',ru:'Успешно',tr:'Başarılı',hi:'सफल'},
+  'Failed': {en:'Failed',id:'Gagal',ms:'Gagal',ja:'失敗',zh:'失敗',ar:'فشل',tl:'Nabigo',th:'ล้มเหลว',vi:'Thất bại',ko:'실패',es:'Fallido',pt:'Falhou',ru:'Не удалось',tr:'Başarısız',hi:'विफल'},
+  'Error': {en:'Error',id:'Kesalahan',ms:'Ralat',ja:'エラー',zh:'错误',ar:'خطأ',tl:'Error',th:'ข้อผิดพลาด',vi:'Lỗi',ko:'오류',es:'Error',pt:'Erro',ru:'Ошибка',tr:'Hata',hi:'त्रुटि'},
+  'Copy': {en:'Copy',id:'Salin',ms:'Salin',ja:'コピー',zh:'复制',ar:'نسخ',tl:'Kopyahin',th:'คัดลอก',vi:'Sao chép',ko:'복사',es:'Copiar',pt:'Copiar',ru:'Копировать',tr:'Kopyala',hi:'कॉपी'},
+  'Share': {en:'Share',id:'Bagikan',ms:'Kongsi',ja:'共有',zh:'分享',ar:'مشاركة',tl:'Ibahagi',th:'แชร์',vi:'Chia sẻ',ko:'공유',es:'Compartir',pt:'Compartilhar',ru:'Поделиться',tr:'Paylaş',hi:'साझा करें'},
+  'Invite': {en:'Invite',id:'Undang',ms:'Jemput',ja:'招待',zh:'邀请',ar:'دعوة',tl:'Imbitahan',th:'เชิญ',vi:'Mời',ko:'초대',es:'Invitar',pt:'Convidar',ru:'Пригласить',tr:'Davet et',hi:'आमंत्रित करें'},
+  'Reward': {en:'Reward',id:'Hadiah',ms:'Ganjaran',ja:'報酬',zh:'奖励',ar:'مكافأة',tl:'Gantimpala',th:'รางวัล',vi:'Phần thưởng',ko:'보상',es:'Recompensa',pt:'Recompensa',ru:'Награда',tr:'Ödül',hi:'इनाम'},
+  'Bonus': {en:'Bonus',id:'Bonus',ms:'Bonus',ja:'ボーナス',zh:'奖励',ar:'مكافأة',tl:'Bonus',th:'โบนัส',vi:'Thưởng',ko:'보너스',es:'Bono',pt:'Bônus',ru:'Бонус',tr:'Bonus',hi:'बोनस'},
+  'Winner': {en:'Winner',id:'Pemenang',ms:'Pemenang',ja:'勝者',zh:'获胜者',ar:'الفائز',tl:'Nanalo',th:'ผู้ชนะ',vi:'Người chiến thắng',ko:'우승자',es:'Ganador',pt:'Vencedor',ru:'Победитель',tr:'Kazanan',hi:'विजेता'},
+  'Game': {en:'Game',id:'Game',ms:'Permainan',ja:'ゲーム',zh:'游戏',ar:'لعبة',tl:'Laro',th:'เกม',vi:'Trò chơi',ko:'게임',es:'Juego',pt:'Jogo',ru:'Игра',tr:'Oyun',hi:'गेम'},
+  'Host': {en:'Host',id:'Host',ms:'Hos',ja:'ホスト',zh:'主播',ar:'المضيف',tl:'Host',th:'โฮสต์',vi:'Host',ko:'호스트',es:'Anfitrión',pt:'Host',ru:'Хост',tr:'Sunucu',hi:'होस्ट'},
+  'Viewer': {en:'Viewer',id:'Penonton',ms:'Penonton',ja:'視聴者',zh:'观众',ar:'المشاهد',tl:'Manonood',th:'ผู้ชม',vi:'Người xem',ko:'시청자',es:'Espectador',pt:'Espectador',ru:'Зритель',tr:'İzleyici',hi:'दर्शक'},
+  'Round': {en:'Round',id:'Putaran',ms:'Pusingan',ja:'ラウンド',zh:'回合',ar:'جولة',tl:'Round',th:'รอบ',vi:'Vòng',ko:'라운드',es:'Ronda',pt:'Rodada',ru:'Раунд',tr:'Tur',hi:'राउंड'},
+  'Weekly': {en:'Weekly',id:'Mingguan',ms:'Mingguan',ja:'毎週',zh:'每周',ar:'أسبوعي',tl:'Lingguhan',th:'รายสัปดาห์',vi:'Hàng tuần',ko:'주간',es:'Semanal',pt:'Semanal',ru:'Еженедельный',tr:'Haftalık',hi:'साप्ताहिक'},
+  'Monthly': {en:'Monthly',id:'Bulanan',ms:'Bulanan',ja:'毎月',zh:'每月',ar:'شهري',tl:'Buwanan',th:'รายเดือน',vi:'Hàng tháng',ko:'월간',es:'Mensual',pt:'Mensal',ru:'Ежемесячный',tr:'Aylık',hi:'मासिक'},
+  'Daily': {en:'Daily',id:'Harian',ms:'Harian',ja:'毎日',zh:'每日',ar:'يومي',tl:'Araw-araw',th:'รายวัน',vi:'Hàng ngày',ko:'일일',es:'Diario',pt:'Diário',ru:'Ежедневный',tr:'Günlük',hi:'दैनिक'},
+  'Today': {en:'Today',id:'Hari Ini',ms:'Hari Ini',ja:'今日',zh:'今天',ar:'اليوم',tl:'Ngayon',th:'วันนี้',vi:'Hôm nay',ko:'오늘',es:'Hoy',pt:'Hoje',ru:'Сегодня',tr:'Bugün',hi:'आज'},
+  'Download': {en:'Download',id:'Unduh',ms:'Muat Turun',ja:'ダウンロード',zh:'下载',ar:'تنزيل',tl:'I-download',th:'ดาวน์โหลด',vi:'Tải xuống',ko:'다운로드',es:'Descargar',pt:'Baixar',ru:'Скачать',tr:'İndir',hi:'डाउनलोड'},
+  'Upload': {en:'Upload',id:'Unggah',ms:'Muat Naik',ja:'アップロード',zh:'上传',ar:'رفع',tl:'I-upload',th:'อัปโหลด',vi:'Tải lên',ko:'업로드',es:'Subir',pt:'Carregar',ru:'Загрузить',tr:'Yükle',hi:'अपलोड'},
+  'Refresh': {en:'Refresh',id:'Segarkan',ms:'Muat Semula',ja:'更新',zh:'刷新',ar:'تحديث',tl:'I-refresh',th:'รีเฟรช',vi:'Làm mới',ko:'새로고침',es:'Actualizar',pt:'Actualizar',ru:'Обновить',tr:'Yenile',hi:'रीफ़्रेश'},
+  'Start': {en:'Start',id:'Mulai',ms:'Mula',ja:'開始',zh:'开始',ar:'بدء',tl:'Magsimula',th:'เริ่ม',vi:'Bắt đầu',ko:'시작',es:'Iniciar',pt:'Iniciar',ru:'Начать',tr:'Başlat',hi:'शुरू करें'},
+  'Stop': {en:'Stop',id:'Berhenti',ms:'Berhenti',ja:'停止',zh:'停止',ar:'إيقاف',tl:'Itigil',th:'หยุด',vi:'Dừng',ko:'중지',es:'Detener',pt:'Parar',ru:'Остановить',tr:'Durdur',hi:'रोकें'},
+  'Play': {en:'Play',id:'Putar',ms:'Mainkan',ja:'再生',zh:'播放',ar:'تشغيل',tl:'I-play',th:'เล่น',vi:'Phát',ko:'재생',es:'Reproducir',pt:'Reproduzir',ru:'Воспроизвести',tr:'Oynat',hi:'चलाएं'},
+  'Pause': {en:'Pause',id:'Jeda',ms:'Jeda',ja:'一時停止',zh:'暂停',ar:'إيقاف مؤقت',tl:'I-pause',th:'หยุดชั่วคราว',vi:'Tạm dừng',ko:'일시정지',es:'Pausar',pt:'Pausar',ru:'Пауза',tr:'Duraklat',hi:'रोकें'},
+  'Spin': {en:'Spin',id:'Putar',ms:'Pusing',ja:'スピン',zh:'旋转',ar:'تدوير',tl:'Paikutin',th:'หมุน',vi:'Quay',ko:'돌리기',es:'Girar',pt:'Girar',ru:'Крутить',tr:'Çevir',hi:'घुमाएँ'},
+  'Lock': {en:'Lock',id:'Kunci',ms:'Kunci',ja:'ロック',zh:'锁定',ar:'قفل',tl:'I-lock',th:'ล็อก',vi:'Khóa',ko:'잠금',es:'Bloquear',pt:'Bloquear',ru:'Заблокировать',tr:'Kilitle',hi:'लॉक'},
+  'Unlock': {en:'Unlock',id:'Buka Kunci',ms:'Buka Kunci',ja:'ロック解除',zh:'解锁',ar:'فتح القفل',tl:'I-unlock',th:'ปลดล็อก',vi:'Mở khóa',ko:'잠금 해제',es:'Desbloquear',pt:'Desbloquear',ru:'Разблокировать',tr:'Kilidi aç',hi:'अनलॉक'},
+  'Claim': {en:'Claim',id:'Klaim',ms:'Tuntut',ja:'受け取る',zh:'领取',ar:'استلام',tl:'Kunin',th:'รับรางวัล',vi:'Nhận',ko:'받기',es:'Reclamar',pt:'Resgatar',ru:'Получить',tr:'Al',hi:'प्राप्त करें'},
+  'Amount': {en:'Amount',id:'Nominal',ms:'Jumlah',ja:'金額',zh:'金额',ar:'المبلغ',tl:'Halaga',th:'จำนวนเงิน',vi:'Số tiền',ko:'금액',es:'Importe',pt:'Valor',ru:'Сумма',tr:'Tutar',hi:'राशि'},
+  'Duration': {en:'Duration',id:'Durasi',ms:'Tempoh',ja:'期間',zh:'时长',ar:'المدة',tl:'Tagal',th:'ระยะเวลา',vi:'Thời lượng',ko:'기간',es:'Duración',pt:'Duração',ru:'Продолжительность',tr:'Süre',hi:'अवधि'},
+  'Language': {en:'Language',id:'Bahasa',ms:'Bahasa',ja:'言語',zh:'语言',ar:'اللغة',tl:'Wika',th:'ภาษา',vi:'Ngôn ngữ',ko:'언어',es:'Idioma',pt:'Idioma',ru:'Язык',tr:'Dil',hi:'भाषा'},
+  'Country': {en:'Country',id:'Negara',ms:'Negara',ja:'国',zh:'国家',ar:'البلد',tl:'Bansa',th:'ประเทศ',vi:'Quốc gia',ko:'국가',es:'País',pt:'País',ru:'Страна',tr:'Ülke',hi:'देश'},
+  'Referral': {en:'Referral',id:'Referral',ms:'Rujukan',ja:'紹介',zh:'推荐',ar:'إحالة',tl:'Referral',th:'การแนะนำ',vi:'Giới thiệu',ko:'추천',es:'Referido',pt:'Indicação',ru:'Реферал',tr:'Referans',hi:'रेफरल'},
+  'Commission': {en:'Commission',id:'Komisi',ms:'Komisen',ja:'コミッション',zh:'佣金',ar:'العمولة',tl:'Komisyon',th:'ค่าคอมมิชชัน',vi:'Hoa hồng',ko:'수수료',es:'Comisión',pt:'Comissão',ru:'Комиссия',tr:'Komisyon',hi:'कमीशन'},
+  'Leaderboard': {en:'Leaderboard',id:'Papan Peringkat',ms:'Papan Pendahulu',ja:'ランキング',zh:'排行榜',ar:'لوحة المتصدرين',tl:'Leaderboard',th:'กระดานผู้นำ',vi:'Bảng xếp hạng',ko:'리더보드',es:'Clasificación',pt:'Ranking',ru:'Таблица лидеров',tr:'Liderlik tablosu',hi:'लीडरबोर्ड'},
+  'Live': {en:'Live',id:'Live',ms:'Siaran Langsung',ja:'ライブ',zh:'直播',ar:'مباشر',tl:'Live',th:'ไลฟ์',vi:'Trực tiếp',ko:'라이브',es:'En vivo',pt:'Ao vivo',ru:'В эфире',tr:'Canlı',hi:'लाइव'},
+  'Stream': {en:'Stream',id:'Siaran',ms:'Strim',ja:'配信',zh:'直播',ar:'بث',tl:'Stream',th:'สตรีม',vi:'Luồng phát',ko:'스트림',es:'Stream',pt:'Transmissão',ru:'Стрим',tr:'Yayın',hi:'स्ट्रीम'},
+  'Users': {en:'Users',id:'Pengguna',ms:'Pengguna',ja:'ユーザー',zh:'用户',ar:'المستخدمون',tl:'Mga User',th:'ผู้ใช้',vi:'Người dùng',ko:'사용자',es:'Usuarios',pt:'Usuários',ru:'Пользователи',tr:'Kullanıcılar',hi:'उपयोगकर्ता'},
+  'Admin': {en:'Admin',id:'Admin',ms:'Pentadbir',ja:'管理者',zh:'管理员',ar:'المسؤول',tl:'Admin',th:'ผู้ดูแลระบบ',vi:'Quản trị viên',ko:'관리자',es:'Administrador',pt:'Administrador',ru:'Администратор',tr:'Yönetici',hi:'व्यवस्थापक'},
+  'Owner': {en:'Owner',id:'Owner',ms:'Pemilik',ja:'オーナー',zh:'所有者',ar:'المالك',tl:'May-ari',th:'เจ้าของ',vi:'Chủ sở hữu',ko:'소유자',es:'Propietario',pt:'Proprietário',ru:'Владелец',tr:'Sahip',hi:'मालिक'},
+  'Account': {en:'Account',id:'Akun',ms:'Akaun',ja:'アカウント',zh:'账户',ar:'الحساب',tl:'Account',th:'บัญชี',vi:'Tài khoản',ko:'계정',es:'Cuenta',pt:'Conta',ru:'Аккаунт',tr:'Hesap',hi:'खाता'},
+  'Notification': {en:'Notification',id:'Notifikasi',ms:'Pemberitahuan',ja:'通知',zh:'通知',ar:'الإشعار',tl:'Abiso',th:'การแจ้งเตือน',vi:'Thông báo',ko:'알림',es:'Notificación',pt:'Notificação',ru:'Уведомление',tr:'Bildirim',hi:'सूचना'},
+  'No data': {en:'No data',id:'Tidak ada data',ms:'Tiada data',ja:'データなし',zh:'暂无数据',ar:'لا توجد بيانات',tl:'Walang data',th:'ไม่มีข้อมูล',vi:'Không có dữ liệu',ko:'데이터 없음',es:'Sin datos',pt:'Sem dados',ru:'Нет данных',tr:'Veri yok',hi:'कोई डेटा नहीं'},
+  'No results': {en:'No results',id:'Tidak ada hasil',ms:'Tiada hasil',ja:'結果なし',zh:'无结果',ar:'لا توجد نتائج',tl:'Walang resulta',th:'ไม่พบผลลัพธ์',vi:'Không có kết quả',ko:'결과 없음',es:'Sin resultados',pt:'Sem resultados',ru:'Нет результатов',tr:'Sonuç yok',hi:'कोई परिणाम नहीं'},
+  'Welcome': {en:'Welcome',id:'Selamat Datang',ms:'Selamat Datang',ja:'ようこそ',zh:'欢迎',ar:'مرحبًا',tl:'Maligayang pagdating',th:'ยินดีต้อนรับ',vi:'Chào mừng',ko:'환영합니다',es:'Bienvenido',pt:'Bem-vindo',ru:'Добро пожаловать',tr:'Hoş geldiniz',hi:'स्वागत है'},
+  'Choose': {en:'Choose',id:'Pilih',ms:'Pilih',ja:'選択',zh:'选择',ar:'اختر',tl:'Pumili',th:'เลือก',vi:'Chọn',ko:'선택',es:'Elegir',pt:'Escolher',ru:'Выбрать',tr:'Seç',hi:'चुनें'},
+  'Select': {en:'Select',id:'Pilih',ms:'Pilih',ja:'選択',zh:'选择',ar:'تحديد',tl:'Piliin',th:'เลือก',vi:'Chọn',ko:'선택',es:'Seleccionar',pt:'Selecionar',ru:'Выбрать',tr:'Seç',hi:'चुनें'},
+  'Enter': {en:'Enter',id:'Masukkan',ms:'Masukkan',ja:'入力',zh:'输入',ar:'أدخل',tl:'Ilagay',th:'ป้อน',vi:'Nhập',ko:'입력',es:'Introducir',pt:'Inserir',ru:'Введите',tr:'Gir',hi:'दर्ज करें'},
+  'Required': {en:'Required',id:'Wajib',ms:'Diperlukan',ja:'必須',zh:'必填',ar:'مطلوب',tl:'Kinakailangan',th:'จำเป็น',vi:'Bắt buộc',ko:'필수',es:'Obligatorio',pt:'Obrigatório',ru:'Обязательно',tr:'Gerekli',hi:'आवश्यक'},
+  'Optional': {en:'Optional',id:'Opsional',ms:'Pilihan',ja:'任意',zh:'可选',ar:'اختياري',tl:'Opsyonal',th:'ไม่บังคับ',vi:'Tùy chọn',ko:'선택 사항',es:'Opcional',pt:'Opcional',ru:'Необязательно',tr:'İsteğe bağlı',hi:'वैकल्पिक'},
+};
+
 const globalTextSources = new WeakMap<Text, string>();
 const globalAttributeSources = new WeakMap<Element, Record<string, string>>();
 
@@ -479,7 +550,7 @@ function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
     });
   });
 
-  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
+  Object.entries(LEGACY_COMMON_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {\n    const translated = translationsByLanguage[targetLanguage];\n    if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);\n  });\n\n  Object.entries(LEGACY_UI_TRANSLATIONS).forEach(([sourceText, translationsByLanguage]) => {
     const translated = translationsByLanguage[targetLanguage];
     if (translated && translated !== sourceText && !map.has(sourceText)) map.set(sourceText, translated);
   });
