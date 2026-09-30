@@ -7,6 +7,22 @@ export interface AuthUser {
   role: 'OWNER' | 'ADMIN' | 'USER';
   balance?: number;
   isBlacklisted?: boolean;
+  displayName?: string;
+  photoURL?: string;
+  referralCode?: string;
+  referralCount?: number;
+  saldo?: number;
+  walletBalance?: number;
+  lockedSaldo?: number;
+  affiliateEarnings?: number;
+  affiliateWithdrawn?: number;
+  isSubscribed?: boolean;
+  subscriptionPlan?: string;
+  subscriptionExpiresAt?: string;
+  isLifetime?: boolean;
+  isBanned?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthResponse {
