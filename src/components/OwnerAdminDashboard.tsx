@@ -14,8 +14,7 @@ import {
   getMemberBadge
 } from '../utils/memberBadge';
 import {
-  db,
-  subscribeToAllUsers,
+    subscribeToAllUsers,
   subscribeToAdmins,
   addAdminAccount,
   removeAdminAccount,
