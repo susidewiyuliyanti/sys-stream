@@ -366,9 +366,29 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         onUpdateWalletBalance?.(latestBalance);
       }
 
-      setActiveDeposit(data.activeDeposit);
-      setDepositTier(data.depositTier || (data.activeDeposit ? getClientTierDetails(data.activeDeposit.amount) : null));
-      setAllDeposits(data.allDeposits || []);
+      // Cloudflare may return snake_case deposit fields; normalize them once
+      // so the Blind Box UI always works with the shared camelCase contract.
+      const normalizeDeposit = (deposit: any) => {
+        if (!deposit) return null;
+        return {
+          ...deposit,
+          depositCode: deposit.depositCode ?? deposit.deposit_code,
+          durationDays: Number(deposit.durationDays ?? deposit.duration_days ?? 0),
+          startDate: deposit.startDate ?? deposit.start_date,
+          endDate: deposit.endDate ?? deposit.end_date,
+          totalClaimed: Number(deposit.totalClaimed ?? deposit.total_claimed ?? 0),
+          forceJackpot: Boolean(deposit.forceJackpot ?? deposit.force_jackpot),
+          createdAt: deposit.createdAt ?? deposit.created_at,
+          amount: Number(deposit.amount ?? 0),
+        };
+      };
+
+      const normalizedActiveDeposit = normalizeDeposit(data.activeDeposit);
+      const normalizedAllDeposits = (data.allDeposits || []).map(normalizeDeposit);
+
+      setActiveDeposit(normalizedActiveDeposit);
+      setDepositTier(data.depositTier || (normalizedActiveDeposit ? getClientTierDetails(normalizedActiveDeposit.amount) : null));
+      setAllDeposits(normalizedAllDeposits);
       setHasClaimedToday(data.hasClaimedToday);
       setTodayClaimData(data.todayClaimData);
       setRecentClaims(data.recentClaims || []);
