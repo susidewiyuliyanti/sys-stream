@@ -48,7 +48,7 @@ export const authenticateToken = async (
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(403).json({ error: 'Login session expired or token invalid.' });
+    return res.status(401).json({ error: 'Login session expired or token invalid.' });
   }
 };
 
@@ -57,8 +57,19 @@ export const requireAdmin = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.user || req.user.role !== 'ADMIN') {
+  if (!req.user || (req.user.role !== 'ADMIN' && req.user.role !== 'OWNER')) {
     return res.status(403).json({ error: 'Access denied: This feature is only for Owner / Admin.' });
+  }
+  next();
+};
+
+export const requireOwner = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user || req.user.role !== 'OWNER') {
+    return res.status(403).json({ error: 'Access denied: This feature is only for Owner.' });
   }
   next();
 };

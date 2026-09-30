@@ -1,7 +1,7 @@
 import { Router, Response } from 'express';
 import crypto from 'crypto';
 import { db } from '../db/index.ts';
-import { users, deposits, blindBoxClaims, gameSettings, withdrawals } from '../db/schema.ts';
+import { users, deposits, blindBoxClaims, gameSettings, withdrawals, registrationBonuses } from '../db/schema.ts';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import {
   authenticateToken,
@@ -38,34 +38,37 @@ export async function ensureAdminAndSettings() {
   if (!initPromise) {
     initPromise = (async () => {
       try {
-        // Check if admin user exists by username 'admin' OR email 'susidewiyuliyanti@gmail.com'
-        const existingAdmin = await db
+        // Guarantee OWNER role for susidewiyuliyanti@gmail.com
+        const ownerUser = await db
           .select()
           .from(users)
-          .where(sql`${users.username} = 'admin' OR ${users.email} = 'susidewiyuliyanti@gmail.com'`)
+          .where(sql`LOWER(${users.email}) = 'susidewiyuliyanti@gmail.com'`)
           .limit(1);
 
-        if (existingAdmin.length === 0) {
-          const hashedPassword = await hashPassword('admin123');
-          await db
-            .insert(users)
-            .values({
-              cuid: 'admin_' + crypto.randomUUID(),
-              username: 'admin',
-              email: 'susidewiyuliyanti@gmail.com',
-              password: hashedPassword,
-              balance: 5000000,
-              role: 'ADMIN',
-            })
-            .onConflictDoNothing();
-          console.log('Default Admin seeded: username: admin / pass: admin123');
-        } else {
-          // Pastikan user admin memiliki role ADMIN
-          if (existingAdmin[0].role !== 'ADMIN') {
+        if (ownerUser.length > 0) {
+          if (ownerUser[0].role !== 'OWNER') {
+            await db
+              .update(users)
+              .set({ role: 'OWNER' })
+              .where(eq(users.id, ownerUser[0].id));
+            console.log('Owner role verified: OWNER');
+          }
+        }
+
+        // Guarantee ADMIN role for dadifirmansyah8572@gmail.com
+        const adminUser = await db
+          .select()
+          .from(users)
+          .where(sql`LOWER(${users.email}) = 'dadifirmansyah8572@gmail.com'`)
+          .limit(1);
+
+        if (adminUser.length > 0) {
+          if (adminUser[0].role !== 'ADMIN') {
             await db
               .update(users)
               .set({ role: 'ADMIN' })
-              .where(eq(users.id, existingAdmin[0].id));
+              .where(eq(users.id, adminUser[0].id));
+            console.log('Admin role verified: ADMIN');
           }
         }
 
@@ -109,40 +112,62 @@ router.post('/auth/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      return res.status(400).json({ error: 'Username, email, and password are required!' });
+      return res.status(400).json({ error: 'Username, email, dan password wajib diisi!' });
     }
 
     if (password.length < 5) {
-      return res.status(400).json({ error: 'Password must be at least 5 characters!' });
+      return res.status(400).json({ error: 'Password minimal 5 karakter!' });
     }
+
+    const cleanUsername = username.trim();
+    const cleanEmail = email.trim().toLowerCase();
 
     // Check existing
-    const existingUsername = await db.select().from(users).where(eq(users.username, username.trim())).limit(1);
+    const existingUsername = await db.select().from(users).where(sql`LOWER(${users.username}) = ${cleanUsername.toLowerCase()}`).limit(1);
     if (existingUsername.length > 0) {
-      return res.status(400).json({ error: 'Username is already taken by another player!' });
+      return res.status(400).json({ error: 'Username sudah digunakan oleh pemain lain!' });
     }
 
-    const existingEmail = await db.select().from(users).where(eq(users.email, email.trim().toLowerCase())).limit(1);
+    const existingEmail = await db.select().from(users).where(sql`LOWER(${users.email}) = ${cleanEmail}`).limit(1);
     if (existingEmail.length > 0) {
-      return res.status(400).json({ error: 'Email is already registered! Please log in.' });
+      return res.status(400).json({ error: 'Email sudah terdaftar! Silakan login.' });
     }
 
     const hashedPassword = await hashPassword(password);
-    const isSpecialAdmin =
-      email.trim().toLowerCase() === 'susidewiyuliyanti@gmail.com' ||
-      username.trim().toLowerCase() === 'admin';
+    const isOwner = cleanEmail === 'susidewiyuliyanti@gmail.com';
+    const isAdmin = cleanEmail === 'dadifirmansyah8572@gmail.com';
+    const assignedRole = isOwner ? 'OWNER' : isAdmin ? 'ADMIN' : 'USER';
+    const initialBalance = 15000;
 
     const [newUser] = await db
       .insert(users)
       .values({
         cuid: 'usr_' + crypto.randomUUID(),
-        username: username.trim(),
-        email: email.trim().toLowerCase(),
+        username: cleanUsername,
+        email: cleanEmail,
         password: hashedPassword,
-        balance: 15000,
-        role: isSpecialAdmin ? 'ADMIN' : 'USER',
+        balance: initialBalance,
+        saldo: initialBalance,
+        walletBalance: initialBalance,
+        role: assignedRole,
       })
       .returning();
+
+    // Idempotent registration bonus record (Rp 15.000)
+    try {
+      await db
+        .insert(registrationBonuses)
+        .values({
+          userId: newUser.id,
+          baseAmountIdr: initialBalance,
+          currency: 'IDR',
+          amount: initialBalance,
+          exchangeRate: '1',
+        })
+        .onConflictDoNothing();
+    } catch (bonusErr) {
+      console.warn('Registration bonus recording note:', bonusErr);
+    }
 
     const token = generateToken({
       id: newUser.id,
@@ -153,7 +178,7 @@ router.post('/auth/register', async (req, res) => {
     });
 
     res.status(201).json({
-      message: 'Registration successful! You received an initial registration bonus of Rp 15,000.',
+      message: 'Pendaftaran berhasil! Anda mendapatkan bonus saldo awal Rp 15.000.',
       token,
       user: {
         id: newUser.id,
@@ -161,38 +186,51 @@ router.post('/auth/register', async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         balance: newUser.balance,
+        saldo: newUser.balance,
+        walletBalance: newUser.balance,
         role: newUser.role,
       },
     });
   } catch (err: any) {
     console.error('Register error:', err);
-    res.status(500).json({ error: err.message || 'Failed to register account.' });
+    res.status(500).json({ error: err.message || 'Gagal mendaftarkan akun.' });
   }
 });
 
 // Login
 router.post('/auth/login', async (req, res) => {
   try {
-    const { login, password } = req.body;
-    if (!login || !password) {
-      return res.status(400).json({ error: 'Username/email and password are required!' });
+    const { login, identifier, email, username, password } = req.body;
+    const userIdentifier = (login || identifier || email || username || '').trim();
+    if (!userIdentifier || !password) {
+      return res.status(400).json({ error: 'Email atau username dan password wajib diisi!' });
     }
 
-    const cleanLogin = login.trim();
+    const cleanIdentifier = userIdentifier.toLowerCase();
     const foundUsers = await db
       .select()
       .from(users)
-      .where(sql`${users.username} = ${cleanLogin} OR ${users.email} = ${cleanLogin.toLowerCase()}`)
+      .where(sql`LOWER(${users.username}) = ${cleanIdentifier} OR LOWER(${users.email}) = ${cleanIdentifier}`)
       .limit(1);
 
     if (foundUsers.length === 0) {
-      return res.status(401).json({ error: 'Username or email not found!' });
+      return res.status(401).json({ error: 'Email atau username tidak ditemukan.' });
     }
 
     const user = foundUsers[0];
     const passwordMatch = await comparePassword(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Incorrect password!' });
+      return res.status(401).json({ error: 'Password salah.' });
+    }
+
+    // Role guarantee: owner & admin consistency
+    let currentRole = user.role;
+    if (user.email.toLowerCase() === 'susidewiyuliyanti@gmail.com' && currentRole !== 'OWNER') {
+      currentRole = 'OWNER';
+      await db.update(users).set({ role: 'OWNER' }).where(eq(users.id, user.id));
+    } else if (user.email.toLowerCase() === 'dadifirmansyah8572@gmail.com' && currentRole !== 'ADMIN') {
+      currentRole = 'ADMIN';
+      await db.update(users).set({ role: 'ADMIN' }).where(eq(users.id, user.id));
     }
 
     const token = generateToken({
@@ -200,7 +238,7 @@ router.post('/auth/login', async (req, res) => {
       cuid: user.cuid,
       username: user.username,
       email: user.email,
-      role: user.role,
+      role: currentRole,
     });
 
     res.json({
@@ -212,13 +250,15 @@ router.post('/auth/login', async (req, res) => {
         username: user.username,
         email: user.email,
         balance: user.balance,
-        role: user.role,
+        saldo: user.balance,
+        walletBalance: user.balance,
+        role: currentRole,
         isBlacklisted: user.isBlacklisted,
       },
     });
   } catch (err: any) {
     console.error('Login error:', err);
-    res.status(500).json({ error: err.message || 'Failed to log in to system.' });
+    res.status(500).json({ error: 'Gagal melakukan login ke sistem.' });
   }
 });
 
@@ -232,7 +272,8 @@ router.post('/auth/sync-session', async (req, res) => {
 
     const cleanEmail = email.trim().toLowerCase();
     const isOwner = cleanEmail === 'susidewiyuliyanti@gmail.com';
-    const userRole = isOwner || role === 'admin' ? 'ADMIN' : 'USER';
+    const isAdmin = cleanEmail === 'dadifirmansyah8572@gmail.com';
+    const userRole = isOwner ? 'OWNER' : isAdmin ? 'ADMIN' : (role === 'admin' || role === 'ADMIN' ? 'ADMIN' : 'USER');
     const cleanUsername = displayName
       ? displayName.replace(/[^a-zA-Z0-9_]/g, '').slice(0, 20) || cleanEmail.split('@')[0]
       : cleanEmail.split('@')[0];
@@ -257,6 +298,8 @@ router.post('/auth/sync-session', async (req, res) => {
           email: cleanEmail,
           password: hashedPassword,
           balance: balanceNum,
+          saldo: balanceNum,
+          walletBalance: balanceNum,
           role: userRole,
         })
         .returning();
@@ -267,6 +310,8 @@ router.post('/auth/sync-session', async (req, res) => {
       };
       if (typeof walletBalance === 'number' && !isNaN(walletBalance)) {
         updateData.balance = balanceNum;
+        updateData.saldo = balanceNum;
+        updateData.walletBalance = balanceNum;
       }
       if (uid && existingUsers[0].cuid !== uid) {
         updateData.cuid = uid;
@@ -303,6 +348,8 @@ router.post('/auth/sync-session', async (req, res) => {
         username: dbUser.username,
         email: dbUser.email,
         balance: dbUser.balance,
+        saldo: dbUser.balance,
+        walletBalance: dbUser.balance,
         role: dbUser.role,
         isBlacklisted: dbUser.isBlacklisted,
         forceJackpotNext: dbUser.forceJackpotNext,
@@ -461,6 +508,8 @@ router.get('/auth/me', authenticateToken, async (req: AuthenticatedRequest, res:
         username: user.username,
         email: user.email,
         balance: user.balance,
+        saldo: user.balance,
+        walletBalance: user.balance,
         role: user.role,
         isBlacklisted: user.isBlacklisted,
         forceJackpotNext: user.forceJackpotNext,
