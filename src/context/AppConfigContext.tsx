@@ -4,7 +4,8 @@ import {
   COUNTRIES_CONFIG,
   getCountryByCode,
   formatCurrencyAmount,
-  translate
+  translate,
+  installGlobalTranslationObserver
 } from '../services/i18n';
 import { sound, SOUND_THEMES } from '../services/sound';
 
@@ -55,6 +56,16 @@ export const AppConfigProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return 'id'; // Default Bahasa Indonesia
   });
 
+  // Global i18n safety net: translate legacy/hard-coded UI text as soon as the selected language changes.
+  useEffect(() => {
+    const cleanLanguage = (languageCode || country.languageCode || 'id').toLowerCase().split('-')[0];
+
+    document.documentElement.lang = cleanLanguage;
+    document.documentElement.dir = cleanLanguage === 'ar' ? 'rtl' : 'ltr';
+
+    return installGlobalTranslationObserver(cleanLanguage);
+  }, [languageCode, country.languageCode]);
+
   // Sound Theme State
   const [soundTheme, setSoundThemeState] = useState<SoundTheme>(() => sound.getTheme());
 
@@ -62,6 +73,7 @@ export const AppConfigProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const nextCountry = getCountryByCode(code);
     setCountry(nextCountry);
     setLanguageCodeState(nextCountry.languageCode);
+
     try {
       localStorage.setItem('ls_country_code', nextCountry.code);
       localStorage.setItem('ls_language_code', nextCountry.languageCode);
