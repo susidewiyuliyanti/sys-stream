@@ -378,8 +378,8 @@ function normalizeTranslationText(value: string): string {
   return value
     .toLowerCase()
     .replace(/[0-9]+(?:[.,][0-9]+)*/g, '#')
-    .replace(/[^\\p{L}#]+/gu, ' ')
-    .replace(/\\s+/g, ' ')
+    .replace(/[^\p{L}#]+/gu, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
