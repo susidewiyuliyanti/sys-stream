@@ -5,7 +5,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const auth = await requireAuth(context.request, context.env);
 
-    if (!auth.ok) {
+    if (auth.ok === false) {
       return auth.response;
     }
 
