@@ -569,11 +569,16 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         throw new Error(data.error || 'Gagal membuat deposit.');
       }
 
-      // Synchronize with Firestore and App unified wallet
-      if (userProfile?.uid && (data.remainingBalance !== undefined || data.remainingSaldo !== undefined)) {
+      // Synchronize the unified wallet immediately after a successful lock.
+      const syncedRemainingBalance = Number(data.remainingBalance ?? data.remainingSaldo ?? 0);
+      const syncedLockedBalance = Number(data.lockedBalance ?? currentUser?.lockedBalance ?? 0);
+
+      if (userProfile?.uid && Number.isFinite(syncedRemainingBalance)) {
         try {
-          const syncedRemainingBalance = Number(data.remainingBalance ?? data.remainingSaldo ?? 0);
-          await updateUserProfile(userProfile.uid, { walletBalance: syncedRemainingBalance, saldo: syncedRemainingBalance });
+          await updateUserProfile(userProfile.uid, {
+            walletBalance: syncedRemainingBalance,
+            saldo: syncedRemainingBalance,
+          });
           await createTransactionOrder({
             orderId: `DEP-LOCK-${Date.now().toString(36).toUpperCase()}`,
             userId: userProfile.uid,
@@ -591,8 +596,18 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         } catch (e) {
           console.warn('Error updating Firestore wallet on deposit:', e);
         }
-        onUpdateWalletBalance?.(syncedRemainingBalance);
       }
+
+      setCurrentUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              balance: syncedRemainingBalance,
+              lockedBalance: syncedLockedBalance,
+            }
+          : prev
+      );
+      onUpdateWalletBalance?.(syncedRemainingBalance);
 
       showToast(
         'success',
