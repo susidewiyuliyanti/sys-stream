@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Sliders,
@@ -98,11 +98,11 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
     try {
       const res = await approvePendingDeposit(order.id || order.orderId, currentUserEmail);
       if (res?.success) {
-        setApprovalMessage(`✅ Deposit ${order.orderId} of ${formatCurrency(order.price)} successfully approved! User balance updated to ${formatCurrency(res.newTargetBalance)}.`);
+        setApprovalMessage(`âœ… Deposit ${order.orderId} of ${formatCurrency(order.price)} successfully approved! User balance updated to ${formatCurrency(res.newTargetBalance)}.`);
         onRefreshUser();
       }
     } catch (err: any) {
-      setApprovalMessage(`❌ Failed: ${err.message || 'An error occurred while approving deposit.'}`);
+      setApprovalMessage(`âŒ Failed: ${err.message || 'An error occurred while approving deposit.'}`);
     } finally {
       setIsProcessingApproval(null);
       setTimeout(() => setApprovalMessage(null), 5000);
@@ -118,7 +118,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
         setApprovalMessage(`Deposit ${order.orderId} has been rejected.`);
       }
     } catch (err: any) {
-      setApprovalMessage(`❌ Failed: ${err.message || 'An error occurred while rejecting deposit.'}`);
+      setApprovalMessage(`âŒ Failed: ${err.message || 'An error occurred while rejecting deposit.'}`);
     } finally {
       setIsProcessingApproval(null);
       setTimeout(() => setApprovalMessage(null), 5000);
@@ -382,7 +382,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
   return (
     <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 text-white space-y-6">
       {/* Top Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4 p-4 rounded-2xl bg-neutral-900/80 border border-amber-500/30 backdrop-blur-md">
+      <div className="flex items-center justify-between flex-wrap gap-4 p-4 rounded-2xl bg-neutral-900 border border-white/10 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
@@ -499,7 +499,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
             activeTab === 'approvals'
               ? 'bg-rose-500 text-white font-extrabold shadow'
-              : 'bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25'
+              : 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25'
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
@@ -517,7 +517,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <form
             onSubmit={handleSaveSettings}
-            className="p-6 rounded-2xl bg-neutral-900/80 border border-amber-500/30 space-y-5"
+            className="p-6 rounded-2xl bg-neutral-900 border border-white/10 space-y-5"
           >
             <h3 className="text-base font-black text-amber-300 flex items-center gap-2">
               <Sliders className="w-4 h-4 text-amber-400" />
@@ -545,12 +545,12 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
             </div>
 
             {/* Jackpot Chance Slider (1/50 s/d 1/1000) */}
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-3">
+            <div className="p-4 rounded-xl bg-neutral-950 border border-white/10 space-y-3">
               <div className="flex justify-between items-center">
                 <label className="text-xs font-bold text-white/80">
                   Natural Jackpot Chance (Slider 1:50 to 1:1000)
                 </label>
-                <span className="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-black">
+                <span className="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-white/10 text-amber-300 font-mono text-xs font-black">
                   1 in {settings.jackpotChance} ({(100 / settings.jackpotChance).toFixed(2)}%)
                 </span>
               </div>
@@ -613,7 +613,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
           </form>
 
           {/* Guidelines info */}
-          <div className="p-6 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-4">
+          <div className="p-6 rounded-2xl bg-neutral-900 border border-white/10 space-y-4">
             <h3 className="text-base font-black text-white flex items-center gap-2">
               <Crown className="w-4 h-4 text-yellow-400" />
               <span>Owner Control Guide</span>
@@ -656,7 +656,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
         return (
           <div className="space-y-6">
             {/* Header section */}
-            <div className="p-5 rounded-2xl bg-neutral-900/80 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl bg-neutral-900 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-base sm:text-lg font-black text-amber-300 flex items-center gap-2">
                   <Users className="w-5 h-5 text-amber-400" />
@@ -668,7 +668,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold">
+                <span className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-white/10 text-amber-300 font-mono text-xs font-bold">
                   Total {depositsList.length} User Terkunci
                 </span>
                 <button
@@ -690,13 +690,13 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 30
                     ? 'bg-slate-800/90 border-slate-300 ring-2 ring-slate-300/40 shadow-lg shadow-slate-500/10'
-                    : 'bg-neutral-900/80 border-white/10 hover:border-slate-400/40'
+                    : 'bg-neutral-900 border-white/10 hover:border-slate-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-slate-400/20 text-slate-200 border border-slate-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>🥉 Group 1</span>
-                    <span>•</span>
+                    <span>ðŸ¥‰ Group 1</span>
+                    <span>â€¢</span>
                     <span>Lock 30 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-slate-300 font-mono">
@@ -712,7 +712,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     {group30.filter((d) => d.status === 'ACTIVE').length} Aktif
                   </span>
                 </div>
-                <div className="mt-2 text-[10px] text-slate-400 bg-slate-900/50 p-2 rounded-lg border border-slate-700/50">
+                <div className="mt-2 text-[10px] text-slate-400 bg-neutral-950 p-2 rounded-lg border border-white/10">
                   Kriteria: Saldo lock Rp 1.000.000 dapat 3 Box Silver harian.
                 </div>
               </div>
@@ -723,13 +723,13 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 60
                     ? 'bg-cyan-950/80 border-cyan-400 ring-2 ring-cyan-400/40 shadow-lg shadow-cyan-500/10'
-                    : 'bg-neutral-900/80 border-white/10 hover:border-cyan-400/40'
+                    : 'bg-neutral-900 border-white/10 hover:border-cyan-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-cyan-400/20 text-cyan-200 border border-cyan-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>🥈 Group 2</span>
-                    <span>•</span>
+                    <span>ðŸ¥ˆ Group 2</span>
+                    <span>â€¢</span>
                     <span>Lock 60 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-cyan-300 font-mono">
@@ -745,7 +745,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     {group60.filter((d) => d.status === 'ACTIVE').length} Aktif
                   </span>
                 </div>
-                <div className="mt-2 text-[10px] text-cyan-300/80 bg-cyan-950/40 p-2 rounded-lg border border-cyan-800/40">
+                <div className="mt-2 text-[10px] text-cyan-300/80 bg-cyan-950/25 p-2 rounded-lg border border-cyan-500/20">
                   Kriteria: Saldo lock Rp 2.500.000 dapat 5 Box Platinum harian.
                 </div>
               </div>
@@ -756,13 +756,13 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                   selectedLockDurationGroup === 90
                     ? 'bg-amber-950/80 border-amber-400 ring-2 ring-amber-400/40 shadow-lg shadow-amber-500/10'
-                    : 'bg-neutral-900/80 border-white/10 hover:border-amber-400/40'
+                    : 'bg-neutral-900 border-white/10 hover:border-amber-400/40'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30 text-[10px] font-black uppercase flex items-center gap-1">
-                    <span>🥇 Group 3</span>
-                    <span>•</span>
+                    <span>ðŸ¥‡ Group 3</span>
+                    <span>â€¢</span>
                     <span>Lock 90 Hari</span>
                   </span>
                   <span className="text-[11px] font-bold text-amber-300 font-mono">
@@ -778,7 +778,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     {group90.filter((d) => d.status === 'ACTIVE').length} Aktif
                   </span>
                 </div>
-                <div className="mt-2 text-[10px] text-amber-300/80 bg-amber-950/40 p-2 rounded-lg border border-amber-800/40">
+                <div className="mt-2 text-[10px] text-amber-300/80 bg-amber-950/25 p-2 rounded-lg border border-amber-500/20">
                   Kriteria: Saldo lock Rp 5.000.000 dapat 10 Box Emas harian.
                 </div>
               </div>
@@ -810,7 +810,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                🥉 Group Lock 30 Hari ({group30.length})
+                ðŸ¥‰ Group Lock 30 Hari ({group30.length})
               </button>
               <button
                 type="button"
@@ -821,7 +821,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                🥈 Group Lock 60 Hari ({group60.length})
+                ðŸ¥ˆ Group Lock 60 Hari ({group60.length})
               </button>
               <button
                 type="button"
@@ -832,12 +832,12 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                🥇 Group Lock 90 Hari ({group90.length})
+                ðŸ¥‡ Group Lock 90 Hari ({group90.length})
               </button>
             </div>
 
             {/* TABEL PENGGUNA TERKELOMPOK */}
-            <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900/80 border border-white/10 overflow-x-auto">
+            <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-white/10 overflow-x-auto">
               {displayedDeposits.length === 0 ? (
                 <div className="text-center py-10 space-y-2">
                   <AlertTriangle className="w-8 h-8 text-amber-400 mx-auto opacity-60" />
@@ -882,16 +882,16 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                           </td>
                           <td className="py-3 px-3">
                             {dep.durationDays === 90 ? (
-                              <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black">
-                                🥇 Lock 90 Hari (10 Box Emas)
+                              <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/10 text-[10px] font-black">
+                                ðŸ¥‡ Lock 90 Hari (10 Box Emas)
                               </span>
                             ) : dep.durationDays === 60 ? (
                               <span className="px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-black">
-                                🥈 Lock 60 Hari (5 Box Platinum)
+                                ðŸ¥ˆ Lock 60 Hari (5 Box Platinum)
                               </span>
                             ) : (
                               <span className="px-2.5 py-1 rounded-full bg-slate-500/20 text-slate-200 border border-slate-500/40 text-[10px] font-black">
-                                🥉 Lock 30 Hari (3 Box Silver)
+                                ðŸ¥‰ Lock 30 Hari (3 Box Silver)
                               </span>
                             )}
                           </td>
@@ -904,7 +904,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                                 dep.status === 'ACTIVE'
                                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                                   : dep.status === 'EXPIRED'
-                                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                                  ? 'bg-amber-500/20 text-amber-300 border border-white/10'
                                   : 'bg-white/10 text-white/60'
                               }`}
                             >
@@ -920,17 +920,17 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleOpenJackpotModal(dep)}
-                                  className="px-3 py-1.5 rounded-xl text-[11px] font-black bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-lg shadow-red-500/30 flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer animate-pulse"
+                                  className="px-3 py-1.5 rounded-xl text-[11px] font-black bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-lg shadow-red-500/30 flex items-center gap-1.5 transition-all hover:brightness-110 cursor-pointer animate-pulse"
                                   title="Klik untuk mengubah nominal atau membatalkan otorisasi jackpot"
                                 >
                                   <Flame className="w-3.5 h-3.5 text-yellow-300" />
-                                  <span>🔥 Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
+                                  <span>ðŸ”¥ Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
                                 </button>
                               ) : (
                                 <button
                                   type="button"
                                   onClick={() => handleOpenJackpotModal(dep)}
-                                  className="px-3 py-1.5 rounded-xl text-[11px] font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
+                                  className="px-3 py-1.5 rounded-xl text-[11px] font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-white/10 transition-all hover:brightness-110 flex items-center gap-1 cursor-pointer"
                                   title="Otorisasi user ini untuk mendapatkan jackpot"
                                 >
                                   <Crown className="w-3.5 h-3.5 text-amber-400" />
@@ -962,12 +962,12 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
 
             {/* MODAL OTORISASI JACKPOT OWNER (TENTUKAN NOMINAL & USER) */}
             {jackpotModalUser && (
-              <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-                <div className="w-full max-w-lg rounded-3xl bg-[#0e1422] border-2 border-amber-500/50 p-6 space-y-5 shadow-2xl shadow-amber-500/20 animate-in zoom-in-95 duration-200">
+              <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+                <div className="w-full max-w-lg rounded-2xl bg-neutral-900 border-2 border-white/10 p-6 space-y-5 shadow-md animate-in zoom-in-95 duration-200">
                   {/* Modal Header */}
                   <div className="flex items-center justify-between border-b border-white/10 pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-white/10 flex items-center justify-center text-amber-400">
                         <Crown className="w-5 h-5" />
                       </div>
                       <div>
@@ -993,7 +993,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                   </div>
 
                   {/* Target User Info */}
-                  <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                  <div className="p-4 rounded-2xl bg-neutral-950 border border-white/10 space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-white/50">Target Pemenang:</span>
                       <span className="font-bold text-white font-mono">@{jackpotModalUser.username}</span>
@@ -1073,7 +1073,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                       type="button"
                       disabled={isJackpotSubmitting || Number(customJackpotNominal || 0) <= 0}
                       onClick={handleApplyCustomJackpot}
-                      className="w-full sm:flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                      className="w-full sm:flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 transition-all active:brightness-95 disabled:opacity-50 cursor-pointer"
                     >
                       <Crown className="w-4 h-4 text-slate-950" />
                       <span>
@@ -1111,7 +1111,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
       {/* TAB 3: FINANCIAL REPORT & STATS */}
       {activeTab === 'stats' && stats && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-1">
+          <div className="p-5 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
             <div className="flex items-center gap-2 text-xs text-white/60">
               <Banknote className="w-4 h-4 text-cyan-400" />
               <span>Total Deposit Inflows</span>
@@ -1124,7 +1124,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-1">
+          <div className="p-5 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
             <div className="flex items-center gap-2 text-xs text-white/60">
               <Gift className="w-4 h-4 text-emerald-400" />
               <span>Total Blind Box Rewards Distributed</span>
@@ -1137,7 +1137,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-1">
+          <div className="p-5 rounded-2xl bg-neutral-900 border border-white/10 space-y-1">
             <div className="flex items-center gap-2 text-xs text-white/60">
               <Users className="w-4 h-4 text-amber-400" />
               <span>Total Registered Users</span>
@@ -1154,7 +1154,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
 
       {/* TAB 4: TAMBAH SALDO INSTAN (KHUSUS OWNER) */}
       {activeTab === 'topup' && (
-        <div className="p-6 rounded-2xl bg-neutral-900/80 border border-emerald-500/30 space-y-6">
+        <div className="p-6 rounded-2xl bg-neutral-900 border border-emerald-500/30 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div>
               <div className="flex items-center gap-2">
@@ -1194,7 +1194,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                   selectedTargetUserId === currentUserId || !selectedTargetUserId
                     ? 'bg-emerald-500/20 border-emerald-400 text-white'
-                    : 'bg-black/40 border-white/10 text-white/70 hover:border-white/20'
+                    : 'bg-neutral-950 border-white/10 text-white/70 hover:border-white/20'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -1337,7 +1337,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
 
           {/* Feedback banner */}
           {approvalMessage && (
-            <div className="p-3.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center gap-2">
+            <div className="p-3.5 rounded-xl bg-amber-500/20 border border-white/10 text-amber-200 text-xs font-bold flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
               <span>{approvalMessage}</span>
             </div>
@@ -1375,11 +1375,11 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                 return (
                   <div
                     key={order.id || order.orderId}
-                    className="p-4 rounded-2xl bg-neutral-900/80 border-2 border-amber-500/30 hover:border-amber-400/60 transition-all space-y-3 shadow-lg"
+                    className="p-4 rounded-2xl bg-neutral-900 border-2 border-white/10 hover:border-amber-400/60 transition-all space-y-3 shadow-lg"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
                       <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-white/10 flex items-center justify-center text-amber-400 shrink-0">
                           <Coins className="w-5 h-5" />
                         </div>
                         <div>
@@ -1387,16 +1387,16 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                             <span className="font-bold text-sm text-white">
                               {order.userName || order.userEmail || 'Member SYS'}
                             </span>
-                            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-black uppercase animate-pulse">
+                            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-white/10 text-[9px] font-black uppercase animate-pulse">
                               PENDING
                             </span>
                           </div>
                           <p className="text-xs text-white/50 font-mono mt-0.5">
-                            User: <strong className="text-white/80">{order.userEmail}</strong> • Order ID: {order.orderId}
+                            User: <strong className="text-white/80">{order.userEmail}</strong> â€¢ Order ID: {order.orderId}
                           </p>
                           <p className="text-[10px] text-white/40 flex items-center gap-2 mt-0.5">
                             <span>{new Date(order.createdAt).toLocaleString('en-US')}</span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span className="text-cyan-300 font-semibold">{order.paymentMethod}</span>
                           </p>
                         </div>
@@ -1407,7 +1407,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                           +{formatCurrency(order.price)}
                         </div>
                         <span className="text-xs text-white/60 font-semibold">
-                          ≈ {(order.price / 16000).toFixed(2)} USDT
+                          â‰ˆ {(order.price / 16000).toFixed(2)} USDT
                         </span>
                       </div>
                     </div>
@@ -1505,3 +1505,4 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
     </div>
   );
 };
+
