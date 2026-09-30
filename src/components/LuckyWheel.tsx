@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { sound } from '../services/sound';
 import confetti from 'canvas-confetti';
 import {
@@ -74,7 +74,7 @@ const TANTANGAN_PRESETS = [
   'Imitate an Angry Cat',
   'Share a Spooky Story',
   'Drink a Glass of Water',
-  'Send Lion Emote 🦁'
+  'Send Lion Emote ðŸ¦'
 ];
 
 const SEGMENT_COLORS = [
@@ -258,7 +258,7 @@ export const LuckyWheel: React.FC<LuckyWheelProps> = ({
 
       // Truncate long names cleanly
       const maxLen = segments.length > 16 ? 12 : 18;
-      const label = item.length > maxLen ? item.slice(0, maxLen) + '…' : item;
+      const label = item.length > maxLen ? item.slice(0, maxLen) + 'â€¦' : item;
       ctx.fillText(label, radius - 24, 0);
       ctx.restore();
     });
@@ -555,338 +555,445 @@ export const LuckyWheel: React.FC<LuckyWheelProps> = ({
     onAwardPrize(winner, activePrizeNominal);
     setShowWinnerModal(false);
   };
-
   return (
-    <div className="flex flex-col items-center justify-start w-full max-w-5xl mx-auto px-2 sm:px-4 py-2 select-none">
-      {/* Quick Header with Active Prize Button & Duration Config */}
-      <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-4 bg-black/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 shadow-xl">
-        {/* Left: Active Prize Nominal */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowCustomNominalModal(true)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-extrabold text-xs sm:text-sm shadow-lg shadow-yellow-500/20 transition-all hover:scale-105 active:scale-95"
-            title="Click to change the standard prize nominal"
-          >
-            <DollarSign className="w-4 h-4 stroke-[3]" />
-            <span>💰 {t('prize_label')}: {formatCurrency(activePrizeNominal)}</span>
-          </button>
+    <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-3 select-none">
+      <div className="rounded-2xl bg-[#0f0f12] border border-white/[0.08] overflow-hidden">
 
-          {/* Quick Chip Presets */}
-          <div className="hidden sm:flex items-center gap-1">
-            {PRESET_CHIPS.slice(0, 3).map((chip) => (
-              <button
-                key={chip.value}
-                onClick={() => onUpdatePrizeNominal(chip.value)}
-                className={`px-2 py-1 text-xs font-bold rounded-lg transition-all ${
-                  activePrizeNominal === chip.value
-                    ? 'bg-yellow-400 text-black font-extrabold border border-yellow-200'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                }`}
-              >
-                {formatCurrency(chip.value)}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* HEADER */}
+        <div className="px-4 sm:px-5 py-3 border-b border-white/[0.08]">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
 
-        {/* Right: Unified Wallet & SPIN DURATION CONFIGURATOR */}
-        <div className="flex items-center gap-2">
-          {userProfile && (
-            <div
-              onClick={onOpenProfile}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold shadow-md cursor-pointer hover:bg-emerald-900/80 transition-all"
-              title="Dompet Terpadu Streamer • Klik untuk Buka Profil & Deposit"
-            >
-              <Wallet className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-[10px] text-white/70">Dompet:</span>
-              <span className="text-emerald-300 font-black">
-                Rp {(userProfile.walletBalance ?? 15000).toLocaleString('id-ID')}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/[0.08] text-white/75 text-xs font-semibold">
+                RODA KEBERUNTUNGAN
               </span>
-            </div>
-          )}
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold shadow-md">
-            <Clock className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{formatDurationText(spinDuration)}</span>
-          </div>
+              <span className="px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold">
+                {segments.length} Peserta
+              </span>
 
-          <button
-            onClick={() => setShowDurationModal(true)}
-            disabled={isSpinning}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-40 text-white font-bold text-xs shadow-md shadow-cyan-600/30 transition-all hover:scale-105 active:scale-95 border border-cyan-300"
-            title="Configure Spinner Rotation Duration"
-          >
-            <Sliders className="w-3.5 h-3.5" />
-            <span>{t('set_duration')}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Main Wheel Arena */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left / Center Canvas Lucky Wheel (Col 7) */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center relative bg-neutral-950/70 p-4 sm:p-6 rounded-3xl border border-white/15 shadow-2xl">
-          {/* Live Spinning Countdown & Emergency Stop Overlay */}
-          {isSpinning && (
-            <div className="w-full mb-3 px-4 py-2.5 bg-cyan-950/90 border-2 border-cyan-400 rounded-2xl flex items-center justify-between shadow-[0_0_25px_rgba(6,182,212,0.4)] animate-in fade-in duration-200">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-                <span className="font-mono font-black text-cyan-300 text-sm tracking-wider">
-                  {t('spinning_label')}: {formatDigitalCountdown(spinTimeRemaining)}
+              {isSpinning && (
+                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+                  LIVE SPIN
                 </span>
-              </div>
-
-              <button
-                onClick={handleStopSpinEarly}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs shadow-lg shadow-red-600/40 active:scale-95 border border-red-300 transition-all"
-                title="Hentikan putaran lebih awal"
-              >
-                <Square className="w-3 h-3 fill-white" />
-                <span>{t('btn_stop')}</span>
-              </button>
+              )}
             </div>
-          )}
 
-          {/* Top Ratchet Pointer */}
-          <div className="relative flex flex-col items-center z-20 -mb-5">
-            <div
-              className={`w-0 h-0 border-l-[16px] border-l-transparent border-r-[16px] border-r-transparent border-t-[34px] border-t-yellow-400 filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] transition-transform duration-75 origin-top ${
-                pointerTick ? 'rotate-12 scale-110' : 'rotate-0'
-              }`}
-            />
-          </div>
-
-          {/* HTML5 Canvas Wheel */}
-          <div className="relative w-[320px] h-[320px] sm:w-[380px] sm:h-[380px]">
-            <canvas
-              ref={canvasRef}
-              width={400}
-              height={400}
-              className="w-full h-full rounded-full drop-shadow-[0_0_35px_rgba(245,158,11,0.25)]"
-            />
-          </div>
-
-          {/* Spin Big Action Controls */}
-          <div className="mt-6 flex flex-col items-center gap-2 w-full max-w-xs">
-            {isSpinning ? (
+            <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={handleStopSpinEarly}
-                className="flex items-center justify-center gap-3 w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-base tracking-wider uppercase shadow-xl shadow-red-600/30 transition-all hover:scale-105 active:scale-95 border-2 border-red-300 animate-pulse"
+                onClick={() => setShowCustomNominalModal(true)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 hover:bg-amber-500/15 transition-colors text-xs font-semibold"
               >
-                <Square className="w-5 h-5 fill-white" />
-                <span>{t('btn_stop')} ({formatDigitalCountdown(spinTimeRemaining)})</span>
+                <DollarSign className="w-3.5 h-3.5" />
+                <span>{t('prize_label')}: {formatCurrency(activePrizeNominal)}</span>
               </button>
-            ) : (
-              <button
-                onClick={spinWheel}
-                disabled={segments.length === 0}
-                className="flex items-center justify-center gap-3 w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 disabled:opacity-50 text-black font-black text-lg tracking-wider uppercase shadow-xl shadow-yellow-500/30 transition-all hover:scale-105 active:scale-95 border-2 border-yellow-200"
-              >
-                <RotateCw className="w-5 h-5 stroke-[2.5]" />
-                <span>{t('btn_spin')} ({formatDurationText(spinDuration)})</span>
-              </button>
-            )}
 
-            <span className="text-[11px] text-white/50 text-center">
-              Tekan <kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-yellow-300 font-mono">Spasi</kbd>
-            </span>
-          </div>
-        </div>
-
-        {/* Right Controls & Segments List (Col 5) */}
-        <div className="lg:col-span-5 flex flex-col gap-4 bg-neutral-950/70 p-4 sm:p-5 rounded-3xl border border-white/15 shadow-2xl">
-          {/* Action Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/10">
-            <span className="text-sm font-bold text-white flex items-center gap-2">
-              <Users className="w-4 h-4 text-cyan-400" />
-              {t('participants_list')} ({segments.length})
-            </span>
-            <div className="flex items-center gap-1.5">
-              {/* Ambil dari Papan Skor */}
-              <button
-                onClick={handleSyncFromLeaderboard}
-                className="px-2.5 py-1 text-xs font-bold rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-1"
-                title="Ambil dari skor"
-              >
-                <Award className="w-3.5 h-3.5" />
-                {t('from_score')}
-              </button>
-              {/* Paste Banyak Sekaligus */}
-              <button
-                onClick={() => setShowBulkModal(true)}
-                className="px-2.5 py-1 text-xs font-bold rounded-lg bg-white/10 hover:bg-white/20 text-white/90 border border-white/20 flex items-center gap-1"
-                title="Salin banyak komentar live TikTok sekaligus"
-              >
-                <Copy className="w-3.5 h-3.5" />
-                {t('paste_bulk')}
-              </button>
-            </div>
-          </div>
-
-          {/* Quick Presets */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] text-white/60 font-medium">Preset:</span>
-            <button
-              onClick={handleLoadTantangan}
-              className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 border border-orange-500/40 flex items-center gap-1"
-            >
-              <Flame className="w-3 h-3" /> {t('preset_challenge')}
-            </button>
-            <button
-              onClick={handleShuffleSegments}
-              className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 flex items-center gap-1"
-              title="Anti-Sama"
-            >
-              <Shuffle className="w-3 h-3" /> {t('shuffle_wheel')}
-            </button>
-            <button
-              onClick={handleClearWheel}
-              className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white/70"
-            >
-              {t('preset_empty')}
-            </button>
-          </div>
-
-          {/* Quick Add Form Input */}
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder={t('input_participant_placeholder')}
-              value={inputName}
-              onChange={(e) => setInputName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleAddSegment();
-              }}
-              className="flex-1 px-3 py-2 text-xs rounded-xl bg-neutral-900 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400"
-            />
-            <button
-              onClick={handleAddSegment}
-              className="px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center gap-1 shrink-0"
-            >
-              <Plus className="w-4 h-4" />
-              {t('add_participant')}
-            </button>
-          </div>
-
-          {/* Segments Scrollable List */}
-          <div className="flex flex-col gap-1.5 max-h-72 overflow-y-auto pr-1">
-            {segments.map((seg, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between px-3 py-2 rounded-xl bg-neutral-900/80 border border-white/10 hover:border-white/25 transition-all text-xs"
-              >
-                <div className="flex items-center gap-2 min-w-0">
-                  <span
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: SEGMENT_COLORS[idx % SEGMENT_COLORS.length] }}
-                  />
-                  <span className="font-semibold text-white/90 truncate">{seg}</span>
-                </div>
+              {userProfile && (
                 <button
-                  onClick={() => handleDeleteSegment(idx)}
-                  className="p-1 hover:bg-red-500/20 text-white/40 hover:text-red-400 rounded transition-all"
-                  title="Remove participant"
+                  onClick={onOpenProfile}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 hover:bg-emerald-500/15 transition-colors text-xs font-semibold"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Wallet className="w-3.5 h-3.5" />
+                  Rp {(userProfile.walletBalance ?? 15000).toLocaleString('id-ID')}
                 </button>
-              </div>
-            ))}
+              )}
+
+              <button
+                onClick={() => setShowDurationModal(true)}
+                disabled={isSpinning}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.08] disabled:opacity-30 transition-colors text-xs font-semibold"
+              >
+                <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                {formatDurationText(spinDuration)}
+                <Sliders className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* POPUP PENGATURAN DURASI PUTARAN SPINNER (MAKSIMAL 10 MENIT) */}
-      {showDurationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="relative w-full max-w-md p-6 rounded-3xl bg-neutral-900 border-2 border-cyan-500/50 shadow-[0_0_40px_rgba(6,182,212,0.25)] flex flex-col gap-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <h3 className="text-base font-extrabold text-cyan-300 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-cyan-400" />
-                <span>Configure Spinner Spin Duration</span>
-              </h3>
-              <span className="text-[11px] font-mono text-yellow-400 font-bold bg-yellow-950/60 border border-yellow-500/40 px-2.5 py-0.5 rounded-lg">
-                Max 10 Min
-              </span>
-            </div>
+        {/* MAIN CONTENT */}
+        <div className="p-3 sm:p-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-            <p className="text-xs text-white/70">
-              Select a quick preset or customize a dramatic spin duration for TikTok Live / OBS broadcasts (up to 10 minutes):
-            </p>
+            {/* WHEEL */}
+            <div className="lg:col-span-7 rounded-xl bg-[#09090b] border border-white/[0.07] overflow-hidden">
 
-            {/* Presets Grid */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-white/60 uppercase">Quick Select:</span>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
-                {SPIN_DURATION_PRESETS.map((p) => {
-                  const isSelected = spinDuration === p.seconds;
-                  return (
+              <div className="px-4 py-3 border-b border-white/[0.07] flex items-center justify-between">
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider text-white/35 font-semibold">
+                    Lucky Wheel
+                  </p>
+                  <p className="text-xs text-white/50 mt-0.5">
+                    Putar roda untuk menentukan pemenang
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  {PRESET_CHIPS.slice(0, 3).map((chip) => (
                     <button
-                      key={p.label}
-                      onClick={() => {
-                        setSpinDuration(p.seconds);
-                        setShowDurationModal(false);
-                      }}
-                      className={`px-2 py-2 rounded-xl text-xs font-bold transition-all border ${
-                        isSelected
-                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-300 shadow-md shadow-cyan-500/40 scale-105 font-black'
-                          : 'bg-black/60 hover:bg-white/10 text-white/80 border-white/10'
+                      key={chip.value}
+                      onClick={() => onUpdatePrizeNominal(chip.value)}
+                      className={`hidden sm:block px-2 py-1 rounded-md text-[10px] font-semibold border transition-colors ${
+                        activePrizeNominal === chip.value
+                          ? 'bg-amber-400 text-black border-amber-300'
+                          : 'bg-white/[0.03] text-white/45 border-white/[0.07] hover:text-white hover:bg-white/[0.07]'
                       }`}
                     >
-                      {p.label}
+                      {formatCurrency(chip.value)}
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
+              </div>
+
+              {isSpinning && (
+                <div className="mx-3 mt-3 px-3 py-2.5 rounded-lg bg-cyan-500/[0.07] border border-cyan-500/20 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span className="text-xs font-mono font-semibold text-cyan-300">
+                      {t('spinning_label')} {formatDigitalCountdown(spinTimeRemaining)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleStopSpinEarly}
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-500/10 border border-red-500/20 text-red-300 hover:bg-red-500/20 text-xs font-semibold"
+                  >
+                    <Square className="w-3 h-3 fill-current" />
+                    {t('btn_stop')}
+                  </button>
+                </div>
+              )}
+
+              {/* WHEEL STAGE */}
+              <div className="relative flex flex-col items-center justify-center py-5 sm:py-7 px-2">
+
+                <div className="relative z-20 -mb-4">
+                  <div
+                    className={`w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[30px] border-t-amber-400 transition-transform duration-75 origin-top ${
+                      pointerTick ? 'rotate-12 scale-110' : ''
+                    }`}
+                  />
+                </div>
+
+                <div className="relative w-[290px] h-[290px] sm:w-[370px] sm:h-[370px]">
+                  <canvas
+                    ref={canvasRef}
+                    width={400}
+                    height={400}
+                    className="w-full h-full rounded-full"
+                  />
+
+                  <div className="absolute inset-0 rounded-full pointer-events-none border border-white/[0.08]" />
+                </div>
+
+                <div className="mt-5 w-full max-w-sm">
+                  {isSpinning ? (
+                    <button
+                      onClick={handleStopSpinEarly}
+                      className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-red-500/10 border border-red-500/30 hover:bg-red-500/15 text-red-300 font-bold text-sm transition-colors"
+                    >
+                      <Square className="w-4 h-4 fill-current" />
+                      {t('btn_stop')} · {formatDigitalCountdown(spinTimeRemaining)}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={spinWheel}
+                      disabled={segments.length === 0}
+                      className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:opacity-30 text-black font-black text-sm transition-colors"
+                    >
+                      <RotateCw className="w-5 h-5" />
+                      {t('btn_spin')}
+                      <span className="font-mono text-black/60">
+                        · {formatDurationText(spinDuration)}
+                      </span>
+                    </button>
+                  )}
+
+                  <div className="mt-2 text-center text-[10px] text-white/30">
+                    Tekan <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-white/60 font-mono">Spasi</kbd> untuk spin / stop
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Custom Minutes and Seconds Input */}
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-white/60 uppercase">
-                Custom Minutes & Seconds:
+            {/* PARTICIPANTS */}
+            <div className="lg:col-span-5 rounded-xl bg-[#111114] border border-white/[0.07] overflow-hidden">
+
+              <div className="px-4 py-3 border-b border-white/[0.07]">
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider text-white/35 font-semibold">
+                      {t('participants_list')}
+                    </p>
+                    <p className="text-xs text-white/50 mt-0.5">
+                      {segments.length} peserta aktif
+                    </p>
+                  </div>
+
+                  <div className="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                    <Users className="w-4 h-4 text-cyan-400" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 sm:p-4 space-y-3">
+
+                {/* ADD */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder={t('input_participant_placeholder')}
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleAddSegment();
+                    }}
+                    className="flex-1 min-w-0 px-3 py-2.5 rounded-lg bg-black/20 border border-white/[0.08] text-white text-xs placeholder-white/25 focus:outline-none focus:border-cyan-500/40"
+                  />
+
+                  <button
+                    onClick={handleAddSegment}
+                    className="px-3 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 hover:bg-cyan-500/15 text-xs font-semibold"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* TOOLS */}
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleSyncFromLeaderboard}
+                    className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg bg-white/[0.04] border border-white/[0.07] text-white/60 hover:text-white hover:bg-white/[0.07] text-[11px] font-semibold transition-colors"
+                  >
+                    <Award className="w-3.5 h-3.5 text-amber-400" />
+                    {t('from_score')}
+                  </button>
+
+                  <button
+                    onClick={() => setShowBulkModal(true)}
+                    className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg bg-white/[0.04] border border-white/[0.07] text-white/60 hover:text-white hover:bg-white/[0.07] text-[11px] font-semibold transition-colors"
+                  >
+                    <Copy className="w-3.5 h-3.5 text-cyan-400" />
+                    {t('paste_bulk')}
+                  </button>
+                </div>
+
+                {/* PRESETS */}
+                <div className="rounded-lg bg-black/15 border border-white/[0.06] p-2.5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] uppercase tracking-wider text-white/30 font-semibold">
+                      Preset
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1.5">
+                    <button
+                      onClick={handleLoadTantangan}
+                      className="flex items-center justify-center gap-1 px-2 py-2 rounded-md bg-white/[0.04] hover:bg-orange-500/10 border border-white/[0.06] text-white/55 hover:text-orange-300 text-[10px] font-semibold"
+                    >
+                      <Flame className="w-3 h-3" />
+                      {t('preset_challenge')}
+                    </button>
+
+                    <button
+                      onClick={handleShuffleSegments}
+                      className="flex items-center justify-center gap-1 px-2 py-2 rounded-md bg-white/[0.04] hover:bg-purple-500/10 border border-white/[0.06] text-white/55 hover:text-purple-300 text-[10px] font-semibold"
+                    >
+                      <Shuffle className="w-3 h-3" />
+                      Shuffle
+                    </button>
+
+                    <button
+                      onClick={handleClearWheel}
+                      className="px-2 py-2 rounded-md bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-white/45 hover:text-white text-[10px] font-semibold"
+                    >
+                      {t('preset_empty')}
+                    </button>
+                  </div>
+                </div>
+
+                {/* LIST */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-wider text-white/30 font-semibold">
+                    Daftar Kursi / Peserta
+                  </span>
+
+                  <span className="text-[10px] font-mono text-white/30">
+                    {segments.length}/100
+                  </span>
+                </div>
+
+                <div className="max-h-[310px] overflow-y-auto pr-1 space-y-1.5">
+                  {segments.map((seg, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-black/15 border border-white/[0.06] hover:border-white/[0.12] transition-colors"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span
+                          className="w-2 h-2 rounded-full shrink-0"
+                          style={{
+                            backgroundColor:
+                              SEGMENT_COLORS[idx % SEGMENT_COLORS.length]
+                          }}
+                        />
+
+                        <span className="text-xs text-white/75 truncate">
+                          {seg}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteSegment(idx)}
+                        className="p-1 rounded-md text-white/25 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        title="Remove participant"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FOOTER INFO */}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[10px] text-white/30">
+            <span>
+              <kbd className="px-1.5 py-0.5 rounded bg-white/[0.05] border border-white/[0.07] text-white/50">Space</kbd>
+              <span className="ml-1">Spin / Stop</span>
+            </span>
+
+            <span>
+              <span className="text-amber-400">●</span>
+              <span className="ml-1">Hadiah {formatCurrency(activePrizeNominal)}</span>
+            </span>
+
+            <span>
+              <Clock className="inline w-3 h-3 mr-1 text-cyan-400" />
+              Maks. 10 menit
+            </span>
+
+            <span>Maks. 100 kursi</span>
+          </div>
+        </div>
+      </div>
+
+      {/* DURATION MODAL */}
+      {showDurationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-[#111114] border border-white/[0.1] overflow-hidden shadow-2xl">
+
+            <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-cyan-400" />
+                  Durasi Putaran
+                </h3>
+                <p className="text-[11px] text-white/40 mt-1">
+                  Maksimal 10 menit
+                </p>
+              </div>
+
+              <span className="px-2 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-[10px] font-semibold">
+                MAX 10:00
               </span>
-              <div className="flex items-center justify-center gap-3 bg-black/80 p-3 rounded-2xl border border-white/15">
-                <div className="flex flex-col items-center">
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={customMinInput}
-                    onChange={(e) => setCustomMinInput(Math.max(0, Math.min(10, parseInt(e.target.value) || 0)))}
-                    className="w-20 px-2 py-2 text-center bg-neutral-900 border border-cyan-500/60 rounded-xl text-lg font-mono font-black text-cyan-300 focus:outline-none focus:border-cyan-400"
-                  />
-                  <span className="text-[10px] text-white/60 font-bold mt-1">MINUTES (0-10)</span>
+            </div>
+
+            <div className="p-5 space-y-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-wider text-white/35 font-semibold mb-2">
+                  Pilihan Cepat
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+                  {SPIN_DURATION_PRESETS.map((p) => {
+                    const isSelected = spinDuration === p.seconds;
+
+                    return (
+                      <button
+                        key={p.label}
+                        onClick={() => {
+                          setSpinDuration(p.seconds);
+                          setShowDurationModal(false);
+                        }}
+                        className={`px-2 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+                          isSelected
+                            ? 'bg-cyan-500 text-black border-cyan-400'
+                            : 'bg-white/[0.03] text-white/60 border-white/[0.07] hover:bg-white/[0.07] hover:text-white'
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    );
+                  })}
                 </div>
+              </div>
 
-                <span className="text-2xl font-bold text-cyan-400 pb-4">:</span>
+              <div className="pt-4 border-t border-white/[0.07]">
+                <p className="text-[10px] uppercase tracking-wider text-white/35 font-semibold mb-2">
+                  Custom
+                </p>
 
-                <div className="flex flex-col items-center">
-                  <input
-                    type="number"
-                    min="0"
-                    max="59"
-                    value={customSecInput}
-                    onChange={(e) => setCustomSecInput(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                    className="w-20 px-2 py-2 text-center bg-neutral-900 border border-cyan-500/60 rounded-xl text-lg font-mono font-black text-cyan-300 focus:outline-none focus:border-cyan-400"
-                  />
-                  <span className="text-[10px] text-white/60 font-bold mt-1">SECONDS (0-59)</span>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="text-center">
+                    <input
+                      type="number"
+                      min="0"
+                      max="10"
+                      value={customMinInput}
+                      onChange={(e) =>
+                        setCustomMinInput(
+                          Math.max(
+                            0,
+                            Math.min(10, parseInt(e.target.value) || 0)
+                          )
+                        )
+                      }
+                      className="w-20 px-2 py-2.5 text-center rounded-lg bg-black/20 border border-white/[0.08] text-cyan-300 font-mono font-bold focus:outline-none focus:border-cyan-500/40"
+                    />
+                    <p className="text-[9px] text-white/30 mt-1">MENIT</p>
+                  </div>
+
+                  <span className="text-xl font-bold text-white/30 pb-4">:</span>
+
+                  <div className="text-center">
+                    <input
+                      type="number"
+                      min="0"
+                      max="59"
+                      value={customSecInput}
+                      onChange={(e) =>
+                        setCustomSecInput(
+                          Math.max(
+                            0,
+                            Math.min(59, parseInt(e.target.value) || 0)
+                          )
+                        )
+                      }
+                      className="w-20 px-2 py-2.5 text-center rounded-lg bg-black/20 border border-white/[0.08] text-cyan-300 font-mono font-bold focus:outline-none focus:border-cyan-500/40"
+                    />
+                    <p className="text-[9px] text-white/30 mt-1">DETIK</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="px-5 py-3 border-t border-white/[0.08] flex justify-end gap-2">
               <button
                 onClick={() => setShowDurationModal(false)}
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white/80"
+                className="px-4 py-2 rounded-lg bg-white/[0.05] hover:bg-white/[0.08] text-white/60 text-xs font-semibold"
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleApplyCustomDuration}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold text-xs shadow-lg shadow-green-600/30 flex items-center gap-1.5"
+                className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-bold flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" />
-                <span>Save Duration</span>
+                Simpan
               </button>
             </div>
           </div>
@@ -895,56 +1002,59 @@ export const LuckyWheel: React.FC<LuckyWheelProps> = ({
 
       {/* WINNER MODAL */}
       {showWinnerModal && winner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-sm p-6 rounded-3xl bg-gradient-to-b from-neutral-900 to-black border-2 border-yellow-400 shadow-[0_0_50px_rgba(245,158,11,0.5)] flex flex-col items-center text-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center animate-bounce">
-              <Award className="w-8 h-8 text-yellow-400" />
-            </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl bg-[#111114] border border-amber-400/30 overflow-hidden shadow-2xl">
 
-            <div>
-              <span className="text-xs font-extrabold tracking-widest text-yellow-400 uppercase">
+            <div className="px-5 pt-6 pb-4 text-center">
+              <div className="mx-auto w-14 h-14 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center">
+                <Award className="w-7 h-7 text-amber-400" />
+              </div>
+
+              <p className="mt-4 text-[10px] uppercase tracking-[0.2em] text-amber-400 font-bold">
                 {t('winner_modal_title')}
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mt-1 break-words">
+              </p>
+
+              <h2 className="mt-1 text-2xl font-black text-white break-words">
                 {winner}
               </h2>
+
+              <div className="mt-4 px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-bold">
+                {t('prize_label')}: {formatCurrency(activePrizeNominal)}
+              </div>
             </div>
 
-            <div className="w-full py-2.5 px-4 rounded-xl bg-yellow-500/20 border border-yellow-500/40 text-yellow-300 font-bold text-sm">
-              {t('prize_label')}: {formatCurrency(activePrizeNominal)}
-            </div>
-
-            <div className="flex flex-col gap-2 w-full mt-2">
+            <div className="px-5 pb-5 space-y-2">
               <button
                 onClick={handleAwardWinner}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-extrabold text-sm shadow-lg shadow-yellow-500/30 flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm flex items-center justify-center gap-2 transition-colors"
               >
                 <Award className="w-4 h-4" />
-                <span>{t('give_prize')}</span>
+                {t('give_prize')}
               </button>
 
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={handleEliminateWinner}
-                  className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/15"
+                  className="py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.07] text-white/70 text-xs font-semibold"
                 >
                   {t('eliminate_winner')}
                 </button>
+
                 <button
                   onClick={() => {
                     setShowWinnerModal(false);
                     spinWheel();
                   }}
-                  className="py-2.5 px-3 rounded-xl bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 font-bold text-xs border border-yellow-500/30 flex items-center justify-center gap-1.5"
+                  className="py-2.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/15 border border-cyan-500/20 text-cyan-300 text-xs font-semibold flex items-center justify-center gap-1.5"
                 >
                   <RefreshCw className="w-4 h-4" />
-                  <span>{t('btn_spin')}</span>
+                  {t('btn_spin')}
                 </button>
               </div>
 
               <button
                 onClick={() => setShowWinnerModal(false)}
-                className="mt-1 text-xs text-white/50 hover:text-white underline"
+                className="w-full py-2 text-xs text-white/35 hover:text-white/70"
               >
                 {t('cancel')}
               </button>
@@ -953,77 +1063,101 @@ export const LuckyWheel: React.FC<LuckyWheelProps> = ({
         </div>
       )}
 
-      {/* BULK PASTE MODAL */}
+      {/* BULK IMPORT MODAL */}
       {showBulkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-md p-6 rounded-2xl bg-neutral-900 border border-white/20 shadow-2xl flex flex-col gap-3">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Copy className="w-4 h-4 text-cyan-400" />
-              Paste Multiple Names at Once (TikTok Live)
-            </h3>
-            <p className="text-xs text-white/60">
-              Copy live TikTok comments and paste below (1 line per participant).
-            </p>
-            <textarea
-              rows={8}
-              placeholder={`@john_live\n@mary_stream\n@alex_gaming\n@sarah_beauty\n...`}
-              value={bulkText}
-              onChange={(e) => setBulkText(e.target.value)}
-              className="w-full p-3 text-xs font-mono rounded-xl bg-neutral-950 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:border-cyan-400"
-            />
-            <div className="flex justify-end gap-2 mt-2">
+          <div className="w-full max-w-md rounded-2xl bg-[#111114] border border-white/[0.1] overflow-hidden shadow-2xl">
+
+            <div className="px-5 py-4 border-b border-white/[0.08]">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Copy className="w-4 h-4 text-cyan-400" />
+                {t('paste_bulk')}
+              </h3>
+
+              <p className="text-[11px] text-white/40 mt-1">
+                Satu peserta per baris.
+              </p>
+            </div>
+
+            <div className="p-5">
+              <textarea
+                rows={8}
+                placeholder={`@john_live
+@mary_stream
+@alex_gaming
+@sarah_beauty`}
+                value={bulkText}
+                onChange={(e) => setBulkText(e.target.value)}
+                className="w-full p-3 rounded-lg bg-black/20 border border-white/[0.08] text-white placeholder-white/20 text-xs font-mono focus:outline-none focus:border-cyan-500/40 resize-none"
+              />
+            </div>
+
+            <div className="px-5 py-3 border-t border-white/[0.08] flex justify-end gap-2">
               <button
                 onClick={() => setShowBulkModal(false)}
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white/80"
+                className="px-4 py-2 rounded-lg bg-white/[0.05] text-white/60 hover:bg-white/[0.08] text-xs font-semibold"
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleBulkImport}
-                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-xs font-bold text-white flex items-center gap-1.5"
+                className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-bold flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" />
-                Import into Wheel
+                Import
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* CUSTOM NOMINAL HADIAH MODAL */}
+      {/* CUSTOM PRIZE MODAL */}
       {showCustomNominalModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-sm p-6 rounded-2xl bg-neutral-900 border border-yellow-500/40 shadow-2xl flex flex-col gap-3">
-            <h3 className="text-base font-bold text-yellow-300 flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              ⚙️ Custom Prize Amount
-            </h3>
-            <p className="text-xs text-white/60">
-              Enter any prize amount in {country.name} ({country.currencySymbol}).
-            </p>
-            <div className="relative flex items-center">
-              <span className="absolute left-3 text-sm font-bold text-white/50">{country.currencySymbol}</span>
-              <input
-                type="number"
-                placeholder="50000"
-                value={customNominalInput}
-                onChange={(e) => setCustomNominalInput(e.target.value)}
-                className="w-full pl-10 pr-3 py-2.5 text-sm font-mono font-bold rounded-xl bg-neutral-950 border border-yellow-500/50 text-yellow-300 focus:outline-none focus:border-yellow-400"
-              />
+          <div className="w-full max-w-sm rounded-2xl bg-[#111114] border border-white/[0.1] overflow-hidden shadow-2xl">
+
+            <div className="px-5 py-4 border-b border-white/[0.08]">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <DollarSign className="w-4 h-4 text-amber-400" />
+                Custom Prize Amount
+              </h3>
+
+              <p className="text-[11px] text-white/40 mt-1">
+                Masukkan nominal hadiah.
+              </p>
             </div>
-            <div className="flex justify-end gap-2 mt-2">
+
+            <div className="p-5">
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-white/35 font-semibold">
+                  {country.currencySymbol}
+                </span>
+
+                <input
+                  type="number"
+                  placeholder="50000"
+                  value={customNominalInput}
+                  onChange={(e) => setCustomNominalInput(e.target.value)}
+                  className="w-full pl-10 pr-3 py-3 rounded-lg bg-black/20 border border-white/[0.08] text-amber-300 font-mono font-bold focus:outline-none focus:border-amber-500/40"
+                />
+              </div>
+            </div>
+
+            <div className="px-5 py-3 border-t border-white/[0.08] flex justify-end gap-2">
               <button
                 onClick={() => setShowCustomNominalModal(false)}
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white/80"
+                className="px-4 py-2 rounded-lg bg-white/[0.05] text-white/60 hover:bg-white/[0.08] text-xs font-semibold"
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleApplyCustomNominal}
-                className="px-5 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-extrabold text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black text-xs font-bold flex items-center gap-1.5"
               >
-                <Check className="w-4 h-4 stroke-[3]" />
-                Apply Prize
+                <Check className="w-4 h-4" />
+                Apply
               </button>
             </div>
           </div>

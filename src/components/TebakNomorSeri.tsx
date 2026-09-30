@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+﻿import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Banknote, PlayerScore, UserProfile } from '../types';
 import { BANKNOTES_DATA, acakTutup, getRandomizedBanknote } from '../data/banknotes';
 import { BanknoteVisual } from './BanknoteVisual';
@@ -340,298 +340,399 @@ export const TebakNomorSeri: React.FC<TebakNomorSeriProps> = ({
     if (m > 0) return `${m} Menit ${s > 0 ? `${s}s` : ''}`;
     return `${s} Detik`;
   };
-
   return (
-    <div className="flex flex-col items-center justify-between w-full max-w-5xl mx-auto px-2 sm:px-4 py-2 select-none">
-      {/* Top Status & Controls Header */}
-      <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-3 bg-black/50 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/10 shadow-lg">
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/40">
-            {currentIndex + 1} / 400
-          </span>
-          <span className="px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold border border-cyan-500/40">
-            {t('level_label')} {level} ({t('close_digits')} {level} DIGIT)
-          </span>
-          <span className="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs font-bold border border-purple-500/40 flex items-center gap-1" title="Anti-Sama unique random">
-            <Shuffle className="w-3 h-3 text-purple-400" /> {t('unique_shuffle')}
-          </span>
-          {currentBanknote.isCrypto && (
-            <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono text-xs font-bold border border-amber-500/40 flex items-center gap-1">
-              <Coins className="w-3 h-3 text-amber-400" /> CRYPTO NOTE
-            </span>
-          )}
-        </div>
-
-        {/* Level Switcher Buttons 1 - 4 */}
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs text-white/60 font-semibold mr-1 hidden sm:inline">{t('level_label')}:</span>
-          {[1, 2, 3, 4].map((lvl) => (
-            <button
-              key={lvl}
-              onClick={() => {
-                setLevel(lvl);
-                setRevealedDigitsIndices([]);
-              }}
-              className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
-                level === lvl
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30 scale-105 border border-cyan-300'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20'
-              }`}
-              title={`Level ${lvl}`}
-            >
-              L{lvl}
-            </button>
-          ))}
-        </div>
-
-        {/* Timer Duration & Unified Host Wallet Badge */}
-        <div className="flex items-center gap-2">
-          {userProfile && (
-            <div
-              onClick={onOpenProfile}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold shadow-md cursor-pointer hover:bg-emerald-900/60 transition-all"
-              title="Dompet Terpadu Host • Klik untuk Buka Profil & Deposit"
-            >
-              <Wallet className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-[10px] text-white/70">Dompet:</span>
-              <span className="text-emerald-300 font-black">
-                Rp {(userProfile.walletBalance ?? 15000).toLocaleString('id-ID')}
+    <div className="w-full max-w-5xl mx-auto px-2 sm:px-4 py-3 select-none">
+      {/* GAME HEADER */}
+      <div className="rounded-xl bg-[#0f0f12] border border-white/[0.08] overflow-hidden">
+        <div className="px-4 py-3 border-b border-white/[0.08]">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-1 rounded-md bg-white/[0.06] border border-white/[0.08] text-white/80 text-xs font-medium">
+                Round {currentIndex + 1} / 400
               </span>
+
+              <span className="px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium">
+                {t('level_label')} {level}
+              </span>
+
+              <span className="px-2.5 py-1 rounded-md bg-white/[0.06] border border-white/[0.08] text-white/60 text-xs font-medium flex items-center gap-1.5">
+                <Shuffle className="w-3 h-3" />
+                {t('unique_shuffle')}
+              </span>
+
+              {currentBanknote.isCrypto && (
+                <span className="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium flex items-center gap-1.5">
+                  <Coins className="w-3 h-3" />
+                  CRYPTO
+                </span>
+              )}
             </div>
-          )}
 
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold">
-            <Clock className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{t('timer_label')}: {formatHeaderDuration(timerDuration)}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Center 3D Banknote Showcase Card */}
-      <div className="w-full relative my-1">
-        <BanknoteVisual
-          banknote={currentBanknote}
-          maskedDigits={maskInfo.visibleDigits}
-          maskIndices={maskInfo.maskIndices}
-          isRevealed={isAnswerRevealed}
-          isZoomed={isZoomed}
-          onToggleZoom={() => setIsZoomed(!isZoomed)}
-        />
-      </div>
-
-      {/* BIG SERIAL NUMBER DISPLAY WITH POPPINS EXTRABOLD & NEON MYSTERY QUESTION MARKS */}
-      <div className="w-full my-3 flex flex-col items-center">
-        {/* Label Teks Tepat di Atas Jajaran Digit */}
-        <div className="text-center font-mono font-black text-sm sm:text-base tracking-widest text-cyan-300 mb-2 uppercase drop-shadow-md flex items-center gap-2">
-          <span>{t('serial_number_label')}: {isAnswerRevealed ? currentBanknote.serialNumber : maskInfo.maskedDisplay}</span>
-          {isAnswerRevealed && (
-            <span className="text-xs bg-emerald-500 text-black px-2 py-0.5 rounded-full font-bold animate-pulse">
-              {t('revealed_label')}
-            </span>
-          )}
-        </div>
-
-        {/* Row of 80px High-Contrast Digits */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full overflow-x-auto p-2">
-          {/* Country Prefix (e.g. IDR, USD, EUR, BTC) */}
-          <div className="h-16 sm:h-20 px-3 sm:px-4 flex items-center justify-center bg-black/90 rounded-2xl border-2 border-white/20 shadow-xl">
-            <span className="font-['Chakra_Petch',sans-serif] font-black text-2xl sm:text-3xl tracking-wider text-yellow-400">
-              {currentBanknote.prefix.trim()}
-            </span>
-          </div>
-
-          {/* Individual Digits Blocks */}
-          {maskInfo.originalDigits.split('').map((digit, idx) => {
-            const isMaskedAndHidden = maskInfo.maskIndices.includes(idx) && !isAnswerRevealed;
-
-            return (
-              <div
-                key={idx}
-                className={`relative w-12 sm:w-16 h-16 sm:h-20 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-2xl ${
-                  isMaskedAndHidden
-                    ? 'bg-black border-2 border-[#00ffcc] shadow-[0_0_20px_rgba(0,255,204,0.6),inset_0_0_12px_rgba(0,255,204,0.3)] scale-105 animate-pulse'
-                    : isAnswerRevealed && maskInfo.maskIndices.includes(idx)
-                    ? 'bg-emerald-950 border-2 border-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.5)]'
-                    : 'bg-black/90 border border-white/30 text-white'
-                }`}
-              >
-                {isMaskedAndHidden ? (
-                  <span className="font-['Poppins',sans-serif] font-extrabold text-3xl sm:text-4xl text-[#00ffcc] drop-shadow-[0_0_12px_#00ffcc]">
-                    ?
-                  </span>
-                ) : (
-                  <span
-                    className={`font-['Poppins',sans-serif] font-black text-3xl sm:text-4xl ${
-                      isAnswerRevealed && maskInfo.maskIndices.includes(idx)
-                        ? 'text-emerald-400'
-                        : 'text-white'
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1 bg-white/[0.04] border border-white/[0.08] rounded-lg p-1">
+                {[1, 2, 3, 4].map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => {
+                      setLevel(lvl);
+                      setRevealedDigitsIndices([]);
+                    }}
+                    className={`min-w-9 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                      level === lvl
+                        ? 'bg-cyan-500 text-black'
+                        : 'text-white/60 hover:text-white hover:bg-white/[0.08]'
                     }`}
+                    title={`Level ${lvl}`}
                   >
-                    {digit}
-                  </span>
-                )}
+                    L{lvl}
+                  </button>
+                ))}
+              </div>
 
-                {/* Corner small digit index */}
-                <span className="absolute bottom-1 right-1.5 text-[9px] font-mono text-white/30 font-semibold">
-                  {idx + 1}
+              {userProfile && (
+                <button
+                  onClick={onOpenProfile}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-colors"
+                  title="Buka profil dan dompet"
+                >
+                  <Wallet className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs text-white/50">Rp</span>
+                  <span className="text-xs font-semibold text-white">
+                    {(userProfile.walletBalance ?? 15000).toLocaleString('id-ID')}
+                  </span>
+                </button>
+              )}
+
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08]">
+                <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="text-xs text-white/70">
+                  {formatHeaderDuration(timerDuration)}
                 </span>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* TAMPILAN DIGITAL TIMER (CUSTOM 1 JAM S/D MAKSIMAL 1 HARI) */}
-      <div className="w-full my-2">
-        <DigitalTimer
-          timeLeft={timeLeft}
-          timerDuration={timerDuration}
-          isTimerRunning={isTimerRunning}
-          onTogglePlayPause={handleTogglePlayPause}
-          onReset={handleResetTimer}
-          onSetDuration={handleSetDuration}
-          onAdjustTime={handleAdjustTime}
-        />
-      </div>
-
-      {/* STREAMER GAMEPLAY ACTION BUTTONS */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 mt-2 bg-neutral-950/80 p-3.5 sm:p-4 rounded-2xl border border-white/15">
-        {/* Streamer Host Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {/* Tombol Kunci Jawaban Host (H) */}
-          <button
-            onClick={() => setIsHostPeekVisible((prev) => !prev)}
-            className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl font-extrabold text-xs transition-all ${
-              isHostPeekVisible
-                ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/30'
-                : 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40'
-            }`}
-            title="Intip Kunci Jawaban Rahasia (Hanya Host) [Shortcut: H]"
-          >
-            {isHostPeekVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            <span className="hidden sm:inline">Kunci (H)</span>
-          </button>
-
-          {/* Tombol MULAI */}
-          <button
-            onClick={handleStartGame}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-sm shadow-lg shadow-green-600/30 transition-all hover:scale-105 active:scale-95"
-            title="Mulai acak uang dan reset timer [Host]"
-          >
-            <Play className="w-4 h-4 fill-white" />
-            <span>MULAI GAME</span>
-          </button>
-
-          {/* Tombol BOCORAN (B) */}
-          <button
-            onClick={handleBocoran}
-            disabled={isAnswerRevealed || maskInfo.maskIndices.length === 0}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 disabled:opacity-40 text-white font-bold text-sm shadow-lg shadow-amber-600/30 transition-all hover:scale-105 active:scale-95"
-            title="Shortcut: B"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span>{t('btn_hint')} <span className="text-yellow-200 text-xs">(-5)</span></span>
-          </button>
-
-          {/* Tombol JAWABAN BENAR (V / Enter) */}
-          <button
-            onClick={handleAnswerCorrect}
-            disabled={isAnswerRevealed}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-40 text-white font-extrabold text-sm shadow-lg shadow-cyan-600/30 transition-all hover:scale-105 active:scale-95 border border-cyan-300"
-            title="Shortcut: V / Enter"
-          >
-            <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-            <span>{t('btn_correct')}</span>
-          </button>
-
-          {/* Tombol Reset Timer (R) */}
-          <button
-            onClick={handleResetTimer}
-            className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all"
-            title="Reset Timer [R]"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
-          {/* Tombol Next / Lewati (Space) */}
-          <button
-            onClick={handleNextBanknote}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-all"
-            title="Shortcut: Spasi"
-          >
-            <SkipForward className="w-4 h-4" />
-            <span>{t('btn_skip')}</span>
-          </button>
-
-          {/* Tombol Acak Seri Baru (A) */}
-          <button
-            onClick={handleRandomizeCurrentSerial}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-400/40 font-bold text-xs transition-all hover:scale-105 active:scale-95"
-            title="Shortcut: A"
-          >
-            <Shuffle className="w-4 h-4 text-purple-300" />
-            <span>{t('btn_shuffle_serial')}</span>
-          </button>
-
-          {/* Tombol Zoom (Z) */}
-          <button
-            onClick={() => setIsZoomed(!isZoomed)}
-            className={`p-2.5 rounded-xl transition-all ${
-              isZoomed ? 'bg-cyan-500 text-black' : 'bg-white/10 hover:bg-white/20 text-white'
-            }`}
-            title="Zoom [Z]"
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
+            </div>
+          </div>
         </div>
 
-        {/* Right: Quick Winner Assigner to Leaderboard */}
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <input
-            type="text"
-            placeholder={t('spectator_username_placeholder')}
-            value={winnerNameInput}
-            onChange={(e) => setWinnerNameInput(e.target.value)}
-            className="px-3 py-1.5 text-xs rounded-lg bg-neutral-900 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 w-full sm:w-44"
-          />
-          <button
-            onClick={onOpenLeaderboard}
-            className="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 font-bold text-xs border border-yellow-500/40 flex items-center gap-1 shrink-0"
-            title="Papan Skor [X]"
-          >
-            <Award className="w-3.5 h-3.5" />
-            {t('btn_score')}
-          </button>
+        {/* BANKNOTE STAGE */}
+        <div className="p-3 sm:p-5">
+          <div className="rounded-xl bg-[#09090b] border border-white/[0.06] overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
+              <div>
+                <p className="text-[11px] uppercase tracking-wider text-white/35 font-semibold">
+                  Tebak Nomor Seri
+                </p>
+                <p className="text-xs text-white/50 mt-0.5">
+                  Identifikasi nomor seri pada uang berikut
+                </p>
+              </div>
+
+              <button
+                onClick={() => setIsZoomed(!isZoomed)}
+                className={`p-2 rounded-lg border transition-colors ${
+                  isZoomed
+                    ? 'bg-cyan-500 text-black border-cyan-400'
+                    : 'bg-white/[0.04] text-white/60 border-white/[0.08] hover:text-white hover:bg-white/[0.08]'
+                }`}
+                title="Zoom [Z]"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-2 sm:p-4">
+              <BanknoteVisual
+                banknote={currentBanknote}
+                maskedDigits={maskInfo.visibleDigits}
+                maskIndices={maskInfo.maskIndices}
+                isRevealed={isAnswerRevealed}
+                isZoomed={isZoomed}
+                onToggleZoom={() => setIsZoomed(!isZoomed)}
+              />
+            </div>
+          </div>
+
+          {/* SERIAL NUMBER */}
+          <div className="mt-4 rounded-xl bg-[#0f0f12] border border-white/[0.08] p-4">
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+              <span className="text-xs sm:text-sm font-semibold tracking-wide text-white/60 uppercase">
+                {t('serial_number_label')}
+              </span>
+
+              {isAnswerRevealed ? (
+                <span className="text-sm sm:text-base font-bold text-emerald-400 font-mono">
+                  {currentBanknote.serialNumber}
+                </span>
+              ) : (
+                <span className="text-sm sm:text-base font-bold text-cyan-300 font-mono">
+                  {maskInfo.maskedDisplay}
+                </span>
+              )}
+
+              {isAnswerRevealed && (
+                <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-semibold uppercase">
+                  {t('revealed_label')}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              <div className="h-12 sm:h-14 min-w-16 px-3 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.1]">
+                <span className="font-mono font-bold text-lg sm:text-xl text-amber-300">
+                  {currentBanknote.prefix.trim()}
+                </span>
+              </div>
+
+              {maskInfo.originalDigits.split('').map((digit, idx) => {
+                const isMaskedAndHidden =
+                  maskInfo.maskIndices.includes(idx) && !isAnswerRevealed;
+
+                return (
+                  <div
+                    key={idx}
+                    className={`relative w-11 sm:w-14 h-12 sm:h-14 rounded-lg flex items-center justify-center transition-all ${
+                      isMaskedAndHidden
+                        ? 'bg-cyan-500/[0.06] border border-cyan-400/50'
+                        : isAnswerRevealed && maskInfo.maskIndices.includes(idx)
+                        ? 'bg-emerald-500/[0.08] border border-emerald-400/40'
+                        : 'bg-white/[0.03] border border-white/[0.1]'
+                    }`}
+                  >
+                    <span
+                      className={`font-mono font-bold text-2xl sm:text-3xl ${
+                        isMaskedAndHidden
+                          ? 'text-cyan-300'
+                          : isAnswerRevealed && maskInfo.maskIndices.includes(idx)
+                          ? 'text-emerald-400'
+                          : 'text-white'
+                      }`}
+                    >
+                      {isMaskedAndHidden ? '?' : digit}
+                    </span>
+
+                    <span className="absolute bottom-0.5 right-1 text-[8px] font-mono text-white/20">
+                      {idx + 1}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* TIMER */}
+          <div className="mt-4 rounded-xl bg-[#0f0f12] border border-white/[0.08] overflow-hidden">
+            <div className="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between">
+              <span className="text-[11px] uppercase tracking-wider text-white/40 font-semibold">
+                Timer
+              </span>
+              <span className="text-xs text-white/40">
+                {formatHeaderDuration(timerDuration)}
+              </span>
+            </div>
+
+            <div className="p-3">
+              <DigitalTimer
+                timeLeft={timeLeft}
+                timerDuration={timerDuration}
+                isTimerRunning={isTimerRunning}
+                onTogglePlayPause={handleTogglePlayPause}
+                onReset={handleResetTimer}
+                onSetDuration={handleSetDuration}
+                onAdjustTime={handleAdjustTime}
+              />
+            </div>
+          </div>
+
+          {/* HOST CONTROLS */}
+          <div className="mt-4 rounded-xl bg-[#0f0f12] border border-white/[0.08] p-3 sm:p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold">
+                  Kontrol Game
+                </p>
+                <p className="text-xs text-white/35 mt-0.5">
+                  Kontrol khusus streamer / host
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+              <button
+                onClick={() => setIsHostPeekVisible((prev) => !prev)}
+                className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-xs font-semibold border transition-colors ${
+                  isHostPeekVisible
+                    ? 'bg-amber-400 text-black border-amber-300'
+                    : 'bg-amber-500/10 text-amber-300 border-amber-500/20 hover:bg-amber-500/15'
+                }`}
+                title="Intip kunci jawaban [H]"
+              >
+                {isHostPeekVisible ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+                Kunci (H)
+              </button>
+
+              <button
+                onClick={handleStartGame}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 text-xs font-semibold transition-colors"
+                title="Mulai game"
+              >
+                <Play className="w-4 h-4" />
+                Mulai Game
+              </button>
+
+              <button
+                onClick={handleBocoran}
+                disabled={isAnswerRevealed || maskInfo.maskIndices.length === 0}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/15 disabled:opacity-30 text-amber-300 border border-amber-500/20 text-xs font-semibold transition-colors"
+                title="Bocoran [B]"
+              >
+                <HelpCircle className="w-4 h-4" />
+                {t('btn_hint')}
+              </button>
+
+              <button
+                onClick={handleAnswerCorrect}
+                disabled={isAnswerRevealed}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/15 disabled:opacity-30 text-cyan-300 border border-cyan-500/20 text-xs font-semibold transition-colors"
+                title="Jawaban benar [V / Enter]"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                {t('btn_correct')}
+              </button>
+
+              <button
+                onClick={handleResetTimer}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.08] text-xs font-semibold transition-colors"
+                title="Reset Timer [R]"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Reset
+              </button>
+
+              <button
+                onClick={handleNextBanknote}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.08] text-xs font-semibold transition-colors"
+                title="Next [Space]"
+              >
+                <SkipForward className="w-4 h-4" />
+                {t('btn_skip')}
+              </button>
+
+              <button
+                onClick={handleRandomizeCurrentSerial}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-purple-500/10 hover:bg-purple-500/15 text-purple-300 border border-purple-500/20 text-xs font-semibold transition-colors"
+                title="Acak seri baru [A]"
+              >
+                <Shuffle className="w-4 h-4" />
+                Acak Seri
+              </button>
+
+              <button
+                onClick={() => setIsZoomed(!isZoomed)}
+                className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors ${
+                  isZoomed
+                    ? 'bg-cyan-500 text-black border-cyan-400'
+                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border-white/[0.08]'
+                }`}
+                title="Zoom [Z]"
+              >
+                <Maximize2 className="w-4 h-4" />
+                Zoom
+              </button>
+            </div>
+
+            {/* LEADERBOARD */}
+            <div className="mt-3 pt-3 border-t border-white/[0.06] flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                placeholder={t('spectator_username_placeholder')}
+                value={winnerNameInput}
+                onChange={(e) => setWinnerNameInput(e.target.value)}
+                className="flex-1 min-w-0 px-3 py-2.5 text-xs rounded-lg bg-black/20 border border-white/[0.08] text-white placeholder-white/30 focus:outline-none focus:border-cyan-500/40"
+              />
+
+              <button
+                onClick={onOpenLeaderboard}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/15 text-yellow-300 border border-yellow-500/20 text-xs font-semibold transition-colors"
+                title="Papan Skor [X]"
+              >
+                <Award className="w-4 h-4" />
+                {t('btn_score')}
+              </button>
+            </div>
+          </div>
+
+          {/* HOST SECRET ANSWER */}
+          <div className="mt-4">
+            <HostSecretAnswer
+              banknote={currentBanknote}
+              maskInfo={maskInfo}
+              isAnswerRevealed={isAnswerRevealed}
+              level={level}
+              onAnswerCorrect={handleAnswerCorrect}
+              isHostPeekVisible={isHostPeekVisible}
+              onToggleHostPeek={() => setIsHostPeekVisible((prev) => !prev)}
+              showSecretModal={showSecretModal}
+              onToggleSecretModal={() => setShowSecretModal((prev) => !prev)}
+            />
+          </div>
+
+          {/* KEYBOARD SHORTCUTS */}
+          <div className="mt-4 rounded-xl bg-[#0f0f12] border border-white/[0.08] px-3 py-3">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] sm:text-[11px] text-white/40">
+              <span className="font-semibold text-white/60 uppercase">
+                Kontrol Streamer
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-amber-300">H / J</kbd>
+                <span className="ml-1.5">Kunci</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-cyan-300">Spasi</kbd>
+                <span className="ml-1.5">Next</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-cyan-300">1-4</kbd>
+                <span className="ml-1.5">Level</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-amber-300">B</kbd>
+                <span className="ml-1.5">Bocoran</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-cyan-300">V / Enter</kbd>
+                <span className="ml-1.5">Benar</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-purple-300">A</kbd>
+                <span className="ml-1.5">Acak</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-white/60">R</kbd>
+                <span className="ml-1.5">Reset</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-cyan-300">Z</kbd>
+                <span className="ml-1.5">Zoom</span>
+              </span>
+
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-yellow-300">X</kbd>
+                <span className="ml-1.5">Papan Skor</span>
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* KUNCI JAWABAN KHUSUS HOST DI BAWAH (HANYA HOST YANG BISA MELIHAT) */}
-      <div className="w-full my-3">
-        <HostSecretAnswer
-          banknote={currentBanknote}
-          maskInfo={maskInfo}
-          isAnswerRevealed={isAnswerRevealed}
-          level={level}
-          onAnswerCorrect={handleAnswerCorrect}
-          isHostPeekVisible={isHostPeekVisible}
-          onToggleHostPeek={() => setIsHostPeekVisible((prev) => !prev)}
-          showSecretModal={showSecretModal}
-          onToggleSecretModal={() => setShowSecretModal((prev) => !prev)}
-        />
-      </div>
-
-      {/* Host Keyboard Shortcuts Legend Footer */}
-      <div className="w-full mt-3 px-3 py-2 rounded-xl bg-black/40 border border-white/10 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-white/60">
-        <span className="font-semibold text-white/80">KONTROL STREAMER:</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-amber-300 border border-neutral-700">H / J</kbd> Kunci Jawaban (Host)</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">Spasi</kbd> Next</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">1 - 4</kbd> Ganti Level</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">B</kbd> Bocoran (-5 Poin)</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">V / Enter</kbd> Jawaban Benar</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-purple-300 border border-neutral-700">A</kbd> Acak Seri Baru</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">R</kbd> Reset Timer</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">Z</kbd> Zoom Uang</span>
-        <span><kbd className="px-1.5 py-0.5 bg-neutral-800 rounded text-cyan-300 border border-neutral-700">X</kbd> Papan Skor</span>
       </div>
     </div>
   );
