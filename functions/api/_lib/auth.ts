@@ -6,6 +6,7 @@ export type UserRole = 'OWNER' | 'ADMIN' | 'USER';
 export interface AuthUser {
   id: number;
   cuid: string;
+  uid: string;
   username: string;
   email: string;
   role: UserRole;
@@ -62,6 +63,7 @@ export function createToken(
     sub: String(user.id),
     id: user.id,
     cuid: user.cuid,
+    uid: user.cuid,
     username: user.username,
     email: user.email,
     role: user.role,
