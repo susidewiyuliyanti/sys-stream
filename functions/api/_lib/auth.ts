@@ -111,28 +111,35 @@ export function getAuthUser(
   return verifyToken(token, env);
 }
 
+export type AuthResult =
+  | { ok: true; user: TokenPayload }
+  | { ok: false; response: Response };
+
 export function requireAuth(
   request: Request,
   env: Env
-): TokenPayload {
+): AuthResult {
   const payload = getAuthUser(request, env);
 
   if (!payload) {
-    throw new Response(
-      JSON.stringify({
-        error: 'Unauthorized',
-        message: 'Please log in first.',
-      }),
-      {
-        status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    return {
+      ok: false,
+      response: new Response(
+        JSON.stringify({
+          error: 'Unauthorized',
+          message: 'Please log in first.',
+        }),
+        {
+          status: 401,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      ),
+    };
   }
 
-  return payload;
+  return { ok: true, user: payload };
 }
 
 export function isOwnerRole(role?: string): boolean {
