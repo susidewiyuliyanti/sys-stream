@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Wallet,
@@ -667,8 +667,8 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             userId: userProfile.uid,
             userEmail: userProfile.email,
             planName: data.isJackpot
-              ? `🎉 JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
-              : `🎁 Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
+              ? `ðŸŽ‰ JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
+              : `ðŸŽ Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
             price: data.prizeAmount,
             currency: 'IDR',
             status: 'success',
@@ -779,7 +779,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-950/20 via-neutral-950 to-black text-white p-3 sm:p-6 select-none font-sans">
+    <div className="min-h-screen bg-slate-950 bg-neutral-950 text-white p-3 sm:p-6 select-none font-sans">
       {/* Toast message */}
       {toastMessage && (
         <motion.div
@@ -815,7 +815,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 </h1>
               </div>
               <p className="text-[11px] text-white/60">
-                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) • Klaim Box Tiap Hari Jam 00:00 WIB • Jackpot Rp 100 - Rp 50.000.000
+                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) â€¢ Klaim Box Tiap Hari Jam 00:00 WIB â€¢ Jackpot Rp 100 - Rp 50.000.000
               </p>
             </div>
           </div>
@@ -830,7 +830,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   onClick={() => {
                     if (onOpenAppProfile) onOpenAppProfile();
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/70 hover:bg-black/90 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-black shadow-inner transition-all hover:scale-105 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/70 hover:bg-black/90 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-black shadow-inner transition-all hover:brightness-110 cursor-pointer"
                   title="Klik untuk Buka Dompet Terpadu & Deposit Crypto"
                 >
                   <Wallet className="w-3.5 h-3.5 text-emerald-400" />
@@ -842,7 +842,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   type="button"
                   id="btn-blindbox-master-menu"
                   onClick={() => setIsMenuOpen(true)}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-xs shadow-md shadow-amber-500/25 transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-400 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-xs shadow-sm transition-all hover:brightness-110 active:scale-95 cursor-pointer group"
                   title="Buka Menu Lengkap Blind Box & Akun"
                 >
                   <Menu className="w-4 h-4 text-slate-950 group-hover:rotate-90 transition-transform" />
@@ -859,7 +859,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     onOpenAppAuth();
                   }
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 text-xs font-black shadow-md shadow-amber-500/25 transition-all hover:scale-105 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 text-xs font-black shadow-sm transition-all hover:brightness-110 cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Masuk Akun SYS Utama</span>
@@ -875,7 +875,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             <div className="relative w-full sm:max-w-md h-full bg-neutral-950 border-l border-amber-500/30 shadow-2xl flex flex-col justify-between overflow-y-auto z-10 font-sans">
               <div className="space-y-4">
                 {/* Header Menu */}
-                <div className="p-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-amber-950/40 via-neutral-900 to-amber-950/30">
+                <div className="p-4 border-b border-white/10 flex items-center justify-between bg-neutral-900">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
                       <Gift className="w-4 h-4" />
@@ -998,7 +998,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         setIsMenuOpen(false);
                         setShowAdminPanel(true);
                       }}
-                      className="w-full p-3 rounded-2xl bg-gradient-to-r from-red-600/30 to-amber-600/30 hover:from-red-600/40 hover:to-amber-600/40 border border-amber-500/40 flex items-center justify-between text-xs font-black text-amber-300 shadow-md transition-all cursor-pointer"
+                      className="w-full p-3 rounded-2xl bg-neutral-900 hover:from-red-600/40 hover:to-amber-600/40 border border-amber-500/40 flex items-center justify-between text-xs font-black text-amber-300 shadow-md transition-all cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
                         <Crown className="w-4 h-4 text-amber-400" />
@@ -1031,7 +1031,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         )}
 
         {/* TIME & COUNTDOWN BANNER (00:00 WIB RESET NOTICE) */}
-        <div className="flex items-center justify-between flex-wrap gap-3 p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 via-yellow-950/30 to-amber-950/40 border border-amber-500/30">
+        <div className="flex items-center justify-between flex-wrap gap-3 p-4 rounded-2xl bg-neutral-900 border border-amber-500/30">
           <div className="flex items-center gap-2.5">
             <Timer className="w-5 h-5 text-amber-400 shrink-0" />
             <div>
@@ -1039,7 +1039,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 Reset Harian Pukul 00:00 WIB
               </div>
               <div className="text-[11px] text-amber-300/70">
-                ⚠️ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
+                âš ï¸ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
               </div>
             </div>
           </div>
@@ -1070,7 +1070,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 <div className="text-right">
                   <span className="text-[10px] text-white/50 block font-bold">Peluang Hadiah:</span>
                   <span className="text-xs font-black text-amber-300">
-                    Rp 100 - Rp 1.000 • Jackpot Rp 100 - Rp 50.000.000
+                    Rp 100 - Rp 1.000 â€¢ Jackpot Rp 100 - Rp 50.000.000
                   </span>
                 </div>
               </div>
@@ -1097,7 +1097,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   onClick={() => {
                     if (onOpenAppAuth) onOpenAppAuth();
                   }}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-base shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-4 rounded-2xl bg-amber-400 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-base shadow-lg transition-all hover:brightness-110 active:brightness-95 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <LogIn className="w-5 h-5" />
                   <span>Masuk untuk Mulai Main Blind Box</span>
@@ -1111,7 +1111,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
               ) : activeDeposit.status === 'EXPIRED' ? (
                 <button
                   onClick={() => setShowWithdrawModal(true)}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-600 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 animate-bounce"
+                  className="w-full py-4 rounded-2xl bg-emerald-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 transition-all hover:brightness-110 active:brightness-95 flex items-center justify-center gap-2 animate-bounce"
                 >
                   <ArrowDownToLine className="w-5 h-5" />
                   <span>Masa Kunci Selesai! Tarik Modal + Hadiah (Withdraw)</span>
@@ -1130,13 +1130,13 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 <button
                   onClick={handleClaimBlindBox}
                   disabled={isClaiming}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-base shadow-xl shadow-amber-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group cursor-pointer"
+                  className="w-full py-4 rounded-2xl bg-amber-400 hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-base shadow-lg transition-all hover:brightness-110 active:brightness-95 flex items-center justify-center gap-2 group cursor-pointer"
                 >
                   <Gift className="w-5 h-5 text-slate-950 group-hover:rotate-12 transition-transform" />
                   <span>
                     {isClaiming
                       ? 'Membuka Box...'
-                      : `🎁 Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
+                      : `ðŸŽ Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
                   </span>
                 </button>
               )}
@@ -1151,7 +1151,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     title="Buka Kunci Saldo (Catatan: Reward blind box akan hangus/hilang)"
                   >
                     <Unlock className="w-3.5 h-3.5" />
-                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) • Catatan: Reward akan hangus</span>
+                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) â€¢ Catatan: Reward akan hangus</span>
                   </button>
                 </div>
               )}
@@ -1190,7 +1190,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         <button
                           type="button"
                           onClick={() => setShowUnlockModal(true)}
-                          className="px-2 py-0.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-white border border-red-500/40 text-[10px] font-extrabold transition-all flex items-center gap-1 cursor-pointer hover:scale-105 active:scale-95"
+                          className="px-2 py-0.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-white border border-red-500/40 text-[10px] font-extrabold transition-all flex items-center gap-1 cursor-pointer hover:brightness-110 active:scale-95"
                           title="Buka Kunci Saldo (Catatan: Reward blind box akan hangus/hilang)"
                         >
                           <Unlock className="w-3 h-3" />
@@ -1224,12 +1224,12 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     <span className="font-black text-amber-300 flex items-center gap-1.5">
                       <span>
                         {(depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'GOLD'
-                          ? '👑'
+                          ? 'ðŸ‘‘'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'PLATINUM'
-                          ? '💎'
+                          ? 'ðŸ’Ž'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'SILVER'
-                          ? '🥈'
-                          : '🥉'}
+                          ? 'ðŸ¥ˆ'
+                          : 'ðŸ¥‰'}
                       </span>
                       <span>
                         {depositTier
@@ -1249,7 +1249,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   </div>
                   <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500"
+                      className="h-full bg-amber-500 transition-all duration-500"
                       style={{ width: `${depositProgressPct}%` }}
                     />
                   </div>
@@ -1257,7 +1257,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
                 {/* Early Unlock Action Card with Explicit Warning Note */}
                 {activeDeposit.status === 'ACTIVE' && (
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-950/40 via-neutral-900 to-red-950/30 border border-red-500/40 space-y-2">
+                  <div className="p-3.5 rounded-2xl bg-red-950/20 border border-red-500/40 space-y-2">
                     <div className="flex items-start gap-2">
                       <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                       <div className="text-[11px] text-white/80 leading-relaxed">
@@ -1267,7 +1267,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowUnlockModal(true)}
-                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs shadow-md shadow-red-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                      className="w-full py-2.5 rounded-xl bg-red-600 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                     >
                       <Unlock className="w-3.5 h-3.5" />
                       <span>Buka Kunci Saldo (Reward Akan Hangus)</span>
@@ -1312,7 +1312,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         onClick={() => setSelectedDuration(days as any)}
                         className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
                           selectedDuration === days
-                            ? 'bg-gradient-to-b from-amber-500/30 to-yellow-600/20 border-amber-400 shadow-md shadow-amber-500/20'
+                            ? 'bg-amber-500/15 border-amber-400 shadow-md shadow-amber-500/20'
                             : 'bg-black/40 border-white/10 hover:border-white/20'
                         }`}
                       >
@@ -1408,19 +1408,19 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                           {nominal >= 1000000
                             ? `${nominal / 1000000} Jt`
                             : `${nominal / 1000} Rb`}
-                          {nominal === 100000000 && ' (Sultan++ 👑)'}
-                          {nominal === 50000000 && ' (Sultan 👑)'}
-                          {nominal === 20000000 && ' (Diamond 💎)'}
-                          {nominal === 5000000 && ' (Gold 🥇)'}
-                          {nominal === 2500000 && ' (Platinum 💍)'}
-                          {nominal === 1000000 && ' (Silver 🥈)'}
+                          {nominal === 100000000 && ' (Sultan++ ðŸ‘‘)'}
+                          {nominal === 50000000 && ' (Sultan ðŸ‘‘)'}
+                          {nominal === 20000000 && ' (Diamond ðŸ’Ž)'}
+                          {nominal === 5000000 && ' (Gold ðŸ¥‡)'}
+                          {nominal === 2500000 && ' (Platinum ðŸ’)'}
+                          {nominal === 1000000 && ' (Silver ðŸ¥ˆ)'}
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* DYNAMIC REWARD PERCENTAGE GENERATOR DISPLAY */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 border border-amber-500/35 space-y-2 text-xs">
+                  <div className="p-3.5 rounded-2xl bg-neutral-900 border border-amber-500/35 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-amber-300 flex items-center gap-1.5">
                         <Flame className="w-3.5 h-3.5 text-amber-400" />
@@ -1464,7 +1464,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">🥈</span>
+                          <span className="text-xs">ðŸ¥ˆ</span>
                           <span className="text-[9px] font-mono text-slate-300 font-bold">1 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">3 Box Silver</div>
@@ -1482,7 +1482,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">💍</span>
+                          <span className="text-xs">ðŸ’</span>
                           <span className="text-[9px] font-mono text-purple-300 font-bold">2.5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">5 Box Platinum</div>
@@ -1500,7 +1500,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">👑</span>
+                          <span className="text-xs">ðŸ‘‘</span>
                           <span className="text-[9px] font-mono text-amber-300 font-bold">5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-amber-300 mt-0.5">10 Box Emas</div>
@@ -1518,7 +1518,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">💎</span>
+                          <span className="text-xs">ðŸ’Ž</span>
                           <span className="text-[9px] font-mono text-cyan-300 font-bold">20 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-cyan-300 mt-0.5">15 Box Diamond</div>
@@ -1536,7 +1536,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">🔥</span>
+                          <span className="text-xs">ðŸ”¥</span>
                           <span className="text-[9px] font-mono text-rose-300 font-bold">50 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-rose-300 mt-0.5">25 Box Sultan</div>
@@ -1623,7 +1623,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     isDepositing ||
                     customDepositAmount < 50000
                   }
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 transition-all hover:brightness-110 active:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-4 h-4" />
                   <span>
@@ -1716,3 +1716,4 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
     </div>
   );
 };
+
