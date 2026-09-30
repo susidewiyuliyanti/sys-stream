@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Wallet,
@@ -191,28 +191,23 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
   // Helper: check if user is already authenticated
   const isUserLoggedIn = Boolean(
-    userProfile ||
-    currentUser ||
-    jwtToken ||
-    (typeof window !== 'undefined' && (
-      localStorage.getItem('sys_stream_auth_token') ||
-      localStorage.getItem('blindbox_jwt_token') ||
-      localStorage.getItem('sys_stream_auth_user')
-    ))
-  );
+  userProfile ||
+  currentUser ||
+  (typeof window !== 'undefined' &&
+    localStorage.getItem('sys_stream_auth_token'))
+);
 
   const getActiveToken = () => {
-    try {
-      return (
-        jwtToken ||
-        localStorage.getItem('sys_stream_auth_token') ||
-        localStorage.getItem('blindbox_jwt_token') ||
-        null
-      );
-    } catch {
-      return null;
-    }
-  };
+  try {
+    return (
+      jwtToken ||
+      localStorage.getItem('sys_stream_auth_token') ||
+      null
+    );
+  } catch {
+    return null;
+  }
+};
 
   // Game data state
   const [activeDeposit, setActiveDeposit] = useState<BlindBoxDeposit | null>(null);
@@ -356,7 +351,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
     try {
       const res = await fetch('/api/auth/me', {
-        headers: { Authorization: Bearer  },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) {
@@ -683,8 +678,8 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             userId: userProfile.uid,
             userEmail: userProfile.email,
             planName: data.isJackpot
-              ? `ðŸŽ‰ JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
-              : `ðŸŽ Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
+              ? `🎉 JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
+              : `🎁 Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
             price: data.prizeAmount,
             currency: 'IDR',
             status: 'success',
@@ -831,7 +826,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 </h1>
               </div>
               <p className="text-[11px] text-white/60">
-                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) â€¢ Klaim Box Tiap Hari Jam 00:00 WIB â€¢ Jackpot Rp 100 - Rp 50.000.000
+                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) • Klaim Box Tiap Hari Jam 00:00 WIB • Jackpot Rp 100 - Rp 50.000.000
               </p>
             </div>
           </div>
@@ -1057,7 +1052,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 Reset Harian Pukul 00:00 WIB
               </div>
               <div className="text-[11px] text-amber-300/70">
-                âš ï¸ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
+                ⚠️ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
               </div>
             </div>
           </div>
@@ -1088,7 +1083,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 <div className="text-right">
                   <span className="text-[10px] text-white/50 block font-bold">Peluang Hadiah:</span>
                   <span className="text-xs font-black text-amber-300">
-                    Rp 100 - Rp 1.000 â€¢ Jackpot Rp 100 - Rp 50.000.000
+                    Rp 100 - Rp 1.000 • Jackpot Rp 100 - Rp 50.000.000
                   </span>
                 </div>
               </div>
@@ -1152,7 +1147,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   <span>
                     {isClaiming
                       ? 'Membuka Box...'
-                      : `ðŸŽ Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
+                      : `🎁 Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
                   </span>
                 </button>
               )}
@@ -1167,7 +1162,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     title="Buka Kunci Saldo (Catatan: Reward blind box akan hangus/hilang)"
                   >
                     <Unlock className="w-3.5 h-3.5" />
-                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) â€¢ Catatan: Reward akan hangus</span>
+                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) • Catatan: Reward akan hangus</span>
                   </button>
                 </div>
               )}
@@ -1240,12 +1235,12 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     <span className="font-black text-amber-300 flex items-center gap-1.5">
                       <span>
                         {(depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'GOLD'
-                          ? 'ðŸ‘‘'
+                          ? '👑'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'PLATINUM'
-                          ? 'ðŸ’Ž'
+                          ? '💎'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'SILVER'
-                          ? 'ðŸ¥ˆ'
-                          : 'ðŸ¥‰'}
+                          ? '🥈'
+                          : '🥉'}
                       </span>
                       <span>
                         {depositTier
@@ -1424,12 +1419,12 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                           {nominal >= 1000000
                             ? `${nominal / 1000000} Jt`
                             : `${nominal / 1000} Rb`}
-                          {nominal === 100000000 && ' (Sultan++ ðŸ‘‘)'}
-                          {nominal === 50000000 && ' (Sultan ðŸ‘‘)'}
-                          {nominal === 20000000 && ' (Diamond ðŸ’Ž)'}
-                          {nominal === 5000000 && ' (Gold ðŸ¥‡)'}
-                          {nominal === 2500000 && ' (Platinum ðŸ’)'}
-                          {nominal === 1000000 && ' (Silver ðŸ¥ˆ)'}
+                          {nominal === 100000000 && ' (Sultan++ 👑)'}
+                          {nominal === 50000000 && ' (Sultan 👑)'}
+                          {nominal === 20000000 && ' (Diamond 💎)'}
+                          {nominal === 5000000 && ' (Gold 🥇)'}
+                          {nominal === 2500000 && ' (Platinum 💍)'}
+                          {nominal === 1000000 && ' (Silver 🥈)'}
                         </button>
                       ))}
                     </div>
@@ -1480,7 +1475,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">ðŸ¥ˆ</span>
+                          <span className="text-xs">🥈</span>
                           <span className="text-[9px] font-mono text-slate-300 font-bold">1 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">3 Box Silver</div>
@@ -1498,7 +1493,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">ðŸ’</span>
+                          <span className="text-xs">💍</span>
                           <span className="text-[9px] font-mono text-purple-300 font-bold">2.5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">5 Box Platinum</div>
@@ -1516,7 +1511,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">ðŸ‘‘</span>
+                          <span className="text-xs">👑</span>
                           <span className="text-[9px] font-mono text-amber-300 font-bold">5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-amber-300 mt-0.5">10 Box Emas</div>
@@ -1534,7 +1529,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">ðŸ’Ž</span>
+                          <span className="text-xs">💎</span>
                           <span className="text-[9px] font-mono text-cyan-300 font-bold">20 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-cyan-300 mt-0.5">15 Box Diamond</div>
@@ -1552,7 +1547,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">ðŸ”¥</span>
+                          <span className="text-xs">🔥</span>
                           <span className="text-[9px] font-mono text-rose-300 font-bold">50 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-rose-300 mt-0.5">25 Box Sultan</div>
@@ -1746,6 +1741,8 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
     </div>
   );
 };
+
+
 
 
 
