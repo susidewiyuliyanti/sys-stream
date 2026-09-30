@@ -75,25 +75,24 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     const body = await readJson<DepositRequest>(context.request);
-
     const amount = Number(body.amount);
     const durationDays = Number(body.durationDays);
 
-    if (!Number.isInteger(amount) || amount <= 0) {
+    if (!Number.isInteger(amount) || amount < 50000 || amount % 10000 !== 0) {
       return json(
         {
           success: false,
-          message: "Nominal deposit tidak valid.",
+          error: "Nominal lock minimal Rp 50.000 dan harus kelipatan Rp 10.000.",
         },
         400
       );
     }
 
-    if (!Number.isInteger(durationDays) || durationDays <= 0) {
+    if (![30, 60, 90].includes(durationDays)) {
       return json(
         {
           success: false,
-          message: "Durasi deposit tidak valid.",
+          error: "Durasi lock harus 30, 60, atau 90 hari.",
         },
         400
       );
@@ -105,16 +104,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       await client.query("BEGIN");
 
       try {
-        /*
-         * Lock row user supaya dua request bersamaan
-         * tidak bisa memanipulasi saldo secara race condition.
-         */
+        // Saldo yang tersedia adalah saldo user yang dapat dipakai untuk lock.
+        // Kunci row agar dua request lock bersamaan tidak dapat menghabiskan saldo yang sama.
         const userResult = await client.query(
           `
           SELECT
             id,
-            saldo,
-            "walletBalance"
+            COALESCE(balance, 0) AS balance,
+            COALESCE(saldo, 0) AS saldo,
+            COALESCE("walletBalance", 0) AS "walletBalance",
+            COALESCE(locked_saldo, 0) AS locked_saldo
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -128,33 +127,54 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         const user = userResult.rows[0];
 
-        const saldo = Number(user.saldo ?? 0);
+        // Gunakan saldo terbesar yang konsisten sebagai available balance,
+        // tetapi jangan pernah menambah saldo hanya karena salah satu field stale.
+        const availableBalance = Math.max(
+          Number(user.balance || 0),
+          Number(user.saldo || 0),
+          Number(user.walletBalance || 0)
+        );
 
-        if (saldo < amount) {
+        if (availableBalance < amount) {
           throw new Error("INSUFFICIENT_BALANCE");
         }
 
+        const activeResult = await client.query(
+          `
+          SELECT id
+          FROM deposits
+          WHERE "userId" = $1 AND status = 'ACTIVE'
+          LIMIT 1
+          `,
+          [userId]
+        );
+
+        if (activeResult.rows.length > 0) {
+          throw new Error("ACTIVE_DEPOSIT_EXISTS");
+        }
+
         const depositCode = generateDepositCode();
-
         const startDate = new Date();
-
         const endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + durationDays);
 
-        /*
-         * Kurangi saldo dan simpan deposit
-         * dalam satu transaksi.
-         */
+        const remainingBalance = availableBalance - amount;
+        const newLockedBalance = Number(user.locked_saldo || 0) + amount;
+
+        // Satu transaksi: available balance turun, locked balance naik.
+        // Semua alias saldo disamakan agar UI utama dan Blind Box membaca angka yang sama.
         await client.query(
           `
           UPDATE users
           SET
-            saldo = saldo - $1,
-            "walletBalance" = "walletBalance" - $1,
-            "updatedAt" = NOW()
-          WHERE id = $2
+            balance = $1,
+            saldo = $1,
+            "walletBalance" = $1,
+            locked_saldo = $2,
+            updated_at = NOW()
+          WHERE id = $3
           `,
-          [amount, userId]
+          [remainingBalance, newLockedBalance, userId]
         );
 
         const depositResult = await client.query(
@@ -172,16 +192,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             "createdAt"
           )
           VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5,
-            $6,
-            'ACTIVE',
-            0,
-            false,
-            NOW()
+            $1, $2, $3, $4, $5, $6, 'ACTIVE', 0, false, NOW()
           )
           RETURNING
             id,
@@ -209,7 +220,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         return {
           deposit: depositResult.rows[0],
-          remainingSaldo: saldo - amount,
+          remainingBalance,
+          remainingSaldo: remainingBalance,
+          lockedBalance: newLockedBalance,
         };
       } catch (error) {
         await client.query("ROLLBACK");
@@ -219,39 +232,34 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return json({
       success: true,
-      message: "Deposit berhasil dibuat.",
+      message: "Lock saldo berhasil dibuat.",
       ...result,
     });
   } catch (error) {
-    console.error("Create deposit error:", error);
+    console.error("Create deposit/lock error:", error);
 
     if (error instanceof Error) {
       if (error.message === "USER_NOT_FOUND") {
-        return json(
-          {
-            success: false,
-            message: "User tidak ditemukan.",
-          },
-          404
-        );
+        return json({ success: false, error: "User tidak ditemukan." }, 404);
       }
 
       if (error.message === "INSUFFICIENT_BALANCE") {
         return json(
-          {
-            success: false,
-            message: "Saldo tidak mencukupi.",
-          },
+          { success: false, error: "Saldo user tersedia tidak mencukupi untuk nominal lock." },
+          400
+        );
+      }
+
+      if (error.message === "ACTIVE_DEPOSIT_EXISTS") {
+        return json(
+          { success: false, error: "Masih ada lock Blind Box yang aktif. Selesaikan atau buka lock tersebut terlebih dahulu." },
           400
         );
       }
     }
 
     return json(
-      {
-        success: false,
-        message: "Gagal membuat deposit.",
-      },
+      { success: false, error: "Gagal melakukan lock saldo." },
       500
     );
   }
