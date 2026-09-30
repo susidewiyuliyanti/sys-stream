@@ -499,8 +499,8 @@ function translateTextNode(node: Text, translations: Map<string, string>): void 
 
   if (!translated) return;
 
-  const leading = original.match(/^\\s*/)?.[0] || '';
-  const trailing = original.match(/\\s*$/)?.[0] || '';
+  const leading = original.match(/^\s*/)?.[0] || '';
+  const trailing = original.match(/\s*$/)?.[0] || '';
   const nextValue = leading + translated + trailing;
   if (node.nodeValue !== nextValue) node.nodeValue = nextValue;
 }
