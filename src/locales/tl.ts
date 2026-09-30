@@ -268,7 +268,7 @@ export default {
   "re_draw_btn": "Re-Raffle",
   "draw_winner_btn": "Raffle Random Winner",
   "input_username_hint": "Type username (e.g. @viewer_live)...",
-  "add_user_btn": "Add",
+  "add_user_btn": "Idagdag",
   "registered_viewers_count": "Viewers registered",
   "search_user_hint": "Search user...",
   "empty_users_hint": "No viewer usernames yet. Add via the input above or when viewers chat.",
@@ -323,5 +323,5 @@ export default {
   "chat_host_badge": "HOST",
   "chat_host_name": "Host Streamer (Ikaw)",
   "game_fast_label": "Mabilis na Laro",
-  "btn_switch_owner": "Owner Admin Panel"
+  "btn_switch_owner": "Admin Panel ng May-ari"
 } as const;
