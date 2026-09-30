@@ -351,7 +351,7 @@ export function sanitizeFirestoreData<
 
   for (const key of Object.keys(data)) {
     if (data[key] !== undefined) {
-      result[key] = data[key];
+      (result as Record<string, any>)[key] = data[key];
     }
   }
 
@@ -595,6 +595,8 @@ export async function syncUserProfile(
     uid,
     email,
     displayName,
+    photoURL: user.photoURL || '',
+    createdAt: user.createdAt || new Date().toISOString(),
     role:
       user.role ||
       'member',
