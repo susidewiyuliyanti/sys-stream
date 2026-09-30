@@ -6,6 +6,7 @@ export interface BlindBoxUser {
   username: string;
   email: string;
   balance: number;
+  lockedBalance?: number;
   role: string;
   isBlacklisted?: boolean;
   forceJackpotNext?: boolean;
@@ -20,7 +21,7 @@ export interface BlindBoxDeposit {
   durationDays: number;
   startDate: string;
   endDate: string;
-  status: 'ACTIVE' | 'CLAIMED' | 'EXPIRED';
+  status: 'ACTIVE' | 'CLAIMED' | 'EXPIRED' | 'UNLOCKED';
   totalClaimed: number;
   forceJackpot?: boolean;
   targetJackpotNominal?: number;
