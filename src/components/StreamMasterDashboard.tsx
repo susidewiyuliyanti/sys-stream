@@ -180,6 +180,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     realOrders.forEach((o) => {
       items.push({
         id: `order-${o.id || o.orderId}`,
+        type: 'order',
         user: o.userName || (o.userEmail ? `@${o.userEmail.split('@')[0]}` : '@pembeli_live'),
         avatar: '🛒',
         text: `Checkout: ${o.planName || o.paymentMethod || 'Pesanan Live'}`,
