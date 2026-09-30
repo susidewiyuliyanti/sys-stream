@@ -13,7 +13,7 @@ export const SysLogo: React.FC<SysLogoProps> = ({
   className = '',
   variant = 'full',
 }) => {
-  // Dimension mapping with proper 240:305 aspect ratio
+  // Dimension mapping keeps the complete emblem visible without clipping
   const sizeMap = {
     xs: { box: 'w-7 h-9', text: 'text-xs', subtext: 'text-[8px]' },
     sm: { box: 'w-9 h-11', text: 'text-sm', subtext: 'text-[9px]' },
@@ -27,8 +27,8 @@ export const SysLogo: React.FC<SysLogoProps> = ({
   // Pure SVG faithful recreation of the luxury embossed leather "SyS" brand mark
   const renderSvgEmblem = (isFullCard = false) => (
     <svg
-      viewBox="0 0 240 305"
-      className="w-full h-full select-none"
+      viewBox="0 0 240 340"
+      className="w-full h-full select-none object-contain"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
