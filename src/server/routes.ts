@@ -300,11 +300,10 @@ router.post('/auth/sync-session', async (req, res) => {
       const updateData: any = {
         role: userRole,
       };
-      if (typeof walletBalance === 'number' && !isNaN(walletBalance)) {
-        updateData.balance = balanceNum;
-        updateData.saldo = balanceNum;
-        updateData.walletBalance = balanceNum;
-      }
+      // Saldo existing selalu menjadi sumber kebenaran di database.
+      // Jangan menimpa balance akibat walletBalance lama dari client/session.
+      // Perubahan saldo hanya boleh dilakukan melalui transaksi backend
+      // seperti top-up, deposit/lock, unlock, withdrawal, atau hadiah game.
       if (uid && existingUsers[0].cuid !== uid) {
         updateData.cuid = uid;
       }
