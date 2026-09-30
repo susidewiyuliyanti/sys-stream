@@ -553,7 +553,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
     setIsDepositing(true);
     try {
-      const res = await fetch('/api/deposit', {
+      const res = await fetch('/api/deposits', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -561,7 +561,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         },
         body: JSON.stringify({
           amount: customDepositAmount,
-          duration: selectedDuration,
+          durationDays: selectedDuration,
         }),
       });
       const data = await res.json();
@@ -570,9 +570,10 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       }
 
       // Synchronize with Firestore and App unified wallet
-      if (userProfile?.uid && data.remainingBalance !== undefined) {
+      if (userProfile?.uid && (data.remainingBalance !== undefined || data.remainingSaldo !== undefined)) {
         try {
-          await updateUserProfile(userProfile.uid, { walletBalance: data.remainingBalance });
+          const syncedRemainingBalance = Number(data.remainingBalance ?? data.remainingSaldo ?? 0);
+          await updateUserProfile(userProfile.uid, { walletBalance: syncedRemainingBalance, saldo: syncedRemainingBalance });
           await createTransactionOrder({
             orderId: `DEP-LOCK-${Date.now().toString(36).toUpperCase()}`,
             userId: userProfile.uid,
@@ -590,7 +591,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         } catch (e) {
           console.warn('Error updating Firestore wallet on deposit:', e);
         }
-        onUpdateWalletBalance?.(data.remainingBalance);
+        onUpdateWalletBalance?.(syncedRemainingBalance);
       }
 
       showToast(
