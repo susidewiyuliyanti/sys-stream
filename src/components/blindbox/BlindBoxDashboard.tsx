@@ -154,6 +154,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         displayName: userProfile.displayName || 'Streamer Host',
         photoURL: userProfile.photoURL || '',
         balance: userProfile.walletBalance ?? userProfile.saldo ?? 15000,
+        lockedBalance: (userProfile as any).lockedSaldo ?? 0,
         role: isOwner ? 'OWNER' : isAdmin ? 'ADMIN' : 'USER',
         isBlacklisted: false,
         isBanned: false,
@@ -174,6 +175,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
           displayName: u.displayName || 'Streamer Host',
           photoURL: u.photoURL || '',
           balance: u.balance ?? u.walletBalance ?? u.saldo ?? 15000,
+          lockedBalance: u.lockedBalance ?? u.lockedSaldo ?? 0,
           role: u.role || 'USER',
           isBlacklisted: false,
           isBanned: false,
@@ -852,6 +854,13 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   <Wallet className="w-3.5 h-3.5 text-emerald-400" />
                   <span>{formatCurrency(unifiedWalletBalance)}</span>
                 </button>
+                <div
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/70 border border-amber-500/40 text-amber-300 text-xs font-mono font-black shadow-inner"
+                  title="Saldo yang sedang terkunci di Blind Box"
+                >
+                  <Lock className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{formatCurrency(Number(currentUser?.lockedBalance ?? 0))}</span>
+                </div>
 
                 {/* THE 1 MASTER MENU BUTTON */}
                 <button
@@ -1698,39 +1707,3 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             </div>
           </div>
         </div>
-      </div>
-
-      {/* MODALS */}
-      <BlindBoxOpenModal
-        isOpen={showOpenModal}
-        onClose={() => setShowOpenModal(false)}
-        prizeAmount={claimResult?.prizeAmount || 0}
-        isJackpot={claimResult?.isJackpot || false}
-        totalClaimed={claimResult?.totalClaimed || 0}
-        tier={claimResult?.tier || depositTier?.tier || 'BRONZE'}
-        tierName={claimResult?.tierName || depositTier?.tierName || 'Bronze'}
-        boxType={claimResult?.boxType || depositTier?.boxType || 'Box Regular'}
-        boxCount={claimResult?.boxCount || depositTier?.boxCount || 1}
-        boxes={claimResult?.boxes || []}
-      />
-
-      <BlindBoxWithdrawModal
-        isOpen={showWithdrawModal}
-        onClose={() => setShowWithdrawModal(false)}
-        deposit={activeDeposit}
-        jwtToken={jwtToken || ''}
-        onSuccess={handleWithdrawSuccess}
-      />
-
-      <BlindBoxUnlockModal
-        isOpen={showUnlockModal}
-        onClose={() => setShowUnlockModal(false)}
-        deposit={activeDeposit}
-        jwtToken={jwtToken || ''}
-        onSuccess={handleUnlockSuccess}
-      />
-    </div>
-  );
-};
-
-
