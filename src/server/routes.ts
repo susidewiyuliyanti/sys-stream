@@ -178,19 +178,11 @@ router.post('/auth/register', async (req, res) => {
     });
 
     res.status(201).json({
-      message: 'Pendaftaran berhasil! Anda mendapatkan bonus saldo awal Rp 15.000.',
-      token,
-      user: {
-        id: newUser.id,
-        cuid: newUser.cuid,
-        username: newUser.username,
-        email: newUser.email,
-        balance: newUser.balance,
-        saldo: newUser.balance,
-        walletBalance: newUser.balance,
-        role: newUser.role,
-      },
-    });
+  message: `Deposit of Rp ${depositAmount.toLocaleString('id-ID')} with ${durationDays}-day duration successfully activated!`,
+  deposit: newDeposit,
+  remainingBalance: updatedUser.balance,
+  userBalance: updatedUser.balance,
+});
   } catch (err: any) {
     console.error('Register error:', err);
     res.status(500).json({ error: err.message || 'Gagal mendaftarkan akun.' });
@@ -967,10 +959,19 @@ router.post('/claim/:depositId', authenticateToken, async (req: AuthenticatedReq
 
     // 5. Add amount to totalClaimed in Deposit
     const newTotalClaimed = deposit.totalClaimed + totalPrizeAmount;
+
+// Record total Blind Box rewards on the deposit
     await db
       .update(deposits)
       .set({ totalClaimed: newTotalClaimed })
       .where(eq(deposits.id, depositId));
+
+// Add Blind Box reward to the user's Current Balance
+    const [updatedUser] = await db
+      .update(users)
+      .set({ balance: sql`${users.balance} + ${totalPrizeAmount}` })
+      .where(eq(users.id, userId))
+      .returning();
 
     // 6. Save to BlindBoxClaim
     const [claimRecord] = await db
@@ -993,6 +994,7 @@ router.post('/claim/:depositId', authenticateToken, async (req: AuthenticatedReq
       prizeAmount: totalPrizeAmount,
       isJackpot: hasAnyJackpot,
       totalClaimed: newTotalClaimed,
+      userBalance: updatedUser.balance,
       tier: tierInfo.tier,
       tierName: tierInfo.tierName,
       boxType: tierInfo.boxType,
@@ -1057,7 +1059,7 @@ router.post('/withdraw', authenticateToken, async (req: AuthenticatedRequest, re
     }
 
     // Total = amount deposit + totalClaimed
-    const totalPayout = deposit.amount + deposit.totalClaimed;
+    const totalPayout = deposit.amount;
 
     // Update deposit status to CLAIMED
     await db.update(deposits).set({ status: 'CLAIMED' }).where(eq(deposits.id, deposit.id));
