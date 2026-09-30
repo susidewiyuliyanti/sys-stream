@@ -357,3 +357,148 @@ export function getCountryByCode(code: string): CountryCurrencyConfig {
   );
   return found || COUNTRIES_CONFIG[0];
 }
+
+
+/**
+ * Global UI translation safety net.
+ * Existing components should still prefer t(), but this catches exact
+ * catalog strings rendered directly by legacy components.
+ */
+const globalTextSources = new WeakMap<Text, string>();
+const globalAttributeSources = new WeakMap<Element, Record<string, string>>();
+
+const GLOBAL_TRANSLATABLE_ATTRIBUTES = [
+  'placeholder',
+  'title',
+  'aria-label',
+  'aria-placeholder'
+] as const;
+
+function buildGlobalTranslationMap(languageCode: string): Map<string, string> {
+  const targetLanguage = (languageCode || 'en').toLowerCase().split('-')[0];
+  const target = TRANSLATIONS[targetLanguage] || TRANSLATIONS.en || TRANSLATIONS.id;
+  const map = new Map<string, string>();
+
+  Object.keys(TRANSLATIONS).forEach((sourceLanguage) => {
+    const source = TRANSLATIONS[sourceLanguage];
+    Object.keys(source).forEach((key) => {
+      const sourceText = source[key];
+      const targetText = target?.[key];
+      if (!sourceText || !targetText || sourceText === targetText) return;
+      if (!map.has(sourceText)) map.set(sourceText, targetText);
+    });
+  });
+
+  return map;
+}
+
+function translateTextNode(node: Text, translations: Map<string, string>): void {
+  const parent = node.parentElement;
+  if (!parent) return;
+
+  const tag = parent.tagName;
+  if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TEXTAREA' || tag === 'INPUT') {
+    return;
+  }
+
+  const original = globalTextSources.get(node) ?? node.nodeValue ?? '';
+  if (!original.trim()) return;
+  if (!globalTextSources.has(node)) globalTextSources.set(node, original);
+
+  const translated = translations.get(original.trim());
+  if (!translated) return;
+
+  const leading = original.match(/^\\s*/)?.[0] || '';
+  const trailing = original.match(/\\s*$/)?.[0] || '';
+  const nextValue = leading + translated + trailing;
+  if (node.nodeValue !== nextValue) node.nodeValue = nextValue;
+}
+
+function translateElementAttributes(element: Element, translations: Map<string, string>): void {
+  if (element.tagName === 'SCRIPT' || element.tagName === 'STYLE' || element.tagName === 'NOSCRIPT') return;
+
+  let originals = globalAttributeSources.get(element);
+  if (!originals) {
+    originals = {};
+    globalAttributeSources.set(element, originals);
+  }
+
+  GLOBAL_TRANSLATABLE_ATTRIBUTES.forEach((attribute) => {
+    if (!element.hasAttribute(attribute)) return;
+    const current = element.getAttribute(attribute) || '';
+    const original = originals[attribute] ?? current;
+    if (originals[attribute] === undefined) originals[attribute] = original;
+
+    const translated = translations.get(original);
+    if (translated && current !== translated) element.setAttribute(attribute, translated);
+  });
+}
+
+export function installGlobalTranslationObserver(languageCode: string): () => void {
+  if (typeof document === 'undefined' || typeof MutationObserver === 'undefined') {
+    return () => undefined;
+  }
+
+  const translations = buildGlobalTranslationMap(languageCode);
+  let stopped = false;
+
+  const apply = (root: Node) => {
+    if (stopped) return;
+
+    if (root.nodeType === Node.TEXT_NODE) {
+      translateTextNode(root as Text, translations);
+      return;
+    }
+
+    const element = root as Element;
+    if (element.nodeType === Node.ELEMENT_NODE) {
+      translateElementAttributes(element, translations);
+    }
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node: Node | null = walker.nextNode();
+    while (node) {
+      translateTextNode(node as Text, translations);
+      node = walker.nextNode();
+    }
+
+    if (element.querySelectorAll) {
+      element.querySelectorAll('*').forEach((child) => {
+        translateElementAttributes(child, translations);
+      });
+    }
+  };
+
+  if (document.body) apply(document.body);
+
+  const observer = new MutationObserver((mutations) => {
+    if (stopped) return;
+
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'characterData') {
+        translateTextNode(mutation.target as Text, translations);
+      }
+
+      mutation.addedNodes.forEach((node) => apply(node));
+
+      if (mutation.type === 'attributes' && mutation.target.nodeType === Node.ELEMENT_NODE) {
+        translateElementAttributes(mutation.target as Element, translations);
+      }
+    });
+  });
+
+  if (document.body) {
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: [...GLOBAL_TRANSLATABLE_ATTRIBUTES]
+    });
+  }
+
+  return () => {
+    stopped = true;
+    observer.disconnect();
+  };
+}
