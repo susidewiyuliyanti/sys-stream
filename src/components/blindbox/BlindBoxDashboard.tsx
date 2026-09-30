@@ -249,11 +249,13 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
   // Config & Currency
   const { formatCurrency, t } = useAppConfig();
 
-  // Unified wallet balance: Shared across Blind Box, Tebak Seri, and Spinner Roda Putar
+  // Saldo utama = saldo game.
+  // Prioritaskan saldo user terbaru dari backend/session agar tidak tertahan
+  // pada userProfile lama yang mungkin belum tersinkron.
   const unifiedWalletBalance =
-    userProfile?.walletBalance !== undefined
-      ? userProfile.walletBalance
-      : (currentUser?.balance ?? 0);
+    currentUser?.balance !== undefined
+      ? Number(currentUser.balance)
+      : Number(userProfile?.walletBalance ?? userProfile?.saldo ?? 0);
 
   // 1. Synchronize user profile & session automatically with backend whenever userProfile changes
   useEffect(() => {
@@ -348,6 +350,20 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       }
       const data = await res.json();
       setCurrentUser(data.user);
+
+      // Sinkronkan saldo terbaru dari backend ke halaman game utama.
+      // Ini menjaga User Balance = Game Balance setelah deposit/unlock/topup.
+      const latestBalance = Number(
+        data.user?.balance ??
+        data.user?.walletBalance ??
+        data.user?.saldo ??
+        0
+      );
+
+      if (Number.isFinite(latestBalance)) {
+        onUpdateWalletBalance?.(latestBalance);
+      }
+
       setActiveDeposit(data.activeDeposit);
       setDepositTier(data.depositTier || (data.activeDeposit ? getClientTierDetails(data.activeDeposit.amount) : null));
       setAllDeposits(data.allDeposits || []);
