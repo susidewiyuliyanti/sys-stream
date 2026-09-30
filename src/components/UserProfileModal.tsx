@@ -712,7 +712,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       const statusData = await checkNowPaymentStatus(activeNowPayment.payment_id);
       if (statusData) {
         setActiveNowPayment((prev) => prev ? { ...prev, payment_status: statusData.payment_status } : null);
-        if (statusData.payment_status === 'finished' || statusData.payment_status === 'confirmed' || statusData.payment_status === 'sending') {
+        if (statusData.payment_status === 'finished' || statusData.payment_status === 'confirmed') {
           const currentUid = auth.currentUser?.uid || userProfile?.uid;
           const currentEmail = auth.currentUser?.email || userProfile?.email || '';
           const currentName = auth.currentUser?.displayName || userProfile?.displayName || 'Host Streamer';
