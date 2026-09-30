@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Wallet,
@@ -261,48 +261,22 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       ? userProfile.walletBalance
       : (currentUser?.balance ?? 0);
 
-  // 1. Synchronize user profile & session automatically with backend whenever userProfile changes
+  // 1. Use the main application authentication session for Blind Box.
   useEffect(() => {
-    if (!userProfile) return;
+    const token = localStorage.getItem('sys_stream_auth_token');
 
-    let isCancelled = false;
-    const syncUnifiedSession = async () => {
-      try {
-        const res = await fetch('/api/auth/sync-session', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            uid: userProfile.uid,
-            email: userProfile.email,
-            displayName: userProfile.displayName,
-            role: userProfile.role,
-            walletBalance: userProfile.walletBalance ?? 15000,
-          }),
-        });
+    if (!token) {
+      setJwtToken(null);
+      return;
+    }
 
-        if (res.ok && !isCancelled) {
-          const data = await res.json();
-          localStorage.setItem('blindbox_jwt_token', data.token);
-          setJwtToken(data.token);
-          setCurrentUser(data.user);
-          fetchUserData(data.token);
-        }
-      } catch (err) {
-        console.error('Failed to sync unified session:', err);
-      }
-    };
-
-    syncUnifiedSession();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [userProfile?.uid, userProfile?.email, userProfile?.displayName, userProfile?.role, userProfile?.walletBalance]);
-
+    setJwtToken(token);
+    fetchUserData(token);
+  }, [userProfile?.uid]);
   // Load token on mount if no userProfile yet
   useEffect(() => {
     if (!userProfile) {
-      const savedToken = localStorage.getItem('blindbox_jwt_token');
+      const savedToken = localStorage.getItem('sys_stream_auth_token');
       if (savedToken) {
         setJwtToken(savedToken);
         fetchUserData(savedToken);
@@ -369,6 +343,45 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
     }
   };
 
+  // Require the main application login session for Blind Box.
+  const requireMainAuth = async (): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+
+    if (!token) {
+      setShowAuthModal(true);
+      return false;
+    }
+
+    setJwtToken(token);
+
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: { Authorization: Bearer  },
+      });
+
+      if (!res.ok) {
+        localStorage.removeItem('sys_stream_auth_token');
+        setJwtToken(null);
+        setShowAuthModal(true);
+        return false;
+      }
+
+      const data = await res.json();
+
+      if (!data.user) {
+        setShowAuthModal(true);
+        return false;
+      }
+
+      setCurrentUser(data.user);
+      await fetchUserData(token);
+      return true;
+    } catch (error) {
+      console.error('Main authentication check failed:', error);
+      setShowAuthModal(true);
+      return false;
+    }
+  };
   // Local ticker for countdown to 00:00 WIB
   useEffect(() => {
     const interval = setInterval(() => {
@@ -395,7 +408,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('blindbox_jwt_token');
+    localStorage.removeItem('sys_stream_auth_token');
     setJwtToken(null);
     setCurrentUser(null);
     setActiveDeposit(null);
@@ -670,8 +683,8 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             userId: userProfile.uid,
             userEmail: userProfile.email,
             planName: data.isJackpot
-              ? `🎉 JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
-              : `🎁 Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
+              ? `ðŸŽ‰ JACKPOT SULTAN Blind Box 3D! (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`
+              : `ðŸŽ Hadiah Harian Blind Box 3D (+Rp ${data.prizeAmount.toLocaleString('id-ID')})`,
             price: data.prizeAmount,
             currency: 'IDR',
             status: 'success',
@@ -818,7 +831,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 </h1>
               </div>
               <p className="text-[11px] text-white/60">
-                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) • Klaim Box Tiap Hari Jam 00:00 WIB • Jackpot Rp 100 - Rp 50.000.000
+                Kunci Deposit Kelipatan 50.000 (Max 5 Juta) â€¢ Klaim Box Tiap Hari Jam 00:00 WIB â€¢ Jackpot Rp 100 - Rp 50.000.000
               </p>
             </div>
           </div>
@@ -1044,7 +1057,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 Reset Harian Pukul 00:00 WIB
               </div>
               <div className="text-[11px] text-amber-300/70">
-                ⚠️ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
+                âš ï¸ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan <strong>hangus</strong>!
               </div>
             </div>
           </div>
@@ -1075,7 +1088,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                 <div className="text-right">
                   <span className="text-[10px] text-white/50 block font-bold">Peluang Hadiah:</span>
                   <span className="text-xs font-black text-amber-300">
-                    Rp 100 - Rp 1.000 • Jackpot Rp 100 - Rp 50.000.000
+                    Rp 100 - Rp 1.000 â€¢ Jackpot Rp 100 - Rp 50.000.000
                   </span>
                 </div>
               </div>
@@ -1099,7 +1112,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             <div className="mt-4 space-y-2">
               {!isUserLoggedIn ? (
                 <button
-                  onClick={() => setShowAuthModal(true)}
+                  onClick={async () => { await requireMainAuth(); }}
                   className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-black text-base shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
                 >
                   <LogIn className="w-5 h-5" />
@@ -1139,7 +1152,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                   <span>
                     {isClaiming
                       ? 'Membuka Box...'
-                      : `🎁 Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
+                      : `ðŸŽ Buka ${depositTier ? `${depositTier.boxCount} ${depositTier.boxType}` : 'Blind Box'} Hari Ini Sekarang!`}
                   </span>
                 </button>
               )}
@@ -1154,7 +1167,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     title="Buka Kunci Saldo (Catatan: Reward blind box akan hangus/hilang)"
                   >
                     <Unlock className="w-3.5 h-3.5" />
-                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) • Catatan: Reward akan hangus</span>
+                    <span>Buka Kunci Modal (Rp {activeDeposit.amount.toLocaleString('id-ID')}) â€¢ Catatan: Reward akan hangus</span>
                   </button>
                 </div>
               )}
@@ -1227,12 +1240,12 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                     <span className="font-black text-amber-300 flex items-center gap-1.5">
                       <span>
                         {(depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'GOLD'
-                          ? '👑'
+                          ? 'ðŸ‘‘'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'PLATINUM'
-                          ? '💎'
+                          ? 'ðŸ’Ž'
                           : (depositTier?.tier || getClientTierDetails(activeDeposit.amount).tier) === 'SILVER'
-                          ? '🥈'
-                          : '🥉'}
+                          ? 'ðŸ¥ˆ'
+                          : 'ðŸ¥‰'}
                       </span>
                       <span>
                         {depositTier
@@ -1411,12 +1424,12 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                           {nominal >= 1000000
                             ? `${nominal / 1000000} Jt`
                             : `${nominal / 1000} Rb`}
-                          {nominal === 100000000 && ' (Sultan++ 👑)'}
-                          {nominal === 50000000 && ' (Sultan 👑)'}
-                          {nominal === 20000000 && ' (Diamond 💎)'}
-                          {nominal === 5000000 && ' (Gold 🥇)'}
-                          {nominal === 2500000 && ' (Platinum 💍)'}
-                          {nominal === 1000000 && ' (Silver 🥈)'}
+                          {nominal === 100000000 && ' (Sultan++ ðŸ‘‘)'}
+                          {nominal === 50000000 && ' (Sultan ðŸ‘‘)'}
+                          {nominal === 20000000 && ' (Diamond ðŸ’Ž)'}
+                          {nominal === 5000000 && ' (Gold ðŸ¥‡)'}
+                          {nominal === 2500000 && ' (Platinum ðŸ’)'}
+                          {nominal === 1000000 && ' (Silver ðŸ¥ˆ)'}
                         </button>
                       ))}
                     </div>
@@ -1467,7 +1480,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">🥈</span>
+                          <span className="text-xs">ðŸ¥ˆ</span>
                           <span className="text-[9px] font-mono text-slate-300 font-bold">1 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">3 Box Silver</div>
@@ -1485,7 +1498,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">💍</span>
+                          <span className="text-xs">ðŸ’</span>
                           <span className="text-[9px] font-mono text-purple-300 font-bold">2.5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-white mt-0.5">5 Box Platinum</div>
@@ -1503,7 +1516,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">👑</span>
+                          <span className="text-xs">ðŸ‘‘</span>
                           <span className="text-[9px] font-mono text-amber-300 font-bold">5 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-amber-300 mt-0.5">10 Box Emas</div>
@@ -1521,7 +1534,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">💎</span>
+                          <span className="text-xs">ðŸ’Ž</span>
                           <span className="text-[9px] font-mono text-cyan-300 font-bold">20 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-cyan-300 mt-0.5">15 Box Diamond</div>
@@ -1539,7 +1552,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs">🔥</span>
+                          <span className="text-xs">ðŸ”¥</span>
                           <span className="text-[9px] font-mono text-rose-300 font-bold">50 Jt</span>
                         </div>
                         <div className="text-[11px] font-black text-rose-300 mt-0.5">25 Box Sultan</div>
@@ -1733,3 +1746,9 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
     </div>
   );
 };
+
+
+
+
+
+

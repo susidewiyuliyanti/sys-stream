@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import {
   Trophy,
   AlertTriangle,
@@ -44,6 +44,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
@@ -175,6 +176,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       return;
     }
 
+    if (password !== confirmPassword) {
+      setLoginError('Konfirmasi kata sandi tidak cocok.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -194,11 +200,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
        * Jika backend langsung membuat session,
        * pengguna dapat langsung masuk.
        */
-      if (
-        result.user ||
-        result.credential ||
-        result.token
-      ) {
+      if (result.user || result.token) {
         onLoginSuccess(result);
         return;
       }
@@ -436,7 +438,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             </h1>
 
             <p className="mt-2 text-white/45 text-sm">
-              Streaming • Game • Reward Platform
+              Streaming â€¢ Game â€¢ Reward Platform
             </p>
 
           </div>
@@ -574,7 +576,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                         }}
                         className="mt-3 text-sm font-bold text-yellow-300 hover:text-yellow-200"
                       >
-                        Kembali ke Login →
+                        Kembali ke Login â†’
                       </button>
 
                     </div>
@@ -822,6 +824,32 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
                   </div>
 
+                  {/* Confirm Password */}
+
+                  <div>
+
+                    <label className="block text-xs font-bold text-white/60 mb-2">
+                      Konfirmasi Kata Sandi
+                    </label>
+
+                    <div className="relative">
+
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Ulangi kata sandi"
+                        autoComplete="new-password"
+                        disabled={isLoading}
+                        className="w-full h-12 rounded-xl bg-black/30 border border-white/10 pl-12 pr-4 outline-none focus:border-white/30 transition disabled:opacity-50"
+                      />
+
+                    </div>
+
+                  </div>
+
                   {/* Register */}
 
                   <button
@@ -948,7 +976,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                   }
                   className="text-white/40 hover:text-white text-xl"
                 >
-                  ×
+                  Ã—
                 </button>
 
               </div>
@@ -986,3 +1014,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 };
 
 export default LoginScreen;
+
+
+
+
+
+

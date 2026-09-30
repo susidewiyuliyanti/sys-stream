@@ -1,4 +1,3 @@
-@'
 import { hashPassword, createToken, type UserRole } from '../_lib/auth';
 import { json, readJson, withDb, type Env } from '../_lib/db';
 
@@ -359,4 +358,3 @@ export const onRequestPost = async ({
     );
   }
 };
-'@ | Set-Content .\functions\api\auth\register.ts

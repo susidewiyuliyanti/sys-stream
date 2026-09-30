@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+﻿import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { UserProfile, PlayerScore, GameTab, BackgroundMode, TransactionOrder, UserActivityLog } from '../types';
 import { isOwnerUser } from '../utils/memberBadge';
 import { sound } from '../services/sound';
@@ -21,7 +21,6 @@ import {
   Users,
   MessageSquare,
   Gift,
-  ShoppingBag,
   TrendingUp,
   Volume2,
   VolumeX,
@@ -182,9 +181,8 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: `order-${o.id || o.orderId}`,
         user: o.userName || (o.userEmail ? `@${o.userEmail.split('@')[0]}` : '@pembeli_live'),
-        avatar: '🛍️',
+        avatar: 'ðŸ›ï¸',
         text: `Checkout: ${o.planName || o.paymentMethod || 'Pesanan Live'}`,
-        type: 'order',
         orderProduct: o.planName || 'Produk Live',
         orderPrice: o.price || 0,
         badge: o.status === 'success' || o.status === 'active' ? 'Order Selesai' : 'Order Baru',
@@ -197,7 +195,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: `act-${act.id}`,
         user: act.userName || (act.userEmail ? `@${act.userEmail.split('@')[0]}` : '@user_live'),
-        avatar: act.type === 'deposit' ? '💳' : act.type === 'jackpot_win' ? '🏆' : act.type === 'gift' ? '🌹' : '💬',
+        avatar: act.type === 'deposit' ? 'ðŸ’³' : act.type === 'jackpot_win' ? 'ðŸ†' : act.type === 'gift' ? 'ðŸŒ¹' : 'ðŸ’¬',
         text: act.title || 'Aktivitas streaming baru',
         type: act.type === 'gift' ? 'gift' : act.type === 'deposit' || act.type === 'order' ? 'order' : act.type === 'system' ? 'system' : 'comment',
         orderPrice: act.amount,
@@ -216,7 +214,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
       items.push({
         id: 'sys-welcome',
         user: 'SYS System',
-        avatar: '💎',
+        avatar: 'ðŸ’Ž',
         text: 'Live stream aktif! Aktivitas penonton, gift, dan order pesanan dari database Firestore akan otomatis muncul di sini.',
         type: 'system',
         badge: 'SYS Host',
@@ -283,7 +281,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     const hostMsg: LiveChatMessage = {
       id: String(Date.now()),
       user: userProfile?.displayName || t('chat_host_name'),
-      avatar: '🎙️',
+      avatar: 'ðŸŽ™ï¸',
       text: customChatMessage.trim(),
       type: 'system',
       badge: t('chat_host_badge'),
@@ -423,7 +421,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  <span>🔢</span> {t('game_guess_number')}
+                  <span>ðŸ”¢</span> {t('game_guess_number')}
                 </span>
                 {activeGame === 'tebak-angka' && (
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
@@ -443,7 +441,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  <span>🎡</span> {t('game_lucky_wheel')}
+                  <span>ðŸŽ¡</span> {t('game_lucky_wheel')}
                 </span>
                 {activeGame === 'roda-keberuntungan' && (
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
@@ -463,7 +461,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  <span>🎁</span> {t('tab_blind_box')}
+                  <span>ðŸŽ</span> {t('tab_blind_box')}
                 </span>
                 {activeGame === 'blind-box' && (
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
@@ -567,7 +565,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                       : 'text-white/60 hover:text-white'
                   }`}
                 >
-                  <span>🎵</span> {t('platform_tiktok')}
+                  <span>ðŸŽµ</span> {t('platform_tiktok')}
                 </button>
                 <button
                   onClick={() => setPlatform('shopee')}
@@ -577,7 +575,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                       : 'text-white/60 hover:text-white'
                   }`}
                 >
-                  <span>🛍️</span> {t('platform_shopee')}
+                  <span>ðŸ›ï¸</span> {t('platform_shopee')}
                 </button>
               </div>
 
@@ -642,7 +640,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">🔢</div>
+                    <div className="text-2xl mb-1">ðŸ”¢</div>
                     <div className="font-bold text-xs">{t('game_guess_number')}</div>
                     <div className="text-[10px] text-white/50">{t('game_guess_number_sub')}</div>
                   </button>
@@ -655,7 +653,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">🎡</div>
+                    <div className="text-2xl mb-1">ðŸŽ¡</div>
                     <div className="font-bold text-xs">{t('game_lucky_wheel')}</div>
                     <div className="text-[10px] text-white/50">{t('game_lucky_wheel_sub')}</div>
                   </button>
@@ -668,7 +666,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
                     }`}
                   >
-                    <div className="text-2xl mb-1">🎁</div>
+                    <div className="text-2xl mb-1">ðŸŽ</div>
                     <div className="font-bold text-xs">{t('tab_blind_box')}</div>
                     <div className="text-[10px] text-white/50">{t('game_blind_box_sub')}</div>
                   </button>
@@ -707,6 +705,98 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                       onLogoutApp={onLogout}
                     />
                   )}
+                </div>
+              </div>
+            )}
+
+            {activeMenu === 'live-control' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-white">{t('live_control_title')}</h2>
+                    <p className="text-xs text-white/60">
+                      {t('live_control_subtitle')}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveMenu('dashboard')}
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold cursor-pointer"
+                  >
+                    {t('back_to_dashboard')}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* OBS Browser Source URL Card */}
+                  <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                        <Tv className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white">{t('obs_browser_source_title')}</h4>
+                        <p className="text-xs text-white/50">{t('obs_browser_source_desc')}</p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-black/60 border border-white/15 flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-amber-300 truncate">
+                        {window.location.origin}/?overlay=1&game={activeGame}
+                      </span>
+                      <button
+                        onClick={handleCopyOverlay}
+                        className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold flex items-center gap-1.5 shrink-0 cursor-pointer"
+                      >
+                        {copiedOverlayUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copiedOverlayUrl ? t('copied') : t('copy_url_btn')}</span>
+                      </button>
+                    </div>
+
+                    <div className="text-xs text-white/60 space-y-1">
+                      <div>â€¢ {t('obs_rec_res')}</div>
+                      <div>â€¢ {t('obs_rec_check')}</div>
+                    </div>
+                  </div>
+
+                  {/* Sound FX & Alerts Controller */}
+                  <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <Volume2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white">{t('sound_effects_title')}</h4>
+                        <p className="text-xs text-white/50">{t('sound_effects_desc')}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => sound.playWinner()}
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>ðŸŽ‰</span> {t('sound_effect_winner')}
+                      </button>
+                      <button
+                        onClick={() => sound.playAlert()}
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>ðŸš¨</span> {t('sound_effect_enrage')}
+                      </button>
+                      <button
+                        onClick={() => sound.playDrumroll()}
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>ðŸ¥</span> {t('sound_effect_drumroll')}
+                      </button>
+                      <button
+                        onClick={() => sound.playWheelSpin()}
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-left flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>ðŸŽ¡</span> {t('sound_effect_wheel')}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -781,7 +871,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                     <div className="space-y-2 text-xs">
                       <div className="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span>🎵</span>
+                          <span>ðŸŽµ</span>
                           <span className="font-bold">TikTok Shop Live</span>
                         </div>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
@@ -791,7 +881,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
 
                       <div className="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span>🛍️</span>
+                          <span>ðŸ›ï¸</span>
                           <span className="font-bold">Shopee Live Partner</span>
                         </div>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
@@ -870,7 +960,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                               : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                           }`}
                         >
-                          <span className="text-lg">🔢</span>
+                          <span className="text-lg">ðŸ”¢</span>
                           <span>{t('btn_start_guess')}</span>
                         </button>
 
@@ -885,7 +975,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                               : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                           }`}
                         >
-                          <span className="text-lg">🎡</span>
+                          <span className="text-lg">ðŸŽ¡</span>
                           <span>{t('btn_start_wheel')}</span>
                         </button>
 
@@ -900,7 +990,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                               : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                           }`}
                         >
-                          <span className="text-lg">🎁</span>
+                          <span className="text-lg">ðŸŽ</span>
                           <span>{t('tab_blind_box')}</span>
                         </button>
                       </div>
@@ -1029,7 +1119,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                       {/* Pinned Broadcast Banner at Top of Chat */}
                       {pinnedAnnouncement && (
                         <div className="my-2 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
-                          <span className="text-sm">📌</span>
+                          <span className="text-sm">ðŸ“Œ</span>
                           <div className="flex-1 font-medium leading-snug">
                             {pinnedAnnouncement}
                           </div>
@@ -1109,7 +1199,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                                 userId: userProfile?.uid || 'host',
                                 userEmail: userProfile?.email || 'host@sysstreamer.com',
                                 userName: userProfile?.displayName ? `@${userProfile.displayName}` : '@sultan_gift',
-                                title: `🌹 ${t('gift_rose')}`,
+                                title: `ðŸŒ¹ ${t('gift_rose')}`,
                                 amount: 5000
                               });
                               sound.playAlert();
@@ -1122,26 +1212,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                           <Gift className="w-3 h-3" /> {t('gift_rose')}
                         </button>
 
-                        <button
-                          onClick={async () => {
-                            try {
-                              await logUserActivity({
-                                type: 'order',
-                                userId: userProfile?.uid || 'host',
-                                userEmail: userProfile?.email || 'buyer@live.com',
-                                userName: '@pembeli_live',
-                                title: 'Keranjang No. 1 (Live Sale)',
-                                amount: 150000
-                              });
-                              sound.playWinner();
-                            } catch (err) {
-                              console.warn('Record order:', err);
-                            }
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[10px] flex items-center gap-1 transition-colors cursor-pointer"
-                        >
-                          <ShoppingBag className="w-3 h-3" /> {t('stats_orders_title')}
-                        </button>
+
                       </div>
 
                       {/* Host Message Input Box */}
@@ -1185,6 +1256,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                     </div>
                   </div>
                 </div>
+
               </>
             )}
           </main>
@@ -1199,3 +1271,9 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     </div>
   );
 };
+
+
+
+
+
+
