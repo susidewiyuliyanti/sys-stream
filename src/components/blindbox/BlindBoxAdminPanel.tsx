@@ -924,7 +924,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                                   title="Klik untuk mengubah nominal atau membatalkan otorisasi jackpot"
                                 >
                                   <Flame className="w-3.5 h-3.5 text-yellow-300" />
-                                  <span>�Y"� Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
+                                  <span>🎰 Rp {activeJackpotNominal.toLocaleString('id-ID')}</span>
                                 </button>
                               ) : (
                                 <button
@@ -1407,7 +1407,7 @@ export const BlindBoxAdminPanel: React.FC<BlindBoxAdminPanelProps> = ({
                           +{formatCurrency(order.price)}
                         </div>
                         <span className="text-xs text-white/60 font-semibold">
-                          �?^ {(order.price / 16000).toFixed(2)} USDT
+                          ≈ {(order.price / 16000).toFixed(2)} USDT
                         </span>
                       </div>
                     </div>
