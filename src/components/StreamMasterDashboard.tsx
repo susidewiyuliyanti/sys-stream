@@ -320,292 +320,312 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white flex flex-col font-['Inter',sans-serif] selection:bg-[#FE2C55] selection:text-white">
-      {/* 1. SIDEBAR KIRI (Fixed Desktop, Mobile Drawer) */}
-      <div className="flex flex-1">
+      {/* SIDEBAR + HEADER */}
+      <div className="flex flex-1 bg-[#09090b]">
         {/* Mobile Backdrop */}
         {isMobileSidebarOpen && (
           <div
             onClick={() => setIsMobileSidebarOpen(false)}
-            className="fixed inset-0 bg-black/80 z-40 lg:hidden backdrop-blur-sm"
+            className="fixed inset-0 bg-black/70 z-40 lg:hidden"
           />
         )}
 
+        {/* SIDEBAR */}
         <aside
-          className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-[#0A0A0A] border-r border-white/10 flex flex-col justify-between transition-transform duration-300 lg:translate-x-0 ${
+          className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-[#0f0f12] border-r border-white/[0.08] flex flex-col transition-transform duration-200 lg:translate-x-0 ${
             isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
-          style={{ overscrollBehavior: 'contain' }}
         >
-          {/* Top Brand Logo */}
-          <div className="p-4 border-b border-white/10 flex items-center justify-between">
+          {/* Brand */}
+          <div className="h-16 px-4 border-b border-white/[0.08] flex items-center justify-between">
             <SysLogo size="md" showText={true} />
 
             <button
               onClick={() => setIsMobileSidebarOpen(false)}
-              className="lg:hidden p-1.5 rounded-lg hover:bg-white/10 text-white/60 cursor-pointer"
+              className="lg:hidden p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Navigation Menu */}
-          <div
-            className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto col-scroll-contain"
-            style={{ overflowAnchor: 'none', overscrollBehavior: 'contain' }}
-          >
-            <div className="px-3 pb-2 text-[10px] font-bold text-white/40 uppercase tracking-widest">
+          {/* Navigation */}
+          <div className="flex-1 overflow-y-auto px-3 py-5">
+            <div className="px-2 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/35">
               {t('main_menu')}
-            </div>
-
-            <button
-              onClick={() => {
-                setActiveMenu('dashboard');
-                setIsMobileSidebarOpen(false);
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition-all cursor-pointer ${
-                activeMenu === 'dashboard'
-                  ? 'bg-[#FE2C55] text-white shadow-lg shadow-[#FE2C55]/25 font-bold'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>{t('nav_dashboard')}</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveMenu('games');
-                setIsMobileSidebarOpen(false);
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition-all cursor-pointer ${
-                activeMenu === 'games'
-                  ? 'bg-[#FE2C55] text-white shadow-lg shadow-[#FE2C55]/25 font-bold'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <Gamepad2 className="w-4 h-4" />
-              <span>{t('nav_games')}</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveMenu('settings');
-                setIsMobileSidebarOpen(false);
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition-all cursor-pointer ${
-                activeMenu === 'settings'
-                  ? 'bg-[#FE2C55] text-white shadow-lg shadow-[#FE2C55]/25 font-bold'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <Settings className="w-4 h-4" />
-              <span>{t('nav_settings')}</span>
-            </button>
-
-            {/* Quick Game Switcher in Sidebar */}
-            <div className="pt-4 px-3 pb-2 text-[10px] font-bold text-white/40 uppercase tracking-widest">
-              {t('quick_games')}
             </div>
 
             <div className="space-y-1">
               <button
                 onClick={() => {
-                  setActiveGame('tebak-angka');
                   setActiveMenu('dashboard');
                   setIsMobileSidebarOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
-                  activeGame === 'tebak-angka'
-                    ? 'bg-white/10 text-white font-bold'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                  activeMenu === 'dashboard'
+                    ? 'bg-white/[0.09] text-white'
+                    : 'text-white/55 hover:text-white hover:bg-white/[0.05]'
                 }`}
               >
-                <span className="flex items-center gap-2">
-                  <span>ðŸ”¢</span> {t('game_guess_number')}
-                </span>
-                {activeGame === 'tebak-angka' && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
-                )}
+                <LayoutDashboard className="w-4 h-4" />
+                <span>{t('nav_dashboard')}</span>
               </button>
 
               <button
                 onClick={() => {
-                  setActiveGame('roda-keberuntungan');
-                  setActiveMenu('dashboard');
+                  setActiveMenu('games');
                   setIsMobileSidebarOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
-                  activeGame === 'roda-keberuntungan'
-                    ? 'bg-white/10 text-white font-bold'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                  activeMenu === 'games'
+                    ? 'bg-white/[0.09] text-white'
+                    : 'text-white/55 hover:text-white hover:bg-white/[0.05]'
                 }`}
               >
-                <span className="flex items-center gap-2">
-                  <span>ðŸŽ¡</span> {t('game_lucky_wheel')}
-                </span>
-                {activeGame === 'roda-keberuntungan' && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
-                )}
+                <Gamepad2 className="w-4 h-4" />
+                <span>{t('nav_games')}</span>
               </button>
 
               <button
                 onClick={() => {
-                  setActiveGame('blind-box');
-                  setActiveMenu('dashboard');
+                  setActiveMenu('settings');
                   setIsMobileSidebarOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
-                  activeGame === 'blind-box'
-                    ? 'bg-white/10 text-white font-bold'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                  activeMenu === 'settings'
+                    ? 'bg-white/[0.09] text-white'
+                    : 'text-white/55 hover:text-white hover:bg-white/[0.05]'
                 }`}
               >
-                <span className="flex items-center gap-2">
-                  <span>ðŸŽ</span> {t('tab_blind_box')}
-                </span>
-                {activeGame === 'blind-box' && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
-                )}
+                <Settings className="w-4 h-4" />
+                <span>{t('nav_settings')}</span>
               </button>
             </div>
 
-            {/* Language Switcher Button in Sidebar */}
-            <div className="pt-4">
+            {/* Games */}
+            <div className="mt-7">
+              <div className="px-2 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/35">
+                {t('quick_games')}
+              </div>
+
+              <div className="space-y-1">
+                <button
+                  onClick={() => {
+                    setActiveGame('tebak-angka');
+                    setActiveMenu('dashboard');
+                    setIsMobileSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                    activeGame === 'tebak-angka'
+                      ? 'bg-white/[0.07] text-white'
+                      : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-xs font-mono text-white/40">01</span>
+                    {t('game_guess_number')}
+                  </span>
+                  {activeGame === 'tebak-angka' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
+                  )}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setActiveGame('roda-keberuntungan');
+                    setActiveMenu('dashboard');
+                    setIsMobileSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                    activeGame === 'roda-keberuntungan'
+                      ? 'bg-white/[0.07] text-white'
+                      : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-xs font-mono text-white/40">02</span>
+                    {t('game_lucky_wheel')}
+                  </span>
+                  {activeGame === 'roda-keberuntungan' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
+                  )}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setActiveGame('blind-box');
+                    setActiveMenu('dashboard');
+                    setIsMobileSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${
+                    activeGame === 'blind-box'
+                      ? 'bg-white/[0.07] text-white'
+                      : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-xs font-mono text-white/40">03</span>
+                    {t('tab_blind_box')}
+                  </span>
+                  {activeGame === 'blind-box' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Language */}
+            <div className="mt-7">
               <button
                 onClick={() => setIsLangModalOpen(true)}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold transition-all cursor-pointer hover:border-cyan-500/40"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] text-white/70 transition-colors cursor-pointer"
               >
-                <div className="flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-cyan-400" />
-                  <span>{t('select_lang_btn')}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-white/70 text-[11px]">
-                  <span>{country.flag}</span>
-                  <span className="uppercase font-mono">{languageCode || country.languageCode}</span>
-                </div>
+                <span className="flex items-center gap-3">
+                  <Globe className="w-4 h-4 text-white/50" />
+                  <span className="text-sm">{t('select_lang_btn')}</span>
+                </span>
+
+                <span className="text-[11px] text-white/45 uppercase">
+                  {languageCode || country.languageCode}
+                </span>
               </button>
             </div>
 
-            {/* Special Owner Admin Panel shortcut if owner */}
+            {/* Owner */}
             {isOwner && onSwitchToOwnerDashboard && (
-              <div className="pt-2">
+              <div className="mt-3">
                 <button
                   onClick={onSwitchToOwnerDashboard}
-                  className="w-full px-3 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-xs flex items-center gap-2 hover:border-amber-400 transition-all cursor-pointer shadow-md"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border border-amber-400/20 bg-amber-400/[0.06] text-amber-300 hover:bg-amber-400/[0.10] transition-colors cursor-pointer"
                 >
-                  <Crown className="w-4 h-4 text-amber-400" />
-                  <span>{t('btn_switch_owner')}</span>
+                  <Crown className="w-4 h-4" />
+                  <span className="text-sm">{t('btn_switch_owner')}</span>
                 </button>
               </div>
             )}
           </div>
 
-          {/* Quick Balance Preview in Sidebar */}
-          <div className="p-4 border-t border-white/10 space-y-3 bg-white/[0.02]">
-            <div
+          {/* Balance */}
+          <div className="p-3 border-t border-white/[0.08]">
+            <button
               onClick={onOpenProfile}
-              className="px-3.5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors shadow-sm"
+              className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors cursor-pointer"
             >
-              <span className="text-white/60">{t('wallet_balance')}</span>
-              <span className="font-mono font-bold text-amber-300">
+              <span className="text-xs text-white/45">
+                {t('wallet_balance')}
+              </span>
+
+              <span className="text-sm font-semibold text-white">
                 {formatCurrency(saldo)}
               </span>
-            </div>
+            </button>
           </div>
         </aside>
 
-        {/* 2. HEADER ATAS & MAIN CONTENT CONTAINER */}
+        {/* MAIN COLUMN */}
         <div className="flex-1 flex flex-col lg:pl-64 min-w-0">
-          {/* HEADER ATAS */}
-          <header className="sticky top-0 z-30 h-16 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 flex items-center justify-between gap-4">
-            {/* Left: Mobile Toggle & Search Bar */}
-            <div className="flex items-center gap-3 flex-1 max-w-md">
+          {/* HEADER */}
+          <header className="sticky top-0 z-30 h-16 bg-[#09090b]/95 backdrop-blur border-b border-white/[0.08] px-4 sm:px-6 flex items-center justify-between gap-4">
+            {/* Mobile + Search */}
+            <div className="flex items-center gap-3 flex-1 max-w-xl">
               <button
                 onClick={() => setIsMobileSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 cursor-pointer"
+                className="lg:hidden p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.06] cursor-pointer"
               >
                 <Menu className="w-5 h-5" />
               </button>
 
-              {/* Search Bar */}
-              <div className="relative w-full">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
+              <div className="relative w-full max-w-md">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('search_placeholder')}
-                  className="w-full bg-white/5 hover:bg-white/[0.08] focus:bg-white/[0.08] border border-white/10 rounded-2xl pl-10 pr-4 py-2 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#FE2C55] transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
                 />
               </div>
             </div>
 
-            {/* Right: Platform, Language, Go Live Button, Profile Seller */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {/* Language Switcher in Header */}
+            {/* Header Actions */}
+            <div className="flex items-center gap-2">
+              {/* Language */}
               <button
                 onClick={() => setIsLangModalOpen(true)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold transition-all cursor-pointer shadow-sm hover:border-cyan-500/40"
+                className="hidden sm:flex items-center gap-2 px-2.5 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
                 title={t('language_selector_title')}
               >
-                <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="text-sm">{country.flag}</span>
-                <span className="hidden md:inline text-white/90 text-xs">
-                  {currentLangObj?.languageName || country.languageName}
+                <Globe className="w-4 h-4" />
+                <span className="text-xs">
+                  {country.flag} {languageCode || country.languageCode}
                 </span>
               </button>
 
-              {/* Platform Selector Switcher */}
-              <div className="hidden sm:flex items-center bg-black/60 p-1 rounded-2xl border border-white/10 text-xs">
+              {/* Platform */}
+              <div className="hidden md:flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.08]">
                 <button
                   onClick={() => setPlatform('tiktok')}
-                  className={`px-3 py-1 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                     platform === 'tiktok'
-                      ? 'bg-[#FE2C55] text-white shadow-sm'
-                      : 'text-white/60 hover:text-white'
+                      ? 'bg-white/[0.10] text-white'
+                      : 'text-white/45 hover:text-white'
                   }`}
                 >
-                  <span>ðŸŽµ</span> {t('platform_tiktok')}
+                  TikTok
                 </button>
+
                 <button
                   onClick={() => setPlatform('shopee')}
-                  className={`px-3 py-1 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                     platform === 'shopee'
-                      ? 'bg-orange-500 text-white shadow-sm'
-                      : 'text-white/60 hover:text-white'
+                      ? 'bg-white/[0.10] text-white'
+                      : 'text-white/45 hover:text-white'
                   }`}
                 >
-                  <span>ðŸ›ï¸</span> {t('platform_shopee')}
+                  Shopee
                 </button>
               </div>
 
-              {/* Sound Mute Toggle */}
+              {/* Sound */}
               <button
                 onClick={toggleSound}
-                className="p-2 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 transition-colors cursor-pointer"
+                className="p-2 rounded-lg text-white/55 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
                 title={isMuted ? t('toggle_sound_on') : t('toggle_sound_off')}
               >
-                {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4" />}
+                {isMuted ? (
+                  <VolumeX className="w-4 h-4 text-rose-400" />
+                ) : (
+                  <Volume2 className="w-4 h-4" />
+                )}
               </button>
 
-              {/* Profile Seller Dropdown Pill */}
-              <div
+              {/* Profile */}
+              <button
                 onClick={onOpenProfile}
-                className="flex items-center gap-2 pl-2 py-1 pr-2.5 sm:pr-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer transition-colors"
+                className="flex items-center gap-2 pl-1.5 pr-2 py-1.5 rounded-lg hover:bg-white/[0.06] transition-colors cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-[#FE2C55] flex items-center justify-center text-white font-extrabold text-xs">
-                  {userProfile?.displayName ? userProfile.displayName.charAt(0).toUpperCase() : 'S'}
+                <div className="w-8 h-8 rounded-full bg-white/[0.10] border border-white/[0.10] flex items-center justify-center text-white text-xs font-semibold">
+                  {userProfile?.displayName
+                    ? userProfile.displayName.charAt(0).toUpperCase()
+                    : 'S'}
                 </div>
-                <div className="hidden md:block text-left leading-none">
-                  <div className="font-bold text-white text-xs truncate max-w-[120px]">
+
+                <div className="hidden sm:block text-left">
+                  <div className="text-xs font-medium text-white max-w-[120px] truncate">
                     {userProfile?.displayName || t('streamer_host')}
                   </div>
-                  <div className="text-[10px] text-white/50 mt-0.5">
-                    {userProfile?.role === 'admin' ? t('super_admin') : isOwner ? t('owner_badge') : t('verified_seller')}
+
+                  <div className="text-[10px] text-white/35 mt-0.5">
+                    {userProfile?.role === 'admin'
+                      ? t('super_admin')
+                      : isOwner
+                        ? t('owner_badge')
+                        : t('verified_seller')}
                   </div>
                 </div>
-                <ChevronDown className="w-3.5 h-3.5 text-white/50 hidden sm:block" />
-              </div>
+
+                <ChevronDown className="hidden sm:block w-3.5 h-3.5 text-white/30" />
+              </button>
             </div>
           </header>
 
@@ -926,271 +946,334 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
             {/* DEFAULT VIEW: DASHBOARD (MAIN REQUIRED LAYOUT) */}
             {activeMenu === 'dashboard' && (
               <>
-                {/* 4. TENGAH - 2 KOLOM:
-                    - Kiri (60%): Live Preview + Kontrol Game. Ada tombol besar: [Mulai Tebak angka] [Putar Roda] [Buka Blind Box]
-                    - Kanan (40%): Live Chat Feed real-time, scroll otomatis.
-                */}
+                {/* LIVE CONTROL AREA */}
                 <div className="grid grid-cols-1 lg:grid-cols-10 gap-5 items-start">
-                  {/* Kolom Kiri (60% / 6 cols out of 10) */}
-                  <div className="lg:col-span-6 space-y-4">
-                    {/* Live Preview Container Card */}
-                    <div className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 border border-gray-100 text-[#0A0A0A] space-y-4">
-                      {/* Live Preview Header */}
-                      <div className="flex items-center justify-between flex-wrap gap-2">
+
+                  {/* LIVE PREVIEW */}
+                  <div className="lg:col-span-6">
+                    <div className="rounded-xl bg-[#111114] border border-white/[0.08] overflow-hidden">
+
+                      {/* Preview Header */}
+                      <div className="px-4 py-3.5 border-b border-white/[0.08] flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-3 h-3 rounded-full bg-[#FE2C55] animate-ping" />
-                          <h3 className="text-base font-black text-[#0A0A0A] tracking-tight">
-                            {t('live_preview_title')}
-                          </h3>
+                          <span className="relative flex h-2.5 w-2.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FE2C55] opacity-60" />
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FE2C55]" />
+                          </span>
+
+                          <div>
+                            <h3 className="text-sm font-semibold text-white">
+                              {t('live_preview_title')}
+                            </h3>
+                            <p className="text-[10px] text-white/35 mt-0.5">
+                              Live game control
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="px-2 py-1 rounded-md bg-white/[0.05] border border-white/[0.06] text-[10px] font-medium text-white/45">
+                          LIVE
+                        </span>
+                      </div>
+
+                      {/* Game Selector */}
+                      <div className="p-4 border-b border-white/[0.08]">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+
+                          <button
+                            onClick={() => {
+                              setActiveGame('tebak-angka');
+                              sound.playClick();
+                            }}
+                            className={`px-3 py-3 rounded-lg border text-left transition-colors cursor-pointer ${
+                              activeGame === 'tebak-angka'
+                                ? 'bg-[#FE2C55]/10 border-[#FE2C55]/40 text-white'
+                                : 'bg-white/[0.025] border-white/[0.07] text-white/55 hover:bg-white/[0.05] hover:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-mono text-white/30">
+                                01
+                              </span>
+
+                              {activeGame === 'tebak-angka' && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#FE2C55]" />
+                              )}
+                            </div>
+
+                            <div className="mt-2 text-xs font-semibold">
+                              {t('btn_start_guess')}
+                            </div>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setActiveGame('roda-keberuntungan');
+                              sound.playClick();
+                            }}
+                            className={`px-3 py-3 rounded-lg border text-left transition-colors cursor-pointer ${
+                              activeGame === 'roda-keberuntungan'
+                                ? 'bg-indigo-500/10 border-indigo-400/30 text-white'
+                                : 'bg-white/[0.025] border-white/[0.07] text-white/55 hover:bg-white/[0.05] hover:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-mono text-white/30">
+                                02
+                              </span>
+
+                              {activeGame === 'roda-keberuntungan' && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                              )}
+                            </div>
+
+                            <div className="mt-2 text-xs font-semibold">
+                              {t('btn_start_wheel')}
+                            </div>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setActiveGame('blind-box');
+                              sound.playClick();
+                            }}
+                            className={`px-3 py-3 rounded-lg border text-left transition-colors cursor-pointer ${
+                              activeGame === 'blind-box'
+                                ? 'bg-amber-400/10 border-amber-400/30 text-white'
+                                : 'bg-white/[0.025] border-white/[0.07] text-white/55 hover:bg-white/[0.05] hover:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-mono text-white/30">
+                                03
+                              </span>
+
+                              {activeGame === 'blind-box' && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                              )}
+                            </div>
+
+                            <div className="mt-2 text-xs font-semibold">
+                              {t('tab_blind_box')}
+                            </div>
+                          </button>
+
                         </div>
                       </div>
 
-                      {/* Tombol Besar Kontrol Game:
-                          [Mulai Tebak angka] [Putar Roda] [Buka Blind Box]
-                      */}
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                        <button
-                          onClick={() => {
-                            setActiveGame('tebak-angka');
-                            sound.playClick();
-                          }}
-                          className={`py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
-                            activeGame === 'tebak-angka'
-                              ? 'bg-gradient-to-r from-[#FE2C55] to-rose-600 text-white shadow-md shadow-[#FE2C55]/30 ring-2 ring-[#FE2C55]/50 scale-[1.02]'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                          }`}
-                        >
-                          <span className="text-lg">ðŸ”¢</span>
-                          <span>{t('btn_start_guess')}</span>
-                        </button>
+                      {/* Game Stage */}
+                      <div className="p-3 sm:p-4">
+                        <div className="rounded-lg overflow-hidden border border-white/[0.08] bg-[#09090b]">
+                          {activeGame === 'tebak-angka' && (
+                            <TebakNomorSeri
+                              onScoreUpdate={onScoreUpdate}
+                              activePrizeNominal={activePrizeNominal}
+                              players={players}
+                              onOpenLeaderboard={onOpenLeaderboard}
+                              userProfile={userProfile}
+                              onUpdateWalletBalance={onUpdateWalletBalance}
+                              onOpenProfile={onOpenProfile}
+                            />
+                          )}
 
-                        <button
-                          onClick={() => {
-                            setActiveGame('roda-keberuntungan');
-                            sound.playClick();
-                          }}
-                          className={`py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
-                            activeGame === 'roda-keberuntungan'
-                              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30 ring-2 ring-purple-500/50 scale-[1.02]'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                          }`}
-                        >
-                          <span className="text-lg">ðŸŽ¡</span>
-                          <span>{t('btn_start_wheel')}</span>
-                        </button>
+                          {activeGame === 'roda-keberuntungan' && (
+                            <LuckyWheel
+                              onAwardPrize={onAwardPrize}
+                              activePrizeNominal={activePrizeNominal}
+                              onUpdatePrizeNominal={onUpdatePrizeNominal}
+                              players={players}
+                              userProfile={userProfile}
+                              onUpdateWalletBalance={onUpdateWalletBalance}
+                              onOpenProfile={onOpenProfile}
+                            />
+                          )}
 
-                        <button
-                          onClick={() => {
-                            setActiveGame('blind-box');
-                            sound.playClick();
-                          }}
-                          className={`py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
-                            activeGame === 'blind-box'
-                              ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black shadow-md shadow-amber-500/30 ring-2 ring-amber-400/50 scale-[1.02]'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                          }`}
-                        >
-                          <span className="text-lg">ðŸŽ</span>
-                          <span>{t('tab_blind_box')}</span>
-                        </button>
-                      </div>
-
-                      {/* Active Live Game Stage Render */}
-                      <div className="rounded-2xl overflow-hidden border border-gray-200 bg-[#0A0A0A] p-2 sm:p-3">
-                        {activeGame === 'tebak-angka' && (
-                          <TebakNomorSeri
-                            onScoreUpdate={onScoreUpdate}
-                            activePrizeNominal={activePrizeNominal}
-                            players={players}
-                            onOpenLeaderboard={onOpenLeaderboard}
-                            userProfile={userProfile}
-                            onUpdateWalletBalance={onUpdateWalletBalance}
-                            onOpenProfile={onOpenProfile}
-                          />
-                        )}
-
-                        {activeGame === 'roda-keberuntungan' && (
-                          <LuckyWheel
-                            onAwardPrize={onAwardPrize}
-                            activePrizeNominal={activePrizeNominal}
-                            onUpdatePrizeNominal={onUpdatePrizeNominal}
-                            players={players}
-                            userProfile={userProfile}
-                            onUpdateWalletBalance={onUpdateWalletBalance}
-                            onOpenProfile={onOpenProfile}
-                          />
-                        )}
-
-                        {activeGame === 'blind-box' && (
-                          <BlindBoxDashboard
-                            userProfile={userProfile}
-                            onUpdateWalletBalance={onUpdateWalletBalance}
-                            onOpenAppProfile={onOpenProfile}
-                            onOpenAppAuth={onOpenProfile}
-                            onLogoutApp={onLogout}
-                          />
-                        )}
+                          {activeGame === 'blind-box' && (
+                            <BlindBoxDashboard
+                              userProfile={userProfile}
+                              onUpdateWalletBalance={onUpdateWalletBalance}
+                              onOpenAppProfile={onOpenProfile}
+                              onOpenAppAuth={onOpenProfile}
+                              onLogoutApp={onLogout}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Kolom Kanan (40% / 4 cols out of 10):
-                      Live Chat Feed real-time, scroll otomatis.
-                  */}
-                  <div className="lg:col-span-4 space-y-4">
+                  {/* LIVE CHAT */}
+                  <div className="lg:col-span-4">
                     <div
-                      className="bg-white rounded-2xl p-5 shadow-sm shadow-black/5 border border-gray-100 text-[#0A0A0A] flex flex-col h-[640px] max-h-[85dvh]"
+                      className="rounded-xl bg-[#111114] border border-white/[0.08] overflow-hidden flex flex-col h-[640px] max-h-[85dvh]"
                       style={{ overscrollBehavior: 'contain' }}
                     >
-                      {/* Live Chat Header */}
-                      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-xl bg-[#FE2C55]/10 text-[#FE2C55] flex items-center justify-center">
-                            <MessageSquare className="w-4 h-4" />
+
+                      {/* Chat Header */}
+                      <div className="px-4 py-3.5 border-b border-white/[0.08] flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                            <MessageSquare className="w-4 h-4 text-white/60" />
                           </div>
+
                           <div>
-                            <h4 className="text-sm font-black text-[#0A0A0A] leading-tight">
+                            <h4 className="text-sm font-semibold text-white">
                               {t('live_chat_title')}
                             </h4>
-                            <p className="text-[11px] text-gray-500">
+
+                            <p className="text-[10px] text-white/35 mt-0.5">
                               {filteredChat.length} {t('detected_messages')}
                             </p>
                           </div>
                         </div>
 
-                        {/* Auto-scroll toggle */}
                         <button
                           onClick={() => setAutoScroll(!autoScroll)}
-                          className={`px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${
+                          className={`px-2 py-1 rounded-md text-[9px] font-semibold uppercase tracking-wide transition-colors cursor-pointer ${
                             autoScroll
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-gray-100 text-gray-600'
+                              ? 'bg-emerald-400/10 text-emerald-300 border border-emerald-400/20'
+                              : 'bg-white/[0.05] text-white/40 border border-white/[0.06]'
                           }`}
-                          title="Auto Scroll"
                         >
                           {autoScroll ? t('auto_scroll_active') : t('auto_scroll_paused')}
                         </button>
                       </div>
 
-                      {/* Chat Filter Chips */}
-                      <div className="flex items-center gap-1.5 py-2.5 border-b border-gray-100 text-xs overflow-x-auto">
+                      {/* Filters */}
+                      <div className="px-3 py-2 border-b border-white/[0.08] flex items-center gap-1.5 overflow-x-auto">
                         <button
                           onClick={() => setChatFilter('all')}
-                          className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer shrink-0 ${
+                          className={`px-2.5 py-1.5 rounded-md text-[10px] font-medium whitespace-nowrap transition-colors cursor-pointer ${
                             chatFilter === 'all'
-                              ? 'bg-[#0A0A0A] text-white'
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              ? 'bg-white/[0.10] text-white'
+                              : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
                           }`}
                         >
                           {t('filter_all')}
                         </button>
+
                         <button
                           onClick={() => setChatFilter('comment')}
-                          className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer shrink-0 ${
+                          className={`px-2.5 py-1.5 rounded-md text-[10px] font-medium whitespace-nowrap transition-colors cursor-pointer ${
                             chatFilter === 'comment'
-                              ? 'bg-[#0A0A0A] text-white'
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              ? 'bg-white/[0.10] text-white'
+                              : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
                           }`}
                         >
                           {t('filter_comments')}
                         </button>
+
                         <button
                           onClick={() => setChatFilter('gift')}
-                          className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer shrink-0 ${
+                          className={`px-2.5 py-1.5 rounded-md text-[10px] font-medium whitespace-nowrap transition-colors cursor-pointer ${
                             chatFilter === 'gift'
-                              ? 'bg-[#FE2C55] text-white'
-                              : 'bg-rose-50 text-[#FE2C55] hover:bg-rose-100'
+                              ? 'bg-[#FE2C55]/15 text-[#FE2C55]'
+                              : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
                           }`}
                         >
                           {t('filter_gifts')}
                         </button>
+
                         <button
                           onClick={() => setChatFilter('order')}
-                          className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer shrink-0 ${
+                          className={`px-2.5 py-1.5 rounded-md text-[10px] font-medium whitespace-nowrap transition-colors cursor-pointer ${
                             chatFilter === 'order'
-                              ? 'bg-emerald-600 text-white'
-                              : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                              ? 'bg-emerald-400/10 text-emerald-300'
+                              : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
                           }`}
                         >
                           {t('filter_orders')}
                         </button>
                       </div>
 
-                      {/* Pinned Broadcast Banner at Top of Chat */}
+                      {/* Pinned Announcement */}
                       {pinnedAnnouncement && (
-                        <div className="my-2 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
-                          <span className="text-sm">ðŸ“Œ</span>
+                        <div className="mx-3 mt-3 p-2.5 rounded-lg bg-amber-400/[0.07] border border-amber-400/20 text-xs text-amber-200 flex items-start gap-2">
+                          <span className="text-amber-300">!</span>
+
                           <div className="flex-1 font-medium leading-snug">
                             {pinnedAnnouncement}
                           </div>
                         </div>
                       )}
 
-                      {/* Real-time Message Stream List */}
+                      {/* Messages */}
                       <div
                         ref={chatContainerRef}
-                        className="flex-1 overflow-y-auto space-y-2 pr-1 my-2 col-scroll-contain"
-                        style={{ overflowAnchor: 'none', overscrollBehavior: 'contain' }}
+                        className="flex-1 overflow-y-auto space-y-1.5 p-3 col-scroll-contain"
+                        style={{
+                          overflowAnchor: 'none',
+                          overscrollBehavior: 'contain'
+                        }}
                       >
                         {filteredChat.map((msg) => (
                           <div
                             key={msg.id}
-                            className={`p-2.5 rounded-xl text-xs transition-all ${
+                            className={`p-2.5 rounded-lg border text-xs ${
                               msg.type === 'gift'
-                                ? 'bg-rose-50/70 border border-rose-200 text-rose-950'
+                                ? 'bg-[#FE2C55]/[0.06] border-[#FE2C55]/15'
                                 : msg.type === 'order'
-                                ? 'bg-emerald-50/70 border border-emerald-200 text-emerald-950'
+                                ? 'bg-emerald-400/[0.05] border-emerald-400/15'
                                 : msg.type === 'system'
-                                ? 'bg-amber-50 border border-amber-300 font-semibold text-amber-900'
-                                : 'bg-gray-50 border border-gray-100 text-gray-900'
+                                ? 'bg-amber-400/[0.05] border-amber-400/15'
+                                : 'bg-white/[0.025] border-white/[0.06]'
                             }`}
                           >
-                            <div className="flex items-center justify-between gap-1 mb-1">
-                              <div className="flex items-center gap-1.5 font-bold">
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <div className="flex items-center gap-1.5 min-w-0">
                                 <span>{msg.avatar}</span>
-                                <span className="text-[#0A0A0A] font-extrabold">{msg.user}</span>
+
+                                <span className="text-white/80 font-medium truncate">
+                                  {msg.user}
+                                </span>
+
                                 {msg.badge && (
                                   <span
-                                    className={`px-1.5 py-0.2 rounded text-[9px] font-black uppercase ${
+                                    className={`px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase shrink-0 ${
                                       msg.type === 'gift'
-                                        ? 'bg-[#FE2C55] text-white'
+                                        ? 'bg-[#FE2C55]/15 text-[#FE2C55]'
                                         : msg.type === 'order'
-                                        ? 'bg-emerald-600 text-white'
-                                        : 'bg-[#0A0A0A] text-white'
+                                        ? 'bg-emerald-400/10 text-emerald-300'
+                                        : 'bg-white/[0.08] text-white/50'
                                     }`}
                                   >
                                     {msg.badge}
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[10px] text-gray-400 font-mono">{msg.time}</span>
+
+                              <span className="text-[9px] text-white/25 font-mono shrink-0">
+                                {msg.time}
+                              </span>
                             </div>
 
-                            <p className="text-gray-800 leading-snug">{msg.text}</p>
+                            <p className="text-white/60 leading-snug">
+                              {msg.text}
+                            </p>
 
-                            {/* Additional metadata for gifts or orders */}
                             {msg.type === 'gift' && msg.giftName && (
-                              <div className="mt-1.5 flex items-center gap-1 text-[11px] font-black text-[#FE2C55]">
+                              <div className="mt-1.5 flex items-center gap-1 text-[10px] font-semibold text-[#FE2C55]">
                                 <span>{msg.giftName}</span>
                                 <span>x{msg.giftCount || 1}</span>
                               </div>
                             )}
 
                             {msg.type === 'order' && msg.orderProduct && (
-                              <div className="mt-1.5 flex items-center justify-between text-[11px] font-semibold text-emerald-700">
+                              <div className="mt-1.5 flex items-center justify-between text-[10px] text-emerald-300">
                                 <span>{msg.orderProduct}</span>
-                                <span className="font-bold">
+                                <span className="font-semibold">
                                   {formatCurrency(msg.orderPrice || 100000)}
                                 </span>
                               </div>
                             )}
                           </div>
                         ))}
+
                         <div ref={chatEndRef} />
                       </div>
 
-                      {/* Quick Interactive Triggers (Saved to Firestore) */}
-                      <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                      {/* Quick Gift */}
+                      <div className="px-3 pt-2 border-t border-white/[0.08]">
                         <button
                           onClick={async () => {
                             try {
@@ -1199,7 +1282,7 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                                 userId: userProfile?.uid || 'host',
                                 userEmail: userProfile?.email || 'host@sysstreamer.com',
                                 userName: userProfile?.displayName ? `@${userProfile.displayName}` : '@sultan_gift',
-                                title: `ðŸŒ¹ ${t('gift_rose')}`,
+                                title: `🌹 ${t('gift_rose')}`,
                                 amount: 5000
                               });
                               sound.playAlert();
@@ -1207,47 +1290,52 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
                               console.warn('Record gift:', err);
                             }
                           }}
-                          className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-[#FE2C55] font-bold text-[10px] flex items-center gap-1 transition-colors cursor-pointer"
+                          className="px-2.5 py-1.5 rounded-md bg-[#FE2C55]/10 border border-[#FE2C55]/15 hover:bg-[#FE2C55]/15 text-[#FE2C55] font-medium text-[10px] flex items-center gap-1.5 transition-colors cursor-pointer"
                         >
-                          <Gift className="w-3 h-3" /> {t('gift_rose')}
+                          <Gift className="w-3 h-3" />
+                          {t('gift_rose')}
                         </button>
-
-
                       </div>
 
-                      {/* Host Message Input Box */}
+                      {/* Host Message */}
                       <form
                         onSubmit={async (e) => {
                           e.preventDefault();
                           if (!customChatMessage.trim()) return;
+
                           const text = customChatMessage.trim();
                           setCustomChatMessage('');
+
                           try {
                             await logUserActivity({
                               type: 'comment',
                               userId: userProfile?.uid || 'host',
                               userEmail: userProfile?.email || 'host@sysstreamer.com',
-                              userName: userProfile?.displayName ? `${userProfile.displayName} (Host)` : 'Host Streamer',
+                              userName: userProfile?.displayName
+                                ? `${userProfile.displayName} (Host)`
+                                : 'Host Streamer',
                               title: text,
                               amount: 0
                             });
+
                             sound.playClick();
                           } catch (err) {
                             console.warn('Send message:', err);
                           }
                         }}
-                        className="mt-2 flex gap-1.5"
+                        className="p-3 flex gap-1.5"
                       >
                         <input
                           type="text"
                           value={customChatMessage}
                           onChange={(e) => setCustomChatMessage(e.target.value)}
                           placeholder={t('send_chat_placeholder')}
-                          className="flex-1 bg-gray-100 hover:bg-gray-200/70 focus:bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#FE2C55]"
+                          className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/25 focus:outline-none focus:border-white/20 transition-colors"
                         />
+
                         <button
                           type="submit"
-                          className="p-2 rounded-xl bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white transition-colors cursor-pointer shrink-0"
+                          className="p-2 rounded-lg bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white transition-colors cursor-pointer shrink-0"
                           title="Send"
                         >
                           <Send className="w-4 h-4" />
@@ -1271,6 +1359,8 @@ export const StreamMasterDashboard: React.FC<StreamMasterDashboardProps> = ({
     </div>
   );
 };
+
+
 
 
 
