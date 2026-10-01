@@ -69,10 +69,10 @@ export default function DashboardPage({ navigate }: Props) {
             <ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
           </button>
 
-          <button onClick={() => navigate?.('/game/spinner')} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-left hover:border-cyan-500/50 transition-colors">
+          <button onClick={() => navigate?.('/game/blindbox')} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-left hover:border-emerald-500/50 transition-colors">
             <Gamepad2 className="w-5 h-5 text-emerald-400 mb-3" />
-            <div className="font-bold">Games</div>
-            <div className="text-xs text-slate-500 mt-1">Enter available games after authentication.</div>
+            <div className="font-bold">Blind Box</div>
+            <div className="text-xs text-slate-500 mt-1">Open the server-backed Blind Box game.</div>
             <ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
           </button>
         </div>
