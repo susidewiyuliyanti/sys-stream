@@ -1,5 +1,5 @@
-import { Env, json, readJson, withDb } from "../_lib/db";
-import { requireAuth } from "../_lib/auth";
+import { Env, json, readJson, withDb } from "../../_lib/db";
+import { requireAuth } from "../../_lib/auth";
 
 interface DepositRequest {
   amount?: number;
