@@ -58,11 +58,16 @@ export default function AdminApp() {
   useEffect(()=>{void checkSession();},[]);
   useEffect(()=>{if(authenticated)void loadDashboard();},[authenticated]);
 
-  const login=async(e:React.FormEvent)=>{
+  const login=async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();setError('');setLoading(true);
     try{
-      const data=await request('/login',{method:'POST',body:JSON.stringify({email,password})});
-      setAdmin(data.admin);setPassword('');setAuthenticated(true);
+      // Read the live form values instead of React state so browser password
+      // managers/autofill are handled even when they do not fire onChange.
+      const form=new FormData(e.currentTarget);
+      const loginEmail=String(form.get('email')||email).trim().toLowerCase();
+      const loginPassword=String(form.get('password')||password);
+      const data=await request('/login',{method:'POST',body:JSON.stringify({email:loginEmail,password:loginPassword})});
+      setAdmin(data.admin);setEmail('');setPassword('');setAuthenticated(true);
     }catch(e:any){setError(e?.message||'Login admin gagal.');}
     finally{setLoading(false);}
   };
