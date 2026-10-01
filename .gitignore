@@ -1,16 +1,17 @@
-node_modules/
-build/
+﻿node_modules/
 dist/
-coverage/
-.DS_Store
+.wrangler/
 *.log
-.env*
-!.env.example
-.wrangler/
-dist/
-node_modules/
-.wrangler/
 
-dist/
+_worker.bundle
 
-node_modules/
+sys-stream/
+sys-stream-backup-before-v0.2/
+
+v0.2-source/
+
+*.backup.tsx
+*.backup-before-fix.tsx
+
+.env
+.env.*
