@@ -16,7 +16,8 @@ model User {
   username         String           @unique
   email            String           @unique
   password         String
-  balance          Int              @default(100000) // Saldo utama (Rp)
+  balance          Int              @default(100000) // Saldo utama dan Game Balance (Rp)
+  lockedSaldo      Int              @default(0) // Saldo yang sedang dikunci di Blind Box
   role             String           @default("USER") // USER, ADMIN
   isBlacklisted    Boolean          @default(false)
   forceJackpotNext Boolean          @default(false)
@@ -36,7 +37,7 @@ model Deposit {
   durationDays Int              // 30, 60, 90
   startDate    DateTime         @default(now())
   endDate      DateTime
-  status       String           @default("ACTIVE") // ACTIVE, CLAIMED, EXPIRED
+  status       String           @default("ACTIVE") // ACTIVE, COMPLETED, EXPIRED
   totalClaimed Int              @default(0)
   forceJackpot Boolean          @default(false)
   createdAt    DateTime         @default(now())
