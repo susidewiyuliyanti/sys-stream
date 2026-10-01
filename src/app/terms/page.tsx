@@ -1,33 +1,79 @@
 import React from 'react';
+import { ArrowLeft, CheckCircle2, FileText, ShieldCheck, WalletCards } from 'lucide-react';
 
 interface Props {
   navigate?: (path: string) => void;
 }
 
-export default function TermsPage({ navigate }: Props) {
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 px-4 py-10">
-      <article className="max-w-4xl mx-auto">
-        <button onClick={() => navigate?.('/login')} className="text-cyan-400 hover:text-cyan-300 text-sm mb-8">
-          ← Back
-        </button>
-        <h1 className="text-3xl font-black mb-2">Terms &amp; Conditions</h1>
-        <p className="text-slate-500 text-sm mb-8">Last updated: October 1, 2026</p>
+export const TERMS_VERSION = '2026-10-01';
 
-        <div className="space-y-7 text-sm leading-7 text-slate-300">
-          <section><h2 className="text-lg font-bold text-white mb-2">1. Acceptance of Terms</h2><p>By creating an account or using SYS STREAM, you agree to these Terms &amp; Conditions and applicable laws and regulations. If you do not agree, do not use the platform.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">2. Eligibility and Account</h2><p>You are responsible for providing accurate registration information, protecting your credentials, and all activity performed through your account. You must be legally permitted to use the services in your jurisdiction.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">3. Deposits and Digital Assets</h2><p>SYS STREAM may support deposits using cryptocurrency or other digital-asset payment methods made available by the platform or its payment providers. A deposit is credited only after the applicable payment has been received and verified. Network fees, blockchain confirmation times, exchange-rate movements, and payment-provider requirements may affect a transaction.</p><p className="mt-2">You are responsible for sending funds using the correct network, asset, and payment instructions. Transactions sent to an incorrect address or unsupported network may be irreversible.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">4. Game Balance and Lock</h2><p>Your available balance and locked balance are maintained according to the platform's transaction records. A lock may temporarily restrict the locked amount according to the selected game rules and duration. Locked funds are not necessarily immediately withdrawable or spendable until the applicable lock conditions are satisfied.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">5. Games, Rewards and Results</h2><p>Games and reward mechanisms operate according to the rules displayed by SYS STREAM. Results are processed using the platform's server-side transaction logic. Rewards, eligibility, limits, and settlement conditions may vary by game and may be subject to applicable law.</p><p className="mt-2">SYS STREAM does not guarantee profit, income, or recovery of any amount used in a game. Users should only use funds they can afford to lose.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">6. Prohibited Conduct</h2><p>You may not use SYS STREAM for fraud, money laundering, unauthorized payments, account abuse, manipulation of game outcomes, automated attacks, exploitation of vulnerabilities, impersonation, or any activity that violates applicable law or third-party rights.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">7. Suspensions and Account Review</h2><p>SYS STREAM may restrict, suspend, or terminate accounts where there is suspected fraud, abuse, security risk, violation of these Terms, or a legal or regulatory requirement. Where appropriate, transactions may be reviewed before settlement.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">8. Service Availability</h2><p>The platform may be temporarily unavailable because of maintenance, security incidents, network failures, blockchain conditions, third-party services, or circumstances beyond reasonable control.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">9. Limitation of Liability</h2><p>To the extent permitted by applicable law, SYS STREAM is not responsible for losses caused by user error, incorrect blockchain transfers, compromised credentials, unsupported networks, third-party payment providers, or events outside the platform's reasonable control. Nothing in these Terms excludes liability that cannot legally be excluded.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">10. Changes</h2><p>SYS STREAM may update these Terms when necessary. Material changes may be communicated through the platform. Continued use after an update constitutes acceptance of the revised Terms to the extent permitted by law.</p></section>
-          <section><h2 className="text-lg font-bold text-white mb-2">11. Contact</h2><p>For questions about these Terms, please use the official contact channel provided by SYS STREAM.</p></section>
+export default function TermsPage({ navigate }: Props) {
+  const sections = [
+    ['Acceptance of Terms','By creating an account or using SYS STREAM, you confirm that you have read and agree to these Terms & Conditions. If you do not agree, do not create or use an account.'],
+    ['Eligibility & Account','You are responsible for providing accurate registration information, protecting your credentials, and all activity performed through your account. You must be legally permitted to use the service in your jurisdiction.'],
+    ['Deposits & Digital Assets','SYS STREAM may support cryptocurrency or other digital-asset payment methods made available by the platform or its payment providers. A deposit is credited only after the applicable payment is received and verified. Network fees, blockchain confirmation times, exchange-rate movements, and provider requirements may affect a transaction.','You are responsible for using the correct asset, network, amount, and payment instructions. Transfers sent to an incorrect address or unsupported network may be irreversible.'],
+    ['Available Balance & Locked Balance','Your available balance and locked balance are maintained from the platform transaction records. When an amount is locked, that amount is separated from the available balance for the applicable lock period and rules. Locked funds are not available for ordinary use until the relevant conditions are satisfied.'],
+    ['Games, Rewards & Settlement','Games and reward mechanisms operate according to the rules displayed by SYS STREAM. Game actions, locks, rewards, and settlement are processed using server-side transaction records. Eligibility, limits, reward amounts, and settlement conditions may vary by game.','SYS STREAM does not guarantee profit, income, or recovery of any amount used in a game. Use only funds you can afford to lose.'],
+    ['Prohibited Conduct','You may not use SYS STREAM for fraud, money laundering, unauthorized payments, account abuse, manipulation of game outcomes, automated attacks, exploitation of vulnerabilities, impersonation, or activity that violates applicable law or third-party rights.'],
+    ['Account Review & Suspension','SYS STREAM may restrict, suspend, or terminate an account when there is suspected fraud, abuse, a security risk, a violation of these Terms, or a legal or regulatory requirement. Transactions may be reviewed before settlement where appropriate.'],
+    ['Service Availability','The service may be temporarily unavailable because of maintenance, security incidents, network failures, blockchain conditions, third-party services, or circumstances outside reasonable control.'],
+    ['Limitation of Liability','To the extent permitted by applicable law, SYS STREAM is not responsible for losses caused by user error, incorrect blockchain transfers, compromised credentials, unsupported networks, third-party payment providers, or events outside the platform’s reasonable control. Nothing in these Terms excludes liability that cannot legally be excluded.'],
+    ['Changes to These Terms','SYS STREAM may update these Terms when necessary. Material changes may be communicated through the platform. A future version may require you to review and accept the updated Terms before continuing to use affected services.'],
+    ['Contact','For questions about these Terms, please use the official contact channel provided by SYS STREAM.'],
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#060a14] text-slate-100 px-4 py-8 sm:py-12">
+      <div className="max-w-4xl mx-auto">
+        <button onClick={() => navigate?.('/login')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-300 transition-colors mb-6">
+          <ArrowLeft className="w-4 h-4" /> Back to account
+        </button>
+
+        <header className="rounded-3xl border border-cyan-500/20 bg-slate-900/70 backdrop-blur-xl p-6 sm:p-8 mb-6 shadow-[0_0_45px_rgba(6,182,212,0.08)]">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
+            <div>
+              <div className="inline-flex items-center gap-2 text-cyan-300 text-xs font-bold uppercase tracking-[0.18em] mb-3">
+                <FileText className="w-4 h-4" /> Legal
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Terms &amp; Conditions</h1>
+              <p className="text-slate-400 mt-2 text-sm leading-6">Please read these terms before creating your SYS STREAM account.</p>
+            </div>
+            <div className="shrink-0 rounded-2xl border border-cyan-500/20 bg-slate-950/60 px-4 py-3">
+              <div className="text-[10px] uppercase tracking-wider text-slate-500">Version</div>
+              <div className="text-sm font-bold text-cyan-300 mt-1">{TERMS_VERSION}</div>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-3 mt-7">
+            {[[ShieldCheck,'Account & Security'],[WalletCards,'Balance & Transactions'],[CheckCircle2,'Rules & Acceptance']].map(([Icon,label]) => (
+              <div key={label as string} className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <Icon className="w-5 h-5 text-cyan-400 mb-2" />
+                <div className="text-xs font-bold text-slate-200">{label as string}</div>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 sm:p-8">
+          <div className="space-y-4">
+            {sections.map(([title, body, extra], index) => (
+              <section key={title} className="rounded-2xl border border-slate-800/80 bg-slate-950/45 p-5">
+                <div className="flex gap-3">
+                  <div className="text-xs font-black text-cyan-400 pt-1 w-7 shrink-0">{String(index + 1).padStart(2, '0')}</div>
+                  <div>
+                    <h2 className="text-base sm:text-lg font-bold text-white">{title}</h2>
+                    <p className="text-sm leading-7 text-slate-300 mt-2">{body}</p>
+                    {extra && <p className="text-sm leading-7 text-slate-400 mt-2">{extra}</p>}
+                  </div>
+                </div>
+              </section>
+            ))}
+          </div>
+          <div className="mt-6 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 text-xs leading-6 text-slate-400">
+            <strong className="text-slate-200">Important:</strong> These platform terms describe how SYS STREAM operates. They should be reviewed by qualified legal counsel before commercial launch to address the laws and regulations applicable to the service and its users.
+          </div>
+          <div className="mt-6 text-xs text-slate-500">Last updated: October 1, 2026 · Terms version {TERMS_VERSION}</div>
         </div>
-      </article>
+      </div>
     </div>
   );
 }
