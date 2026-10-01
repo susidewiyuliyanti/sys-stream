@@ -42,7 +42,7 @@ export default function LoginPage({ navigate }: Props) {
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
       login(data.user?.username || usernameInput.trim());
-      if (navigate) navigate('/room/main');
+      if (navigate) navigate('/dashboard');
     } catch (error) {
       console.error(error);
       window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
