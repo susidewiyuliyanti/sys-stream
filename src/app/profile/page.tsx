@@ -23,32 +23,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-const PRESET_AVATARS = [
-  {
-    name: 'Cyberpunk Headphone Girl',
-    url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Neon Visor Hacker',
-    url: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Shadow Mask Ninja',
-    url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Red Hair Operative',
-    url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Hooded Cyber Samurai',
-    url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Anime Cyber Pilot',
-    url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&auto=format&fit=crop&q=80',
-  },
-];
 
 export default function ProfilePage() {
   const {
@@ -66,7 +40,7 @@ export default function ProfilePage() {
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<30 | 60 | 90>(30);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  const [newAvatarInput, setNewAvatarInput] = useState(user.avatar);
+  const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
   // Compute total locked from locks or fallback to 500 for matching screenshot
@@ -162,7 +136,7 @@ export default function ProfilePage() {
             <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-purple-600 via-pink-500 to-cyan-400 shadow-[0_0_30px_rgba(168,85,247,0.5)]">
               <div className="w-full h-full rounded-full bg-slate-950 p-1 border-2 border-purple-500/80 overflow-hidden">
                 <img
-                  src={user.avatar || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80'}
+                  src={user.avatar || '/default-avatar.svg'}
                   alt={user.username}
                   className="w-full h-full rounded-full object-cover object-center group-hover:scale-110 transition-transform duration-300"
                 />
@@ -367,53 +341,37 @@ export default function ProfilePage() {
                 />
               </div>
 
-              {/* Preset Cyberpunk Avatars Gallery */}
+              {/* User Storage Upload Only */}
               <div>
                 <label className="block text-slate-400 font-bold uppercase mb-2">
-                  Choose Preset Avatar
+                  Profile Photo
                 </label>
-                <div className="grid grid-cols-3 gap-2.5">
-                  {PRESET_AVATARS.map((av, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => {
-                        sound.playClick();
-                        setNewAvatarInput(av.url);
-                      }}
-                      className={`relative aspect-square rounded-2xl overflow-hidden border-2 transition-all p-0.5 cursor-pointer ${
-                        newAvatarInput === av.url
-                          ? 'border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.6)] scale-105'
-                          : 'border-slate-800 hover:border-purple-500'
-                      }`}
-                    >
-                      <img
-                        src={av.url}
-                        alt={av.name}
-                        className="w-full h-full object-cover rounded-xl"
-                      />
-                      {newAvatarInput === av.url && (
-                        <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-cyan-400 flex items-center justify-center text-slate-950">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Custom Image URL input */}
-              <div>
-                <label className="block text-slate-400 font-bold uppercase mb-1">
-                  Or Paste Custom Avatar Image URL
+                <label className="w-full min-h-32 rounded-2xl border-2 border-dashed border-slate-700 hover:border-cyan-400 bg-slate-950 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors overflow-hidden">
+                  {newAvatarInput ? (
+                    <img src={newAvatarInput} alt="Profile preview" className="w-24 h-24 rounded-full object-cover border-2 border-cyan-400" />
+                  ) : (
+                    <Upload className="w-8 h-8 text-slate-500" />
+                  )}
+                  <span className="text-xs font-bold text-slate-300">{newAvatarInput ? 'Change photo from device' : 'Upload photo from device'}</span>
+                  <span className="text-[10px] text-slate-500">JPG, PNG, WEBP • photo stays from your device storage</span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 5 * 1024 * 1024) {
+                        showToast('Photo too large', 'Maximum profile photo size is 5 MB.', 'error');
+                        e.currentTarget.value = '';
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onload = () => setNewAvatarInput(String(reader.result || ''));
+                      reader.readAsDataURL(file);
+                    }}
+                  />
                 </label>
-                <input
-                  type="url"
-                  placeholder="https://images.unsplash.com/..."
-                  value={newAvatarInput}
-                  onChange={(e) => setNewAvatarInput(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400"
-                />
               </div>
 
               {/* Action Buttons */}
