@@ -90,7 +90,7 @@ export default function BlindboxGamePage() {
     getTotalLockedUsdt,
     getDailyBoxQuota,
     getRemainingDailyBoxes,
-    consumeDailyBoxClaim,
+    claimBlindBox,
     showToast,
     requireAuth,
   } = useGame();
@@ -148,11 +148,11 @@ export default function BlindboxGamePage() {
   };
 
   const startDailyUnboxing = () => {
-    requireAuth(() => {
+    requireAuth(async () => {
       if (!isQualified) {
         showToast(
           'Staking Required',
-          'You must lock a minimum of 4.00 USDT (30, 60, or 90 days) to open daily Blind Boxes.',
+          'You must lock a minimum of 4.00 USDT to open daily Blind Boxes.',
           'error'
         );
         return;
@@ -169,65 +169,66 @@ export default function BlindboxGamePage() {
 
       if (unboxingState !== 'IDLE') return;
 
-      // Consume one daily claim
-      const consumed = consumeDailyBoxClaim();
-      if (!consumed) return;
-
-      setUnboxingState('SHAKING');
-      sound.playUnboxShake();
-
-      setTimeout(() => {
+      try {
+        setUnboxingState('SHAKING');
         sound.playUnboxShake();
-      }, 450);
-
-      setTimeout(() => {
-        setUnboxingState('REVEALING');
-
-        const pool = selectedBox.lootPool;
-        const selected = pool[Math.floor(Math.random() * pool.length)];
-
-        // All rewards in USDT proportional to user's locked USDT!
-        const scalingFactor = Math.max(1, Math.min(8, 1 + (totalLocked - 4) / 50));
-        const finalUsdtReward = Number((selected.usdtReward * scalingFactor).toFixed(2));
-        const coinsEquiv = Math.floor(finalUsdtReward * 100);
-
-        const uniqueItem: BlindboxItem = {
-          ...selected,
-          id: 'pull_' + Date.now() + Math.random().toString(36).substring(2, 6),
-          usdtReward: finalUsdtReward,
-          coinValue: coinsEquiv,
-        };
-
-        setUnboxedItem(uniqueItem);
-        setWonUsdt(finalUsdtReward);
-
-        // Auto-credit reward in USDT
-        updateCoins(coinsEquiv);
 
         setTimeout(() => {
-          setUnboxingState('REVEALED');
-          sound.playUnboxReveal(uniqueItem.rarity);
+          sound.playUnboxShake();
+        }, 450);
 
-          if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || finalUsdtReward >= 10) {
-            sound.playJackpot();
-            confetti({
-              particleCount: 130,
-              spread: 90,
-              origin: { y: 0.5 },
+        setTimeout(async () => {
+          setUnboxingState('REVEALING');
+
+          const result = await claimBlindBox(selectedBox.id);
+          const finalUsdtReward = Number(result.rewardUsdt || 0);
+          const coinsEquiv = Math.floor(finalUsdtReward * 100);
+
+          const baseItem = selectedBox.lootPool.find(item => item.id === result.item?.id) || selectedBox.lootPool[0];
+          const uniqueItem: BlindboxItem = {
+            ...baseItem,
+            id: 'pull_' + result.claimId,
+            name: result.item?.name || baseItem.name,
+            rarity: result.item?.rarity || baseItem.rarity,
+            usdtReward: finalUsdtReward,
+            coinValue: coinsEquiv,
+          };
+
+          setUnboxedItem(uniqueItem);
+          setWonUsdt(finalUsdtReward);
+
+          setTimeout(() => {
+            setUnboxingState('REVEALED');
+            sound.playUnboxReveal(uniqueItem.rarity);
+
+            if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || finalUsdtReward >= 10) {
+              sound.playJackpot();
+              confetti({
+                particleCount: 130,
+                spread: 90,
+                origin: { y: 0.5 },
+              });
+            }
+
+            addGameHistory({
+              gameType: 'blindbox',
+              gameName: selectedBox.name,
+              betAmount: 0,
+              payoutAmount: coinsEquiv,
+              multiplier: 1.0,
+              isWin: true,
+              details: `Daily Box: +$${finalUsdtReward.toFixed(2)} USDT & ${uniqueItem.name}`,
             });
-          }
-
-          addGameHistory({
-            gameType: 'blindbox',
-            gameName: selectedBox.name,
-            betAmount: 0, // Free daily claim with active lock!
-            payoutAmount: coinsEquiv,
-            multiplier: 1.0,
-            isWin: true,
-            details: `Daily Box: +$${finalUsdtReward.toFixed(2)} USDT & ${uniqueItem.name}`,
-          });
-        }, 700);
-      }, 1200);
+          }, 700);
+        }, 1200);
+      } catch (error) {
+        setUnboxingState('IDLE');
+        showToast(
+          'Blind Box Failed',
+          error instanceof Error ? error.message : 'Server gagal memproses Blind Box.',
+          'error'
+        );
+      }
     });
   };
 
