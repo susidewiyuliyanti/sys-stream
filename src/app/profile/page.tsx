@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { CryptoDepositModal } from '../../components/CryptoDepositModal';
 import { sound } from '../../lib/sound';
+import { useLanguage } from '../../i18n';
 import {
   Settings,
   Bell,
@@ -36,6 +37,7 @@ export default function ProfilePage() {
     setLoginModalOpen,
     showToast,
   } = useGame();
+  const { t } = useLanguage();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<30 | 60 | 90>(30);
@@ -103,7 +105,7 @@ export default function ProfilePage() {
               setIsEditProfileModalOpen(true);
             }}
             className="p-2.5 rounded-2xl bg-slate-900/80 border border-cyan-500/20 text-cyan-400 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
-            title="Edit Profile & Settings"
+            title={t('Edit Profile & Avatar')}
           >
             <Settings className="w-5 h-5" />
           </button>
@@ -120,7 +122,7 @@ export default function ProfilePage() {
           <button
             onClick={() => {
               sound.playClick();
-              showToast('Notifications', 'No unread notifications at this time.', 'info');
+              showToast(t('Notifications'), t('No unread notifications at this time.'), 'info');
             }}
             className="relative p-2.5 rounded-2xl bg-slate-900/80 border border-cyan-500/20 text-cyan-400 hover:text-white transition-all cursor-pointer"
           >
@@ -194,7 +196,7 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-cyan-400 font-bold">
               <Lock className="w-4 h-4" />
-              <span>Locked Balance</span>
+              <span>{t('Locked Balance')}</span>
             </div>
             <button
               onClick={() =>
@@ -246,7 +248,7 @@ export default function ProfilePage() {
             className="w-full py-3.5 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 text-slate-950 font-black text-base rounded-2xl shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Diamond className="w-5 h-5 fill-slate-950" />
-            <span>Deposit Crypto</span>
+            <span>{t('Deposit Crypto')}</span>
           </button>
         </div>
 
@@ -255,7 +257,7 @@ export default function ProfilePage() {
           {/* Header */}
           <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
             <Clock className="w-4 h-4" />
-            <span>Lock History</span>
+            <span>{t('Lock History')}</span>
           </div>
 
           {/* Filter Tabs: 30 DAYS, 60 DAYS, 90 DAYS */}
@@ -316,7 +318,7 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <Camera className="w-5 h-5 text-purple-400" />
-                <h3 className="text-base font-bold text-white">Edit Profile & Avatar</h3>
+                <h3 className="text-base font-bold text-white">{t('Edit Profile & Avatar')}</h3>
               </div>
               <button
                 onClick={() => setIsEditProfileModalOpen(false)}
@@ -330,7 +332,7 @@ export default function ProfilePage() {
               {/* Username Input */}
               <div>
                 <label className="block text-slate-400 font-bold uppercase mb-1">
-                  Display Username
+                  {t('Display Username')}
                 </label>
                 <input
                   type="text"
@@ -344,7 +346,7 @@ export default function ProfilePage() {
               {/* User Storage Upload Only */}
               <div>
                 <label className="block text-slate-400 font-bold uppercase mb-2">
-                  Profile Photo
+                  {t('Profile Photo')}
                 </label>
                 <label className="w-full min-h-32 rounded-2xl border-2 border-dashed border-slate-700 hover:border-cyan-400 bg-slate-950 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors overflow-hidden">
                   {newAvatarInput ? (
@@ -352,7 +354,7 @@ export default function ProfilePage() {
                   ) : (
                     <Upload className="w-8 h-8 text-slate-500" />
                   )}
-                  <span className="text-xs font-bold text-slate-300">{newAvatarInput ? 'Change photo from device' : 'Upload photo from device'}</span>
+                  <span className="text-xs font-bold text-slate-300">{newAvatarInput ? '{t('Change photo from device')}' : '{t('Upload photo from device')}'}</span>
                   <span className="text-[10px] text-slate-500">JPG, PNG, WEBP • photo stays from your device storage</span>
                   <input
                     type="file"
@@ -381,13 +383,13 @@ export default function ProfilePage() {
                   onClick={() => setIsEditProfileModalOpen(false)}
                   className="flex-1 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl"
                 >
-                  Cancel
+                  {t('Cancel')}
                 </button>
                 <button
                   type="submit"
                   className="flex-1 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-extrabold rounded-xl shadow-md"
                 >
-                  Save Changes
+                  {t('Save Changes')}
                 </button>
               </div>
             </form>
