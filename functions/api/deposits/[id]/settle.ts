@@ -34,15 +34,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT
             id,
-            "userId",
+            user_id,
             amount,
-            "durationDays",
-            "startDate",
-            "endDate",
+            duration_days,
+            start_date,
+            end_date,
             status
           FROM deposits
           WHERE id = $1
-            AND "userId" = $2
+            AND user_id = $2
           FOR UPDATE
           `,
           [depositId, userId]
@@ -157,7 +157,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SET
             status = 'COMPLETED'
           WHERE id = $1
-            AND "userId" = $2
+            AND user_id = $2
             AND status = 'ACTIVE'
           `,
           [depositId, userId]
