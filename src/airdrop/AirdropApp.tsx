@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
-  CheckCircle2,
+  CheckCircle2,\n  CircleDollarSign,
   Clock3,
   ExternalLink,
   FileVideo,
@@ -15,7 +15,7 @@ import {
   Sparkles,
   Upload,
   X,
-  Youtube,
+  Youtube,\n  WalletCards,
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
 
