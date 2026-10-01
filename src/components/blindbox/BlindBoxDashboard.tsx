@@ -353,8 +353,6 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       const data = await res.json();
       setCurrentUser(data.user);
 
-      // Sinkronkan saldo terbaru dari backend ke halaman game utama.
-      // Ini menjaga User Balance = Game Balance setelah deposit/unlock/topup.
       const latestBalance = Number(
         data.user?.balance ??
         data.user?.walletBalance ??
@@ -366,8 +364,16 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         onUpdateWalletBalance?.(latestBalance);
       }
 
-      // Cloudflare may return snake_case deposit fields; normalize them once
-      // so the Blind Box UI always works with the shared camelCase contract.
+      const depositsRes = await fetch('/api/deposits', {
+        headers: { Authorization: `Bearer ${activeTok}` },
+      });
+
+      if (!depositsRes.ok) {
+        throw new Error('Gagal mengambil data Blind Box.');
+      }
+
+      const depositData = await depositsRes.json();
+
       const normalizeDeposit = (deposit: any) => {
         if (!deposit) return null;
         return {
@@ -383,20 +389,26 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         };
       };
 
-      const normalizedActiveDeposit = normalizeDeposit(data.activeDeposit);
-      const normalizedAllDeposits = (data.allDeposits || []).map(normalizeDeposit);
+      const normalizedActiveDeposit = normalizeDeposit(depositData.activeDeposit);
+      const normalizedAllDeposits = (depositData.deposits || []).map(normalizeDeposit);
 
       setActiveDeposit(normalizedActiveDeposit);
-      setDepositTier(data.depositTier || (normalizedActiveDeposit ? getClientTierDetails(normalizedActiveDeposit.amount) : null));
+      setDepositTier(
+        normalizedActiveDeposit
+          ? getClientTierDetails(normalizedActiveDeposit.amount)
+          : null
+      );
       setAllDeposits(normalizedAllDeposits);
-      setHasClaimedToday(data.hasClaimedToday);
-      setTodayClaimData(data.todayClaimData);
-      setRecentClaims(data.recentClaims || []);
-      setSettings(data.settings);
-      if (data.wibTime) {
-        setCountdownText(data.wibTime.countdownFormatted);
-        setWibDateStr(data.wibTime.dateStr);
+      setHasClaimedToday(Boolean(depositData.hasClaimedToday));
+      setTodayClaimData(depositData.todayClaimData);
+      setRecentClaims(depositData.recentClaims || []);
+      setSettings(depositData.settings);
+
+      if (depositData.wibTime) {
+        setCountdownText(depositData.wibTime.countdownFormatted);
+        setWibDateStr(depositData.wibTime.dateStr);
       }
+
     } catch (err) {
       console.error('Failed to fetch user data:', err);
     }
@@ -687,7 +699,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
 
     setIsClaiming(true);
     try {
-      const res = await fetch(`/api/claim/${activeDeposit.id}`, {
+      const res = await fetch(`/api/deposits/${activeDeposit.id}/claim`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
