@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
 
-type TaskType = 'youtube' | 'social' | 'upload' | 'deposit' | 'withdrawal' | 'profile';
+type TaskType = 'youtube' | 'tiktok' | 'instagram' | 'shorts' | 'social' | 'upload' | 'deposit' | 'withdrawal' | 'profile' | 'checkin';
 type Task = {
   id: string; type: TaskType; title: string; description: string;
   reward: string; estimated: string; daily?: boolean; priority?: boolean; action: string;
@@ -14,6 +14,10 @@ type Task = {
 type Leader = { rank:number; username:string; referrals:number };
 
 const TASKS: Task[] = [
+  { id:'daily-checkin', type:'checkin', title:'Daily Check-in', description:'Open the Airdrop Center once each day and complete your daily check-in. Keep your streak active for campaign rewards.', reward:'Configured by program', estimated:'30 seconds', daily:true, action:'Check In' },
+  { id:'tiktok-upload', type:'tiktok', title:'Upload to TikTok', description:'Create and upload an original SYS STREAM video to your TikTok account, then submit the public video URL as proof.', reward:'Configured by program', estimated:'10–20 minutes', daily:true, action:'Start TikTok Task' },
+  { id:'instagram-reel', type:'instagram', title:'Post an Instagram Reel', description:'Create an original SYS STREAM Reel and publish it on Instagram. Submit the public Reel URL as proof.', reward:'Configured by program', estimated:'10–20 minutes', daily:true, action:'Start Instagram Task' },
+  { id:'youtube-shorts', type:'shorts', title:'Upload a YouTube Short', description:'Create an original vertical video about SYS STREAM and publish it as a YouTube Short. Submit the public URL as proof.', reward:'Configured by program', estimated:'10–20 minutes', daily:true, action:'Start Shorts Task' },
   { id:'youtube-upload', type:'youtube', title:'Upload Video ke YouTube', description:'Buat video original tentang SYS STREAM, upload ke channel YouTube kamu, lalu kirim URL video sebagai bukti.', reward:'Configured by program', estimated:'15–30 menit', daily:true, priority:true, action:'Start YouTube Task' },
   { id:'youtube-review', type:'youtube', title:'Watch & Honest Review', description:'Tonton konten campaign dan berikan feedback yang jujur. Tidak ada kewajiban memberikan rating positif.', reward:'Configured by program', estimated:'5–10 menit', daily:true, action:'Open Review Task' },
   { id:'social-daily', type:'social', title:'Daily Social Task', description:'Selesaikan aktivitas sosial yang tercantum pada brief campaign. Jangan gunakan akun palsu atau otomatisasi.', reward:'Configured by program', estimated:'2–5 menit', daily:true, action:'View Task' },
@@ -23,7 +27,10 @@ const TASKS: Task[] = [
 ];
 
 function typeIcon(type:TaskType) {
-  if(type==='youtube') return <Youtube className="w-5 h-5"/>;
+  if(type==='youtube'||type==='shorts') return <Youtube className="w-5 h-5"/>;
+  if(type==='tiktok') return <span className="text-sm font-black">♪</span>;
+  if(type==='instagram') return <span className="text-sm font-black">◎</span>;
+  if(type==='checkin') return <Clock3 className="w-5 h-5"/>;
   if(type==='upload') return <Upload className="w-5 h-5"/>;
   if(type==='deposit') return <CircleDollarSign className="w-5 h-5"/>;
   if(type==='withdrawal') return <WalletCards className="w-5 h-5"/>;
@@ -32,12 +39,21 @@ function typeIcon(type:TaskType) {
 }
 function typeLabel(type:TaskType) {
   if(type==='youtube') return 'YOUTUBE';
+  if(type==='shorts') return 'YOUTUBE SHORTS';
+  if(type==='tiktok') return 'TIKTOK';
+  if(type==='instagram') return 'INSTAGRAM';
+  if(type==='checkin') return 'CHECK-IN';
   if(type==='upload') return 'PROOF';
   if(type==='deposit') return 'DEPOSIT';
   if(type==='withdrawal') return 'WITHDRAWAL';
   if(type==='profile') return 'PROFILE';
   return 'SOCIAL';
 }
+
+const COPY = {
+  en:{tasks:'Tasks',submissions:'My submissions',login:'Login',hero:'{tx.hero}',intro:'Complete campaign tasks across YouTube, TikTok and Instagram. Submit public proof links and follow the rules for each task.',daily:'TODAY\'S DAILY MISSIONS',dailySub:'Daily tasks may change based on the active campaign.',available:'Available Tasks',empty:'No submissions yet',emptySub:'Your submissions will appear here after your account is connected.',instructions:'Task instructions',live:'LIVE'},
+  id:{tasks:'Tugas',submissions:'Pengajuan saya',login:'Masuk',hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',intro:'Selesaikan task campaign di YouTube, TikTok, dan Instagram. Kirim link bukti publik dan ikuti aturan setiap task.',daily:'MISI HARIAN HARI INI',dailySub:'Task harian dapat berubah sesuai campaign aktif.',available:'Task Tersedia',empty:'Belum ada submission',emptySub:'{tx.emptySub}',instructions:'Instruksi task',live:'LANGSUNG'}
+} as const;
 
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
@@ -46,6 +62,8 @@ export default function AirdropApp() {
   const [leaders,setLeaders]=useState<Leader[]>([]);
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
+  const [lang,setLang]=useState<'en'|'id'>('en');
+  const tx=COPY[lang];
 
   useEffect(()=>{
     let active=true;
@@ -67,10 +85,10 @@ export default function AirdropApp() {
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
       <div className="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between">
         <a href="https://sysstreamer.asia"><SysLogo size="md" showText/></a>
-        <nav className="hidden md:flex items-center gap-2 text-sm">
-          <button onClick={()=>setTab('tasks')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">Tasks</button>
-          <button onClick={()=>setTab('submissions')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">My submissions</button>
-          <a href="https://sysstreamer.asia/login" className="px-4 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">Login</a>
+        <nav className="hidden md:flex items-center gap-2 text-sm"><button onClick={()=>setLang(v=>v==='en'?'id':'en')} className="px-3 py-2 rounded-lg border border-slate-800 text-xs font-bold">{lang.toUpperCase()}</button>
+          <button onClick={()=>setTab('tasks')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.tasks}</button>
+          <button onClick={()=>setTab('submissions')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.submissions}</button>
+          <a href="https://sysstreamer.asia/login" className="px-4 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">{tx.login}</a>
         </nav>
         <button className="md:hidden p-2 rounded-lg" onClick={()=>setMenuOpen(v=>!v)}>{menuOpen?<X className="w-5 h-5"/>:<Menu className="w-5 h-5"/>}</button>
       </div>
@@ -87,7 +105,7 @@ export default function AirdropApp() {
         <div className="relative max-w-3xl">
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-amber-400"><ShieldCheck className="w-4 h-4"/> SYS STREAM TASK CENTER</div>
           <h1 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight">Daily tasks. Create content. Submit proof. Earn airdrop rewards.</h1>
-          <p className="mt-4 text-slate-400 max-w-2xl">Prioritas campaign: upload video original ke YouTube. Tersedia juga honest review, social task, deposit, withdrawal, dan profile task. Semua reward mengikuti aturan campaign dan review.</p>
+          <p className="mt-4 text-slate-400 max-w-2xl">{tx.intro}</p>
           <div className="mt-6 flex flex-wrap gap-3 text-xs text-slate-300">
             <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ Instruksi per task</span>
             <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ Proof submission</span>
@@ -119,7 +137,7 @@ export default function AirdropApp() {
 
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div><div className="text-xs font-black tracking-wider text-amber-400">TODAY'S DAILY MISSIONS</div><h2 className="mt-1 text-xl font-black">Daily Tasks</h2><p className="mt-1 text-xs text-slate-500">Tugas harian mengikuti campaign aktif dan dapat berubah setiap hari.</p></div>
+          <div><div className="text-xs font-black tracking-wider text-amber-400">TODAY'S DAILY MISSIONS</div><h2 className="mt-1 text-xl font-black">{tx.daily}</h2><p className="mt-1 text-xs text-slate-500">{tx.dailySub}</p></div>
           <div className="text-xs text-slate-400">3 daily missions</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
@@ -131,7 +149,7 @@ export default function AirdropApp() {
       </section>
 
       <div className="mt-8 flex items-center gap-2 border-b border-slate-800">
-        <button onClick={()=>setTab('tasks')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='tasks'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>Available Tasks</button>
+        <button onClick={()=>setTab('tasks')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='tasks'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>{tx.available}</button>
         <button onClick={()=>setTab('submissions')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='submissions'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>My Submissions</button>
       </div>
 
@@ -141,7 +159,7 @@ export default function AirdropApp() {
           <h2 className="mt-5 text-lg font-bold">{t.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{t.description}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">Reward</div><div className="font-bold text-amber-400">{t.reward}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{t.action}</button></div>
         </article>)}
-      </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">Belum ada submission</h2><p className="mt-2 text-sm text-slate-500">Submission yang kamu kirim akan tampil di sini setelah akun terhubung.</p></section>}
+      </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">Submission yang kamu kirim akan tampil di sini setelah akun terhubung.</p></section>}
     </main>
 
     <footer className="border-t border-slate-800 mt-12"><div className="max-w-7xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-wrap gap-3 justify-between"><span>SYS STREAM Airdrop & Task Center</span><span>Task rewards are subject to review and program rules.</span></div></footer>
@@ -149,7 +167,7 @@ export default function AirdropApp() {
     {selectedTask&&<div className="fixed inset-0 z-50 bg-black/70 p-4 flex items-center justify-center" onClick={()=>setSelectedTask(null)}>
       <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6" onClick={e=>e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type)}</div><h2 className="mt-1 text-xl font-black">{selectedTask.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800"><X className="w-5 h-5"/></button></div>
-        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">Task instructions</div><p className="mt-2 text-sm text-slate-300">{selectedTask.description}</p></div>
+        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{selectedTask.description}</p></div>
         <a href="https://sysstreamer.asia/login" className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold"><ExternalLink className="w-4 h-4"/> Login to continue</a>
       </div>
     </div>}
