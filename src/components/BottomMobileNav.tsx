@@ -18,7 +18,7 @@ interface BottomMobileNavProps {
 export const BottomMobileNav: React.FC<BottomMobileNavProps> = ({ currentPath, navigate }) => {
   const { t } = useLanguage();
   const tabs = [
-    { label: t('Home'), path: '/room/main', icon: Home },
+    { label: t('Home'), path: '/dashboard', icon: Home },
     { label: t('Earn'), path: '/game/blindbox', icon: TrendingUp },
     { label: t('Board'), path: '/leaderboard', icon: Trophy },
     { label: t('Profile'), path: '/profile', icon: User },
@@ -29,7 +29,7 @@ export const BottomMobileNav: React.FC<BottomMobileNavProps> = ({ currentPath, n
       {tabs.map((tab) => {
         const isActive =
           currentPath === tab.path ||
-          (tab.path === '/room/main' && currentPath.startsWith('/room')) ||
+          (tab.path === '/dashboard' && (currentPath === '/dashboard' || currentPath === '/room/main')) ||
           (tab.path === '/leaderboard' && (currentPath.startsWith('/leaderboard') || currentPath.startsWith('/referral'))) ||
           (tab.path === '/game/blindbox' && (currentPath.startsWith('/game') || currentPath.startsWith('/vault')));
 
