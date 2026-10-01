@@ -1,35 +1,23 @@
-import { Env, json, withDb } from "../../_lib/db";
-import { requireAuth } from "../../_lib/auth";
+import { Env, json, withDb } from "../../../_lib/db";
+import { requireAuth } from "../../../_lib/auth";
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const auth = await requireAuth(context.request, context.env);
 
-    if (auth.ok === false) {
-      return auth.response;
-    }
+    if (auth.ok === false) return auth.response;
 
     const userId = Number(auth.user.id);
     const depositId = Number(context.params.id);
 
     if (!Number.isInteger(depositId) || depositId <= 0) {
-      return json(
-        {
-          success: false,
-          error: "ID deposit tidak valid.",
-        },
-        400
-      );
+      return json({ success: false, error: "ID deposit tidak valid." }, 400);
     }
 
     const result = await withDb(context.env, async (client) => {
       await client.query("BEGIN");
 
       try {
-        /*
-         * Lock row deposit agar dua request settlement bersamaan
-         * tidak dapat mengembalikan principal dua kali.
-         */
         const depositResult = await client.query(
           `
           SELECT
@@ -48,19 +36,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [depositId, userId]
         );
 
-        if (depositResult.rows.length === 0) {
-          throw new Error("DEPOSIT_NOT_FOUND");
-        }
+        if (depositResult.rows.length === 0) throw new Error("DEPOSIT_NOT_FOUND");
 
         const deposit = depositResult.rows[0];
 
-        /*
-         * Idempotency:
-         * settlement kedua tidak boleh mengkredit saldo lagi.
-         */
         if (deposit.status === "COMPLETED") {
           await client.query("COMMIT");
-
           return {
             alreadySettled: true,
             amountReturned: Number(deposit.amount),
@@ -68,34 +49,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           };
         }
 
-        if (deposit.status !== "ACTIVE") {
-          throw new Error("DEPOSIT_NOT_SETTLEABLE");
-        }
+        if (deposit.status !== "ACTIVE") throw new Error("DEPOSIT_NOT_SETTLEABLE");
 
         const endDate = new Date(deposit.endDate);
         const now = new Date();
 
-        if (Number.isNaN(endDate.getTime())) {
-          throw new Error("INVALID_END_DATE");
-        }
-
-        if (now < endDate) {
-          throw new Error("DEPOSIT_NOT_EXPIRED");
-        }
+        if (Number.isNaN(endDate.getTime())) throw new Error("INVALID_END_DATE");
+        if (now < endDate) throw new Error("DEPOSIT_NOT_EXPIRED");
 
         const principal = Number(deposit.amount);
+        if (!Number.isFinite(principal) || principal <= 0) throw new Error("INVALID_AMOUNT");
 
-        if (!Number.isFinite(principal) || principal <= 0) {
-          throw new Error("INVALID_AMOUNT");
-        }
-
-        /*
-         * Return principal ke saldo user.
-         *
-         * Game Balance menggunakan saldo user yang sama,
-         * sehingga saldo utama dan saldo game otomatis kembali
-         * mengikuti transaksi ini.
-         */
         const userResult = await client.query(
           `
           SELECT
@@ -109,19 +73,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [userId]
         );
 
-        if (userResult.rows.length === 0) {
-          throw new Error("USER_NOT_FOUND");
-        }
+        if (userResult.rows.length === 0) throw new Error("USER_NOT_FOUND");
 
         const user = userResult.rows[0];
-
         const currentBalance = Number(user.balance || 0);
-
         const currentLocked = Number(user.locked_saldo || 0);
 
-        if (currentLocked < principal) {
-          throw new Error("LOCKED_BALANCE_INCONSISTENT");
-        }
+        if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
         const newBalance = currentBalance + principal;
         const newLockedBalance = currentLocked - principal;
@@ -137,16 +95,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [newBalance, newLockedBalance, userId]
         );
 
-        /*
-         * Tandai deposit selesai dalam transaksi yang sama.
-         * Principal hanya dikembalikan sekali karena row deposit
-         * dikunci FOR UPDATE dan status berubah menjadi COMPLETED.
-         */
         await client.query(
           `
           UPDATE deposits
-          SET
-            status = 'COMPLETED'
+          SET status = 'COMPLETED'
           WHERE id = $1
             AND user_id = $2
             AND status = 'ACTIVE'
@@ -181,58 +133,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   } catch (error) {
     console.error("Settle deposit error:", error);
 
-    const message =
-      error instanceof Error ? error.message : "";
-
+    const message = error instanceof Error ? error.message : "";
     const errors: Record<string, [string, number]> = {
-      DEPOSIT_NOT_FOUND: [
-        "Deposit tidak ditemukan.",
-        404,
-      ],
-      DEPOSIT_NOT_SETTLEABLE: [
-        "Deposit tidak dapat diselesaikan dari status saat ini.",
-        400,
-      ],
-      DEPOSIT_NOT_EXPIRED: [
-        "Masa lock belum berakhir.",
-        400,
-      ],
-      INVALID_END_DATE: [
-        "Tanggal akhir lock tidak valid.",
-        500,
-      ],
-      INVALID_AMOUNT: [
-        "Nominal principal tidak valid.",
-        500,
-      ],
-      USER_NOT_FOUND: [
-        "User tidak ditemukan.",
-        404,
-      ],
-      LOCKED_BALANCE_INCONSISTENT: [
-        "Saldo locked tidak konsisten dengan principal deposit.",
-        409,
-      ],
+      DEPOSIT_NOT_FOUND: ["Deposit tidak ditemukan.", 404],
+      DEPOSIT_NOT_SETTLEABLE: ["Deposit tidak dapat diselesaikan dari status saat ini.", 400],
+      DEPOSIT_NOT_EXPIRED: ["Masa lock belum berakhir.", 400],
+      INVALID_END_DATE: ["Tanggal akhir lock tidak valid.", 500],
+      INVALID_AMOUNT: ["Nominal principal tidak valid.", 500],
+      USER_NOT_FOUND: ["User tidak ditemukan.", 404],
+      LOCKED_BALANCE_INCONSISTENT: ["Saldo locked tidak konsisten dengan principal deposit.", 409],
     };
 
     if (errors[message]) {
-      const [text, status] = errors[message];
-
-      return json(
-        {
-          success: false,
-          error: text,
-        },
-        status
-      );
+      const [errorText, status] = errors[message];
+      return json({ success: false, error: errorText }, status);
     }
 
-    return json(
-      {
-        success: false,
-        error: "Gagal menyelesaikan lock.",
-      },
-      500
-    );
+    return json({ success: false, error: "Gagal menyelesaikan lock." }, 500);
   }
 };
