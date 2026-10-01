@@ -127,32 +127,9 @@ export default function App() {
 
         {/* Quiet Editorial Footer */}
         <footer className="border-t border-slate-900 bg-slate-950 py-8 px-4 text-xs text-slate-400">
-          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+          <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+            <div className="flex items-center">
               <SysLogo size="sm" showText={true} />
-              <span>·</span>
-              <span>Decentralized Streaming & Gaming Arena</span>
-            </div>
-
-            <div className="flex items-center gap-4 text-slate-400">
-              <button onClick={() => navigate('/room/main')} className="hover:text-white transition-colors cursor-pointer">
-                Live Stream
-              </button>
-              <button onClick={() => navigate('/game/tebak')} className="hover:text-white transition-colors cursor-pointer">
-                Crypto Card
-              </button>
-              <button onClick={() => navigate('/game/spinner')} className="hover:text-white transition-colors cursor-pointer">
-                Viewer Raffle
-              </button>
-              <button onClick={() => navigate('/game/blindbox')} className="hover:text-white transition-colors cursor-pointer">
-                Blind Box
-              </button>
-              <button onClick={() => navigate('/leaderboard')} className="hover:text-white transition-colors cursor-pointer">
-                Leaderboard
-              </button>
-              <button onClick={() => navigate('/referral')} className="hover:text-white transition-colors cursor-pointer">
-                Referrals
-              </button>
             </div>
 
             <div className="text-slate-400">
