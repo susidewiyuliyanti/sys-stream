@@ -54,56 +54,25 @@ interface GameContextType {
 }
 
 const DEFAULT_USER: UserProfile = {
-  id: 'usr_neo_922',
-  username: 'neo_user_922',
-  avatar: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80',
-  coins: 50000,
-  diamonds: 120,
-  vipTier: 3,
-  referralCode: 'CYBER-9X7QK2',
-  totalWon: 124080,
-  totalBet: 88500,
-  winStreak: 5,
-  bestWin: 15000,
+  id: '',
+  username: '',
+  avatar: '',
+  coins: 0,
+  diamonds: 0,
+  vipTier: 0,
+  referralCode: '',
+  totalWon: 0,
+  totalBet: 0,
+  winStreak: 0,
+  bestWin: 0,
 };
 
-const INITIAL_INVENTORY: BlindboxItem[] = [
-  {
-    id: 'item_1',
-    name: 'Cyberpunk Katana 2099',
-    category: 'Weapon',
-    rarity: 'rare',
-    powerStat: 68,
-    coinValue: 450,
-    usdtReward: 4.5,
-    iconName: 'Sword',
-    obtainedAt: '2026-09-28',
-  },
-  {
-    id: 'item_2',
-    name: 'Holo-Chameleon Drone',
-    category: 'Companion',
-    rarity: 'epic',
-    powerStat: 84,
-    coinValue: 1200,
-    usdtReward: 12.0,
-    iconName: 'Bot',
-    obtainedAt: '2026-09-29',
-  },
-];
+const INITIAL_INVENTORY: BlindboxItem[] = [];
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserProfile>(() => {
-    const saved = localStorage.getItem('nexus_user');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return DEFAULT_USER;
-  });
+  const [user, setUser] = useState<UserProfile>(() => DEFAULT_USER);
 
   const [inventory, setInventory] = useState<BlindboxItem[]>(() => {
     const saved = localStorage.getItem('nexus_inventory');
@@ -122,30 +91,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return JSON.parse(saved);
       } catch (e) {}
     }
-    return [
-      {
-        id: 'hist_1',
-        gameType: 'spinner',
-        gameName: 'Lucky Wheel',
-        betAmount: 100,
-        payoutAmount: 300,
-        multiplier: 3.0,
-        isWin: true,
-        timestamp: Date.now() - 3600000,
-        details: 'Landed on 3.0x Emerald Segment',
-      },
-      {
-        id: 'hist_2',
-        gameType: 'tebak',
-        gameName: 'Tebak Angka',
-        betAmount: 50,
-        payoutAmount: 100,
-        multiplier: 2.0,
-        isWin: true,
-        timestamp: Date.now() - 7200000,
-        details: 'High Guess (Target > 50, Rolled 74)',
-      },
-    ];
+    return [];
   });
 
   const [locks, setLocks] = useState<LockRecord[]>(() => {
@@ -155,20 +101,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return JSON.parse(saved);
       } catch (e) {}
     }
-    return [
-      {
-        id: 'lock_demo_1',
-        userId: 'usr_neo_88',
-        amount: 10.0,
-        durationDays: 30,
-        multiplier: 1.15,
-        startDate: Date.now() - 86400000 * 5,
-        endDate: Date.now() + 86400000 * 25,
-        status: 'locked',
-        dailyClaims: 5,
-        accumulatedYieldCoins: 125,
-      },
-    ];
+    return [];
   });
 
   const [cryptoCard, setCryptoCard] = useState<CryptoCardConfig>(() => {
@@ -196,25 +129,63 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return JSON.parse(saved);
       } catch (e) {}
     }
-    return [
-      'CyberWhale_88',
-      'ValkyrieStrike',
-      'NeonMatrix',
-      'ShadowBlade',
-      'CryptoGhost_7',
-      'PulseRider',
-      'HyperionAce',
-      'SatoshiLord',
-    ];
+    return [];
   });
 
   const [soundEnabled, setSoundEnabled] = useState(sound.enabled);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [pendingInvoices, setPendingInvoices] = useState<CryptoInvoice[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
-    return localStorage.getItem('sys_is_logged_in') !== 'false';
+    return Boolean(localStorage.getItem('sys_stream_auth_token'));
   });
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.success || !data?.user) {
+          throw new Error(data?.error || 'Session tidak valid.');
+        }
+        if (cancelled) return;
+
+        const remote = data.user;
+        setUser(prev => ({
+          ...prev,
+          id: String(remote.id),
+          username: remote.username || prev.username,
+          avatar: prev.avatar,
+          coins: Math.floor(Number(remote.balance || 0) * 100),
+          diamonds: prev.diamonds,
+          vipTier: prev.vipTier,
+          referralCode: prev.referralCode,
+        }));
+        setIsLoggedIn(true);
+        localStorage.setItem('sys_is_logged_in', 'true');
+      })
+      .catch(() => {
+        if (cancelled) return;
+        localStorage.removeItem('sys_stream_auth_token');
+        localStorage.removeItem('sys_stream_auth_user');
+        localStorage.setItem('sys_is_logged_in', 'false');
+        setIsLoggedIn(false);
+        setUser(DEFAULT_USER);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const login = (customName?: string) => {
     setIsLoggedIn(true);
@@ -566,28 +537,49 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const createCryptoInvoice = async (amountUsd: number, currency: string): Promise<CryptoInvoice> => {
-    const cryptoRates: Record<string, number> = {
-      btc: 0.000015,
-      eth: 0.00038,
-      usdt: 1.0,
-      sol: 0.0068,
-      trx: 7.2,
-    };
-    const rate = cryptoRates[currency.toLowerCase()] || 1.0;
-    const coinsToCredit = Math.floor(amountUsd * 100);
-    const payAmount = Number((amountUsd * rate).toFixed(6));
-    const orderId = `INV_${Date.now()}_${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token || !user.id) {
+      throw new Error('Silakan login terlebih dahulu.');
+    }
 
+    const normalizedCurrency = currency.toLowerCase() === 'usdt'
+      ? 'usdttrc20'
+      : currency.toLowerCase();
+
+    const response = await fetch('/api/payments/create-invoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        amountUsd,
+        currency: normalizedCurrency,
+      }),
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data?.success || !data?.invoice) {
+      throw new Error(data?.error || 'Gagal membuat invoice pembayaran crypto.');
+    }
+
+    const remote = data.invoice;
+    const payAddress = String(remote.pay_address || '');
+    const orderId = String(remote.order_id || '');
     const invoice: CryptoInvoice = {
       orderId,
-      paymentId: 'np_' + Date.now(),
-      payAddress: `0x71C84B9A${currency.toUpperCase()}90E3F5724589`,
-      priceAmountUsd: amountUsd,
-      payAmount,
-      payCurrency: currency.toUpperCase(),
-      coinsToCredit,
+      paymentId: String(remote.payment_id || ''),
+      payAddress,
+      priceAmountUsd: Number(remote.amount_usd || amountUsd),
+      payAmount: Number(remote.pay_amount || 0),
+      payCurrency: String(remote.pay_currency || normalizedCurrency).toUpperCase(),
+      coinsToCredit: Math.floor(Number(remote.amount_usd || amountUsd) * 100),
       status: 'waiting',
-      qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=crypto:${currency.toUpperCase()}:${orderId}`,
+      qrCodeUrl: payAddress
+        ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payAddress)}`
+        : '',
       expiresAt: Date.now() + 1800000,
     };
 
