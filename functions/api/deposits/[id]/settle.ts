@@ -37,8 +37,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             user_id,
             amount,
             duration_days,
-            start_date,
-            end_date,
+            start_date AS "startDate",
+            end_date AS "endDate",
             status
           FROM deposits
           WHERE id = $1
@@ -101,8 +101,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SELECT
             id,
             COALESCE(balance, 0) AS balance,
-            COALESCE(saldo, 0) AS saldo,
-            COALESCE(wallet_balance, 0) AS wallet_balance,
             COALESCE(locked_saldo, 0) AS locked_saldo
           FROM users
           WHERE id = $1
@@ -117,11 +115,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         const user = userResult.rows[0];
 
-        const currentBalance = Math.max(
-          Number(user.balance || 0),
-          Number(user.saldo || 0),
-          Number(user.wallet_balance || 0)
-        );
+        const currentBalance = Number(user.balance || 0);
 
         const currentLocked = Number(user.locked_saldo || 0);
 
@@ -137,10 +131,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           UPDATE users
           SET
             balance = $1,
-            saldo = $1,
-            wallet_balance = $1,
-            locked_saldo = $2,
-            updated_at = NOW()
+            locked_saldo = $2
           WHERE id = $3
           `,
           [newBalance, newLockedBalance, userId]
