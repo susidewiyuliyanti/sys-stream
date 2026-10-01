@@ -16,6 +16,7 @@ import ProfilePage from './app/profile/page';
 import LeaderboardPage from './app/leaderboard/page';
 import ReferralPage from './app/referral/page';
 import RoomArenaPage from './app/room/[id]/page';
+import DashboardPage from './app/dashboard/page';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -25,7 +26,7 @@ export default function App() {
       const pathname = window.location.pathname;
       if (pathname && pathname !== '/') return pathname;
     }
-    return '/game/tebak';
+    return '/login';
   });
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function App() {
       if (hash) {
         setCurrentPath(hash);
       } else {
-        setCurrentPath(window.location.pathname || '/game/tebak');
+        setCurrentPath(window.location.pathname || '/login');
       }
     };
 
@@ -63,6 +64,8 @@ export default function App() {
     '/profile',
     '/leaderboard',
     '/referral',
+    '/dashboard',
+    '/room/main',
   ];
 
   useEffect(() => {
@@ -87,6 +90,10 @@ export default function App() {
       !isAuthenticated
     ) {
       return <LoginPage navigate={navigate} />;
+    }
+
+    if (currentPath === '/dashboard' || currentPath === '/room/main') {
+      return <DashboardPage navigate={navigate} />;
     }
 
     if (currentPath === '/game/spinner') {
