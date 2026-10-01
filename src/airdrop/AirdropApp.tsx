@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
 
-type TaskType = 'youtube' | 'social' | 'upload';
+type TaskType = 'youtube' | 'social' | 'upload' | 'deposit' | 'withdrawal' | 'profile';
 
 type Task = {
   id: string;
@@ -33,43 +33,80 @@ type Task = {
 
 const TASKS: Task[] = [
   {
+    id: 'youtube-upload',
+    type: 'youtube',
+    title: 'Upload Video ke YouTube',
+    description: 'Buat video original tentang SYS STREAM, upload ke channel YouTube kamu, lalu kirim URL video sebagai bukti.',
+    reward: 'Configured by program',
+    estimated: '15–30 menit',
+    daily: true,
+    priority: true,
+    action: 'Start YouTube Task',
+  },
+  {
     id: 'youtube-review',
     type: 'youtube',
-    title: 'Review Video YouTube',
-    description: 'Tonton video sampai selesai, lalu kirim penilaian dan bukti sesuai instruksi task.',
-    reward: 'Reward task',
-    estimated: '± 5 menit',
-    action: 'Review video',
+    title: 'Watch & Honest Review',
+    description: 'Tonton konten campaign dan berikan feedback yang jujur. Tidak ada kewajiban memberikan rating positif.',
+    reward: 'Configured by program',
+    estimated: '5–10 menit',
+    daily: true,
+    action: 'Open Review Task',
   },
   {
-    id: 'social-follow',
+    id: 'social-daily',
     type: 'social',
-    title: 'Social Media Task',
-    description: 'Ikuti akun atau lakukan aktivitas sosial yang tercantum pada detail task.',
-    reward: 'Reward task',
-    estimated: '± 2 menit',
-    action: 'Buka task',
+    title: 'Daily Social Task',
+    description: 'Selesaikan aktivitas sosial yang tercantum pada brief campaign. Jangan gunakan akun palsu atau otomatisasi.',
+    reward: 'Configured by program',
+    estimated: '2–5 menit',
+    daily: true,
+    action: 'View Task',
   },
   {
-    id: 'proof-upload',
-    type: 'upload',
-    title: 'Upload Bukti Aktivitas',
-    description: 'Kirim screenshot atau bukti aktivitas setelah menyelesaikan task yang diminta.',
-    reward: 'Reward task',
-    estimated: '± 3 menit',
-    action: 'Upload bukti',
+    id: 'deposit',
+    type: 'deposit',
+    title: 'Complete a Deposit',
+    description: 'Lakukan deposit nyata melalui halaman resmi SYS STREAM. Reward hanya diproses jika transaksi memenuhi aturan campaign.',
+    reward: 'Configured by program',
+    estimated: '5 menit',
+    action: 'Open Deposit',
+  },
+  {
+    id: 'withdrawal',
+    type: 'withdrawal',
+    title: 'Complete a Withdrawal',
+    description: 'Ajukan withdrawal sesuai saldo dan aturan. Periksa alamat wallet dan network sebelum konfirmasi.',
+    reward: 'Configured by program',
+    estimated: '5 menit',
+    action: 'Open Withdrawal',
+  },
+  {
+    id: 'profile',
+    type: 'profile',
+    title: 'Complete Your Profile',
+    description: 'Lengkapi informasi profil dasar agar akun siap mengikuti campaign dan proses reward.',
+    reward: 'Configured by program',
+    estimated: '2 menit',
+    action: 'Open Profile',
   },
 ];
 
 function typeIcon(type: TaskType) {
   if (type === 'youtube') return <Youtube className="w-5 h-5" />;
   if (type === 'upload') return <Upload className="w-5 h-5" />;
+  if (type === 'deposit') return <CircleDollarSign className="w-5 h-5" />;
+  if (type === 'withdrawal') return <WalletCards className="w-5 h-5" />;
+  if (type === 'profile') return <CheckCircle2 className="w-5 h-5" />;
   return <Link2 className="w-5 h-5" />;
 }
 
 function typeLabel(type: TaskType) {
   if (type === 'youtube') return 'YOUTUBE';
   if (type === 'upload') return 'PROOF';
+  if (type === 'deposit') return 'DEPOSIT';
+  if (type === 'withdrawal') return 'WITHDRAWAL';
+  if (type === 'profile') return 'PROFILE';
   return 'SOCIAL';
 }
 
@@ -110,8 +147,8 @@ export default function AirdropApp() {
           <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl" />
           <div className="relative max-w-3xl">
             <div className="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-amber-400"><ShieldCheck className="w-4 h-4" /> SYS STREAM TASK CENTER</div>
-            <h1 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight">Complete tasks. Submit proof. Earn rewards.</h1>
-            <p className="mt-4 text-slate-400 max-w-2xl">Selesaikan review video YouTube dan social task yang tersedia. Setiap task memiliki instruksi, bukti, dan proses review sebelum reward diproses.</p>
+            <h1 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight">Daily tasks. Create content. Submit proof. Earn airdrop rewards.</h1>
+            <p className="mt-4 text-slate-400 max-w-2xl">Prioritas campaign: upload video original ke YouTube. Tersedia juga honest review, social task, deposit, withdrawal, dan profile task. Semua reward mengikuti aturan campaign dan review.</p>
             <div className="mt-6 flex flex-wrap gap-3 text-xs text-slate-300">
               <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ Instruksi per task</span>
               <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ Proof submission</span>
@@ -132,6 +169,29 @@ export default function AirdropApp() {
               <div className="mt-2 text-xl font-black">{value}</div>
             </div>
           ))}
+        </section>
+
+        <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <div className="text-xs font-black tracking-wider text-amber-400">TODAY'S DAILY MISSIONS</div>
+              <h2 className="mt-1 text-xl font-black">Daily Tasks</h2>
+              <p className="mt-1 text-xs text-slate-500">Tugas harian mengikuti campaign aktif dan dapat berubah setiap hari.</p>
+            </div>
+            <div className="text-xs text-slate-400">3 daily missions</div>
+          </div>
+          <div className="mt-5 grid md:grid-cols-3 gap-3">
+            {TASKS.filter(task => task.daily).map(task => (
+              <button key={task.id} onClick={() => setSelectedTask(task)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="text-amber-400">{typeIcon(task.type)}</span>
+                  {task.priority && <span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">PRIORITY</span>}
+                </div>
+                <div className="mt-3 font-bold text-sm">{task.title}</div>
+                <div className="mt-1 text-xs text-slate-500">{task.estimated} · Proof required</div>
+              </button>
+            ))}
+          </div>
         </section>
 
         <div className="mt-8 flex items-center gap-2 border-b border-slate-800">
