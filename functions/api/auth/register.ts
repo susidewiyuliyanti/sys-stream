@@ -19,13 +19,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       password?:string;
       displayName?:string;
       termsAccepted?:boolean;
-      termsVersion?:string;
+      termsVersion?:string;\n      referralCode?:string;
     }>(request);
 
     const username=String(body.username||"").trim();
     const email=String(body.email||"").trim().toLowerCase();
     const password=String(body.password||"");
-    const displayName=String(body.displayName||username).trim() || username;
+    const displayName=String(body.displayName||username).trim() || username;\n    const referralCode=String(body.referralCode||"").trim();
 
     if(!/^[a-zA-Z0-9_]{3,32}$/.test(username)) return json({success:false,error:"Username 3-32 karakter: huruf, angka, underscore."},400);
     if(!validEmail(email)) return json({success:false,error:"Email tidak valid."},400);
@@ -46,6 +46,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const verificationHash=await hashVerificationToken(verificationToken);
     const verificationId=crypto.randomUUID();
     const verificationExpires=verificationExpiry();
+    let referrer:any = null;
+    if (referralCode) {
+      referrer = await env.DB.prepare(
+        "SELECT id, referral_code FROM users WHERE upper(referral_code)=upper(?) LIMIT 1"
+      ).bind(referralCode).first();
+      if (referrer && String(referrer.id) === id) referrer = null;
+    }
 
     await env.DB.batch([
       env.DB.prepare(
@@ -60,6 +67,15 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         `INSERT INTO email_verification_tokens(id,user_id,token_hash,expires_at,used_at,created_at)
          VALUES(?,?,?,?,NULL,?)`
       ).bind(verificationId,id,verificationHash,verificationExpires,acceptedAt),
+      ...(referrer ? [
+        env.DB.prepare(
+          `INSERT INTO referrals(id,referrer_user_id,referred_user_id,referral_code,status,created_at)
+           VALUES(?,?,?,?, 'ACTIVE', ?)`
+        ).bind(crypto.randomUUID(), String(referrer.id), id, String(referrer.referral_code), acceptedAt),
+        env.DB.prepare(
+          "UPDATE users SET referral_count = referral_count + 1 WHERE id = ?"
+        ).bind(String(referrer.id)),
+      ] : []),
     ]);
 
     const origin = new URL(request.url).origin;
