@@ -9,12 +9,8 @@ import { BottomMobileNav } from './components/BottomMobileNav';
 import LoginPage from './app/login/page';
 import TermsPage from './app/terms/page';
 import PrivacyPage from './app/privacy/page';
-import TebakGamePage from './app/game/tebak/page';
-import SpinnerGamePage from './app/game/spinner/page';
 import BlindboxGamePage from './app/game/blindbox/page';
 import ProfilePage from './app/profile/page';
-import LeaderboardPage from './app/leaderboard/page';
-import ReferralPage from './app/referral/page';
 import DashboardPage from './app/dashboard/page';
 
 export default function App() {
@@ -57,12 +53,8 @@ export default function App() {
   );
 
   const protectedPaths = [
-    '/game/tebak',
-    '/game/spinner',
     '/game/blindbox',
     '/profile',
-    '/leaderboard',
-    '/referral',
     '/dashboard',
     '/room',
   ];
@@ -95,9 +87,6 @@ export default function App() {
       return <DashboardPage navigate={navigate} />;
     }
 
-    if (currentPath === '/game/spinner') {
-      return <SpinnerGamePage />;
-    }
     if (currentPath === '/game/blindbox') {
       return <BlindboxGamePage />;
     }
@@ -110,9 +99,8 @@ export default function App() {
     if (currentPath === '/referral') {
       return <ReferralPage />;
     }
-    // Legacy live-room routes are intentionally disabled in production.
-    // This prevents the old demo room UI/data from being reachable.
-    // Default to login rather than exposing any legacy game/demo page.
+    // Legacy/demo game routes are intentionally disabled in production.
+    // Only server-backed production pages are reachable from the user app.
     return <LoginPage navigate={navigate} />;
   };
 
