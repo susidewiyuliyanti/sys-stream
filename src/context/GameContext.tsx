@@ -33,9 +33,11 @@ interface GameContextType {
   addGameHistory: (entry: Omit<GameHistoryEntry, 'id' | 'timestamp'>) => void;
   addToInventory: (item: BlindboxItem) => void;
   sellInventoryItem: (itemId: string) => void;
-  createLock: (amount: number, durationDays: 30 | 60 | 90) => boolean;
-  claimDailyLockYield: (lockId: string) => void;
-  unlockEarly: (lockId: string) => boolean;
+  createLock: (amount: number, durationDays: 30 | 60 | 90) => Promise<boolean>;
+  claimDailyLockYield: (lockId: string) => Promise<boolean>;
+  unlockEarly: (lockId: string) => Promise<boolean>;
+  claimBlindBox: (boxId: string) => Promise<any>;
+  refreshFinancialState: () => Promise<boolean>;
   hasActiveLock: () => boolean;
   getTotalLockedUsdt: () => number;
   getDailyBoxQuota: () => number;
@@ -140,38 +142,67 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
 
+  const refreshFinancialState = async (): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/locks', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) throw new Error(data?.error || 'Gagal mengambil saldo.');
+      const remote = data.user;
+      setUser(prev => ({
+        ...prev,
+        id: String(remote.id),
+        username: remote.username || prev.username,
+        coins: Math.round(Number(remote.balance || 0) * 100),
+      }));
+      const remoteLocks: LockRecord[] = (data.locks || []).map((l: any) => ({
+        id: String(l.id),
+        userId: String(l.user_id),
+        amount: Number(l.amount),
+        durationDays: Number(l.duration_days),
+        multiplier: Number(l.multiplier),
+        startDate: Number(l.start_date),
+        endDate: Number(l.end_date),
+        status: l.status,
+        dailyClaims: Number(l.daily_claims || 0),
+        accumulatedYieldCoins: 0,
+      }));
+      setLocks(remoteLocks);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) {
       setIsLoggedIn(false);
+      setUser(DEFAULT_USER);
+      setLocks([]);
       return;
     }
-
     let cancelled = false;
-
     fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async response => {
         const data = await response.json().catch(() => ({}));
-        if (!response.ok || !data?.success || !data?.user) {
-          throw new Error(data?.error || 'Session tidak valid.');
-        }
+        if (!response.ok || !data?.success || !data?.user) throw new Error(data?.error || 'Session tidak valid.');
         if (cancelled) return;
-
         const remote = data.user;
         setUser(prev => ({
           ...prev,
           id: String(remote.id),
           username: remote.username || prev.username,
-          avatar: prev.avatar,
-          coins: Math.floor(Number(remote.balance || 0) * 100),
-          diamonds: prev.diamonds,
-          vipTier: prev.vipTier,
-          referralCode: prev.referralCode,
+          coins: Math.round(Number(remote.balance || 0) * 100),
         }));
         setIsLoggedIn(true);
         localStorage.setItem('sys_is_logged_in', 'true');
+        await refreshFinancialState();
       })
       .catch(() => {
         if (cancelled) return;
@@ -180,11 +211,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('sys_is_logged_in', 'false');
         setIsLoggedIn(false);
         setUser(DEFAULT_USER);
+        setLocks([]);
       });
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const login = (customName?: string) => {
@@ -229,10 +258,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     sound.playClick();
     showToast('Username Updated', `Display name set to @${trimmed}`, 'success');
   };
-
-  useEffect(() => {
-    localStorage.setItem('nexus_locks', JSON.stringify(locks));
-  }, [locks]);
 
   useEffect(() => {
     localStorage.setItem('nexus_cryptocard', JSON.stringify(cryptoCard));
@@ -339,76 +364,93 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return parseInt(localStorage.getItem(key) || '0', 10);
   });
 
-  const createLock = (amount: number, durationDays: 30 | 60 | 90): boolean => {
-    const coinsNeeded = Math.floor(amount * 100);
-    if (amount < 4) {
-      showToast('Minimum Lock Amount', 'Minimum lock amount is $4.00 USDT (400 Coins)', 'error');
+  const createLock = async (amount: number, durationDays: 30 | 60 | 90): Promise<boolean> => {
+    if (!isLoggedIn) return false;
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/locks/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ amount, durationDays }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) {
+        showToast('Lock Failed', data?.error || 'Gagal mengunci saldo.', 'error');
+        return false;
+      }
+      await refreshFinancialState();
+      sound.playWin();
+      showToast('Funds Staked & Locked', `Locked $${amount.toFixed(2)} USDT for ${durationDays} days.`, 'success');
+      return true;
+    } catch {
+      showToast('Lock Failed', 'Server tidak dapat memproses lock.', 'error');
       return false;
     }
-    if (user.coins < coinsNeeded) {
-      showToast('Insufficient Balance', `You need ${coinsNeeded.toLocaleString()} Coins to lock $${amount}.00 USDT`, 'error');
+  };
+
+  const claimDailyLockYield = async (lockId: string): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/locks/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ lockId }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) {
+        showToast('Daily Yield', data?.error || 'Claim gagal.', 'error');
+        return false;
+      }
+      await refreshFinancialState();
+      sound.playWin();
+      showToast('Daily Yield Claimed', `+${Number(data.claimedAmount || 0).toFixed(4)} USDT added to your balance.`, 'success');
+      return true;
+    } catch {
+      showToast('Daily Yield', 'Server tidak dapat memproses claim.', 'error');
       return false;
     }
-
-    const deducted = updateCoins(-coinsNeeded);
-    if (!deducted) return false;
-
-    // Yield: 30d -> 10% (1.10x), 60d -> 15% (1.15x), 90d -> 20% (1.20x)
-    const multiplier = durationDays === 30 ? 1.10 : durationDays === 60 ? 1.15 : 1.20;
-    const yieldPercentage = durationDays === 30 ? '10%' : durationDays === 60 ? '15%' : '20%';
-
-    const newLock: LockRecord = {
-      id: 'lock_' + Date.now(),
-      userId: user.id,
-      amount,
-      durationDays,
-      multiplier,
-      startDate: Date.now(),
-      endDate: Date.now() + durationDays * 86400000,
-      status: 'locked',
-      dailyClaims: 0,
-      accumulatedYieldCoins: 0,
-    };
-
-    setLocks(prev => [newLock, ...prev]);
-    sound.playWin();
-    showToast(
-      'Funds Staked & Locked',
-      `Locked $${amount}.00 USDT for ${durationDays} days (${yieldPercentage} estimated return)! Daily box quota activated.`,
-      'success'
-    );
-    return true;
   };
 
-  const claimDailyLockYield = (lockId: string) => {
-    const targetLock = locks.find(l => l.id === lockId);
-    if (!targetLock || targetLock.status !== 'locked') return;
-
-    // Daily claim yield in coins based on committed duration
-    const totalYieldUsd = targetLock.amount * (targetLock.multiplier - 1);
-    const dailyProfitUsd = totalYieldUsd / targetLock.durationDays;
-    const coinsEarned = Math.max(1, Math.round(dailyProfitUsd * 100));
-
-    updateCoins(coinsEarned);
-    setLocks(prev =>
-      prev.map(l =>
-        l.id === lockId
-          ? {
-              ...l,
-              dailyClaims: l.dailyClaims + 1,
-              accumulatedYieldCoins: l.accumulatedYieldCoins + coinsEarned,
-            }
-          : l
-      )
-    );
-
-    sound.playWin();
-    showToast(
-      'Daily Yield Claimed',
-      `Collected +${coinsEarned} Coins daily reward from ${targetLock.durationDays}d Staking Vault!`,
-      'success'
-    );
+  const unlockEarly = async (lockId: string): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/locks/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ lockId }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) {
+        showToast('Unlock Failed', data?.error || 'Unlock gagal.', 'error');
+        return false;
+      }
+      await refreshFinancialState();
+      sound.playJackpot();
+      showToast('Funds Unlocked', `+${Number(data.payout || 0).toFixed(4)} USDT returned to available balance.`, 'success');
+      return true;
+    } catch {
+      showToast('Unlock Failed', 'Server tidak dapat memproses unlock.', 'error');
+      return false;
+    }
   };
+
+  const claimBlindBox = async (boxId: string): Promise<any> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) throw new Error('Silakan login terlebih dahulu.');
+    const response = await fetch('/api/blindbox/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ boxId }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data?.success) throw new Error(data?.error || 'Blind Box claim gagal.');
+    await refreshFinancialState();
+    return data;
+  };
+
 
   const getTotalLockedUsdt = (): number => {
     return locks
@@ -653,6 +695,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         createLock,
         claimDailyLockYield,
         unlockEarly,
+        claimBlindBox,
+        refreshFinancialState,
         hasActiveLock,
         getTotalLockedUsdt,
         getDailyBoxQuota,
