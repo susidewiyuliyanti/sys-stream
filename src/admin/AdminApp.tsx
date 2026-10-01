@@ -8,58 +8,86 @@ type AdminUser = { id:string; username:string; email:string; balance:number; loc
 type AdminDeposit = { id:string; depositCode:string; userId:string; username:string; amount:number; durationDays:number; status:string; createdAt:string };
 
 export default function AdminApp() {
-  const [token, setToken] = useState(() => localStorage.getItem('sys_admin_session') || '');
+  const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [deposits, setDeposits] = useState<AdminDeposit[]>([]);
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   const request = async (path:string, options:RequestInit = {}) => {
     const response = await fetch(API + path, {
       ...options,
-      headers: { 'Content-Type':'application/json', ...(options.headers || {}), Authorization: `Bearer ${token}` },
+      credentials: 'same-origin',
+      headers: { 'Content-Type':'application/json', ...(options.headers || {}) },
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || !data.success) throw new Error(data.error || 'Request gagal.');
     return data;
   };
 
+  const checkSession = async () => {
+    setCheckingSession(true);
+    try {
+      await request('/me');
+      setAuthenticated(true);
+    } catch {
+      setAuthenticated(false);
+    } finally {
+      setCheckingSession(false);
+    }
+  };
+
   const loadDashboard = async () => {
-    if (!token) return;
-    setLoading(true); setError('');
+    if (!authenticated) return;
+    setLoading(true);
+    setError('');
     try {
       const [u,d] = await Promise.all([request('/users'), request('/deposits')]);
-      setUsers(u.users || []); setDeposits(d.deposits || []);
+      setUsers(u.users || []);
+      setDeposits(d.deposits || []);
     } catch (e:any) {
       if (e?.message?.toLowerCase().includes('session') || e?.message?.toLowerCase().includes('unauthorized')) {
-        localStorage.removeItem('sys_admin_session'); setToken('');
+        setAuthenticated(false);
       }
       setError(e?.message || 'Gagal memuat dashboard.');
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { void loadDashboard(); }, [token]);
+  useEffect(() => { void checkSession(); }, []);
+  useEffect(() => { if (authenticated) void loadDashboard(); }, [authenticated]);
 
   const login = async (e:React.FormEvent) => {
-    e.preventDefault(); setError(''); setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
     try {
-      const response = await fetch(API + '/login', {
-        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ password })
+      await request('/login', {
+        method:'POST',
+        body:JSON.stringify({ password })
       });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.success) throw new Error(data.error || 'Login admin gagal.');
-      localStorage.setItem('sys_admin_session', data.token);
-      setToken(data.token); setPassword('');
-    } catch (e:any) { setError(e?.message || 'Login admin gagal.'); }
-    finally { setLoading(false); }
+      setPassword('');
+      setAuthenticated(true);
+    } catch (e:any) {
+      setError(e?.message || 'Login admin gagal.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('sys_admin_session'); setToken(''); setUsers([]); setDeposits([]);
+  const logout = async () => {
+    try { await request('/logout', { method:'POST' }); } catch {}
+    setAuthenticated(false);
+    setUsers([]);
+    setDeposits([]);
   };
 
-  if (!token) return (
+  if (checkingSession) return <Loading />;
+
+  if (!authenticated) return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
         <div className="flex justify-center mb-8"><SysLogo size="md" showText /></div>
@@ -86,8 +114,8 @@ export default function AdminApp() {
         <div className="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between">
           <SysLogo size="md" showText />
           <div className="flex items-center gap-3">
-            <button onClick={()=>void loadDashboard()} className="p-2 rounded-lg border border-slate-800 hover:border-slate-600"><RefreshCw className={`w-4 h-4 ${loading?'animate-spin':''}`}/></button>
-            <button onClick={logout} className="p-2 rounded-lg border border-slate-800 hover:border-red-500/50 text-slate-400"><LogOut className="w-4 h-4"/></button>
+            <button aria-label="Refresh dashboard" onClick={()=>void loadDashboard()} className="p-2 rounded-lg border border-slate-800 hover:border-slate-600"><RefreshCw className={`w-4 h-4 ${loading?'animate-spin':''}`}/></button>
+            <button aria-label="Logout" onClick={()=>void logout()} className="p-2 rounded-lg border border-slate-800 hover:border-red-500/50 text-slate-400"><LogOut className="w-4 h-4"/></button>
           </div>
         </div>
       </header>
@@ -113,6 +141,10 @@ export default function AdminApp() {
       </main>
     </div>
   );
+}
+
+function Loading() {
+  return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center"><div className="text-sm text-slate-400">Checking admin session...</div></div>;
 }
 
 function Stat({icon,label,value}:{icon:React.ReactNode;label:string;value:string}) {
