@@ -25,8 +25,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     const userId = Number(auth.user.id);
 
-    const deposits = await withDb(context.env, async (client) => {
-      const result = await client.query(
+    const data = await withDb(context.env, async (client) => {
+      const depositsResult = await client.query(
         `
         SELECT
           id,
@@ -46,13 +46,105 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         [userId]
       );
 
-      return result.rows;
+      const deposits = depositsResult.rows;
+      const activeDeposit = deposits.find((deposit) => deposit.status === "ACTIVE") ?? null;
+      const today = new Date().toISOString().slice(0, 10);
+
+      let hasClaimedToday = false;
+      let todayClaimData = null;
+
+      if (activeDeposit) {
+        const todayClaim = await client.query(
+          `
+          SELECT
+            id,
+            deposit_id AS "depositId",
+            user_id AS "userId",
+            claim_date AS "claimDate",
+            amount,
+            is_jackpot AS "isJackpot",
+            claimed_at AS "claimedAt"
+          FROM blind_box_claims
+          WHERE deposit_id = $1
+            AND claim_date = $2
+          LIMIT 1
+          `,
+          [activeDeposit.id, today]
+        );
+
+        hasClaimedToday = todayClaim.rows.length > 0;
+        todayClaimData = todayClaim.rows[0] ?? null;
+      }
+
+      const claimsResult = await client.query(
+        `
+        SELECT
+          c.id,
+          c.deposit_id AS "depositId",
+          c.user_id AS "userId",
+          c.claim_date AS "claimDate",
+          c.amount,
+          c.is_jackpot AS "isJackpot",
+          c.claimed_at AS "claimedAt"
+        FROM blind_box_claims c
+        INNER JOIN deposits d ON d.id = c.deposit_id
+        WHERE d.user_id = $1
+        ORDER BY c.claimed_at DESC
+        LIMIT 20
+        `,
+        [userId]
+      );
+
+      const settingsResult = await client.query(
+        `
+        SELECT
+          id,
+          "minBox",
+          "maxBox",
+          "jackpotAmount",
+          "jackpotChance"
+        FROM game_settings
+        ORDER BY id DESC
+        LIMIT 1
+        `
+      );
+
+      return {
+        deposits,
+        activeDeposit,
+        hasClaimedToday,
+        todayClaimData,
+        recentClaims: claimsResult.rows,
+        settings: settingsResult.rows[0] ?? null,
+      };
     });
+
+    const now = new Date();
+    const wibNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+    const nextResetWib = new Date(
+      Date.UTC(
+        wibNow.getUTCFullYear(),
+        wibNow.getUTCMonth(),
+        wibNow.getUTCDate() + 1,
+        0,
+        0,
+        0
+      )
+    );
+    const countdownMs = Math.max(0, nextResetWib.getTime() - wibNow.getTime());
+    const hours = Math.floor(countdownMs / 3600000);
+    const minutes = Math.floor((countdownMs % 3600000) / 60000);
+    const seconds = Math.floor((countdownMs % 60000) / 1000);
 
     return json({
       success: true,
-      deposits,
+      ...data,
+      wibTime: {
+        dateStr: wibNow.toISOString().slice(0, 10),
+        countdownFormatted: `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`,
+      },
     });
+
   } catch (error) {
     console.error("Get deposits error:", error);
 
