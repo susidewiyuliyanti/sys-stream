@@ -2,38 +2,9 @@ import { Env, json } from "./db";
 
 const SESSION_TTL_SECONDS = 8 * 60 * 60;
 
-async function ensureAdminSessions(env: Env) {
-  await env.DB.prepare(`
-    CREATE TABLE IF NOT EXISTS admin_sessions (
-      token TEXT PRIMARY KEY,
-      created_at INTEGER NOT NULL,
-      expires_at INTEGER NOT NULL,
-      admin_user_id TEXT
-    )
-  `).run();
-
-  // Older deployments could have created admin_sessions before the
-  // admin_user_id column was introduced. Repair that schema in-place so
-  // owner-key and named-admin sessions do not fail with a 500.
-  const columns = await env.DB.prepare(`PRAGMA table_info("admin_sessions")`).all();
-  const hasAdminUserId = (columns.results || []).some(
-    (column: any) => String(column.name || "").toLowerCase() === "admin_user_id"
-  );
-
-  if (!hasAdminUserId) {
-    await env.DB.prepare(
-      "ALTER TABLE admin_sessions ADD COLUMN admin_user_id TEXT"
-    ).run();
-  }
-
-  await env.DB.prepare(
-    "CREATE INDEX IF NOT EXISTS idx_admin_sessions_admin_user ON admin_sessions(admin_user_id)"
-  ).run();
-}
-
 function getCookie(request: Request, name: string) {
   const header = request.headers.get("Cookie") || "";
-  const match = header.match(new RegExp(`(?:^|;\\s*)${name.replace(/[.*+?^\${}()|[\\]\\\\]/g, "\\\\$&")}=([^;]*)`));
+  const match = header.match(new RegExp(`(?:^|;\\s*)${name.replace(/[.*+?^\\${}()|[\\]\\\\]/g, "\\\\$&")}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : "";
 }
 
@@ -46,7 +17,6 @@ export type AdminIdentity = {
 };
 
 export async function createAdminSession(env: Env, identity: AdminIdentity) {
-  await ensureAdminSessions(env);
   const token = crypto.randomUUID() + "." + crypto.randomUUID();
   const now = Math.floor(Date.now() / 1000);
   await env.DB.prepare(
@@ -56,11 +26,10 @@ export async function createAdminSession(env: Env, identity: AdminIdentity) {
 }
 
 export async function requireAdmin(request: Request, env: Env) {
-  const bearer = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
+  const bearer = (request.headers.get("Authorization") || "").replace(/^Bearer\\s+/i, "").trim();
   const token = bearer || getCookie(request, "sys_admin_session");
   if (!token) return { ok:false as const, response:json({success:false,error:"Unauthorized admin session"},401) };
 
-  await ensureAdminSessions(env);
   const now = Math.floor(Date.now()/1000);
   const row = await env.DB.prepare(
     `SELECT s.token, s.admin_user_id AS adminUserId,
@@ -94,7 +63,6 @@ export async function requireAdmin(request: Request, env: Env) {
 
 export async function revokeAdminSession(env: Env, token: string) {
   if (!token) return;
-  await ensureAdminSessions(env);
   await env.DB.prepare("DELETE FROM admin_sessions WHERE token = ?").bind(token).run();
 }
 
