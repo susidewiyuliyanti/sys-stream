@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import React, { lazy, Suspense } from 'react';
 import App from './App.tsx';
 import './index.css';
+import { LanguageProvider } from './i18n';
 
 const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
@@ -33,7 +34,9 @@ const HostApp = () => {
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Suspense fallback={<Loading />}>
-      <HostApp />
+      <LanguageProvider>
+        <HostApp />
+      </LanguageProvider>
     </Suspense>
   </React.StrictMode>
 );
