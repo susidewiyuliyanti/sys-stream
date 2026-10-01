@@ -1,0 +1,247 @@
+import { Env, json, withDb } from "../../_lib/db";
+import { requireAuth } from "../../_lib/auth";
+
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+  try {
+    const auth = await requireAuth(context.request, context.env);
+
+    if (auth.ok === false) {
+      return auth.response;
+    }
+
+    const userId = Number(auth.user.id);
+    const depositId = Number(context.params.id);
+
+    if (!Number.isInteger(depositId) || depositId <= 0) {
+      return json(
+        {
+          success: false,
+          error: "ID deposit tidak valid.",
+        },
+        400
+      );
+    }
+
+    const result = await withDb(context.env, async (client) => {
+      await client.query("BEGIN");
+
+      try {
+        /*
+         * Lock row deposit agar dua request settlement bersamaan
+         * tidak dapat mengembalikan principal dua kali.
+         */
+        const depositResult = await client.query(
+          `
+          SELECT
+            id,
+            "userId",
+            amount,
+            "durationDays",
+            "startDate",
+            "endDate",
+            status
+          FROM deposits
+          WHERE id = $1
+            AND "userId" = $2
+          FOR UPDATE
+          `,
+          [depositId, userId]
+        );
+
+        if (depositResult.rows.length === 0) {
+          throw new Error("DEPOSIT_NOT_FOUND");
+        }
+
+        const deposit = depositResult.rows[0];
+
+        /*
+         * Idempotency:
+         * settlement kedua tidak boleh mengkredit saldo lagi.
+         */
+        if (deposit.status === "COMPLETED") {
+          await client.query("COMMIT");
+
+          return {
+            alreadySettled: true,
+            amountReturned: Number(deposit.amount),
+            status: "COMPLETED",
+          };
+        }
+
+        if (deposit.status !== "ACTIVE") {
+          throw new Error("DEPOSIT_NOT_SETTLEABLE");
+        }
+
+        const endDate = new Date(deposit.endDate);
+        const now = new Date();
+
+        if (Number.isNaN(endDate.getTime())) {
+          throw new Error("INVALID_END_DATE");
+        }
+
+        if (now < endDate) {
+          throw new Error("DEPOSIT_NOT_EXPIRED");
+        }
+
+        const principal = Number(deposit.amount);
+
+        if (!Number.isFinite(principal) || principal <= 0) {
+          throw new Error("INVALID_AMOUNT");
+        }
+
+        /*
+         * Return principal ke saldo user.
+         *
+         * Game Balance menggunakan saldo user yang sama,
+         * sehingga saldo utama dan saldo game otomatis kembali
+         * mengikuti transaksi ini.
+         */
+        const userResult = await client.query(
+          `
+          SELECT
+            id,
+            COALESCE(balance, 0) AS balance,
+            COALESCE(saldo, 0) AS saldo,
+            COALESCE(wallet_balance, 0) AS wallet_balance,
+            COALESCE(locked_saldo, 0) AS locked_saldo
+          FROM users
+          WHERE id = $1
+          FOR UPDATE
+          `,
+          [userId]
+        );
+
+        if (userResult.rows.length === 0) {
+          throw new Error("USER_NOT_FOUND");
+        }
+
+        const user = userResult.rows[0];
+
+        const currentBalance = Math.max(
+          Number(user.balance || 0),
+          Number(user.saldo || 0),
+          Number(user.wallet_balance || 0)
+        );
+
+        const currentLocked = Number(user.locked_saldo || 0);
+
+        if (currentLocked < principal) {
+          throw new Error("LOCKED_BALANCE_INCONSISTENT");
+        }
+
+        const newBalance = currentBalance + principal;
+        const newLockedBalance = currentLocked - principal;
+
+        await client.query(
+          `
+          UPDATE users
+          SET
+            balance = $1,
+            saldo = $1,
+            wallet_balance = $1,
+            locked_saldo = $2,
+            updated_at = NOW()
+          WHERE id = $3
+          `,
+          [newBalance, newLockedBalance, userId]
+        );
+
+        /*
+         * Tandai deposit selesai dalam transaksi yang sama.
+         * Principal hanya dikembalikan sekali karena row deposit
+         * dikunci FOR UPDATE dan status berubah menjadi COMPLETED.
+         */
+        await client.query(
+          `
+          UPDATE deposits
+          SET
+            status = 'COMPLETED'
+          WHERE id = $1
+            AND "userId" = $2
+            AND status = 'ACTIVE'
+          `,
+          [depositId, userId]
+        );
+
+        await client.query("COMMIT");
+
+        return {
+          alreadySettled: false,
+          amountReturned: principal,
+          status: "COMPLETED",
+          balance: newBalance,
+          lockedBalance: newLockedBalance,
+          settledAt: now.toISOString(),
+        };
+      } catch (error) {
+        await client.query("ROLLBACK");
+        throw error;
+      }
+    });
+
+    return json({
+      success: true,
+      message: result.alreadySettled
+        ? "Lock sudah pernah diselesaikan."
+        : "Lock selesai dan principal berhasil dikembalikan ke saldo.",
+      depositId,
+      ...result,
+    });
+  } catch (error) {
+    console.error("Settle deposit error:", error);
+
+    const message =
+      error instanceof Error ? error.message : "";
+
+    const errors: Record<string, [string, number]> = {
+      DEPOSIT_NOT_FOUND: [
+        "Deposit tidak ditemukan.",
+        404,
+      ],
+      DEPOSIT_NOT_SETTLEABLE: [
+        "Deposit tidak dapat diselesaikan dari status saat ini.",
+        400,
+      ],
+      DEPOSIT_NOT_EXPIRED: [
+        "Masa lock belum berakhir.",
+        400,
+      ],
+      INVALID_END_DATE: [
+        "Tanggal akhir lock tidak valid.",
+        500,
+      ],
+      INVALID_AMOUNT: [
+        "Nominal principal tidak valid.",
+        500,
+      ],
+      USER_NOT_FOUND: [
+        "User tidak ditemukan.",
+        404,
+      ],
+      LOCKED_BALANCE_INCONSISTENT: [
+        "Saldo locked tidak konsisten dengan principal deposit.",
+        409,
+      ],
+    };
+
+    if (errors[message]) {
+      const [text, status] = errors[message];
+
+      return json(
+        {
+          success: false,
+          error: text,
+        },
+        status
+      );
+    }
+
+    return json(
+      {
+        success: false,
+        error: "Gagal menyelesaikan lock.",
+      },
+      500
+    );
+  }
+};
