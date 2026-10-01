@@ -490,38 +490,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
-  const unlockEarly = (lockId: string): boolean => {
-    const targetLock = locks.find(l => l.id === lockId);
-    if (!targetLock || targetLock.status !== 'locked') return false;
-
-    const isFullyMatured = Date.now() >= targetLock.endDate;
-    const principalCoins = Math.floor(targetLock.amount * 100);
-
-    if (isFullyMatured) {
-      const totalPayout = Math.floor(principalCoins * targetLock.multiplier);
-      updateCoins(totalPayout);
-      sound.playJackpot();
-      showToast(
-        'Staking Term Completed!',
-        `Full ${targetLock.durationDays}d duration reached! Principal + bonus unlocked: +${totalPayout.toLocaleString()} Coins`,
-        'success'
-      );
-    } else {
-      // Early unlock: daily rewards forfeited! User ONLY gets initial locked principal back.
-      updateCoins(principalCoins);
-      sound.playClick();
-      showToast(
-        'Early Unlock Executed',
-        `Unlocked before ${targetLock.durationDays} days. Daily rewards forfeited. Initial principal of $${targetLock.amount.toFixed(2)} USDT (+${principalCoins} Coins) returned to wallet.`,
-        'info'
-      );
-    }
-
-    setLocks(prev =>
-      prev.map(l => (l.id === lockId ? { ...l, status: 'unlocked' } : l))
-    );
-    return true;
-  };
 
   const hasActiveLock = (): boolean => {
     return locks.some(l => l.status === 'locked' && l.amount >= 4);
