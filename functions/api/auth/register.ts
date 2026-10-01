@@ -1,5 +1,11 @@
 import { Env, json, readJson } from "../../_lib/db";
-import { createSession, hashPassword } from "../../_lib/auth";
+import { hashPassword } from "../../_lib/auth";
+import {
+  createVerificationToken,
+  hashVerificationToken,
+  sendVerificationEmail,
+  verificationExpiry,
+} from "../../_lib/email";
 
 const TERMS_VERSION = "2026-10-01";
 
@@ -36,26 +42,45 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const referralCode="SYS-"+username.toUpperCase().slice(0,12)+"-"+crypto.randomUUID().slice(0,6).toUpperCase();
     const acceptedAt=Math.floor(Date.now()/1000);
     const acceptanceId=crypto.randomUUID();
+    const verificationToken=createVerificationToken();
+    const verificationHash=await hashVerificationToken(verificationToken);
+    const verificationId=crypto.randomUUID();
+    const verificationExpires=verificationExpiry();
 
     await env.DB.batch([
       env.DB.prepare(
-        `INSERT INTO users(id,username,email,password_hash,display_name,role,available_balance,total_locked,referral_code,created_at,terms_version,terms_accepted_at)
-         VALUES(?,?,?,?,?,'USER',0,0,?,?,?,?)`
+        `INSERT INTO users(id,username,email,password_hash,display_name,role,available_balance,total_locked,referral_code,created_at,terms_version,terms_accepted_at,email_verified,email_verified_at)
+         VALUES(?,?,?,?,?,'USER',0,0,?,?,?,?,0,NULL)`
       ).bind(id,username,email,passwordHash,displayName,referralCode,acceptedAt,TERMS_VERSION,acceptedAt),
       env.DB.prepare(
         `INSERT INTO terms_acceptances(id,user_id,terms_version,accepted_at,created_at)
          VALUES(?,?,?,?,?)`
       ).bind(acceptanceId,id,TERMS_VERSION,acceptedAt,acceptedAt),
+      env.DB.prepare(
+        `INSERT INTO email_verification_tokens(id,user_id,token_hash,expires_at,used_at,created_at)
+         VALUES(?,?,?,?,NULL,?)`
+      ).bind(verificationId,id,verificationHash,verificationExpires,acceptedAt),
     ]);
 
-    const token=await createSession(env,id);
+    const origin = new URL(request.url).origin;
+    const sent = await sendVerificationEmail(env, email, verificationToken, origin);
+
+    if (!sent.ok) {
+      console.error("registration verification email failed", sent.error);
+      return json({
+        success:false,
+        code:"EMAIL_SERVICE_UNAVAILABLE",
+        requiresEmailVerification:true,
+        email,
+        error:"Akun sudah dibuat tetapi email verifikasi belum dapat dikirim. Setelah layanan email aktif, gunakan Kirim Ulang Verifikasi."
+      },503);
+    }
+
     return json({
       success:true,
-      token,
-      user:{
-        id,username,email,displayName,role:"USER",balance:0,lockedBalance:0,
-        termsVersion:TERMS_VERSION,termsAcceptedAt:acceptedAt
-      }
+      requiresEmailVerification:true,
+      email,
+      message:"Akun dibuat. Silakan verifikasi email sebelum login."
     });
   }catch(error){
     console.error("register error",error);
