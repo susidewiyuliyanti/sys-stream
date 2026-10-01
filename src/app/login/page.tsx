@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
 import { TERMS_VERSION } from '../terms/page';
@@ -11,7 +11,10 @@ import {
   Wallet,
   Shield,
   Fingerprint,
+  CheckCircle,
 } from 'lucide-react';
+
+import { BrowserProvider } from 'ethers';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -204,7 +207,7 @@ export default function LoginPage({ navigate }: Props) {
             </button>
           </div>
 
-          {/* Terms acceptance — required for new accounts */}
+          {/* Terms acceptance â€” required for new accounts */}
           {authMode === 'register' && (
             <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
               <input
@@ -279,7 +282,7 @@ export default function LoginPage({ navigate }: Props) {
           className="w-full py-3 bg-slate-950/60 border border-slate-700 text-slate-500 font-bold text-xs rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <Wallet className="w-4 h-4 text-slate-500" />
-          <span>Wallet Login — Coming Soon</span>
+          <span>Wallet Login â€” Coming Soon</span>
         </button>
 
         {/* Register Prompt */}
@@ -307,3 +310,5 @@ export default function LoginPage({ navigate }: Props) {
     </div>
   );
 }
+
+
