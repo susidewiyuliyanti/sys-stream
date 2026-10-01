@@ -782,9 +782,9 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       }
 
       setClaimResult({
-        prizeAmount: data.prizeAmount,
+        prizeAmount: Number(data.reward ?? data.prizeAmount ?? 0),
         isJackpot: data.isJackpot,
-        totalClaimed: data.totalClaimed,
+        totalClaimed: Number(data.totalClaimed ?? 0),
         tier: data.tier,
         tierName: data.tierName,
         boxType: data.boxType,
@@ -795,9 +795,9 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
       setHasClaimedToday(true);
 
       // Synchronize prize reward with Firestore and App unified wallet
-      if (userProfile?.uid && data.userBalance !== undefined) {
+      if (userProfile?.uid && data.balance !== undefined) {
         try {
-          await updateUserProfile(userProfile.uid, { walletBalance: data.userBalance });
+          await updateUserProfile(userProfile.uid, { walletBalance: Number(data.balance) });
           await createTransactionOrder({
             orderId: `PRIZE-${Date.now().toString(36).toUpperCase()}`,
             userId: userProfile.uid,
@@ -805,7 +805,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             planName: data.isJackpot
               ? `🎉 JACKPOT SULTAN!`
               : `🎁 Hadiah Hari Ini`,
-            price: data.prizeAmount,
+            price: Number(data.reward ?? data.prizeAmount ?? 0),
             currency: 'IDR',
             status: 'success',
             paymentMethod: 'Reward Game Blind Box',
@@ -816,7 +816,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         } catch (e) {
           console.warn('Error updating Firestore wallet on claim:', e);
         }
-        onUpdateWalletBalance?.(data.userBalance);
+        onUpdateWalletBalance?.(Number(data.balance));
       }
 
       fetchUserData();
