@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+.wrangler/
+dist/
+node_modules/
