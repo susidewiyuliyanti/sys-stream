@@ -286,6 +286,238 @@ export default {
       }
     }
 
+    // GET AUTHENTICATED USER BALANCE + LOCKS
+    if (url.pathname === '/api/locks' && request.method === 'GET') {
+      const authUser = await getAuthenticatedUser(request, env);
+      if (!authUser) {
+        return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+      }
+
+      const locks = await env.DB.prepare(`
+        SELECT id, user_id, amount, duration_days, multiplier, start_date, end_date,
+               status, daily_claims, last_claim_at
+        FROM locks
+        WHERE user_id = ?
+        ORDER BY start_date DESC
+      `).bind(String(authUser.id)).all();
+
+      return new Response(JSON.stringify({
+        success: true,
+        user: {
+          id: String(authUser.id),
+          balance: Number(authUser.balance || 0),
+          lockedBalance: Number(authUser.lockedBalance || 0)
+        },
+        locks: locks.results || []
+      }), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
+
+    // EARLY/FULL UNLOCK: principal is returned by the server.
+    if (url.pathname === '/api/locks/unlock' && request.method === 'POST') {
+      try {
+        const authUser = await getAuthenticatedUser(request, env);
+        if (!authUser) {
+          return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+
+        const body: any = await request.json();
+        const lockId = String(body.lockId || '');
+        if (!lockId) {
+          return new Response(JSON.stringify({ error: 'lockId is required' }), { status: 400 });
+        }
+
+        const lock: any = await env.DB.prepare(`
+          SELECT id, user_id, amount, multiplier, start_date, end_date, status
+          FROM locks
+          WHERE id = ? AND user_id = ?
+          LIMIT 1
+        `).bind(lockId, String(authUser.id)).first();
+
+        if (!lock) {
+          return new Response(JSON.stringify({ error: 'Lock not found' }), { status: 404 });
+        }
+        if (lock.status !== 'locked') {
+          return new Response(JSON.stringify({ error: 'Lock is not active' }), { status: 400 });
+        }
+
+        const now = Date.now();
+        const matured = now >= Number(lock.end_date);
+        const principal = Number(lock.amount);
+        const payout = matured
+          ? Number((principal * Number(lock.multiplier)).toFixed(4))
+          : principal;
+
+        // The lock row is the source of truth. Only an active lock can be settled.
+        await env.DB.batch([
+          env.DB.prepare(`
+            UPDATE locks
+            SET status = 'unlocked'
+            WHERE id = ? AND user_id = ? AND status = 'locked'
+          `).bind(lockId, String(authUser.id)),
+          env.DB.prepare(`
+            UPDATE users
+            SET available_balance = available_balance + ?,
+                total_locked = MAX(0, total_locked - ?)
+            WHERE id = ?
+          `).bind(payout, principal, String(authUser.id))
+        ]);
+
+        const updated: any = await env.DB.prepare(`
+          SELECT available_balance, total_locked
+          FROM users WHERE id = ? LIMIT 1
+        `).bind(String(authUser.id)).first();
+
+        return new Response(JSON.stringify({
+          success: true,
+          lockId,
+          matured,
+          principal,
+          payout,
+          balance: Number(updated?.available_balance || 0),
+          lockedBalance: Number(updated?.total_locked || 0)
+        }), {
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ error: err?.message || 'Unlock failed' }), { status: 500 });
+      }
+    }
+
+    // SERVER-SIDE BLIND BOX REWARD. The client never decides the payout amount.
+    if (url.pathname === '/api/blindbox/claim' && request.method === 'POST') {
+      try {
+        const authUser = await getAuthenticatedUser(request, env);
+        if (!authUser) {
+          return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+
+        const body: any = await request.json();
+        const boxId = String(body.boxId || 'cyber_daily');
+        const todayKey = new Date().toISOString().slice(0, 10);
+        const userId = String(authUser.id);
+
+        const locked: any = await env.DB.prepare(`
+          SELECT COALESCE(SUM(amount),0) AS total_locked
+          FROM locks
+          WHERE user_id = ? AND status = 'locked'
+        `).bind(userId).first();
+
+        const totalLocked = Number(locked?.total_locked || 0);
+        if (totalLocked < 4) {
+          return new Response(JSON.stringify({ error: 'Minimum active lock is 4.00 USDT' }), { status: 400 });
+        }
+
+        const quota =
+          totalLocked >= 500 ? 10 :
+          totalLocked >= 250 ? 5 :
+          totalLocked >= 100 ? 3 :
+          totalLocked >= 50 ? 2 : 1;
+
+        const claimTable = `CREATE TABLE IF NOT EXISTS blindbox_claims (
+          id TEXT PRIMARY KEY,
+          user_id TEXT NOT NULL,
+          claim_date TEXT NOT NULL,
+          box_id TEXT NOT NULL,
+          reward_usdt REAL NOT NULL,
+          item_id TEXT NOT NULL,
+          item_name TEXT NOT NULL,
+          rarity TEXT NOT NULL,
+          created_at INTEGER NOT NULL,
+          UNIQUE(user_id, claim_date, id)
+        )`;
+        await env.DB.prepare(claimTable).run();
+
+        const countRow: any = await env.DB.prepare(`
+          SELECT COUNT(*) AS count FROM blindbox_claims
+          WHERE user_id = ? AND claim_date = ?
+        `).bind(userId, todayKey).first();
+
+        if (Number(countRow?.count || 0) >= quota) {
+          return new Response(JSON.stringify({ error: 'Daily Blind Box quota reached', quota }), { status: 409 });
+        }
+
+        const pools: Record<string, Array<{id:string,name:string,rarity:string,reward:number}>> = {
+          cyber_daily: [
+            {id:'bb_1',name:'Tactical Neon Visor',rarity:'common',reward:0.5},
+            {id:'bb_2',name:'Nano-Blade Dagger',rarity:'common',reward:0.8},
+            {id:'bb_3',name:'EMP Grenade Launcher',rarity:'rare',reward:1.5},
+            {id:'bb_4',name:'Holo-Decoy Drone',rarity:'rare',reward:2.5},
+          ],
+          apex_lockbox: [
+            {id:'bb_5',name:'Vortex Hoverbike',rarity:'rare',reward:3.5},
+            {id:'bb_6',name:'Plasma Katana Mk.IV',rarity:'epic',reward:7.5},
+            {id:'bb_7',name:'Quantum Core Reactor',rarity:'epic',reward:12},
+            {id:'bb_8',name:'Solaris Battle Automaton',rarity:'legendary',reward:25},
+          ],
+          dragon_vault: [
+            {id:'bb_9',name:'Obsidian Dreadnought',rarity:'epic',reward:15},
+            {id:'bb_10',name:'Aegis of the Sun God',rarity:'legendary',reward:35},
+            {id:'bb_11',name:'Chronos Time Fragment',rarity:'legendary',reward:50},
+            {id:'bb_12',name:'Cyber Dragon Sovereign',rarity:'mythic',reward:100},
+          ]
+        };
+
+        const pool = pools[boxId] || pools.cyber_daily;
+        if (boxId === 'apex_lockbox' && totalLocked < 50) {
+          return new Response(JSON.stringify({ error: 'Apex box requires 50.00 USDT locked' }), { status: 400 });
+        }
+        if (boxId === 'dragon_vault' && totalLocked < 100) {
+          return new Response(JSON.stringify({ error: 'Dragon Vault requires 100.00 USDT locked' }), { status: 400 });
+        }
+
+        const selected = pool[Math.floor(Math.random() * pool.length)];
+        const scalingFactor = Math.max(1, Math.min(8, 1 + (totalLocked - 4) / 50));
+        const reward = Number((selected.reward * scalingFactor).toFixed(2));
+        const claimId = 'bb_' + crypto.randomUUID();
+
+        await env.DB.batch([
+          env.DB.prepare(`
+            INSERT INTO blindbox_claims
+              (id,user_id,claim_date,box_id,reward_usdt,item_id,item_name,rarity,created_at)
+            VALUES (?,?,?,?,?,?,?,?,?)
+          `).bind(
+            claimId,userId,todayKey,boxId,reward,selected.id,selected.name,selected.rarity,Date.now()
+          ),
+          env.DB.prepare(`
+            UPDATE users
+            SET available_balance = available_balance + ?
+            WHERE id = ?
+          `).bind(reward,userId)
+        ]);
+
+        const updated: any = await env.DB.prepare(`
+          SELECT available_balance, total_locked FROM users WHERE id = ? LIMIT 1
+        `).bind(userId).first();
+
+        return new Response(JSON.stringify({
+          success:true,
+          claimId,
+          boxId,
+          item:{ id:selected.id, name:selected.name, rarity:selected.rarity },
+          rewardUsdt:reward,
+          balance:Number(updated?.available_balance || 0),
+          lockedBalance:Number(updated?.total_locked || 0),
+          dailyUsed:Number(countRow?.count || 0)+1,
+          dailyQuota:quota
+        }), {
+          headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}
+        });
+      } catch (err:any) {
+        return new Response(JSON.stringify({error:err?.message || 'Blind Box claim failed'}), {status:500});
+      }
+    }
+
     // CREATE LOCK: amount >= 4, duration in (30,60,90)
     if (url.pathname === '/api/locks/create' && request.method === 'POST') {
       try {
