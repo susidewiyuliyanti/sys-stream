@@ -9,3 +9,8 @@ coverage/
 .wrangler/
 dist/
 node_modules/
+.wrangler/
+
+dist/
+
+node_modules/
