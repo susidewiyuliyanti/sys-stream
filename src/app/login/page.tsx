@@ -102,7 +102,7 @@ export default function LoginPage({ navigate }: Props) {
             {authMode === 'login' ? t('Welcome Back') : t('Create SYS Account')}
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Sign in to continue streaming and gaming
+            {t('Sign in to continue streaming and gaming')}
           </p>
         </div>
 
@@ -125,7 +125,7 @@ export default function LoginPage({ navigate }: Props) {
           {authMode === 'register' && (
             <div className="relative">
               <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
-              <input type="email" placeholder="Email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
+              <input type="email" placeholder={t('Email')} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
             </div>
           )}
 
