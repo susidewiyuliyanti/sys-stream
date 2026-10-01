@@ -434,7 +434,8 @@ export default {
           item_name TEXT NOT NULL,
           rarity TEXT NOT NULL,
           created_at INTEGER NOT NULL,
-          UNIQUE(user_id, claim_date, id)
+          claim_number INTEGER NOT NULL,
+          UNIQUE(user_id, claim_date, claim_number)
         )`;
         await env.DB.prepare(claimTable).run();
 
@@ -443,7 +444,8 @@ export default {
           WHERE user_id = ? AND claim_date = ?
         `).bind(userId, todayKey).first();
 
-        if (Number(countRow?.count || 0) >= quota) {
+        const nextClaimNumber = Number(countRow?.count || 0) + 1;
+        if (nextClaimNumber > quota) {
           return new Response(JSON.stringify({ error: 'Daily Blind Box quota reached', quota }), { status: 409 });
         }
 
@@ -484,10 +486,10 @@ export default {
         await env.DB.batch([
           env.DB.prepare(`
             INSERT INTO blindbox_claims
-              (id,user_id,claim_date,box_id,reward_usdt,item_id,item_name,rarity,created_at)
-            VALUES (?,?,?,?,?,?,?,?,?)
+              (id,user_id,claim_date,box_id,reward_usdt,item_id,item_name,rarity,created_at,claim_number)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
           `).bind(
-            claimId,userId,todayKey,boxId,reward,selected.id,selected.name,selected.rarity,Date.now()
+            claimId,userId,todayKey,boxId,reward,selected.id,selected.name,selected.rarity,Date.now(),nextClaimNumber
           ),
           env.DB.prepare(`
             UPDATE users
