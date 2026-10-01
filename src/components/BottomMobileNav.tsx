@@ -1,5 +1,6 @@
 import React from 'react';
 import { sound } from '../lib/sound';
+import { useLanguage } from '../i18n';
 import {
   Home,
   TrendingUp,
@@ -15,11 +16,12 @@ interface BottomMobileNavProps {
 }
 
 export const BottomMobileNav: React.FC<BottomMobileNavProps> = ({ currentPath, navigate }) => {
+  const { t } = useLanguage();
   const tabs = [
-    { label: 'Home', path: '/room/main', icon: Home },
-    { label: 'Earn', path: '/game/blindbox', icon: TrendingUp },
-    { label: 'Board', path: '/leaderboard', icon: Trophy },
-    { label: 'Profile', path: '/profile', icon: User },
+    { label: t('Home'), path: '/room/main', icon: Home },
+    { label: t('Earn'), path: '/game/blindbox', icon: TrendingUp },
+    { label: t('Board'), path: '/leaderboard', icon: Trophy },
+    { label: t('Profile'), path: '/profile', icon: User },
   ];
 
   return (
