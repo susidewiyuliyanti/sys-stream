@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
+import { TERMS_VERSION } from '../terms/page';
 import { useLanguage } from '../../i18n';
 import {
   User,
@@ -25,6 +26,7 @@ export default function LoginPage({ navigate }: Props) {
   const [passwordInput, setPasswordInput] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +37,7 @@ export default function LoginPage({ navigate }: Props) {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput };
+        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
@@ -66,7 +68,7 @@ export default function LoginPage({ navigate }: Props) {
         <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-2xl border border-cyan-500/30 mb-6">
           <button
             type="button"
-            onClick={() => { sound.playClick(); setAuthMode('login'); }}
+            onClick={() => { sound.playClick(); setAuthMode('login'); setTermsAccepted(false); }}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               authMode === 'login'
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
@@ -77,7 +79,7 @@ export default function LoginPage({ navigate }: Props) {
           </button>
           <button
             type="button"
-            onClick={() => { sound.playClick(); setAuthMode('register'); }}
+            onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               authMode === 'register'
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
@@ -142,6 +144,30 @@ export default function LoginPage({ navigate }: Props) {
             </button>
           </div>
 
+          {/* Terms acceptance — required for new accounts */}
+          {authMode === 'register' && (
+            <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer shrink-0"
+                required
+              />
+              <span className="text-[11px] leading-5 text-slate-400">
+                I have read and agree to the{' '}
+                <button
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); navigate?.('/terms'); }}
+                  className="text-cyan-300 hover:text-cyan-200 underline font-bold"
+                >
+                  Terms &amp; Conditions
+                </button>
+                {' '}and understand that my acceptance will be recorded with the current Terms version.
+              </span>
+            </label>
+          )}
+
           {/* Remember me & Forgot Password */}
           <div className="flex items-center justify-between text-xs pt-1">
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
@@ -165,8 +191,8 @@ export default function LoginPage({ navigate }: Props) {
           {/* Glowing Neon Login Button */}
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            disabled={isSubmitting || (authMode === 'register' && !termsAccepted)}
+            className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -201,7 +227,7 @@ export default function LoginPage({ navigate }: Props) {
           <span>Don't have an account? </span>
           <button
             type="button"
-            onClick={() => { sound.playClick(); setAuthMode('register'); }}
+            onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
             className="text-purple-400 hover:text-purple-300 font-bold underline"
           >
             Register Now
