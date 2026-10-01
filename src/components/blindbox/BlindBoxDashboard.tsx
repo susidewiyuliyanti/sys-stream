@@ -439,6 +439,76 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
     return () => clearInterval(interval);
   }, []);
 
+  // Automatic settlement: when a Blind Box lock reaches maturity,
+  // return the principal to the same unified balance used by the game.
+  useEffect(() => {
+    const depositId = activeDeposit?.id;
+    const endDate = activeDeposit?.endDate;
+
+    if (!depositId || !endDate || activeDeposit?.status !== 'ACTIVE') {
+      return;
+    }
+
+    const end = new Date(endDate).getTime();
+    if (!Number.isFinite(end) || Date.now() < end) {
+      return;
+    }
+
+    const token = getActiveToken();
+    if (!token) return;
+
+    let cancelled = false;
+
+    const settleMaturedDeposit = async () => {
+      try {
+        const res = await fetch(`/api/deposits/${depositId}/settle`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          console.warn('Blind Box automatic settlement failed:', data);
+          return;
+        }
+
+        if (cancelled) return;
+
+        const newBalance = Number(data.balance);
+        if (Number.isFinite(newBalance)) {
+          setCurrentUser((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  balance: newBalance,
+                  lockedBalance: Number(data.lockedBalance ?? prev.lockedBalance ?? 0),
+                }
+              : prev
+          );
+          onUpdateWalletBalance?.(newBalance);
+        }
+
+        showToast(
+          'success',
+          `Lock Blind Box selesai. Principal Rp ${Number(data.amountReturned ?? activeDeposit.amount).toLocaleString('id-ID')} telah kembali ke saldo.`
+        );
+
+        await fetchUserData(token);
+      } catch (error) {
+        console.warn('Blind Box automatic settlement error:', error);
+      }
+    };
+
+    void settleMaturedDeposit();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeDeposit?.id, activeDeposit?.endDate, activeDeposit?.status]);
+
   const handleLogout = () => {
     try {
       localStorage.removeItem('sys_stream_auth_token');
