@@ -14,9 +14,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
 
-    // Backward-compatible owner bootstrap: the existing ADMIN_API_KEY remains
-    // available only as the owner-level bootstrap credential.
-    if (context.env.ADMIN_API_KEY && password && password === context.env.ADMIN_API_KEY && !email) {
+    // Owner bootstrap: ADMIN_API_KEY is the dedicated owner credential.
+    // Check it before requiring an email so the Owner Key still works if
+    // the browser autofills an email into the form.
+    if (context.env.ADMIN_API_KEY && password && password === context.env.ADMIN_API_KEY) {
       const session = await createAdminSession(context.env, {
         id: null,
         email: "owner-api-key",
