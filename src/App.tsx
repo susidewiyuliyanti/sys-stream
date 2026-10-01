@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { GameProvider } from './context/GameContext';
 import { Navbar } from './components/Navbar';
 import { ToastContainer } from './components/ToastContainer';
-import { SysLogo } from './components/SysLogo';
 import { MobileAuthModal } from './components/MobileAuthModal';
 import { BottomMobileNav } from './components/BottomMobileNav';
 
@@ -125,16 +124,16 @@ export default function App() {
         {/* Global Toast Alerts */}
         <ToastContainer />
 
-        {/* Quiet Editorial Footer */}
-        <footer className="border-t border-slate-900 bg-slate-950 py-8 px-4 text-xs text-slate-400">
-          <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-            <div className="flex items-center">
-              <SysLogo size="sm" showText={true} />
-            </div>
-
-            <div className="text-slate-400">
-              © 2026 SYS STREAM. Provably Fair Protocol.
-            </div>
+        {/* Minimal Legal Footer */}
+        <footer className="border-t border-slate-900 bg-slate-950 py-5 px-4 text-xs text-slate-500">
+          <div className="max-w-6xl mx-auto flex items-center justify-center gap-5">
+            <a href="#/terms" className="hover:text-cyan-400 transition-colors">
+              Terms &amp; Conditions
+            </a>
+            <span className="text-slate-700">•</span>
+            <a href="#/privacy" className="hover:text-cyan-400 transition-colors">
+              Privacy Policy
+            </a>
           </div>
         </footer>
       </div>
