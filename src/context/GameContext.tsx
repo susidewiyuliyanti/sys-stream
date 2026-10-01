@@ -48,7 +48,6 @@ interface GameContextType {
   claimDailyBonus: () => boolean;
   claimReferralRewards: () => { coins: number; diamonds: number };
   createCryptoInvoice: (amountUsd: number, currency: string) => Promise<CryptoInvoice>;
-  simulatePaymentCompletion: (orderId: string) => void;
   switchUser: (type: 'regular' | 'whale' | 'pro') => void;
   dismissToast: (id: string) => void;
   showToast: (title: string, message: string, type?: Toast['type']) => void;
@@ -596,14 +595,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return invoice;
   };
 
-  const simulatePaymentCompletion = (orderId: string) => {
-    const inv = pendingInvoices.find(i => i.orderId === orderId);
-    const credit = inv ? inv.coinsToCredit : 1000;
-    updateCoins(credit);
-    sound.playJackpot();
-    showToast('Payment Confirmed', `NOWPayments confirmed order ${orderId}. +${credit} coins credited to wallet!`, 'jackpot');
-  };
-
   const switchUser = (type: 'regular' | 'whale' | 'pro') => {
     if (type === 'whale') {
       setUser({
@@ -682,7 +673,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         claimDailyBonus,
         claimReferralRewards,
         createCryptoInvoice,
-        simulatePaymentCompletion,
         switchUser,
         dismissToast,
         showToast,
