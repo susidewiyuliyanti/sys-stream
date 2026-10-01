@@ -99,7 +99,7 @@ export default function LoginPage({ navigate }: Props) {
         {/* Heading & Subtitle */}
         <div className="text-center mb-5">
           <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            {authMode === 'login' ? '{t('Welcome Back')}' : '{t('Create SYS Account')}'}
+            {authMode === 'login' ? t('Welcome Back') : t('Create SYS Account')}
           </h2>
           <p className="text-xs text-slate-400 mt-1">
             Sign in to continue streaming and gaming
@@ -115,7 +115,7 @@ export default function LoginPage({ navigate }: Props) {
             </span>
             <input
               type="text"
-              placeholder="{t('Username or Email')}"
+              placeholder={t('Username or Email')}
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
