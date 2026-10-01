@@ -22,21 +22,32 @@ export default function LoginPage({ navigate }: Props) {
   const { user, login } = useGame();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
+  const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sound.playClick();
     setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      login(usernameInput.trim() || user.username || 'neo_user_922');
+    try {
+      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const body = authMode === 'login'
+        ? { identifier: usernameInput.trim(), password: passwordInput }
+        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput };
+      const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
+      localStorage.setItem('sys_stream_auth_token', data.token);
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
+      login(data.user?.username || usernameInput.trim());
       if (navigate) navigate('/room/main');
-    }, 700);
+    } catch (error) {
+      console.error(error);
+      window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
+    } finally { setIsSubmitting(false); }
   };
 
   const handleWalletAuth = () => {
@@ -114,6 +125,13 @@ export default function LoginPage({ navigate }: Props) {
               className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
             />
           </div>
+
+          {authMode === 'register' && (
+            <div className="relative">
+              <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
+              <input type="email" placeholder="Email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
+            </div>
+          )}
 
           {/* Password */}
           <div className="relative">
