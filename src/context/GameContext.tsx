@@ -50,7 +50,6 @@ interface GameContextType {
   claimDailyBonus: () => boolean;
   claimReferralRewards: () => { coins: number; diamonds: number };
   createCryptoInvoice: (amountUsd: number, currency: string) => Promise<CryptoInvoice>;
-  switchUser: (type: 'regular' | 'whale' | 'pro') => void;
   dismissToast: (id: string) => void;
   showToast: (title: string, message: string, type?: Toast['type']) => void;
 }
@@ -602,42 +601,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return invoice;
   };
 
-  const switchUser = (type: 'regular' | 'whale' | 'pro') => {
-    if (type === 'whale') {
-      setUser({
-        id: 'usr_whale_99',
-        username: 'ApexWhale',
-        avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=ApexWhale',
-        coins: 150000,
-        diamonds: 500,
-        vipTier: 5,
-        referralCode: 'WHALEVIP',
-        totalWon: 890000,
-        totalBet: 740000,
-        winStreak: 12,
-        bestWin: 50000,
-      });
-      showToast('Switched Profile', 'Logged in as VIP ApexWhale ($150,000 balance)', 'info');
-    } else if (type === 'pro') {
-      setUser({
-        id: 'usr_pro_01',
-        username: 'ValkyriePro',
-        avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=ValkyriePro',
-        coins: 12400,
-        diamonds: 85,
-        vipTier: 3,
-        referralCode: 'VALK99',
-        totalWon: 45000,
-        totalBet: 32000,
-        winStreak: 5,
-        bestWin: 12000,
-      });
-      showToast('Switched Profile', 'Logged in as ValkyriePro', 'info');
-    } else {
-      setUser(DEFAULT_USER);
-      showToast('Switched Profile', 'Logged in as NeoRider', 'info');
-    }
-  };
 
   return (
     <GameContext.Provider
@@ -682,7 +645,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         claimDailyBonus,
         claimReferralRewards,
         createCryptoInvoice,
-        switchUser,
         dismissToast,
         showToast,
       }}
