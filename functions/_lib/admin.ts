@@ -7,9 +7,28 @@ async function ensureAdminSessions(env: Env) {
     CREATE TABLE IF NOT EXISTS admin_sessions (
       token TEXT PRIMARY KEY,
       created_at INTEGER NOT NULL,
-      expires_at INTEGER NOT NULL
+      expires_at INTEGER NOT NULL,
+      admin_user_id TEXT
     )
   `).run();
+
+  // Older deployments could have created admin_sessions before the
+  // admin_user_id column was introduced. Repair that schema in-place so
+  // owner-key and named-admin sessions do not fail with a 500.
+  const columns = await env.DB.prepare(`PRAGMA table_info("admin_sessions")`).all();
+  const hasAdminUserId = (columns.results || []).some(
+    (column: any) => String(column.name || "").toLowerCase() === "admin_user_id"
+  );
+
+  if (!hasAdminUserId) {
+    await env.DB.prepare(
+      "ALTER TABLE admin_sessions ADD COLUMN admin_user_id TEXT"
+    ).run();
+  }
+
+  await env.DB.prepare(
+    "CREATE INDEX IF NOT EXISTS idx_admin_sessions_admin_user ON admin_sessions(admin_user_id)"
+  ).run();
 }
 
 function getCookie(request: Request, name: string) {
