@@ -200,7 +200,7 @@ async function createNowPaymentsInvoice(
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      'x-api-key': env.NOWPAYMENTS_API_KEY || 'DEMO_KEY',
+      'x-api-key': env.NOWPAYMENTS_API_KEY,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -214,6 +214,28 @@ async function createNowPaymentsInvoice(
   });
 
   return await response.json();
+}
+
+async function getAuthenticatedUser(request: Request, env: Env) {
+  const token = (request.headers.get('Authorization') || '')
+    .replace(/^Bearer\s+/i, '')
+    .trim();
+
+  if (!token || !env.DB) return null;
+
+  return await env.DB.prepare(
+    `SELECT
+       u.id,
+       u.username,
+       u.email,
+       COALESCE(u.available_balance, 0) AS balance,
+       COALESCE(u.total_locked, 0) AS lockedBalance
+     FROM auth_sessions s
+     JOIN users u ON u.id = s.user_id
+     WHERE s.token = ?
+       AND s.expires_at > ?
+     LIMIT 1`
+  ).bind(token, Math.floor(Date.now() / 1000)).first<any>();
 }
 
 // -------------------------------------------------------------
@@ -599,16 +621,17 @@ if (url.pathname === '/api/payments/nowpayments-diagnostic' && request.method ==
       try {
         const body: any = await request.json();
 
-        const userId = String(body.userId || '').trim();
-        const amountUsd = Number(body.amountUsd ?? body.amount);
-        const currency = String(body.currency ?? body.payCurrency ?? 'usdttrc20').trim().toLowerCase();
-
-        if (!userId) {
-          return new Response(JSON.stringify({ error: 'userId is required' }), {
-            status: 400,
+        const authUser = await getAuthenticatedUser(request, env);
+        if (!authUser) {
+          return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+            status: 401,
             headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
           });
         }
+
+        const userId = String(authUser.id);
+        const amountUsd = Number(body.amountUsd ?? body.amount);
+        const currency = String(body.currency ?? body.payCurrency ?? 'usdttrc20').trim().toLowerCase();
 
         if (!Number.isFinite(amountUsd) || amountUsd <= 0) {
           return new Response(JSON.stringify({ error: 'amountUsd must be greater than 0' }), {
@@ -639,6 +662,15 @@ if (url.pathname === '/api/payments/nowpayments-diagnostic' && request.method ==
             userId
           }), {
             status: 404,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+
+        if (!env.NOWPAYMENTS_API_KEY) {
+          return new Response(JSON.stringify({
+            error: 'NOWPayments API key is not configured'
+          }), {
+            status: 503,
             headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
           });
         }
