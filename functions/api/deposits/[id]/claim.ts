@@ -33,8 +33,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             user_id,
             amount,
             duration_days,
-            start_date,
-            end_date,
+            start_date AS "startDate",
+            end_date AS "endDate",
             status,
             total_claimed,
             force_jackpot
@@ -73,7 +73,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
          * Satu user hanya boleh claim satu kali
          * untuk tanggal kalender yang sama.
          */
-        const claimDate = now.toISOString().slice(0, 10);
+        const wibNow = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+        const claimDate = wibNow.toISOString().slice(0, 10);
 
         const existingClaim = await client.query(
           `
@@ -191,9 +192,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           UPDATE users
           SET
-            saldo = saldo + $1,
-            wallet_balance = wallet_balance + $1,
-            updated_at = NOW()
+            balance = balance + $1
           WHERE id = $2
           `,
           [reward, userId]
