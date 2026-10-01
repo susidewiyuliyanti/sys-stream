@@ -29,7 +29,7 @@ export async function createAdminSession(env: Env) {
 }
 
 export async function requireAdmin(request: Request, env: Env) {
-  const bearer = (request.headers.get("Authorization") || "").replace(/^Bearer\\s+/i, "").trim();
+  const bearer = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
   const token = bearer || getCookie(request, "sys_admin_session");
   if (!token) return { ok:false as const, response:json({success:false,error:"Unauthorized admin session"},401) };
 
