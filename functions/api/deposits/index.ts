@@ -48,7 +48,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
       const deposits = depositsResult.rows;
       const activeDeposit = deposits.find((deposit) => deposit.status === "ACTIVE") ?? null;
-      const today = new Date().toISOString().slice(0, 10);
+      const wibNow = new Date(Date.now() + 7 * 60 * 60 * 1000);
+      const today = wibNow.toISOString().slice(0, 10);
 
       let hasClaimedToday = false;
       let todayClaimData = null;
@@ -203,8 +204,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SELECT
             id,
             COALESCE(balance, 0) AS balance,
-            COALESCE(saldo, 0) AS saldo,
-            COALESCE(wallet_balance, 0) AS wallet_balance,
             COALESCE(locked_saldo, 0) AS locked_saldo
           FROM users
           WHERE id = $1
@@ -218,14 +217,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         const user = userResult.rows[0];
-
-        // Gunakan saldo terbesar yang konsisten sebagai available balance,
-        // tetapi jangan pernah menambah saldo hanya karena salah satu field stale.
-        const availableBalance = Math.max(
-          Number(user.balance || 0),
-          Number(user.saldo || 0),
-          Number(user.wallet_balance || 0)
-        );
+        const availableBalance = Number(user.balance || 0);
 
         if (availableBalance < amount) {
           throw new Error("INSUFFICIENT_BALANCE");
@@ -253,17 +245,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const remainingBalance = availableBalance - amount;
         const newLockedBalance = Number(user.locked_saldo || 0) + amount;
 
-        // Satu transaksi: available balance turun, locked balance naik.
-        // Semua alias saldo disamakan agar UI utama dan Blind Box membaca angka yang sama.
         await client.query(
           `
           UPDATE users
           SET
             balance = $1,
-            saldo = $1,
-            wallet_balance = $1,
-            locked_saldo = $2,
-            updated_at = NOW()
+            locked_saldo = $2
           WHERE id = $3
           `,
           [remainingBalance, newLockedBalance, userId]
