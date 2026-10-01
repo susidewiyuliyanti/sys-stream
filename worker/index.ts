@@ -263,7 +263,29 @@ export default {
       return stub.fetch(request);
     }
 
-    // B. Locks & Staking Endpoints (D1)
+    // B. Protected game/account endpoints require a valid authenticated session.
+    // The client cannot choose another user's identity.
+    if (url.pathname === '/api/locks/create' && request.method === 'POST') {
+      try {
+        const authUser = await getAuthenticatedUser(request, env);
+        if (!authUser) {
+          return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+
+        const body: any = await request.json();
+        body.userId = String(authUser.id);
+        request = new Request(request, { body: JSON.stringify(body) });
+      } catch {
+        return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+      }
+    }
+
     // CREATE LOCK: amount >= 4, duration in (30,60,90)
     if (url.pathname === '/api/locks/create' && request.method === 'POST') {
       try {
@@ -317,8 +339,17 @@ export default {
     // C. Daily Claims for Active Locks
     if (url.pathname === '/api/locks/claim' && request.method === 'POST') {
       try {
+        const authUser = await getAuthenticatedUser(request, env);
+        if (!authUser) {
+          return new Response(JSON.stringify({ error: 'Unauthorized: login required' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+
         const body: any = await request.json();
-        const { lockId, userId } = body;
+        const lockId = String(body.lockId || '');
+        const userId = String(authUser.id);
 
         if (!lockId || !userId) {
           return new Response(JSON.stringify({
