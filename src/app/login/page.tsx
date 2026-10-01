@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
 import { useLanguage } from '../../i18n';
-import { SysLogo } from '../../components/SysLogo';
 import {
   User,
   Lock,
@@ -11,8 +10,6 @@ import {
   Wallet,
   Shield,
   Fingerprint,
-  ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 
 interface Props {
@@ -65,11 +62,6 @@ export default function LoginPage({ navigate }: Props) {
 
       {/* Cyberpunk Glass Card matching Screenshot 1 */}
       <div className="relative w-full max-w-sm sm:max-w-md bg-[#080d1a]/90 backdrop-blur-2xl border-2 border-cyan-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.25)] text-white">
-        {/* Brand Header */}
-        <div className="flex flex-col items-center text-center mb-6">
-          <SysLogo size="lg" showText={true} />
-        </div>
-
         {/* Login / Register Pill Tabs */}
         <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-2xl border border-cyan-500/30 mb-6">
           <button
