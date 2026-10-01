@@ -45,7 +45,6 @@ export default function ProfilePage() {
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
-  // Compute total locked from locks or fallback to 500 for matching screenshot
   const totalLocked = getTotalLockedUsdt();
 
   // Production lock history comes only from authenticated server state.
@@ -135,22 +134,11 @@ export default function ProfilePage() {
           {/* Username & Verified Badge */}
           <div className="flex items-center gap-1.5 mt-1">
             <h2 className="text-xl sm:text-2xl font-black text-cyan-400 tracking-tight">
-              {user.username || 'neo_user_922'}
+              {user.username || t('Guest')}
             </h2>
             <div className="w-5 h-5 rounded-full bg-cyan-500 flex items-center justify-center text-slate-950">
               <Check className="w-3.5 h-3.5 stroke-[3]" />
             </div>
-          </div>
-
-          {/* Level & Streak Badges */}
-          <div className="flex items-center gap-3">
-            <span className="px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase bg-purple-950/60 border border-purple-500/60 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.3)]">
-              LEVEL 22
-            </span>
-            <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
-              <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
-              <span>5 Day Streak</span>
-            </span>
           </div>
 
           {/* Guest / Logged in indicator */}
@@ -200,23 +188,6 @@ export default function ProfilePage() {
             </div>
             <div className="text-xs text-slate-400 mt-1">
               Locked • Earns passive yield
-            </div>
-          </div>
-
-          {/* Total Earnings Stat */}
-          <div className="flex items-center justify-between pt-2 border-t border-cyan-500/20 text-xs">
-            <div>
-              <div className="text-purple-400 font-bold text-[11px]">Total Earnings</div>
-              <div className="text-xl sm:text-2xl font-black text-white font-mono mt-0.5">
-                1,240.80 USDT
-              </div>
-            </div>
-
-            <div className="text-right">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold font-mono">
-                <TrendingUp className="w-3.5 h-3.5" /> +12.5%
-              </span>
-              <div className="text-[10px] text-slate-500 mt-0.5">+158.30 this week</div>
             </div>
           </div>
 
@@ -335,7 +306,7 @@ export default function ProfilePage() {
                   ) : (
                     <Upload className="w-8 h-8 text-slate-500" />
                   )}
-                  <span className="text-xs font-bold text-slate-300">{newAvatarInput ? '{t('Change photo from device')}' : '{t('Upload photo from device')}'}</span>
+                  <span className="text-xs font-bold text-slate-300">{newAvatarInput ? t('Change photo from device') : t('Upload photo from device')}</span>
                   <span className="text-[10px] text-slate-500">JPG, PNG, WEBP • photo stays from your device storage</span>
                   <input
                     type="file"
