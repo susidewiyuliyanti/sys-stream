@@ -34,6 +34,7 @@ export const onRequestGet: PagesFunction<Env> =
                   username,
                   email,
                   balance,
+                  locked_saldo AS "lockedSaldo",
                   role,
                   is_blacklisted AS "isBlacklisted"
                 FROM users
@@ -66,6 +67,9 @@ export const onRequestGet: PagesFunction<Env> =
           email: String(user.email),
           balance: Number(
             user.balance ?? 0
+          ),
+          lockedBalance: Number(
+            user.lockedSaldo ?? 0
           ),
           role: user.role,
           isBlacklisted:
