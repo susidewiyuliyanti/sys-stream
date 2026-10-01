@@ -15,7 +15,6 @@ import BlindboxGamePage from './app/game/blindbox/page';
 import ProfilePage from './app/profile/page';
 import LeaderboardPage from './app/leaderboard/page';
 import ReferralPage from './app/referral/page';
-import RoomArenaPage from './app/room/[id]/page';
 import DashboardPage from './app/dashboard/page';
 
 export default function App() {
@@ -65,7 +64,7 @@ export default function App() {
     '/leaderboard',
     '/referral',
     '/dashboard',
-    '/room/main',
+    '/room',
   ];
 
   useEffect(() => {
@@ -92,7 +91,7 @@ export default function App() {
       return <LoginPage navigate={navigate} />;
     }
 
-    if (currentPath === '/dashboard' || currentPath === '/room/main') {
+    if (currentPath === '/dashboard' || currentPath === '/room' || currentPath.startsWith('/room/')) {
       return <DashboardPage navigate={navigate} />;
     }
 
@@ -111,12 +110,10 @@ export default function App() {
     if (currentPath === '/referral') {
       return <ReferralPage />;
     }
-    if (currentPath.startsWith('/room')) {
-      const roomId = currentPath.replace('/room/', '').replace('/room', '');
-      return <RoomArenaPage roomId={roomId || 'ROOM-777'} navigate={navigate} />;
-    }
-    // Default to Tebak
-    return <TebakGamePage />;
+    // Legacy live-room routes are intentionally disabled in production.
+    // This prevents the old demo room UI/data from being reachable.
+    // Default to login rather than exposing any legacy game/demo page.
+    return <LoginPage navigate={navigate} />;
   };
 
   return (
