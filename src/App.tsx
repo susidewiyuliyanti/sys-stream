@@ -7,6 +7,8 @@ import { BottomMobileNav } from './components/BottomMobileNav';
 
 // Page components
 import LoginPage from './app/login/page';
+import TermsPage from './app/terms/page';
+import PrivacyPage from './app/privacy/page';
 import TebakGamePage from './app/game/tebak/page';
 import SpinnerGamePage from './app/game/spinner/page';
 import BlindboxGamePage from './app/game/blindbox/page';
@@ -72,6 +74,12 @@ export default function App() {
   const renderCurrentView = () => {
     if (currentPath === '/login') {
       return <LoginPage navigate={navigate} />;
+    }
+    if (currentPath === '/terms') {
+      return <TermsPage navigate={navigate} />;
+    }
+    if (currentPath === '/privacy') {
+      return <PrivacyPage navigate={navigate} />;
     }
 
     if (
