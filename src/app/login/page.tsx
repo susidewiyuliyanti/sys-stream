@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
+import { useLanguage } from '../../i18n';
 import { SysLogo } from '../../components/SysLogo';
 import {
   User,
@@ -20,6 +21,7 @@ interface Props {
 
 export default function LoginPage({ navigate }: Props) {
   const { user, login } = useGame();
+  const { t } = useLanguage();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
@@ -97,7 +99,7 @@ export default function LoginPage({ navigate }: Props) {
         {/* Heading & Subtitle */}
         <div className="text-center mb-5">
           <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            {authMode === 'login' ? 'Welcome Back' : 'Create SYS Account'}
+            {authMode === 'login' ? '{t('Welcome Back')}' : '{t('Create SYS Account')}'}
           </h2>
           <p className="text-xs text-slate-400 mt-1">
             Sign in to continue streaming and gaming
@@ -113,7 +115,7 @@ export default function LoginPage({ navigate }: Props) {
             </span>
             <input
               type="text"
-              placeholder="Username or Email"
+              placeholder="{t('Username or Email')}"
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
@@ -134,7 +136,7 @@ export default function LoginPage({ navigate }: Props) {
             </span>
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••••"
+              placeholder={t('Password')}
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
               className="w-full pl-10 pr-10 py-3 bg-slate-950/80 border border-purple-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400 transition-colors font-mono"
