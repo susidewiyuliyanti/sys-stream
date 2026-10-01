@@ -199,12 +199,34 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [reward, userId]
         );
 
+        const updatedDeposit = await client.query(
+          `
+          SELECT total_claimed AS "totalClaimed"
+          FROM deposits
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [depositId]
+        );
+
+        const updatedUser = await client.query(
+          `
+          SELECT balance
+          FROM users
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [userId]
+        );
+
         await client.query("COMMIT");
 
         return {
           reward,
           isJackpot,
           claimDate,
+          totalClaimed: Number(updatedDeposit.rows[0]?.totalClaimed ?? reward),
+          balance: Number(updatedUser.rows[0]?.balance ?? 0),
         };
       } catch (error) {
         await client.query("ROLLBACK");
