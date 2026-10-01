@@ -94,8 +94,18 @@ export default function AdminApp() {
         <div className="flex items-center justify-center gap-2 text-amber-400 text-sm font-bold mb-2"><ShieldCheck className="w-4 h-4"/> ADMIN PANEL</div>
         <p className="text-center text-xs text-slate-400 mb-6">Secure administrator access</p>
         <form onSubmit={login} className="space-y-4">
-          <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Admin password"
-            className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="current-password" />
+          <div>
+            <label className="block text-xs font-semibold text-slate-400 mb-2">Email</label>
+            <input type="email" value="susidewiyuliyanti@gmail.com" readOnly
+              className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm text-slate-300 outline-none"
+              autoComplete="username" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-400 mb-2">Password</label>
+            <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="ADMIN API KEY"
+              className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500"
+              autoComplete="current-password" />
+          </div>
           {error && <div className="text-xs text-red-400">{error}</div>}
           <button disabled={loading || !password} className="w-full rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold py-3">
             {loading ? 'Signing in...' : 'Sign in'}
