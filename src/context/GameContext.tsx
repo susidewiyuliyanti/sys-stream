@@ -223,15 +223,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(prev => ({ ...prev, username: customName.trim() }));
     }
     setLoginModalOpen(false);
+    void refreshFinancialState();
     sound.playWin();
     showToast('Logged In Successfully', `Welcome back, ${customName || user.username}!`, 'success');
   };
 
   const logout = () => {
-    setIsLoggedIn(false);
+    localStorage.removeItem('sys_stream_auth_token');
+    localStorage.removeItem('sys_stream_auth_user');
     localStorage.setItem('sys_is_logged_in', 'false');
+    setIsLoggedIn(false);
+    setUser(DEFAULT_USER);
+    setLocks([]);
     sound.playClick();
-    showToast('Logged Out', 'Viewing games as Guest. Login is required to place bets.', 'info');
+    showToast('Logged Out', 'You must log in again before playing.', 'info');
   };
 
   const requireAuth = (action: () => void): boolean => {
