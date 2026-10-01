@@ -110,11 +110,8 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                   className="w-full px-3.5 py-2 text-sm bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
-              <div className="mt-1.5 flex items-center justify-between text-xs text-slate-400">
-                <span>Rate: 1 USD = 100 Gold Coins</span>
-                <span className="text-amber-400 font-medium">
-                  Receives: {customUsd ? Math.floor(parseFloat(customUsd) * 100 || 0) : selectedUsd * 100} Coins
-                </span>
+              <div className="mt-1.5 text-xs text-slate-500">
+                Deposit is credited to your real account balance after payment confirmation.
               </div>
             </div>
 
