@@ -61,11 +61,15 @@ export default function AdminApp() {
   const login=async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();setError('');setLoading(true);
     try{
-      // Read the live form values instead of React state so browser password
-      // managers/autofill are handled even when they do not fire onChange.
-      const form=new FormData(e.currentTarget);
-      const loginEmail=String(form.get('email')||email).trim().toLowerCase();
-      const loginPassword=String(form.get('password')||password);
+      // Read the actual DOM controls at submit time. This deliberately does
+      // not depend on React onChange firing, which some password managers and
+      // browser autofill implementations do not trigger.
+      const form=e.currentTarget;
+      const emailInput=form.elements.namedItem('email') as HTMLInputElement | null;
+      const passwordInput=form.elements.namedItem('password') as HTMLInputElement | null;
+      const loginEmail=String(emailInput?.value || '').trim().toLowerCase();
+      const loginPassword=String(passwordInput?.value || '');
+      if(!loginPassword) throw new Error('Password / Owner Key wajib diisi.');
       const data=await request('/login',{method:'POST',body:JSON.stringify({email:loginEmail,password:loginPassword})});
       setAdmin(data.admin);setEmail('');setPassword('');setAuthenticated(true);
     }catch(e:any){setError(e?.message||'Login admin gagal.');}
@@ -95,14 +99,14 @@ export default function AdminApp() {
           <form onSubmit={login} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2">Admin Email <span className="text-slate-600">(leave blank for owner key)</span></label>
-              <input name="email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="admin@sysstreamer.asia" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="username"/>
+              <input name="email" type="email" defaultValue="" onChange={e=>setEmail(e.target.value)} placeholder="admin@sysstreamer.asia" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="username"/>
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2">Password / Owner Key</label>
-              <input name="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Enter secure credential" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="current-password" autoFocus={!email}/>
+              <input name="password" type="password" defaultValue="" onChange={e=>setPassword(e.target.value)} placeholder="Enter secure credential" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="current-password" autoFocus/>
             </div>
             {error&&<div className="rounded-xl border border-red-500/20 bg-red-500/10 text-red-300 text-xs p-3">{error}</div>}
-            <button disabled={loading||!password} className="w-full rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold py-3">{loading?'Signing in...':'Sign in'}</button>
+            <button disabled={loading} className="w-full rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold py-3">{loading?'Signing in...':'Sign in'}</button>
           </form>
         </div>
       </div>
