@@ -93,12 +93,6 @@ export default function App() {
     if (currentPath === '/profile') {
       return <ProfilePage />;
     }
-    if (currentPath === '/leaderboard') {
-      return <LeaderboardPage />;
-    }
-    if (currentPath === '/referral') {
-      return <ReferralPage />;
-    }
     // Legacy/demo game routes are intentionally disabled in production.
     // Only server-backed production pages are reachable from the user app.
     return <LoginPage navigate={navigate} />;
