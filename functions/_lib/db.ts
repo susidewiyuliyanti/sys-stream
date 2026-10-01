@@ -1,4 +1,4 @@
-export interface Env { DB: D1Database; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; }
+export interface Env { DB: D1Database; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; RESEND_API_KEY?: string; EMAIL_FROM?: string; }
 export interface DbRow { [key:string]: any }
 export interface DbResult { rows: DbRow[]; rowCount:number }
 export interface DbClient { query(sql:string, params?:any[]):Promise<DbResult> }
@@ -6,7 +6,7 @@ function normalizeSql(sql:string):string {
  return sql.replace(/\$\d+/g,"?").replace(/\bNOW\(\)/gi,"CURRENT_TIMESTAMP").replace(/\s+FOR\s+UPDATE\b/gi,"")
   .replace(/\bbalance\b/g,"available_balance").replace(/\blocked_saldo\b/g,"total_locked");
 }
-export async function withDb<T>(env:Env, fn:(client:DbClient)=>Promise<T>):Promise<T>{
+export async function withDb<T>(env:Env, fn:(client:DbClient)=>Promise<T>):Promise<T>{ 
  const client:DbClient={async query(sql,params=[]){
   const s=normalizeSql(sql);
   if(/^\s*(BEGIN|COMMIT|ROLLBACK)\b/i.test(s)) return {rows:[],rowCount:0};
