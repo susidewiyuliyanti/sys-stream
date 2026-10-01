@@ -52,13 +52,7 @@ export default function LoginPage({ navigate }: Props) {
 
   const handleWalletAuth = () => {
     sound.playClick();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const shortAddr = '0x' + Math.random().toString(16).substring(2, 6) + '...' + Math.random().toString(16).substring(2, 6);
-      login(`Web3_${shortAddr.slice(2, 6)}`);
-      if (navigate) navigate('/room/main');
-    }, 900);
+    window.alert('Wallet login belum tersedia. Silakan login atau register dengan akun SYS terlebih dahulu.');
   };
 
   return (
@@ -198,14 +192,14 @@ export default function LoginPage({ navigate }: Props) {
           </div>
         </div>
 
-        {/* Connect Crypto Wallet Button */}
+        {/* Wallet authentication is intentionally disabled until a real wallet-signature flow is implemented. */}
         <button
           onClick={handleWalletAuth}
           type="button"
-          className="w-full py-3 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-bold text-xs rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-3 bg-slate-950/60 border border-slate-700 text-slate-500 font-bold text-xs rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
-          <Wallet className="w-4 h-4 text-cyan-400" />
-          <span>Connect Wallet</span>
+          <Wallet className="w-4 h-4 text-slate-500" />
+          <span>Wallet Login — Coming Soon</span>
         </button>
 
         {/* Register Prompt */}
