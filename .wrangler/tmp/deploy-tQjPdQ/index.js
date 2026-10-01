@@ -1,0 +1,430 @@
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+
+// worker/index.ts
+var RoomDurableObject = class {
+  static {
+    __name(this, "RoomDurableObject");
+  }
+  constructor(state, env) {
+    this.state = state;
+    this.env = env;
+    this.sessions = /* @__PURE__ */ new Map();
+    this.state.blockConcurrencyWhile(async () => {
+      const stored = await this.state.storage.get("roomData");
+      if (stored) {
+        this.roomData = stored;
+      } else {
+        this.roomData = {
+          roomId: "room_main",
+          streamerId: "streamer_neo_01",
+          tiktokLiveId: "@neostreamer_live",
+          title: "\xF0\u0178\u201D\xA5 TIKTOK LIVE ARENA - TEBAK & SPINNER JACKPOT",
+          chat: [
+            { id: "1", user: "TikTok_Viewer_44", text: "Halo bang! Gaskeun spinnernya! \xF0\u0178\u201D\xA5", source: "tiktok", timestamp: Date.now() - 4e4 },
+            { id: "2", user: "App_CyberGamer", text: "All in Tebak angka High nih!", source: "app", timestamp: Date.now() - 25e3 },
+            { id: "3", user: "TikTok_Budi", text: "Sent 1x Rose \xF0\u0178\u0152\xB9", source: "tiktok", gift: "Rose \xF0\u0178\u0152\xB9", timestamp: Date.now() - 1e4 }
+          ],
+          activeGame: "idle",
+          viewersCount: 248
+        };
+      }
+    });
+  }
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname === "/ws" || url.pathname === "/websocket") {
+      if (request.headers.get("Upgrade") !== "websocket") {
+        return new Response("Expected WebSocket upgrade", { status: 400 });
+      }
+      const pair = new WebSocketPair();
+      const client = pair[0];
+      const server = pair[1];
+      await this.handleWebSocketSession(
+        server,
+        url.searchParams.get("user") || "neo_user_922"
+      );
+      return new Response(null, { status: 101, webSocket: client });
+    }
+    if (url.pathname === "/api/chat") {
+      if (request.method === "POST") {
+        const body = await request.json();
+        const newMsg = {
+          id: "c_" + Date.now(),
+          user: body.user || "Anonymous",
+          text: body.text || "",
+          source: body.source || "app",
+          gift: body.gift,
+          timestamp: Date.now()
+        };
+        this.roomData.chat.push(newMsg);
+        if (this.roomData.chat.length > 80) this.roomData.chat.shift();
+        await this.state.storage.put("roomData", this.roomData);
+        this.broadcastChat();
+        return new Response(JSON.stringify({ success: true, message: newMsg }), {
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+      return new Response(JSON.stringify(this.roomData.chat), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    if (url.pathname === "/api/room-state") {
+      return new Response(JSON.stringify(this.roomData), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    return new Response("Not Found", { status: 404 });
+  }
+  async handleWebSocketSession(ws, user) {
+    ws.accept?.();
+    this.sessions.set(ws, { user });
+    this.roomData.viewersCount = Math.max(248, this.sessions.size + 240);
+    ws.send(JSON.stringify({ type: "init", chat: this.roomData.chat, roomState: this.roomData }));
+    ws.addEventListener("message", async (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        if (msg.type === "chat") {
+          const chatMsg = {
+            id: "c_" + Date.now() + Math.random().toString(36).substring(2, 5),
+            user: msg.user || user,
+            text: msg.text || "",
+            source: msg.source || "app",
+            gift: msg.gift,
+            timestamp: Date.now()
+          };
+          this.roomData.chat.push(chatMsg);
+          if (this.roomData.chat.length > 80) this.roomData.chat.shift();
+          await this.state.storage.put("roomData", this.roomData);
+          this.broadcastChat();
+        } else if (msg.type === "game_event") {
+          this.roomData.activeGame = msg.game;
+          this.roomData.gameData = msg.data;
+          await this.state.storage.put("roomData", this.roomData);
+          this.broadcast({ type: "game_event", game: msg.game, data: msg.data });
+        }
+      } catch (err) {
+        console.error("Error handling WebSocket message:", err);
+      }
+    });
+    ws.addEventListener("close", () => {
+      this.sessions.delete(ws);
+      this.roomData.viewersCount = Math.max(248, this.sessions.size + 240);
+    });
+  }
+  broadcastChat() {
+    this.broadcast({ type: "chat", chat: this.roomData.chat });
+  }
+  broadcast(payload) {
+    const data = JSON.stringify(payload);
+    for (const [ws] of this.sessions) {
+      try {
+        ws.send(data);
+      } catch {
+        this.sessions.delete(ws);
+      }
+    }
+  }
+};
+var index_default = {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization, x-api-key"
+        }
+      });
+    }
+    if (url.pathname === "/ws" || url.pathname.startsWith("/api/room/ws")) {
+      const id = env.ROOM_DURABLE_OBJECT.idFromName("main_room");
+      const stub = env.ROOM_DURABLE_OBJECT.get(id);
+      return stub.fetch(request);
+    }
+    if (url.pathname === "/api/locks/create" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { userId, amount, durationDays } = body;
+        const numAmount = Number(amount);
+        const days = Number(durationDays);
+        if (numAmount < 4) {
+          return new Response(JSON.stringify({ error: "Minimum lock amount is 4.00" }), { status: 400 });
+        }
+        if (![30, 60, 90].includes(days)) {
+          return new Response(JSON.stringify({ error: "Duration must be 30, 60, or 90 days" }), { status: 400 });
+        }
+        const multiplier = days === 30 ? 1.15 : days === 60 ? 1.35 : 1.65;
+        const lockId = "lock_" + Date.now() + Math.random().toString(36).substring(2, 6);
+        const startDate = Date.now();
+        const endDate = startDate + days * 864e5;
+        if (env.DB) {
+          const user = await env.DB.prepare("SELECT available_balance FROM users WHERE id = ?").bind(userId).first();
+          if (user && user.available_balance < numAmount) {
+            return new Response(JSON.stringify({ error: "Insufficient available balance" }), { status: 400 });
+          }
+          await env.DB.batch([
+            env.DB.prepare(
+              `INSERT INTO locks (id, user_id, amount, duration_days, multiplier, start_date, end_date, status, daily_claims)
+               VALUES (?, ?, ?, ?, ?, ?, ?, 'locked', 0)`
+            ).bind(lockId, userId, numAmount, days, multiplier, startDate, endDate),
+            env.DB.prepare(
+              `UPDATE users SET available_balance = available_balance - ?, total_locked = total_locked + ? WHERE id = ?`
+            ).bind(numAmount, numAmount, userId)
+          ]);
+        }
+        return new Response(JSON.stringify({
+          success: true,
+          lock: { id: lockId, userId, amount: numAmount, durationDays: days, multiplier, startDate, endDate, status: "locked" }
+        }), {
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+      }
+    }
+    if (url.pathname === "/api/locks/claim" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { lockId, userId } = body;
+        let claimedAmount = 0.5;
+        if (env.DB) {
+          const lock = await env.DB.prepare("SELECT amount, multiplier, daily_claims FROM locks WHERE id = ? AND user_id = ?").bind(lockId, userId).first();
+          if (lock) {
+            claimedAmount = Number((lock.amount * (lock.multiplier - 1) / 30).toFixed(4));
+            await env.DB.batch([
+              env.DB.prepare("UPDATE locks SET daily_claims = daily_claims + 1 WHERE id = ?").bind(lockId),
+              env.DB.prepare("UPDATE users SET available_balance = available_balance + ? WHERE id = ?").bind(claimedAmount, userId)
+            ]);
+          }
+        }
+        return new Response(JSON.stringify({ success: true, claimedAmount }), {
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+      }
+    }
+    if (url.pathname === "/api/payments/nowpayments-diagnostic" && request.method === "GET") {
+      const adminKey = request.headers.get("x-admin-api-key");
+      if (!env.ADMIN_API_KEY || adminKey !== env.ADMIN_API_KEY) {
+        return new Response(JSON.stringify({
+          error: "Unauthorized"
+        }), {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+      }
+      try {
+        const response = await fetch("https://api.nowpayments.io/v1/currencies", {
+          method: "GET",
+          headers: {
+            "x-api-key": env.NOWPAYMENTS_API_KEY
+          }
+        });
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = {
+            raw: text
+          };
+        }
+        return new Response(JSON.stringify({
+          success: response.ok,
+          nowpayments_status: response.status,
+          has_api_key: Boolean(env.NOWPAYMENTS_API_KEY),
+          usdttrc20_available: Array.isArray(data.currencies) ? data.currencies.includes("usdttrc20") : null,
+          response: data
+        }), {
+          status: response.ok ? 200 : 502,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({
+          error: "NOWPayments diagnostic request failed",
+          message: error?.message || String(error)
+        }), {
+          status: 502,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+      }
+    }
+    if (url.pathname === "/api/payments/create-invoice" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const userId = String(body.userId || "").trim();
+        const amountUsd = Number(body.amountUsd ?? body.amount);
+        const currency = String(body.currency ?? body.payCurrency ?? "usdttrc20").trim().toLowerCase();
+        if (!userId) {
+          return new Response(JSON.stringify({ error: "userId is required" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+          });
+        }
+        if (!Number.isFinite(amountUsd) || amountUsd <= 0) {
+          return new Response(JSON.stringify({ error: "amountUsd must be greater than 0" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+          });
+        }
+        if (!currency) {
+          return new Response(JSON.stringify({ error: "currency is required" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+          });
+        }
+        if (!env.DB) {
+          throw new Error("D1 database binding is unavailable");
+        }
+        const user = await env.DB.prepare("SELECT id, username, available_balance, total_locked FROM users WHERE id = ?").bind(userId).first();
+        if (!user) {
+          return new Response(JSON.stringify({
+            error: "User not found",
+            userId
+          }), {
+            status: 404,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+          });
+        }
+        const orderId = `DEP_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
+        const npResponse = await fetch("https://api.nowpayments.io/v1/payment", {
+          method: "POST",
+          headers: {
+            "x-api-key": env.NOWPAYMENTS_API_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            price_amount: amountUsd,
+            price_currency: "usd",
+            pay_currency: currency,
+            ipn_callback_url: `${env.BASE_URL}/api/payments/ipn`,
+            order_id: orderId,
+            order_description: `SYS Streamer deposit for ${userId}`
+          })
+        });
+        const npText = await npResponse.text();
+        let npData;
+        try {
+          npData = JSON.parse(npText);
+        } catch {
+          npData = { raw: npText };
+        }
+        if (!npResponse.ok) {
+          return new Response(JSON.stringify({
+            error: "NOWPayments create payment failed",
+            nowpayments_status: npResponse.status,
+            details: npData
+          }), {
+            status: 502,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+          });
+        }
+        const paymentId = String(npData.payment_id || "");
+        const invoiceId = npData.invoice_id != null ? String(npData.invoice_id) : null;
+        if (!paymentId) {
+          throw new Error("NOWPayments response did not contain payment_id");
+        }
+        await env.DB.prepare(
+          `INSERT INTO payments (
+            payment_id,
+            invoice_id,
+            user_id,
+            amount,
+            status,
+            credited,
+            created_at,
+            nowpayments_status,
+            pay_currency,
+            pay_amount,
+            pay_address,
+            order_id
+          ) VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)`
+        ).bind(
+          paymentId,
+          invoiceId,
+          userId,
+          amountUsd,
+          "PENDING",
+          Math.floor(Date.now() / 1e3),
+          npData.payment_status || "waiting",
+          npData.pay_currency || currency,
+          npData.pay_amount ?? null,
+          npData.pay_address ?? null,
+          orderId
+        ).run();
+        return new Response(JSON.stringify({
+          success: true,
+          invoice: {
+            payment_id: paymentId,
+            invoice_id: invoiceId,
+            user_id: userId,
+            amount_usd: amountUsd,
+            pay_currency: npData.pay_currency || currency,
+            pay_amount: npData.pay_amount ?? null,
+            pay_address: npData.pay_address ?? null,
+            order_id: orderId,
+            status: "PENDING",
+            nowpayments_status: npData.payment_status || "waiting"
+          }
+        }), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({
+          error: err?.message || String(err)
+        }), {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+      }
+    }
+    if (url.pathname === "/api/payments/ipn" && request.method === "POST") {
+      const data = await request.json();
+      if (data.payment_status === "confirmed" || data.payment_status === "finished") {
+        if (env.DB) {
+          await env.DB.prepare(
+            `UPDATE payments SET status = ?, credited = 1 WHERE payment_id = ?`
+          ).bind(data.payment_status, data.order_id).run();
+          await env.DB.prepare(
+            `UPDATE users SET available_balance = available_balance + ? WHERE id = ?`
+          ).bind(data.price_amount, data.user_id).run();
+        }
+      }
+      return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
+    }
+    if (url.pathname === "/api/leaderboard") {
+      return new Response(JSON.stringify([
+        { user_id: "u1", username: "CyberWhale_88", points: 14850 },
+        { user_id: "u2", username: "ValkyrieStrike", points: 11200 },
+        { user_id: "u3", username: "NeonMatrix", points: 9400 }
+      ]), { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" } });
+    }
+    return new Response(JSON.stringify({ message: "SYS STREAMER API v1.0.0" }), {
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+};
+export {
+  RoomDurableObject,
+  index_default as default
+};
+//# sourceMappingURL=index.js.map

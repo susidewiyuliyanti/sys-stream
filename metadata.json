@@ -1,6 +1,6 @@
 {
-  "name": "LiveStream Game Studio - Tebak Nomor Seri, Spinner & TTS OBS TikTok",
-  "description": "SYS Streamer by SYS Agency: Aplikasi game interaktif broadcast OBS Studio & TikTok Live: Tebak Nomor Seri Uang 3D, Lucky Spinner Roda Putar, dan Game 3D Blind Box Deposit dengan Cloud Database & JWT Auth.",
+  "name": "SYS STREAM",
+  "description": "Real-time gaming, lucky spinner, mystery blind boxes, live prediction duels, leaderboards, and crypto rewards platform.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

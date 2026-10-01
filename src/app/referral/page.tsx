@@ -1,0 +1,291 @@
+import React, { useState } from 'react';
+import { useGame } from '../../context/GameContext';
+import { sound } from '../../lib/sound';
+import { Users, Copy, Check, Gift, ArrowRight, Share2, DollarSign, Award, Sparkles } from 'lucide-react';
+import confetti from 'canvas-confetti';
+
+export default function ReferralPage() {
+  const { user, claimReferralRewards, showToast } = useGame();
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [pendingClaim, setPendingClaim] = useState({ coins: 380, diamonds: 12 });
+  const [isClaimed, setIsClaimed] = useState(false);
+
+  // Commission calculator state
+  const [calcFriends, setCalcFriends] = useState(15);
+  const [calcWagerPerFriend, setCalcWagerPerFriend] = useState(1000);
+
+  const referralLink = typeof window !== 'undefined'
+    ? `${window.location.origin}/login?ref=${user.referralCode}`
+    : `https://nexus-arcade.pages.dev/login?ref=${user.referralCode}`;
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(referralLink);
+    setCopiedLink(true);
+    sound.playClick();
+    setTimeout(() => setCopiedLink(false), 2000);
+    showToast('Copied Link', 'Referral link copied to clipboard!', 'info');
+  };
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(user.referralCode);
+    setCopiedCode(true);
+    sound.playClick();
+    setTimeout(() => setCopiedCode(false), 2000);
+    showToast('Copied Code', `Referral code ${user.referralCode} copied!`, 'info');
+  };
+
+  const handleClaim = () => {
+    if (pendingClaim.coins === 0 && pendingClaim.diamonds === 0) {
+      showToast('No Pending Rewards', 'All referral commissions have already been transferred.', 'info');
+      return;
+    }
+
+    claimReferralRewards();
+    confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+    setPendingClaim({ coins: 0, diamonds: 0 });
+    setIsClaimed(true);
+  };
+
+  const estMonthlyEarnings = Math.floor(calcFriends * calcWagerPerFriend * 0.05);
+
+  const mockReferees = [
+    { id: '1', username: 'PixelKnight', date: '2026-09-30', tier: 1, volume: '4,500 Coins', commission: '+225 Coins' },
+    { id: '2', username: 'VortexHunter', date: '2026-09-29', tier: 1, volume: '2,100 Coins', commission: '+105 Coins' },
+    { id: '3', username: 'SolarFlare', date: '2026-09-28', tier: 2, volume: '1,800 Coins', commission: '+45 Coins' },
+    { id: '4', username: 'ZeroGravity', date: '2026-09-27', tier: 3, volume: '3,200 Coins', commission: '+32 Coins' },
+  ];
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="text-center max-w-2xl mx-auto mb-8">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-3">
+          <Gift className="w-3.5 h-3.5" />
+          <span>Affiliate Partner Program</span>
+        </div>
+        <h1 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
+          Earn Passive Crypto & Gold Coins
+        </h1>
+        <p className="mt-2 text-sm text-slate-400">
+          Invite fellow gamers to NEXUS. Earn up to 5% lifetime commission on every bet across 3 tiers, plus instant sign-up bonuses.
+        </p>
+      </div>
+
+      {/* Primary Referral Link Card */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
+        <div className="grid md:grid-cols-12 gap-6 items-center">
+          <div className="md:col-span-7 space-y-4">
+            <h2 className="text-lg font-bold text-white">Your Personal Affiliate Link</h2>
+            <p className="text-xs text-slate-400">
+              Anyone registering with your link receives a free <strong className="text-amber-400">+500 Gold Coins</strong> starter bonus.
+            </p>
+
+            {/* Share Link Input */}
+            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl p-2 pl-3">
+              <span className="text-xs font-mono text-slate-300 truncate flex-1 select-all">
+                {referralLink}
+              </span>
+              <button
+                onClick={copyLink}
+                className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
+              >
+                {copiedLink ? <Check className="w-4 h-4 text-emerald-950" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+              </button>
+            </div>
+
+            {/* Referral Code Quick Copy */}
+            <div className="flex items-center gap-3 text-xs text-slate-400">
+              <span>Direct Promo Code:</span>
+              <button
+                onClick={copyCode}
+                className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md hover:border-amber-500/50 transition-colors flex items-center gap-1.5"
+              >
+                <span>{user.referralCode}</span>
+                {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Pending Commission Balance & Claim Box */}
+          <div className="md:col-span-5 bg-slate-950 border border-amber-500/30 rounded-2xl p-6 space-y-4 text-center">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Unclaimed Commission Balance
+            </div>
+
+            <div className="flex items-center justify-center gap-3">
+              <div className="text-2xl font-mono font-black text-amber-400">
+                🪙 {pendingClaim.coins.toLocaleString()}
+              </div>
+              <span className="text-slate-600">·</span>
+              <div className="text-2xl font-mono font-black text-cyan-400">
+                💎 {pendingClaim.diamonds}
+              </div>
+            </div>
+
+            <button
+              onClick={handleClaim}
+              disabled={pendingClaim.coins === 0 && pendingClaim.diamonds === 0}
+              className="w-full py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 font-extrabold text-sm rounded-xl transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 fill-current" />
+              <span>{isClaimed ? 'All Claimed!' : 'Claim Commission to Wallet'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 3-Tier Compensation Tree Breakdown */}
+      <div className="grid md:grid-cols-3 gap-4 mb-8">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold">
+              Tier 1 (Direct)
+            </span>
+            <span className="text-lg font-mono font-black text-white">5.0%</span>
+          </div>
+          <h3 className="text-sm font-bold text-white">Direct Invitations</h3>
+          <p className="text-xs text-slate-400 mt-1">
+            Players who register directly via your personal link or referral code.
+          </p>
+          <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
+            <span className="text-slate-400">Active Referees:</span>
+            <span className="font-mono text-white font-bold">14 Players</span>
+          </div>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold">
+              Tier 2 (Sub-Affiliate)
+            </span>
+            <span className="text-lg font-mono font-black text-white">2.5%</span>
+          </div>
+          <h3 className="text-sm font-bold text-white">Network Invites</h3>
+          <p className="text-xs text-slate-400 mt-1">
+            Players invited by your Tier 1 direct referees.
+          </p>
+          <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
+            <span className="text-slate-400">Active Referees:</span>
+            <span className="font-mono text-white font-bold">32 Players</span>
+          </div>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/30 text-xs font-bold">
+              Tier 3 (Extended)
+            </span>
+            <span className="text-lg font-mono font-black text-white">1.0%</span>
+          </div>
+          <h3 className="text-sm font-bold text-white">Deep Ecosystem</h3>
+          <p className="text-xs text-slate-400 mt-1">
+            Players invited down the tree by your Tier 2 network.
+          </p>
+          <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
+            <span className="text-slate-400">Active Referees:</span>
+            <span className="font-mono text-white font-bold">58 Players</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Commission Estimator Calculator */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
+        <h3 className="text-base font-bold text-white mb-1">Affiliate Income Calculator</h3>
+        <p className="text-xs text-slate-400 mb-6">
+          Slide to project your estimated monthly passive revenue based on active friends.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-5">
+            <div>
+              <div className="flex justify-between text-xs text-slate-300 mb-1.5">
+                <span>Active Friends Invited:</span>
+                <span className="font-mono font-bold text-amber-400">{calcFriends} Friends</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value={calcFriends}
+                onChange={(e) => setCalcFriends(Number(e.target.value))}
+                className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between text-xs text-slate-300 mb-1.5">
+                <span>Average Weekly Wager per Friend:</span>
+                <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} Coins</span>
+              </div>
+              <input
+                type="range"
+                min="100"
+                max="10000"
+                step="100"
+                value={calcWagerPerFriend}
+                onChange={(e) => setCalcWagerPerFriend(Number(e.target.value))}
+                className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+              />
+            </div>
+          </div>
+
+          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center">
+            <div className="text-xs text-slate-400 uppercase font-semibold">Estimated Monthly Earnings</div>
+            <div className="text-3xl sm:text-4xl font-mono font-black text-amber-400 mt-2">
+              +{estMonthlyEarnings.toLocaleString()} Coins
+            </div>
+            <div className="text-xs text-emerald-400 font-mono mt-1">
+              ≈ ${(estMonthlyEarnings / 100).toFixed(2)} USD / month
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Referral Activity Table */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="p-4 border-b border-slate-800 flex justify-between items-center">
+          <h3 className="text-sm font-bold text-white">Live Referral Feed</h3>
+          <span className="text-xs text-slate-400">Total Referrals: 104</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+              <tr>
+                <th className="py-3 px-4">Referee Handle</th>
+                <th className="py-3 px-4">Date Joined</th>
+                <th className="py-3 px-4">Commission Tier</th>
+                <th className="py-3 px-4">Wager Volume</th>
+                <th className="py-3 px-4 text-right">Commission Earned</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60 font-mono">
+              {mockReferees.map(row => (
+                <tr key={row.id} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="py-3.5 px-4 font-sans font-semibold text-white">
+                    {row.username}
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-400">
+                    {row.date}
+                  </td>
+                  <td className="py-3.5 px-4 font-sans">
+                    <span className="px-2 py-0.5 rounded bg-slate-800 text-amber-400 text-[11px] font-semibold">
+                      Tier {row.tier}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-300">
+                    {row.volume}
+                  </td>
+                  <td className="py-3.5 px-4 text-right font-bold text-emerald-400">
+                    {row.commission}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,7 +1,0 @@
-prisma/
-src/
-public/
-  _headers
-  _redirects
-package.json
-...

@@ -1,0 +1,22 @@
+﻿name = "sys-streamer"
+main = "worker/index.ts"
+compatibility_date = "2024-04-01"
+
+[vars]
+ENVIRONMENT = "production"
+BASE_URL = "https://sys-streamer.pages.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sys-streamer-db"
+database_id = "b4500803-e9a8-46dc-9dc3-11a87c5fa365"
+
+[durable_objects]
+bindings = [
+  { name = "ROOM_DURABLE_OBJECT", class_name = "RoomDurableObject" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RoomDurableObject"]
+
