@@ -30,17 +30,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT
             id,
-            "userId",
+            user_id,
             amount,
-            "durationDays",
-            "startDate",
-            "endDate",
+            duration_days,
+            start_date,
+            end_date,
             status,
-            "totalClaimed",
-            "forceJackpot"
+            total_claimed,
+            force_jackpot
           FROM deposits
           WHERE id = $1
-            AND "userId" = $2
+            AND user_id = $2
           FOR UPDATE
           `,
           [depositId, userId]
@@ -79,8 +79,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT id
           FROM blind_box_claims
-          WHERE "depositId" = $1
-            AND "claimDate" = $2
+          WHERE deposit_id = $1
+            AND claim_date = $2
           LIMIT 1
           `,
           [depositId, claimDate]
@@ -152,12 +152,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         await client.query(
           `
           INSERT INTO blind_box_claims (
-            "depositId",
-            "userId",
-            "claimDate",
+            deposit_id,
+            user_id,
+            claim_date,
             amount,
-            "isJackpot",
-            "claimedAt"
+            is_jackpot,
+            claimed_at
           )
           VALUES (
             $1,
@@ -181,7 +181,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           UPDATE deposits
           SET
-            "totalClaimed" = "totalClaimed" + $1
+            total_claimed = total_claimed + $1
           WHERE id = $2
           `,
           [reward, depositId]
@@ -192,8 +192,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           UPDATE users
           SET
             saldo = saldo + $1,
-            "walletBalance" = "walletBalance" + $1,
-            "updatedAt" = NOW()
+            wallet_balance = wallet_balance + $1,
+            updated_at = NOW()
           WHERE id = $2
           `,
           [reward, userId]
