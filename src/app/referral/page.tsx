@@ -15,9 +15,8 @@ export default function ReferralPage() {
   const [calcFriends, setCalcFriends] = useState(15);
   const [calcWagerPerFriend, setCalcWagerPerFriend] = useState(1000);
 
-  const referralLink = typeof window !== 'undefined'
-    ? `${window.location.origin}/login?ref=${user.referralCode}`
-    : `https://nexus-arcade.pages.dev/login?ref=${user.referralCode}`;
+  const PRODUCTION_DOMAIN = 'https://sysstreamer.asia';
+  const referralLink = `${PRODUCTION_DOMAIN}/login?ref=${encodeURIComponent(user.referralCode)}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
