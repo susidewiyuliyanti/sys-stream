@@ -1,4 +1,17 @@
 -- Admin accounts and auditable promotional jackpot grants.
+-- Production-safe migration: create the admin session table if it does not exist,
+-- including the admin identity column used by named admin accounts.
+
+CREATE TABLE IF NOT EXISTS admin_sessions (
+  token TEXT PRIMARY KEY,
+  created_at INTEGER NOT NULL,
+  expires_at INTEGER NOT NULL,
+  admin_user_id TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_admin_sessions_admin_user
+  ON admin_sessions(admin_user_id);
+
 CREATE TABLE IF NOT EXISTS admin_users (
   id TEXT PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
@@ -10,13 +23,8 @@ CREATE TABLE IF NOT EXISTS admin_users (
   updated_at INTEGER NOT NULL
 );
 
-ALTER TABLE admin_sessions ADD COLUMN admin_user_id TEXT;
-
 CREATE INDEX IF NOT EXISTS idx_admin_users_active
   ON admin_users(active);
-
-CREATE INDEX IF NOT EXISTS idx_admin_sessions_admin_user
-  ON admin_sessions(admin_user_id);
 
 CREATE TABLE IF NOT EXISTS jackpot_grants (
   id TEXT PRIMARY KEY,
