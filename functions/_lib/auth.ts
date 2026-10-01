@@ -8,6 +8,7 @@ export interface AuthUser {
   role?: string;
   balance?: number;
   lockedBalance?: number;
+  emailVerified?: boolean;
 }
 
 const textEncoder = new TextEncoder();
@@ -70,21 +71,27 @@ export async function requireAuth(request: Request, env: Env) {
 
   const row = await env.DB.prepare(
     `SELECT u.id, u.username, u.email, u.display_name AS displayName, u.role,
+            COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance,0) AS balance,
             COALESCE(u.total_locked,0) AS lockedBalance
      FROM auth_sessions s
      JOIN users u ON u.id = s.user_id
      WHERE s.token = ? AND s.expires_at > ?
      LIMIT 1`
-  ).bind(token, Math.floor(Date.now() / 1000)).first<AuthUser>();
+  ).bind(token, Math.floor(Date.now() / 1000)).first<any>();
 
   if (!row) return { ok: false as const, response: json({ success: false, error: "Invalid or expired session" }, 401) };
+
+  if (Number(row.emailVerified || 0) !== 1) {
+    return { ok: false as const, response: json({ success: false, error: "Email belum diverifikasi." }, 403) };
+  }
 
   return {
     ok: true as const,
     user: {
       ...row,
       id: String(row.id),
+      emailVerified: true,
       balance: Number(row.balance ?? 0),
       lockedBalance: Number(row.lockedBalance ?? 0),
     },
@@ -95,6 +102,7 @@ export async function requireAuth(request: Request, env: Env) {
 export async function getUserById(env: Env, userId: string) {
   return env.DB.prepare(
     `SELECT id, username, email, display_name AS displayName, role,
+            COALESCE(email_verified,0) AS emailVerified,
             COALESCE(available_balance,0) AS balance,
             COALESCE(total_locked,0) AS lockedBalance
      FROM users WHERE id = ? LIMIT 1`
