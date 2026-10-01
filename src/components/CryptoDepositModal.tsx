@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import { CryptoInvoice } from '../types';
-import { X, Copy, CheckCircle, ExternalLink, QrCode, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { X, Copy, CheckCircle, ExternalLink, QrCode, ArrowRight, ShieldCheck } from 'lucide-react';
 import { sound } from '../lib/sound';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  const { createCryptoInvoice, simulatePaymentCompletion, showToast } = useGame();
+  const { createCryptoInvoice, showToast } = useGame();
   const [selectedUsd, setSelectedUsd] = useState<number>(50);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USDT');
   const [customUsd, setCustomUsd] = useState<string>('');
@@ -55,17 +55,6 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     setCopied(true);
     sound.playClick();
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleSimulateIpn = () => {
-    if (!invoice) return;
-    setIsConfirming(true);
-    sound.playClick();
-    setTimeout(() => {
-      simulatePaymentCompletion(invoice.orderId);
-      setIsConfirming(false);
-      onClose();
-    }, 1200);
   };
 
   return (
@@ -209,23 +198,6 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                     {copied ? <CheckCircle className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
-              </div>
-            </div>
-
-            {/* Test Simulation Button */}
-            <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-xs text-slate-300">
-                  <span className="font-semibold text-amber-400">Sandbox Test Mode:</span> Simulate NOWPayments IPN webhook confirmation.
-                </div>
-                <button
-                  onClick={handleSimulateIpn}
-                  disabled={isConfirming}
-                  className="px-3 py-1.5 bg-amber-500 text-slate-950 font-semibold text-xs rounded-lg hover:bg-amber-400 transition-colors shrink-0 flex items-center gap-1.5"
-                >
-                  <Zap className="w-3.5 h-3.5" />
-                  {isConfirming ? 'Confirming...' : 'Simulate IPN Payout'}
-                </button>
               </div>
             </div>
 
