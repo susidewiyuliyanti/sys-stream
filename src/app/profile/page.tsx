@@ -46,41 +46,22 @@ export default function ProfilePage() {
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
   // Compute total locked from locks or fallback to 500 for matching screenshot
-  const totalLocked = Math.max(500, getTotalLockedUsdt());
+  const totalLocked = getTotalLockedUsdt();
 
-  // Demo lock history matching Screenshot 2
-  const lockHistoryItems = [
-    {
-      id: 'lh_1',
-      badge: '30D LOCK',
-      amountUsdt: 200.0,
-      durationDays: 30,
-      yieldRate: '+0.8% / day',
-      startedDate: 'Oct 2, 2024',
-      statusText: 'UNLOCKS IN 12D',
-      statusColor: 'text-emerald-400',
-    },
-    {
-      id: 'lh_2',
-      badge: '60D LOCK',
-      amountUsdt: 200.0,
-      durationDays: 60,
-      yieldRate: '+1.2% / day',
-      startedDate: 'Sep 14, 2024',
-      statusText: 'LOCKED • 24D REMAINING',
-      statusColor: 'text-amber-400',
-    },
-    {
-      id: 'lh_3',
-      badge: '90D LOCK',
-      amountUsdt: 100.0,
-      durationDays: 90,
-      yieldRate: '+1.8% / day',
-      startedDate: 'Aug 26, 2024',
-      statusText: 'LOCKED • 67D REMAINING',
-      statusColor: 'text-purple-400',
-    },
-  ];
+  // Production lock history comes only from authenticated server state.
+  const lockHistoryItems = locks
+    .filter((item) => item.durationDays === selectedDurationFilter)
+    .map((item) => ({
+      id: item.id,
+      badge: `${item.durationDays}D LOCK`,
+      amountUsdt: item.amount,
+      yieldRate: `+${Math.max(0, (item.multiplier - 1) * 100).toFixed(2)}%`,
+      startedDate: new Date(item.startDate).toLocaleDateString(),
+      statusText: item.status === 'locked'
+        ? `LOCKED • ${Math.max(0, Math.ceil((item.endDate - Date.now()) / 86400000))}D REMAINING`
+        : 'UNLOCKED',
+      statusColor: item.status === 'locked' ? 'text-amber-400' : 'text-slate-500',
+    }));
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
