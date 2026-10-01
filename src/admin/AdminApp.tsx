@@ -95,11 +95,11 @@ export default function AdminApp() {
           <form onSubmit={login} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2">Admin Email <span className="text-slate-600">(leave blank for owner key)</span></label>
-              <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="admin@sysstreamer.asia" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="username"/>
+              <input name="email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="admin@sysstreamer.asia" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="username"/>
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2">Password / Owner Key</label>
-              <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Enter secure credential" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="current-password" autoFocus={!email}/>
+              <input name="password" type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Enter secure credential" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500" autoComplete="current-password" autoFocus={!email}/>
             </div>
             {error&&<div className="rounded-xl border border-red-500/20 bg-red-500/10 text-red-300 text-xs p-3">{error}</div>}
             <button disabled={loading||!password} className="w-full rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold py-3">{loading?'Signing in...':'Sign in'}</button>
