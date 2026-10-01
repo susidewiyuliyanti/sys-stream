@@ -51,10 +51,37 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isAuthenticated = Boolean(
+    typeof window !== 'undefined' && localStorage.getItem('sys_stream_auth_token')
+  );
+
+  const protectedPaths = [
+    '/game/tebak',
+    '/game/spinner',
+    '/game/blindbox',
+    '/profile',
+    '/leaderboard',
+    '/referral',
+  ];
+
+  useEffect(() => {
+    if (protectedPaths.some(path => currentPath === path || currentPath.startsWith(path + '/')) && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [currentPath, isAuthenticated]);
+
   const renderCurrentView = () => {
     if (currentPath === '/login') {
       return <LoginPage navigate={navigate} />;
     }
+
+    if (
+      protectedPaths.some(path => currentPath === path || currentPath.startsWith(path + '/')) &&
+      !isAuthenticated
+    ) {
+      return <LoginPage navigate={navigate} />;
+    }
+
     if (currentPath === '/game/spinner') {
       return <SpinnerGamePage />;
     }
