@@ -8,6 +8,8 @@ export interface UserProfile {
   diamonds: number;
   vipTier: number;
   referralCode: string;
+  registrationBonusIdr?: number;
+  registrationBonusGranted?: boolean;
   referredBy?: string;
   totalWon: number;
   totalBet: number;
