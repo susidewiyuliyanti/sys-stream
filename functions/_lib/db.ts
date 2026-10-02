@@ -1,4 +1,4 @@
-export interface Env { DB: D1Database; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; RESEND_API_KEY?: string; EMAIL_FROM?: string; }
+export interface Env { DB: D1Database; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; RESEND_API_KEY?: string; EMAIL_FROM?: string; NOWPAYMENTS_API_KEY?: string; NOWPAYMENTS_IPN_SECRET?: string; }
 export interface DbRow { [key:string]: any }
 export interface DbResult { rows: DbRow[]; rowCount:number }
 export interface DbClient { query(sql:string, params?:any[]):Promise<DbResult> }
