@@ -190,7 +190,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         terms_version,terms_accepted_at,email_verified,email_verified_at,
         registration_bonus_idr,registration_bonus_granted
       )
-      VALUES(?,?,?,?,?,'USER',0.8363,0,?,?,?,?,0,NULL,15000,1)`
+      VALUES(?,?,?,?,?,'USER',0,0,?,?,?,?,0,NULL,15000,1)`
     ).bind(
       id,
       username,
