@@ -2,6 +2,54 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 export type LanguageCode = 'id' | 'en' | 'es' | 'pt' | 'zh' | 'ja' | 'ko' | 'ar';
 
+
+// Registration bonus is stored canonically as IDR 15,000.
+// The display value is localized for the user's selected language.
+// Rates below are a presentation reference, not a payment/settlement rate.
+export const REGISTRATION_BONUS_IDR = 15000;
+const REGISTRATION_BONUS_IDR_PER_UNIT: Record<LanguageCode, number> = {
+  id: 1,
+  en: 17937,
+  es: 20154.04,
+  pt: 20154.04,
+  zh: 2675.35,
+  ja: 113.5732,
+  ko: 13.30,
+  ar: 4767.08,
+};
+
+const REGISTRATION_BONUS_CURRENCY: Record<LanguageCode, string> = {
+  id: 'IDR',
+  en: 'USD',
+  es: 'EUR',
+  pt: 'EUR',
+  zh: 'CNY',
+  ja: 'JPY',
+  ko: 'KRW',
+  ar: 'SAR',
+};
+
+export function formatRegistrationBonus(language: LanguageCode): string {
+  const currency = REGISTRATION_BONUS_CURRENCY[language];
+  const idrPerUnit = REGISTRATION_BONUS_IDR_PER_UNIT[language];
+  const amount = REGISTRATION_BONUS_IDR / idrPerUnit;
+  const locale = language === 'id' ? 'id-ID'
+    : language === 'en' ? 'en-US'
+    : language === 'es' ? 'es-ES'
+    : language === 'pt' ? 'pt-PT'
+    : language === 'zh' ? 'zh-CN'
+    : language === 'ja' ? 'ja-JP'
+    : language === 'ko' ? 'ko-KR'
+    : 'ar-SA';
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: ['JPY','KRW'].includes(currency) ? 0 : 2,
+    maximumFractionDigits: ['JPY','KRW'].includes(currency) ? 0 : 2,
+  }).format(amount);
+}
+
 export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: string }> = [
   { code: 'id', label: 'Indonesian', native: 'Bahasa Indonesia' },
   { code: 'en', label: 'English', native: 'English' },
