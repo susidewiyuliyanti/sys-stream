@@ -23,11 +23,11 @@ export async function onRequestPost(context:any){
       );
     }
 
-    const expectedMessage = "SYS STREAMER LOGIN\\n\\nNonce:" + String(nonceRow.nonce);
+    const expectedMessage = "SYS STREAMER LOGIN\n\nNonce:" + String(nonceRow.nonce);
     const receivedMessage = message;
 
     // Accept the exact current message and the legacy escaped-newline form.
-    const legacyMessage = receivedMessage.replace(/\\\\n/g, "\\n");
+    const legacyMessage = receivedMessage.replace(/\\n/g, "\n");
     const messageToVerify =
       receivedMessage === expectedMessage
         ? receivedMessage
