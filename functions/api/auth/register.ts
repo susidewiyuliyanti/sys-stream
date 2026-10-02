@@ -52,6 +52,9 @@ async function ensureRegistrationSchema(env: Env) {
     ["email_verified_at", "INTEGER"],
     ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
     ["wallet_address", "TEXT"],
+    ["referred_by", "TEXT"],
+    ["locked_saldo", "REAL NOT NULL DEFAULT 0"],
+    ["has_referral_bonus", "INTEGER NOT NULL DEFAULT 0"],
     ["avatar_url", "TEXT"],
     ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
@@ -200,11 +203,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     await env.DB.prepare(
       `INSERT INTO users(
         id,username,email,password_hash,display_name,role,
-        available_balance,total_locked,referral_code,created_at,
+        available_balance,total_locked,locked_saldo,referral_code,referred_by,created_at,
         terms_version,terms_accepted_at,email_verified,email_verified_at,
-        registration_bonus_idr,registration_bonus_granted
+        registration_bonus_idr,registration_bonus_granted,has_referral_bonus
       )
-      VALUES(?,?,?,?,?,'USER',0,0,?,?,?,?,0,NULL,15000,1)`
+      VALUES(?,?,?,?,?,'USER',0,0,0,?,?,?, ?,0,NULL,15000,1,0)`
     ).bind(
       id,
       username,
@@ -212,6 +215,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       passwordHash,
       displayName,
       userReferralCode,
+      incomingReferralCode || null,
       acceptedAt,
       TERMS_VERSION,
       acceptedAt
