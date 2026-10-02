@@ -351,6 +351,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     localStorage.setItem('nexus_user', JSON.stringify(user));
+    if (user.id || user.username || user.avatar || user.referralCode) {
+      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+        id: user.id,
+        username: user.username,
+        avatar: user.avatar,
+        referralCode: user.referralCode,
+        vipTier: user.vipTier,
+      }));
+    }
   }, [user]);
 
   useEffect(() => {
