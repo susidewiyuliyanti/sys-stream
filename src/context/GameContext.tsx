@@ -39,6 +39,7 @@ interface GameContextType {
   claimDailyLockYield: (lockId: string) => Promise<boolean>;
   unlockEarly: (lockId: string) => Promise<boolean>;
   claimBlindBox: (boxId: string) => Promise<any>;
+  claimRegistrationBonus: () => Promise<boolean>;
   refreshFinancialState: () => Promise<boolean>;
   hasActiveLock: () => boolean;
   getTotalLockedUsdt: () => number;
@@ -221,7 +222,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
       .then(async response => {
         const data = await response.json().catch(() => ({}));
-        if (!response.ok || !data?.success || !data?.user) throw new Error(data?.error || 'Session tidak valid.');
+        if (!response.ok || !data?.success || !data?.user) { const error: any = new Error(data?.error || 'Session check failed.'); error.status = response.status; throw error; }
         if (cancelled) return;
         const remote = data.user;
         setUser(prev => ({
@@ -238,31 +239,26 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('sys_is_logged_in', 'true');
         await refreshFinancialState();
       })
-      .catch(() => {
+      .catch((error: any) => {
         if (cancelled) return;
-        localStorage.removeItem('sys_stream_auth_token');
-        localStorage.removeItem('sys_stream_auth_user');
-        localStorage.setItem('sys_is_logged_in', 'false');
-        setIsLoggedIn(false);
+        // Never force logout because of a transient/network/server error.
+        // Only an explicit 401/403 means the token is no longer accepted.
+        if (error?.status === 401 || error?.status === 403) {
+          localStorage.removeItem('sys_stream_auth_token');
+          localStorage.removeItem('sys_stream_auth_user');
+          localStorage.setItem('sys_is_logged_in', 'false');
+          setIsLoggedIn(false);
+          setLocks([]);
+          return;
+        }
+        setIsLoggedIn(true);
+        localStorage.setItem('sys_is_logged_in', 'true');
         try {
           const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
           if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
-            setUser(prev => ({
-              ...DEFAULT_USER,
-              ...prev,
-              id: String(cached.id || prev.id || ''),
-              username: String(cached.username || prev.username || ''),
-              avatar: String(cached.avatar || prev.avatar || ''),
-              referralCode: String(cached.referralCode || prev.referralCode || ''),
-              vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
-            }));
-          } else {
-            setUser(DEFAULT_USER);
+            setUser(prev => ({ ...prev, ...cached }));
           }
-        } catch {
-          setUser(DEFAULT_USER);
-        }
-        setLocks([]);
+        } catch {}
       });
     return () => { cancelled = true; };
   }, []);
@@ -589,6 +585,36 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const claimRegistrationBonus = async (): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) { setLoginModalOpen(true); return false; }
+    try {
+      const response = await fetch('/api/auth/claim-registration-bonus', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) {
+        showToast('Registration Bonus', data?.error || 'Bonus registrasi tidak dapat diklaim.', 'error');
+        return false;
+      }
+      const remote = data.user || {};
+      setUser(prev => ({
+        ...prev,
+        coins: Math.round(Number(remote.available_balance || 0) * 100),
+        registrationBonusIdr: Number(remote.registration_bonus_idr || prev.registrationBonusIdr || 0),
+        registrationBonusGranted: Boolean(Number(remote.registration_bonus_granted || 0)),
+      }));
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
+      sound.playWin();
+      showToast('Bonus Claimed', 'Bonus registrasi berhasil masuk ke saldo Anda.', 'success');
+      return true;
+    } catch {
+      showToast('Registration Bonus', 'Koneksi ke server gagal. Bonus Anda tetap aman dan dapat dicoba lagi.', 'error');
+      return false;
+    }
+  };
+
   const claimBlindBox = async (boxId: string): Promise<any> => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) throw new Error('Silakan login terlebih dahulu.');
@@ -782,6 +808,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         claimDailyLockYield,
         unlockEarly,
         claimBlindBox,
+        claimRegistrationBonus,
         refreshFinancialState,
         hasActiveLock,
         getTotalLockedUsdt,
