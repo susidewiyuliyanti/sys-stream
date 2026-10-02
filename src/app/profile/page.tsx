@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { CryptoDepositModal } from '../../components/CryptoDepositModal';
 import { sound } from '../../lib/sound';
@@ -22,6 +22,9 @@ import {
   Coins,
   LogOut,
   Sparkles,
+  Copy,
+  ExternalLink,
+  CalendarDays,
 } from 'lucide-react';
 
 
@@ -37,6 +40,9 @@ export default function ProfilePage() {
     setLoginModalOpen,
     showToast,
   } = useGame();
+
+  const [eventStatuses, setEventStatuses] = useState<any[]>([]);
+  const [copiedReferral, setCopiedReferral] = useState(false);
   const { t } = useLanguage();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
@@ -46,6 +52,30 @@ export default function ProfilePage() {
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
   const totalLocked = getTotalLockedUsdt();
+  const referralLink = user.referralCode
+    ? `https://sysstreamer.asia/register?ref=${encodeURIComponent(user.referralCode)}`
+    : '';
+
+  useEffect(() => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) { setEventStatuses([]); return; }
+    fetch('/api/profile', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => { if (data?.success) setEventStatuses(Array.isArray(data.events) ? data.events : []); })
+      .catch(() => {});
+  }, [isLoggedIn, user.id]);
+
+  const copyReferralLink = async () => {
+    if (!referralLink) return;
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopiedReferral(true);
+      showToast('Referral Link', 'Referral link berhasil disalin.', 'success');
+      setTimeout(() => setCopiedReferral(false), 1800);
+    } catch {
+      showToast('Referral Link', referralLink, 'info');
+    }
+  };
 
   // Production lock history comes only from authenticated server state.
   const lockHistoryItems = locks
@@ -158,6 +188,44 @@ export default function ProfilePage() {
             </button>
           )}
         </div>
+
+        {/* REFERRAL + EVENT STATUS */}
+        {isLoggedIn && (
+          <div className="space-y-3">
+            <div className="relative overflow-hidden bg-slate-950/90 border border-purple-500/30 rounded-3xl p-5 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-black uppercase tracking-wider text-purple-400">Referral Link</div>
+                  <div className="text-[11px] text-slate-500 mt-1">Bagikan link ini untuk mengundang user baru.</div>
+                </div>
+                <span className="text-[10px] font-mono text-cyan-400">{user.referralCode || 'GENERATING...'}</span>
+              </div>
+              <div className="flex gap-2">
+                <input readOnly value={referralLink} className="min-w-0 flex-1 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[10px] text-slate-300 font-mono" />
+                <button onClick={copyReferralLink} disabled={!referralLink} className="px-3 rounded-xl bg-purple-600 text-white font-bold disabled:opacity-40" title="Copy referral link">
+                  {copiedReferral ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </button>
+                {referralLink && <a href={referralLink} target="_blank" rel="noreferrer" className="px-3 rounded-xl border border-slate-700 flex items-center justify-center text-cyan-400"><ExternalLink className="w-4 h-4" /></a>}
+              </div>
+            </div>
+
+            <div className="bg-slate-950/90 border border-cyan-500/20 rounded-3xl p-5 space-y-3">
+              <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm"><CalendarDays className="w-4 h-4" /> Event Participation Status</div>
+              {eventStatuses.length === 0 ? (
+                <div className="py-4 text-center text-xs text-slate-500">Belum ada event yang diikuti.</div>
+              ) : (
+                <div className="space-y-2">
+                  {eventStatuses.map((event) => (
+                    <div key={String(event.eventId)} className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+                      <div className="min-w-0"><div className="text-sm font-bold text-white truncate">{event.eventName}</div><div className="text-[10px] text-slate-500 mt-1">{event.joinedAt ? new Date(Number(event.joinedAt)).toLocaleString() : ''}</div></div>
+                      <span className="shrink-0 px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-[10px] font-black text-cyan-400">{String(event.status || 'JOINED').replace(/_/g, ' ')}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* LOCKED BALANCE CARD matching Screenshot 2 */}
         <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#060e1d] to-[#040813] border-2 border-cyan-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] space-y-4">
