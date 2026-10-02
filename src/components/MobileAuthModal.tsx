@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
 import { SysLogo } from './SysLogo';
@@ -25,6 +26,8 @@ export const MobileAuthModal: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [verificationNotice, setVerificationNotice] = useState('');
 
   if (!loginModalOpen) return null;
 
@@ -36,10 +39,15 @@ export const MobileAuthModal: React.FC = () => {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput };
+        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
+      if (authMode === 'register' && data.requiresEmailVerification) {
+        setVerificationNotice(data.message || 'Akun dibuat. Silakan verifikasi email.');
+        setPasswordInput('');
+        return;
+      }
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
       login(data.user?.username || usernameInput.trim());
@@ -84,7 +92,7 @@ export const MobileAuthModal: React.FC = () => {
         <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-2xl border border-cyan-500/30 mb-6">
           <button
             type="button"
-            onClick={() => { sound.playClick(); setAuthMode('login'); }}
+            onClick={() => { sound.playClick(); setAuthMode('login'); setTermsAccepted(false); }}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               authMode === 'login'
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
@@ -95,7 +103,7 @@ export const MobileAuthModal: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => { sound.playClick(); setAuthMode('register'); }}
+            onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               authMode === 'register'
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
@@ -160,6 +168,17 @@ export const MobileAuthModal: React.FC = () => {
             </button>
           </div>
 
+
+          {authMode === 'register' && (
+            <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
+              <input type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} required className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer shrink-0" />
+              <span className="text-[11px] leading-5 text-slate-400">I have read and agree to the Terms &amp; Conditions.</span>
+            </label>
+          )}
+          {verificationNotice && authMode === 'register' && (
+            <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
+          )}
+
           {/* Remember me & Forgot Password */}
           <div className="flex items-center justify-between text-xs pt-1">
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
@@ -183,7 +202,7 @@ export const MobileAuthModal: React.FC = () => {
           {/* Glowing Neon Login Button */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || (authMode === 'register' && !termsAccepted)}
             className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
