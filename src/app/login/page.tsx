@@ -262,12 +262,6 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
           )}
 
-          {authMode === 'register' && (
-              <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
-              <input type="email" placeholder={t('Email')} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
-            </div>
-          )}
-
           {/* Password */}
           <div className="relative">
             <span className="absolute left-3.5 top-3.5 text-purple-400">
