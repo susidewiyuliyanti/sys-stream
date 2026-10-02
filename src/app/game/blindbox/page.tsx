@@ -382,6 +382,16 @@ export default function BlindboxGamePage() {
                     </button>
                   ))}
                 </div>
+                <input
+                  type="number"
+                  min="4"
+                  step="0.01"
+                  value={lockUsdAmount}
+                  onChange={(e) => setLockUsdAmount(Math.max(4, Number(e.target.value) || 4))}
+                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
+                  placeholder="Nominal lock pilihan user"
+                />
+                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum 4 USDT.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>Quota: <strong className="text-emerald-400">{lockUsdAmount >= 250 ? '5 Boxes/Day' : lockUsdAmount >= 100 ? '3 Boxes/Day' : lockUsdAmount >= 50 ? '2 Boxes/Day' : '1 Box/Day'}</strong></span>
                   <span className="font-mono text-amber-400">{lockUsdAmount * 100} Coins</span>
