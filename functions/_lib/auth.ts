@@ -107,8 +107,14 @@ export async function requireAuth(request: Request, env: Env) {
             COALESCE(u.registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(u.registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(u.email_verified,0) AS emailVerified,
-            COALESCE(u.available_balance, u.balance, 0) AS balance,
-            COALESCE(u.total_locked, u.locked_saldo, 0) AS lockedBalance
+            CASE WHEN COALESCE(u.available_balance,0) > 0
+                 THEN COALESCE(u.available_balance,0)
+                 ELSE COALESCE(u.balance,0)
+            END AS balance,
+            CASE WHEN COALESCE(u.total_locked,0) > 0
+                 THEN COALESCE(u.total_locked,0)
+                 ELSE COALESCE(u.locked_saldo,0)
+            END AS lockedBalance
      FROM auth_sessions s
      JOIN users u ON u.id = s.user_id
      WHERE s.token = ? AND s.expires_at > ?
@@ -142,8 +148,14 @@ export async function getUserById(env: Env, userId: string) {
             COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(email_verified,0) AS emailVerified,
-            COALESCE(available_balance,0) AS balance,
-            COALESCE(total_locked,0) AS lockedBalance
+            CASE WHEN COALESCE(available_balance,0) > 0
+                 THEN COALESCE(available_balance,0)
+                 ELSE COALESCE(balance,0)
+            END AS balance,
+            CASE WHEN COALESCE(total_locked,0) > 0
+                 THEN COALESCE(total_locked,0)
+                 ELSE COALESCE(locked_saldo,0)
+            END AS lockedBalance
      FROM users WHERE id = ? LIMIT 1`
   ).bind(String(userId)).first<AuthUser>();
 }
