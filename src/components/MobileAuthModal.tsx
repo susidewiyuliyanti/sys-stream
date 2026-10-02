@@ -77,7 +77,7 @@ export const MobileAuthModal: React.FC = () => {
 
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-6">
-          <SysLogo size="sm" showText={true} />
+          <SysLogo size="lg" showText={true} textClassName="!text-base" />
         </div>
 
         {/* Login / Register Pill Tabs */}
