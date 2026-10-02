@@ -9,7 +9,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const bonusIdr = Number(user.registrationBonusIdr || 0);
     const granted = Number(user.registrationBonusGranted || 0);
     if (granted !== 1 || bonusIdr <= 0) {
-      return json({ success:false, error:"Bonus registrasi sudah diklaim atau tidak tersedia." }, { status:409 });
+      return json({ success:false, error:"Bonus registrasi sudah diklaim atau tidak tersedia." }, 409);
     }
 
     // available_balance is stored in USDT. The registration bonus is recorded
@@ -19,12 +19,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const result = await env.DB.prepare(
       `UPDATE users
        SET available_balance = COALESCE(available_balance,0) + ?,
+           balance = COALESCE(available_balance,0) + ?,
            registration_bonus_granted = 0
        WHERE id = ? AND registration_bonus_granted = 1`
-    ).bind(bonusUsdt, user.id).run();
+    ).bind(bonusUsdt, bonusUsdt, user.id).run();
 
     if (!result.meta.changes) {
-      return json({ success:false, error:"Bonus registrasi sudah diklaim." }, { status:409 });
+      return json({ success:false, error:"Bonus registrasi sudah diklaim." }, 409);
     }
 
     const updated = await env.DB.prepare(
