@@ -51,6 +51,7 @@ async function ensureRegistrationSchema(env: Env) {
     ["email_verified_at", "INTEGER"],
     ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
     ["wallet_address", "TEXT"],
+    ["avatar_url", "TEXT"],
   ];
   for (const [name, definition] of additions) {
     if (!names.has(name)) {
@@ -71,6 +72,35 @@ async function ensureRegistrationSchema(env: Env) {
     referred_user_id TEXT NOT NULL UNIQUE, referral_code TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'ACTIVE', created_at INTEGER NOT NULL
   )`).run();
+
+  // Repair auxiliary production tables created by older versions.
+  const repairTable = async (table: string, additions: Array<[string,string]>) => {
+    const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all();
+    const existing = new Set((info.results || []).map((r:any) => String(r.name)));
+    for (const [name, definition] of additions) {
+      if (!existing.has(name)) {
+        try {
+          await env.DB.prepare(`ALTER TABLE ${table} ADD COLUMN ${name} ${definition}`).run();
+        } catch (error) {
+          console.error("registration schema repair skipped", { table, name, error: String(error) });
+        }
+      }
+    }
+  };
+
+  await repairTable("email_verification_tokens", [
+    ["id", "TEXT"], ["user_id", "TEXT"], ["token_hash", "TEXT"],
+    ["expires_at", "INTEGER"], ["used_at", "INTEGER"], ["created_at", "INTEGER"],
+  ]);
+  await repairTable("terms_acceptances", [
+    ["id", "TEXT"], ["user_id", "TEXT"], ["terms_version", "TEXT"],
+    ["accepted_at", "INTEGER"], ["created_at", "INTEGER"],
+  ]);
+  await repairTable("referrals", [
+    ["id", "TEXT"], ["referrer_user_id", "TEXT"], ["referred_user_id", "TEXT"],
+    ["referral_code", "TEXT"], ["status", "TEXT"], ["created_at", "INTEGER"],
+  ]);
+
   // Existing production databases may have older versions of these tables.
   // Indexes are helpful but must never block account registration.
   for (const sql of [
