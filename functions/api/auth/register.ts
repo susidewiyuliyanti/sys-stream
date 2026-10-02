@@ -49,7 +49,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const verificationId=crypto.randomUUID();
     const verificationExpires=verificationExpiry();
     let referrer:any = null;
-    if (referralCode) {
+    if (incomingReferralCode) {
       referrer = await env.DB.prepare(
         "SELECT id, referral_code FROM users WHERE upper(referral_code)=upper(?) LIMIT 1"
       ).bind(incomingReferralCode).first();
