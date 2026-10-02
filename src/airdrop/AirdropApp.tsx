@@ -244,7 +244,8 @@ function localizedTasks(language:LanguageCode):Task[]{
 }
 
 export default function AirdropApp(){
-  const {language}=useLanguage();
+  // Airdrop defaults to English independently from the main site's language preference.
+  const language: LanguageCode = 'en';
   const tx=TEXT[language]||TEXT.en;
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
   const [menuOpen,setMenuOpen]=useState(false);
