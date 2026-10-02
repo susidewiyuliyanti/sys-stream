@@ -71,13 +71,20 @@ async function ensureRegistrationSchema(env: Env) {
     referred_user_id TEXT NOT NULL UNIQUE, referral_code TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'ACTIVE', created_at INTEGER NOT NULL
   )`).run();
-  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals(referral_code)`).run();
-  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_terms_acceptances_user ON terms_acceptances(user_id)`).run();
-  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_email_verification_user ON email_verification_tokens(user_id)`).run();
-
-  try {
-    await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)").run();
-  } catch (_) {}
+  // Existing production databases may have older versions of these tables.
+  // Indexes are helpful but must never block account registration.
+  for (const sql of [
+    "CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals(referral_code)",
+    "CREATE INDEX IF NOT EXISTS idx_terms_acceptances_user ON terms_acceptances(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_email_verification_user ON email_verification_tokens(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)"
+  ]) {
+    try {
+      await env.DB.prepare(sql).run();
+    } catch (error) {
+      console.error("registration optional index skipped", { sql, error: String(error) });
+    }
+  }
 }
 
 function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
@@ -250,12 +257,22 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
 
     const origin = new URL(request.url).origin;
-    const sent = await sendVerificationEmail(
-      env,
-      email,
-      verificationToken,
-      origin
-    );
+    let sent: Awaited<ReturnType<typeof sendVerificationEmail>>;
+    try {
+      sent = await sendVerificationEmail(
+        env,
+        email,
+        verificationToken,
+        origin
+      );
+    } catch (error) {
+      console.error("registration verification email threw", {
+        requestId,
+        userId: id,
+        error: String(error),
+      });
+      sent = { ok: false, error: "Email provider request failed." };
+    }
 
     if (!sent.ok) {
       console.error("registration verification email failed", {
