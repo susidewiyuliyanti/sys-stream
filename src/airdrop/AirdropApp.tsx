@@ -253,7 +253,7 @@ export default function AirdropApp(){
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
   const tasks=useMemo(()=>localizedTasks(language),[language]);
-  const rewardPool = String(import.meta.env.VITE_AIRDROP_REWARD_POOL || '').trim() || 'TBA';
+  const rewardPool = '$10,000';
 
   useEffect(()=>{
     let active=true;
