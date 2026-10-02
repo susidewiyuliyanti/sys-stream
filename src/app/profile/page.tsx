@@ -40,6 +40,7 @@ export default function ProfilePage() {
     isLoggedIn,
     setLoginModalOpen,
     showToast,
+    claimRegistrationBonus,
   } = useGame();
 
   const [eventStatuses, setEventStatuses] = useState<any[]>([]);
@@ -49,10 +50,17 @@ export default function ProfilePage() {
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<30 | 60 | 90>(30);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawAddress, setWithdrawAddress] = useState('');
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
+  const [claimingBonus, setClaimingBonus] = useState(false);
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
-  const totalLocked = getTotalLockedUsdt();
+  const totalLocked = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
+  const availableBalance = Number(user.coins || 0) / 100;
   const referralLink = user.referralCode
     ? `https://sysstreamer.asia/register?ref=${encodeURIComponent(user.referralCode)}`
     : '';
@@ -92,6 +100,66 @@ export default function ProfilePage() {
         : 'UNLOCKED',
       statusColor: item.status === 'locked' ? 'text-amber-400' : 'text-slate-500',
     }));
+
+  const loadTransactions = async () => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return;
+    setLoadingTransactions(true);
+    try {
+      const r = await fetch('/api/transactions', { headers: { Authorization: `Bearer ${token}` } });
+      const data = await r.json().catch(() => ({}));
+      if (data?.success) setTransactions(Array.isArray(data.transactions) ? data.transactions : []);
+    } finally {
+      setLoadingTransactions(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) void loadTransactions();
+  }, [isLoggedIn, user.id]);
+
+  const handleClaimBonus = async () => {
+    setClaimingBonus(true);
+    try {
+      await claimRegistrationBonus();
+      await loadTransactions();
+    } finally {
+      setClaimingBonus(false);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    const amount = Number(withdrawAmount);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      showToast('Withdrawal', 'Masukkan nominal penarikan yang valid.', 'error');
+      return;
+    }
+    if (!withdrawAddress.trim()) {
+      showToast('Withdrawal', 'Masukkan alamat wallet tujuan.', 'error');
+      return;
+    }
+    if (amount > availableBalance) {
+      showToast('Withdrawal', 'Saldo tersedia tidak mencukupi.', 'error');
+      return;
+    }
+    const token = localStorage.getItem('sys_stream_auth_token');
+    try {
+      const r = await fetch('/api/withdrawals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` },
+        body: JSON.stringify({ amount, walletAddress: withdrawAddress.trim(), currency: 'USDT' }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok || !data?.success) throw new Error(data?.error || 'Penarikan gagal.');
+      showToast('Withdrawal', 'Permintaan penarikan berhasil dibuat dan menunggu proses.', 'success');
+      setWithdrawOpen(false);
+      setWithdrawAmount('');
+      setWithdrawAddress('');
+      await loadTransactions();
+    } catch (e: any) {
+      showToast('Withdrawal', e?.message || 'Penarikan gagal.', 'error');
+    }
+  };
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,7 +262,32 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* REFERRAL + EVENT STATUS */}
+        {isLoggedIn && user.registrationBonusGranted && (
+          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-slate-950 to-cyan-500/10 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-emerald-400 font-black">Registration Bonus</div>
+              <div className="text-2xl font-black text-white mt-1">Rp15.000</div>
+              <div className="text-xs text-slate-400 mt-1">Bonus tersedia dan belum diklaim.</div>
+            </div>
+            <button disabled={claimingBonus} onClick={() => void handleClaimBonus()} className="px-5 py-3 rounded-2xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300 disabled:opacity-50">
+              {claimingBonus ? 'Processing...' : 'Claim Bonus'}
+            </button>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-cyan-500/20 bg-slate-950 p-4">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Available Balance</div>
+            <div className="text-xl font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
+          </div>
+          <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
+            <div className="text-xl font-black text-amber-300 mt-1">Withdraw</div>
+            <div className="text-[10px] text-slate-500 mt-1">Ajukan penarikan USDT</div>
+          </button>
+        </div>
+
+        {/* REFERRAL + EVENT STATUS */
         {isLoggedIn && (
           <div className="space-y-3">
             <div className="relative overflow-hidden bg-slate-950/90 border border-purple-500/30 rounded-3xl p-5 space-y-3">
@@ -232,7 +325,25 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* LOCKED BALANCE CARD matching Screenshot 2 */}
+        <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="text-sm font-black text-white">Transaction History</div>
+              <div className="text-[10px] text-slate-500">Deposit, withdrawal, lock, reward & bonus</div>
+            </div>
+            <button onClick={() => void loadTransactions()} className="text-xs text-cyan-400 hover:text-white">Refresh</button>
+          </div>
+          {loadingTransactions ? <div className="text-xs text-slate-500 py-5 text-center">Loading...</div> :
+            transactions.length === 0 ? <div className="text-xs text-slate-500 py-5 text-center">Belum ada transaksi.</div> :
+            <div className="space-y-2">{transactions.slice(0,20).map((tx:any) => (
+              <div key={String(tx.id)} className="flex items-center justify-between gap-3 rounded-2xl bg-slate-900 border border-slate-800 p-3">
+                <div className="min-w-0"><div className="text-xs font-bold text-white">{String(tx.type || 'TRANSACTION').replace(/_/g,' ')}</div><div className="text-[10px] text-slate-500">{tx.createdAt ? new Date(tx.createdAt).toLocaleString() : ''}</div></div>
+                <div className={Number(tx.amount) >= 0 ? 'text-emerald-400 font-black text-xs' : 'text-rose-400 font-black text-xs'}>{Number(tx.amount) >= 0 ? '+' : ''}{Number(tx.amount).toFixed(4)} USDT</div>
+              </div>
+            ))}</div>}
+        </div>
+
+        {/* LOCKED BALANCE CARD matching Screenshot 2 */
         <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#060e1d] to-[#040813] border-2 border-cyan-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] space-y-4">
           {/* Header Row */}
           <div className="flex items-center justify-between text-xs">
@@ -336,7 +447,19 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* EDIT PROFILE & AVATAR PICKER MODAL */}
+      {withdrawOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl bg-[#080d1a] border border-amber-500/30 p-6 space-y-4">
+            <div className="flex justify-between"><h3 className="font-black text-lg">Withdraw USDT</h3><button onClick={() => setWithdrawOpen(false)}><X className="w-5 h-5"/></button></div>
+            <div className="text-xs text-slate-500">Available: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
+            <input type="number" min="0" step="0.0001" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder="Amount USDT" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
+            <input value={withdrawAddress} onChange={e => setWithdrawAddress(e.target.value)} placeholder="USDT wallet address" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
+            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">Submit Withdrawal</button>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT PROFILE & AVATAR PICKER MODAL */
       {isEditProfileModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="w-full max-w-md bg-[#080d1a] border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl space-y-5 text-white max-h-[90vh] overflow-y-auto">
