@@ -157,12 +157,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (!sent.ok) {
       console.error("registration verification email failed", sent.error);
       return json({
-        success:false,
+        success:true,
         code:"EMAIL_SERVICE_UNAVAILABLE",
         requiresEmailVerification:true,
         email,
-        error:"Akun sudah dibuat tetapi email verifikasi belum dapat dikirim. Setelah layanan email aktif, gunakan Kirim Ulang Verifikasi."
-      },503);
+        message:"Akun berhasil dibuat, tetapi email verifikasi belum dapat dikirim. Gunakan Kirim Ulang Verifikasi setelah layanan email aktif."
+      });
     }
 
     return json({
