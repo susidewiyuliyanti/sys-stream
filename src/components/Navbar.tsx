@@ -19,7 +19,7 @@ export const Navbar: React.FC<Props> = ({ navigate }) => {
           aria-label="Go to SYS STREAM home"
           className="text-left transition-transform hover:scale-[1.02] cursor-pointer"
         >
-          <SysLogo size="md" showText={true} />
+          <SysLogo size="sm" showText={true} />
         </button>
         <label className="flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-2.5 py-2 text-xs text-slate-300" title={t('Language')}>
           <Globe className="w-4 h-4 text-cyan-400" />
