@@ -1,7 +1,6 @@
 import React from 'react';
 import { LockKeyhole, Wallet, Gamepad2, User, ArrowRight, RefreshCw, Target, CircleDot, Gift } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { useLanguage } from '../../i18n';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -9,7 +8,6 @@ interface Props {
 
 export default function DashboardPage({ navigate }: Props) {
   const { user, locks, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
-  const { language } = useLanguage();
 
   const available = Number(user.coins || 0) / 100;
   const locked = locks
