@@ -19,6 +19,8 @@ export async function onRequestPost(context:any){
     if (!names.has("email_verified")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0").run();
     if (!names.has("referral_count")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN referral_count INTEGER NOT NULL DEFAULT 0").run();
     if (!names.has("avatar_url")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN avatar_url TEXT").run();
+    if (!names.has("registration_bonus_idr")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN registration_bonus_idr REAL NOT NULL DEFAULT 0").run();
+    if (!names.has("registration_bonus_granted")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN registration_bonus_granted INTEGER NOT NULL DEFAULT 0").run();
     const body = await context.request.json();
 
     const wallet = String(body.wallet || "").trim().toLowerCase();
@@ -81,8 +83,12 @@ export async function onRequestPost(context:any){
       const referralCode = "SYS-" + username + "-" + crypto.randomUUID().slice(0, 6).toUpperCase();
 
       await context.env.DB.prepare(`
-        INSERT INTO users(id, wallet_address, username, display_name, referral_code, role, email_verified, created_at)
-        VALUES(?,?,?,?,?,'USER',1,?)
+        INSERT INTO users(
+          id, wallet_address, username, display_name, referral_code, role,
+          email_verified, created_at, available_balance,
+          registration_bonus_idr, registration_bonus_granted
+        )
+        VALUES(?,?,?,?,?,'USER',1,?,0.8333333333,15000,1)
       `).bind(id, wallet, username, username, referralCode, Date.now()).run();
 
       user = await context.env.DB.prepare(`
