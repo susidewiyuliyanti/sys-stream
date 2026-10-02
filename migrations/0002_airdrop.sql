@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS airdrop_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    wallet TEXT UNIQUE NOT NULL,
+    referral_code TEXT UNIQUE,
+    referred_by TEXT,
+    points INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS airdrop_tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    category TEXT NOT NULL,
+    reward INTEGER DEFAULT 0,
+    active INTEGER DEFAULT 1
+);
+
+
+CREATE TABLE IF NOT EXISTS task_submissions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    wallet TEXT NOT NULL,
+    task_id INTEGER NOT NULL,
+    proof_link TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS daily_checkins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wallet TEXT NOT NULL,
+    checkin_date TEXT NOT NULL,
+    reward INTEGER DEFAULT 10
+);
+
+
+CREATE TABLE IF NOT EXISTS referral_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wallet TEXT NOT NULL,
+    referred_wallet TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

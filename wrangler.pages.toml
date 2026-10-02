@@ -1,0 +1,12 @@
+name = "sys-stream"
+
+pages_build_output_dir = "./dist"
+
+
+[[d1_databases]]
+
+binding = "DB"
+
+database_name = "sys-streamer-db"
+
+database_id = "b4500803-e9a8-46dc-9dc3-11a87c5fa365"

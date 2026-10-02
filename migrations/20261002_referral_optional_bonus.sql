@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN has_referral_bonus INTEGER DEFAULT 0;

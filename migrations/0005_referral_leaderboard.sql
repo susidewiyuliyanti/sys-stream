@@ -1,5 +1,5 @@
 -- Production referral attribution and realtime leaderboard source.
-ALTER TABLE users ADD COLUMN referral_count INTEGER NOT NULL DEFAULT 0;
+-- referral_count already exists
 
 CREATE TABLE IF NOT EXISTS referrals (
   id TEXT PRIMARY KEY,

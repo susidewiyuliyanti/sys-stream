@@ -5,7 +5,6 @@ interface SysLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showText?: boolean;
   textColor?: string;
-  textClassName?: string;
 }
 
 export const SysLogo: React.FC<SysLogoProps> = ({
@@ -13,7 +12,6 @@ export const SysLogo: React.FC<SysLogoProps> = ({
   size = 'md',
   showText = true,
   textColor = 'text-white',
-  textClassName = '',
 }) => {
   const dimensions = {
     sm: { icon: 28, text: 'text-sm', sub: 'text-[9px]' },
@@ -133,7 +131,7 @@ export const SysLogo: React.FC<SysLogoProps> = ({
         <div className="flex flex-col leading-none">
           <div className="flex items-center gap-1.5">
             <span
-              className={`font-black tracking-wider uppercase font-serif ${dimensions.text} ${textColor} ${textClassName}`}
+              className={`font-black tracking-wider uppercase font-serif ${dimensions.text} ${textColor}`}
               style={{
                 fontFamily: "'Space Grotesk', 'Plus Jakarta Sans', sans-serif",
                 letterSpacing: '0.08em',
