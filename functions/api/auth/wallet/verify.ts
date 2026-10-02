@@ -85,10 +85,9 @@ export async function onRequestPost(context:any){
       await context.env.DB.prepare(`
         INSERT INTO users(
           id, wallet_address, username, display_name, referral_code, role,
-          email_verified, created_at, available_balance,
-          registration_bonus_idr, registration_bonus_granted
+          email_verified, created_at, available_balance, registration_bonus_idr, registration_bonus_granted
         )
-        VALUES(?,?,?,?,?,'USER',1,?,0.8363,15000,1)
+        VALUES(?,?,?,?,?,'USER',1,?, 0, 15000, 1)
       `).bind(id, wallet, username, username, referralCode, Date.now()).run();
 
       user = await context.env.DB.prepare(`
