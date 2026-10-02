@@ -11,8 +11,10 @@ CREATE TABLE IF NOT EXISTS deposits (
  force_jackpot INTEGER NOT NULL DEFAULT 0,
  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
 CREATE INDEX IF NOT EXISTS idx_deposits_user_id ON deposits(user_id);
 CREATE INDEX IF NOT EXISTS idx_deposits_status ON deposits(status);
+
 CREATE TABLE IF NOT EXISTS blind_box_claims (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
  deposit_id INTEGER NOT NULL,
@@ -23,8 +25,10 @@ CREATE TABLE IF NOT EXISTS blind_box_claims (
  claimed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
  UNIQUE(deposit_id,claim_date)
 );
+
 CREATE INDEX IF NOT EXISTS idx_blind_box_claims_user_id ON blind_box_claims(user_id);
 CREATE INDEX IF NOT EXISTS idx_blind_box_claims_deposit_id ON blind_box_claims(deposit_id);
+
 CREATE TABLE IF NOT EXISTS game_settings (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
  minBox REAL NOT NULL DEFAULT 100,
@@ -32,6 +36,18 @@ CREATE TABLE IF NOT EXISTS game_settings (
  jackpotAmount REAL NOT NULL DEFAULT 50000000,
  jackpotChance REAL NOT NULL DEFAULT 0
 );
-INSERT INTO game_settings(minBox,maxBox,jackpotAmount,jackpotChance)
-SELECT 100,1000,50000000,0
-WHERE NOT EXISTS(SELECT 1 FROM game_settings);
+
+INSERT INTO game_settings(
+ minBox,
+ maxBox,
+ jackpotAmount,
+ jackpotChance
+)
+SELECT
+ 100,
+ 1000,
+ 50000000,
+ 0
+WHERE NOT EXISTS(
+ SELECT 1 FROM game_settings
+);
