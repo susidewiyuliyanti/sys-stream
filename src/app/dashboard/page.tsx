@@ -1,7 +1,7 @@
 import React from 'react';
 import { LockKeyhole, Wallet, Gamepad2, User, ArrowRight, RefreshCw, Target, CircleDot, Gift } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { useLanguage, formatRegistrationBonus } from '../../i18n';
+import { useLanguage } from '../../i18n';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -43,7 +43,7 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="sm:col-span-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
-                <div className="text-xl font-black mt-2 text-emerald-300">{formatRegistrationBonus(language)}</div>
+                <div className="text-xl font-black mt-2 text-emerald-300">Rp15.000</div>
                 <p className="text-xs text-slate-400 mt-1">Bonus pendaftaran • 1 akun hanya dapat claim 1 kali</p>
               </div>
               <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
