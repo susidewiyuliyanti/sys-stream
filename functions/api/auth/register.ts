@@ -8,6 +8,7 @@ import {
 } from "../../_lib/email";
 
 const TERMS_VERSION = "2026-10-01";
+const PRODUCTION_ORIGIN = "https://sysstreamer.asia";
 
 async function ensureRegistrationSchema(env: Env) {
   // The production D1 may contain an older users table. Repair only missing
@@ -289,7 +290,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
-    const origin = new URL(request.url).origin;
+    const origin = PRODUCTION_ORIGIN;
     let sent: Awaited<ReturnType<typeof sendVerificationEmail>>;
     try {
       sent = await sendVerificationEmail(
