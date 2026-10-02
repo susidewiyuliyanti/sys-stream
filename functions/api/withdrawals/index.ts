@@ -120,7 +120,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     });
   } catch (error: any) {
     console.error("withdrawal error", error);
-    if (String(error?.message || "") === "INSUFFICIENT_BALANCE") {
+    const message = String(error?.message || "");
+    if (message.includes("NOT NULL") || message.includes("INSUFFICIENT_BALANCE")) {
       return json({ success:false, error:"Saldo tersedia tidak mencukupi." },400);
     }
     return json({ success:false, error:"Gagal membuat permintaan penarikan." },500);
