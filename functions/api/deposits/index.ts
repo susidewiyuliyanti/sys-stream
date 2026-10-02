@@ -203,8 +203,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT
             id,
-            COALESCE(balance, 0) AS balance,
-            COALESCE(locked_saldo, 0) AS locked_saldo
+            COALESCE(available_balance, 0) AS available_balance,
+            COALESCE(balance, 0) AS legacy_balance,
+            COALESCE(total_locked, 0) AS total_locked,
+            COALESCE(locked_saldo, 0) AS legacy_locked_saldo
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -217,7 +219,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         const user = userResult.rows[0];
-        const availableBalance = Number(user.balance || 0);
+        // Canonical production balance is available_balance/total_locked.
+        // Legacy fields are used only as a compatibility fallback for old accounts.
+        const canonicalBalance = Number(user.available_balance || 0);
+        const legacyBalance = Number(user.legacy_balance || 0);
+        const availableBalance = canonicalBalance > 0 ? canonicalBalance : legacyBalance;
+        const currentLocked = Number(user.total_locked || 0) > 0
+          ? Number(user.total_locked || 0)
+          : Number(user.legacy_locked_saldo || 0);
 
         if (availableBalance < amount) {
           throw new Error("INSUFFICIENT_BALANCE");
@@ -243,12 +252,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         endDate.setDate(endDate.getDate() + durationDays);
 
         const remainingBalance = availableBalance - amount;
-        const newLockedBalance = Number(user.locked_saldo || 0) + amount;
+        const newLockedBalance = currentLocked + amount;
 
         await client.query(
           `
           UPDATE users
           SET
+            available_balance = $1,
+            total_locked = $2,
             balance = $1,
             locked_saldo = $2
           WHERE id = $3
