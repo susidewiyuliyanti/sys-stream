@@ -343,7 +343,7 @@ export default function ProfilePage() {
             ))}</div>}
         </div>
 
-        {/* LOCKED BALANCE CARD matching Screenshot 2 */
+        {/* LOCKED BALANCE CARD matching Screenshot 2 */}
         <div className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#060e1d] to-[#040813] border-2 border-cyan-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] space-y-4">
           {/* Header Row */}
           <div className="flex items-center justify-between text-xs">
