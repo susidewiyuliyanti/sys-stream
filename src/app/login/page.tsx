@@ -124,7 +124,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
+        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -242,21 +242,27 @@ const handleSubmit = async (e: React.FormEvent) => {
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {/* Username / Email */}
-          <div className="relative">
-            <span className="absolute left-3.5 top-3.5 text-cyan-400">
-              <User className="w-4 h-4" />
-            </span>
-            <input
-              type="text"
-              placeholder={t('Username or Email')}
-              value={usernameInput}
-              onChange={(e) => setUsernameInput(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
-            />
-          </div>
+          {authMode === 'login' ? (
+            <div className="relative">
+              <span className="absolute left-3.5 top-3.5 text-cyan-400">
+                <User className="w-4 h-4" />
+              </span>
+              <input
+                type="text"
+                placeholder={t('Username or Email')}
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+              />
+            </div>
+          ) : (
+            <div className="relative">
+              <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
+              <input type="email" placeholder={t('Email address')} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} required className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
+            </div>
+          )}
 
           {authMode === 'register' && (
-            <div className="relative">
               <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
               <input type="email" placeholder={t('Email')} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
             </div>
