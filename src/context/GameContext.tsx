@@ -27,6 +27,7 @@ interface GameContextType {
   requireAuth: (action: () => void) => boolean;
   updateAvatar: (avatarUrl: string) => void;
   updateUsername: (username: string) => void;
+  recordEventParticipation: (eventId: string, eventName: string, status?: string) => Promise<boolean>;
   toggleSound: () => void;
   updateCoins: (delta: number) => boolean;
   updateDiamonds: (delta: number) => boolean;
@@ -155,6 +156,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ...prev,
         id: String(remote.id),
         username: remote.username || prev.username,
+        avatar: remote.avatarUrl || prev.avatar || '',
+        referralCode: remote.referralCode || prev.referralCode || '',
         coins: Math.round(Number(remote.balance || 0) * 100),
       }));
       const remoteLocks: LockRecord[] = (data.locks || []).map((l: any) => ({
@@ -277,6 +280,23 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return true;
     } catch {
       showToast('Profile Update Failed', 'Server tidak dapat menyimpan profile.', 'error');
+      return false;
+    }
+  };
+
+  const recordEventParticipation = async (eventId: string, eventName: string, status = 'JOINED'): Promise<boolean> => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/events/participate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ eventId, eventName, status }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) return false;
+      return true;
+    } catch {
       return false;
     }
   };
@@ -656,6 +676,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         requireAuth,
         updateAvatar,
         updateUsername,
+        recordEventParticipation,
         toggleSound,
         updateCoins,
         updateDiamonds,
