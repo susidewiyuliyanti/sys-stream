@@ -35,6 +35,7 @@ export default function ProfilePage() {
     getTotalLockedUsdt,
     updateAvatar,
     updateUsername,
+    updateProfile,
     logout,
     isLoggedIn,
     setLoginModalOpen,
@@ -92,15 +93,19 @@ export default function ProfilePage() {
       statusColor: item.status === 'locked' ? 'text-amber-400' : 'text-slate-500',
     }));
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newAvatarInput.trim()) {
-      updateAvatar(newAvatarInput.trim());
+    const username = newUsernameInput.trim();
+    const avatar = newAvatarInput.trim();
+
+    if (!username) return;
+
+    const saved = await updateProfile(username, avatar);
+    if (saved) {
+      setNewUsernameInput(username);
+      setNewAvatarInput(avatar);
+      setIsEditProfileModalOpen(false);
     }
-    if (newUsernameInput.trim() && newUsernameInput !== user.username) {
-      updateUsername(newUsernameInput.trim());
-    }
-    setIsEditProfileModalOpen(false);
   };
 
   return (
