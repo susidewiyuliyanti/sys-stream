@@ -170,10 +170,37 @@ export const MobileAuthModal: React.FC = () => {
 
 
           {authMode === 'register' && (
-            <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
-              <input type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} required className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer shrink-0" />
-              <span className="text-[11px] leading-5 text-slate-400">I have read and agree to the Terms &amp; Conditions.</span>
-            </label>
+            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-3.5">
+              <div className="flex items-start gap-3">
+                <input
+                  id="mobile-terms-accepted"
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  required
+                  className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer shrink-0"
+                />
+                <label htmlFor="mobile-terms-accepted" className="text-[11px] leading-5 text-slate-300 cursor-pointer">
+                  I have read and agree to the{' '}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setLoginModalOpen(false);
+                      window.location.hash = '/terms';
+                    }}
+                    className="text-cyan-300 hover:text-cyan-200 underline font-bold"
+                  >
+                    Terms &amp; Conditions
+                  </button>
+                  .
+                </label>
+              </div>
+              <div className="mt-2 pl-7 text-[10px] leading-4 text-slate-500">
+                Wajib membaca dan menyetujui Terms &amp; Conditions sebelum membuat akun.
+              </div>
+            </div>
           )}
           {verificationNotice && authMode === 'register' && (
             <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
