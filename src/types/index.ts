@@ -10,6 +10,7 @@ export interface UserProfile {
   referralCode: string;
   registrationBonusIdr?: number;
   registrationBonusGranted?: boolean;
+  lockedBalance?: number;
   referredBy?: string;
   totalWon: number;
   totalBet: number;
