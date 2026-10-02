@@ -7,12 +7,12 @@ interface Props {
 }
 
 export default function DashboardPage({ navigate }: Props) {
-  const { user, locks, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
+  const { user, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
 
   const available = Number(user.coins || 0) / 100;
-  const locked = locks
-    .filter(lock => lock.status === 'locked')
-    .reduce((sum, lock) => sum + Number(lock.amount || 0), 0);
+  // Locked Balance is always the server value chosen by the user.
+  // Never use a browser/localStorage default such as 10 USDT.
+  const locked = Number(user.lockedBalance || 0);
 
   if (!isLoggedIn) return null;
 
@@ -42,7 +42,7 @@ export default function DashboardPage({ navigate }: Props) {
               <div>
                 <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
                 <div className="text-xl font-black mt-2 text-emerald-300">Rp15.000</div>
-                <p className="text-xs text-slate-400 mt-1">Bonus pendaftaran • 1 akun hanya dapat claim 1 kali</p>
+                <p className="text-xs text-slate-400 mt-1">Bonus pendaftaran • harus diklaim user • 1 akun hanya dapat claim 1 kali</p>
               </div>
               <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
                 <Gift className="w-4 h-4" /> Claim Bonus Registrasi
@@ -63,7 +63,9 @@ export default function DashboardPage({ navigate }: Props) {
               <LockKeyhole className="w-4 h-4 text-amber-400" /> Locked Balance
             </div>
             <div className="text-3xl font-black mt-3">{locked.toFixed(2)} USDT</div>
-            <p className="text-xs text-slate-500 mt-1">{locks.filter(lock => lock.status === 'locked').length} active lock(s)</p>
+            <p className="text-xs text-slate-500 mt-1">
+              {locked > 0 ? 'Nominal lock dipilih user.' : 'Belum ada saldo yang dikunci. Pilih nominal lock sendiri di Blind Box.'}
+            </p>
           </div>
         </div>
 
