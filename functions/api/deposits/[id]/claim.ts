@@ -138,7 +138,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         await client.query(
           `
           UPDATE users
-          SET balance = balance + $1
+          SET
+            available_balance = COALESCE(available_balance, 0) + $1,
+            balance = COALESCE(available_balance, 0) + $1
           WHERE id = $2
           `,
           [reward, userId]
@@ -156,7 +158,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         const updatedUser = await client.query(
           `
-          SELECT balance
+          SELECT COALESCE(available_balance, 0) AS balance
           FROM users
           WHERE id = $1
           LIMIT 1
