@@ -27,6 +27,7 @@ interface GameContextType {
   requireAuth: (action: () => void) => boolean;
   updateAvatar: (avatarUrl: string) => void;
   updateUsername: (username: string) => void;
+  updateProfile: (username: string, avatarUrl: string) => Promise<boolean>;
   recordEventParticipation: (eventId: string, eventName: string, status?: string) => Promise<boolean>;
   toggleSound: () => void;
   updateCoins: (delta: number) => boolean;
@@ -357,6 +358,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       return false;
     }
+  };
+
+  const updateProfile = async (username: string, avatarUrl: string): Promise<boolean> => {
+    const trimmedUsername = username.trim();
+    const trimmedAvatar = avatarUrl.trim();
+    if (!trimmedUsername) return false;
+
+    const ok = await saveRemoteProfile({
+      username: trimmedUsername,
+      avatarUrl: trimmedAvatar,
+    });
+    if (!ok) return false;
+
+    // Apply the complete server response in one state update.
+    // This avoids two concurrent profile writes racing with each other.
+    sound.playClick();
+    showToast('Profile Updated', 'Profile tersimpan ke akun Anda.', 'success');
+    return true;
   };
 
   const updateAvatar = (avatarUrl: string) => {
@@ -743,6 +762,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         requireAuth,
         updateAvatar,
         updateUsername,
+        updateProfile,
         recordEventParticipation,
         toggleSound,
         updateCoins,
