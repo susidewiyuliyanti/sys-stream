@@ -1,4 +1,4 @@
-import { Env, json, readJson } from "../../../_lib/db";
+import { Env, json, readJson } from "../../_lib/db";
 import { requireAuth } from "../../../_lib/auth";
 async function ensureLocks(env:Env){await env.DB.prepare(`CREATE TABLE IF NOT EXISTS locks (
  id INTEGER PRIMARY KEY AUTOINCREMENT,user_id TEXT NOT NULL,amount REAL NOT NULL,duration_days INTEGER NOT NULL,multiplier REAL NOT NULL DEFAULT 1,
