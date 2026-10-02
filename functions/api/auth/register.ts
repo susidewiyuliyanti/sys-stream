@@ -9,10 +9,81 @@ import {
 
 const TERMS_VERSION = "2026-10-01";
 
+async function ensureRegistrationSchema(env: Env) {
+  // The production D1 may contain an older users table. Repair only missing
+  // columns so registration does not depend on a local migration having run.
+  await env.DB.prepare(
+    `CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      username TEXT,
+      email TEXT,
+      password_hash TEXT,
+      display_name TEXT,
+      role TEXT NOT NULL DEFAULT 'USER',
+      available_balance REAL NOT NULL DEFAULT 0,
+      total_locked REAL NOT NULL DEFAULT 0,
+      referral_code TEXT,
+      created_at INTEGER,
+      terms_version TEXT,
+      terms_accepted_at INTEGER,
+      email_verified INTEGER NOT NULL DEFAULT 0,
+      email_verified_at INTEGER,
+      referral_count INTEGER NOT NULL DEFAULT 0,
+      wallet_address TEXT
+    )`
+  ).run();
+
+  const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
+  const names = new Set((columns.results || []).map((r:any) => String(r.name)));
+  const additions: Array<[string,string]> = [
+    ["email", "TEXT"],
+    ["password_hash", "TEXT"],
+    ["display_name", "TEXT"],
+    ["role", "TEXT NOT NULL DEFAULT 'USER'"],
+    ["available_balance", "REAL NOT NULL DEFAULT 0"],
+    ["total_locked", "REAL NOT NULL DEFAULT 0"],
+    ["referral_code", "TEXT"],
+    ["created_at", "INTEGER"],
+    ["terms_version", "TEXT"],
+    ["terms_accepted_at", "INTEGER"],
+    ["email_verified", "INTEGER NOT NULL DEFAULT 0"],
+    ["email_verified_at", "INTEGER"],
+    ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
+    ["wallet_address", "TEXT"],
+  ];
+  for (const [name, definition] of additions) {
+    if (!names.has(name)) {
+      await env.DB.prepare(`ALTER TABLE users ADD COLUMN ${name} ${definition}`).run();
+    }
+  }
+
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS terms_acceptances (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, terms_version TEXT NOT NULL,
+    accepted_at INTEGER NOT NULL, created_at INTEGER NOT NULL
+  )`).run();
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS email_verification_tokens (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, token_hash TEXT NOT NULL UNIQUE,
+    expires_at INTEGER NOT NULL, used_at INTEGER, created_at INTEGER NOT NULL
+  )`).run();
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS referrals (
+    id TEXT PRIMARY KEY, referrer_user_id TEXT NOT NULL,
+    referred_user_id TEXT NOT NULL UNIQUE, referral_code TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'ACTIVE', created_at INTEGER NOT NULL
+  )`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals(referral_code)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_terms_acceptances_user ON terms_acceptances(user_id)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_email_verification_user ON email_verification_tokens(user_id)`).run();
+
+  try {
+    await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)").run();
+  } catch (_) {}
+}
+
 function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   try {
+    await ensureRegistrationSchema(env);
     const body = await readJson<{
       username?:string;
       email?:string;
