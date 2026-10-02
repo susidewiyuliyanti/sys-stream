@@ -196,7 +196,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(prev => ({
           ...prev,
           id: String(remote.id),
-          username: remote.username || prev.username,
+          username: remote.username || remote.displayName || prev.username,
+          avatar: remote.avatarUrl || prev.avatar || '',
+          referralCode: remote.referralCode || prev.referralCode || '',
           coins: Math.round(Number(remote.balance || 0) * 100),
         }));
         setIsLoggedIn(true);
@@ -249,8 +251,39 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
+  const saveRemoteProfile = async (patch: { username?: string; avatarUrl?: string }) => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return false;
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(patch),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) {
+        showToast('Profile Update Failed', data?.error || 'Gagal menyimpan profile.', 'error');
+        return false;
+      }
+      const remote = data.user || {};
+      setUser(prev => ({
+        ...prev,
+        id: String(remote.id || prev.id),
+        username: remote.username || prev.username,
+        avatar: remote.avatarUrl || prev.avatar,
+        referralCode: remote.referralCode || prev.referralCode,
+      }));
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
+      return true;
+    } catch {
+      showToast('Profile Update Failed', 'Server tidak dapat menyimpan profile.', 'error');
+      return false;
+    }
+  };
+
   const updateAvatar = (avatarUrl: string) => {
     setUser(prev => ({ ...prev, avatar: avatarUrl }));
+    void saveRemoteProfile({ avatarUrl });
     sound.playClick();
     showToast('Profile Updated', 'Profile picture updated successfully!', 'success');
   };
@@ -259,6 +292,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const trimmed = newUsername.trim();
     if (!trimmed) return;
     setUser(prev => ({ ...prev, username: trimmed }));
+    void saveRemoteProfile({ username: trimmed });
     sound.playClick();
     showToast('Username Updated', `Display name set to @${trimmed}`, 'success');
   };
