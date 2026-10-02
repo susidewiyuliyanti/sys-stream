@@ -36,6 +36,7 @@ async function ensureRegistrationSchema(env: Env) {
   const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
   const names = new Set((columns.results || []).map((r:any) => String(r.name)));
   const additions: Array<[string,string]> = [
+    ["username", "TEXT"],
     ["email", "TEXT"],
     ["password_hash", "TEXT"],
     ["display_name", "TEXT"],
