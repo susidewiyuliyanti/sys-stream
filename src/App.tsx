@@ -12,6 +12,8 @@ import VerifyEmailPage from './app/auth/verify-email/page';
 import TermsPage from './app/terms/page';
 import PrivacyPage from './app/privacy/page';
 import BlindboxGamePage from './app/game/blindbox/page';
+import SpinnerGamePage from './app/game/spinner/page';
+import TebakGamePage from './app/game/tebak/page';
 import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
 
@@ -56,6 +58,8 @@ export default function App() {
 
   const protectedPaths = [
     '/game/blindbox',
+    '/game/spinner',
+    '/game/tebak',
     '/profile',
     '/dashboard',
     '/room',
@@ -94,6 +98,12 @@ export default function App() {
 
     if (currentPath === '/game/blindbox') {
       return <BlindboxGamePage />;
+    }
+    if (currentPath === '/game/spinner') {
+      return <SpinnerGamePage />;
+    }
+    if (currentPath === '/game/tebak') {
+      return <TebakGamePage />;
     }
     if (currentPath === '/profile') {
       return <ProfilePage />;
