@@ -2,6 +2,23 @@ import { verifyMessage } from "ethers";
 
 export async function onRequestPost(context:any){
   try {
+    await context.env.DB.prepare(`CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY, username TEXT, email TEXT, password_hash TEXT,
+      display_name TEXT, role TEXT NOT NULL DEFAULT 'USER',
+      available_balance REAL NOT NULL DEFAULT 0, total_locked REAL NOT NULL DEFAULT 0,
+      referral_code TEXT, created_at INTEGER, terms_version TEXT,
+      terms_accepted_at INTEGER, email_verified INTEGER NOT NULL DEFAULT 0,
+      email_verified_at INTEGER, referral_count INTEGER NOT NULL DEFAULT 0,
+      wallet_address TEXT, avatar_url TEXT
+    )`).run();
+    const cols = await context.env.DB.prepare("PRAGMA table_info(users)").all();
+    const names = new Set((cols.results || []).map((r:any) => String(r.name)));
+    if (!names.has("username")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN username TEXT").run();
+    if (!names.has("display_name")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN display_name TEXT").run();
+    if (!names.has("referral_code")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN referral_code TEXT").run();
+    if (!names.has("email_verified")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0").run();
+    if (!names.has("referral_count")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN referral_count INTEGER NOT NULL DEFAULT 0").run();
+    if (!names.has("avatar_url")) await context.env.DB.prepare("ALTER TABLE users ADD COLUMN avatar_url TEXT").run();
     const body = await context.request.json();
 
     const wallet = String(body.wallet || "").trim().toLowerCase();
@@ -60,11 +77,13 @@ export async function onRequestPost(context:any){
 
     if (!user) {
       const id = crypto.randomUUID();
+      const username = "WEB3_" + wallet.slice(2, 8).toUpperCase();
+      const referralCode = "SYS-" + username + "-" + crypto.randomUUID().slice(0, 6).toUpperCase();
 
       await context.env.DB.prepare(`
-        INSERT INTO users(id, wallet_address, role)
-        VALUES(?,?,?)
-      `).bind(id, wallet, "USER").run();
+        INSERT INTO users(id, wallet_address, username, display_name, referral_code, role, email_verified, created_at)
+        VALUES(?,?,?,?,?,'USER',1,?)
+      `).bind(id, wallet, username, username, referralCode, Date.now()).run();
 
       user = await context.env.DB.prepare(`
         SELECT *
@@ -73,6 +92,11 @@ export async function onRequestPost(context:any){
         LIMIT 1
       `).bind(wallet).first();
     }
+
+    await context.env.DB.prepare(
+      "UPDATE users SET email_verified = 1, username = COALESCE(NULLIF(username,''), ?), display_name = COALESCE(NULLIF(display_name,''), ?), referral_code = COALESCE(NULLIF(referral_code,''), ?) WHERE id = ?"
+    ).bind("WEB3_" + wallet.slice(2, 8).toUpperCase(), "WEB3_" + wallet.slice(2, 8).toUpperCase(), "SYS-WEB3-" + crypto.randomUUID().slice(0, 8).toUpperCase(), String(user.id)).run();
+    user = await context.env.DB.prepare("SELECT * FROM users WHERE id = ? LIMIT 1").bind(String(user.id)).first();
 
     // A nonce is single-use. Delete it only after the signature has been
     // cryptographically verified and the wallet matches.
