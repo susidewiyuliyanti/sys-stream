@@ -1,5 +1,5 @@
 import React from 'react';
-import { LockKeyhole, Wallet, Gamepad2, User, ArrowRight, RefreshCw } from 'lucide-react';
+import { LockKeyhole, Wallet, Gamepad2, User, ArrowRight, RefreshCw, Target, CircleDot, Gift } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useLanguage, formatRegistrationBonus } from '../../i18n';
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function DashboardPage({ navigate }: Props) {
-  const { user, locks, isLoggedIn, refreshFinancialState } = useGame();
+  const { user, locks, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
   const { language } = useLanguage();
 
   const available = Number(user.coins || 0) / 100;
@@ -40,10 +40,15 @@ export default function DashboardPage({ navigate }: Props) {
 
         <div className="grid sm:grid-cols-2 gap-4">
           {user.registrationBonusGranted && (
-            <div className="sm:col-span-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
-              <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
-              <div className="text-3xl font-black mt-2 text-emerald-300">{formatRegistrationBonus(language)}</div>
-              <p className="text-xs text-slate-400 mt-1">Bonus akun baru • nilai dasar Rp15.000</p>
+            <div className="sm:col-span-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
+                <div className="text-xl font-black mt-2 text-emerald-300">{formatRegistrationBonus(language)}</div>
+                <p className="text-xs text-slate-400 mt-1">Bonus pendaftaran • 1 akun hanya dapat claim 1 kali</p>
+              </div>
+              <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
+                <Gift className="w-4 h-4" /> Claim Bonus Registrasi
+              </button>
             </div>
           )}
 
@@ -64,28 +69,26 @@ export default function DashboardPage({ navigate }: Props) {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-3">
-          <button onClick={() => navigate?.('/game/blindbox')} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-left hover:border-cyan-500/50 transition-colors">
-            <Gamepad2 className="w-5 h-5 text-cyan-400 mb-3" />
-            <div className="font-bold">Blind Box</div>
-            <div className="text-xs text-slate-500 mt-1">Open the game using your real account balance.</div>
-            <ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <button onClick={() => navigate?.('/game/tebak')} className="rounded-2xl border border-cyan-500/30 bg-slate-900 p-5 text-left hover:border-cyan-400/70 transition-colors">
+            <Target className="w-6 h-6 text-cyan-400 mb-3" />
+            <div className="font-bold text-lg">Tebak Nomor</div>
+            <div className="text-xs text-slate-500 mt-1">Pilih angka dan ikuti permainan Tebak Nomor menggunakan saldo akun.</div>
+            <ArrowRight className="w-4 h-4 mt-4 text-slate-500" />
           </button>
-
-          <button onClick={() => navigate?.('/profile')} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-left hover:border-cyan-500/50 transition-colors">
-            <User className="w-5 h-5 text-purple-400 mb-3" />
-            <div className="font-bold">Profile</div>
-            <div className="text-xs text-slate-500 mt-1">Manage your account profile.</div>
-            <ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+          <button onClick={() => navigate?.('/game/spinner')} className="rounded-2xl border border-purple-500/30 bg-slate-900 p-5 text-left hover:border-purple-400/70 transition-colors">
+            <CircleDot className="w-6 h-6 text-purple-400 mb-3" />
+            <div className="font-bold text-lg">Spinner</div>
+            <div className="text-xs text-slate-500 mt-1">Masuk ke game Spinner dan lihat peserta yang sedang bermain.</div>
+            <ArrowRight className="w-4 h-4 mt-4 text-slate-500" />
           </button>
-
-          <button onClick={() => navigate?.('/game/blindbox')} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-left hover:border-emerald-500/50 transition-colors">
-            <Gamepad2 className="w-5 h-5 text-emerald-400 mb-3" />
-            <div className="font-bold">Blind Box</div>
-            <div className="text-xs text-slate-500 mt-1">Open the server-backed Blind Box game.</div>
-            <ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+          <button onClick={() => navigate?.('/game/blindbox')} className="rounded-2xl border border-emerald-500/30 bg-slate-900 p-5 text-left hover:border-emerald-400/70 transition-colors">
+            <Gift className="w-6 h-6 text-emerald-400 mb-3" />
+            <div className="font-bold text-lg">Blind Box</div>
+            <div className="text-xs text-slate-500 mt-1">Buka Blind Box dan gunakan saldo game yang sama dengan saldo akun.</div>
+            <ArrowRight className="w-4 h-4 mt-4 text-slate-500" />
           </button>
-        </div>
+        </div>div>
       </div>
     </section>
   );
