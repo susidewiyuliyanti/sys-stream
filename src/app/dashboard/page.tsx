@@ -39,11 +39,13 @@ export default function DashboardPage({ navigate }: Props) {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          <div className="sm:col-span-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
-            <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
-            <div className="text-3xl font-black mt-2 text-emerald-300">{formatRegistrationBonus(language)}</div>
-            <p className="text-xs text-slate-400 mt-1">Bonus akun baru • nilai dasar Rp15.000</p>
-          </div>
+          {user.registrationBonusGranted && (
+            <div className="sm:col-span-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+              <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
+              <div className="text-3xl font-black mt-2 text-emerald-300">{formatRegistrationBonus(language)}</div>
+              <p className="text-xs text-slate-400 mt-1">Bonus akun baru • nilai dasar Rp15.000</p>
+            </div>
+          )}
 
           <div className="rounded-2xl border border-cyan-500/30 bg-slate-900/80 p-5">
             <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-wider">
