@@ -31,7 +31,9 @@ async function getProfile(env: Env, userId: string) {
            COALESCE(email_verified,0) AS emailVerified,
            COALESCE(available_balance,0) AS balance,
            COALESCE(total_locked,0) AS lockedBalance,
-           COALESCE(referral_count,0) AS referralCount
+           COALESCE(referral_count,0) AS referralCount,
+           COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
+           COALESCE(registration_bonus_granted,0) AS registrationBonusGranted
     FROM users WHERE id = ? LIMIT 1
   `).bind(userId).first<any>();
 }
