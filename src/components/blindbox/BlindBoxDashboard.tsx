@@ -153,7 +153,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
         email: userProfile.email || '',
         displayName: userProfile.displayName || 'Streamer Host',
         photoURL: userProfile.photoURL || '',
-        balance: userProfile.walletBalance ?? userProfile.saldo ?? 15000,
+        balance: userProfile.walletBalance ?? userProfile.saldo ?? 0,
         lockedBalance: (userProfile as any).lockedSaldo ?? 0,
         role: isOwner ? 'OWNER' : isAdmin ? 'ADMIN' : 'USER',
         isBlacklisted: false,
@@ -174,7 +174,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
           email: u.email || '',
           displayName: u.displayName || 'Streamer Host',
           photoURL: u.photoURL || '',
-          balance: u.balance ?? u.walletBalance ?? u.saldo ?? 15000,
+          balance: u.balance ?? u.walletBalance ?? u.saldo ?? 0,
           lockedBalance: u.lockedBalance ?? u.lockedSaldo ?? 0,
           role: u.role || 'USER',
           isBlacklisted: false,
@@ -274,7 +274,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             email: userProfile.email,
             displayName: userProfile.displayName,
             role: userProfile.role,
-            walletBalance: userProfile.walletBalance ?? 15000,
+            walletBalance: userProfile.walletBalance ?? 0,
           }),
         });
 
@@ -324,7 +324,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
               email: u?.email,
               displayName: (u as any)?.displayName || (u as any)?.username,
               role: (u as any)?.role,
-              walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 15000,
+              walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 0,
             }),
           });
           if (syncRes.ok) {
@@ -614,7 +614,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             email: u?.email,
             displayName: (u as any)?.displayName || (u as any)?.username,
             role: (u as any)?.role,
-            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 15000,
+            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 0,
           }),
         });
         if (syncRes.ok) {
@@ -737,7 +737,7 @@ export const BlindBoxDashboard: React.FC<BlindBoxDashboardProps> = ({
             email: u?.email,
             displayName: (u as any)?.displayName || (u as any)?.username,
             role: (u as any)?.role,
-            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 15000,
+            walletBalance: (u as any)?.walletBalance ?? (u as any)?.saldo ?? 0,
           }),
         });
         if (syncRes.ok) {
