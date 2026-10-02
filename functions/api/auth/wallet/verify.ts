@@ -88,7 +88,7 @@ export async function onRequestPost(context:any){
           email_verified, created_at, available_balance,
           registration_bonus_idr, registration_bonus_granted
         )
-        VALUES(?,?,?,?,?,'USER',1,?,0.8333333333,15000,1)
+        VALUES(?,?,?,?,?,'USER',1,?,0.8363,15000,1)
       `).bind(id, wallet, username, username, referralCode, Date.now()).run();
 
       user = await context.env.DB.prepare(`
