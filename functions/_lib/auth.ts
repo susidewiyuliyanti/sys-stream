@@ -9,6 +9,9 @@ export interface AuthUser {
   balance?: number;
   lockedBalance?: number;
   emailVerified?: boolean;
+  referralCode?: string;
+  avatarUrl?: string;
+  referralCount?: number;
 }
 
 const textEncoder = new TextEncoder();
@@ -71,6 +74,9 @@ export async function requireAuth(request: Request, env: Env) {
 
   const row = await env.DB.prepare(
     `SELECT u.id, u.username, u.email, u.display_name AS displayName, u.role,
+            u.referral_code AS referralCode,
+            u.avatar_url AS avatarUrl,
+            COALESCE(u.referral_count,0) AS referralCount,
             COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance,0) AS balance,
             COALESCE(u.total_locked,0) AS lockedBalance
@@ -102,6 +108,8 @@ export async function requireAuth(request: Request, env: Env) {
 export async function getUserById(env: Env, userId: string) {
   return env.DB.prepare(
     `SELECT id, username, email, display_name AS displayName, role,
+            referral_code AS referralCode, avatar_url AS avatarUrl,
+            COALESCE(referral_count,0) AS referralCount,
             COALESCE(email_verified,0) AS emailVerified,
             COALESCE(available_balance,0) AS balance,
             COALESCE(total_locked,0) AS lockedBalance
