@@ -1,4 +1,4 @@
-﻿import { verifyMessage } from "ethers";
+import { verifyMessage } from "ethers";
 
 export async function onRequestPost(context:any){
 
@@ -22,10 +22,30 @@ export async function onRequestPost(context:any){
  let recovered;
 
  try{
+  const nonceRow:any = await context.env.DB.prepare(
+   "SELECT nonce FROM wallet_nonces WHERE wallet = ? LIMIT 1"
+  ).bind(String(wallet).toLowerCase()).first();
+
+  if(!nonceRow?.nonce){
+   return Response.json(
+    { error:"Wallet nonce tidak ditemukan atau sudah digunakan. Silakan coba lagi." },
+    { status:401 }
+   );
+  }
+
+  const expectedMessage =
+   "SYS STREAMER LOGIN\n\nNonce:" + String(nonceRow.nonce);
+
+  if(String(message) !== expectedMessage){
+   return Response.json(
+    { error:"Invalid wallet message" },
+    { status:401 }
+   );
+  }
 
   recovered = verifyMessage(
-   message,
-   signature
+   String(message),
+   String(signature)
   );
 
  }catch(e){
