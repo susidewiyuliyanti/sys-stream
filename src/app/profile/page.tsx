@@ -459,7 +459,7 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* EDIT PROFILE & AVATAR PICKER MODAL */
+      {/* EDIT PROFILE & AVATAR PICKER MODAL */}
       {isEditProfileModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="w-full max-w-md bg-[#080d1a] border-2 border-purple-500/40 rounded-3xl p-6 shadow-2xl space-y-5 text-white max-h-[90vh] overflow-y-auto">
