@@ -56,9 +56,23 @@ async function ensureRegistrationSchema(env: Env) {
     ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
   ];
+  // D1 can receive two registration requests at nearly the same time.
+  // Both may observe the same missing column and race on ALTER TABLE. A
+  // duplicate-column result is harmless because the other request already
+  // repaired the schema, so never let that race abort registration.
   for (const [name, definition] of additions) {
     if (!names.has(name)) {
-      await env.DB.prepare(`ALTER TABLE users ADD COLUMN ${name} ${definition}`).run();
+      try {
+        await env.DB.prepare(`ALTER TABLE users ADD COLUMN ${name} ${definition}`).run();
+      } catch (error) {
+        const message = String(error);
+        if (!/duplicate column name|already exists/i.test(message)) {
+          console.error("registration users schema repair skipped", {
+            column: name,
+            error: message,
+          });
+        }
+      }
     }
   }
 
