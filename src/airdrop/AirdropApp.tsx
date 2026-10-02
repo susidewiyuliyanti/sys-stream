@@ -4,7 +4,7 @@ import {
   Link2, Menu, ShieldCheck, Trophy, Upload, WalletCards, X, Youtube
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
-import { useLanguage, LanguageCode } from '../i18n';
+import { LanguageCode } from '../i18n';
 
 type TaskType = 'youtube' | 'tiktok' | 'instagram' | 'shorts' | 'social' | 'deposit' | 'withdrawal' | 'profile' | 'checkin';
 type Task = {
