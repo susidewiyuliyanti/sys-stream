@@ -12,6 +12,8 @@ export interface AuthUser {
   referralCode?: string;
   avatarUrl?: string;
   referralCount?: number;
+  registrationBonusIdr?: number;
+  registrationBonusGranted?: boolean;
 }
 
 const textEncoder = new TextEncoder();
@@ -77,6 +79,8 @@ export async function requireAuth(request: Request, env: Env) {
             u.referral_code AS referralCode,
             u.avatar_url AS avatarUrl,
             COALESCE(u.referral_count,0) AS referralCount,
+            COALESCE(u.registration_bonus_idr,0) AS registrationBonusIdr,
+            COALESCE(u.registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance,0) AS balance,
             COALESCE(u.total_locked,0) AS lockedBalance
@@ -110,6 +114,8 @@ export async function getUserById(env: Env, userId: string) {
     `SELECT id, username, email, display_name AS displayName, role,
             referral_code AS referralCode, avatar_url AS avatarUrl,
             COALESCE(referral_count,0) AS referralCount,
+            COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
+            COALESCE(registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(email_verified,0) AS emailVerified,
             COALESCE(available_balance,0) AS balance,
             COALESCE(total_locked,0) AS lockedBalance
