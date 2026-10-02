@@ -601,11 +601,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const remote = data.user || {};
       setUser(prev => ({
         ...prev,
+        id: String(remote.id || prev.id),
+        username: remote.username || prev.username,
+        avatar: remote.avatar_url || prev.avatar || '',
+        referralCode: remote.referral_code || prev.referralCode || '',
         coins: Math.round(Number(remote.available_balance || 0) * 100),
         registrationBonusIdr: Number(remote.registration_bonus_idr || prev.registrationBonusIdr || 0),
         registrationBonusGranted: Boolean(Number(remote.registration_bonus_granted || 0)),
       }));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
+      await refreshFinancialState();
       sound.playWin();
       showToast('Bonus Claimed', 'Bonus registrasi berhasil masuk ke saldo Anda.', 'success');
       return true;
