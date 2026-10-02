@@ -64,6 +64,8 @@ const DEFAULT_USER: UserProfile = {
   diamonds: 0,
   vipTier: 0,
   referralCode: '',
+  registrationBonusIdr: 0,
+  registrationBonusGranted: false,
   totalWon: 0,
   totalBet: 0,
   winStreak: 0,
@@ -228,6 +230,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           username: remote.username || remote.displayName || prev.username,
           avatar: remote.avatarUrl || prev.avatar || '',
           referralCode: remote.referralCode || prev.referralCode || '',
+          registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
+          registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
           coins: Math.round(Number(remote.balance || 0) * 100),
         }));
         setIsLoggedIn(true);
@@ -334,6 +338,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username: remote.username || prev.username,
         avatar: remote.avatarUrl || prev.avatar,
         referralCode: remote.referralCode || prev.referralCode,
+        registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
+        registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
       }));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       return true;
