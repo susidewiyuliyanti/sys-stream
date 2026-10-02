@@ -69,28 +69,55 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   try {
     await ensureProfileSchema(env);
     const body = await request.json().catch(() => ({}));
-    const username = String(body.username || "").trim();
-    const avatarUrl = String(body.avatarUrl || "").trim();
-    const displayName = String(body.displayName || username || "").trim();
+    const hasUsername = Object.prototype.hasOwnProperty.call(body, "username");
+    const hasAvatar = Object.prototype.hasOwnProperty.call(body, "avatarUrl");
+    const hasDisplayName = Object.prototype.hasOwnProperty.call(body, "displayName");
 
-    if (username && !/^[a-zA-Z0-9_]{3,32}$/.test(username)) {
+    const username = hasUsername ? String(body.username || "").trim() : "";
+    const avatarUrl = hasAvatar ? String(body.avatarUrl || "").trim() : "";
+    const displayName = hasDisplayName
+      ? String(body.displayName || "").trim()
+      : (hasUsername ? username : "");
+
+    if (hasUsername && !username) {
+      return json({ success: false, error: "Username tidak boleh kosong." }, 400);
+    }
+
+    if (hasUsername && !/^[a-zA-Z0-9_]{3,32}$/.test(username)) {
       return json({ success: false, error: "Username 3-32 karakter: huruf, angka, underscore." }, 400);
     }
 
-    if (username && username.toLowerCase() !== String(auth.user.username || "").toLowerCase()) {
+    if (hasUsername && username.toLowerCase() !== String(auth.user.username || "").toLowerCase()) {
       const exists = await env.DB.prepare(
         "SELECT id FROM users WHERE lower(username)=lower(?) AND id <> ? LIMIT 1"
       ).bind(username, String(auth.user.id)).first();
       if (exists) return json({ success: false, error: "Username sudah digunakan." }, 409);
     }
 
-    await env.DB.prepare(`
-      UPDATE users
-      SET username = COALESCE(NULLIF(?, ''), username),
-          display_name = COALESCE(NULLIF(?, ''), display_name),
-          avatar_url = ?
-      WHERE id = ?
-    `).bind(username, displayName, avatarUrl || null, String(auth.user.id)).run();
+    // Update only fields explicitly supplied by the client. This prevents
+    // saving username from accidentally clearing avatar_url (or vice versa).
+    const sets: string[] = [];
+    const values: any[] = [];
+
+    if (hasUsername) {
+      sets.push("username = ?");
+      values.push(username);
+    }
+    if (hasDisplayName || hasUsername) {
+      sets.push("display_name = ?");
+      values.push(displayName);
+    }
+    if (hasAvatar) {
+      sets.push("avatar_url = ?");
+      values.push(avatarUrl || null);
+    }
+
+    if (sets.length > 0) {
+      values.push(String(auth.user.id));
+      await env.DB.prepare(
+        `UPDATE users SET ${sets.join(", ")} WHERE id = ?`
+      ).bind(...values).run();
+    }
 
     return json({ success: true, user: await getProfile(env, String(auth.user.id)) });
   } catch (error) {
