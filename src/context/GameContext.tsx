@@ -416,6 +416,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username: user.username,
         avatar: user.avatar,
         referralCode: user.referralCode,
+        registrationBonusIdr: user.registrationBonusIdr,
+        registrationBonusGranted: user.registrationBonusGranted,
         vipTier: user.vipTier,
       }));
     }
