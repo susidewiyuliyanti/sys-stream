@@ -94,27 +94,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       env.DB.prepare(`
         INSERT INTO transactions(user_id,type,amount,currency,status,reference,description)
-        SELECT ?, 'WITHDRAWAL', ?, ?, 'PENDING', ?, 'Withdrawal request'
-        WHERE EXISTS (
-          SELECT 1 FROM users
-          WHERE id = ?
-            AND (
-              COALESCE(available_balance,0) >= 0
-              OR COALESCE(balance,0) >= 0
-            )
+        VALUES(
+          CASE WHEN changes() = 1 THEN ? ELSE NULL END,
+          'WITHDRAWAL', ?, ?, 'PENDING', ?, 'Withdrawal request'
         )
-      `).bind(auth.user.id, -amount, currency, reference, auth.user.id)
+      `).bind(auth.user.id, -amount, currency, reference)
     ]);
 
-    const balanceUpdate = batch[1];
-    const changed = Number(balanceUpdate?.meta?.changes || 0);
-
-    // If the balance condition did not match, the batch must not be allowed to
-    // leave a withdrawal row behind. D1 batches are transactional, so force a
-    // rollback by throwing before returning success.
-    if (changed !== 1) {
-      throw new Error("INSUFFICIENT_BALANCE");
-    }
 
     const withdrawal = await env.DB.prepare(`
       SELECT id,amount,currency,network,status
