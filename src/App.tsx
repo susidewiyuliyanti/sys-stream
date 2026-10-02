@@ -1,4 +1,3 @@
-import AirdropApp from "./AirdropApp";
 import React, { useState, useEffect } from 'react';
 import { GameProvider } from './context/GameContext';
 import { Navbar } from './components/Navbar';
