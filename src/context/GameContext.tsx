@@ -157,36 +157,48 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshFinancialState = async (): Promise<boolean> => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) return false;
+
     try {
-      const response = await fetch('/api/locks', {
+      // Production source of truth: authenticated user record.
+      // Do not read the legacy /api/locks endpoint or browser-only lock cache.
+      const response = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data?.success) throw new Error(data?.error || 'Gagal mengambil saldo.');
+
+      if (!response.ok || !data?.success || !data?.user) {
+        throw new Error(data?.error || 'Gagal mengambil saldo.');
+      }
+
       const remote = data.user;
+      const balance = Number(remote.balance || 0);
+      const lockedBalance = Number(remote.lockedBalance || 0);
+
       setUser(prev => ({
         ...prev,
-        id: String(remote.id),
-        username: remote.username || prev.username,
+        id: String(remote.id || prev.id),
+        username: remote.username || remote.displayName || prev.username,
         avatar: remote.avatarUrl || prev.avatar || '',
         referralCode: remote.referralCode || prev.referralCode || '',
-        coins: Math.round(Number(remote.balance || 0) * 100),
+        registrationBonusIdr: Number(remote.registrationBonusIdr ?? prev.registrationBonusIdr ?? 0),
+        registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
+        coins: Math.round(balance * 100),
+        lockedBalance,
       }));
-      const remoteLocks: LockRecord[] = (data.locks || []).map((l: any) => ({
-        id: String(l.id),
-        userId: String(l.user_id),
-        amount: Number(l.amount),
-        durationDays: Number(l.duration_days),
-        multiplier: Number(l.multiplier),
-        startDate: Number(l.start_date),
-        endDate: Number(l.end_date),
-        status: l.status,
-        dailyClaims: Number(l.daily_claims || 0),
-        accumulatedYieldCoins: 0,
-      }));
-      setLocks(remoteLocks);
+
+      // The old browser-only locks list must never determine the displayed
+      // Locked Balance. Keep it empty unless a real server-backed lock record
+      // is introduced later.
+      setLocks([]);
       return true;
-    } catch {
+    } catch (error: any) {
+      if (error?.status === 401 || error?.status === 403) {
+        localStorage.removeItem('sys_stream_auth_token');
+        localStorage.removeItem('sys_stream_auth_user');
+        localStorage.setItem('sys_is_logged_in', 'false');
+        setIsLoggedIn(false);
+        setLocks([]);
+      }
       return false;
     }
   };
@@ -205,6 +217,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username: String(cached.username || prev.username || ''),
             avatar: String(cached.avatar || prev.avatar || ''),
             referralCode: String(cached.referralCode || prev.referralCode || ''),
+            lockedBalance: Number(cached.lockedBalance ?? prev.lockedBalance ?? 0),
             vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
           }));
         } else {
@@ -233,6 +246,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           referralCode: remote.referralCode || prev.referralCode || '',
           registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
           registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
+          lockedBalance: Number(remote.lockedBalance || 0),
           coins: Math.round(Number(remote.balance || 0) * 100),
         }));
         setIsLoggedIn(true);
@@ -608,6 +622,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         coins: Math.round(Number(remote.available_balance || 0) * 100),
         registrationBonusIdr: Number(remote.registration_bonus_idr || prev.registrationBonusIdr || 0),
         registrationBonusGranted: Boolean(Number(remote.registration_bonus_granted || 0)),
+        lockedBalance: Number(remote.locked_balance ?? remote.lockedBalance ?? prev.lockedBalance ?? 0),
       }));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       await refreshFinancialState();
@@ -636,9 +651,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   const getTotalLockedUsdt = (): number => {
-    return locks
-      .filter((l) => l.status === 'locked')
-      .reduce((sum, l) => sum + l.amount, 0);
+    return Number(user.lockedBalance || 0);
   };
 
   // Quota rule: $4 = 1 box, $50 = 2 boxes, $100 = 3 boxes, $250 = 5 boxes, $500+ = 10 boxes
