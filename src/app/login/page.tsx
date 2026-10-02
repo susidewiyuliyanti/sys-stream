@@ -37,48 +37,81 @@ export default function LoginPage({ navigate }: Props) {
 
   
 const handleWalletAuth = async () => {
+  if (isSubmitting) return;
 
- if(!window.ethereum){
-  alert("Install MetaMask");
-  return;
- }
+  if (!window.ethereum) {
+    window.alert("Install MetaMask atau wallet Web3 terlebih dahulu.");
+    return;
+  }
 
- const accounts = await window.ethereum.request({
-  method:"eth_requestAccounts"
- });
+  setIsSubmitting(true);
 
- const wallet = accounts[0];
+  try {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
 
- const res = await fetch("/api/auth/wallet/nonce",{
-  method:"POST",
-  headers:{
-   "Content-Type":"application/json"
-  },
-  body:JSON.stringify({
-    wallet
-  })
- });
+    const wallet = String(accounts?.[0] || "").toLowerCase();
+    if (!wallet) {
+      throw new Error("Wallet address tidak ditemukan.");
+    }
 
- const data = await res.json();
+    const nonceRes = await fetch("/api/auth/wallet/nonce", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ wallet }),
+    });
 
- const message =
- "SYS STREAMER LOGIN\n\nNonce:" + data.nonce;
+    const nonceData = await nonceRes.json().catch(() => ({}));
+    if (!nonceRes.ok || !nonceData?.nonce) {
+      throw new Error(nonceData?.error || "Gagal membuat nonce wallet.");
+    }
 
- const signature = await window.ethereum.request({
-  method:"personal_sign",
-  params:[
-   message,
-   wallet
-  ]
- });
+    const message = "SYS STREAMER LOGIN\\n\\nNonce:" + String(nonceData.nonce);
 
- console.log({
-  wallet,
-  signature
- });
+    const signature = await window.ethereum.request({
+      method: "personal_sign",
+      params: [message, wallet],
+    });
 
- alert("Wallet connected");
+    const verifyRes = await fetch("/api/auth/wallet/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wallet,
+        signature,
+        message,
+      }),
+    });
 
+    const verifyData = await verifyRes.json().catch(() => ({}));
+
+    if (!verifyRes.ok || !verifyData?.token || !verifyData?.user) {
+      throw new Error(verifyData?.error || "Verifikasi tanda tangan wallet gagal.");
+    }
+
+    // Simpan session yang dikembalikan backend sebelum melakukan navigasi.
+    localStorage.setItem("sys_stream_auth_token", String(verifyData.token));
+    localStorage.setItem("sys_stream_auth_user", JSON.stringify(verifyData.user));
+
+    const walletLabel =
+      String(verifyData.user.username || verifyData.user.display_name || "").trim() ||
+      ("Web3_" + wallet.slice(2, 8));
+
+    login(walletLabel);
+
+    // Wallet login mengikuti alur login email: langsung masuk ke beranda/dashboard.
+    if (navigate) {
+      navigate("/dashboard");
+    } else {
+      window.location.hash = "/dashboard";
+    }
+  } catch (error) {
+    console.error("Wallet login error:", error);
+    window.alert(error instanceof Error ? error.message : "Wallet login gagal.");
+  } finally {
+    setIsSubmitting(false);
+  }
 };
 
 const handleSubmit = async (e: React.FormEvent) => {
@@ -320,10 +353,10 @@ const handleSubmit = async (e: React.FormEvent) => {
         <button
           onClick={handleWalletAuth}
           type="button"
-          className="w-full py-3 bg-slate-950/60 border border-slate-700 text-slate-500 font-bold text-xs rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-3 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-bold text-xs rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
         >
-          <Wallet className="w-4 h-4 text-slate-500" />
-          <span>Wallet Login — Coming Soon</span>
+          <Wallet className="w-4 h-4 text-cyan-400" />
+          <span>Connect Wallet</span>
         </button>
 
         {/* Register Prompt */}
