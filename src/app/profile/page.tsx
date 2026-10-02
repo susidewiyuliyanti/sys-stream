@@ -287,7 +287,7 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        {/* REFERRAL + EVENT STATUS */
+        {/* REFERRAL + EVENT STATUS */}
         {isLoggedIn && (
           <div className="space-y-3">
             <div className="relative overflow-hidden bg-slate-950/90 border border-purple-500/30 rounded-3xl p-5 space-y-3">
