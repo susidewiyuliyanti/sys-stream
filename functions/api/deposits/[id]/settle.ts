@@ -64,8 +64,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT
             id,
-            COALESCE(balance, 0) AS balance,
-            COALESCE(locked_saldo, 0) AS locked_saldo
+            COALESCE(available_balance, 0) AS available_balance,
+            COALESCE(balance, 0) AS legacy_balance,
+            COALESCE(total_locked, 0) AS total_locked,
+            COALESCE(locked_saldo, 0) AS legacy_locked_saldo
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -76,8 +78,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         if (userResult.rows.length === 0) throw new Error("USER_NOT_FOUND");
 
         const user = userResult.rows[0];
-        const currentBalance = Number(user.balance || 0);
-        const currentLocked = Number(user.locked_saldo || 0);
+        const currentBalance = Number(user.available_balance || 0) > 0
+          ? Number(user.available_balance || 0)
+          : Number(user.legacy_balance || 0);
+        const currentLocked = Number(user.total_locked || 0) > 0
+          ? Number(user.total_locked || 0)
+          : Number(user.legacy_locked_saldo || 0);
 
         if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
@@ -88,6 +94,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           UPDATE users
           SET
+            available_balance = $1,
+            total_locked = $2,
             balance = $1,
             locked_saldo = $2
           WHERE id = $3
