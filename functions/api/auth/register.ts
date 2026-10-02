@@ -52,6 +52,8 @@ async function ensureRegistrationSchema(env: Env) {
     ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
     ["wallet_address", "TEXT"],
     ["avatar_url", "TEXT"],
+    ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
+    ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
   ];
   for (const [name, definition] of additions) {
     if (!names.has(name)) {
@@ -184,9 +186,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       `INSERT INTO users(
         id,username,email,password_hash,display_name,role,
         available_balance,total_locked,referral_code,created_at,
-        terms_version,terms_accepted_at,email_verified,email_verified_at
+        terms_version,terms_accepted_at,email_verified,email_verified_at,
+        registration_bonus_idr,registration_bonus_granted
       )
-      VALUES(?,?,?,?,?,'USER',0,0,?,?,?,?,0,NULL)`
+      VALUES(?,?,?,?,?,'USER',0.8333333333,0,?,?,?,?,0,NULL,15000,1)`
     ).bind(
       id,
       username,
