@@ -5,8 +5,19 @@ async function ensureProfileSchema(env: Env) {
   const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
   const names = new Set((columns.results || []).map((r:any) => String(r.name)));
 
-  if (!names.has("avatar_url")) {
-    await env.DB.prepare("ALTER TABLE users ADD COLUMN avatar_url TEXT").run();
+  const additions: Array<[string,string]> = [
+    ["avatar_url", "TEXT"],
+    ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
+    ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
+  ];
+  for (const [name, definition] of additions) {
+    if (!names.has(name)) {
+      try {
+        await env.DB.prepare(`ALTER TABLE users ADD COLUMN ${name} ${definition}`).run();
+      } catch (error) {
+        console.error("profile schema repair skipped", { name, error: String(error) });
+      }
+    }
   }
 
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS user_events (
