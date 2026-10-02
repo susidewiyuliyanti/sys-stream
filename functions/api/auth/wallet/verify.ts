@@ -36,7 +36,12 @@ export async function onRequestPost(context:any){
   const expectedMessage =
    "SYS STREAMER LOGIN\n\nNonce:" + String(nonceRow.nonce);
 
-  if(String(message) !== expectedMessage){
+  // Accept the exact current message and the legacy escaped-newline form so
+  // older cached frontend deployments can still authenticate.
+  const receivedMessage = String(message);
+  const legacyMessage = receivedMessage.replace(/\\\\n/g, "\n");
+
+  if(receivedMessage !== expectedMessage && legacyMessage !== expectedMessage){
    return Response.json(
     { error:"Invalid wallet message" },
     { status:401 }
@@ -44,7 +49,7 @@ export async function onRequestPost(context:any){
   }
 
   recovered = verifyMessage(
-   String(message),
+   legacyMessage,
    String(signature)
   );
 
