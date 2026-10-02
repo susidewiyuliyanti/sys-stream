@@ -42,6 +42,13 @@ export const MobileAuthModal: React.FC = () => {
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
+      if (authMode === 'register') {
+        window.alert(data.message || 'Account created. Please verify your email before logging in.');
+        setAuthMode('login');
+        setPasswordInput('');
+        return;
+      }
+      if (!data.token || !data.user) throw new Error('Login berhasil diproses tetapi sesi belum tersedia. Silakan coba lagi.');
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
       login(data.user?.username || usernameInput.trim());
