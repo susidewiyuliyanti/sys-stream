@@ -155,15 +155,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       referralCode?: string;
     }>(request);
 
-    const username = String(body.username || "").trim();
+    const suppliedUsername = String(body.username || "").trim();
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
-    const displayName = String(body.displayName || username).trim() || username;
     const incomingReferralCode = String(body.referralCode || "").trim();
 
-    if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) {
-      return json({ success: false, error: "Username 3-32 karakter: huruf, angka, underscore." }, 400);
-    }
+    // Registration is email-first. Username is optional and generated server-side.
     if (!validEmail(email)) {
       return json({ success: false, error: "Email tidak valid." }, 400);
     }
@@ -180,20 +177,31 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }, 400);
     }
 
-    const exists = await env.DB.prepare(
-      "SELECT id FROM users WHERE lower(username)=lower(?) OR lower(email)=lower(?) LIMIT 1"
-    ).bind(username, email).first();
+    const emailExists = await env.DB.prepare(
+      "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
+    ).bind(email).first();
 
-    if (exists) {
-      return json({ success: false, error: "Username atau email sudah terdaftar." }, 409);
+    if (emailExists) {
+      return json({ success: false, error: "Email sudah terdaftar." }, 409);
     }
 
     const id = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
+    const emailLocalPart = email.split("@")[0]
+      .replace(/[^a-zA-Z0-9_]/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 20) || "user";
+
+    let username = suppliedUsername || emailLocalPart;
+    if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) username = "user";
+    const usernameTaken = await env.DB.prepare(
+      "SELECT id FROM users WHERE lower(username)=lower(?) LIMIT 1"
+    ).bind(username).first();
+    if (usernameTaken) username = username.slice(0, 24) + "_" + crypto.randomUUID().slice(0, 6);
+
+    const displayName = String(body.displayName || username).trim() || username;
     const userReferralCode =
-      "SYS-" +
-      username.toUpperCase().slice(0, 12) +
-      "-" +
+      "SYS-" + username.toUpperCase().slice(0, 12) + "-" +
       crypto.randomUUID().slice(0, 6).toUpperCase();
     const acceptedAt = Math.floor(Date.now() / 1000);
 
