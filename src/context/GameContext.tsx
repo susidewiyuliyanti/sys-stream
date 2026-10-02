@@ -74,7 +74,15 @@ const INITIAL_INVENTORY: BlindboxItem[] = [];
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserProfile>(() => DEFAULT_USER);
+  const [user, setUser] = useState<UserProfile>(() => {
+    try {
+      const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
+      if (cached && (cached.username || cached.avatar || cached.referralCode)) {
+        return { ...DEFAULT_USER, ...cached };
+      }
+    } catch {}
+    return DEFAULT_USER;
+  });
 
   const [inventory, setInventory] = useState<BlindboxItem[]>(() => {
     const saved = localStorage.getItem('nexus_inventory');
@@ -233,11 +241,27 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    // Keep the saved profile locally so logout does not reset the user's
+    // username/avatar/referral identity. Financial/session data is still cleared.
+    localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+      referralCode: user.referralCode,
+      vipTier: user.vipTier,
+    }));
     localStorage.removeItem('sys_stream_auth_token');
     localStorage.removeItem('sys_stream_auth_user');
     localStorage.setItem('sys_is_logged_in', 'false');
     setIsLoggedIn(false);
-    setUser(DEFAULT_USER);
+    setUser(prev => ({
+      ...DEFAULT_USER,
+      id: prev.id,
+      username: prev.username,
+      avatar: prev.avatar,
+      referralCode: prev.referralCode,
+      vipTier: prev.vipTier,
+    }));
     setLocks([]);
     sound.playClick();
     showToast('Logged Out', 'You must log in again before playing.', 'info');
