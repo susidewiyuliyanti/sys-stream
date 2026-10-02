@@ -242,18 +242,46 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         acceptedAt
       ).run();
     } catch (error) {
-      console.error("register verification token write failed", {
+      // Production D1 can contain an older verification-token row for the
+      // same user. Remove only that user's unused tokens and retry once so
+      // a stale token/constraint cannot turn a valid registration into 500.
+      console.error("register verification token first write failed", {
         requestId,
         userId: id,
         error: String(error),
       });
 
-      return json({
-        success: false,
-        code: "REGISTRATION_STORAGE_ERROR",
-        requestId,
-        error: "Akun belum dapat diselesaikan karena penyimpanan verifikasi bermasalah. Silakan coba lagi.",
-      }, 500);
+      try {
+        await env.DB.prepare(
+          `DELETE FROM email_verification_tokens
+           WHERE user_id = ? AND used_at IS NULL`
+        ).bind(id).run();
+
+        await env.DB.prepare(
+          `INSERT INTO email_verification_tokens(
+            id,user_id,token_hash,expires_at,used_at,created_at
+          ) VALUES(?,?,?,?,NULL,?)`
+        ).bind(
+          crypto.randomUUID(),
+          id,
+          verificationHash,
+          verificationExpires,
+          acceptedAt
+        ).run();
+      } catch (retryError) {
+        console.error("register verification token retry failed", {
+          requestId,
+          userId: id,
+          error: String(retryError),
+        });
+
+        return json({
+          success: false,
+          code: "REGISTRATION_VERIFICATION_STORAGE_ERROR",
+          requestId,
+          error: "Akun belum dapat menyelesaikan verifikasi email. Silakan coba registrasi kembali.",
+        }, 500);
+      }
     }
 
     // Referral is optional. A referral failure must never prevent the new
@@ -333,7 +361,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       requestId,
       registrationBonusIdr: 15000,
       registrationBonusUsdt: 0.8363,
-      message: "Akun dibuat. Bonus registrasi Rp15.000 telah diberikan. Silakan verifikasi email sebelum login.",
+      message: "Akun dibuat. Bonus registrasi Rp15.000 tersedia untuk di-claim satu kali setelah login. Silakan verifikasi email sebelum login.",
     });
   } catch (error) {
     console.error("register error", {
