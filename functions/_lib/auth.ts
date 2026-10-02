@@ -70,7 +70,32 @@ export async function createSession(env: Env, userId: string): Promise<string> {
   return token;
 }
 
+async function ensureAuthUserColumns(env: Env) {
+  const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
+  const names = new Set((columns.results || []).map((r:any) => String(r.name)));
+  const additions: Array<[string,string]> = [
+    ["avatar_url", "TEXT"],
+    ["referral_code", "TEXT"],
+    ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
+    ["email_verified", "INTEGER NOT NULL DEFAULT 0"],
+    ["available_balance", "REAL NOT NULL DEFAULT 0"],
+    ["total_locked", "REAL NOT NULL DEFAULT 0"],
+    ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
+    ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
+  ];
+  for (const [name, definition] of additions) {
+    if (!names.has(name)) {
+      try {
+        await env.DB.prepare(`ALTER TABLE users ADD COLUMN ${name} ${definition}`).run();
+      } catch (error) {
+        console.error("auth schema repair skipped", { name, error: String(error) });
+      }
+    }
+  }
+}
+
 export async function requireAuth(request: Request, env: Env) {
+  await ensureAuthUserColumns(env);
   const token = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
   if (!token) return { ok: false as const, response: json({ success: false, error: "Unauthorized" }, 401) };
 
