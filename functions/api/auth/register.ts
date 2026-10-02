@@ -10,52 +10,9 @@ import {
 const TERMS_VERSION = "2026-10-01";
 
 function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
-async function ensureRegistrationSchema(env: Env) {
-  const info = await env.DB.prepare("PRAGMA table_info(users)").all<any>();
-  const columns = new Set((info.results || []).map((row:any) => String(row.name)));
-  const additions: Array<[string,string]> = [
-    ["email", "ALTER TABLE users ADD COLUMN email TEXT"],
-    ["password_hash", "ALTER TABLE users ADD COLUMN password_hash TEXT"],
-    ["display_name", "ALTER TABLE users ADD COLUMN display_name TEXT"],
-    ["role", "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'USER'"],
-    ["available_balance", "ALTER TABLE users ADD COLUMN available_balance REAL NOT NULL DEFAULT 0"],
-    ["total_locked", "ALTER TABLE users ADD COLUMN total_locked REAL NOT NULL DEFAULT 0"],
-    ["referral_code", "ALTER TABLE users ADD COLUMN referral_code TEXT"],
-    ["created_at", "ALTER TABLE users ADD COLUMN created_at INTEGER NOT NULL DEFAULT (unixepoch())"],
-    ["terms_version", "ALTER TABLE users ADD COLUMN terms_version TEXT"],
-    ["terms_accepted_at", "ALTER TABLE users ADD COLUMN terms_accepted_at INTEGER"],
-    ["email_verified", "ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 1"],
-    ["email_verified_at", "ALTER TABLE users ADD COLUMN email_verified_at INTEGER"],
-    ["referral_count", "ALTER TABLE users ADD COLUMN referral_count INTEGER NOT NULL DEFAULT 0"]
-  ];
-  for (const [name, sql] of additions) {
-    if (!columns.has(name)) {
-      try { await env.DB.prepare(sql).run(); } catch (e) {
-        const message = e instanceof Error ? e.message : String(e);
-        if (!/duplicate column|already exists/i.test(message)) throw e;
-      }
-    }
-  }
-  // Older production databases may already contain duplicate legacy emails.
-  // Do not let that block every new registration while still preventing duplicates
-  // at the application level below.
-  try {
-    await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email) WHERE email IS NOT NULL").run();
-  } catch (e) {
-    const message = e instanceof Error ? e.message : String(e);
-    if (!/unique|constraint/i.test(message)) throw e;
-    await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)").run();
-  }
-  await env.DB.prepare("CREATE TABLE IF NOT EXISTS terms_acceptances (id TEXT PRIMARY KEY,user_id TEXT NOT NULL,terms_version TEXT NOT NULL,accepted_at INTEGER NOT NULL,created_at INTEGER NOT NULL)").run();
-  await env.DB.prepare("CREATE TABLE IF NOT EXISTS email_verification_tokens (id TEXT PRIMARY KEY,user_id TEXT NOT NULL,token_hash TEXT NOT NULL UNIQUE,expires_at INTEGER NOT NULL,used_at INTEGER,created_at INTEGER NOT NULL)").run();
-  await env.DB.prepare("CREATE TABLE IF NOT EXISTS referrals (id TEXT PRIMARY KEY,referrer_user_id TEXT NOT NULL,referred_user_id TEXT NOT NULL UNIQUE,referral_code TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'ACTIVE',created_at INTEGER NOT NULL)").run();
-  await env.DB.prepare("CREATE TABLE IF NOT EXISTS auth_sessions (token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires_at INTEGER NOT NULL,created_at INTEGER NOT NULL DEFAULT (unixepoch()))").run();
-}
-
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   try {
-    await ensureRegistrationSchema(env);
     const body = await readJson<{
       username?:string;
       email?:string;
@@ -92,7 +49,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const verificationId=crypto.randomUUID();
     const verificationExpires=verificationExpiry();
     let referrer:any = null;
-    if (incomingReferralCode) {
+    if (referralCode) {
       referrer = await env.DB.prepare(
         "SELECT id, referral_code FROM users WHERE upper(referral_code)=upper(?) LIMIT 1"
       ).bind(incomingReferralCode).first();
@@ -144,14 +101,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       message:"Akun dibuat. Silakan verifikasi email sebelum login."
     });
   }catch(error){
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("register error", message);
-    if (/unique constraint|constraint failed.*email|idx_users_email/i.test(message)) {
-      return json({success:false,code:"REGISTRATION_CONFLICT",error:"Username atau email sudah terdaftar."},409);
-    }
-    if (/no such table|no such column|has no column named/i.test(message)) {
-      return json({success:false,code:"REGISTRATION_SCHEMA_ERROR",error:"Database akun belum siap. Silakan coba lagi beberapa saat."},503);
-    }
-    return json({success:false,code:"REGISTRATION_SERVER_ERROR",error:"Registrasi gagal diproses di server. Silakan coba lagi."},500);
+    console.error("register error",error);
+    return json({success:false,error:"Registrasi gagal di server."},500);
   }
 }

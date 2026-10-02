@@ -1,6 +1,6 @@
 -- Record the Terms version accepted at account creation.
-ALTER TABLE users ADD COLUMN terms_version TEXT;
-ALTER TABLE users ADD COLUMN terms_accepted_at INTEGER;
+-- ALTER TABLE users ADD COLUMN terms_version TEXT;
+-- ALTER TABLE users ADD COLUMN terms_accepted_at INTEGER;
 
 CREATE TABLE IF NOT EXISTS terms_acceptances (
   id TEXT PRIMARY KEY,

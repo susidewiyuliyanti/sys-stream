@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
 import { TERMS_VERSION } from '../terms/page';
@@ -35,7 +35,53 @@ export default function LoginPage({ navigate }: Props) {
   const [verificationNotice, setVerificationNotice] = useState('');
   const [resendBusy, setResendBusy] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+const handleWalletAuth = async () => {
+
+ if(!window.ethereum){
+  alert("Install MetaMask");
+  return;
+ }
+
+ const accounts = await window.ethereum.request({
+  method:"eth_requestAccounts"
+ });
+
+ const wallet = accounts[0];
+
+ const res = await fetch("/api/auth/wallet/nonce",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json"
+  },
+  body:JSON.stringify({
+    wallet
+  })
+ });
+
+ const data = await res.json();
+
+ const message =
+ "SYS STREAMER LOGIN\n\nNonce:" + data.nonce;
+
+ const signature = await window.ethereum.request({
+  method:"personal_sign",
+  params:[
+   message,
+   wallet
+  ]
+ });
+
+ console.log({
+  wallet,
+  signature
+ });
+
+ alert("Wallet connected");
+
+};
+
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sound.playClick();
     setIsSubmitting(true);
@@ -43,7 +89,7 @@ export default function LoginPage({ navigate }: Props) {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, ...(new URLSearchParams(window.location.search).get('ref')?.trim() ? { referralCode: new URLSearchParams(window.location.search).get('ref')!.trim() } : {}) };
+        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, referralCode };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -93,12 +139,7 @@ export default function LoginPage({ navigate }: Props) {
     }
   };
 
-  const handleWalletAuth = () => {
-    sound.playClick();
-    window.alert('Wallet login belum tersedia. Silakan login atau register dengan akun SYS terlebih dahulu.');
-  };
-
-  return (
+ return (
     <div className="min-h-screen bg-[#060a14] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">
       {/* Background Cyber Matrix Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
@@ -207,7 +248,7 @@ export default function LoginPage({ navigate }: Props) {
             </button>
           </div>
 
-          {/* Terms acceptance â€” required for new accounts */}
+          {/* Terms acceptance — required for new accounts */}
           {authMode === 'register' && (
             <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
               <input
@@ -282,7 +323,7 @@ export default function LoginPage({ navigate }: Props) {
           className="w-full py-3 bg-slate-950/60 border border-slate-700 text-slate-500 font-bold text-xs rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <Wallet className="w-4 h-4 text-slate-500" />
-          <span>Wallet Login â€” Coming Soon</span>
+          <span>Wallet Login — Coming Soon</span>
         </button>
 
         {/* Register Prompt */}
@@ -310,5 +351,11 @@ export default function LoginPage({ navigate }: Props) {
     </div>
   );
 }
+
+
+
+
+
+
 
 

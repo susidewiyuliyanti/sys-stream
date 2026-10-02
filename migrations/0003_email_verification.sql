@@ -1,6 +1,6 @@
 -- Production email verification for user accounts.
-ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 1;
-ALTER TABLE users ADD COLUMN email_verified_at INTEGER;
+-- email_verified already exists
+-- email_verified already exists
 
 CREATE TABLE IF NOT EXISTS email_verification_tokens (
   id TEXT PRIMARY KEY,
