@@ -43,7 +43,7 @@ export default function LoginPage({ navigate }: Props) {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, referralCode };
+        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, ...(new URLSearchParams(window.location.search).get('ref')?.trim() ? { referralCode: new URLSearchParams(window.location.search).get('ref')!.trim() } : {}) };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
