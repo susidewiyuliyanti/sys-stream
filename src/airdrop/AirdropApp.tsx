@@ -28,6 +28,7 @@ const BASE_TASKS: Array<Omit<Task,'title'|'description'|'estimated'|'action'>> =
 
 const TEXT: Record<LanguageCode, any> = {
   id:{
+    pool:'POOL REWARD', poolSub:'Total hadiah yang dialokasikan untuk campaign Airdrop', poolCta:'Ikuti campaign dan rebut bagian reward pool',
     tasks:'Tugas', submissions:'Pengajuan saya', login:'Masuk', hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',
     intro:'Selesaikan task campaign di YouTube, TikTok, dan Instagram. Kirim link bukti publik dan ikuti aturan setiap task.',
     daily:'MISI HARIAN HARI INI', dailySub:'Task harian dapat berubah sesuai campaign aktif.', available:'Task Tersedia',
@@ -52,6 +53,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   en:{
+    pool:'REWARD POOL', poolSub:'Total rewards allocated to the Airdrop campaign', poolCta:'Join the campaign and earn your share of the reward pool',
     tasks:'Tasks', submissions:'My submissions', login:'Login', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
     intro:'Complete campaign tasks across YouTube, TikTok and Instagram. Submit public proof links and follow each task’s rules.',
     daily:"TODAY'S DAILY MISSIONS", dailySub:'Daily tasks may change based on the active campaign.', available:'Available Tasks',
@@ -76,6 +78,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   es:{
+    pool:'POOL DE RECOMPENSAS', poolSub:'Recompensas totales asignadas a la campaña de Airdrop', poolCta:'Únete a la campaña y consigue tu parte del pool',
     tasks:'Tareas', submissions:'Mis envíos', login:'Iniciar sesión', hero:'Tareas diarias. Crea contenido. Envía pruebas. Gana recompensas de airdrop.',
     intro:'Completa tareas de campaña en YouTube, TikTok e Instagram. Envía enlaces públicos como prueba y sigue las reglas.',
     daily:'MISIONES DIARIAS DE HOY', dailySub:'Las tareas diarias pueden cambiar según la campaña activa.', available:'Tareas disponibles',
@@ -99,6 +102,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   pt:{
+    pool:'POOL DE RECOMPENSAS', poolSub:'Total de recompensas alocadas para a campanha de Airdrop', poolCta:'Participe da campanha e conquiste sua parte do pool',
     tasks:'Tarefas', submissions:'Meus envios', login:'Entrar', hero:'Tarefas diárias. Crie conteúdo. Envie provas. Ganhe recompensas de airdrop.',
     intro:'Conclua tarefas de campanha no YouTube, TikTok e Instagram. Envie links públicos como prova e siga as regras.',
     daily:'MISSÕES DIÁRIAS DE HOJE', dailySub:'As tarefas diárias podem mudar conforme a campanha ativa.', available:'Tarefas disponíveis',
@@ -122,6 +126,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   zh:{
+    pool:'奖励池', poolSub:'本次空投活动分配的总奖励', poolCta:'参加活动，赢取你的奖励份额',
     tasks:'任务', submissions:'我的提交', login:'登录', hero:'每日任务。创建内容。提交证明。赚取空投奖励。',
     intro:'完成 YouTube、TikTok 和 Instagram 活动任务。提交公开证明链接并遵守任务规则。', daily:'今日每日任务',
     dailySub:'每日任务可能根据当前活动调整。', available:'可用任务', empty:'暂无提交', emptySub:'连接账户后，你的提交会显示在这里。',
@@ -144,6 +149,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   ja:{
+    pool:'報酬プール', poolSub:'エアドロップキャンペーンに割り当てられた総報酬', poolCta:'キャンペーンに参加して報酬を獲得',
     tasks:'タスク', submissions:'提出履歴', login:'ログイン', hero:'毎日のタスク。コンテンツを作成。証明を提出。エアドロップ報酬を獲得。',
     intro:'YouTube、TikTok、Instagram のキャンペーンタスクを完了し、公開証明リンクを提出してください。', daily:'本日のデイリーミッション',
     dailySub:'デイリータスクはキャンペーンにより変更されます。', available:'利用可能なタスク', empty:'提出はまだありません', emptySub:'アカウント接続後、提出内容がここに表示されます。',
@@ -166,6 +172,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   ko:{
+    pool:'보상 풀', poolSub:'에어드롭 캠페인에 배정된 총 보상', poolCta:'캠페인에 참여하고 보상 풀의 몫을 획득하세요',
     tasks:'작업', submissions:'내 제출', login:'로그인', hero:'매일의 작업. 콘텐츠를 만들고 증빙을 제출하여 에어드롭 보상을 받으세요.',
     intro:'YouTube, TikTok, Instagram 캠페인 작업을 완료하고 공개 증빙 링크를 제출하세요.', daily:'오늘의 일일 미션',
     dailySub:'일일 작업은 활성 캠페인에 따라 변경될 수 있습니다.', available:'사용 가능한 작업', empty:'제출 내역이 없습니다', emptySub:'계정 연결 후 제출 내역이 여기에 표시됩니다.',
@@ -188,6 +195,7 @@ const TEXT: Record<LanguageCode, any> = {
     }
   },
   ar:{
+    pool:'مجمع المكافآت', poolSub:'إجمالي المكافآت المخصصة لحملة الإيردروب', poolCta:'انضم إلى الحملة واحصل على حصتك من مجمع المكافآت',
     tasks:'المهام', submissions:'إرسالياتي', login:'تسجيل الدخول', hero:'مهام يومية. أنشئ المحتوى. أرسل الإثبات. احصل على مكافآت الإيردروب.',
     intro:'أكمل مهام الحملات على YouTube وTikTok وInstagram وأرسل روابط إثبات عامة واتبع قواعد كل مهمة.',
     daily:'مهام اليوم اليومية', dailySub:'قد تتغير المهام اليومية حسب الحملة النشطة.', available:'المهام المتاحة',
@@ -245,6 +253,7 @@ export default function AirdropApp(){
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
   const tasks=useMemo(()=>localizedTasks(language),[language]);
+  const rewardPool = String(import.meta.env.VITE_AIRDROP_REWARD_POOL || '').trim() || 'TBA';
 
   useEffect(()=>{
     let active=true;
@@ -291,6 +300,18 @@ export default function AirdropApp(){
             <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ {tx.proofShort}</span>
             <span className="px-3 py-2 rounded-full bg-slate-800 border border-slate-700">✓ {tx.reviewShort}</span>
           </div>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-amber-400/30 bg-gradient-to-r from-amber-500/10 via-slate-900 to-purple-500/10 p-5 sm:p-7 relative overflow-hidden shadow-[0_0_40px_rgba(245,158,11,0.08)]">
+        <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-amber-400/10 blur-3xl"/>
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-black tracking-[0.18em] text-amber-300"><CircleDollarSign className="w-4 h-4"/> {tx.pool}</div>
+            <div className="mt-2 text-4xl sm:text-5xl font-black tracking-tight text-white">{rewardPool}</div>
+            <p className="mt-2 text-sm text-slate-400">{tx.poolSub}</p>
+          </div>
+          <div className="sm:max-w-xs rounded-2xl border border-amber-400/20 bg-slate-950/50 px-4 py-3 text-sm font-bold text-amber-200">{tx.poolCta}</div>
         </div>
       </section>
 
