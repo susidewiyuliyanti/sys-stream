@@ -108,15 +108,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return [];
   });
 
-  const [locks, setLocks] = useState<LockRecord[]>(() => {
-    const saved = localStorage.getItem('nexus_locks');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return [];
-  });
+  // Legacy browser-only locks are intentionally not loaded.
+  // Production Locked Balance comes only from the authenticated server user.
+  const [locks, setLocks] = useState<LockRecord[]>([]);
 
   const [cryptoCard, setCryptoCard] = useState<CryptoCardConfig>(() => {
     const saved = localStorage.getItem('nexus_cryptocard');
