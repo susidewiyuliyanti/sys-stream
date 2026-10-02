@@ -43,49 +43,100 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const currency = String(body.currency || "USDT").toUpperCase();
     const network = String(body.network || "TRC20").toUpperCase();
 
-    if (!Number.isFinite(amount) || amount <= 0) return json({ success:false, error:"Nominal penarikan tidak valid." },400);
-    if (!walletAddress || walletAddress.length < 20) return json({ success:false, error:"Alamat wallet tidak valid." },400);
-    if (currency !== "USDT") return json({ success:false, error:"Saat ini penarikan hanya USDT." },400);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return json({ success:false, error:"Nominal penarikan tidak valid." },400);
+    }
+    if (!walletAddress || walletAddress.length < 20) {
+      return json({ success:false, error:"Alamat wallet tidak valid." },400);
+    }
+    if (currency !== "USDT") {
+      return json({ success:false, error:"Saat ini penarikan hanya USDT." },400);
+    }
+    if (network !== "TRC20") {
+      return json({ success:false, error:"Saat ini jaringan penarikan USDT adalah TRC20." },400);
+    }
 
-    const result = await env.DB.prepare(`
-      SELECT
-        CASE WHEN COALESCE(available_balance,0) > 0 THEN COALESCE(available_balance,0) ELSE COALESCE(balance,0) END AS balance
-      FROM users WHERE id = ? LIMIT 1
-    `).bind(auth.user.id).first<any>();
-    const balance = Number(result?.balance || 0);
+    // Use a conditional balance update inside the same D1 transaction as the
+    // withdrawal + ledger insert. This prevents double-spend when two requests
+    // arrive at nearly the same time.
+    const reference = `WD-${crypto.randomUUID()}`;
 
-    if (amount > balance) return json({ success:false, error:"Saldo tersedia tidak mencukupi." },400);
+    const batch = await env.DB.batch([
+      env.DB.prepare(`
+        INSERT INTO withdrawals(user_id,amount,currency,wallet_address,network,status,provider_reference)
+        VALUES(?,?,?,?,?,'PENDING',?)
+      `).bind(auth.user.id, amount, currency, walletAddress, network, reference),
+
+      env.DB.prepare(`
+        UPDATE users
+        SET available_balance = CASE
+              WHEN COALESCE(available_balance,0) >= ? THEN COALESCE(available_balance,0) - ?
+              ELSE COALESCE(balance,0) - ?
+            END,
+            balance = CASE
+              WHEN COALESCE(available_balance,0) >= ? THEN COALESCE(available_balance,0) - ?
+              ELSE COALESCE(balance,0) - ?
+            END
+        WHERE id = ?
+          AND (
+            COALESCE(available_balance,0) >= ?
+            OR (
+              COALESCE(available_balance,0) <= 0
+              AND COALESCE(balance,0) >= ?
+            )
+          )
+      `).bind(
+        amount, amount, amount,
+        amount, amount, amount,
+        auth.user.id,
+        amount, amount
+      ),
+
+      env.DB.prepare(`
+        INSERT INTO transactions(user_id,type,amount,currency,status,reference,description)
+        SELECT ?, 'WITHDRAWAL', ?, ?, 'PENDING', ?, 'Withdrawal request'
+        WHERE EXISTS (
+          SELECT 1 FROM users
+          WHERE id = ?
+            AND (
+              COALESCE(available_balance,0) >= 0
+              OR COALESCE(balance,0) >= 0
+            )
+        )
+      `).bind(auth.user.id, -amount, currency, reference, auth.user.id)
+    ]);
+
+    const balanceUpdate = batch[1];
+    const changed = Number(balanceUpdate?.meta?.changes || 0);
+
+    // If the balance condition did not match, the batch must not be allowed to
+    // leave a withdrawal row behind. D1 batches are transactional, so force a
+    // rollback by throwing before returning success.
+    if (changed !== 1) {
+      throw new Error("INSUFFICIENT_BALANCE");
+    }
 
     const withdrawal = await env.DB.prepare(`
-      INSERT INTO withdrawals(user_id,amount,currency,wallet_address,network,status)
-      VALUES(?,?,?,?,?,'PENDING')
-    `).bind(auth.user.id, amount, currency, walletAddress, network).run();
-
-    const withdrawalId = Number(withdrawal.meta.last_row_id || 0);
-
-    await env.DB.prepare(`
-      UPDATE users
-      SET available_balance = ?,
-          balance = ?
-      WHERE id = ?
-    `).bind(balance - amount, balance - amount, auth.user.id).run();
-
-    await env.DB.prepare(`
-      INSERT INTO transactions(user_id,type,amount,currency,status,reference,description)
-      VALUES(?,?,?,?,?,?,?)
-    `).bind(auth.user.id, "WITHDRAWAL", -amount, currency, "PENDING", `WD-${withdrawalId}`, "Withdrawal request").run();
+      SELECT id,amount,currency,network,status
+      FROM withdrawals
+      WHERE provider_reference = ? AND user_id = ?
+      ORDER BY id DESC LIMIT 1
+    `).bind(reference, auth.user.id).first<any>();
 
     return json({
       success:true,
-      withdrawalId,
+      withdrawalId: Number(withdrawal?.id || 0),
       amount,
       currency,
       network,
       status:"PENDING",
       message:"Permintaan penarikan berhasil dibuat dan menunggu proses."
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("withdrawal error", error);
+    if (String(error?.message || "") === "INSUFFICIENT_BALANCE") {
+      return json({ success:false, error:"Saldo tersedia tidak mencukupi." },400);
+    }
     return json({ success:false, error:"Gagal membuat permintaan penarikan." },500);
   }
 }
