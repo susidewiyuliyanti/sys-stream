@@ -330,7 +330,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       requiresEmailVerification: true,
       email,
       requestId,
-      message: "Akun dibuat. Silakan verifikasi email sebelum login.",
+      registrationBonusIdr: 15000,
+      registrationBonusUsdt: 0.8363,
+      message: "Akun dibuat. Bonus registrasi Rp15.000 telah diberikan. Silakan verifikasi email sebelum login.",
     });
   } catch (error) {
     console.error("register error", {
