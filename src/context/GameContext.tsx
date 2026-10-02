@@ -191,7 +191,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) {
       setIsLoggedIn(false);
-      setUser(DEFAULT_USER);
+      try {
+        const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
+        if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
+          setUser(prev => ({
+            ...DEFAULT_USER,
+            ...prev,
+            id: String(cached.id || prev.id || ''),
+            username: String(cached.username || prev.username || ''),
+            avatar: String(cached.avatar || prev.avatar || ''),
+            referralCode: String(cached.referralCode || prev.referralCode || ''),
+            vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
+          }));
+        } else {
+          setUser(DEFAULT_USER);
+        }
+      } catch {
+        setUser(DEFAULT_USER);
+      }
       setLocks([]);
       return;
     }
@@ -222,7 +239,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.removeItem('sys_stream_auth_user');
         localStorage.setItem('sys_is_logged_in', 'false');
         setIsLoggedIn(false);
-        setUser(DEFAULT_USER);
+        try {
+          const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
+          if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
+            setUser(prev => ({
+              ...DEFAULT_USER,
+              ...prev,
+              id: String(cached.id || prev.id || ''),
+              username: String(cached.username || prev.username || ''),
+              avatar: String(cached.avatar || prev.avatar || ''),
+              referralCode: String(cached.referralCode || prev.referralCode || ''),
+              vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
+            }));
+          } else {
+            setUser(DEFAULT_USER);
+          }
+        } catch {
+          setUser(DEFAULT_USER);
+        }
         setLocks([]);
       });
     return () => { cancelled = true; };
