@@ -98,7 +98,9 @@ const handleWalletAuth = async () => {
       String(verifyData.user.username || verifyData.user.display_name || "").trim() ||
       ("Web3_" + wallet.slice(2, 8));
 
-    login(walletLabel);
+    // Backend is the source of truth for the wallet profile.
+    // Do not overwrite the saved username with a UI-generated label.
+    login();
 
     // Wallet login mengikuti alur login email: langsung masuk ke beranda/dashboard.
     if (navigate) {
