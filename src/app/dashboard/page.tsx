@@ -88,8 +88,9 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="text-xs text-slate-500 mt-1">Buka Blind Box dan gunakan saldo game yang sama dengan saldo akun.</div>
             <ArrowRight className="w-4 h-4 mt-4 text-slate-500" />
           </button>
-        </div>div>
+        </div>
       </div>
     </section>
   );
 }
+
