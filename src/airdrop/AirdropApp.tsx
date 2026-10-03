@@ -248,9 +248,33 @@ export default function AirdropApp() {
   useEffect(() => {
     let active = true;
 
-    const checkSharedSession = async () => {
-      // Validate the same HttpOnly SYS STREAM session cookie from the main
-      // origin. This is intentionally the source of truth for Airdrop auth.
+    const checkSession = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const handoff = params.get('handoff');
+
+      // Preferred production path: Dashboard creates a one-time handoff from
+      // the already-authenticated SYS STREAM account. Exchange it here.
+      if (handoff) {
+        try {
+          const response = await fetch('/api/auth/airdrop-exchange', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: handoff }),
+            cache: 'no-store',
+          });
+          const data = await response.json().catch(() => ({}));
+          if (active && response.ok && data?.success && data?.user) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setAuthenticated(true);
+            setAuthChecked(true);
+            return;
+          }
+        } catch {
+          // Continue to shared-cookie validation below.
+        }
+      }
+
       try {
         const response = await fetch('https://sysstreamer.asia/api/auth/me', {
           credentials: 'include',
@@ -263,11 +287,9 @@ export default function AirdropApp() {
           return;
         }
       } catch {
-        // Fall through to the same-origin check below.
+        // Fall through to same-origin validation.
       }
 
-      // Keep a same-origin fallback for environments where the shared-domain
-      // cookie is already visible directly to the Airdrop host.
       try {
         const response = await fetch('/api/auth/me', {
           credentials: 'include',
@@ -284,7 +306,7 @@ export default function AirdropApp() {
       }
     };
 
-    void checkSharedSession();
+    void checkSession();
     return () => { active = false; };
   }, []);
 
