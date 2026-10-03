@@ -234,7 +234,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username: String(cached.username || prev.username || ''),
             avatar: String(cached.avatar || prev.avatar || ''),
             referralCode: String(cached.referralCode || prev.referralCode || ''),
-        walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
+          walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
             lockedBalance: Number(cached.lockedBalance ?? prev.lockedBalance ?? 0),
             vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
           }));
@@ -262,6 +262,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           username: remote.username || remote.displayName || prev.username,
           avatar: remote.avatarUrl || prev.avatar || '',
           referralCode: remote.referralCode || prev.referralCode || '',
+          walletAddress: remote.walletAddress || prev.walletAddress || '',
           registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
           registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
           lockedBalance: Number(remote.lockedBalance || 0),
