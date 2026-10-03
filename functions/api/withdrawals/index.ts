@@ -43,8 +43,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const currency = String(body.currency || "USDT").toUpperCase();
     const network = String(body.network || "TRC20").toUpperCase();
 
-    if (!Number.isFinite(amount) || amount <= 0) {
-      return json({ success:false, error:"Nominal penarikan tidak valid." },400);
+    if (!Number.isFinite(amount) || amount < 100000) {
+      return json({ success:false, error:"Minimum withdrawal is Rp 100.000 equivalent in all display currencies." },400);
     }
     if (!walletAddress || walletAddress.length < 20) {
       return json({ success:false, error:"Alamat wallet tidak valid." },400);
