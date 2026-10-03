@@ -2117,6 +2117,8 @@ const BLIND_BOX_USER_SCREEN_TRANSLATIONS: Record<LanguageCode, Record<string, st
     'Min. 50 Ribu':'الحد الأدنى 50 ألف روبية','Estimasi Profit Harian:':'الربح اليومي المتوقع:','Nominal minimal deposit adalah Rp 50.000!':'الحد الأدنى للإيداع هو 50,000 روبية!',
     'Nominal Modal Dikunci:':'رأس المال المقفل:','Hadiah Harian Tier:':'المكافأة اليومية للمستوى:','Total Kesempatan Buka Box:':'إجمالي فرص فتح الصندوق:',
     'Potensi Hadiah + Jackpot:':'المكافأة المحتملة + الجاكبوت:','Saldo Dompet Terpadu:':'رصيد المحفظة الموحدة:','Claim History (Last 7 Days)':'سجل المطالبات (آخر 7 أيام)',
+    '⚠️ Peraturan Game: Klaim sebelum jam 23:59 WIB setiap hari, atau kesempatan hari tersebut akan ':'⚠️ قواعد اللعبة: طالب قبل الساعة 23:59 بتوقيت WIB كل يوم، وإلا ستضيع فرصة ذلك اليوم ',
+    'Select deposit amount (':'اختر مبلغ الإيداع (','Sultan VIP: 2.5% - 3.5% / hari':'Sultan VIP: 2.5% - 3.5% / يوم','Diamond: 2.0% - 3.0% / hari':'Diamond: 2.0% - 3.0% / يوم','Gold: 1.5% - 2.5% / hari':'Gold: 1.5% - 2.5% / يوم','Platinum: 1.2% - 2.0% / hari':'Platinum: 1.2% - 2.0% / يوم','Silver: 0.8% - 1.5% / hari':'Silver: 0.8% - 1.5% / يوم','Bronze: 0.5% - 1.0% / hari':'Bronze: 0.5% - 1.0% / يوم',
   },
 };
 for (const lang of Object.keys(BLIND_BOX_USER_SCREEN_TRANSLATIONS) as LanguageCode[]) {
