@@ -137,8 +137,8 @@ export default function Room({
       <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-950/80 p-7 text-center">
           <LogIn className="w-10 h-10 mx-auto text-cyan-400 mb-4" />
-          <h1 className="text-xl font-black">${t("Masuk untuk bergabung ke Live Room")}</h1>
-          <p className="text-sm text-slate-400 mt-2">${t("Setiap akun memiliki profil dan identitasnya sendiri di dalam room.")}</p>
+          <h1 className="text-xl font-black">{t("Masuk untuk bergabung ke Live Room")}</h1>
+          <p className="text-sm text-slate-400 mt-2">{t("Setiap akun memiliki profil dan identitasnya sendiri di dalam room.")}</p>
           <button
             onClick={() => requireAuth(() => undefined)}
             className="mt-6 w-full rounded-xl bg-cyan-500 px-4 py-3 font-black text-slate-950"
