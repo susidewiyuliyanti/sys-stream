@@ -138,10 +138,6 @@ export async function requireAuth(request: Request, env: Env) {
 
   if (!row) return { ok: false as const, response: json({ success: false, error: "Invalid or expired session" }, 401) };
 
-  if (Number(row.emailVerified || 0) !== 1) {
-    return { ok: false as const, response: json({ success: false, error: "Email belum diverifikasi." }, 403) };
-  }
-
   return {
     ok: true as const,
     user: {
