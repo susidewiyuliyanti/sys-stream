@@ -297,9 +297,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (usernameTaken) username = username.slice(0, 24) + "_" + crypto.randomUUID().slice(0, 6);
 
     const displayName = String(body.displayName || username).trim() || username;
-    const userReferralCode =
-      "SYS-" + username.toUpperCase().slice(0, 12) + "-" +
-      crypto.randomUUID().slice(0, 6).toUpperCase();
+    const userReferralCode = walletAddress
+      ? "SYS-" + walletAddress.slice(2, 10).toUpperCase()
+      : "SYS-" + username.toUpperCase().slice(0, 12) + "-" +
+        crypto.randomUUID().slice(0, 6).toUpperCase();
     const acceptedAt = Math.floor(Date.now() / 1000);
 
     // Build the INSERT from the actual production schema. This keeps registration
