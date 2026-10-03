@@ -10,8 +10,8 @@ async function ensureWalletColumn(env: Env) {
 }
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
-  await ensureWalletColumn(env);
   try {
+    await ensureWalletColumn(env);
     const body = await readJson<{ identifier?: string; username?: string; email?: string; password?: string }>(request);
     const identifier = String(body.identifier ?? body.username ?? body.email ?? "").trim();
     const password = String(body.password ?? "");
