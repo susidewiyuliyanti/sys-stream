@@ -7,12 +7,12 @@ import {
 
 const API = '/api/admin';
 
-type AdminUser = { id:string; username:string; email:string; balance:number; lockedBalance:number; role:string; createdAt:string };
+type AdminUser = { id:string; username:string; email:string; balance:number; lockedBalance:number; role:string; createdAt:string; walletAddress?:string };
 type AdminDeposit = { id:string; depositCode:string; userId:string; username:string; amount:number; durationDays:number; status:string; createdAt:string };
 type AdminAccount = { id:string; email:string; displayName:string; role:string; active:number; createdAt:number };
 type JackpotGrant = { id:string; userId:string; username:string; email:string; amount:number; currency:string; note:string; adminName:string; createdAt:number };
 type AirdropTask = { id:number; title:string; description:string; category:string; rewardPoints:number; active:number; createdAt:string };
-type Tab = 'overview'|'users'|'transactions'|'jackpot'|'airdrop'|'admins';
+type Streamer = { id:string; username:string; email:string; walletAddress:string; role:string; createdAt?:string };\ntype Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins';
 
 export default function AdminApp() {
   const [authenticated,setAuthenticated]=useState(false);
@@ -22,7 +22,7 @@ export default function AdminApp() {
   const [error,setError]=useState('');
   const [users,setUsers]=useState<AdminUser[]>([]);
   const [deposits,setDeposits]=useState<AdminDeposit[]>([]);
-  const [admins,setAdmins]=useState<AdminAccount[]>([]);
+  const [admins,setAdmins]=useState<AdminAccount[]>([]);\n  const [streamers,setStreamers]=useState<Streamer[]>([]);
   const [grants,setGrants]=useState<JackpotGrant[]>([]);
   const [airdropTasks,setAirdropTasks]=useState<AirdropTask[]>([]);
   const [loading,setLoading]=useState(false);
@@ -48,8 +48,8 @@ export default function AdminApp() {
     if(!authenticated)return;
     setLoading(true);setError('');
     try{
-      const [u,d,b,a,t]=await Promise.all([request('/users'),request('/deposits'),request('/bonuses'),request('/admins'),request('/airdrop-tasks')]);
-      setUsers(u.users||[]);setDeposits(d.deposits||[]);setGrants(b.grants||[]);setAdmins(a.admins||[]);setAirdropTasks(t.tasks||[]);
+      const [u,d,b,a,t,s]=await Promise.all([request('/users'),request('/deposits'),request('/bonuses'),request('/admins'),request('/airdrop-tasks'),request('/streamers')]);
+      setUsers(u.users||[]);setDeposits(d.deposits||[]);setGrants(b.grants||[]);setAdmins(a.admins||[]);setAirdropTasks(t.tasks||[]);setStreamers(s.streamers||[]);
       setAdmin(a.currentAdmin||admin);
     }catch(e:any){
       if(/session|unauthorized/i.test(e?.message||''))setAuthenticated(false);
@@ -80,7 +80,7 @@ export default function AdminApp() {
 
   const logout=async()=>{
     try{await request('/logout',{method:'POST'});}catch{}
-    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setAirdropTasks([]);setTab('overview');
+    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setAirdropTasks([]);setStreamers([]);setTab('overview');
   };
 
   const filteredUsers=useMemo(()=>{
@@ -137,7 +137,7 @@ export default function AdminApp() {
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <nav className="bg-slate-900 border border-slate-800 rounded-2xl p-2 space-y-1">
               <NavButton active={tab==='overview'} onClick={()=>setTab('overview')} icon={<LayoutDashboard/>} label="Overview"/>
-              <NavButton active={tab==='users'} onClick={()=>setTab('users')} icon={<Users/>} label="Users"/>
+              <NavButton active={tab==='users'} onClick={()=>setTab('users')} icon={<Users/>} label="Users"/>\n              <NavButton active={tab==='streamers'} onClick={()=>setTab('streamers')} icon={<Activity/>} label="Streamers"/>
               <NavButton active={tab==='transactions'} onClick={()=>setTab('transactions')} icon={<WalletCards/>} label="Transactions"/>
               <NavButton active={tab==='jackpot'} onClick={()=>setTab('jackpot')} icon={<Gift/>} label="Jackpot Grants"/>
               <NavButton active={tab==='airdrop'} onClick={()=>setTab('airdrop')} icon={<ListChecks/>} label="User Tasks / Airdrop Task"/>
@@ -153,7 +153,7 @@ export default function AdminApp() {
             {error&&<div className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm p-4">{error}</div>}
             <div className="mb-6">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':tab==='airdrop'?'User Tasks / Airdrop Task':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
+                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='streamers'?'Streamer Management':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':tab==='airdrop'?'User Tasks / Airdrop Task':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
                 {(tab==='users'||tab==='transactions')&&<div className="relative w-full md:w-80"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder={tab==='users'?'Search user, email...':'Search transaction...'} className="w-full rounded-xl bg-slate-900 border border-slate-800 pl-10 pr-4 py-2.5 text-sm outline-none focus:border-slate-600"/></div>}
               </div>
             </div>
@@ -177,6 +177,26 @@ function Overview({users,deposits,totalBalance,totalLocked}:{users:AdminUser[];d
 
 function UsersTable({users}:{users:AdminUser[]}){
  return <Panel title="All Users" meta={`${users.length} matching records`}><div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">User</th><th className="text-left py-3 pr-4">Email</th><th className="text-right py-3 pr-4">Available</th><th className="text-right py-3 pr-4">Locked</th><th className="text-left py-3">Role</th></tr></thead><tbody className="divide-y divide-slate-800">{users.map(u=><tr key={u.id}><td className="py-3 pr-4 font-semibold">{u.username||u.id}</td><td className="py-3 pr-4 text-slate-400">{u.email||'-'}</td><td className="py-3 pr-4 text-right">{formatNumber(Number(u.balance||0))}</td><td className="py-3 pr-4 text-right">{formatNumber(Number(u.lockedBalance||0))}</td><td className="py-3"><span className="text-xs rounded-full px-2 py-1 bg-slate-800">{u.role||'USER'}</span></td></tr>)}</tbody></table>{!users.length&&<EmptyState text="No users found."/>}</div></Panel>;
+}
+
+function StreamersPanel({users,streamers,onRefresh}:{users:AdminUser[];streamers:Streamer[];onRefresh:()=>void}){
+ const [userId,setUserId]=useState(''); const [busy,setBusy]=useState(false); const [message,setMessage]=useState('');
+ const availableUsers=users.filter(u=>String(u.role||'user').toLowerCase()!=='streamer');
+ const promote=async(e:React.FormEvent)=>{e.preventDefault();if(!userId)return;setBusy(true);setMessage('');try{const r=await fetch(API+'/streamers',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,action:'promote'})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal menambahkan streamer.');setMessage('User berhasil ditetapkan sebagai Official Streamer Partner.');setUserId('');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menambahkan streamer.')}finally{setBusy(false)}};
+ const remove=async(id:string)=>{if(!confirm('Hapus status Official Streamer dari user ini?'))return;setBusy(true);setMessage('');try{const r=await fetch(API+'/streamers',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:id,action:'remove'})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal mencabut status streamer.');setMessage('Status streamer dicabut.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal mencabut status streamer.')}finally{setBusy(false)}};
+ return <div className="space-y-6">
+ <Panel title="Official Streamer Partner" meta="Admin/Owner dapat menunjuk user production sebagai streamer resmi SYS STREAM">
+  <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-5 text-xs leading-5 text-slate-400">Streamer resmi tetap menggunakan akun dan wallet user yang sama. Status ini memberikan identitas <strong className="text-slate-200">Official Streamer Partner</strong>; hak streaming pada room tetap divalidasi oleh backend berdasarkan kepemilikan room.</div>
+  <form onSubmit={promote} className="flex flex-col md:flex-row gap-3">
+   <select value={userId} onChange={e=>setUserId(e.target.value)} className="flex-1 rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"><option value="">Pilih user untuk dijadikan streamer...</option>{availableUsers.map(u=><option key={u.id} value={u.id}>{u.username||u.id} — {u.email||u.walletAddress||'wallet belum tersedia'}</option>)}</select>
+   <button disabled={busy||!userId} className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold">{busy?'Processing...':'+ Tambah Streamer'}</button>
+  </form>
+  {message&&<div className="mt-3 text-xs text-slate-300">{message}</div>}
+ </Panel>
+ <Panel title="Daftar Official Streamer" meta={streamers.length+' streamer production'}>
+  <div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">Streamer</th><th className="text-left py-3 pr-4">Wallet</th><th className="text-left py-3 pr-4">Status</th><th className="text-right py-3">Action</th></tr></thead><tbody className="divide-y divide-slate-800">{streamers.map(s=><tr key={s.id}><td className="py-3 pr-4"><div className="font-semibold">{s.username||s.id}</div><div className="text-xs text-slate-500">{s.email||'-'}</div></td><td className="py-3 pr-4 font-mono text-xs text-slate-400">{s.walletAddress||'-'}</td><td className="py-3"><span className="text-xs rounded-full px-2 py-1 bg-emerald-500/10 text-emerald-400">OFFICIAL STREAMER</span></td><td className="py-3 text-right"><button disabled={busy} onClick={()=>void remove(s.id)} className="px-3 py-2 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs font-semibold">Cabut Status</button></td></tr>)}</tbody></table>{!streamers.length&&<EmptyState text="Belum ada Official Streamer Partner."/>}</div>
+ </Panel>
+ </div>;
 }
 
 function TransactionsTable({deposits}:{deposits:AdminDeposit[]}){
