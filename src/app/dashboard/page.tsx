@@ -190,7 +190,7 @@ export default function DashboardPage({ navigate }: Props) {
                 SYS STREAM
               </div>
               <h1 className="text-2xl sm:text-3xl font-black mt-2">Halo, {user.walletAddress || user.username || 'User'}</h1>
-              <p className="text-sm text-slate-400 mt-1">User ID: {user.walletAddress || 'Wallet belum terhubung'} · Live, komunitas, dan postingan dari pengguna SYS STREAM.</p>
+              <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · Live, komunitas, dan postingan dari pengguna SYS STREAM.</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -204,7 +204,7 @@ export default function DashboardPage({ navigate }: Props) {
                 onClick={() => { setPostError(''); setIsCreateOpen(true); }}
                 className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-black text-slate-950 hover:bg-cyan-300 transition-colors"
               >
-                <Plus className="w-4 h-4" /> Upload / Create
+                <Plus className="w-4 h-4" /> {t('Upload / Create')}
               </button>
               <button
                 onClick={() => void refreshFinancialState()}
@@ -240,7 +240,7 @@ export default function DashboardPage({ navigate }: Props) {
                 <p className="text-xs text-slate-400">{t('Bonus pendaftaran masih tersedia untuk diklaim.')}</p>
               </div>
               <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
-                <Gift className="w-4 h-4" /> Claim Bonus
+                <Gift className="w-4 h-4" /> {t('Claim Bonus')}
               </button>
             </div>
           )}
@@ -290,7 +290,7 @@ export default function DashboardPage({ navigate }: Props) {
                       {post.content && <p className="mt-4 text-sm leading-6 whitespace-pre-wrap break-words text-slate-200">{post.content}</p>}
                       {post.mediaUrl && (
                         <a href={post.mediaUrl} target="_blank" rel="noreferrer" className="mt-3 block text-xs text-cyan-300 hover:text-cyan-200 break-all">
-                          Buka media terlampir →
+                          {t('Buka media terlampir →')}
                         </a>
                       )}
                     </article>
@@ -310,7 +310,7 @@ export default function DashboardPage({ navigate }: Props) {
               <div className="font-bold text-slate-300 mt-3">{t('Belum ada data live aktif')}</div>
               <p className="text-xs text-slate-500 mt-1">{t('Room live akan tampil di sini setelah tersedia dari backend produksi.')}</p>
               <button onClick={() => navigate?.('/room/main')} className="mt-4 inline-flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs font-black text-rose-300">
-                Buka Live Room <ArrowRight className="w-4 h-4" />
+                {t('Buka Live Room')} <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </section>
