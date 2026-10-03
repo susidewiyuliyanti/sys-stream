@@ -177,89 +177,99 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060a14] text-white font-sans pb-24 selection:bg-cyan-500 selection:text-black">
-      <div className="max-w-md mx-auto px-4 py-4 sm:py-6 space-y-6">
-        {/* Top Header Bar matching Screenshot 2 */}
-        <div className="flex items-center justify-between pt-2">
-          {/* Settings Gear */}
-          <button
-            onClick={() => {
-              sound.playClick();
-              setIsEditProfileModalOpen(true);
-            }}
-            className="p-2.5 rounded-2xl bg-slate-900/80 border border-cyan-500/20 text-cyan-400 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
-            title={t('Edit Profile & Avatar')}
-          >
-            <Settings className="w-5 h-5" />
-          </button>
-
-          {/* Futuristic Glowing Neon Title "Profile" */}
-          <h1
-            className="text-2xl font-black tracking-wider text-cyan-400 uppercase drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-          >
-            Profile
-          </h1>
-
-          {/* Notification Bell with Pink Dot */}
-          <button
-            onClick={() => {
-              sound.playClick();
-              showToast(t('Notifications'), t('No unread notifications at this time.'), 'info');
-            }}
-            className="relative p-2.5 rounded-2xl bg-slate-900/80 border border-cyan-500/20 text-cyan-400 hover:text-white transition-all cursor-pointer"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-pink-500 rounded-full shadow-[0_0_6px_rgba(236,72,153,0.9)] animate-pulse" />
-          </button>
+    <div className="min-h-screen bg-[#050814] text-white font-sans pb-24">
+      <div className="max-w-3xl mx-auto px-4 py-5 sm:py-8 space-y-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-bold">SYS STREAM</div>
+            <h1 className="text-2xl font-black mt-1">Profile</h1>
+            <p className="text-xs text-slate-500 mt-1">Kelola akun, wallet, dan aktivitas kamu.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                sound.playClick();
+                setIsEditProfileModalOpen(true);
+              }}
+              className="p-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-cyan-300 hover:border-cyan-500/40 transition-colors"
+              title={t('Edit Profile & Avatar')}
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => {
+                sound.playClick();
+                showToast(t('Notifications'), t('No unread notifications at this time.'), 'info');
+              }}
+              className="relative p-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-cyan-300 transition-colors"
+              aria-label="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-cyan-400 rounded-full" />
+            </button>
+          </div>
         </div>
 
-        {/* User Hero Section: Dual Neon Glowing Circular Avatar */}
-        <div className="flex flex-col items-center text-center space-y-3 pt-2">
-          {/* Avatar Container with Dual Neon Purple/Magenta Ring */}
-          <div className="relative group cursor-pointer" onClick={() => setIsEditProfileModalOpen(true)}>
-            <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-purple-600 via-pink-500 to-cyan-400 shadow-[0_0_30px_rgba(168,85,247,0.5)]">
-              <div className="w-full h-full rounded-full bg-slate-950 p-1 border-2 border-purple-500/80 overflow-hidden">
-                <img
-                  src={user.avatar || '/default-avatar.svg'}
-                  alt={user.username}
-                  className="w-full h-full rounded-full object-cover object-center group-hover:scale-110 transition-transform duration-300"
-                />
+        <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+            <button
+              onClick={() => setIsEditProfileModalOpen(true)}
+              className="relative w-24 h-24 rounded-2xl p-0.5 bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 shrink-0"
+              aria-label="Edit avatar"
+            >
+              <img
+                src={user.avatar || '/default-avatar.svg'}
+                alt={user.username || 'User'}
+                className="w-full h-full rounded-[14px] object-cover bg-slate-950"
+              />
+              <span className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-cyan-400 text-slate-950 border-4 border-slate-900 flex items-center justify-center">
+                <Camera className="w-3.5 h-3.5" />
+              </span>
+            </button>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-black truncate">{user.username || t('Guest')}</h2>
+                {isLoggedIn && <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />}
+              </div>
+              <p className="text-xs text-slate-500 mt-1 truncate">{user.email || 'SYS STREAM member'}</p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold text-cyan-300">Member</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-[10px] font-bold text-slate-400">USDT Account</span>
               </div>
             </div>
 
-            {/* Camera / Edit Icon Badge */}
-            <div className="absolute bottom-1 right-1 p-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg border border-slate-950 flex items-center justify-center">
-              <Camera className="w-4 h-4" />
+            <div className="flex sm:flex-col gap-2">
+              <button
+                onClick={() => setIsEditProfileModalOpen(true)}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-xs font-bold hover:border-cyan-500/40"
+              >
+                <Edit2 className="w-3.5 h-3.5" /> Edit
+              </button>
+              <button
+                onClick={logout}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 px-4 py-2.5 text-xs font-bold text-slate-500 hover:text-rose-400"
+              >
+                <LogOut className="w-3.5 h-3.5" /> Logout
+              </button>
             </div>
           </div>
+        </section>
 
-          {/* Username & Verified Badge */}
-          <div className="flex items-center gap-1.5 mt-1">
-            <h2 className="text-xl sm:text-2xl font-black text-cyan-400 tracking-tight">
-              {user.username || t('Guest')}
-            </h2>
-            <div className="w-5 h-5 rounded-full bg-cyan-500 flex items-center justify-center text-slate-950">
-              <Check className="w-3.5 h-3.5 stroke-[3]" />
-            </div>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-4">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Available</div>
+            <div className="text-lg font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
           </div>
-
-          {/* Guest / Logged in indicator */}
-          {!isLoggedIn ? (
-            <button
-              onClick={() => setLoginModalOpen(true)}
-              className="mt-1 px-4 py-1.5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl text-xs font-bold text-white shadow"
-            >
-              Log In to Save Progress
-            </button>
-          ) : (
-            <button
-              onClick={logout}
-              className="text-[11px] text-slate-500 hover:text-rose-400 flex items-center gap-1 transition-colors"
-            >
-              <LogOut className="w-3 h-3" /> Log Out
-            </button>
-          )}
+          <div className="rounded-2xl border border-amber-500/20 bg-slate-900/70 p-4">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Locked</div>
+            <div className="text-lg font-black text-amber-300 mt-1">{totalLocked.toFixed(2)} USDT</div>
+          </div>
+          <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
+            <div className="text-lg font-black text-white mt-1">Withdraw</div>
+            <div className="text-[10px] text-slate-500 mt-1">Ajukan penarikan</div>
+          </button>
         </div>
 
         {isLoggedIn && user.registrationBonusGranted && (
