@@ -272,7 +272,7 @@ export default function BlindboxGamePage() {
                 <div className="text-white font-bold">
                   Daily Boxes: <span className="text-emerald-400 font-mono">{remainingBoxes} / {dailyQuota} Available</span>
                 </div>
-                <div className="text-[10px] text-slate-400">Resets in: {timeToReset}</div>
+                <div className="text-[10px] text-slate-400">{t('Quota resets in')} {timeToReset}</div>
               </div>
             </div>
           ) : (
@@ -291,7 +291,7 @@ export default function BlindboxGamePage() {
             <span>{t('$4 equivalent+ Lock')}</span>
             <span className="text-emerald-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(71748)} ($4 USD equivalent). Maksimal 1 claim per hari.</div>
+          <div className="text-[11px] text-slate-400">{t('Lock Amount (IDR)')}: {formatMoney(71748)} ($4 USD equivalent). {t('You have opened all')}.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -375,7 +375,7 @@ export default function BlindboxGamePage() {
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`${t('Lock amount')} (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(71748)}, dapat dimulai dari nominal setara $4 USD; server memvalidasi minimum.</div>
+                <div className="text-[10px] text-slate-500 mt-1">{t('Nominal Lock (IDR)')}. {t('Lock Amount (IDR)')}: {formatMoney(71748)}. $4 USD equivalent.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>{t('Quota:')} <strong className="text-emerald-400">{t('1 Box/Day')}</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
@@ -595,7 +595,7 @@ export default function BlindboxGamePage() {
                   className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-bold transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Open Next Daily Box ({remainingBoxes} Left)</span>
+                  <span>{t('Claim Daily Blind Box')} ({remainingBoxes} {t('Left')})</span>
                 </button>
               )}
             </div>
