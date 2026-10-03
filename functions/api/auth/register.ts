@@ -281,7 +281,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
-    let id = crypto.randomUUID();
+    let id = String(created.id) as typeof id;
     const passwordHash = await hashPassword(password);
 
     const emailLocalPart = email.split("@")[0]
