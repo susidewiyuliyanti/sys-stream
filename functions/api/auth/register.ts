@@ -290,7 +290,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       id,
       username,
       // Legacy column only; email is never collected or used.
-      email: "",
+      email: null,
       password_hash: passwordHash,
       password: passwordHash,
       display_name: displayName,
