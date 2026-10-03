@@ -83,7 +83,7 @@ export default function ProfilePage() {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopiedReferral(true);
-      showToast('Referral Link', 'Referral link berhasil disalin.', 'success');
+      showToast(t('Referral Link'), t('Referral link berhasil disalin.'), 'success');
       setTimeout(() => setCopiedReferral(false), 1800);
     } catch {
       showToast('Referral Link', referralLink, 'info');
@@ -98,7 +98,7 @@ export default function ProfilePage() {
       badge: `${item.durationDays}D LOCK`,
       amountUsdt: item.amount,
       yieldRate: `+${Math.max(0, (item.multiplier - 1) * 100).toFixed(2)}%`,
-      startedDate: new Date(item.startDate).toLocaleDateString(),
+      startedDate: new Date(item.startDate).toLocaleDateString(getLocaleConfig(language).locale),
       statusText: item.status === 'locked'
         ? `LOCKED • ${Math.max(0, Math.ceil((item.endDate - Date.now()) / 86400000))}D REMAINING`
         : 'UNLOCKED',
@@ -140,11 +140,11 @@ export default function ProfilePage() {
       return;
     }
     if (!withdrawAddress.trim()) {
-      showToast('Withdrawal', 'Masukkan alamat wallet tujuan.', 'error');
+      showToast(t('Withdrawal'), t('Masukkan alamat wallet tujuan.'), 'error');
       return;
     }
     if (amount > availableBalance) {
-      showToast('Withdrawal', 'Saldo tersedia tidak mencukupi.', 'error');
+      showToast(t('Withdrawal'), t('Saldo tersedia tidak mencukupi.'), 'error');
       return;
     }
     const token = localStorage.getItem('sys_stream_auth_token');
@@ -156,13 +156,13 @@ export default function ProfilePage() {
       });
       const data = await r.json().catch(() => ({}));
       if (!r.ok || !data?.success) throw new Error(data?.error || 'Penarikan gagal.');
-      showToast('Withdrawal', 'Permintaan penarikan berhasil dibuat dan menunggu proses.', 'success');
+      showToast(t('Withdrawal'), t('Permintaan penarikan berhasil dibuat dan menunggu proses.'), 'success');
       setWithdrawOpen(false);
       setWithdrawAmount('');
       setWithdrawAddress('');
       await loadTransactions();
     } catch (e: any) {
-      showToast('Withdrawal', e?.message || 'Penarikan gagal.', 'error');
+      showToast(t('Withdrawal'), e?.message || t('Penarikan gagal.'), 'error');
     }
   };
 
