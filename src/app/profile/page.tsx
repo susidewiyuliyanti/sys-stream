@@ -95,13 +95,13 @@ export default function ProfilePage() {
     .filter((item) => item.durationDays === selectedDurationFilter)
     .map((item) => ({
       id: item.id,
-      badge: `${item.durationDays}D LOCK`,
+      badge: `${item.durationDays}D ${t('LOCK')}`,
       amountUsdt: item.amount,
       yieldRate: `+${Math.max(0, (item.multiplier - 1) * 100).toFixed(2)}%`,
       startedDate: new Date(item.startDate).toLocaleDateString(getLocaleConfig(language).locale),
       statusText: item.status === 'locked'
-        ? `LOCKED • ${Math.max(0, Math.ceil((item.endDate - Date.now()) / 86400000))}D REMAINING`
-        : 'UNLOCKED',
+        ? `${t('LOCKED')} • ${Math.max(0, Math.ceil((item.endDate - Date.now()) / 86400000))}D ${t('REMAINING')}`
+        : t('UNLOCKED'),
       statusColor: item.status === 'locked' ? 'text-amber-400' : 'text-slate-500',
     }));
 
@@ -270,7 +270,7 @@ export default function ProfilePage() {
                   {user.walletAddress || t('Wallet belum terhubung')}
                 </div>
                 <div className="text-[10px] text-slate-500 mt-2">
-                  Alamat wallet akun. Recovery phrase tidak disimpan di server.
+                  {t('Alamat wallet akun. Recovery phrase tidak disimpan di server.')}
                 </div>
               </div>
               {user.walletAddress && (
