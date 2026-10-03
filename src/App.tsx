@@ -15,6 +15,7 @@ import SpinnerGamePage from './app/game/spinner/page';
 import TebakGamePage from './app/game/tebak/page';
 import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
+import RoomPage from './app/room/[id]/page';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -91,8 +92,12 @@ export default function App() {
       return <LoginPage navigate={navigate} />;
     }
 
-    if (currentPath === '/dashboard' || currentPath === '/room' || currentPath.startsWith('/room/')) {
+    if (currentPath === '/dashboard' || currentPath === '/room') {
       return <DashboardPage navigate={navigate} />;
+    }
+    if (currentPath.startsWith('/room/')) {
+      const roomId = decodeURIComponent(currentPath.slice('/room/'.length)) || 'main';
+      return <RoomPage roomId={roomId} navigate={navigate} />;
     }
 
     if (currentPath === '/game/blindbox') {
