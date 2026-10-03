@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserProvider, Wallet } from 'ethers';
+import { BrowserProvider, Wallet as EvmWallet } from 'ethers';
 import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
