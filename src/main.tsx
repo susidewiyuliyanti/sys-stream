@@ -1,7 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import React from 'react';
 import App from './App.tsx';
-import { lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import './index.css';
 import { LanguageProvider } from './i18n';
 
