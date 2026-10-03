@@ -8,7 +8,7 @@ import { SysLogo } from '../components/SysLogo';
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
 type TaskType = 'youtube'|'tiktok'|'instagram'|'shorts'|'social'|'deposit'|'withdrawal'|'profile'|'checkin';
 type TaskKey = 'checkin'|'tiktok'|'instagram'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile';
-type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean };
+type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
 const TASKS: Task[] = [
   {id:'daily-checkin',key:'checkin',type:'checkin',reward:'program',estimated:'30 seconds',daily:true},
@@ -230,6 +230,8 @@ function typeLabel(type:TaskType,tx:Record<string,string>) {
 
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
+  const [dbTasks,setDbTasks]=useState<any[]>([]);
+  const [tasksLoading,setTasksLoading]=useState(true);
   const [walletAddress,setWalletAddress]=useState('');
   const [proofLink,setProofLink]=useState('');
   const [submissions,setSubmissions]=useState<Array<{id:number;task_id:number|string;task_title?:string;evidence_link:string;status:string;reward_points:number;created_at:string}>>([]);
@@ -274,6 +276,22 @@ export default function AirdropApp() {
 
   useEffect(()=>{
     let active=true;
+    const loadTasks=async()=>{
+      setTasksLoading(true);
+      try{
+        const res=await fetch('/api/airdrop/tasks',{cache:'no-store'});
+        const data=await res.json().catch(()=>({}));
+        if(active) setDbTasks(res.ok&&data.success&&Array.isArray(data.tasks)?data.tasks:[]);
+      }catch{ if(active) setDbTasks([]); }
+      finally{ if(active) setTasksLoading(false); }
+    };
+    loadTasks();
+    const timer=window.setInterval(loadTasks,30000);
+    return()=>{active=false;window.clearInterval(timer);};
+  },[]);
+
+  useEffect(()=>{
+    let active=true;
     const loadSubmissions=async()=>{
       const wallet=walletAddress.trim();
       if(!wallet){if(active)setSubmissions([]);return;}
@@ -304,8 +322,18 @@ export default function AirdropApp() {
     return()=>{active=false;window.clearInterval(timer);};
   },[lang,tx.unavailable]);
 
-  const availableTasks=useMemo(()=>TASKS,[]);
-  const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
+  const availableTasks=useMemo<Task[]>(()=>{
+    const fallback=(dbTasks.length?dbTasks:TASKS as any[]).map((raw:any,index:number)=>{
+      const category=String(raw.category||'social').toLowerCase();
+      const type:TaskType=(['youtube','tiktok','instagram','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
+      const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
+      const title=String(raw.title||'').trim();
+      const desc=String(raw.description||'').trim();
+      return {id:String(raw.id??index),key,type,reward:raw.reward!==undefined?String(raw.reward):String(raw.reward_points??'program'),estimated:'',daily:false,priority:false,title,desc};
+    });
+    return fallback;
+  },[dbTasks]);
+  const taskText=(task:Task)=>{if(task.title||task.desc)return {title:task.title||TASK_TEXT[task.key]?.title||'Task',desc:task.desc||'',action:TASK_TEXT[task.key]?.action||'Open Task'};const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
 
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
@@ -368,10 +396,10 @@ export default function AirdropApp() {
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div><div className="text-xs font-black tracking-wider text-amber-400">{tx.daily}</div><h2 className="mt-1 text-xl font-black">{tx.daily}</h2><p className="mt-1 text-xs text-slate-500">{tx.dailySub}</p></div>
-          <div className="text-xs text-slate-400">{TASKS.filter(t=>t.daily).length} {tx.dailyMissions}</div>
+          <div className="text-xs text-slate-400">{availableTasks.filter(t=>t.daily).length || Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {TASKS.filter(t=>t.daily).slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>setSelectedTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
+          {availableTasks.filter(t=>t.daily).slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>setSelectedTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.estimated} · {tx.proof}</div>
           </button>})}
@@ -384,7 +412,7 @@ export default function AirdropApp() {
       </div>
 
       {tab==='tasks'?<section className="mt-6 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {availableTasks.map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">Loading active tasks...</div>:availableTasks.map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:t.reward}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
