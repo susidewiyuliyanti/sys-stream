@@ -171,11 +171,11 @@ export default function Room({
         setRoom(data.room);
         setParticipants([]);
         setMessages([]);
-        showToast(t("Live"), "Room berhasil dibuat.", "success");
+        showToast(t("Live"), t("Room berhasil dibuat."), "success");
         void loadRoom(true);
       }
     } catch (error: any) {
-      showToast(t("Live"), error?.message || "Gagal membuat room.", "error");
+      showToast(t("Live"), error?.message || t("Gagal membuat room."), "error");
     } finally {
       setCreatingRoom(false);
     }
@@ -203,20 +203,20 @@ export default function Room({
     return (
       <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
         <form onSubmit={createRoom} className="w-full max-w-lg rounded-3xl border border-cyan-500/20 bg-slate-950/90 p-7">
-          <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">OFFICIAL STREAMER</div>
-          <h1 className="text-2xl font-black mt-2">Buat Live Room</h1>
+          <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">{t("OFFICIAL STREAMER")}</div>
+          <h1 className="text-2xl font-black mt-2">{t("Buat Live Room")}</h1>
           <p className="text-sm text-slate-400 mt-2">
-            Room <span className="text-cyan-300 font-bold">{effectiveRoomId}</span> belum tersedia. Buat room ini untuk menjadi pemiliknya.
+            {t("Room belum tersedia. Buat room ini untuk menjadi pemiliknya.")} <span className="text-cyan-300 font-bold">{effectiveRoomId}</span>
           </p>
           <input value={roomTitle} onChange={e=>setRoomTitle(e.target.value)} maxLength={120}
-            placeholder="Judul Live Room" required
+            placeholder={t("Judul Live Room")} required
             className="mt-6 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-cyan-400" />
           <textarea value={roomDescription} onChange={e=>setRoomDescription(e.target.value)} maxLength={500}
-            placeholder="Deskripsi room (opsional)"
+            placeholder={t("Deskripsi room (opsional)")}
             className="mt-3 w-full min-h-28 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-cyan-400" />
           <button disabled={creatingRoom}
             className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-3 font-black text-slate-950 disabled:opacity-50">
-            {creatingRoom ? "MEMBUAT ROOM..." : "BUAT ROOM"}
+            {creatingRoom ? t("MEMBUAT ROOM...") : t("BUAT ROOM")}
           </button>
         </form>
       </div>
@@ -228,8 +228,8 @@ export default function Room({
       <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-950/90 p-7 text-center">
           <Radio className="w-10 h-10 mx-auto text-slate-500 mb-4" />
-          <h1 className="text-xl font-black">Room belum tersedia</h1>
-          <p className="text-sm text-slate-500 mt-2">Room ini belum dibuat oleh Official Streamer.</p>
+          <h1 className="text-xl font-black">{t("Room belum tersedia")}</h1>
+          <p className="text-sm text-slate-500 mt-2">{t("Room ini belum dibuat oleh Official Streamer.")}</p>
         </div>
       </div>
     );
@@ -289,7 +289,7 @@ export default function Room({
                   <div>
                     <div className="text-xs uppercase tracking-wider text-rose-300 font-black">STREAMER CONTROL</div>
                     <div className="text-sm font-bold mt-1">
-                      {stream.status === "connected" || stream.status === "reconnected" ? "Streaming sedang berjalan" : "Kirim video dari OBS ke server"}
+                      {stream.status === "connected" || stream.status === "reconnected" ? t("Streaming sedang berjalan") : t("Kirim video dari OBS ke server")}
                     </div>
                   </div>
                   <button
@@ -306,7 +306,7 @@ export default function Room({
                     }}
                     className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-black hover:border-cyan-400 disabled:opacity-50"
                   >
-                    {streamBusy ? "CHECK..." : "CHECK STATUS"}
+                    {streamBusy ? t("CHECK...") : t("CHECK STATUS")}
                   </button>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 mt-4">
@@ -343,15 +343,15 @@ export default function Room({
                     }).then(r => r.json()).then(data => {
                       if (data?.success) {
                         setStream(data.stream || null);
-                        showToast(t("Live"), "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.", "success");
+                        showToast(t("Live"), t("Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video."), "success");
                       } else {
-                        showToast(t("Live"), data?.error || "Gagal membuat Live Input.", "error");
+                        showToast(t("Live"), data?.error || t("Gagal membuat Live Input."), "error");
                       }
-                    }).catch(() => showToast(t("Live"), "Gagal terhubung ke streaming server.", "error")).finally(() => setStreamBusy(false));
+                    }).catch(() => showToast(t("Live"), t("Gagal terhubung ke streaming server."), "error")).finally(() => setStreamBusy(false));
                   }}
                   className="rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-black text-slate-950 hover:bg-cyan-300 disabled:opacity-50 shrink-0"
                 >
-                  {!room.owner ? "KHUSUS PEMILIK ROOM" : streamBusy ? "MEMBUAT..." : "AKTIFKAN STREAMING"}
+                  {!room.owner ? t("KHUSUS PEMILIK ROOM") : streamBusy ? t("MEMBUAT...") : t("AKTIFKAN STREAMING")}
                 </button>
               </section>
             )}
