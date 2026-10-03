@@ -57,6 +57,10 @@ export default function Room({
   const [streamBusy, setStreamBusy] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [loading, setLoading] = useState(true);
+  const [roomMissing, setRoomMissing] = useState(false);
+  const [creatingRoom, setCreatingRoom] = useState(false);
+  const [roomTitle, setRoomTitle] = useState("");
+  const [roomDescription, setRoomDescription] = useState("");
   const [sending, setSending] = useState(false);
   const [activeTab, setActiveTab] = useState<"chat" | "viewers">("chat");
   const chatRef = useRef<HTMLDivElement>(null);
@@ -75,7 +79,11 @@ export default function Room({
         cache: "no-store",
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data?.success) throw new Error(data?.error || "Live room tidak dapat dimuat.");
+      if (!response.ok || !data?.success) {
+        setRoomMissing(response.status === 404);
+        throw new Error(data?.error || "Live room tidak dapat dimuat.");
+      }
+      setRoomMissing(false);
       setRoom(data.room || null);
       setParticipants(Array.isArray(data.participants) ? data.participants : []);
       setMessages(Array.isArray(data.messages) ? data.messages : []);
@@ -147,6 +155,31 @@ export default function Room({
   const currentUserId = String(user?.id || "");
   const currentUser = participants.find(p => p.userId === currentUserId);
   const displayCurrentName = currentUser?.username || user?.username || "User";
+  const canCreateRoom = ["streamer","admin","owner"].includes(String(user?.role || "").toLowerCase());
+
+  const createRoom = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!roomTitle.trim() || creatingRoom) return;
+    setCreatingRoom(true);
+    try {
+      const data = await postRoomAction("create_room", {
+        title: roomTitle.trim(),
+        description: roomDescription.trim()
+      });
+      if (data?.room) {
+        setRoomMissing(false);
+        setRoom(data.room);
+        setParticipants([]);
+        setMessages([]);
+        showToast(t("Live"), "Room berhasil dibuat.", "success");
+        void loadRoom(true);
+      }
+    } catch (error: any) {
+      showToast(t("Live"), error?.message || "Gagal membuat room.", "error");
+    } finally {
+      setCreatingRoom(false);
+    }
+  };
 
   if (!isLoggedIn) {
     return (
@@ -161,6 +194,42 @@ export default function Room({
           >
             LOGIN / REGISTER
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (roomMissing && canCreateRoom) {
+    return (
+      <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
+        <form onSubmit={createRoom} className="w-full max-w-lg rounded-3xl border border-cyan-500/20 bg-slate-950/90 p-7">
+          <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">OFFICIAL STREAMER</div>
+          <h1 className="text-2xl font-black mt-2">Buat Live Room</h1>
+          <p className="text-sm text-slate-400 mt-2">
+            Room <span className="text-cyan-300 font-bold">{effectiveRoomId}</span> belum tersedia. Buat room ini untuk menjadi pemiliknya.
+          </p>
+          <input value={roomTitle} onChange={e=>setRoomTitle(e.target.value)} maxLength={120}
+            placeholder="Judul Live Room" required
+            className="mt-6 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-cyan-400" />
+          <textarea value={roomDescription} onChange={e=>setRoomDescription(e.target.value)} maxLength={500}
+            placeholder="Deskripsi room (opsional)"
+            className="mt-3 w-full min-h-28 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-cyan-400" />
+          <button disabled={creatingRoom}
+            className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-3 font-black text-slate-950 disabled:opacity-50">
+            {creatingRoom ? "MEMBUAT ROOM..." : "BUAT ROOM"}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  if (roomMissing) {
+    return (
+      <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
+        <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-950/90 p-7 text-center">
+          <Radio className="w-10 h-10 mx-auto text-slate-500 mb-4" />
+          <h1 className="text-xl font-black">Room belum tersedia</h1>
+          <p className="text-sm text-slate-500 mt-2">Room ini belum dibuat oleh Official Streamer.</p>
         </div>
       </div>
     );
