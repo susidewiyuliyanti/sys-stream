@@ -9,7 +9,7 @@ id,
 title,
 description,
 category,
-reward
+reward_points AS reward
 FROM airdrop_tasks
 WHERE active=1
 ORDER BY id ASC
