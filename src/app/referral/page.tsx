@@ -7,7 +7,7 @@ import confetti from 'canvas-confetti';
 export default function ReferralPage() {
   const { user, claimReferralRewards, showToast } = useGame();
   const [copiedLink, setCopiedLink] = useState(false);
-  const [pendingClaim, setPendingClaim] = useState({ coins: 380, diamonds: 12 });
+  const [pendingClaim, setPendingClaim] = useState({ coins: 0, diamonds: 0 });
   const [isClaimed, setIsClaimed] = useState(false);
 
   // Commission calculator state
