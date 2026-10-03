@@ -53,10 +53,10 @@ export default function ReferralPage() {
           <span>{t('Affiliate Partner Program')}</span>
         </div>
         <h1 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
-          Earn Passive Crypto & Gold Coins
+          {t('Earn Passive Crypto & Gold Coins')}
         </h1>
         <p className="mt-2 text-sm text-slate-400">
-          Invite fellow gamers to NEXUS. Earn up to 5% lifetime commission on every bet across 3 tiers, plus instant sign-up bonuses.
+          {t('Invite fellow gamers to NEXUS. Earn up to 5% lifetime commission on every bet across 3 tiers, plus instant sign-up bonuses.')}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export default function ReferralPage() {
           <div className="md:col-span-7 space-y-4">
             <h2 className="text-lg font-bold text-white">{t('Your Personal Affiliate Link')}</h2>
             <p className="text-xs text-slate-400">
-              Anyone registering with your link receives a free <strong className="text-amber-400">+500 Gold Coins</strong> starter bonus.
+              {t('Anyone registering with your link receives a free')} <strong className="text-amber-400">+500 Gold Coins</strong> {t('starter bonus.')}
             </p>
 
             {/* Share Link Input */}
@@ -95,7 +95,7 @@ export default function ReferralPage() {
           {/* Pending Commission Balance & Claim Box */}
           <div className="md:col-span-5 bg-slate-950 border border-amber-500/30 rounded-2xl p-6 space-y-4 text-center">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Unclaimed Commission Balance
+              {t('Unclaimed Commission Balance')}
             </div>
 
             <div className="flex items-center justify-center gap-3">
@@ -125,30 +125,30 @@ export default function ReferralPage() {
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold">
-              Tier 1 (Direct)
+              {t('Tier 1 (Direct)')}
             </span>
             <span className="text-lg font-mono font-black text-white">5.0%</span>
           </div>
           <h3 className="text-sm font-bold text-white">{t('Direct Invitations')}</h3>
           <p className="text-xs text-slate-400 mt-1">
-            Players who register directly via your personal link or referral code.
+            {t('Players who register directly via your personal link or referral code.')}
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
             <span className="text-slate-400">{t('Active Referees:')}</span>
-            <span className="font-mono text-white font-bold">14 Players</span>
+            <span className="font-mono text-white font-bold">{t('Data produksi')}</span>
           </div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold">
-              Tier 2 (Sub-Affiliate)
+              {t('Tier 2 (Sub-Affiliate)')}
             </span>
             <span className="text-lg font-mono font-black text-white">2.5%</span>
           </div>
           <h3 className="text-sm font-bold text-white">{t('Network Invites')}</h3>
           <p className="text-xs text-slate-400 mt-1">
-            Players invited by your Tier 1 direct referees.
+            {t('Players invited by your Tier 1 direct referees.')}
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
             <span className="text-slate-400">{t('Active Referees:')}</span>
@@ -159,13 +159,13 @@ export default function ReferralPage() {
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/30 text-xs font-bold">
-              Tier 3 (Extended)
+              {t('Tier 3 (Extended)')}
             </span>
             <span className="text-lg font-mono font-black text-white">1.0%</span>
           </div>
           <h3 className="text-sm font-bold text-white">{t('Deep Ecosystem')}</h3>
           <p className="text-xs text-slate-400 mt-1">
-            Players invited down the tree by your Tier 2 network.
+            {t('Players invited down the tree by your Tier 2 network.')}
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
             <span className="text-slate-400">{t('Active Referees:')}</span>
@@ -178,7 +178,7 @@ export default function ReferralPage() {
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
         <h3 className="text-base font-bold text-white mb-1">{t('Affiliate Income Calculator')}</h3>
         <p className="text-xs text-slate-400 mb-6">
-          Slide to project your estimated monthly passive revenue based on active friends.
+          {t('Slide to project your estimated monthly passive revenue based on active friends.')}
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -186,7 +186,7 @@ export default function ReferralPage() {
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
                 <span>{t('Active Friends Invited:')}</span>
-                <span className="font-mono font-bold text-amber-400">{calcFriends} Friends</span>
+                <span className="font-mono font-bold text-amber-400">{calcFriends} {t('Friends')}</span>
               </div>
               <input
                 type="range"
@@ -201,7 +201,7 @@ export default function ReferralPage() {
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
                 <span>{t('Average Weekly Wager per Friend:')}</span>
-                <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} Coins</span>
+                <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} {t('Coins')}</span>
               </div>
               <input
                 type="range"
@@ -218,7 +218,7 @@ export default function ReferralPage() {
           <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center">
             <div className="text-xs text-slate-400 uppercase font-semibold">{t('Estimated Monthly Earnings')}</div>
             <div className="text-3xl sm:text-4xl font-mono font-black text-amber-400 mt-2">
-              +{estMonthlyEarnings.toLocaleString()} Coins
+              +{estMonthlyEarnings.toLocaleString()} {t('Coins')}
             </div>
             <div className="text-xs text-emerald-400 font-mono mt-1">
               ≈ ${(estMonthlyEarnings / 100).toFixed(2)} USD / month
@@ -247,7 +247,7 @@ export default function ReferralPage() {
             <tbody className="divide-y divide-slate-800/60 font-mono">
               <tr>
                 <td colSpan={5} className="py-8 px-4 text-center text-slate-500">
-                  Belum ada data referral produksi untuk wallet ini.
+                  {t('Belum ada data referral produksi untuk wallet ini.')}
                 </td>
               </tr>
             </tbody>
