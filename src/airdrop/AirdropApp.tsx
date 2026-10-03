@@ -418,15 +418,29 @@ export default function AirdropApp() {
   },[lang,tx.unavailable]);
 
   const availableTasks=useMemo<Task[]>(()=>{
-    const fallback=dbTasks.map((raw:any,index:number)=>{
-      const category=String(raw.category||'social').toLowerCase();
+    const configured=dbTasks.map((raw:any,index:number)=>{
+      const category=String(raw.category||raw.type||'social').toLowerCase();
       const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
-      const title=String(raw.title||'').trim();
-      const desc=String(raw.description||'').trim();
-      return {id:String(raw.id??index),key,type,reward:raw.reward!==undefined?String(raw.reward):String(raw.reward_points??'program'),estimated:'',daily:false,priority:false,title,desc};
+      return {
+        id:String(raw.id??`db-${index}`),
+        key,
+        type,
+        reward:raw.reward!==undefined?String(raw.reward):String(raw.reward_points??'program'),
+        estimated:String(raw.estimated||''),
+        daily:Boolean(raw.daily),
+        priority:Boolean(raw.priority),
+        title:String(raw.title||'').trim(),
+        desc:String(raw.description||raw.desc||'').trim()
+      };
     });
-    return fallback;
+
+    // TASKS is the complete campaign catalog. Database records override a
+    // catalog item when the same task type exists, while missing categories
+    // remain visible so users can see every supported task.
+    const configuredTypes=new Set(configured.map(t=>t.type));
+    const catalog=TASKS.filter(t=>!configuredTypes.has(t.type));
+    return [...configured,...catalog];
   },[dbTasks]);
   const taskText=(task:Task)=>{if(task.title||task.desc)return {title:task.title||TASK_TEXT[task.key]?.title||tx.task,desc:task.desc||'',action:TASK_TEXT[task.key]?.action?tx[TASK_TEXT[task.key].action]:tx.openTask};const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
 
