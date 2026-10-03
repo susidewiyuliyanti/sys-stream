@@ -215,7 +215,7 @@ export const MobileAuthModal: React.FC = () => {
             {authMode === 'login' ? t('Welcome Back') : t('Create SYS Account')}
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            {t('Login menggunakan wallet Anda.')}
+            {authMode === 'login' ? t('Login menggunakan wallet Anda.') : t('Buat wallet baru langsung dari perangkat Anda.')}
           </p>
         </div>
 
@@ -252,11 +252,11 @@ export const MobileAuthModal: React.FC = () => {
                   <div className="text-xs font-black uppercase tracking-wider text-amber-300" >{t('Simpan Recovery Phrase')}</div>
                   <p className="text-[10px] leading-4 text-amber-100/80">{t('Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.')}</p>
                   <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                    <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
+                    <div className="text-[10px] text-slate-500 mb-1">{t('Wallet Address')}</div>
                     <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
                   </div>
                   <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                    <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
+                    <div className="text-[10px] text-slate-500 mb-1">{t('Recovery Phrase')}</div>
                     <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
                   </div>
                   <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
