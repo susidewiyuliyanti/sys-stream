@@ -256,7 +256,7 @@ export default function AirdropApp() {
       // the already-authenticated SYS STREAM account. Exchange it here.
       if (handoff) {
         try {
-          const response = await fetch('/api/auth/airdrop-exchange', {
+          const response = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
