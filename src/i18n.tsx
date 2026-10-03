@@ -632,6 +632,36 @@ for (const lang of Object.keys(ALL_PAGE_LABELS) as LanguageCode[]) {
   Object.assign(translations[lang], ALL_PAGE_LABELS[lang]);
   PAGE_UI_TRANSLATIONS[lang] = { ...ALL_PAGE_LABELS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 }
+const FINAL_PAGE_LABELS: Record<LanguageCode, Record<string,string>> = {
+id:{
+'Affiliate Partner Program':'Program Mitra Afiliasi','Your Personal Affiliate Link':'Tautan Afiliasi Pribadi Anda','Direct Invitations':'Undangan Langsung','Active Referees:':'Referral Aktif:','Network Invites':'Undangan Jaringan','Data produksi':'Data produksi','Deep Ecosystem':'Ekosistem Mendalam','Affiliate Income Calculator':'Kalkulator Pendapatan Afiliasi','Active Friends Invited:':'Teman Aktif yang Diundang:','Average Weekly Wager per Friend:':'Rata-rata Wager Mingguan per Teman:','Estimated Monthly Earnings':'Perkiraan Pendapatan Bulanan','Live Referral Feed':'Feed Referral Live','Referral milik wallet ini':'Referral milik wallet ini','Referee Handle':'Nama Referral','Date Joined':'Tanggal Bergabung','Commission Tier':'Tingkat Komisi','Wager Volume':'Volume Wager','Commission Earned':'Komisi Diperoleh',
+'Masuk untuk bergabung ke Live Room':'Masuk untuk bergabung ke Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Setiap akun memiliki profil dan identitasnya sendiri di dalam room.','Profil akun Anda':'Profil akun Anda','Belum ada deskripsi room dari pemilik room.':'Belum ada deskripsi room dari pemilik room.','Peserta Live':'Peserta Live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Hanya akun yang benar-benar bergabung yang ditampilkan.','Memuat peserta...':'Memuat peserta...','Belum ada peserta lain.':'Belum ada peserta lain.','Belum ada peserta.':'Belum ada peserta.',
+'Viewer Username Raffle Spinner':'Spinner Undian Username Penonton','Live Participants Only':'Hanya Peserta Live','Spinning for Winner...':'Memutar untuk Menentukan Pemenang...','Current Viewers on Wheel:':'Penonton Saat Ini di Spinner:','Recent Raffle Winners':'Pemenang Undian Terbaru',
+'Digital Crypto Card Number Guess':'Tebak Nomor Kartu Kripto Digital','Streamer Card Settings':'Pengaturan Kartu Streamer','Streamer Card Configurator':'Konfigurator Kartu Streamer','Card Title':'Judul Kartu','Serial Number':'Nomor Seri','Streamer Clue / Note for Viewers':'Petunjuk / Catatan Streamer untuk Penonton','Concealed':'Tersembunyi','Revealed':'Terungkap','Streamer Clue:':'Petunjuk Streamer:','Mode Interaksi':'Mode Interaksi','Verifying Cryptographic Seed...':'Memverifikasi Seed Kriptografi...','Verify Challenge':'Verifikasi Tantangan','Provably Fair Verification':'Verifikasi Provably Fair',
+'NOWPayments Crypto Deposit':'Deposit Kripto NOWPayments','Instant deposit with zero platform fees':'Deposit instan tanpa biaya platform','Create NOWPayments Invoice':'Buat Invoice NOWPayments','Order ID:':'ID Pesanan:',
+'EVM Wallet Recovery Phrase':'Recovery Phrase Wallet EVM','Wallet Address':'Alamat Wallet','Recovery Phrase':'Recovery Phrase','Remember me':'Ingat saya','or Connect with Crypto Wallet':'atau Hubungkan dengan Crypto Wallet','Connect Wallet':'Hubungkan Wallet','Don\'t have an account? ':'Belum punya akun? ','Secured with Web3':'Diamankan dengan Web3','Biometric Login Available':'Login Biometrik Tersedia',
+'We sent a verification link to ':'Kami mengirim tautan verifikasi ke ','You must verify it before you can log in.':'Anda harus memverifikasinya sebelum login.','SENDING...':'MENGIRIM...','RESEND VERIFICATION EMAIL':'KIRIM ULANG EMAIL VERIFIKASI'
+},
+en:{
+'Affiliate Partner Program':'Affiliate Partner Program','Your Personal Affiliate Link':'Your Personal Affiliate Link','Direct Invitations':'Direct Invitations','Active Referees:':'Active Referees:','Network Invites':'Network Invites','Data produksi':'Production data','Deep Ecosystem':'Deep Ecosystem','Affiliate Income Calculator':'Affiliate Income Calculator','Active Friends Invited:':'Active Friends Invited:','Average Weekly Wager per Friend:':'Average Weekly Wager per Friend:','Estimated Monthly Earnings':'Estimated Monthly Earnings','Live Referral Feed':'Live Referral Feed','Referral milik wallet ini':'Referrals for this wallet','Referee Handle':'Referee Handle','Date Joined':'Date Joined','Commission Tier':'Commission Tier','Wager Volume':'Wager Volume','Commission Earned':'Commission Earned',
+'Masuk untuk bergabung ke Live Room':'Sign in to join the Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Each account has its own profile and identity inside the room.','Profil akun Anda':'Your account profile','Belum ada deskripsi room dari pemilik room.':'The room owner has not added a description yet.','Peserta Live':'Live Participants','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Only accounts that actually joined are shown.','Memuat peserta...':'Loading participants...','Belum ada peserta lain.':'No other participants yet.','Belum ada peserta.':'No participants yet.',
+'Viewer Username Raffle Spinner':'Viewer Username Raffle Spinner','Live Participants Only':'Live Participants Only','Spinning for Winner...':'Spinning for Winner...','Current Viewers on Wheel:':'Current Viewers on Wheel:','Recent Raffle Winners':'Recent Raffle Winners',
+'Digital Crypto Card Number Guess':'Digital Crypto Card Number Guess','Streamer Card Settings':'Streamer Card Settings','Streamer Card Configurator':'Streamer Card Configurator','Card Title':'Card Title','Serial Number':'Serial Number','Streamer Clue / Note for Viewers':'Streamer Clue / Note for Viewers','Concealed':'Concealed','Revealed':'Revealed','Streamer Clue:':'Streamer Clue:','Mode Interaksi':'Interaction Mode','Verifying Cryptographic Seed...':'Verifying Cryptographic Seed...','Verify Challenge':'Verify Challenge','Provably Fair Verification':'Provably Fair Verification',
+'NOWPayments Crypto Deposit':'NOWPayments Crypto Deposit','Instant deposit with zero platform fees':'Instant deposit with zero platform fees','Create NOWPayments Invoice':'Create NOWPayments Invoice','Order ID:':'Order ID:',
+'EVM Wallet Recovery Phrase':'EVM Wallet Recovery Phrase','Wallet Address':'Wallet Address','Recovery Phrase':'Recovery Phrase','Remember me':'Remember me','or Connect with Crypto Wallet':'or Connect with Crypto Wallet','Connect Wallet':'Connect Wallet','Don\'t have an account? ':'Don\'t have an account? ','Secured with Web3':'Secured with Web3','Biometric Login Available':'Biometric Login Available',
+'We sent a verification link to ':'We sent a verification link to ','You must verify it before you can log in.':'You must verify it before you can log in.','SENDING...':'SENDING...','RESEND VERIFICATION EMAIL':'RESEND VERIFICATION EMAIL'
+}
+};
+for (const lang of ['es','pt','zh','ja','ko','ar'] as LanguageCode[]) {
+  const en = FINAL_PAGE_LABELS.en;
+  const existing = PAGE_UI_TRANSLATIONS[lang] || {};
+  PAGE_UI_TRANSLATIONS[lang] = { ...en, ...existing };
+}
+for (const lang of Object.keys(FINAL_PAGE_LABELS) as LanguageCode[]) {
+  Object.assign(translations[lang], FINAL_PAGE_LABELS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...FINAL_PAGE_LABELS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
