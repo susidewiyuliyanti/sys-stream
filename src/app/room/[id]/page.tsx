@@ -464,6 +464,8 @@ export default function Room({
           </div>
         </div>
 
+          </div>
+
           <aside className="min-w-0 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] lg:flex lg:flex-col lg:rounded-2xl lg:border lg:border-slate-800 lg:bg-slate-950/70 lg:overflow-hidden">
         {/* LIVE CHAT MESSAGES FEED matching Screenshot 3 */}
         <div
