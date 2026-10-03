@@ -271,7 +271,7 @@ export const MobileAuthModal: React.FC = () => {
               </div>
             </div>
           )}
-          {verificationNotice && authMode === 'register' && (
+          {verificationNotice && (
             <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
           )}
 
