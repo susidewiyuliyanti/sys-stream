@@ -10,7 +10,6 @@ import {
   Settings,
   Eye,
   EyeOff,
-  Coins,
   Trophy,
   CheckCircle,
   HelpCircle,
@@ -380,25 +379,25 @@ export default function TebakGamePage() {
                 }`}
               >
                 {lastOutcome.won
-                  ? `WINNER! Verified Code: [${lastOutcome.revealedDigits.join(' ')}]. Paid +${lastOutcome.payout.toLocaleString()} Coins!`
+                  ? `CHALLENGE BERHASIL! Kode terverifikasi: [${lastOutcome.revealedDigits.join(' ')}]. Semua angka tersembunyi cocok!`
                   : `Prediction Missed. Secret Digits: [${lastOutcome.revealedDigits.join(' ')}]. Matched ${lastOutcome.matchedCount}/${concealedCount}.`}
               </div>
             )}
           </div>
         </div>
 
-        {/* Right: Betting Console */}
+        {/* Right: Streamer / Viewer Interaction Console */}
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              {t('Interaction Challenge — No Financial Stake')}
+              {t('Streamer & Viewer Interaction — Free to Play')}
             </h2>
 
             {/* Non-financial challenge notice */}
             <div className="p-4 bg-slate-950 border border-cyan-500/20 rounded-xl space-y-2 text-xs">
               <div className="font-black text-cyan-300">{t('Mode Interaksi')}</div>
               <p className="text-slate-400 leading-relaxed">
-                {t('Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.')}
+                {t('Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.')}
               </p>
             </div>
 
@@ -430,7 +429,7 @@ export default function TebakGamePage() {
             </div>
             <p className="leading-relaxed">
               The 4-digit code is tied to serial number <strong>{cryptoCard.serialNumber}</strong>. Streamer sets visible
-              and concealed digits in real-time. Guess all concealed digits correctly to claim the jackpot.
+              and concealed digits in real-time. Penonton mencoba menebak angka yang disembunyikan. Tidak ada taruhan atau hadiah finansial dalam game ini.
             </p>
           </div>
         </div>
