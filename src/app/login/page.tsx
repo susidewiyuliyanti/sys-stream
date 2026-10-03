@@ -223,7 +223,7 @@ export default function LoginPage({ navigate }: Props) {
           </button>
           <button type="button" onClick={() => switchMode('register')}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${authMode === 'register' ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' : 'text-slate-400 hover:text-white'}`}>
-            Register
+            {t('Generate Wallet')}
           </button>
         </div>
 
@@ -273,11 +273,11 @@ export default function LoginPage({ navigate }: Props) {
                     {t('Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.')}
                   </p>
                   <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                    <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
+                    <div className="text-[10px] text-slate-500 mb-1">{t('Wallet Address')}</div>
                     <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
                   </div>
                   <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                    <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
+                    <div className="text-[10px] text-slate-500 mb-1">{t('Recovery Phrase')}</div>
                     <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
                   </div>
                   <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
