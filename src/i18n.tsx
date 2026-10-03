@@ -101,6 +101,18 @@ export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: strin
 
 const translations: Record<LanguageCode, Record<string, string>> = {
   id: {
+    'Production data is used for all content and activity on this page.': 'Konten dan aktivitas di halaman ini menggunakan data produksi.',
+    'Every user can share posts and updates.': 'Setiap pengguna dapat membagikan tulisan dan postingan.',
+    'Community Posts': 'Postingan Komunitas',
+    'Claim Bonus': 'Klaim Bonus',
+    'Registration Bonus': 'Bonus Pendaftaran',
+    'Locked': 'Terkunci',
+    'Available': 'Tersedia',
+    'Upload / Create': 'Unggah / Buat',
+    'Airdrop': 'Airdrop',
+    'Games': 'Permainan',
+    'Live Now': 'Live Sekarang',
+    'Workspace': 'Ruang Kerja',
     Home:'Beranda', Earn:'Dapatkan', Board:'Papan', Profile:'Profil', Language:'Bahasa',
     Login:'Masuk', Register:'Daftar', 'Welcome Back':'Selamat Datang Kembali',
     'Create SYS Account':'Buat Akun SYS', 'Username or Email':'Username atau Email',
