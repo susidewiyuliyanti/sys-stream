@@ -220,20 +220,20 @@ export default function MiningPage() {
 
               <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-800 bg-slate-950 p-4 text-left text-sm">
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$10 Lock</span>
-                  <strong>1 SYS / hari</strong>
+                  <span className="text-slate-400">$10 {tx.lock}</span>
+                  <strong>1 SYS {tx.perDay}</strong>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$20 Lock</span>
-                  <strong>2 SYS / hari</strong>
+                  <span className="text-slate-400">$20 {tx.lock}</span>
+                  <strong>2 SYS {tx.perDay}</strong>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$50 Lock</span>
-                  <strong>5 SYS / hari</strong>
+                  <span className="text-slate-400">$50 {tx.lock}</span>
+                  <strong>5 SYS {tx.perDay}</strong>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$100 Lock</span>
-                  <strong>10 SYS / hari</strong>
+                  <span className="text-slate-400">$100 {tx.lock}</span>
+                  <strong>10 SYS {tx.perDay}</strong>
                 </div>
               </div>
             </div>
