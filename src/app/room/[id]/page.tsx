@@ -97,7 +97,7 @@ export default function Room({
       body: JSON.stringify({ roomId: effectiveRoomId, action, ...payload }),
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data?.success) throw new Error(data?.error || "Aksi live room gagal.");
+    if (!response.ok || !data?.success) throw new Error(data?.error || t("Aksi live room gagal."));
     return data;
   };
 
@@ -176,7 +176,7 @@ export default function Room({
                 <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
                 <h2 className="font-black text-lg">{room?.status === "LIVE" ? t('Live Room Aktif') : t('Live belum aktif')}</h2>
                 <p className="text-sm text-slate-500 mt-2">
-                  Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.
+                  {t("Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.")}
                 </p>
               </div>
             </section>
@@ -203,7 +203,7 @@ export default function Room({
                   <h2 className="font-black">{t("Peserta Live")}</h2>
                   <p className="text-[11px] text-slate-500">{t("Hanya akun yang benar-benar bergabung yang ditampilkan.")}</p>
                 </div>
-                <span className="text-xs text-cyan-400">{participants.length} aktif</span>
+                <span className="text-xs text-cyan-400">{participants.length} {t("aktif")}</span>
               </div>
               {loading && participants.length === 0 ? (
                 <div className="text-sm text-slate-500 py-6 text-center">{t("Memuat peserta...")}</div>
@@ -216,7 +216,7 @@ export default function Room({
                       <div className="w-11 h-11 mx-auto rounded-full overflow-hidden border border-slate-700 bg-slate-900 flex items-center justify-center">
                         {p.avatarUrl ? <img src={p.avatarUrl} alt={p.username} className="w-full h-full object-cover" /> : <User className="w-5 h-5 text-slate-500" />}
                       </div>
-                      <div className="text-[10px] text-slate-300 truncate mt-1">{p.username}{p.userId === currentUserId ? " (Anda)" : ""}</div>
+                      <div className="text-[10px] text-slate-300 truncate mt-1">{p.username}{p.userId === currentUserId ? ` (${t("Anda")})` : ""}</div>
                     </div>
                   ))}
                 </div>
@@ -239,7 +239,7 @@ export default function Room({
                 <div ref={chatRef} className="flex-1 overflow-y-auto p-3 space-y-3">
                   {messages.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-center text-sm text-slate-500 px-5">
-                      Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.
+                      {t("Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.")}
                     </div>
                   ) : messages.map(m => (
                     <div key={m.id} className="flex gap-2">
@@ -247,7 +247,7 @@ export default function Room({
                         {m.avatarUrl ? <img src={m.avatarUrl} alt={m.username} className="w-full h-full object-cover" /> : <User className="w-3.5 h-3.5 text-slate-500" />}
                       </div>
                       <div className="min-w-0">
-                        <div className="text-[11px] font-black text-cyan-300">{m.username}{m.userId === currentUserId ? " • Anda" : ""}</div>
+                        <div className="text-[11px] font-black text-cyan-300">{m.username}{m.userId === currentUserId ? ` • ${t("Anda")}` : ""}</div>
                         <div className="text-xs text-slate-200 break-words">{m.message}</div>
                       </div>
                     </div>
@@ -275,7 +275,7 @@ export default function Room({
                     <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-900 flex items-center justify-center">
                       {p.avatarUrl ? <img src={p.avatarUrl} alt={p.username} className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-slate-500" />}
                     </div>
-                    <div className="text-xs font-bold truncate">{p.username}{p.userId === currentUserId ? " (Anda)" : ""}</div>
+                    <div className="text-xs font-bold truncate">{p.username}{p.userId === currentUserId ? ` (${t("Anda")})` : ""}</div>
                   </div>
                 ))}
               </div>
