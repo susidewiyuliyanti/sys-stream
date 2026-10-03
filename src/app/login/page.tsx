@@ -35,6 +35,8 @@ export default function LoginPage({ navigate }: Props) {
   const [verificationNotice, setVerificationNotice] = useState('');
   const [resendBusy, setResendBusy] = useState(false);
   const referralParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') || '' : '';
+  const returnParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('return') || '' : '';
+  const postLoginPath = returnParam.startsWith('/') ? returnParam : '/dashboard';
 
   
 const handleWalletAuth = async () => {
