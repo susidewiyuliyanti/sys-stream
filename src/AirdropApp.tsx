@@ -12,6 +12,7 @@ import VerifyEmailPage from './app/auth/verify-email/page';
 import TermsPage from './app/terms/page';
 import PrivacyPage from './app/privacy/page';
 import BlindboxGamePage from './app/game/blindbox/page';
+import MiningPage from './app/game/mining/page';
 import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
 
@@ -94,6 +95,9 @@ export default function App() {
 
     if (currentPath === '/game/blindbox') {
       return <BlindboxGamePage />;
+    }
+    if (currentPath === '/game/mining') {
+      return <MiningPage />;
     }
     if (currentPath === '/profile') {
       return <ProfilePage />;
