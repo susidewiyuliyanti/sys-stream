@@ -281,7 +281,7 @@ export default function AirdropApp() {
         // Airdrop lives on a different origin. Exchange the short-lived
         // handoff code first so this origin receives its own auth cookie.
         if (handoff) {
-          const exchange = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
+          const exchange = await fetch('/api/auth/airdrop-exchange', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -300,7 +300,7 @@ export default function AirdropApp() {
           }
         }
 
-        const res = await fetch('https://sysstreamer.asia/api/auth/me', {
+        const res = await fetch('/api/auth/me', {
           method: 'GET',
           credentials: 'include',
           cache: 'no-store',
@@ -354,7 +354,7 @@ export default function AirdropApp() {
     const loadSubmissions=async()=>{
       if(!walletAddress.trim()){if(active)setSubmissions([]);return;}
       try{
-        const res=await fetch('https://sysstreamer.asia/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
+        const res=await fetch('/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
         const data=await res.json().catch(()=>({}));
         if(active)setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);
       }catch{if(active)setSubmissions([]);}
@@ -367,7 +367,7 @@ export default function AirdropApp() {
     if(selectedTask.type!=='checkin'&&!proofLink.trim()){setSubmissionMessage(tx.proofRequired||COPY.en.proofRequired||'Proof link is required.');return;}
     setSubmissionLoading(true);setSubmissionMessage('');
     try{
-      const res=await fetch('https://sysstreamer.asia/api/airdrop/submit',{
+      const res=await fetch('/api/airdrop/submit',{
         method:'POST',
         credentials:'include',
         headers:{'Content-Type':'application/json'},
@@ -377,7 +377,7 @@ export default function AirdropApp() {
       if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');
       setSelectedTask(null);
       setTab('submissions');
-      const refreshed=await fetch('https://sysstreamer.asia/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
+      const refreshed=await fetch('/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
       const next=await refreshed.json().catch(()=>({}));
       setSubmissions(Array.isArray(next.submissions)?next.submissions:[]);
     }catch(e){setSubmissionMessage(e instanceof Error?e.message:'Submission failed');}
