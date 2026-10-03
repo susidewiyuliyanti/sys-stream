@@ -57,7 +57,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     if (!tx) return json({success:false,error:"Transaction not found."},404);
 
-    const successful = ["finished","confirmed"].includes(status);
+    const successful = status === "finished";
     const failed = ["failed","expired","refunded"].includes(status);
 
     if (successful && String(tx.status).toUpperCase() !== "COMPLETED") {
