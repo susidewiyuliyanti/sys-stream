@@ -123,12 +123,22 @@ export async function createSession(env: Env, userId: string): Promise<string> {
     Number(idMeta.pk) === 1 &&
     !/CHAR|CLOB|TEXT|BLOB/i.test(String(idMeta.type || ""));
 
+  const now = Math.floor(Date.now() / 1000);
+  // Support historical D1 naming conventions as well as the current schema.
+  // The canonical fields are still created above for requireAuth().
   const values: Record<string, any> = {
     id: crypto.randomUUID(),
     token,
+    session_token: token,
     user_id: String(userId),
+    userId: String(userId),
     expires_at: expiresAt,
-    created_at: Math.floor(Date.now() / 1000),
+    expiresAt,
+    created_at: now,
+    createdAt: now,
+    revoked: 0,
+    is_revoked: 0,
+    active: 1,
   };
 
   const insertColumns:string[] = [];
