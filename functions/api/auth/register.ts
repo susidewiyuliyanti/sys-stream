@@ -1,4 +1,5 @@
 import { Env, json, readJson } from "../../_lib/db";
+import { getAddress, isAddress } from "ethers";
 import { hashPassword } from "../../_lib/auth";
 import {
   createVerificationToken,
@@ -232,12 +233,14 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       termsAccepted?: boolean;
       termsVersion?: string;
       referralCode?: string;
+      walletAddress?: string;
     }>(request);
 
     const suppliedUsername = String(body.username || "").trim();
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const incomingReferralCode = String(body.referralCode || "").trim();
+    const incomingWalletAddress = String(body.walletAddress || "").trim();
 
     // Registration is email-first. Username is optional and generated server-side.
     if (!validEmail(email)) {
@@ -246,6 +249,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (password.length < 6) {
       return json({ success: false, error: "Password minimal 6 karakter." }, 400);
     }
+    if (incomingWalletAddress && !isAddress(incomingWalletAddress)) {
+      return json({ success: false, error: "Alamat wallet EVM tidak valid." }, 400);
+    }
+    const walletAddress = incomingWalletAddress ? getAddress(incomingWalletAddress) : null;
     if (
       body.termsAccepted !== true ||
       String(body.termsVersion || "") !== TERMS_VERSION
@@ -262,6 +269,15 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     if (emailExists) {
       return json({ success: false, error: "Email sudah terdaftar." }, 409);
+    }
+
+    if (walletAddress) {
+      const walletExists = await env.DB.prepare(
+        "SELECT id FROM users WHERE lower(wallet_address)=lower(?) LIMIT 1"
+      ).bind(walletAddress).first();
+      if (walletExists) {
+        return json({ success: false, error: "Wallet tersebut sudah terhubung ke akun lain." }, 409);
+      }
     }
 
     let id = crypto.randomUUID();
@@ -318,7 +334,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       email_verified: 0,
       email_verified_at: null,
       referral_count: 0,
-      wallet_address: null,
+      wallet_address: walletAddress,
       has_referral_bonus: 0,
       avatar_url: null,
       registration_bonus_idr: 15000,
