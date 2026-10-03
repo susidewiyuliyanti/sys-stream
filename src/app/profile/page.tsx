@@ -136,7 +136,7 @@ export default function ProfilePage() {
     const amountDisplay = Number(withdrawAmount);
     const amount = Math.round(amountDisplay * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
     if (!Number.isFinite(amountDisplay) || amount < withdrawalMinIdr) {
-      showToast('Withdrawal', 'Minimum withdrawal is {formatMoney(withdrawalMinIdr)}.', 'error');
+      showToast('Withdrawal', `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
       return;
     }
     if (!withdrawAddress.trim()) {
@@ -495,7 +495,7 @@ export default function ProfilePage() {
           <div className="w-full max-w-md rounded-3xl bg-[#080d1a] border border-amber-500/30 p-6 space-y-4">
             <div className="flex justify-between"><h3 className="font-black text-lg">Withdraw USDT</h3><button onClick={() => setWithdrawOpen(false)}><X className="w-5 h-5"/></button></div>
             <div className="text-xs text-slate-500">Available: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
-            <input type="number" min="0" step="0.0001" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder="Amount USDT" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
+            <input type="number" min={100000 / (IDR_PER_CURRENCY_UNIT[language] ?? 1)} step="0.01" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder={`Amount (${getLocaleConfig(language).currency})`} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
             <input value={withdrawAddress} onChange={e => setWithdrawAddress(e.target.value)} placeholder="USDT wallet address" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
             <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">Submit Withdrawal</button>
           </div>
