@@ -8,6 +8,7 @@ export interface UserProfile {
   diamonds: number;
   vipTier: number;
   referralCode: string;
+  walletAddress?: string;
   registrationBonusIdr?: number;
   registrationBonusGranted?: boolean;
   lockedBalance?: number;
