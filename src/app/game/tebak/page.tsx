@@ -37,7 +37,7 @@ export default function TebakGamePage() {
   const [editTitle, setEditTitle] = useState(cryptoCard.cardTitle);
   const [editSerial, setEditSerial] = useState(cryptoCard.serialNumber);
   const [editDigits, setEditDigits] = useState<[number, number, number, number]>(cryptoCard.digits);
-  const [edit{t('Concealed')}, setEdit{t('Concealed')}] = useState<[boolean, boolean, boolean, boolean]>(cryptoCard.concealed);
+  const [editConcealed, setEditConcealed] = useState<[boolean, boolean, boolean, boolean]>(cryptoCard.concealed);
   const [editNote, setEditNote] = useState(cryptoCard.streamerNote);
 
   const concealedCount = cryptoCard.concealed.filter(Boolean).length;
