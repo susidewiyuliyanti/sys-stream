@@ -174,7 +174,7 @@ export default function Room({
             <section className="aspect-video rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden">
               <div className="text-center px-6">
                 <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
-                <h2 className="font-black text-lg">{room?.status === "LIVE" ? "Live Room Aktif" : "Live belum aktif"}</h2>
+                <h2 className="font-black text-lg">{room?.status === "LIVE" ? "{t('Live Room Aktif')}" : "{t('Live belum aktif')}"}</h2>
                 <p className="text-sm text-slate-500 mt-2">
                   Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.
                 </p>
