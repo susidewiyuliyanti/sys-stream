@@ -219,7 +219,7 @@ export default function Room({
 
   return (
     <div className="min-h-screen bg-[#050814] text-white font-sans pb-20 selection:bg-pink-500 selection:text-white">
-      <div className="max-w-md mx-auto relative flex flex-col min-h-screen">
+      <div className="w-full max-w-md lg:max-w-7xl mx-auto relative flex flex-col min-h-screen px-0 lg:px-5">
         {/* TOP STATUS BAR & TIKTOK LIVE HEADER matching Screenshot 3 */}
         <div className="p-3 pb-2 flex items-center justify-between text-xs border-b border-slate-900 bg-[#050814]/90 backdrop-blur-md sticky top-0 z-30">
           <div className="flex items-center gap-2">
@@ -263,8 +263,10 @@ export default function Room({
           </div>
         </div>
 
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-5 lg:items-start">
+          <div className="min-w-0">
         {/* STREAMER VIDEO VIEWPORT matching Screenshot 3 */}
-        <div className="relative aspect-[16/11] bg-slate-950 overflow-hidden border-b border-cyan-500/20 shadow-2xl">
+        <div className="relative aspect-[16/11] lg:aspect-video bg-slate-950 overflow-hidden border-b border-cyan-500/20 shadow-2xl">
           {/* Cyberpunk Anime Streamer Girl */}
           <img
             src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80"
@@ -462,10 +464,13 @@ export default function Room({
           </div>
         </div>
 
+          </div>
+
+          <aside className="min-w-0 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] lg:flex lg:flex-col lg:rounded-2xl lg:border lg:border-slate-800 lg:bg-slate-950/70 lg:overflow-hidden">
         {/* LIVE CHAT MESSAGES FEED matching Screenshot 3 */}
         <div
           ref={chatScrollRef}
-          className="flex-1 px-3.5 space-y-2 overflow-y-auto max-h-56 scrollbar-none text-xs"
+          className="flex-1 px-3.5 space-y-2 overflow-y-auto max-h-56 lg:max-h-none lg:min-h-0 scrollbar-none text-xs"
         >
           {chatList.map((c, i) => (
             <div key={i} className="flex items-start gap-2 py-0.5 animate-in fade-in-50">
@@ -507,7 +512,7 @@ export default function Room({
         </div>
 
         {/* BOTTOM LIVE BAR INPUT matching Screenshot 3 */}
-        <div className="p-3 bg-[#050814]/95 border-t border-slate-900 sticky bottom-14 z-30">
+        <div className="p-3 bg-[#050814]/95 border-t border-slate-900 sticky bottom-14 lg:bottom-auto lg:mt-auto z-30">
           <form onSubmit={handleSendChat} className="flex items-center gap-2">
             {/* Gift Icon Button */}
             <button
@@ -547,6 +552,7 @@ export default function Room({
               </button>
             </div>
           </form>
+        </aside>
         </div>
       </div>
     </div>
