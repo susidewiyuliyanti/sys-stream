@@ -71,6 +71,7 @@ export default function App() {
 
   const protectedPaths = [
     '/game/blindbox',
+    '/game/mining',
     '/game/spinner',
     '/game/tebak',
     '/profile',
