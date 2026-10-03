@@ -569,8 +569,8 @@ export default function AirdropApp() {
                   const day=i+1, item=checkins.get(day), isToday=checkinMonth===new Date().toISOString().slice(0,7)&&day===new Date().getDate();
                   return <tr key={day} className="border-t border-slate-800">
                     <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">{AIRDROP_UI[lang].today}</span>:null}</td>
-                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">{AIRDROP_UI[lang].notChecked}</span>}</td>
-                    <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} pts</td>
+                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status==='approved'?'Disetujui':item.status==='pending'?'Menunggu':item.status==='rejected'?'Ditolak':item.status} </span>:<span className="text-slate-500">{AIRDROP_UI[lang].notChecked}</span>}</td>
+                    <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} {AIRDROP_UI[lang].points}</td>
                     <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">{AIRDROP_UI[lang].checkin}</button>:<span className="text-slate-600">—</span>}</td>
                   </tr>;
                 })}
