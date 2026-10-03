@@ -59,7 +59,7 @@ export default function TebakGamePage() {
       // Check if player filled all concealed slots
       for (let i = 0; i < 4; i++) {
         if (cryptoCard.concealed[i] && (!playerGuesses[i] || playerGuesses[i].trim() === '')) {
-          showToast('Incomplete Prediction', `Please enter a digit for Slot #${i + 1}`, 'error');
+          showToast(t('Incomplete Prediction'), `${t('Please enter a digit for Slot')} #${i + 1}`, 'error');
           return;
         }
       }
@@ -88,10 +88,10 @@ export default function TebakGamePage() {
         if (allMatched) {
           sound.playJackpot();
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
-          showToast('Card Cracked!', `All ${concealedCount} concealed digits matched! Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.`, 'jackpot');
+          showToast(t('Card Cracked!'), `${t('All concealed digits matched!')} ${t('Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.')}`, 'jackpot');
         } else {
           sound.playClick();
-          showToast('Guess Missed', `Matched ${matchedCount}/${concealedCount} digits. Try another prediction!`, 'info');
+          showToast(t('Guess Missed'), `${matchedCount}/${concealedCount} ${t('Matched digits. Try another prediction!')}`, 'info');
         }
 
         setLastOutcome({
