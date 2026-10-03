@@ -727,6 +727,54 @@ for (const lang of Object.keys(EXHAUSTIVE_UI_TRANSLATIONS) as LanguageCode[]) {
   PAGE_UI_TRANSLATIONS[lang] = { ...EXHAUSTIVE_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 }
 
+
+const DASHBOARD_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  id: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'Setiap pengguna dapat membagikan tulisan dan postingan.',
+    'Belum ada postingan':'Belum ada postingan','Jadilah pengguna pertama yang membagikan sesuatu.':'Jadilah pengguna pertama yang membagikan sesuatu.',
+    'Buat Postingan':'Buat Postingan','Belum ada data live aktif':'Belum ada data live aktif',
+    'Room live akan tampil di sini setelah tersedia dari backend produksi.':'Room live akan tampil di sini setelah tersedia dari backend produksi.',
+    'Live':'Live','Buka Live Room →':'Buka Live Room →','Tebak Nomor':'Tebak Nomor','Ikuti permainan live.':'Ikuti permainan live.',
+    'Spinner':'Spinner','Masuk ke event spinner.':'Masuk ke event spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Buka Blind Box dengan saldo akun.',
+    'Upload / Create Post':'Unggah / Buat Postingan','Tulis sesuatu untuk dibagikan ke komunitas...':'Tulis sesuatu untuk dibagikan ke komunitas...',
+    'URL media (opsional)':'URL media (opsional)','Menerbitkan...':'Menerbitkan...','Terbitkan Postingan':'Terbitkan Postingan',
+    'Refresh balance':'Muat ulang saldo','Refresh posts':'Muat ulang postingan','Claim Bonus':'Klaim Bonus'
+  },
+  en: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'Every user can share posts and updates.',
+    'Belum ada postingan':'No posts yet','Jadilah pengguna pertama yang membagikan sesuatu.':'Be the first user to share something.',
+    'Buat Postingan':'Create Post','Belum ada data live aktif':'No active live data',
+    'Room live akan tampil di sini setelah tersedia dari backend produksi.':'Live rooms will appear here when available from the production backend.',
+    'Live':'Live','Buka Live Room →':'Open Live Room →','Tebak Nomor':'Guess the Number','Ikuti permainan live.':'Join the live game.',
+    'Spinner':'Spinner','Masuk ke event spinner.':'Enter the spinner event.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Open Blind Box using your account balance.',
+    'Upload / Create Post':'Upload / Create Post','Tulis sesuatu untuk dibagikan ke komunitas...':'Write something to share with the community...',
+    'URL media (opsional)':'Media URL (optional)','Menerbitkan...':'Publishing...','Terbitkan Postingan':'Publish Post',
+    'Refresh balance':'Refresh balance','Refresh posts':'Refresh posts','Claim Bonus':'Claim Bonus'
+  },
+  es: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuario puede compartir publicaciones y actualizaciones.','Belum ada postingan':'Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.':'Sé el primero en compartir algo.','Buat Postingan':'Crear publicación','Belum ada data live aktif':'No hay datos de transmisiones activas','Room live akan tampil di sini setelah tersedia dari backend produksi.':'Las salas en vivo aparecerán cuando estén disponibles desde el backend de producción.','Live':'En vivo','Buka Live Room →':'Abrir sala en vivo →','Tebak Nomor':'Adivina el número','Ikuti permainan live.':'Participa en el juego en vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar al evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post':'Subir / crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...':'Escribe algo para compartir con la comunidad...','URL media (opsional)':'URL multimedia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Actualizar saldo','Refresh posts':'Actualizar publicaciones','Claim Bonus':'Reclamar bono'
+  },
+  pt: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuário pode compartilhar publicações e atualizações.','Belum ada postingan':'Ainda não há publicações','Jadilah pengguna pertama yang membagikan sesuatu.':'Seja o primeiro a compartilhar algo.','Buat Postingan':'Criar publicação','Belum ada data live aktif':'Não há dados de live ativos','Room live akan tampil di sini setelah tersedia dari backend produksi.':'As salas ao vivo aparecerão quando estiverem disponíveis no backend de produção.','Live':'Ao vivo','Buka Live Room →':'Abrir sala ao vivo →','Tebak Nomor':'Adivinhe o número','Ikuti permainan live.':'Participe do jogo ao vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar no evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box usando o saldo da conta.','Upload / Create Post':'Enviar / criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...':'Escreva algo para compartilhar com a comunidade...','URL media (opsional)':'URL de mídia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Atualizar saldo','Refresh posts':'Atualizar publicações','Claim Bonus':'Resgatar bônus'
+  },
+  zh: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'每位用户都可以分享帖子和动态。','Belum ada postingan':'暂无帖子','Jadilah pengguna pertama yang membagikan sesuatu.':'成为第一个分享内容的用户。','Buat Postingan':'创建帖子','Belum ada data live aktif':'暂无活跃直播数据','Room live akan tampil di sini setelah tersedia dari backend produksi.':'生产后端提供数据后，直播间会显示在这里。','Live':'直播','Buka Live Room →':'打开直播间 →','Tebak Nomor':'猜数字','Ikuti permainan live.':'参与直播游戏。','Spinner':'转盘','Masuk ke event spinner.':'进入转盘活动。','Blind Box':'盲盒','Buka Blind Box dengan saldo akun.':'使用账户余额打开盲盒。','Upload / Create Post':'上传 / 创建帖子','Tulis sesuatu untuk dibagikan ke komunitas...':'写下要与社区分享的内容...','URL media (opsional)':'媒体链接（可选）','Menerbitkan...':'发布中...','Terbitkan Postingan':'发布帖子','Refresh balance':'刷新余额','Refresh posts':'刷新帖子','Claim Bonus':'领取奖励'
+  },
+  ja: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'すべてのユーザーが投稿や更新を共有できます。','Belum ada postingan':'投稿はまだありません','Jadilah pengguna pertama yang membagikan sesuatu.':'最初に何かを共有しましょう。','Buat Postingan':'投稿を作成','Belum ada data live aktif':'アクティブなライブデータはありません','Room live akan tampil di sini setelah tersedia dari backend produksi.':'本番バックエンドから利用可能になるとライブルームがここに表示されます。','Live':'ライブ','Buka Live Room →':'ライブルームを開く →','Tebak Nomor':'数字を当てる','Ikuti permainan live.':'ライブゲームに参加する。','Spinner':'スピナー','Masuk ke event spinner.':'スピナーイベントに入る。','Blind Box':'ブラインドボックス','Buka Blind Box dengan saldo akun.':'アカウント残高でブラインドボックスを開く。','Upload / Create Post':'アップロード / 投稿を作成','Tulis sesuatu untuk dibagikan ke komunitas...':'コミュニティで共有する内容を入力...','URL media (opsional)':'メディアURL（任意）','Menerbitkan...':'公開中...','Terbitkan Postingan':'投稿を公開','Refresh balance':'残高を更新','Refresh posts':'投稿を更新','Claim Bonus':'ボーナスを受け取る'
+  },
+  ko: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'모든 사용자는 게시물과 업데이트를 공유할 수 있습니다.','Belum ada postingan':'게시물이 없습니다','Jadilah pengguna pertama yang membagikan sesuatu.':'가장 먼저 콘텐츠를 공유해 보세요.','Buat Postingan':'게시물 만들기','Belum ada data live aktif':'활성 라이브 데이터가 없습니다','Room live akan tampil di sini setelah tersedia dari backend produksi.':'프로덕션 백엔드에서 제공되면 라이브 룸이 여기에 표시됩니다.','Live':'라이브','Buka Live Room →':'라이브 룸 열기 →','Tebak Nomor':'숫자 맞히기','Ikuti permainan live.':'라이브 게임에 참여하세요.','Spinner':'스피너','Masuk ke event spinner.':'스피너 이벤트 입장','Blind Box':'블라인드 박스','Buka Blind Box dengan saldo akun.':'계정 잔액으로 블라인드 박스 열기','Upload / Create Post':'업로드 / 게시물 만들기','Tulis sesuatu untuk dibagikan ke komunitas...':'커뮤니티에 공유할 내용을 작성하세요...','URL media (opsional)':'미디어 URL(선택 사항)','Menerbitkan...':'게시 중...','Terbitkan Postingan':'게시물 게시','Refresh balance':'잔액 새로고침','Refresh posts':'게시물 새로고침','Claim Bonus':'보너스 받기'
+  },
+  ar: {
+    'Setiap user dapat membagikan tulisan dan postingan.':'يمكن لكل مستخدم مشاركة المنشورات والتحديثات.','Belum ada postingan':'لا توجد منشورات بعد','Jadilah pengguna pertama yang membagikan sesuatu.':'كن أول مستخدم يشارك شيئًا.','Buat Postingan':'إنشاء منشور','Belum ada data live aktif':'لا توجد بيانات بث مباشر نشطة','Room live akan tampil di sini setelah tersedia dari backend produksi.':'ستظهر غرف البث المباشر هنا عند توفرها من الواجهة الخلفية للإنتاج.','Live':'مباشر','Buka Live Room →':'فتح غرفة البث المباشر →','Tebak Nomor':'خمن الرقم','Ikuti permainan live.':'شارك في اللعبة المباشرة.','Spinner':'العجلة','Masuk ke event spinner.':'الدخول إلى فعالية العجلة.','Blind Box':'الصندوق الغامض','Buka Blind Box dengan saldo akun.':'افتح الصندوق الغامض باستخدام رصيد حسابك.','Upload / Create Post':'رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...':'اكتب شيئًا لمشاركته مع المجتمع...','URL media (opsional)':'رابط الوسائط (اختياري)','Menerbitkan...':'جارٍ النشر...','Terbitkan Postingan':'نشر المنشور','Refresh balance':'تحديث الرصيد','Refresh posts':'تحديث المنشورات','Claim Bonus':'استلام المكافأة'
+  }
+};
+for (const lang of Object.keys(DASHBOARD_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], DASHBOARD_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...DASHBOARD_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
