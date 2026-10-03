@@ -224,7 +224,7 @@ export default function Room({
                     </div>
                   </div>
                   <button
-                    disabled={streamBusy}
+                    disabled={streamBusy || !room.owner}
                     onClick={() => {
                       setStreamBusy(true);
                       void fetch("/api/live/stream?roomId=" + encodeURIComponent(effectiveRoomId), {
@@ -255,7 +255,7 @@ export default function Room({
                 </p>
               </section>
             )}
-            {room?.owner && (
+            {room && (
               <section className="mt-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                   <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">AKTIFKAN STREAMING</div>
@@ -282,7 +282,7 @@ export default function Room({
                   }}
                   className="rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-black text-slate-950 hover:bg-cyan-300 disabled:opacity-50 shrink-0"
                 >
-                  {streamBusy ? "MEMBUAT..." : "AKTIFKAN STREAMING"}
+                  {!room.owner ? "KHUSUS PEMILIK ROOM" : streamBusy ? "MEMBUAT..." : "AKTIFKAN STREAMING"}
                 </button>
               </section>
             )}
