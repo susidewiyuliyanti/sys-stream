@@ -21,6 +21,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [minAmountUsd] = useState<number>(5);
+  const [providerMinAmountUsd, setProviderMinAmountUsd] = useState<number | null>(null);
   const [depositError, setDepositError] = useState<string>('');
   const [diagnosticError, setDiagnosticError] = useState<string>('');
   const [paymentStatus, setPaymentStatus] = useState<string>('waiting');
@@ -77,12 +78,15 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     setDepositError('');
     setDiagnosticError('');
+    setProviderMinAmountUsd(null);
     try {
       const inv = await createCryptoInvoice(finalAmount, selectedCurrency);
       setPaymentStatus(inv.status || 'waiting');
       setInvoice(inv);
     } catch (err: any) {
       const message = String(err?.message || t('Failed to generate invoice'));
+      const providerMinimum = Number(err?.minimumUsd);
+      if (Number.isFinite(providerMinimum) && providerMinimum > 0) setProviderMinAmountUsd(providerMinimum);
       setDepositError(message);
       try {
         const token = localStorage.getItem('sys_stream_auth_token');
@@ -166,8 +170,16 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 />
               </div>
               <div className="mt-1.5 text-xs text-slate-500 space-y-1">
-                <div>{t('Minimum deposit')}: <span className="text-slate-300">${minAmountUsd.toFixed(2)} USD</span></div>
-                <div>{t('Rate is checked live by NOWPayments when the payment is created.')}</div>
+                <div>{t('Platform minimum')}: <span className="text-slate-300">$"+"{minAmountUsd.toFixed(2)} USD</span></div>
+                {providerMinAmountUsd !== null && (
+                  <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-amber-200">
+                    <div>{t('NOWPayments minimum for this network')}: <span className="font-bold">$"+"{providerMinAmountUsd.toFixed(2)} USD</span></div>
+                    <button type="button" onClick={() => { setCustomUsd(providerMinAmountUsd.toFixed(2)); setSelectedUsd(0); sound.playClick(); }} className="mt-1 text-xs font-bold text-amber-300 hover:text-amber-200 underline">
+                      {t('Use NOWPayments minimum')}
+                    </button>
+                  </div>
+                )}
+                <div>{t('Rate and minimum are checked live by NOWPayments when the payment is created.')}
                 <div>{t('Deposit is credited to your real account balance after payment confirmation.')}</div>
               </div>
             </div>
