@@ -38,11 +38,16 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   // Issue a fresh session for the Airdrop origin while preserving the same user.
   const token = await createSession(env, String(session.userId));
-  return new Response(JSON.stringify({ success: true, user }), {
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-      "Set-Cookie": createAuthCookie(token),
-    },
+  const origin = request.headers.get("Origin") || "";
+  const headers = new Headers({
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
+    "Set-Cookie": createAuthCookie(token),
   });
+  if (origin === "https://airdrop.sysstreamer.asia") {
+    headers.set("Access-Control-Allow-Origin", origin);
+    headers.set("Access-Control-Allow-Credentials", "true");
+    headers.set("Vary", "Origin");
+  }
+  return new Response(JSON.stringify({ success: true, user }), { headers });
 }
