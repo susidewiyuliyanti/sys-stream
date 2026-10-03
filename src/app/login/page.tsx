@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function LoginPage({ navigate }: Props) {
-  const { user, login } = useGame();
+  const { user } = useGame();
   const { t } = useLanguage();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
@@ -142,7 +142,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
         : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, ...(referralParam ? { referralCode: referralParam } : {}) };
-      const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      const res = await fetch(endpoint, { method:'POST', credentials:'include', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         if (data.code === 'EMAIL_NOT_VERIFIED') {
@@ -163,10 +163,32 @@ const handleSubmit = async (e: React.FormEvent) => {
         setPasswordInput('');
         return;
       }
-      localStorage.setItem('sys_stream_auth_token', data.token);
+      if (!data?.token || !data?.user) {
+        throw new Error('Sesi autentikasi tidak diterima dari server.');
+      }
+
+      // The login endpoint already creates the server auth session and shared
+      // cookie. Persist the same server-authoritative identity before navigation.
+      localStorage.setItem('sys_stream_auth_token', String(data.token));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
-      login(data.user?.username || usernameInput.trim());
-      if (navigate) navigate(postLoginPath);
+      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+        id: data.user.id,
+        username: data.user.username || data.user.displayName || data.user.display_name || usernameInput.trim(),
+        avatar: data.user.avatarUrl || data.user.avatar_url || '',
+        referralCode: data.user.referralCode || data.user.referral_code || '',
+        walletAddress: data.user.walletAddress || data.user.wallet_address || '',
+        registrationBonusIdr: Number(data.user.registrationBonusIdr ?? data.user.registration_bonus_idr ?? 0),
+        registrationBonusGranted: Boolean(data.user.registrationBonusGranted ?? data.user.registration_bonus_granted),
+      }));
+      localStorage.setItem('sys_is_logged_in', 'true');
+
+      // Force a fresh app bootstrap so the dashboard reads the authenticated
+      // server session instead of racing the previous in-memory auth state.
+      if (postLoginPath === '/airdrop') {
+        window.location.replace('https://airdrop.sysstreamer.asia/');
+      } else {
+        window.location.replace(`/#${postLoginPath}`);
+      }
     } catch (error) {
       console.error(error);
       window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
@@ -368,7 +390,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
         </div>
 
-        {/* Wallet authentication is intentionally disabled until a real wallet-signature flow is implemented. */}
+        {/* Production wallet authentication uses the server nonce/signature flow above. */}
         <button
           onClick={handleWalletAuth}
           type="button"
