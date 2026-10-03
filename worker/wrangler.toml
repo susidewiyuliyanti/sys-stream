@@ -27,6 +27,10 @@ pattern = "sysstreamer.asia/api/payments/*"
 zone_name = "sysstreamer.asia"
 
 [[routes]]
+pattern = "sysstreamer.asia/api/locks"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
 pattern = "sysstreamer.asia/api/locks/*"
 zone_name = "sysstreamer.asia"
 
