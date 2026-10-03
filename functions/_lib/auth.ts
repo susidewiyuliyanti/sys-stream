@@ -1,5 +1,22 @@
 import { Env, json } from "./db";
 
+export const AUTH_COOKIE_NAME = "sys_stream_session";
+export const AUTH_COOKIE_DOMAIN = ".sysstreamer.asia";
+
+export function createAuthCookie(token: string, maxAgeSeconds = 60 * 60 * 24 * 30): string {
+  return `${AUTH_COOKIE_NAME}=${encodeURIComponent(token)}; Max-Age=${maxAgeSeconds}; Path=/; Domain=${AUTH_COOKIE_DOMAIN}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+export function createClearAuthCookie(): string {
+  return `${AUTH_COOKIE_NAME}=; Max-Age=0; Path=/; Domain=${AUTH_COOKIE_DOMAIN}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+function getCookieValue(request: Request, name: string): string {
+  const raw = request.headers.get("Cookie") || "";
+  const part = raw.split(";").map(v => v.trim()).find(v => v.startsWith(name + "="));
+  return part ? decodeURIComponent(part.slice(name.length + 1)) : "";
+}
+
 export interface AuthUser {
   id: string;
   username?: string;
@@ -98,7 +115,8 @@ async function ensureAuthUserColumns(env: Env) {
 
 export async function requireAuth(request: Request, env: Env) {
   await ensureAuthUserColumns(env);
-  const token = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
+  const bearerToken = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "").trim();
+  const token = bearerToken || getCookieValue(request, AUTH_COOKIE_NAME);
   if (!token) return { ok: false as const, response: json({ success: false, error: "Unauthorized" }, 401) };
 
   const row = await env.DB.prepare(
