@@ -28,7 +28,7 @@ const COPY: Record<Lang, Record<string,string>> = {
     tasks:'Tugas', submissions:'Pengajuan Saya', login:'Masuk', wallet:'Alamat Wallet', walletPlaceholder:'Masukkan alamat wallet', saveWallet:'Simpan Wallet', walletRequired:'Alamat wallet wajib diisi untuk mengikuti task.', hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',
     intro:'Selesaikan tugas campaign di YouTube, TikTok, dan Instagram. Kirim link bukti publik dan ikuti aturan setiap tugas.',
     daily:'MISI HARIAN HARI INI', dailySub:'Tugas harian dapat berubah sesuai campaign aktif.', available:'Tugas Tersedia',
-    empty:'Belum ada pengajuan', emptySub:'Pengajuan yang kamu kirim akan tampil di sini setelah akun terhubung.',
+    empty:'Belum ada pengajuan', emptySub:'Pengajuan yang kamu kirim akan tampil di sini setelah wallet digunakan.', proofRequired:'Link bukti wajib diisi untuk task ini.',
     instructions:'Instruksi tugas', live:'LANGSUNG', leaderboard:'PAPAN PERINGKAT REFERRAL', top:'Top Referral — Live',
     leaderboardSub:'Peringkat diperbarui otomatis setiap 10 detik dari data referral produksi.',
     successful:'Referral berhasil', refs:'REF', connecting:'MENGHUBUNGKAN', unavailable:'Papan peringkat belum tersedia.',
@@ -51,7 +51,7 @@ const COPY: Record<Lang, Record<string,string>> = {
     tasks:'Tasks', submissions:'My Submissions', login:'Login', wallet:'Wallet Address', walletPlaceholder:'Enter wallet address', saveWallet:'Save Wallet', walletRequired:'Wallet address is required to join a task.', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
     intro:'Complete campaign tasks across YouTube, TikTok, and Instagram. Submit public proof links and follow each task rule.',
     daily:"TODAY'S DAILY MISSIONS", dailySub:'Daily tasks may change based on the active campaign.', available:'Available Tasks',
-    empty:'No submissions yet', emptySub:'Your submissions will appear here after your account is connected.',
+    empty:'No submissions yet', emptySub:'Your submissions will appear here after a wallet is used.', proofRequired:'A proof link is required for this task.',
     instructions:'Task instructions', live:'LIVE', leaderboard:'REFERRAL LEADERBOARD', top:'Top Referrers — Live',
     leaderboardSub:'Ranking updates automatically every 10 seconds from production referral data.',
     successful:'Successful referrals', refs:'REFS', connecting:'CONNECTING', unavailable:'Leaderboard is not available.',
@@ -231,6 +231,10 @@ function typeLabel(type:TaskType,tx:Record<string,string>) {
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
   const [walletAddress,setWalletAddress]=useState('');
+  const [proofLink,setProofLink]=useState('');
+  const [submissions,setSubmissions]=useState<Array<{id:number;task_id:number|string;task_title?:string;evidence_link:string;status:string;reward_points:number;created_at:string}>>([]);
+  const [submissionLoading,setSubmissionLoading]=useState(false);
+  const [submissionMessage,setSubmissionMessage]=useState('');
   const [menuOpen,setMenuOpen]=useState(false);
   const [tab,setTab]=useState<'tasks'|'submissions'>('tasks');
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
@@ -265,6 +269,25 @@ export default function AirdropApp() {
     setWalletAddress(savedWallet);
   }, []);
 
+
+  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); },[selectedTask]);
+
+  useEffect(()=>{
+    let active=true;
+    const loadSubmissions=async()=>{
+      const wallet=walletAddress.trim();
+      if(!wallet){if(active)setSubmissions([]);return;}
+      try{const res=await fetch('/api/airdrop/submissions?wallet='+encodeURIComponent(wallet),{cache:'no-store'});const data=await res.json().catch(()=>({}));if(active)setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);}catch{if(active)setSubmissions([]);}
+    };
+    loadSubmissions(); return()=>{active=false;};
+  },[walletAddress]);
+
+  const submitTask=async()=>{
+    const wallet=walletAddress.trim(); if(!selectedTask||!wallet)return;
+    if(selectedTask.type!=='checkin'&&!proofLink.trim()){setSubmissionMessage(tx.proofRequired||COPY.en.proofRequired||'Proof link is required.');return;}
+    setSubmissionLoading(true);setSubmissionMessage('');
+    try{const res=await fetch('/api/airdrop/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wallet,taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN'})});const data=await res.json().catch(()=>({}));if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');localStorage.setItem('sys_stream_airdrop_wallet',wallet);setSelectedTask(null);setTab('submissions');const refreshed=await fetch('/api/airdrop/submissions?wallet='+encodeURIComponent(wallet),{cache:'no-store'});const next=await refreshed.json().catch(()=>({}));setSubmissions(Array.isArray(next.submissions)?next.submissions:[]);}catch(e){setSubmissionMessage(e instanceof Error?e.message:'Submission failed');}finally{setSubmissionLoading(false);}
+  };
 
   useEffect(()=>{
     let active=true;
@@ -366,7 +389,7 @@ export default function AirdropApp() {
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:t.reward}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
         </article>})}
-      </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></section>}
+      </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-5">{submissions.length===0?<div className="p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></div>:<div className="space-y-3">{submissions.map(s=><div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div className="flex-1 min-w-0"><div className="font-bold truncate">{s.task_title||String(s.task_id)}</div><a href={s.evidence_link} target="_blank" rel="noreferrer" className="text-xs text-amber-400 break-all">{s.evidence_link}</a><div className="text-[10px] text-slate-500 mt-1">{s.created_at}</div></div><div className="text-xs font-black px-3 py-2 rounded-xl bg-slate-800 text-slate-200">{s.status}</div><div className="text-xs text-amber-400 font-bold">{s.reward_points} pts</div></div>)}</div>}</section>}
     </main>
 
     <footer className="border-t border-slate-800 mt-12"><div className="max-w-7xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-wrap gap-3 justify-between"><span>SYS STREAM Airdrop &amp; Task Center</span><span>{tx.footer}</span></div></footer>
@@ -379,7 +402,9 @@ export default function AirdropApp() {
           <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
           <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
           {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
-          <button disabled={!walletAddress.trim()} onClick={()=>{localStorage.setItem('sys_stream_airdrop_wallet',walletAddress.trim());setSelectedTask(null)}} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed"{tx.saveWallet || COPY.en.saveWallet}</button>
+          {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder="https://..." className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
+          {submissionMessage&&<div className="mt-3 text-xs text-amber-300">{submissionMessage}</div>}
+          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?'Submitting...':(tx.saveWallet || COPY.en.saveWallet)}</button>
         </div>
       </div>
     </div>})()}
