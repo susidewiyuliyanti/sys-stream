@@ -1059,6 +1059,18 @@ const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
+const AIRDROP_FINAL_LABELS: Record<LanguageCode, Record<string,string>> = {
+ id:{'Loading active tasks...':'Memuat tugas aktif...','Submitting...':'Mengirim...','Menu':'Menu','Close':'Tutup','https://...':'https://...'},
+ en:{'Loading active tasks...':'Loading active tasks...','Submitting...':'Submitting...','Menu':'Menu','Close':'Close','https://...':'https://...'},
+ es:{'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Menu':'Menú','Close':'Cerrar','https://...':'https://...'},
+ pt:{'Loading active tasks...':'Carregando tarefas ativas...','Submitting...':'Enviando...','Menu':'Menu','Close':'Fechar','https://...':'https://...'},
+ zh:{'Loading active tasks...':'正在加载活动任务...','Submitting...':'提交中...','Menu':'菜单','Close':'关闭','https://...':'https://...'},
+ ja:{'Loading active tasks...':'アクティブなタスクを読み込んでいます...','Submitting...':'送信中...','Menu':'メニュー','Close':'閉じる','https://...':'https://...'},
+ ko:{'Loading active tasks...':'활성 작업을 불러오는 중...','Submitting...':'제출 중...','Menu':'메뉴','Close':'닫기','https://...':'https://...'},
+ ar:{'Loading active tasks...':'جارٍ تحميل المهام النشطة...','Submitting...':'جارٍ الإرسال...','Menu':'القائمة','Close':'إغلاق','https://...':'https://...'}
+};
+for(const lang of Object.keys(AIRDROP_FINAL_LABELS) as LanguageCode[]){Object.assign(translations[lang],AIRDROP_FINAL_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...AIRDROP_FINAL_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
