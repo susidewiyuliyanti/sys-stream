@@ -59,9 +59,11 @@ function safeErrorMessage(data: any, status: number) {
     data?.detail,
     data?.code,
   ];
+
   for (const candidate of candidates) {
     if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
   }
+
   if (Array.isArray(data?.errors) && data.errors.length) {
     return data.errors.map((item: any) =>
       typeof item === "string"
@@ -69,9 +71,19 @@ function safeErrorMessage(data: any, status: number) {
         : item?.message || item?.error || item?.description || JSON.stringify(item)
     ).join("; ");
   }
-  if (status === 401 || status === 403) return "NOWPayments menolak API key. Periksa NOWPAYMENTS_API_KEY di Cloudflare Production Secrets.";
-  if (status === 400) return "Parameter deposit ditolak oleh NOWPayments. Periksa mata uang, minimum pembayaran, dan konfigurasi akun NOWPayments.";
-  if (status === 429) return "NOWPayments sedang membatasi permintaan. Coba lagi beberapa saat.";
+
+  if (status === 401 || status === 403) {
+    return "NOWPayments menolak API key. Periksa NOWPAYMENTS_API_KEY di Cloudflare Production Secrets.";
+  }
+
+  if (status === 400) {
+    return "Parameter payment ditolak oleh NOWPayments. Periksa Outcome Wallet, mata uang pembayaran, dan minimum pair.";
+  }
+
+  if (status === 429) {
+    return "NOWPayments sedang membatasi permintaan. Coba lagi beberapa saat.";
+  }
+
   return `NOWPayments gagal membuat payment (HTTP ${status}).`;
 }
 
@@ -85,32 +97,72 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     const amountUsd = Number(url.searchParams.get("amount") || "0");
     const payCurrency = normalizePayCurrency(requestedCurrency);
     const supportedCurrencies = new Set(["usdttrc20", "btc", "eth", "sol", "trx"]);
-    if (!supportedCurrencies.has(payCurrency)) return json({ success: false, error: "Mata uang crypto yang dipilih belum didukung." }, 400);
+
+    if (!supportedCurrencies.has(payCurrency)) {
+      return json({ success: false, error: "Mata uang crypto yang dipilih belum didukung." }, 400);
+    }
+
     const apiKey = String(env.NOWPAYMENTS_API_KEY || "").trim();
-    if (!apiKey) return json({ success: false, error: "NOWPayments belum dikonfigurasi di server." }, 503);
+    if (!apiKey) {
+      return json({ success: false, error: "NOWPayments belum dikonfigurasi di server." }, 503);
+    }
+
     const base = "https://api.nowpayments.io/v1";
     const headers = { "x-api-key": apiKey, "Accept": "application/json" };
     const currenciesResponse = await fetch(base + "/currencies", { headers });
     const currenciesData = await currenciesResponse.json().catch(() => ({}));
-    if (!currenciesResponse.ok) return json({ success: false, error: safeErrorMessage(currenciesData, currenciesResponse.status) }, 502);
-    const available = Array.isArray(currenciesData?.currencies) ? currenciesData.currencies.map((v: any) => String(v).toLowerCase()) : [];
-    if (available.length && !available.includes(payCurrency.toLowerCase())) return json({ success: false, error: `${payCurrency.toUpperCase()} saat ini tidak tersedia di akun NOWPayments.` }, 400);
-    const minResponse = await fetch(`${base}/min-amount?currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`, { headers });
+
+    if (!currenciesResponse.ok) {
+      return json({ success: false, error: safeErrorMessage(currenciesData, currenciesResponse.status) }, 502);
+    }
+
+    const available = Array.isArray(currenciesData?.currencies)
+      ? currenciesData.currencies.map((v: any) => String(v).toLowerCase())
+      : [];
+
+    if (available.length && !available.includes(payCurrency.toLowerCase())) {
+      return json({ success: false, error: `${payCurrency.toUpperCase()} saat ini tidak tersedia di akun NOWPayments.` }, 400);
+    }
+
+    const minResponse = await fetch(
+      `${base}/min-amount?currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`,
+      { headers }
+    );
     const minData = await minResponse.json().catch(() => ({}));
-    if (!minResponse.ok) return json({ success: false, error: safeErrorMessage(minData, minResponse.status) }, 502);
+
+    if (!minResponse.ok) {
+      return json({ success: false, error: safeErrorMessage(minData, minResponse.status) }, 502);
+    }
+
     const minAmount = Number(minData?.min_amount || 0);
     let estimate: number | null = null;
+
     if (Number.isFinite(amountUsd) && amountUsd > 0) {
-      const estimateResponse = await fetch(`${base}/estimate?amount=${encodeURIComponent(amountUsd)}&currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`, { headers });
+      const estimateResponse = await fetch(
+        `${base}/estimate?amount=${encodeURIComponent(amountUsd)}&currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`,
+        { headers }
+      );
       const estimateData = await estimateResponse.json().catch(() => ({}));
-      if (estimateResponse.ok && Number.isFinite(Number(estimateData?.estimated_amount))) estimate = Number(estimateData.estimated_amount);
+
+      if (estimateResponse.ok && Number.isFinite(Number(estimateData?.estimated_amount))) {
+        estimate = Number(estimateData.estimated_amount);
+      }
     }
-    return json({ success: true, currency: payCurrency, available: true, min_amount_usd: minAmount, estimate, rate_checked_at: new Date().toISOString() });
+
+    return json({
+      success: true,
+      currency: payCurrency,
+      available: true,
+      min_amount_usd: minAmount,
+      estimate,
+      rate_checked_at: new Date().toISOString()
+    });
   } catch (error: any) {
     console.error("NOWPayments preflight error", error);
     return json({ success: false, error: "Tidak dapat memeriksa aturan pembayaran NOWPayments saat ini." }, 502);
   }
 }
+
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   const auth = await requireAuth(request, env);
   if (!auth.ok) return auth.response;
@@ -119,11 +171,14 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const body = await request.json() as { amountUsd?: number; currency?: string };
     const amountUsd = Number(body.amountUsd);
     const requestedCurrency = String(body.currency || "USDT").trim();
+
     if (!Number.isFinite(amountUsd)) {
       return json({ success: false, error: "Nominal deposit tidak valid." }, 400);
     }
+
     const payCurrency = normalizePayCurrency(requestedCurrency);
     const supportedCurrencies = new Set(["usdttrc20", "btc", "eth", "sol", "trx"]);
+
     if (!supportedCurrencies.has(payCurrency)) {
       return json({ success: false, error: "Mata uang crypto yang dipilih belum didukung untuk deposit." }, 400);
     }
@@ -140,83 +195,28 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }, 503);
     }
 
-    // Current NOWPayments Payment API requires the concrete pay_amount
-    // for direct payment creation. Calculate it immediately before creating
-    // the payment so the crypto amount is current and matches the selected pair.
-    const estimateController = new AbortController();
-    const estimateTimeout = setTimeout(() => estimateController.abort(), 10000);
-    let estimateResponse: Response;
-    let estimateData: any = {};
-    try {
-      estimateResponse = await fetch(
-        "https://api.nowpayments.io/v1/estimate" +
-        "?amount=" + encodeURIComponent(Number(amountUsd.toFixed(2))) +
-        "&currency_from=usd&currency_to=" + encodeURIComponent(payCurrency),
-        {
-          headers: {
-            "x-api-key": apiKey,
-            "Accept": "application/json",
-          },
-          signal: estimateController.signal,
-        }
-      );
-      const estimateRaw = await estimateResponse.text();
-      try {
-        estimateData = estimateRaw ? JSON.parse(estimateRaw) : {};
-      } catch {
-        estimateData = { message: estimateRaw.slice(0, 500) };
-      }
-    } finally {
-      clearTimeout(estimateTimeout);
-    }
-
-    if (!estimateResponse.ok) {
-      console.error("NOWPayments estimate failed", {
-        status: estimateResponse.status,
-        data: estimateData,
-        payCurrency,
-        amountUsd,
-      });
-      return json({
-        success: false,
-        error: "NOWPayments tidak dapat menghitung jumlah " + payCurrency.toUpperCase() +
-          " untuk deposit " + amountUsd.toFixed(2) + " USD. " +
-          safeErrorMessage(estimateData, estimateResponse.status),
-        provider_status: estimateResponse.status,
-        provider_code: estimateData?.code || null,
-      }, estimateResponse.status >= 400 && estimateResponse.status < 500 ? estimateResponse.status : 502);
-    }
-
-    const payAmount = Number(estimateData?.estimated_amount);
-    if (!Number.isFinite(payAmount) || payAmount <= 0) {
-      console.error("NOWPayments returned invalid estimate", {
-        status: estimateResponse.status,
-        data: estimateData,
-        payCurrency,
-        amountUsd,
-      });
-      return json({
-        success: false,
-        error: "NOWPayments tidak mengembalikan jumlah pembayaran crypto yang valid.",
-      }, 502);
-    }
-
     await ensureTransactions(env);
+
     const orderId = `DEP-${String(auth.user.id)}-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     const ipnUrl = "https://sysstreamer.asia/api/payments/ipn";
-    const apiUrl = String((env as any).NOWPAYMENTS_API_URL || "https://api.nowpayments.io/v1/payment").trim();
+    const apiUrl = String(
+      (env as any).NOWPAYMENTS_API_URL || "https://api.nowpayments.io/v1/payment"
+    ).trim();
+
     if (!/^https:\/\/api\.nowpayments\.io\/v1\/payment(?:\?.*)?$/i.test(apiUrl)) {
       console.error("Invalid NOWPayments API URL", { apiUrl });
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
-    // Keep payment creation to a single NOWPayments API call.
-    // Extra provider preflight calls can cause Cloudflare Pages Function timeouts.
+    // NOWPayments can calculate the crypto amount from price_amount + price_currency.
+    // pay_amount is optional; do not call /estimate here because a separate estimate
+    // failure should not block creation of a valid payment.
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
 
     let response: Response;
     let data: any = {};
+
     try {
       response = await fetch(apiUrl, {
         method: "POST",
@@ -229,7 +229,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
           price_amount: Number(amountUsd.toFixed(2)),
           price_currency: "usd",
           pay_currency: payCurrency,
-          pay_amount: payAmount,
           ipn_callback_url: ipnUrl,
           order_id: orderId,
           order_description: "SYS STREAM account deposit",
@@ -254,10 +253,16 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         payCurrency,
         amountUsd,
       });
+
       const providerMessage = safeErrorMessage(data, response.status);
       const detail = response.status === 400
-        ? "NOWPayments menolak payment " + payCurrency.toUpperCase() + " sebesar " + amountUsd.toFixed(2) + " USD. Kode provider: " + String(data?.code || "400") + ". Detail: " + providerMessage
+        ? "NOWPayments menolak payment " + payCurrency.toUpperCase() +
+          " sebesar " + amountUsd.toFixed(2) + " USD. Kode provider: " +
+          String(data?.code || "400") + ". Detail: " + providerMessage +
+          " Pastikan Outcome Wallet " + payCurrency.toUpperCase() +
+          " sudah dikonfigurasi di akun NOWPayments."
         : providerMessage;
+
       return json({
         success: false,
         error: detail,
@@ -271,8 +276,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     const paymentId = data?.payment_id;
     const payAddress = data?.pay_address;
+
     if (!paymentId || !payAddress) {
-      console.error("NOWPayments returned incomplete payment", { status: response.status, data });
+      console.error("NOWPayments returned incomplete payment", {
+        status: response.status,
+        data
+      });
+
       return json({
         success: false,
         error: "NOWPayments tidak mengembalikan payment_id atau alamat pembayaran. Deposit belum dibuat.",
@@ -312,12 +322,14 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     });
   } catch (error: any) {
     console.error("create invoice error", error);
+
     if (error?.name === "AbortError") {
       return json({
         success: false,
         error: "NOWPayments tidak merespons dalam batas waktu. Silakan coba lagi.",
       }, 504);
     }
+
     return json({
       success: false,
       error: error instanceof Error ? error.message : "Gagal membuat deposit crypto.",
