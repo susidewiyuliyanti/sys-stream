@@ -36,7 +36,7 @@ export default function Root({ onLoaded }: { onLoaded?: () => void }) {
         <span className="text-amber-400">{dots}</span>
       </div>
       <div className="text-xs text-slate-500 mt-2 font-sans">
-        Initializing TikTok Live Sync + Cloudflare D1 Connection
+        {t('Initializing TikTok Live Sync + Cloudflare D1 Connection')}
       </div>
     </div>
   );
