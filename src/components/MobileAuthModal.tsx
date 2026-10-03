@@ -49,7 +49,7 @@ export const MobileAuthModal: React.FC = () => {
       // the user confirms that the recovery phrase has been backed up.
       const newWallet = HDNodeWallet.createRandom();
       const phrase = newWallet.mnemonic?.phrase || '';
-      if (!phrase) throw new Error('Recovery phrase gagal dibuat.');
+      if (!phrase) throw new Error(t('Recovery phrase gagal dibuat.'));
 
       setGeneratedWallet({
         address: newWallet.address,
@@ -59,10 +59,10 @@ export const MobileAuthModal: React.FC = () => {
       setPendingRegistrationAuth({
         password: crypto.randomUUID() + crypto.randomUUID(),
       });
-      setVerificationNotice('Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.');
+      setVerificationNotice(t('Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.'));
     } catch (error) {
       console.error('Local wallet generation failed', error);
-      setVerificationNotice(error instanceof Error ? error.message : 'Gagal membuat wallet baru.');
+      setVerificationNotice(error instanceof Error ? error.message : t('Gagal membuat wallet baru.'));
     }
   };
 
@@ -112,11 +112,11 @@ export const MobileAuthModal: React.FC = () => {
     setVerificationNotice('');
     try {
       const ethereum = (window as any).ethereum;
-      if (!ethereum) throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
+      if (!ethereum) throw new Error(t('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.'));
 
       const accounts = (await ethereum.request({ method: 'eth_requestAccounts' })) as string[];
       const walletAddress = String(accounts?.[0] || '').trim();
-      if (!walletAddress) throw new Error('Wallet address tidak ditemukan.');
+      if (!walletAddress) throw new Error(t('Wallet address tidak ditemukan.'));
 
       const challengeRes = await fetch('/api/auth/web3/challenge', {
         method: 'POST',
@@ -126,7 +126,7 @@ export const MobileAuthModal: React.FC = () => {
       });
       const challengeData = await challengeRes.json().catch(() => ({}));
       if (!challengeRes.ok || !challengeData?.success || !challengeData?.challengeId || !challengeData?.message) {
-        throw new Error(challengeData?.error || 'Gagal membuat challenge wallet.');
+        throw new Error(challengeData?.error || t('Gagal membuat challenge wallet.'));
       }
 
       const challengeWallet = String(challengeData.walletAddress || walletAddress).trim();
@@ -148,7 +148,7 @@ export const MobileAuthModal: React.FC = () => {
       });
       const loginData = await loginRes.json().catch(() => ({}));
       if (!loginRes.ok || !loginData?.success || !loginData?.token || !loginData?.user) {
-        throw new Error(loginData?.error || 'Verifikasi tanda tangan wallet gagal.');
+        throw new Error(loginData?.error || t('Verifikasi tanda tangan wallet gagal.'));
       }
 
       const user = loginData.user;
@@ -168,7 +168,7 @@ export const MobileAuthModal: React.FC = () => {
       setLoginModalOpen(false);
     } catch (error) {
       console.error('EVM wallet authentication failed', error);
-      setVerificationNotice(error instanceof Error ? error.message : 'Login wallet gagal.');
+      setVerificationNotice(error instanceof Error ? error.message : t('Login wallet gagal.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -294,7 +294,7 @@ export const MobileAuthModal: React.FC = () => {
             <div className="w-full border-t border-slate-800" />
           </div>
           <div className="relative flex justify-center text-[10px] uppercase font-bold text-slate-500">
-            <span className="bg-[#080d1a] px-3">or Connect with Crypto Wallet</span>
+            <span className="bg-[#080d1a] px-3">{t('or Connect with Crypto Wallet')}</span>
           </div>
         </div>
 
