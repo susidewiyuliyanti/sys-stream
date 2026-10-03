@@ -264,11 +264,34 @@ export default function AirdropApp() {
   });
   const tx=COPY[lang];
 
+  useEffect(() => {
+    let active = true;
+    const loadAuthenticatedWallet = async () => {
+      try {
+        const res = await fetch('https://sysstreamer.asia/api/auth/me', {
+          method: 'GET',
+          credentials: 'include',
+          cache: 'no-store',
+        });
+        const data = await res.json().catch(() => ({}));
+        const wallet = String(data?.user?.walletAddress || '').trim().toLowerCase();
+        if (active) {
+          setWalletAddress(data?.success && wallet ? wallet : '');
+          if (data?.success && wallet) localStorage.setItem('sys_stream_airdrop_wallet', wallet);
+        }
+      } catch {
+        if (active) setWalletAddress('');
+      }
+    };
+    void loadAuthenticatedWallet();
+    return () => { active = false; };
+  }, []);
+
   useEffect(()=>{ document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; },[lang]);
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const savedWallet = localStorage.getItem('sys_stream_airdrop_wallet') || '';
-    setWalletAddress(savedWallet);
+    if (savedWallet) setWalletAddress(savedWallet);
   }, []);
 
 
@@ -293,9 +316,12 @@ export default function AirdropApp() {
   useEffect(()=>{
     let active=true;
     const loadSubmissions=async()=>{
-      const wallet=walletAddress.trim();
-      if(!wallet){if(active)setSubmissions([]);return;}
-      try{const res=await fetch('/api/airdrop/submissions?wallet='+encodeURIComponent(wallet),{cache:'no-store'});const data=await res.json().catch(()=>({}));if(active)setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);}catch{if(active)setSubmissions([]);}
+      if(!walletAddress.trim()){if(active)setSubmissions([]);return;}
+      try{
+        const res=await fetch('https://sysstreamer.asia/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
+        const data=await res.json().catch(()=>({}));
+        if(active)setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);
+      }catch{if(active)setSubmissions([]);}
     };
     loadSubmissions(); return()=>{active=false;};
   },[walletAddress]);
@@ -304,7 +330,22 @@ export default function AirdropApp() {
     const wallet=walletAddress.trim(); if(!selectedTask||!wallet)return;
     if(selectedTask.type!=='checkin'&&!proofLink.trim()){setSubmissionMessage(tx.proofRequired||COPY.en.proofRequired||'Proof link is required.');return;}
     setSubmissionLoading(true);setSubmissionMessage('');
-    try{const res=await fetch('/api/airdrop/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wallet,taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN'})});const data=await res.json().catch(()=>({}));if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');localStorage.setItem('sys_stream_airdrop_wallet',wallet);setSelectedTask(null);setTab('submissions');const refreshed=await fetch('/api/airdrop/submissions?wallet='+encodeURIComponent(wallet),{cache:'no-store'});const next=await refreshed.json().catch(()=>({}));setSubmissions(Array.isArray(next.submissions)?next.submissions:[]);}catch(e){setSubmissionMessage(e instanceof Error?e.message:'Submission failed');}finally{setSubmissionLoading(false);}
+    try{
+      const res=await fetch('https://sysstreamer.asia/api/airdrop/submit',{
+        method:'POST',
+        credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN'})
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');
+      setSelectedTask(null);
+      setTab('submissions');
+      const refreshed=await fetch('https://sysstreamer.asia/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
+      const next=await refreshed.json().catch(()=>({}));
+      setSubmissions(Array.isArray(next.submissions)?next.submissions:[]);
+    }catch(e){setSubmissionMessage(e instanceof Error?e.message:'Submission failed');}
+    finally{setSubmissionLoading(false);}
   };
 
   useEffect(()=>{
