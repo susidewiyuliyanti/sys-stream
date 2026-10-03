@@ -781,6 +781,95 @@ const AUDIT_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
 };
 for (const lang of Object.keys(AUDIT_UI_TRANSLATIONS) as LanguageCode[]) { Object.assign(translations[lang], AUDIT_UI_TRANSLATIONS[lang]); PAGE_UI_TRANSLATIONS[lang] = { ...AUDIT_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] }; }
 
+
+const DEPOSIT_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  id: {
+    'NOWPayments Crypto Deposit':'Deposit Crypto NOWPayments','Instant deposit with zero platform fees':'Deposit instan tanpa biaya platform',
+    'Deposit Amount (USD)':'Nominal Deposit (USD)','Or enter custom USD amount':'Atau masukkan nominal USD sendiri',
+    'Minimum deposit':'Minimum deposit','Rate is checked live by NOWPayments when the payment is created.':'Kurs diperiksa langsung oleh NOWPayments saat pembayaran dibuat.',
+    'Deposit is credited to your real account balance after payment confirmation.':'Deposit masuk ke saldo akun nyata setelah pembayaran dikonfirmasi.',
+    'Select Cryptocurrency':'Pilih Cryptocurrency','Minimum Deposit':'Minimum Deposit','Minimum deposit is':'Minimum deposit adalah',
+    'Error':'Error','Failed to generate invoice':'Gagal membuat invoice','Order ID: ':'ID Pesanan: ','Awaiting Deposit':'Menunggu Deposit',
+    'Deposit QR Code':'QR Code Deposit','Send exactly to deposit address:':'Kirim tepat ke alamat deposit:','Open NOWPayments Payment Page':'Buka Halaman Pembayaran NOWPayments',
+    'Change Currency / Amount':'Ubah Mata Uang / Nominal','Done':'Selesai'
+  },
+  en: {
+    'NOWPayments Crypto Deposit':'NOWPayments Crypto Deposit','Instant deposit with zero platform fees':'Instant deposit with zero platform fees',
+    'Deposit Amount (USD)':'Deposit Amount (USD)','Or enter custom USD amount':'Or enter custom USD amount',
+    'Minimum deposit':'Minimum deposit','Rate is checked live by NOWPayments when the payment is created.':'Rate is checked live by NOWPayments when the payment is created.',
+    'Deposit is credited to your real account balance after payment confirmation.':'Deposit is credited to your real account balance after payment confirmation.',
+    'Select Cryptocurrency':'Select Cryptocurrency','Minimum Deposit':'Minimum Deposit','Minimum deposit is':'Minimum deposit is',
+    'Error':'Error','Failed to generate invoice':'Failed to generate invoice','Order ID: ':'Order ID: ','Awaiting Deposit':'Awaiting Deposit',
+    'Deposit QR Code':'Deposit QR Code','Send exactly to deposit address:':'Send exactly to deposit address:','Open NOWPayments Payment Page':'Open NOWPayments Payment Page',
+    'Change Currency / Amount':'Change Currency / Amount','Done':'Done'
+  },
+  es: {
+    'NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantáneo sin comisiones de plataforma',
+    'Deposit Amount (USD)':'Importe del depósito (USD)','Or enter custom USD amount':'O introduce un importe USD personalizado',
+    'Minimum deposit':'Depósito mínimo','Rate is checked live by NOWPayments when the payment is created.':'NOWPayments comprueba el tipo de cambio en tiempo real al crear el pago.',
+    'Deposit is credited to your real account balance after payment confirmation.':'El depósito se acredita en tu saldo real tras confirmar el pago.',
+    'Select Cryptocurrency':'Selecciona criptomoneda','Minimum Deposit':'Depósito mínimo','Minimum deposit is':'El depósito mínimo es',
+    'Error':'Error','Failed to generate invoice':'No se pudo crear la factura','Order ID: ':'ID de pedido: ','Awaiting Deposit':'Esperando depósito',
+    'Deposit QR Code':'Código QR del depósito','Send exactly to deposit address:':'Envía exactamente a la dirección de depósito:','Open NOWPayments Payment Page':'Abrir página de pago de NOWPayments',
+    'Change Currency / Amount':'Cambiar moneda / importe','Done':'Listo'
+  },
+  pt: {
+    'NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantâneo sem taxas da plataforma',
+    'Deposit Amount (USD)':'Valor do depósito (USD)','Or enter custom USD amount':'Ou informe um valor USD personalizado',
+    'Minimum deposit':'Depósito mínimo','Rate is checked live by NOWPayments when the payment is created.':'A cotação é verificada em tempo real pela NOWPayments ao criar o pagamento.',
+    'Deposit is credited to your real account balance after payment confirmation.':'O depósito é creditado no saldo real após a confirmação do pagamento.',
+    'Select Cryptocurrency':'Selecionar criptomoeda','Minimum Deposit':'Depósito mínimo','Minimum deposit is':'O depósito mínimo é',
+    'Error':'Erro','Failed to generate invoice':'Falha ao criar a fatura','Order ID: ':'ID do pedido: ','Awaiting Deposit':'Aguardando depósito',
+    'Deposit QR Code':'QR Code do depósito','Send exactly to deposit address:':'Envie exatamente para o endereço de depósito:','Open NOWPayments Payment Page':'Abrir página de pagamento NOWPayments',
+    'Change Currency / Amount':'Alterar moeda / valor','Done':'Concluído'
+  },
+  zh: {
+    'NOWPayments Crypto Deposit':'NOWPayments 加密货币充值','Instant deposit with zero platform fees':'即时充值，平台零手续费',
+    'Deposit Amount (USD)':'充值金额（USD）','Or enter custom USD amount':'或输入自定义 USD 金额',
+    'Minimum deposit':'最低充值','Rate is checked live by NOWPayments when the payment is created.':'创建付款时由 NOWPayments 实时检查汇率。',
+    'Deposit is credited to your real account balance after payment confirmation.':'付款确认后，充值金额会进入您的真实账户余额。',
+    'Select Cryptocurrency':'选择加密货币','Minimum Deposit':'最低充值','Minimum deposit is':'最低充值金额为',
+    'Error':'错误','Failed to generate invoice':'创建账单失败','Order ID: ':'订单ID：','Awaiting Deposit':'等待充值',
+    'Deposit QR Code':'充值二维码','Send exactly to deposit address:':'请准确发送到充值地址：','Open NOWPayments Payment Page':'打开 NOWPayments 支付页面',
+    'Change Currency / Amount':'更改货币 / 金额','Done':'完成'
+  },
+  ja: {
+    'NOWPayments Crypto Deposit':'NOWPayments暗号資産入金','Instant deposit with zero platform fees':'プラットフォーム手数料なしの即時入金',
+    'Deposit Amount (USD)':'入金額（USD）','Or enter custom USD amount':'またはUSD金額を入力',
+    'Minimum deposit':'最低入金額','Rate is checked live by NOWPayments when the payment is created.':'支払い作成時にNOWPaymentsがレートをリアルタイム確認します。',
+    'Deposit is credited to your real account balance after payment confirmation.':'支払い確認後、入金額が実際のアカウント残高に反映されます。',
+    'Select Cryptocurrency':'暗号資産を選択','Minimum Deposit':'最低入金額','Minimum deposit is':'最低入金額は',
+    'Error':'エラー','Failed to generate invoice':'請求書の作成に失敗しました','Order ID: ':'注文ID：','Awaiting Deposit':'入金待ち',
+    'Deposit QR Code':'入金QRコード','Send exactly to deposit address:':'入金アドレスへ正確に送信してください：','Open NOWPayments Payment Page':'NOWPayments支払いページを開く',
+    'Change Currency / Amount':'通貨 / 金額を変更','Done':'完了'
+  },
+  ko: {
+    'NOWPayments Crypto Deposit':'NOWPayments 암호화폐 입금','Instant deposit with zero platform fees':'플랫폼 수수료 없는 즉시 입금',
+    'Deposit Amount (USD)':'입금 금액(USD)','Or enter custom USD amount':'또는 사용자 지정 USD 금액 입력',
+    'Minimum deposit':'최소 입금','Rate is checked live by NOWPayments when the payment is created.':'결제 생성 시 NOWPayments가 환율을 실시간 확인합니다.',
+    'Deposit is credited to your real account balance after payment confirmation.':'결제 확인 후 입금액이 실제 계정 잔액에 반영됩니다.',
+    'Select Cryptocurrency':'암호화폐 선택','Minimum Deposit':'최소 입금','Minimum deposit is':'최소 입금액은',
+    'Error':'오류','Failed to generate invoice':'인보이스 생성 실패','Order ID: ':'주문 ID: ','Awaiting Deposit':'입금 대기',
+    'Deposit QR Code':'입금 QR 코드','Send exactly to deposit address:':'입금 주소로 정확히 보내세요:','Open NOWPayments Payment Page':'NOWPayments 결제 페이지 열기',
+    'Change Currency / Amount':'통화 / 금액 변경','Done':'완료'
+  },
+  ar: {
+    'NOWPayments Crypto Deposit':'إيداع العملات الرقمية عبر NOWPayments','Instant deposit with zero platform fees':'إيداع فوري بدون رسوم منصة',
+    'Deposit Amount (USD)':'مبلغ الإيداع (USD)','Or enter custom USD amount':'أو أدخل مبلغ USD مخصصًا',
+    'Minimum deposit':'الحد الأدنى للإيداع','Rate is checked live by NOWPayments when the payment is created.':'يتم التحقق من السعر مباشرة عبر NOWPayments عند إنشاء الدفع.',
+    'Deposit is credited to your real account balance after payment confirmation.':'يُضاف الإيداع إلى رصيد حسابك الحقيقي بعد تأكيد الدفع.',
+    'Select Cryptocurrency':'اختر العملة الرقمية','Minimum Deposit':'الحد الأدنى للإيداع','Minimum deposit is':'الحد الأدنى للإيداع هو',
+    'Error':'خطأ','Failed to generate invoice':'فشل إنشاء الفاتورة','Order ID: ':'معرّف الطلب: ','Awaiting Deposit':'بانتظار الإيداع',
+    'Deposit QR Code':'رمز QR للإيداع','Send exactly to deposit address:':'أرسل المبلغ إلى عنوان الإيداع بالضبط:','Open NOWPayments Payment Page':'فتح صفحة دفع NOWPayments',
+    'Change Currency / Amount':'تغيير العملة / المبلغ','Done':'تم'
+  }
+};
+for (const lang of Object.keys(DEPOSIT_UI_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], DEPOSIT_UI_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...DEPOSIT_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
