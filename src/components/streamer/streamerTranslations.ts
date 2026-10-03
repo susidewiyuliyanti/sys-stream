@@ -1,4 +1,4 @@
-import type { LanguageCode } from '../../src/i18n';
+import type { LanguageCode } from '../../i18n';
 
 export const FOOTER_ABOUT_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
