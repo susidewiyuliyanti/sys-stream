@@ -40,7 +40,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
                balance = COALESCE(available_balance,0) + ?,
                registration_bonus_granted = 0
            WHERE id = ? AND registration_bonus_granted = 1`
-        ).bind(bonusUsdt, bonusUsdt, String(user.id)),
+        ).bind(bonusIdr, bonusIdr, String(user.id)),
       ]);
 
       const updateResult = results[1];
