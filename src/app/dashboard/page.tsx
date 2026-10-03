@@ -238,6 +238,27 @@ export default function DashboardPage({ navigate }: Props) {
             </div>
           )}
 
+          <section className="rounded-2xl border border-emerald-500/25 bg-gradient-to-r from-emerald-500/10 via-slate-900/80 to-slate-900/80 p-5 sm:p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-4">
+                <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3">
+                  <Pickaxe className="w-7 h-7 text-emerald-400" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-emerald-400 font-black">SYS Mining</div>
+                  <h2 className="text-xl font-black mt-1">Mining SYS dari Blind Box Lock</h2>
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1">Lock aktif minimal $10 dapat mengaktifkan reward mining harian.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate?.('/game/mining')}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-5 py-3 text-sm font-black text-slate-950 hover:bg-emerald-300 transition-colors shrink-0"
+              >
+                <Pickaxe className="w-4 h-4" /> Buka SYS Mining <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </section>
+
           <section className="rounded-2xl border border-cyan-500/15 bg-slate-900/70 p-4 sm:p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
