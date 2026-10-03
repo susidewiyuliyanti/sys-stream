@@ -5,41 +5,7 @@ import { useGame } from "../../../context/GameContext";
 import { useLanguage } from "../../../i18n";
 import { Heart, Send, Radio, Users, MessageCircle, User, LogIn } from "lucide-react";
 
-type Participant = {
-  userId: string;
-  username: string;
-  displayName: string;
-  avatarUrl: string;
-};
-
-type RoomMessage = Participant & {
-  id: string;
-  message: string;
-  createdAt: number;
-};
-
-type RoomState = {
-  id: string;
-  ownerUserId: string;
-  title: string;
-  description: string;
-  status: string;
-  likes: number;
-  participantCount: number;
-  owner?: boolean;
-};
-
-type RoomStream = {
-  provider: string;
-  inputUid: string;
-  playbackUrl: string;
-  playbackHls: string;
-  playbackWebrtc: string;
-  status: string;
-  ingestUrl: string;
-  streamKey: string;
-  owner: boolean;
-};
+import type { Participant, RoomMessage, RoomState, RoomStream } from "./roomTypes";
 
 export default function Room({
   roomId = "main",
