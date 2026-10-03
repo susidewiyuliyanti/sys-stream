@@ -288,7 +288,7 @@ export default function BlindboxGamePage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 text-xs">
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>$4 equivalent+ Lock</span>
+            <span>{t('$4 equivalent+ Lock')}</span>
             <span className="text-emerald-400 font-mono">1 Box / Hari</span>
           </div>
           <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(71748)} ($4 USD equivalent). Maksimal 1 claim per hari.</div>
@@ -329,7 +329,7 @@ export default function BlindboxGamePage() {
                 <span>{t('LOCK SALDO DIBUTUHKAN')}</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white">
-                Lock saldo untuk mendapatkan hak claim Blind Box harian
+                {t('Lock saldo untuk mendapatkan hak claim Blind Box harian')}
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
@@ -377,7 +377,7 @@ export default function BlindboxGamePage() {
                 />
                 <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(71748)}, dapat dimulai dari nominal setara $4 USD; server memvalidasi minimum.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
-                  <span>Quota: <strong className="text-emerald-400">{t('1 Box/Day')}</strong></span>
+                  <span>{t('Quota:')} <strong className="text-emerald-400">{t('1 Box/Day')}</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
                 </div>
               </div>
