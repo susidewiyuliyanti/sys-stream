@@ -171,11 +171,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const amount = Number(body.amount);
     const durationDays = Number(body.durationDays);
 
-    if (!Number.isInteger(amount) || amount < 50000 || amount % 10000 !== 0) {
+    if (!Number.isInteger(amount) || amount < 71748) {
       return json(
         {
           success: false,
-          error: "Nominal lock minimal Rp 50.000 dan harus kelipatan Rp 10.000.",
+          error: "Nominal lock minimal setara $4 USD (berbasis kurs server) dan tidak dibatasi kelipatan Rp 10.000.",
         },
         400
       );
