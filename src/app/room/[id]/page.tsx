@@ -28,6 +28,18 @@ type RoomState = {
   participantCount: number;
 };
 
+type RoomStream = {
+  provider: string;
+  inputUid: string;
+  playbackUrl: string;
+  playbackHls: string;
+  playbackWebrtc: string;
+  status: string;
+  ingestUrl: string;
+  streamKey: string;
+  owner: boolean;
+};
+
 export default function Room({
   roomId = "main",
   navigate,
@@ -40,6 +52,8 @@ export default function Room({
   const [room, setRoom] = useState<RoomState | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
+  const [stream, setStream] = useState<RoomStream | null>(null);
+  const [streamBusy, setStreamBusy] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -64,6 +78,7 @@ export default function Room({
       setRoom(data.room || null);
       setParticipants(Array.isArray(data.participants) ? data.participants : []);
       setMessages(Array.isArray(data.messages) ? data.messages : []);
+      setStream(data.stream || null);
     } catch (error: any) {
       if (!silent) showToast(t("Live Room"), error?.message || t("Gagal memuat live room."), "error");
     } finally {
@@ -171,15 +186,105 @@ export default function Room({
 
         <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-5 mt-4">
           <main className="min-w-0">
-            <section className="aspect-video rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden">
-              <div className="text-center px-6">
-                <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
-                <h2 className="font-black text-lg">{room?.status === "LIVE" ? t('Live Room Aktif') : t('Live belum aktif')}</h2>
-                <p className="text-sm text-slate-500 mt-2">
-                  {t("Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.")}
-                </p>
-              </div>
+            <section className="aspect-video rounded-2xl border border-slate-800 bg-black overflow-hidden relative">
+              {stream?.playbackUrl ? (
+                <iframe
+                  src={stream.playbackUrl}
+                  title={room?.title || "SYS STREAM Live"}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center px-6">
+                    <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
+                    <h2 className="font-black text-lg">{t("Streaming belum aktif")}</h2>
+                    <p className="text-sm text-slate-500 mt-2">
+                      {t("Belum ada video live produksi pada room ini.")}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {stream && (
+                <div className="absolute left-3 top-3 flex items-center gap-2 rounded-lg bg-black/70 px-2.5 py-1 text-[10px] font-black">
+                  <span className={stream.status === "connected" || stream.status === "reconnected" ? "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" : "w-2 h-2 rounded-full bg-amber-400"} />
+                  {stream.status === "connected" || stream.status === "reconnected" ? "LIVE" : stream.status.toUpperCase()}
+                </div>
+              )}
             </section>
+            {stream?.owner && (
+              <section className="mt-3 rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-xs uppercase tracking-wider text-rose-300 font-black">STREAMER CONTROL</div>
+                    <div className="text-sm font-bold mt-1">
+                      {stream.status === "connected" || stream.status === "reconnected" ? "Streaming sedang berjalan" : "Kirim video dari OBS ke server"}
+                    </div>
+                  </div>
+                  <button
+                    disabled={streamBusy}
+                    onClick={() => {
+                      setStreamBusy(true);
+                      void fetch("/api/live/stream?roomId=" + encodeURIComponent(effectiveRoomId), {
+                        headers: { Authorization: "Bearer " + (localStorage.getItem("sys_stream_auth_token") || "") },
+                        cache: "no-store"
+                      }).then(r => r.json()).then(data => {
+                        if (data?.success) setStream(data.stream || null);
+                        else showToast(t("Live"), data?.error || t("Status streaming gagal."), "error");
+                      }).catch(() => showToast(t("Live"), t("Status streaming gagal."), "error")).finally(() => setStreamBusy(false));
+                    }}
+                    className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-black hover:border-cyan-400 disabled:opacity-50"
+                  >
+                    {streamBusy ? "CHECK..." : "CHECK STATUS"}
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3 mt-4">
+                  <div className="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <div className="text-[10px] text-slate-500">RTMPS SERVER</div>
+                    <div className="text-xs text-cyan-300 break-all mt-1 select-all">{stream.ingestUrl || "-"}</div>
+                  </div>
+                  <div className="rounded-xl bg-slate-950 border border-slate-800 p-3">
+                    <div className="text-[10px] text-slate-500">STREAM KEY</div>
+                    <div className="text-xs text-amber-300 break-all mt-1 select-all">{stream.streamKey || "-"}</div>
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-3">
+                  Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas.
+                </p>
+              </section>
+            )}
+            {!stream && room?.ownerUserId === currentUserId && (
+              <section className="mt-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">AKTIFKAN STREAMING</div>
+                  <div className="text-sm font-bold mt-1">Buat Live Input Cloudflare untuk room ini.</div>
+                  <div className="text-[11px] text-slate-500 mt-1">Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.</div>
+                </div>
+                <button
+                  disabled={streamBusy}
+                  onClick={() => {
+                    setStreamBusy(true);
+                    const token = localStorage.getItem("sys_stream_auth_token") || "";
+                    void fetch("/api/live/stream", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+                      body: JSON.stringify({ roomId: effectiveRoomId, title: room?.title || ("SYS STREAM • " + effectiveRoomId) })
+                    }).then(r => r.json()).then(data => {
+                      if (data?.success) {
+                        setStream(data.stream || null);
+                        showToast(t("Live"), "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.", "success");
+                      } else {
+                        showToast(t("Live"), data?.error || "Gagal membuat Live Input.", "error");
+                      }
+                    }).catch(() => showToast(t("Live"), "Gagal terhubung ke streaming server.", "error")).finally(() => setStreamBusy(false));
+                  }}
+                  className="rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-black text-slate-950 hover:bg-cyan-300 disabled:opacity-50 shrink-0"
+                >
+                  {streamBusy ? "MEMBUAT..." : "AKTIFKAN STREAMING"}
+                </button>
+              </section>
+            )}
 
             <section className="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
               <div className="flex items-center gap-3">
