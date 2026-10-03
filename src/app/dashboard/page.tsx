@@ -130,7 +130,28 @@ export default function DashboardPage({ navigate }: Props) {
             <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">Home</button>
             <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Live Now</button>
             <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Games</button>
-            <button onClick={() => { window.location.href = 'https://airdrop.sysstreamer.asia'; }} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Airdrop</button>
+            <button
+              onClick={async () => {
+                try {
+                  const token = localStorage.getItem('sys_stream_auth_token');
+                  const response = await fetch('/api/auth/airdrop-handoff', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: token ? { Authorization: 'Bearer ' + token } : {},
+                    cache: 'no-store',
+                  });
+                  const data = await response.json().catch(() => ({}));
+                  if (response.ok && data?.success && data?.code) {
+                    window.location.href = 'https://airdrop.sysstreamer.asia/?handoff=' + encodeURIComponent(data.code);
+                    return;
+                  }
+                  window.location.href = 'https://airdrop.sysstreamer.asia';
+                } catch {
+                  window.location.href = 'https://airdrop.sysstreamer.asia';
+                }
+              }}
+              className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white"
+            >Airdrop</button>
             <button onClick={() => navigate?.('/profile')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Profile</button>
           </nav>
           <div className="mt-auto p-3 rounded-xl bg-slate-950 border border-slate-800 text-[10px] text-slate-500">Konten dan aktivitas di halaman ini menggunakan data produksi.</div>
