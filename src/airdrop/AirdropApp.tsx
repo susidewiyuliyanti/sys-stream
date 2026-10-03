@@ -228,6 +228,12 @@ function typeLabel(type:TaskType,tx:Record<string,string>) {
   return map[type]||'SOCIAL';
 }
 
+function statusLabel(status:string,tx:Record<string,string>) {
+  const key=status.toLowerCase();
+  const map:Record<string,string|undefined>={pending:tx.pending,approved:tx.approved,rejected:tx.rejected,paid:tx.paid};
+  return map[key]||status;
+}
+
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
   const [dbTasks,setDbTasks]=useState<any[]>([]);
