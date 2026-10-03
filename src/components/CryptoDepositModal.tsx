@@ -41,7 +41,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
         setEstimatedCrypto(data.estimate == null ? null : Number(data.estimate));
       })
       .catch(() => { if (!cancelled) { setEstimatedCrypto(null); setMinAmountUsd(5); } })
-      .finally(() => { if (!cancelled) setIsCheckingRules(false); });
+      .finally(() => { if (!cancelled) setIsCheckingRules(false); }));
     return () => { cancelled = true; clearTimeout(timer); };
   }, [isOpen, selectedCurrency, selectedUsd, customUsd]);
 
