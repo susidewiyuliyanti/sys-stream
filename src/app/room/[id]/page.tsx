@@ -502,7 +502,6 @@ export default function Room({
             </div>
           ))}
         </div>
-        </div>
 
         {/* SYSTEM TICKER ANNOUNCEMENT */}
         <div className="px-3.5 py-1 text-[10px] text-yellow-400 flex items-center gap-1 bg-yellow-500/10 border-t border-b border-yellow-500/20 font-semibold">
