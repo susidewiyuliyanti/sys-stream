@@ -216,7 +216,7 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="rounded-2xl border border-violet-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-violet-400" /> SYS Coin</div>
               <div className="text-xl font-black mt-2">{Number(user.sysBalance || 0).toLocaleString('en-US', { maximumFractionDigits: 8 })} SYS</div>
-              <div className="text-[10px] text-slate-500 mt-1">Reward dari Airdrop</div>
+              <div className="text-[10px] text-slate-500 mt-1">{t('Reward dari Airdrop')}</div>
             </div>
             <div className="rounded-2xl border border-rose-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> {t('Live Now')}</div>
@@ -254,7 +254,7 @@ export default function DashboardPage({ navigate }: Props) {
                 onClick={() => navigate?.('/game/mining')}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-5 py-3 text-sm font-black text-slate-950 hover:bg-emerald-300 transition-colors shrink-0"
               >
-                <Pickaxe className="w-4 h-4" /> Buka SYS Mining <ArrowRight className="w-4 h-4" />
+                <Pickaxe className="w-4 h-4" /> {t('SYS Mining')} <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </section>
