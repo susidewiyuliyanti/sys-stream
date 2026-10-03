@@ -256,6 +256,34 @@ export default function ProfilePage() {
           </div>
         </section>
 
+        {isLoggedIn && (
+          <section className="rounded-3xl border border-cyan-500/20 bg-slate-950/80 p-5">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-slate-500">EVM Wallet</div>
+                <div className="text-sm font-mono font-bold text-cyan-300 mt-1 break-all">
+                  {user.walletAddress || 'Wallet belum terhubung'}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-2">
+                  Alamat wallet akun. Recovery phrase tidak disimpan di server.
+                </div>
+              </div>
+              {user.walletAddress && (
+                <button
+                  onClick={() => {
+                    void navigator.clipboard.writeText(user.walletAddress || '');
+                    showToast('Wallet', 'Alamat wallet berhasil disalin.', 'success');
+                  }}
+                  className="shrink-0 p-2 rounded-xl border border-slate-700 text-cyan-400 hover:border-cyan-400"
+                  title="Copy wallet address"
+                >
+                  <Copy className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </section>
+        )}
+
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-4">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Available</div>
