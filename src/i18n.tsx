@@ -1824,6 +1824,74 @@ const UI_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Tulis sesuatu atau masukkan media terlebih dahulu.':'اكتب شيئاً أو أضف وسائط أولاً.','Posting gagal dibuat.':'فشل إنشاء المنشور.','Koneksi gagal. Silakan coba lagi.':'فشل الاتصال. حاول مرة أخرى.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'تستخدم جميع محتويات وأنشطة هذه الصفحة بيانات الإنتاج.','Wallet belum terhubung':'المحفظة غير متصلة','Refresh balance':'تحديث الرصيد','Bonus pendaftaran masih tersedia untuk diklaim.':'لا تزال مكافأة التسجيل متاحة للاستلام.','Buka Live Room':'فتح الغرفة المباشرة','Ikuti permainan live.':'انضم إلى اللعبة المباشرة','Masuk ke event spinner.':'الدخول إلى فعالية العجلة','Buka Blind Box dengan saldo akun.':'فتح Blind Box باستخدام رصيد الحساب','Upload / Create Post':'رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...':'اكتب شيئاً لمشاركته مع المجتمع...','Menerbitkan...':'جارٍ النشر...','Terbitkan Postingan':'نشر المنشور','Referral link berhasil disalin.':'تم نسخ رابط الإحالة.','Masukkan alamat wallet tujuan.':'أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.':'الرصيد المتاح غير كافٍ.','Belum ada event yang diikuti.':'لا توجد فعاليات منضم إليها.','Need More Viewers':'نحتاج إلى مزيد من المشاهدين','Winner Picked!':'تم اختيار الفائز!','Congratulations':'تهانينا!','Selected as Lucky Viewer!':'تم اختيارك كمشاهد محظوظ!','Incomplete Prediction':'التوقع غير مكتمل','Please enter a digit for Slot':'أدخل رقماً للخانة','Card Cracked!':'تم فك البطاقة!','Guess Missed':'لم تنجح التخمينات','Daily Limit Reached':'تم بلوغ الحد اليومي','Staking Required':'يلزم القفل'
   }
 };
+const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  id: {
+    'Reward dari Airdrop':'Reward dari Airdrop','SYS Mining':'SYS Mining','Mining SYS dari Blind Box Lock':'Mining SYS dari Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Lock aktif minimal $10 dapat mengaktifkan reward mining harian.',
+    'DAILY CHECK-IN':'CHECK-IN HARIAN','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.',
+    'Tanggal':'Tanggal','Status':'Status','Points':'Points','Aksi':'Aksi','TODAY':'HARI INI','Belum check-in':'Belum check-in','Check-in':'Check-in',
+    'AIRDROP POINTS':'POIN AIRDROP','Points → SYS':'Points → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Points hanya berasal dari task yang diproses server. Konversi dicatat sebagai ledger.',
+    'Available':'Tersedia','Pending':'Menunggu','Converted':'Dikonversi','Jumlah points':'Jumlah points','Conversion gagal':'Konversi gagal','Rate saat ini: 1 SYS = 1.000 points.':'Rate saat ini: 1 SYS = 1.000 points.',
+    'URL media (opsional)':'URL media (opsional)','Memuat status Mining...':'Memuat status Mining...'
+  },
+  en: {
+    'Reward dari Airdrop':'Airdrop reward','SYS Mining':'SYS Mining','Mining SYS dari Blind Box Lock':'Mine SYS from Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'An active lock of at least $10 enables daily mining rewards.',
+    'DAILY CHECK-IN':'DAILY CHECK-IN','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Recurring daily check-in. Rewards are given in points and can be converted to SYS under the program rules.',
+    'Tanggal':'Date','Status':'Status','Points':'Points','Aksi':'Action','TODAY':'TODAY','Belum check-in':'Not checked in','Check-in':'Check in',
+    'AIRDROP POINTS':'AIRDROP POINTS','Points → SYS':'Points → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Points come only from server-processed tasks. Conversions are recorded in the ledger.',
+    'Available':'Available','Pending':'Pending','Converted':'Converted','Jumlah points':'Points amount','Conversion gagal':'Conversion failed','Rate saat ini: 1 SYS = 1.000 points.':'Current rate: 1 SYS = 1,000 points.',
+    'URL media (opsional)':'Media URL (optional)','Memuat status Mining...':'Loading Mining status...'
+  },
+  es: {
+    'Reward dari Airdrop':'Recompensa de Airdrop','SYS Mining':'Minería SYS','Mining SYS dari Blind Box Lock':'Minar SYS con Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Un bloqueo activo de al menos $10 activa las recompensas diarias de minería.',
+    'DAILY CHECK-IN':'CHECK-IN DIARIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diario recurrente. Las recompensas se otorgan en puntos y pueden convertirse a SYS según las reglas del programa.',
+    'Tanggal':'Fecha','Status':'Estado','Points':'Puntos','Aksi':'Acción','TODAY':'HOY','Belum check-in':'Sin check-in','Check-in':'Registrar check-in',
+    'AIRDROP POINTS':'PUNTOS AIRDROP','Points → SYS':'Puntos → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Los puntos provienen solo de tareas procesadas por el servidor. Las conversiones se registran en el libro mayor.',
+    'Available':'Disponible','Pending':'Pendiente','Converted':'Convertido','Jumlah points':'Cantidad de puntos','Conversion gagal':'Conversión fallida','Rate saat ini: 1 SYS = 1.000 points.':'Tasa actual: 1 SYS = 1.000 puntos.',
+    'URL media (opsional)':'URL multimedia (opcional)','Memuat status Mining...':'Cargando estado de minería...'
+  },
+  pt: {
+    'Reward dari Airdrop':'Recompensa do Airdrop','SYS Mining':'Mineração SYS','Mining SYS dari Blind Box Lock':'Minerar SYS com Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Um lock ativo de pelo menos $10 ativa recompensas diárias de mineração.',
+    'DAILY CHECK-IN':'CHECK-IN DIÁRIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diário recorrente. As recompensas são dadas em pontos e podem ser convertidas em SYS conforme as regras do programa.',
+    'Tanggal':'Data','Status':'Status','Points':'Pontos','Aksi':'Ação','TODAY':'HOJE','Belum check-in':'Sem check-in','Check-in':'Fazer check-in',
+    'AIRDROP POINTS':'PONTOS AIRDROP','Points → SYS':'Pontos → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Os pontos vêm apenas de tarefas processadas pelo servidor. As conversões são registradas no livro razão.',
+    'Available':'Disponível','Pending':'Pendente','Converted':'Convertido','Jumlah points':'Quantidade de pontos','Conversion gagal':'Falha na conversão','Rate saat ini: 1 SYS = 1.000 points.':'Taxa atual: 1 SYS = 1.000 pontos.',
+    'URL media (opsional)':'URL de mídia (opcional)','Memuat status Mining...':'Carregando status da mineração...'
+  },
+  zh: {
+    'Reward dari Airdrop':'空投奖励','SYS Mining':'SYS 挖矿','Mining SYS dari Blind Box Lock':'通过 Blind Box Lock 挖矿 SYS','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'至少 $10 的有效锁定可开启每日挖矿奖励。',
+    'DAILY CHECK-IN':'每日签到','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'每日重复签到。奖励以积分发放，并可按计划规则转换为 SYS。',
+    'Tanggal':'日期','Status':'状态','Points':'积分','Aksi':'操作','TODAY':'今天','Belum check-in':'尚未签到','Check-in':'签到',
+    'AIRDROP POINTS':'空投积分','Points → SYS':'积分 → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'积分仅来自服务器处理的任务，转换记录在账本中。',
+    'Available':'可用','Pending':'待处理','Converted':'已转换','Jumlah points':'积分数量','Conversion gagal':'转换失败','Rate saat ini: 1 SYS = 1.000 points.':'当前汇率：1 SYS = 1,000 积分。',
+    'URL media (opsional)':'媒体 URL（可选）','Memuat status Mining...':'正在加载挖矿状态…'
+  },
+  ja: {
+    'Reward dari Airdrop':'エアドロップ報酬','SYS Mining':'SYSマイニング','Mining SYS dari Blind Box Lock':'Blind Box LockでSYSをマイニング','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'10ドル以上の有効なロックで毎日のマイニング報酬が有効になります。',
+    'DAILY CHECK-IN':'デイリーチェックイン','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'毎日のチェックイン。報酬はポイントで付与され、プログラム規則に従ってSYSへ変換できます。',
+    'Tanggal':'日付','Status':'ステータス','Points':'ポイント','Aksi':'操作','TODAY':'今日','Belum check-in':'未チェックイン','Check-in':'チェックイン',
+    'AIRDROP POINTS':'エアドロップポイント','Points → SYS':'ポイント → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'ポイントはサーバーで処理されたタスクからのみ付与され、変換は台帳に記録されます。',
+    'Available':'利用可能','Pending':'保留中','Converted':'変換済み','Jumlah points':'ポイント数','Conversion gagal':'変換に失敗しました','Rate saat ini: 1 SYS = 1.000 points.':'現在のレート：1 SYS = 1,000ポイント。',
+    'URL media (opsional)':'メディアURL（任意）','Memuat status Mining...':'マイニング状態を読み込み中…'
+  },
+  ko: {
+    'Reward dari Airdrop':'에어드롭 보상','SYS Mining':'SYS 채굴','Mining SYS dari Blind Box Lock':'Blind Box Lock으로 SYS 채굴','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'최소 $10의 활성 Lock으로 일일 채굴 보상이 활성화됩니다.',
+    'DAILY CHECK-IN':'일일 체크인','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'매일 반복되는 체크인입니다. 보상은 포인트로 지급되며 프로그램 규칙에 따라 SYS로 전환할 수 있습니다.',
+    'Tanggal':'날짜','Status':'상태','Points':'포인트','Aksi':'작업','TODAY':'오늘','Belum check-in':'체크인하지 않음','Check-in':'체크인',
+    'AIRDROP POINTS':'에어드롭 포인트','Points → SYS':'포인트 → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'포인트는 서버에서 처리된 작업에서만 발생하며 전환 내역은 원장에 기록됩니다.',
+    'Available':'사용 가능','Pending':'대기 중','Converted':'전환됨','Jumlah points':'포인트 수량','Conversion gagal':'전환 실패','Rate saat ini: 1 SYS = 1.000 points.':'현재 비율: 1 SYS = 1,000 포인트.',
+    'URL media (opsional)':'미디어 URL(선택 사항)','Memuat status Mining...':'채굴 상태를 불러오는 중...'
+  },
+  ar: {
+    'Reward dari Airdrop':'مكافأة الإيردروب','SYS Mining':'تعدين SYS','Mining SYS dari Blind Box Lock':'تعدين SYS عبر Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'يؤدي القفل النشط بقيمة 10 دولارات على الأقل إلى تفعيل مكافآت التعدين اليومية.',
+    'DAILY CHECK-IN':'تسجيل الحضور اليومي','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'تسجيل حضور يومي متكرر. تُمنح المكافآت بالنقاط ويمكن تحويلها إلى SYS وفق قواعد البرنامج.',
+    'Tanggal':'التاريخ','Status':'الحالة','Points':'النقاط','Aksi':'الإجراء','TODAY':'اليوم','Belum check-in':'لم يتم التسجيل','Check-in':'تسجيل الحضور',
+    'AIRDROP POINTS':'نقاط الإيردروب','Points → SYS':'النقاط → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'تأتي النقاط فقط من المهام التي يعالجها الخادم، وتُسجل التحويلات في دفتر الأستاذ.',
+    'Available':'متاح','Pending':'معلق','Converted':'تم التحويل','Jumlah points':'عدد النقاط','Conversion gagal':'فشل التحويل','Rate saat ini: 1 SYS = 1.000 points.':'المعدل الحالي: 1 SYS = 1,000 نقطة.',
+    'URL media (opsional)':'رابط الوسائط (اختياري)','Memuat status Mining...':'جارٍ تحميل حالة التعدين…'
+  }
+};
+for (const lang of Object.keys(FINAL_AUDIT_TRANSLATIONS) as LanguageCode[]) Object.assign(UI_AUDIT_TRANSLATIONS[lang], FINAL_AUDIT_TRANSLATIONS[lang]);
+
 for (const lang of Object.keys(UI_AUDIT_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(translations[lang], UI_AUDIT_TRANSLATIONS[lang]);
   PAGE_UI_TRANSLATIONS[lang] = { ...UI_AUDIT_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
