@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import { CryptoInvoice } from '../types';
 import { X, Copy, CheckCircle, ExternalLink, QrCode, ArrowRight, ShieldCheck } from 'lucide-react';
