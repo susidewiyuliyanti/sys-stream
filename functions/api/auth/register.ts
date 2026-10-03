@@ -235,33 +235,90 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       crypto.randomUUID().slice(0, 6).toUpperCase();
     const acceptedAt = Math.floor(Date.now() / 1000);
 
-    // Legacy production D1 can use INTEGER PRIMARY KEY for users.id.
-    // Let SQLite allocate that id instead of binding a UUID into it.
+    // Build the INSERT from the actual production schema. This keeps registration
+    // compatible with both the current UUID schema and the original integer-ID
+    // schema, without assuming every historical column exists.
+    const userSchema = await env.DB.prepare("PRAGMA table_info(users)").all<any>();
+    const userColumns = (userSchema.results || []) as any[];
+    const idMeta = userColumns.find((r:any) => String(r.name) === "id");
+    const legacyIntegerId = !!idMeta && String(idMeta.type || "").toUpperCase().includes("INT") && Number(idMeta.pk) === 1;
+
+    const values: Record<string, any> = {
+      id,
+      username,
+      email,
+      password_hash: passwordHash,
+      password: passwordHash,
+      display_name: displayName,
+      photo_url: "",
+      role: "USER",
+      available_balance: 0,
+      balance: 0,
+      saldo: 0,
+      wallet_balance: 0,
+      total_locked: 0,
+      locked_saldo: 0,
+      referral_code: userReferralCode,
+      referred_by: incomingReferralCode || null,
+      created_at: acceptedAt,
+      updated_at: acceptedAt,
+      terms_version: TERMS_VERSION,
+      terms_accepted_at: acceptedAt,
+      email_verified: 0,
+      email_verified_at: null,
+      referral_count: 0,
+      wallet_address: null,
+      has_referral_bonus: 0,
+      avatar_url: null,
+      registration_bonus_idr: 15000,
+      registration_bonus_granted: 1,
+      cuid: crypto.randomUUID(),
+      uid: crypto.randomUUID(),
+      streamer_handle: null,
+      bio: null,
+      affiliate_earnings: 0,
+      affiliate_withdrawn: 0,
+      is_subscribed: 0,
+      subscription_plan: "free",
+      subscription_expires_at: null,
+      is_lifetime: 0,
+      subscribed_at: null,
+      is_blacklisted: 0,
+      is_banned: 0,
+      banned_reason: null,
+      force_jackpot_next: 0,
+      target_jackpot_nominal: null,
+      last_saldo_modified_by: null,
+      last_saldo_modification_reason: null,
+    };
+
+    const insertColumns: string[] = [];
+    const insertValues: any[] = [];
+    for (const column of userColumns) {
+      const name = String(column.name);
+      if (name === "id" && legacyIntegerId) continue;
+      if (!Object.prototype.hasOwnProperty.call(values, name)) {
+        const notNull = Number(column.notnull) === 1;
+        const hasDefault = column.dflt_value !== null && column.dflt_value !== undefined;
+        if (notNull && !hasDefault) {
+          throw new Error("UNSUPPORTED_USERS_SCHEMA_REQUIRED_COLUMN:" + name);
+        }
+        continue;
+      }
+      insertColumns.push(name);
+      insertValues.push(values[name]);
+    }
+
+    if (!insertColumns.includes("email") || !insertColumns.includes("username")) {
+      throw new Error("USERS_SCHEMA_MISSING_REQUIRED_ACCOUNT_COLUMNS");
+    }
+
+    const placeholders = insertColumns.map(() => "?").join(",");
+    await env.DB.prepare(
+      \`INSERT INTO users(\${insertColumns.join(",")}) VALUES(\${placeholders})\`
+    ).bind(...insertValues).run();
+
     if (legacyIntegerId) {
-      await env.DB.prepare(`INSERT INTO users(`
-        username,email,password_hash,password,display_name,photo_url,role,
-        available_balance,balance,saldo,wallet_balance,total_locked,locked_saldo,
-        referral_code,referred_by,created_at,updated_at,
-        terms_version,terms_accepted_at,email_verified,email_verified_at,
-        registration_bonus_idr,registration_bonus_granted,has_referral_bonus,
-        cuid,referral_count,affiliate_earnings,affiliate_withdrawn,
-        is_subscribed,subscription_plan,is_lifetime,is_blacklisted,is_banned,
-        force_jackpot_next
-      )
-      VALUES(
-        ?,?,?,?,?,?,'USER',
-        0,0,0,0,0,0,
-        ?,?,?,?,
-        ?,?,0,NULL,
-        15000,1,0,
-        ?,0,0,0,
-        0,'free',0,0,0,
-        0
-      )`).bind(
-        username,email,passwordHash,passwordHash,displayName,"",
-        userReferralCode,incomingReferralCode || null,acceptedAt,acceptedAt,
-        TERMS_VERSION,acceptedAt,crypto.randomUUID(),
-      ).run();
       const created = await env.DB.prepare(
         "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
       ).bind(email).first<any>();
@@ -269,32 +326,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         throw new Error("LEGACY_USER_ID_NOT_FOUND_AFTER_INSERT");
       }
       id = String(created.id);
-    } else {
-      await env.DB.prepare(`INSERT INTO users(`
-        id,username,email,password_hash,password,display_name,photo_url,role,
-        available_balance,balance,saldo,wallet_balance,total_locked,locked_saldo,
-        referral_code,referred_by,created_at,updated_at,
-        terms_version,terms_accepted_at,email_verified,email_verified_at,
-        registration_bonus_idr,registration_bonus_granted,has_referral_bonus,
-        cuid,referral_count,affiliate_earnings,affiliate_withdrawn,
-        is_subscribed,subscription_plan,is_lifetime,is_blacklisted,is_banned,
-        force_jackpot_next
-      )
-      VALUES(
-        ?,?,?,?,?,?,'USER',
-        0,0,0,0,0,0,
-        ?,?,?,?,
-        ?,?,0,NULL,
-        15000,1,0,
-        ?,0,0,0,
-        0,'free',0,0,0,
-        0
-      )`).bind(
-        id,username,email,passwordHash,passwordHash,displayName,"",
-        userReferralCode,incomingReferralCode || null,acceptedAt,acceptedAt,
-        TERMS_VERSION,acceptedAt,id,
-      ).run();
     }
+
     // Terms acceptance is required by the API contract. If the auxiliary
     // audit record fails, keep the account and report a trackable server error.
     try {
