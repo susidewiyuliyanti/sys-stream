@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGame } from '../context/GameContext';
 import { CryptoInvoice } from '../types';
 import { X, Copy, CheckCircle, ExternalLink, QrCode, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -20,8 +20,32 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [invoice, setInvoice] = useState<CryptoInvoice | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
+  const [minAmountUsd, setMinAmountUsd] = useState<number>(5);
+  const [estimatedCrypto, setEstimatedCrypto] = useState<number | null>(null);
+  const [isCheckingRules, setIsCheckingRules] = useState<boolean>(false);
 
   if (!isOpen) return null;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    let cancelled = false;
+    const amount = customUsd ? Number(customUsd) : selectedUsd;
+    const currency = selectedCurrency === 'USDT' ? 'usdttrc20' : selectedCurrency.toLowerCase();
+    setIsCheckingRules(true);
+    fetch(`/api/payments/create-invoice?currency=${encodeURIComponent(currency)}&amount=${encodeURIComponent(String(Number.isFinite(amount) ? amount : 0))}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('sys_stream_auth_token') || ''}` },
+    })
+      .then(async r => ({ ok: r.ok, data: await r.json().catch(() => ({})) }))
+      .then(({ ok, data }) => {
+        if (cancelled) return;
+        if (!ok || !data?.success) { setEstimatedCrypto(null); setMinAmountUsd(5); return; }
+        setMinAmountUsd(Math.max(5, Number(data.min_amount_usd || 0)));
+        setEstimatedCrypto(data.estimate == null ? null : Number(data.estimate));
+      })
+      .catch(() => { if (!cancelled) { setEstimatedCrypto(null); setMinAmountUsd(5); } })
+      .finally(() => { if (!cancelled) setIsCheckingRules(false); });
+    return () => { cancelled = true; };
+  }, [isOpen, selectedCurrency, selectedUsd, customUsd]);
 
   const currencies = [
     { code: 'USDT', name: 'Tether (TRC20)', icon: '₮' },
@@ -36,8 +60,8 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const handleGenerateInvoice = async () => {
     sound.playClick();
     const finalAmount = customUsd ? parseFloat(customUsd) : selectedUsd;
-    if (isNaN(finalAmount) || finalAmount < 5) {
-      showToast(t('Minimum Deposit'), t('Minimum deposit is $5.00 USD'), 'error');
+    if (isNaN(finalAmount) || finalAmount < minAmountUsd) {
+      showToast(t('Minimum Deposit'), `${t('Minimum deposit is')} ${minAmountUsd.toFixed(2)} USD`, 'error');
       return;
     }
 
@@ -85,7 +109,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
             {/* Amount Selection */}
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Deposit Amount (USD)
+                {t('Deposit Amount (USD)')}
               </label>
               <div className="grid grid-cols-5 gap-2">
                 {presetAmounts.map(amt => (
@@ -106,21 +130,23 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
               <div className="mt-2.5">
                 <input
                   type="number"
-                  placeholder="Or enter custom USD amount"
+                  placeholder={t('Or enter custom USD amount')}
                   value={customUsd}
                   onChange={(e) => setCustomUsd(e.target.value)}
                   className="w-full px-3.5 py-2 text-sm bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
-              <div className="mt-1.5 text-xs text-slate-500">
-                Deposit is credited to your real account balance after payment confirmation.
+              <div className="mt-1.5 text-xs text-slate-500 space-y-1">
+                <div>{t('Minimum deposit')}: <span className="text-slate-300">${minAmountUsd.toFixed(2)} USD</span></div>
+                <div>{isCheckingRules ? t('Checking current NOWPayments limits...') : estimatedCrypto != null ? t('Current estimate available') : t('Rate is checked again when the payment is created.')}</div>
+                <div>{t('Deposit is credited to your real account balance after payment confirmation.')}</div>
               </div>
             </div>
 
             {/* Currency Selector */}
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Select Cryptocurrency
+                {t('Select Cryptocurrency')}
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {currencies.map(curr => (
@@ -148,14 +174,14 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
             <button
               onClick={handleGenerateInvoice}
-              disabled={isLoading}
+              disabled={isLoading || isCheckingRules}
               className="w-full py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
             >
-              {isLoading ? (
+              {isLoading || isCheckingRules ? (
                 <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>{t('Create NOWPayments Invoice')}</span>
+                  <span>{isCheckingRules ? t('Checking payment rules...') : t('Create NOWPayments Invoice')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
