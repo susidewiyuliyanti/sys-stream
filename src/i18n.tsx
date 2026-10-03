@@ -1,6 +1,44 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type LanguageCode = 'id' | 'en' | 'es' | 'pt' | 'zh' | 'ja' | 'ko' | 'ar';
+export interface LocaleConfig {
+  locale: string;
+  currency: string;
+  direction: 'ltr' | 'rtl';
+}
+
+export const LOCALE_CONFIG: Record<LanguageCode, LocaleConfig> = {
+  id: { locale: 'id-ID', currency: 'IDR', direction: 'ltr' },
+  en: { locale: 'en-US', currency: 'USD', direction: 'ltr' },
+  es: { locale: 'es-ES', currency: 'EUR', direction: 'ltr' },
+  pt: { locale: 'pt-PT', currency: 'EUR', direction: 'ltr' },
+  zh: { locale: 'zh-CN', currency: 'CNY', direction: 'ltr' },
+  ja: { locale: 'ja-JP', currency: 'JPY', direction: 'ltr' },
+  ko: { locale: 'ko-KR', currency: 'KRW', direction: 'ltr' },
+  ar: { locale: 'ar-SA', currency: 'SAR', direction: 'rtl' },
+};
+
+export function getLocaleConfig(language: LanguageCode): LocaleConfig {
+  return LOCALE_CONFIG[language] ?? LOCALE_CONFIG.id;
+}
+
+export function formatLocalizedCurrency(amount: number, language: LanguageCode, currency = getLocaleConfig(language).currency): string {
+  const config = getLocaleConfig(language);
+  const value = Number.isFinite(amount) ? amount : 0;
+  const zeroDecimal = currency === 'JPY' || currency === 'KRW';
+  return new Intl.NumberFormat(config.locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: zeroDecimal ? 0 : 2,
+    maximumFractionDigits: zeroDecimal ? 0 : 2,
+  }).format(value);
+}
+
+export function formatLocalizedNumber(amount: number, language: LanguageCode): string {
+  const config = getLocaleConfig(language);
+  return new Intl.NumberFormat(config.locale).format(Number.isFinite(amount) ? amount : 0);
+}
+
 
 
 // Registration bonus is stored canonically as IDR 15,000.
@@ -172,13 +210,18 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const setLanguage = (next: LanguageCode) => {
-    setLanguageState(next);
-    localStorage.setItem('sys_stream_language', next);
+    const safeLanguage = LANGUAGES.some(l => l.code === next) ? next : 'id';
+    setLanguageState(safeLanguage);
+    localStorage.setItem('sys_stream_language', safeLanguage);
   };
 
   useEffect(() => {
-    document.documentElement.lang = language;
-    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    const config = getLocaleConfig(language);
+    document.documentElement.lang = config.locale;
+    document.documentElement.dir = config.direction;
+    document.documentElement.dataset.language = language;
+    document.documentElement.dataset.currency = config.currency;
+    document.documentElement.dataset.locale = config.locale;
   }, [language]);
 
   const value = useMemo(() => ({
