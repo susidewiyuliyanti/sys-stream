@@ -33,7 +33,7 @@ type Post = {
 
 export default function DashboardPage({ navigate }: Props) {
   const { user, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -126,12 +126,12 @@ export default function DashboardPage({ navigate }: Props) {
         <aside className="hidden lg:flex lg:flex-col lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] rounded-2xl border border-slate-800 bg-slate-900/70 p-3">
           <div className="px-3 py-3 mb-2">
             <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-black">SYS STREAM</div>
-            <div className="text-sm font-black mt-1 text-white">Workspace</div>
+            <div className="text-sm font-black mt-1 text-white">{t('Workspace')}</div>
           </div>
           <nav className="space-y-1 text-sm">
-            <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">Home</button>
-            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Live Now</button>
-            <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Games</button>
+            <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">{t('Home')}</button>
+            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Live Now')}</button>
+            <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Games')}</button>
             <button
               onClick={async () => {
                 try {
@@ -175,10 +175,10 @@ export default function DashboardPage({ navigate }: Props) {
                 }
               }}
               className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white"
-            >Airdrop</button>
-            <button onClick={() => navigate?.('/profile')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Profile</button>
+            >{t('Airdrop')}</button>
+            <button onClick={() => navigate?.('/profile')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Profile')}</button>
           </nav>
-          <div className="mt-auto p-3 rounded-xl bg-slate-950 border border-slate-800 text-[10px] text-slate-500">Konten dan aktivitas di halaman ini menggunakan data produksi.</div>
+          <div className="mt-auto p-3 rounded-xl bg-slate-950 border border-slate-800 text-[10px] text-slate-500">{t('Konten dan aktivitas di halaman ini menggunakan data produksi.')}</div>
         </aside>
 
         <main className="min-w-0 space-y-6">
@@ -234,9 +234,9 @@ export default function DashboardPage({ navigate }: Props) {
           {user.registrationBonusGranted && (
             <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
+                <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">{t('Registration Bonus')}</div>
                 <div className="text-lg font-black mt-1 text-emerald-300">{formatRegistrationBonus(language)}</div>
-                <p className="text-xs text-slate-400">Bonus pendaftaran masih tersedia untuk diklaim.</p>
+                <p className="text-xs text-slate-400">{t('Bonus pendaftaran masih tersedia untuk diklaim.')}</p>
               </div>
               <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
                 <Gift className="w-4 h-4" /> Claim Bonus
@@ -249,9 +249,9 @@ export default function DashboardPage({ navigate }: Props) {
               <div>
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-cyan-400" />
-                  <h2 className="text-xl font-black">Community Posts</h2>
+                  <h2 className="text-xl font-black">{t('Community Posts')}</h2>
                 </div>
-                <p className="text-xs text-slate-500 mt-1">Setiap user dapat membagikan tulisan dan postingan.</p>
+                <p className="text-xs text-slate-500 mt-1">{t('Setiap user dapat membagikan tulisan dan postingan.')}</p>
               </div>
               <button onClick={() => void loadPosts()} className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white" aria-label="Refresh posts">
                 <RefreshCw className="w-4 h-4" />
@@ -260,11 +260,11 @@ export default function DashboardPage({ navigate }: Props) {
 
             <div className="mt-4">
               {isLoadingPosts ? (
-                <div className="rounded-xl border border-slate-800 bg-slate-950 p-6 text-center text-sm text-slate-500">Memuat postingan...</div>
+                <div className="rounded-xl border border-slate-800 bg-slate-950 p-6 text-center text-sm text-slate-500">{t('Memuat postingan...')}</div>
               ) : posts.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center">
-                  <div className="font-bold text-slate-300">Belum ada postingan</div>
-                  <p className="text-xs text-slate-500 mt-1">Jadilah pengguna pertama yang membagikan sesuatu.</p>
+                  <div className="font-bold text-slate-300">{t('Belum ada postingan')}</div>
+                  <p className="text-xs text-slate-500 mt-1">{t('Jadilah pengguna pertama yang membagikan sesuatu.')}</p>
                   <button onClick={() => { setPostError(''); setIsCreateOpen(true); }} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-black text-slate-950">
                     <Plus className="w-4 h-4" /> Buat Postingan
                   </button>
@@ -302,12 +302,12 @@ export default function DashboardPage({ navigate }: Props) {
           <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5">
             <div className="flex items-center gap-2 mb-4">
               <Radio className="w-5 h-5 text-rose-400" />
-              <h2 className="text-xl font-black">Live Now</h2>
+              <h2 className="text-xl font-black">{t('Live Now')}</h2>
             </div>
             <div className="rounded-xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center">
               <Radio className="w-8 h-8 mx-auto text-slate-600" />
-              <div className="font-bold text-slate-300 mt-3">Belum ada data live aktif</div>
-              <p className="text-xs text-slate-500 mt-1">Room live akan tampil di sini setelah tersedia dari backend produksi.</p>
+              <div className="font-bold text-slate-300 mt-3">{t('Belum ada data live aktif')}</div>
+              <p className="text-xs text-slate-500 mt-1">{t('Room live akan tampil di sini setelah tersedia dari backend produksi.')}</p>
               <button onClick={() => navigate?.('/room/main')} className="mt-4 inline-flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs font-black text-rose-300">
                 Buka Live Room <ArrowRight className="w-4 h-4" />
               </button>
@@ -316,13 +316,13 @@ export default function DashboardPage({ navigate }: Props) {
 
           <section className="grid sm:grid-cols-3 gap-4">
             <button onClick={() => navigate?.('/game/tebak')} className="rounded-2xl border border-cyan-500/20 bg-slate-900 p-4 text-left hover:border-cyan-400/60 transition-colors">
-              <Target className="w-5 h-5 text-cyan-400 mb-2" /><div className="font-bold">Tebak Nomor</div><div className="text-xs text-slate-500 mt-1">Ikuti permainan live.</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+              <Target className="w-5 h-5 text-cyan-400 mb-2" /><div className="font-bold">{t('Tebak Nomor')}</div><div className="text-xs text-slate-500 mt-1">{t('Ikuti permainan live.')}</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
             </button>
             <button onClick={() => navigate?.('/game/spinner')} className="rounded-2xl border border-purple-500/20 bg-slate-900 p-4 text-left hover:border-purple-400/60 transition-colors">
-              <CircleDot className="w-5 h-5 text-purple-400 mb-2" /><div className="font-bold">Spinner</div><div className="text-xs text-slate-500 mt-1">Masuk ke event spinner.</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+              <CircleDot className="w-5 h-5 text-purple-400 mb-2" /><div className="font-bold">{t('Spinner')}</div><div className="text-xs text-slate-500 mt-1">{t('Masuk ke event spinner.')}</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
             </button>
             <button onClick={() => navigate?.('/game/blindbox')} className="rounded-2xl border border-emerald-500/20 bg-slate-900 p-4 text-left hover:border-emerald-400/60 transition-colors">
-              <Gift className="w-5 h-5 text-emerald-400 mb-2" /><div className="font-bold">Blind Box</div><div className="text-xs text-slate-500 mt-1">Buka Blind Box dengan saldo akun.</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
+              <Gift className="w-5 h-5 text-emerald-400 mb-2" /><div className="font-bold">{t('Blind Box')}</div><div className="text-xs text-slate-500 mt-1">{t('Buka Blind Box dengan saldo akun.')}</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
             </button>
           </section>
         </main>
@@ -333,7 +333,7 @@ export default function DashboardPage({ navigate }: Props) {
           <div className="w-full max-w-lg rounded-3xl border border-cyan-500/20 bg-[#08101f] p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs uppercase tracking-wider text-cyan-400 font-bold">Community</div>
+                <div className="text-xs uppercase tracking-wider text-cyan-400 font-bold">{t('Community')}</div>
                 <h3 className="text-xl font-black mt-1">Upload / Create Post</h3>
               </div>
               <button onClick={() => !isPosting && setIsCreateOpen(false)} className="p-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white">
