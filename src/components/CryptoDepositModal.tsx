@@ -3,6 +3,7 @@ import { useGame } from '../context/GameContext';
 import { CryptoInvoice } from '../types';
 import { X, Copy, CheckCircle, ExternalLink, QrCode, ArrowRight, ShieldCheck } from 'lucide-react';
 import { sound } from '../lib/sound';
+import { useLanguage } from '../i18n';
 
 interface Props {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface Props {
 
 export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const { createCryptoInvoice, showToast } = useGame();
+  const { t } = useLanguage();
   const [selectedUsd, setSelectedUsd] = useState<number>(50);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USDT');
   const [customUsd, setCustomUsd] = useState<string>('');
@@ -35,7 +37,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     sound.playClick();
     const finalAmount = customUsd ? parseFloat(customUsd) : selectedUsd;
     if (isNaN(finalAmount) || finalAmount < 5) {
-      showToast('Minimum Deposit', 'Minimum deposit is $5.00 USD', 'error');
+      showToast(t('Minimum Deposit'), t('Minimum deposit is $5.00 USD'), 'error');
       return;
     }
 
@@ -44,7 +46,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
       const inv = await createCryptoInvoice(finalAmount, selectedCurrency);
       setInvoice(inv);
     } catch (err: any) {
-      showToast('Error', err.message || 'Failed to generate invoice', 'error');
+      showToast(t('Error'), err.message || t('Failed to generate invoice'), 'error');
     } finally {
       setIsLoading(false);
     }
@@ -66,8 +68,8 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
               NP
             </div>
             <div>
-              <h3 className="text-base font-semibold text-white">NOWPayments Crypto Deposit</h3>
-              <p className="text-xs text-slate-400">Instant deposit with zero platform fees</p>
+              <h3 className="text-base font-semibold text-white">{t('NOWPayments Crypto Deposit')}</h3>
+              <p className="text-xs text-slate-400">{t('Instant deposit with zero platform fees')}</p>
             </div>
           </div>
           <button
@@ -153,7 +155,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Create NOWPayments Invoice</span>
+                  <span>{t('Create NOWPayments Invoice')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -164,7 +166,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <div className="mt-5 space-y-4">
             <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Order ID: <span className="text-white font-mono">{invoice.orderId}</span></span>
+                <span>{t('Order ID: ')}<span className="text-white font-mono">{invoice.orderId}</span></span>
                 <span className="flex items-center gap-1 text-emerald-400">
                   <ShieldCheck className="w-3.5 h-3.5" /> Awaiting Deposit
                 </span>
