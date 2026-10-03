@@ -2400,6 +2400,45 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 }
 };
 
+const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    "LOGIN / REGISTER":"LOGIN / REGISTER","SYS STREAM Live":"SYS STREAM Live","LIVE":"LIVE",
+    "Live":"Live","Chat":"Chat","Aksi live room gagal.":"Aksi live room gagal.","Status streaming gagal.":"Status streaming gagal."
+  },
+  en: {
+    "LOGIN / REGISTER":"LOGIN / REGISTER","SYS STREAM Live":"SYS STREAM Live","LIVE":"LIVE",
+    "Live":"Live","Chat":"Chat","Aksi live room gagal.":"Live room action failed.","Status streaming gagal.":"Failed to check streaming status."
+  },
+  es: {
+    "LOGIN / REGISTER":"INICIAR SESIÓN / REGISTRARSE","SYS STREAM Live":"SYS STREAM Live","LIVE":"EN VIVO",
+    "Live":"En vivo","Chat":"Chat","Aksi live room gagal.":"La acción de la sala en vivo falló.","Status streaming gagal.":"No se pudo comprobar el estado de la transmisión."
+  },
+  pt: {
+    "LOGIN / REGISTER":"ENTRAR / REGISTRAR","SYS STREAM Live":"SYS STREAM Live","LIVE":"AO VIVO",
+    "Live":"Ao vivo","Chat":"Chat","Aksi live room gagal.":"A ação da sala ao vivo falhou.","Status streaming gagal.":"Falha ao verificar o status da transmissão."
+  },
+  zh: {
+    "LOGIN / REGISTER":"登录 / 注册","SYS STREAM Live":"SYS STREAM Live","LIVE":"直播",
+    "Live":"直播","Chat":"聊天","Aksi live room gagal.":"直播间操作失败。","Status streaming gagal.":"检查直播状态失败。"
+  },
+  ja: {
+    "LOGIN / REGISTER":"ログイン / 登録","SYS STREAM Live":"SYS STREAM Live","LIVE":"ライブ",
+    "Live":"ライブ","Chat":"チャット","Aksi live room gagal.":"ライブ配信ルームの操作に失敗しました。","Status streaming gagal.":"配信ステータスの確認に失敗しました。"
+  },
+  ko: {
+    "LOGIN / REGISTER":"로그인 / 회원가입","SYS STREAM Live":"SYS STREAM Live","LIVE":"라이브",
+    "Live":"라이브","Chat":"채팅","Aksi live room gagal.":"라이브 룸 작업에 실패했습니다.","Status streaming gagal.":"스트리밍 상태 확인에 실패했습니다."
+  },
+  ar: {
+    "LOGIN / REGISTER":"تسجيل الدخول / التسجيل","SYS STREAM Live":"SYS STREAM Live","LIVE":"مباشر",
+    "Live":"مباشر","Chat":"دردشة","Aksi live room gagal.":"فشل إجراء غرفة البث المباشر.","Status streaming gagal.":"تعذر التحقق من حالة البث."
+  }
+};
+for (const lang of Object.keys(LIVE_ROOM_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(LIVE_ROOM_TRANSLATIONS[lang], LIVE_ROOM_COMMON_TRANSLATIONS[lang]);
+  Object.assign(translations[lang], LIVE_ROOM_TRANSLATIONS[lang]);
+}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
