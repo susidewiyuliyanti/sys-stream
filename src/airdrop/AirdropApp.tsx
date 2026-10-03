@@ -6,8 +6,8 @@ import {
 import { SysLogo } from '../components/SysLogo';
 
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
-type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'deposit'|'withdrawal'|'profile'|'checkin';
-type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile';
+type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'deposit'|'withdrawal'|'profile'|'checkin'|'mining';
+type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile'|'mining';
 type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
 const TASKS: Task[] = [
@@ -24,7 +24,8 @@ const TASKS: Task[] = [
   {id:'discord-activity',key:'discord',type:'discord',reward:'program',estimated:'5–10 minutes',daily:true},
   {id:'deposit',key:'deposit',type:'deposit',reward:'program',estimated:'5 minutes'},
   {id:'withdrawal',key:'withdrawal',type:'withdrawal',reward:'program',estimated:'5 minutes'},
-  {id:'profile',key:'profile',type:'profile',reward:'program',estimated:'2 minutes'}
+  {id:'profile',key:'profile',type:'profile',reward:'program',estimated:'2 minutes'},
+  {id:'mining-tutorial',key:'mining',type:'mining',reward:'program',estimated:'2–5 minutes',priority:true}
 ];
 
 const COPY: Record<Lang, Record<string,string>> = {
@@ -49,7 +50,8 @@ const COPY: Record<Lang, Record<string,string>> = {
     socialTitle:'Tugas Sosial Harian', socialDesc:'Selesaikan aktivitas sosial pada brief campaign. Jangan gunakan akun palsu atau otomatisasi.', socialAction:'Lihat Tugas',
     depositTitle:'Selesaikan Deposit', depositDesc:'Lakukan deposit nyata melalui halaman resmi SYS STREAM. Reward diproses jika transaksi memenuhi aturan campaign.', depositAction:'Buka Deposit',
     withdrawalTitle:'Selesaikan Withdrawal', withdrawalDesc:'Ajukan withdrawal sesuai saldo dan aturan. Periksa alamat wallet dan network sebelum konfirmasi.', withdrawalAction:'Buka Withdrawal',
-    profileTitle:'Lengkapi Profil', profileDesc:'Lengkapi informasi profil dasar agar akun siap mengikuti campaign dan proses reward.', profileAction:'Buka Profil'
+    profileTitle:'Lengkapi Profil', profileDesc:'Lengkapi informasi profil dasar agar akun siap mengikuti campaign dan proses reward.', profileAction:'Buka Profil',
+    miningTitle:'Tutorial Aktifkan SYS Mining', miningDesc:'Buka SYS Mining, pastikan Anda memiliki Blind Box Lock aktif minimal $10 (≈ Rp 179.370). Setelah lock aktif, Mining akan otomatis ON dan Anda dapat claim reward SYS 1 kali setiap hari. Setiap kelipatan $10 lock menghasilkan 1 SYS per hari.', miningAction:'Aktifkan / Buka Mining'
   },
   en:{
     tasks:'Tasks', submissions:'My Submissions', login:'Login', wallet:'Wallet Address', walletPlaceholder:'Enter wallet address', saveWallet:'Save Wallet', walletRequired:'Wallet address is required to join a task.', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
@@ -72,7 +74,8 @@ const COPY: Record<Lang, Record<string,string>> = {
     socialTitle:'Daily Social Task', socialDesc:'Complete the social activity listed in the campaign brief. Do not use fake accounts or automation.', socialAction:'View Task',
     depositTitle:'Complete a Deposit', depositDesc:'Make a real deposit through the official SYS STREAM page. Rewards are processed only when campaign rules are met.', depositAction:'Open Deposit',
     withdrawalTitle:'Complete a Withdrawal', withdrawalDesc:'Request a withdrawal according to your balance and the rules. Check the wallet address and network before confirming.', withdrawalAction:'Open Withdrawal',
-    profileTitle:'Complete Your Profile', profileDesc:'Complete your basic profile information so your account is ready for campaigns and rewards.', profileAction:'Open Profile'
+    profileTitle:'Complete Your Profile', profileDesc:'Complete your basic profile information so your account is ready for campaigns and rewards.', profileAction:'Open Profile',
+    miningTitle:'SYS Mining Activation Tutorial', miningDesc:'Open SYS Mining and make sure you have an active Blind Box Lock of at least $10 (≈ Rp 179,370). Once the lock is active, Mining turns ON automatically and you can claim SYS once per day. Each $10 of lock earns 1 SYS per day.', miningAction:'Open / Activate Mining'
   },
   es:{
     tasks:'Tareas', submissions:'Mis envíos', login:'Iniciar sesión', hero:'Tareas diarias. Crea contenido. Envía pruebas. Obtén recompensas de airdrop.',
@@ -214,7 +217,8 @@ const TASK_TEXT: Record<TaskKey,{title:string;desc:string;action:string}> = {
   social:{title:'socialTitle',desc:'socialDesc',action:'socialAction'},
   deposit:{title:'depositTitle',desc:'depositDesc',action:'depositAction'},
   withdrawal:{title:'withdrawalTitle',desc:'withdrawalDesc',action:'withdrawalAction'},
-  profile:{title:'profileTitle',desc:'profileDesc',action:'profileAction'}
+  profile:{title:'profileTitle',desc:'profileDesc',action:'profileAction'},
+  mining:{title:'miningTitle',desc:'miningDesc',action:'miningAction'}
 };
 
 function typeIcon(type:TaskType) {
@@ -229,10 +233,11 @@ function typeIcon(type:TaskType) {
   if(type==='deposit') return <CircleDollarSign className="w-5 h-5"/>;
   if(type==='withdrawal') return <WalletCards className="w-5 h-5"/>;
   if(type==='profile') return <CheckCircle2 className="w-5 h-5"/>;
+  if(type==='mining') return <span className="text-sm font-black">⛏</span>;
   return <Link2 className="w-5 h-5"/>;
 }
 function typeLabel(type:TaskType,tx:Record<string,string>) {
-  const map:Record<TaskType,string>={review:'REVIEW',youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE'};
+  const map:Record<TaskType,string>={review:'REVIEW',youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE',mining:'SYS MINING'};
   return map[type]||'SOCIAL';
 }
 
@@ -421,6 +426,13 @@ export default function AirdropApp() {
     return()=>{active=false;window.clearInterval(timer);};
   },[lang,tx.unavailable]);
 
+  const openTask=(task:Task)=>{
+    if(task.type==='mining'){
+      window.location.href='https://sysstreamer.asia/#/game/mining';
+      return;
+    }
+    setSelectedTask(task);
+  };
   const availableTasks=useMemo<Task[]>(()=>{
     const configured=dbTasks.filter((raw:any)=>{const t=String(raw.type??raw.task_type??raw.category??raw.key??'').toLowerCase();const k=String(raw.key??'').toLowerCase();return t!=='withdrawal'&&t!=='profile'&&k!=='withdrawal'&&k!=='profile';}).map((raw:any,index:number)=>{
       const category=String(raw.category||raw.type||'social').toLowerCase();
@@ -512,7 +524,7 @@ export default function AirdropApp() {
           <div className="text-xs text-slate-400">{Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>setSelectedTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
+          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>openTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.estimated} · {tx.proof}</div>
           </button>})}
@@ -550,7 +562,7 @@ export default function AirdropApp() {
                     <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">TODAY</span>:null}</td>
                     <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">Belum check-in</span>}</td>
                     <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} pts</td>
-                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>setSelectedTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">Check-in</button>:<span className="text-slate-600">—</span>}</td>
+                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">Check-in</button>:<span className="text-slate-600">—</span>}</td>
                   </tr>;
                 })}
               </tbody>
@@ -608,7 +620,7 @@ export default function AirdropApp() {
         {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
-          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
+          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
         </article>})}
         </div>
       </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-5">{submissions.length===0?<div className="p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></div>:<div className="space-y-3">{submissions.map(s=><div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div className="flex-1 min-w-0"><div className="font-bold truncate">{s.task_title||String(s.task_id)}</div><a href={s.evidence_link} target="_blank" rel="noreferrer" className="text-xs text-amber-400 break-all">{s.evidence_link}</a><div className="text-[10px] text-slate-500 mt-1">{s.created_at}</div></div><div className="text-xs font-black px-3 py-2 rounded-xl bg-slate-800 text-slate-200">{statusLabel(s.status,tx)}</div><div className="text-xs text-amber-400 font-bold">{s.reward_points} pts</div></div>)}</div>}</section>}
