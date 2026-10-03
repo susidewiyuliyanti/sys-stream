@@ -205,6 +205,17 @@ const COPY: Record<Lang, Record<string,string>> = {
   }
 };
 
+const AIRDROP_UI: Record<Lang, Record<string,string>> = {
+  id:{dailyCheckin:'DAILY CHECK-IN',checkinDesc:'Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.',date:'Tanggal',status:'Status',points:'Points',action:'Aksi',today:'HARI INI',notChecked:'Belum check-in',all:'Semua',youtube:'YouTube',social:'Sosial Media',checkin:'Daily Check-in',airdropPoints:'AIRDROP POINTS',pointsSys:'Points → SYS',pointsDesc:'Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.',available:'Tersedia',pending:'Pending',converted:'Dikonversi',pointsAmount:'Jumlah points',convert:'Konversi ke SYS',rate:'Rate saat ini: 1 SYS = 1.000 points.',loading:'Memuat task aktif...',proofPlaceholder:'https://...',submitting:'Mengirim...',conversionFailed:'Conversion gagal',conversionSuccess:'Berhasil dicatat'},
+  en:{dailyCheckin:'DAILY CHECK-IN',checkinDesc:'Recurring daily check-in. Rewards are issued in points and can be converted to SYS according to program rules.',date:'Date',status:'Status',points:'Points',action:'Action',today:'TODAY',notChecked:'Not checked in',all:'All',youtube:'YouTube',social:'Social Media',checkin:'Daily Check-in',airdropPoints:'AIRDROP POINTS',pointsSys:'Points → SYS',pointsDesc:'Points come only from server-processed tasks. Conversion is recorded in the ledger.',available:'Available',pending:'Pending',converted:'Converted',pointsAmount:'Points amount',convert:'Convert to SYS',rate:'Current rate: 1 SYS = 1,000 points.',loading:'Loading active tasks...',proofPlaceholder:'https://...',submitting:'Submitting...',conversionFailed:'Conversion failed',conversionSuccess:'Recorded successfully'},
+  es:{dailyCheckin:'CHECK-IN DIARIO',checkinDesc:'Check-in diario recurrente. Las recompensas se otorgan en puntos y pueden convertirse a SYS según las reglas.',date:'Fecha',status:'Estado',points:'Puntos',action:'Acción',today:'HOY',notChecked:'Sin check-in',all:'Todas',youtube:'YouTube',social:'Redes sociales',checkin:'Check-in diario',airdropPoints:'PUNTOS AIRDROP',pointsSys:'Puntos → SYS',pointsDesc:'Los puntos solo proceden de tareas procesadas por el servidor. La conversión queda registrada.',available:'Disponibles',pending:'Pendientes',converted:'Convertidos',pointsAmount:'Cantidad de puntos',convert:'Convertir a SYS',rate:'Tasa actual: 1 SYS = 1.000 puntos.',loading:'Cargando tareas activas...',proofPlaceholder:'https://...',submitting:'Enviando...',conversionFailed:'Conversión fallida',conversionSuccess:'Registrado correctamente'},
+  pt:{dailyCheckin:'CHECK-IN DIÁRIO',checkinDesc:'Check-in diário recorrente. As recompensas são dadas em pontos e podem ser convertidas em SYS conforme as regras.',date:'Data',status:'Status',points:'Pontos',action:'Ação',today:'HOJE',notChecked:'Não fez check-in',all:'Todas',youtube:'YouTube',social:'Mídias sociais',checkin:'Check-in diário',airdropPoints:'PONTOS AIRDROP',pointsSys:'Pontos → SYS',pointsDesc:'Os pontos vêm apenas de tarefas processadas pelo servidor. A conversão é registrada no ledger.',available:'Disponível',pending:'Pendente',converted:'Convertido',pointsAmount:'Quantidade de pontos',convert:'Converter para SYS',rate:'Taxa atual: 1 SYS = 1.000 pontos.',loading:'Carregando tarefas ativas...',proofPlaceholder:'https://...',submitting:'Enviando...',conversionFailed:'Falha na conversão',conversionSuccess:'Registrado com sucesso'},
+  zh:{dailyCheckin:'每日签到',checkinDesc:'每日重复签到。奖励以积分发放，并可根据活动规则兑换 SYS。',date:'日期',status:'状态',points:'积分',action:'操作',today:'今天',notChecked:'未签到',all:'全部',youtube:'YouTube',social:'社交媒体',checkin:'每日签到',airdropPoints:'空投积分',pointsSys:'积分 → SYS',pointsDesc:'积分仅来自服务器处理的任务，兑换记录会写入账本。',available:'可用',pending:'待处理',converted:'已兑换',pointsAmount:'积分数量',convert:'兑换为 SYS',rate:'当前比例：1 SYS = 1,000 积分。',loading:'正在加载活动任务...',proofPlaceholder:'https://...',submitting:'正在提交...',conversionFailed:'兑换失败',conversionSuccess:'记录成功'},
+  ja:{dailyCheckin:'デイリーチェックイン',checkinDesc:'毎日のチェックインです。報酬はポイントで付与され、プログラム規則に従って SYS に変換できます。',date:'日付',status:'ステータス',points:'ポイント',action:'操作',today:'今日',notChecked:'未チェックイン',all:'すべて',youtube:'YouTube',social:'ソーシャル',checkin:'デイリーチェックイン',airdropPoints:'エアドロップポイント',pointsSys:'ポイント → SYS',pointsDesc:'ポイントはサーバーで処理されたタスクからのみ発生します。変換は台帳に記録されます。',available:'利用可能',pending:'保留中',converted:'変換済み',pointsAmount:'ポイント数',convert:'SYS に変換',rate:'現在のレート：1 SYS = 1,000 ポイント。',loading:'アクティブなタスクを読み込み中...',proofPlaceholder:'https://...',submitting:'送信中...',conversionFailed:'変換に失敗しました',conversionSuccess:'正常に記録しました'},
+  ko:{dailyCheckin:'일일 체크인',checkinDesc:'반복되는 일일 체크인입니다. 보상은 포인트로 지급되며 프로그램 규칙에 따라 SYS로 전환할 수 있습니다.',date:'날짜',status:'상태',points:'포인트',action:'작업',today:'오늘',notChecked:'체크인 안 함',all:'전체',youtube:'YouTube',social:'소셜 미디어',checkin:'일일 체크인',airdropPoints:'에어드롭 포인트',pointsSys:'포인트 → SYS',pointsDesc:'포인트는 서버에서 처리된 작업에서만 발생하며 전환 내역은 원장에 기록됩니다.',available:'사용 가능',pending:'대기 중',converted:'전환됨',pointsAmount:'포인트 수량',convert:'SYS로 전환',rate:'현재 비율: 1 SYS = 1,000 포인트.',loading:'활성 작업을 불러오는 중...',proofPlaceholder:'https://...',submitting:'제출 중...',conversionFailed:'전환 실패',conversionSuccess:'성공적으로 기록됨'},
+  ar:{dailyCheckin:'تسجيل الحضور اليومي',checkinDesc:'تسجيل حضور يومي متكرر. تُمنح المكافآت كنقاط ويمكن تحويلها إلى SYS وفق قواعد البرنامج.',date:'التاريخ',status:'الحالة',points:'النقاط',action:'الإجراء',today:'اليوم',notChecked:'لم يتم التسجيل',all:'الكل',youtube:'YouTube',social:'وسائل التواصل',checkin:'تسجيل الحضور اليومي',airdropPoints:'نقاط الإيردروب',pointsSys:'النقاط → SYS',pointsDesc:'النقاط تأتي فقط من المهام التي يعالجها الخادم، ويتم تسجيل التحويل في السجل.',available:'متاح',pending:'معلق',converted:'تم التحويل',pointsAmount:'عدد النقاط',convert:'تحويل إلى SYS',rate:'المعدل الحالي: 1 SYS = 1,000 نقطة.',loading:'جارٍ تحميل المهام النشطة...',proofPlaceholder:'https://...',submitting:'جارٍ الإرسال...',conversionFailed:'فشل التحويل',conversionSuccess:'تم التسجيل بنجاح'}
+};
+
 const TASK_TEXT: Record<TaskKey,{title:string;desc:string;action:string}> = {
   checkin:{title:'checkinTitle',desc:'checkinDesc',action:'checkinAction'},
   tiktok:{title:'tiktokTitle',desc:'tiktokDesc',action:'tiktokAction'},
@@ -434,7 +445,7 @@ export default function AirdropApp() {
   const availableTasks=useMemo<Task[]>(()=>{
     const configured=dbTasks.filter((raw:any)=>{const t=String(raw.type??raw.task_type??raw.category??raw.key??'').toLowerCase();const k=String(raw.key??'').toLowerCase();return t!=='withdrawal'&&t!=='profile'&&k!=='withdrawal'&&k!=='profile';}).map((raw:any,index:number)=>{
       const category=String(raw.category||raw.type||'social').toLowerCase();
-      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
+      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','deposit','withdrawal','profile','checkin','mining'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
       return {
         id:String(raw.id??`db-${index}`),
@@ -542,23 +553,23 @@ export default function AirdropApp() {
         return <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <div className="text-xs font-black tracking-wider text-amber-400">DAILY CHECK-IN</div>
+              <div className="text-xs font-black tracking-wider text-amber-400">{AIRDROP_UI[lang].dailyCheckin}</div>
               <h2 className="mt-1 text-xl font-black">{taskText(checkinTask).title}</h2>
-              <p className="mt-1 text-xs text-slate-500">Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.</p>
+              <p className="mt-1 text-xs text-slate-500">{AIRDROP_UI[lang].checkinDesc}</p>
             </div>
             <input type="month" value={checkinMonth} onChange={e=>setCheckinMonth(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" />
           </div>
           <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-800">
             <table className="w-full min-w-[620px] text-sm">
               <thead className="bg-slate-950 text-slate-400 text-xs uppercase">
-                <tr><th className="text-left px-4 py-3">Tanggal</th><th className="text-left px-4 py-3">Status</th><th className="text-left px-4 py-3">Points</th><th className="text-right px-4 py-3">Aksi</th></tr>
+                <tr><th className="text-left px-4 py-3">{AIRDROP_UI[lang].date}</th><th className="text-left px-4 py-3">{AIRDROP_UI[lang].status}</th><th className="text-left px-4 py-3">{AIRDROP_UI[lang].points}</th><th className="text-right px-4 py-3">{AIRDROP_UI[lang].action}</th></tr>
               </thead>
               <tbody>
                 {Array.from({length:daysInMonth},(_,i)=>{
                   const day=i+1, item=checkins.get(day), isToday=checkinMonth===new Date().toISOString().slice(0,7)&&day===new Date().getDate();
                   return <tr key={day} className="border-t border-slate-800">
                     <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">TODAY</span>:null}</td>
-                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">Belum check-in</span>}</td>
+                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">{AIRDROP_UI[lang].notChecked}</span>}</td>
                     <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} pts</td>
                     <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">Check-in</button>:<span className="text-slate-600">—</span>}</td>
                   </tr>;
@@ -577,29 +588,29 @@ export default function AirdropApp() {
             <p className="mt-1 text-xs text-slate-500">Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.</p>
           </div>
           <div className="grid grid-cols-3 gap-2 w-full lg:w-auto">
-            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Available</div><div className="font-black text-amber-400">{points.available}</div></div>
-            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Pending</div><div className="font-black">{points.pending}</div></div>
-            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Converted</div><div className="font-black">{points.paid}</div></div>
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">{AIRDROP_UI[lang].available}</div><div className="font-black text-amber-400">{points.available}</div></div>
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">{AIRDROP_UI[lang].pending}</div><div className="font-black">{points.pending}</div></div>
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">{AIRDROP_UI[lang].converted}</div><div className="font-black">{points.paid}</div></div>
           </div>
         </div>
         <div className="mt-5 flex flex-col sm:flex-row gap-3">
-          <input type="number" min="1" step="1" value={conversionPoints} onChange={e=>setConversionPoints(e.target.value)} placeholder="Jumlah points" className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm" />
+          <input type="number" min="1" step="1" value={conversionPoints} onChange={e=>setConversionPoints(e.target.value)} placeholder={AIRDROP_UI[lang].pointsAmount} className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm" />
           <button disabled={conversionLoading||!Number(conversionPoints)||Number(conversionPoints)>points.available} onClick={async()=>{
             setConversionLoading(true);setConversionMessage('');
             try{
               const res=await fetch('/api/airdrop/submissions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'convert',points:Number(conversionPoints)})});
               const data=await res.json().catch(()=>({}));
-              if(!res.ok||!data.success) throw new Error(data.message||data.error||'Conversion gagal');
-              setConversionMessage(`Berhasil dicatat: ${data.convertedPoints} points = ${data.sysAmount} SYS.`);
+              if(!res.ok||!data.success) throw new Error(data.message||data.error||AIRDROP_UI[lang].conversionFailed);
+              setConversionMessage(`${AIRDROP_UI[lang].conversionSuccess}: ${data.convertedPoints} points = ${data.sysAmount} SYS.`);
               setConversionPoints('');
               const refreshed=await fetch('/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
               const next=await refreshed.json().catch(()=>({}));
               if(next.points) setPoints({approved:Number(next.points.approved||0),pending:Number(next.points.pending||0),paid:Number(next.points.paid||0),available:Number(next.points.available||0)});
-            }catch(e){setConversionMessage(e instanceof Error?e.message:'Conversion gagal');}
+            }catch(e){setConversionMessage(e instanceof Error?e.message:AIRDROP_UI[lang].conversionFailed);}
             finally{setConversionLoading(false);}
-          }} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">Convert to SYS</button>
+          }} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">{AIRDROP_UI[lang].convert}</button>
         </div>
-        <div className="mt-2 text-[10px] text-slate-500">Rate saat ini: 1 SYS = 1.000 points.</div>
+        <div className="mt-2 text-[10px] text-slate-500">{AIRDROP_UI[lang].rate}</div>
         {conversionMessage&&<div className="mt-3 text-xs text-amber-300">{conversionMessage}</div>}
       </section>
 
@@ -611,11 +622,11 @@ export default function AirdropApp() {
       {tab==='tasks'?<section className="mt-6">
         <div className="mb-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            ['all','Semua'],['youtube','YouTube'],['social','Sosial Media'],['checkin','Daily Check-in']
+            [['all',AIRDROP_UI[lang].all],['youtube',AIRDROP_UI[lang].youtube],['social',AIRDROP_UI[lang].social],['checkin',AIRDROP_UI[lang].checkin]
           ].map(([key,label])=><button key={key} onClick={()=>setTaskCategory(key as 'all'|'youtube'|'social'|'checkin')} className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-3 text-xs font-bold hover:border-amber-400/40">{label}</button>)}
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
@@ -634,9 +645,9 @@ export default function AirdropApp() {
           <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
           <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
           {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
-          {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder={tx.proofPlaceholder || "https://..."} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
+          {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder={tx.proofPlaceholder || AIRDROP_UI[lang].proofPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
           {submissionMessage&&<div className="mt-3 text-xs text-amber-300">{submissionMessage}</div>}
-          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || 'Submitting...'):(tx.saveWallet || COPY.en.saveWallet)}</button>
+          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || AIRDROP_UI[lang].submitting):(tx.saveWallet || COPY.en.saveWallet)}</button>
         </div>
       </div>
     </div>})()}
