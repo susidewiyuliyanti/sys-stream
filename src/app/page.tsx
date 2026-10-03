@@ -30,7 +30,7 @@ export default function Root({ onLoaded }: { onLoaded?: () => void }) {
         <SysLogo size="xl" showText={false} />
       </div>
       <div className="tracking-widest font-extrabold text-base text-white flex items-center gap-1">
-        <span>SYS STREAM LOADING</span>
+        <span>{t('SYS STREAM LOADING')}</span>
         <span className="text-amber-400">{dots}</span>
       </div>
       <div className="text-xs text-slate-500 mt-2 font-sans">
