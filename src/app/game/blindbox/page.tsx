@@ -222,7 +222,7 @@ export default function BlindboxGamePage() {
     if (!unboxedItem) return;
     sound.playClick();
     addToInventory(unboxedItem);
-    showToast('Vault Updated', `Added ${unboxedItem.name} to your Inventory!`, 'success');
+    showToast(t('Vault Updated'), `${t('Added to your Inventory!')}`, 'success');
     resetBox();
   };
 
@@ -373,7 +373,7 @@ export default function BlindboxGamePage() {
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
                   onChange={(e) => setLockIdrAmount(Math.max(71748, toIdr(Number(e.target.value) || 0)))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
-                  placeholder={`Lock amount (${currencyConfig.currency})`}
+                  placeholder={`${t('Lock amount')} (${currencyConfig.currency})`}
                 />
                 <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(71748)}, dapat dimulai dari nominal setara $4 USD; server memvalidasi minimum.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
@@ -403,7 +403,7 @@ export default function BlindboxGamePage() {
                       }`}
                     >
                       <div className="text-xs font-bold">{tier.days}d</div>
-                      <div className="text-[9px] font-semibold opacity-85">Lock</div>
+                      <div className="text-[9px] font-semibold opacity-85">{t('Lock')}</div>
                     </button>
                   ))}
                 </div>
