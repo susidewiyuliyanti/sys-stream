@@ -1,5 +1,5 @@
 import { Env, json, readJson } from "../../_lib/db";
-import { createSession, verifyPassword } from "../../_lib/auth";
+import { createSession, verifyPassword, createAuthCookie } from "../../_lib/auth";
 
 async function ensureWalletColumn(env: Env) {
   const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
@@ -43,7 +43,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
 
     const token = await createSession(env, String(user.id));
-    return json({
+    return new Response(JSON.stringify({
       success:true, token,
       user:{
         id:String(user.id), username:user.username, email:user.email,
@@ -52,6 +52,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         walletAddress:user.walletAddress || null, referralCode:user.referralCode || null,
         emailVerified:true
       }
+    }), {
+      headers: { "Content-Type": "application/json", "Set-Cookie": createAuthCookie(token) },
     });
   } catch (error) {
     console.error("login error", error);
