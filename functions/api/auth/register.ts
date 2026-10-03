@@ -233,10 +233,12 @@ async function insertIntoExistingSchema(env: Env, table: string, values: Record<
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   const requestId = crypto.randomUUID();
+  let stage = "SCHEMA_INIT";
 
   try {
     await ensureRegistrationSchema(env);
 
+    stage = "READ_REQUEST";
     const body = await readJson<{
       username?: string;
       password?: string;
@@ -253,6 +255,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const incomingWalletAddress = String(body.walletAddress || "").trim();
 
     // Registration is wallet-first. Email is not collected or required.
+    stage = "VALIDATE_WALLET";
     if (password.length < 6) {
       return json({ success: false, error: "Password minimal 6 karakter." }, 400);
     }
@@ -260,6 +263,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Wallet wajib dihubungkan untuk membuat akun." }, 400);
     }
     const walletAddress = getAddress(incomingWalletAddress);
+    stage = "CHECK_EXISTING_WALLET";
     if (
       body.termsAccepted !== true ||
       String(body.termsVersion || "") !== TERMS_VERSION
@@ -281,6 +285,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     // Use a UUID for the current TEXT/UUID schema. Legacy integer-ID schemas
     // are resolved to their database-generated id immediately after insert.
+    stage = "PREPARE_ACCOUNT";
     let id: string = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
 
@@ -391,6 +396,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
 
     const placeholders = insertColumns.map(() => "?").join(",");
+    stage = "INSERT_USER";
     try {
       await env.DB.prepare(
         `INSERT INTO users(${insertColumns.join(",")}) VALUES(${placeholders})`
@@ -427,6 +433,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }, 503);
     }
 
+    stage = "FINALIZE_USER";
     if (legacyIntegerId) {
       const created = await env.DB.prepare(
         "SELECT id FROM users WHERE lower(wallet_address)=lower(?) LIMIT 1"
@@ -439,6 +446,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     // Terms acceptance is required by the API contract. If the auxiliary
     // audit record fails, keep the account and report a trackable server error.
+    stage = "WRITE_TERMS";
     try {
       await insertIntoExistingSchema(env, "terms_acceptances", {
         id: crypto.randomUUID(),
@@ -457,6 +465,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     // Referral is optional. A referral failure must never prevent the new
     // user account from being created.
+    stage = "WRITE_REFERRAL";
     if (incomingReferralCode) {
       try {
         const referrer = await env.DB.prepare(
@@ -493,6 +502,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
+    stage = "CREATE_SESSION";
     const token = await createSession(env, id);
     return json({
       success: true,
@@ -524,11 +534,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // Keep production diagnostics in Cloudflare logs while returning a stable
     // response to the client. This is deliberately not a dummy/fallback path.
     const message = errorText(error);
-    if (/D1|database|SQLITE|table|column|schema|constraint/i.test(message)) {
+    console.error("register failure stage", { requestId, stage, message });
+    if (/D1|database|SQLITE|table|column|schema|constraint/i.test(message) || stage === "INSERT_USER" || stage === "CREATE_SESSION" || stage === "SCHEMA_INIT") {
       return json({
         success: false,
         code: "REGISTRATION_DATABASE_ERROR",
         requestId,
+        stage,
         error: "Registrasi tidak dapat diproses oleh database. Silakan coba lagi.",
       }, 503);
     }
@@ -537,6 +549,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       success: false,
       code: "REGISTRATION_SERVER_ERROR",
       requestId,
+      stage,
       error: "Registrasi gagal diproses di server. Silakan coba lagi.",
     }, 503);
   }
