@@ -16,6 +16,14 @@ import {
 
 import { BrowserProvider } from 'ethers';
 
+declare global {
+  interface Window {
+    ethereum?: {
+      request(args: { method: string; params?: unknown[] }): Promise<unknown>;
+    };
+  }
+}
+
 interface Props {
   navigate?: (path: string) => void;
 }
