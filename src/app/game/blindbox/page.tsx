@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGame } from '../../../context/GameContext';
 import { BlindboxItem, RarityTier, LockRecord } from '../../../types';
 import { sound } from '../../../lib/sound';
-import { formatIdrAsSelectedCurrency, getLocaleConfig, IDR_PER_CURRENCY_UNIT } from '../../../i18n';
+import { formatIdrAsSelectedCurrency, getLocaleConfig, IDR_PER_CURRENCY_UNIT, useLanguage } from '../../../i18n';
 import {
   Box,
   Sparkles,
@@ -30,7 +30,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    description: 'Tersedia untuk lock aktif minimum {formatMoney(50000)}. Reward harian diproses server dan masuk ke saldo tersedia.',
+    description: 'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: 50000,
@@ -97,7 +97,7 @@ export default function BlindboxGamePage() {
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
-  const { language } = require('../../../i18n').useLanguage();
+  const { language } = useLanguage();
   const currencyConfig = getLocaleConfig(language);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const toIdr = (displayAmount: number) => Math.round(displayAmount * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
