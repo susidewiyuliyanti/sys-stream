@@ -22,7 +22,7 @@ async function ensureLiveSchema(env: Env) {
     status TEXT NOT NULL DEFAULT 'created',
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
-  `).run();
+  )`).run();
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_live_streams_room ON live_streams(room_id)").run();
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS live_rooms (
     id TEXT PRIMARY KEY,
