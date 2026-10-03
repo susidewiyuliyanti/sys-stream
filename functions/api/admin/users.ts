@@ -6,7 +6,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   if (!auth.ok) return auth.response;
   try {
     const result = await context.env.DB.prepare(`
-      SELECT id, username, email, COALESCE(available_balance,0) AS balance,
+      SELECT id, username, email, wallet_address AS walletAddress, COALESCE(available_balance,0) AS balance,
              COALESCE(total_locked,0) AS lockedBalance, COALESCE(role,'user') AS role,
              created_at AS createdAt
       FROM users
