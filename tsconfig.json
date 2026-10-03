@@ -30,6 +30,13 @@
     "node_modules",
     "dist",
     "sys-stream-backup-before-v0.2",
-    "src/app/login/page.broken-wallet.tsx"
+    "src/app/login/page.broken-wallet.tsx",
+    "src/app/login/page.backup-before-fix.tsx",
+    "src/app/login/page.backup.tsx",
+    "src/app/login/page.before-wallet-fix.tsx",
+    "src/app/login/page.double-wallet-backup.tsx",
+    "src/app/login/page.safe-backup.tsx",
+    "src/app/login/page.wallet-backup.tsx",
+    "sys-stream"
   ]
 }
