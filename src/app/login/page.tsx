@@ -34,9 +34,30 @@ export default function LoginPage({ navigate }: Props) {
   const [verificationEmail, setVerificationEmail] = useState('');
   const [verificationNotice, setVerificationNotice] = useState('');
   const [resendBusy, setResendBusy] = useState(false);
+  const [registerWallet, setRegisterWallet] = useState('');
+  const [walletConnecting, setWalletConnecting] = useState(false);
   const referralParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') || '' : '';
   const returnParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('return') || '' : '';
   const postLoginPath = returnParam.startsWith('/') ? returnParam : '/dashboard';
+
+  const connectRegistrationWallet = async () => {
+    if (!window.ethereum || walletConnecting) {
+      window.alert(t('Install MetaMask atau wallet Web3 terlebih dahulu.'));
+      return;
+    }
+    setWalletConnecting(true);
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const wallet = String(accounts?.[0] || '').toLowerCase();
+      if (!wallet) throw new Error(t('Wallet address tidak ditemukan.'));
+      setRegisterWallet(wallet);
+    } catch (error) {
+      console.error('Registration wallet connection error:', error);
+      window.alert(error instanceof Error ? error.message : t('Gagal menghubungkan wallet.'));
+    } finally {
+      setWalletConnecting(false);
+    }
+  };
 
   
 const handleWalletAuth = async () => {
@@ -141,7 +162,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, ...(referralParam ? { referralCode: referralParam } : {}) };
+        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, walletAddress: registerWallet || undefined, ...(referralParam ? { referralCode: referralParam } : {}) };
       const res = await fetch(endpoint, { method:'POST', credentials:'include', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -159,7 +180,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       }
       if (authMode === 'register' && data.requiresEmailVerification) {
         setVerificationEmail(String(data.email || emailInput.trim()));
-        setVerificationNotice(data.message || 'Akun dibuat. Silakan verifikasi email sebelum login.');
+        setVerificationNotice(data.message || t('Akun dibuat. Silakan verifikasi email sebelum login.'));
         setPasswordInput('');
         return;
       }
@@ -259,7 +280,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         {verificationEmail && (
           <div className="mb-5 rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-4">
-            <div className="text-sm font-bold text-cyan-300">Verify your email</div>
+            <div className="text-sm font-bold text-cyan-300">{t('Verify your email')}</div>
             <p className="mt-1 text-[11px] leading-5 text-slate-400">
               We sent a verification link to <span className="text-slate-200 font-semibold">{verificationEmail}</span>.
               You must verify it before you can log in.
@@ -322,6 +343,17 @@ const handleSubmit = async (e: React.FormEvent) => {
             </button>
           </div>
 
+          {authMode === 'register' && (
+            <div className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-3.5">
+              <div className="text-[11px] font-bold text-purple-300 mb-2">{t('Wallet Identity')}</div>
+              <button type="button" onClick={() => void connectRegistrationWallet()} disabled={walletConnecting}
+                className="w-full rounded-xl border border-cyan-500/30 bg-slate-950/80 py-2.5 text-[11px] font-bold text-cyan-300 hover:text-white disabled:opacity-50">
+                {walletConnecting ? t('CONNECTING WALLET...') : registerWallet ? `${t('Wallet Connected')}: ${registerWallet}` : t('Connect Wallet for Registration')}
+              </button>
+              <p className="mt-2 text-[10px] leading-5 text-slate-500">{t('Wallet ini akan menjadi identitas User ID dan referral link akun Anda.')}</p>
+            </div>
+          )}
+
           {/* Terms acceptance — required for new accounts */}
           {authMode === 'register' && (
             <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
@@ -355,7 +387,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-3.5 h-3.5 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer"
               />
-              <span className="text-[11px]">Remember me</span>
+              <span className="text-[11px]">{t('Remember me')}</span>
             </label>
             <button
               type="button"
@@ -369,7 +401,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           {/* Glowing Neon Login Button */}
           <button
             type="submit"
-            disabled={isSubmitting || (authMode === 'register' && !termsAccepted)}
+            disabled={isSubmitting || (authMode === 'register' && (!termsAccepted || !registerWallet))}
             className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
@@ -386,7 +418,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="w-full border-t border-slate-800" />
           </div>
           <div className="relative flex justify-center text-[10px] uppercase font-bold text-slate-500">
-            <span className="bg-[#080d1a] px-3">or Connect with Crypto Wallet</span>
+            <span className="bg-[#080d1a] px-3">{t('or Connect with Crypto Wallet')}</span>
           </div>
         </div>
 
@@ -397,7 +429,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           className="w-full py-3 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-bold text-xs rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
         >
           <Wallet className="w-4 h-4 text-cyan-400" />
-          <span>Connect Wallet</span>
+          <span>{t('Connect Wallet')}</span>
         </button>
 
         {/* Register Prompt */}
