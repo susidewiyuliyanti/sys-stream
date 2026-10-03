@@ -391,14 +391,14 @@ export default function TebakGamePage() {
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Interaction Challenge — No Financial Stake
+              {t('Interaction Challenge — No Financial Stake')}
             </h2>
 
             {/* Non-financial challenge notice */}
             <div className="p-4 bg-slate-950 border border-cyan-500/20 rounded-xl space-y-2 text-xs">
               <div className="font-black text-cyan-300">{t('Mode Interaksi')}</div>
               <p className="text-slate-400 leading-relaxed">
-                Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.
+                {t('Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.')}
               </p>
             </div>
 
