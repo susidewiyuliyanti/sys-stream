@@ -26,6 +26,7 @@ type RoomState = {
   status: string;
   likes: number;
   participantCount: number;
+  owner?: boolean;
 };
 
 type RoomStream = {
@@ -254,7 +255,7 @@ export default function Room({
                 </p>
               </section>
             )}
-            {!stream && room?.ownerUserId === currentUserId && (
+            {room?.owner && (
               <section className="mt-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                   <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">AKTIFKAN STREAMING</div>
