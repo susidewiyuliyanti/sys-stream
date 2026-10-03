@@ -9,6 +9,7 @@ export interface UserProfile {
   vipTier: number;
   referralCode: string;
   walletAddress?: string;
+  sysBalance?: number;
   registrationBonusIdr?: number;
   registrationBonusGranted?: boolean;
   lockedBalance?: number;
