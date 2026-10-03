@@ -714,7 +714,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Production deposits currently allow one Blind Box claim per active lock per WIB day.
   // Keep the frontend quota aligned with the server-side claim rule.
   const getDailyBoxQuota = (): number => {
-    return getTotalLockedUsdt() >= 50000 ? 1 : 0;
+    return getTotalLockedUsdt() >= 72000 ? 1 : 0;
   };
 
   const getRemainingDailyBoxes = (): number => {
