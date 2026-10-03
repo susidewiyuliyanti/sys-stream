@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import App from './App.tsx';
-import AirdropApp from './airdrop/AirdropApp.tsx';
+import { lazy, Suspense } from 'react';
 import './index.css';
 import { LanguageProvider } from './i18n';
 
@@ -10,6 +10,7 @@ const hostname = typeof window !== 'undefined'
   : '';
 
 const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
+const AirdropApp = lazy(() => import('./airdrop/AirdropApp.tsx'));
 
 const Loading = () => (
   <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
