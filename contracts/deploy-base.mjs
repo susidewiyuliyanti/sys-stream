@@ -1,10 +1,11 @@
 import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import solc from "solc";
 import { ethers } from "ethers";
 
-const ROOT = path.resolve(new URL(".", import.meta.url).pathname);
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const CONTRACT_FILE = path.join(ROOT, "SysStreamToken.sol");
 
 function readContract() {
@@ -64,7 +65,6 @@ function getArg(name) {
 
 const compileOnly = process.argv.includes("--compile-only");
 const network = getArg("--network");
-
 const artifact = compile();
 
 if (compileOnly) {
