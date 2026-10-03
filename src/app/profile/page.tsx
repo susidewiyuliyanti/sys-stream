@@ -136,7 +136,7 @@ export default function ProfilePage() {
     const amountDisplay = Number(withdrawAmount);
     const amount = Math.round(amountDisplay * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
     if (!Number.isFinite(amountDisplay) || amount < withdrawalMinIdr) {
-      showToast(t('Withdrawal'), `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
+      showToast(t('Withdrawal'), `${t('Minimum withdrawal is')} ${formatMoney(withdrawalMinIdr)}.`, 'error');
       return;
     }
     if (!withdrawAddress.trim()) {
@@ -207,7 +207,7 @@ export default function ProfilePage() {
                 showToast(t('Notifications'), t('No unread notifications at this time.'), 'info');
               }}
               className="relative p-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-cyan-300 transition-colors"
-              aria-label="Notifications"
+              aria-label={t('Notifications')}
             >
               <Bell className="w-4 h-4" />
               <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-cyan-400 rounded-full" />
@@ -220,7 +220,7 @@ export default function ProfilePage() {
             <button
               onClick={() => setIsEditProfileModalOpen(true)}
               className="relative w-24 h-24 rounded-2xl p-0.5 bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 shrink-0"
-              aria-label="Edit avatar"
+              aria-label={t('Edit avatar')}
             >
               <img
                 src={user.avatar || '/default-avatar.svg'}
@@ -299,7 +299,7 @@ export default function ProfilePage() {
             <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(totalLockedUsdt)}</div>
           </div>
           <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Wallet')}</div>
             <div className="text-lg font-black text-white mt-1">{t('Withdraw')}</div>
             <div className="text-[10px] text-slate-500 mt-1">{t('Ajukan penarikan')}</div>
           </button>
@@ -497,7 +497,7 @@ export default function ProfilePage() {
             <div className="text-xs text-slate-500">{t('Available')}: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
             <input type="number" min={100000 / (IDR_PER_CURRENCY_UNIT[language] ?? 1)} step="0.01" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder={`Amount (${getLocaleConfig(language).currency})`} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
             <input value={withdrawAddress} onChange={e => setWithdrawAddress(e.target.value)} placeholder={t('USDT wallet address')} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
-            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">Submit {t('Withdraw')}al</button>
+            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">{t('Submit')} {t('Withdraw')}al</button>
           </div>
         </div>
       )}
