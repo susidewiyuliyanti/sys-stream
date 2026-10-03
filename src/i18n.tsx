@@ -207,6 +207,58 @@ translations.en = Object.fromEntries([
   ['Lock History','Lock History'],['Log Out','Log Out'],['Notifications','Notifications'],
 ]);
 
+
+// Shared production UI translations. Every supported language gets an explicit value;
+// unknown keys still fall back to English, never to a mixed-language label.
+Object.assign(translations.en, {
+  Workspace:'Workspace', 'Upload / Create':'Upload / Create', Available:'Available', Locked:'Locked',
+  'Registration Bonus':'Registration Bonus', 'Claim Bonus':'Claim Bonus', 'Community Posts':'Community Posts',
+  'Production data is used for all content and activity on this page.':'Production data is used for all content and activity on this page.',
+  'Every user can share posts and updates.':'Every user can share posts and updates.',
+});
+Object.assign(translations.es, {
+  Workspace:'Espacio de trabajo', Home:'Inicio', 'Live Now':'En vivo', Games:'Juegos', Airdrop:'Airdrop', Profile:'Perfil',
+  'Upload / Create':'Subir / Crear', Available:'Disponible', Locked:'Bloqueado', 'Registration Bonus':'Bono de registro',
+  'Claim Bonus':'Reclamar bono', 'Community Posts':'Publicaciones de la comunidad',
+  'Production data is used for all content and activity on this page.':'Esta página utiliza datos de producción para todo el contenido y la actividad.',
+  'Every user can share posts and updates.':'Cada usuario puede compartir publicaciones y actualizaciones.',
+});
+Object.assign(translations.pt, {
+  Workspace:'Área de trabalho', Home:'Início', 'Live Now':'Ao vivo', Games:'Jogos', Airdrop:'Airdrop', Profile:'Perfil',
+  'Upload / Create':'Enviar / Criar', Available:'Disponível', Locked:'Bloqueado', 'Registration Bonus':'Bônus de registro',
+  'Claim Bonus':'Resgatar bônus', 'Community Posts':'Publicações da comunidade',
+  'Production data is used for all content and activity on this page.':'Esta página usa dados de produção para todo o conteúdo e atividade.',
+  'Every user can share posts and updates.':'Cada usuário pode compartilhar publicações e atualizações.',
+});
+Object.assign(translations.zh, {
+  Workspace:'工作区', Home:'首页', 'Live Now':'正在直播', Games:'游戏', Airdrop:'空投', Profile:'个人资料',
+  'Upload / Create':'上传 / 创建', Available:'可用', Locked:'已锁定', 'Registration Bonus':'注册奖励',
+  'Claim Bonus':'领取奖励', 'Community Posts':'社区帖子',
+  'Production data is used for all content and activity on this page.':'本页面所有内容和活动均使用生产数据。',
+  'Every user can share posts and updates.':'每位用户都可以分享帖子和动态。',
+});
+Object.assign(translations.ja, {
+  Workspace:'ワークスペース', Home:'ホーム', 'Live Now':'ライブ中', Games:'ゲーム', Airdrop:'エアドロップ', Profile:'プロフィール',
+  'Upload / Create':'アップロード / 作成', Available:'利用可能', Locked:'ロック済み', 'Registration Bonus':'登録ボーナス',
+  'Claim Bonus':'ボーナスを受け取る', 'Community Posts':'コミュニティ投稿',
+  'Production data is used for all content and activity on this page.':'このページのコンテンツとアクティビティは本番データを使用します。',
+  'Every user can share posts and updates.':'すべてのユーザーが投稿や更新を共有できます。',
+});
+Object.assign(translations.ko, {
+  Workspace:'워크스페이스', Home:'홈', 'Live Now':'라이브', Games:'게임', Airdrop:'에어드롭', Profile:'프로필',
+  'Upload / Create':'업로드 / 만들기', Available:'사용 가능', Locked:'잠김', 'Registration Bonus':'가입 보너스',
+  'Claim Bonus':'보너스 받기', 'Community Posts':'커뮤니티 게시물',
+  'Production data is used for all content and activity on this page.':'이 페이지의 모든 콘텐츠와 활동은 운영 데이터를 사용합니다.',
+  'Every user can share posts and updates.':'모든 사용자가 게시물과 업데이트를 공유할 수 있습니다.',
+});
+Object.assign(translations.ar, {
+  Workspace:'مساحة العمل', Home:'الرئيسية', 'Live Now':'مباشر الآن', Games:'الألعاب', Airdrop:'الإيردروب', Profile:'الملف الشخصي',
+  'Upload / Create':'رفع / إنشاء', Available:'متاح', Locked:'مقفل', 'Registration Bonus':'مكافأة التسجيل',
+  'Claim Bonus':'استلام المكافأة', 'Community Posts':'منشورات المجتمع',
+  'Production data is used for all content and activity on this page.':'تستخدم هذه الصفحة بيانات الإنتاج لجميع المحتويات والأنشطة.',
+  'Every user can share posts and updates.':'يمكن لكل مستخدم مشاركة المنشورات والتحديثات.',
+});
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
