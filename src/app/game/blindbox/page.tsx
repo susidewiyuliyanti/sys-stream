@@ -88,7 +88,7 @@ export default function BlindboxGamePage() {
   const [selectedBox, setSelectedBox] = useState<BoxTier>(BOX_TIERS[0]);
   const [unboxingState, setUnboxingState] = useState<'IDLE' | 'SHAKING' | 'REVEALING' | 'REVEALED'>('IDLE');
   const [unboxedItem, setUnboxedItem] = useState<BlindboxItem | null>(null);
-  const [wonUsdt, setWonUsdt] = useState<number>(0);
+  const [wonIdr, setWonIdr] = useState<number>(0);
 
   // Staking lock modal/form
   const [lockIdrAmount, setLockIdrAmount] = useState<number>(50000);
@@ -176,7 +176,7 @@ export default function BlindboxGamePage() {
           };
 
           setUnboxedItem(uniqueItem);
-          setWonUsdt(rewardIdr);
+          setWonIdr(rewardIdr);
 
           setTimeout(() => {
             setUnboxingState('REVEALED');
@@ -224,7 +224,7 @@ export default function BlindboxGamePage() {
   const resetBox = () => {
     setUnboxingState('IDLE');
     setUnboxedItem(null);
-    setWonUsdt(0);
+    setWonIdr(0);
   };
 
   const getRarityBadge = (rarity: RarityTier) => {
@@ -538,7 +538,7 @@ export default function BlindboxGamePage() {
                   Reward dikreditkan ke saldo tersedia
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
-                  +Rp {wonUsdt.toLocaleString('id-ID')}
+                  +Rp {wonIdr.toLocaleString('id-ID')}
                 </div>
                 <div className="text-xs text-slate-400">
                   Reward diproses dalam saldo IDR
