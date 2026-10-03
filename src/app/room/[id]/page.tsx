@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { useLanguage } from "../../../i18n";
 import { Heart, Send, Radio, Users, MessageCircle, User, LogIn } from "lucide-react";
 
 type Participant = {
@@ -35,6 +36,7 @@ export default function Room({
   navigate?: (path: string) => void;
 }) {
   const { user, isLoggedIn, requireAuth, showToast } = useGame();
+  const { t } = useLanguage();
   const [room, setRoom] = useState<RoomState | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
@@ -63,7 +65,7 @@ export default function Room({
       setParticipants(Array.isArray(data.participants) ? data.participants : []);
       setMessages(Array.isArray(data.messages) ? data.messages : []);
     } catch (error: any) {
-      if (!silent) showToast("Live Room", error?.message || "Gagal memuat live room.", "error");
+      if (!silent) showToast(t("Live Room"), error?.message || t("Gagal memuat live room."), "error");
     } finally {
       if (!silent) setLoading(false);
     }
@@ -111,7 +113,7 @@ export default function Room({
           if (data?.message) setMessages(prev => [...prev, data.message].slice(-100));
           setChatInput("");
         })
-        .catch((error: any) => showToast("Chat", error?.message || "Pesan gagal dikirim.", "error"))
+        .catch((error: any) => showToast(t("Chat"), error?.message || t("Pesan gagal dikirim."), "error"))
         .finally(() => setSending(false));
     });
   };
@@ -122,7 +124,7 @@ export default function Room({
         .then((data: any) => {
           setRoom(prev => prev ? { ...prev, likes: Number(data?.likes || prev.likes) } : prev);
         })
-        .catch((error: any) => showToast("Live", error?.message || "Like gagal dikirim.", "error"));
+        .catch((error: any) => showToast(t("Live"), error?.message || t("Like gagal dikirim."), "error"));
     });
   };
 
@@ -135,8 +137,8 @@ export default function Room({
       <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-950/80 p-7 text-center">
           <LogIn className="w-10 h-10 mx-auto text-cyan-400 mb-4" />
-          <h1 className="text-xl font-black">Masuk untuk bergabung ke Live Room</h1>
-          <p className="text-sm text-slate-400 mt-2">Setiap akun memiliki profil dan identitasnya sendiri di dalam room.</p>
+          <h1 className="text-xl font-black">${t("Masuk untuk bergabung ke Live Room")}</h1>
+          <p className="text-sm text-slate-400 mt-2">${t("Setiap akun memiliki profil dan identitasnya sendiri di dalam room.")}</p>
           <button
             onClick={() => requireAuth(() => undefined)}
             className="mt-6 w-full rounded-xl bg-cyan-500 px-4 py-3 font-black text-slate-950"
@@ -188,25 +190,25 @@ export default function Room({
                 </div>
                 <div className="min-w-0">
                   <div className="font-black truncate">{displayCurrentName}</div>
-                  <div className="text-[11px] text-cyan-400">Profil akun Anda</div>
+                  <div className="text-[11px] text-cyan-400">{t("Profil akun Anda")}</div>
                 </div>
               </div>
               {room?.description && <p className="text-sm text-slate-400 mt-3">{room.description}</p>}
-              {!room?.description && <p className="text-sm text-slate-500 mt-3">Belum ada deskripsi room dari pemilik room.</p>}
+              {!room?.description && <p className="text-sm text-slate-500 mt-3">{t("Belum ada deskripsi room dari pemilik room.")}</p>}
             </section>
 
             <section className="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h2 className="font-black">Peserta Live</h2>
-                  <p className="text-[11px] text-slate-500">Hanya akun yang benar-benar bergabung yang ditampilkan.</p>
+                  <h2 className="font-black">{t("Peserta Live")}</h2>
+                  <p className="text-[11px] text-slate-500">{t("Hanya akun yang benar-benar bergabung yang ditampilkan.")}</p>
                 </div>
                 <span className="text-xs text-cyan-400">{participants.length} aktif</span>
               </div>
               {loading && participants.length === 0 ? (
-                <div className="text-sm text-slate-500 py-6 text-center">Memuat peserta...</div>
+                <div className="text-sm text-slate-500 py-6 text-center">{t("Memuat peserta...")}</div>
               ) : participants.length === 0 ? (
-                <div className="text-sm text-slate-500 py-6 text-center">Belum ada peserta lain.</div>
+                <div className="text-sm text-slate-500 py-6 text-center">{t("Belum ada peserta lain.")}</div>
               ) : (
                 <div className="flex gap-3 overflow-x-auto pb-1">
                   {participants.map(p => (
@@ -267,7 +269,7 @@ export default function Room({
             ) : (
               <div className="flex-1 overflow-y-auto p-3">
                 {participants.length === 0 ? (
-                  <div className="text-sm text-slate-500 text-center py-8">Belum ada peserta.</div>
+                  <div className="text-sm text-slate-500 text-center py-8">{t("Belum ada peserta.")}</div>
                 ) : participants.map(p => (
                   <div key={p.userId} className="flex items-center gap-3 py-2 border-b border-slate-900">
                     <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-900 flex items-center justify-center">
