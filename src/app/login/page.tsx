@@ -34,6 +34,7 @@ export default function LoginPage({ navigate }: Props) {
   const [verificationEmail, setVerificationEmail] = useState('');
   const [verificationNotice, setVerificationNotice] = useState('');
   const [resendBusy, setResendBusy] = useState(false);
+  const referralParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') || '' : '';
 
   
 const handleWalletAuth = async () => {
@@ -124,7 +125,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
+        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, ...(referralParam ? { referralCode: referralParam } : {}) };
       const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
