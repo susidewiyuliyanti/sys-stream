@@ -198,7 +198,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
     return json({
       success: false,
-      error: "Gagal membuat deposit crypto.",
+      error: error instanceof Error ? error.message : "Gagal membuat deposit crypto.",
     }, 500);
   }
 }
