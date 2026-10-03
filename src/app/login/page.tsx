@@ -107,9 +107,9 @@ const handleWalletAuth = async () => {
 
     // Wallet login mengikuti alur login email: langsung masuk ke beranda/dashboard.
     if (navigate) {
-      navigate("/dashboard");
+      navigate(postLoginPath);
     } else {
-      window.location.hash = "/dashboard";
+      window.location.hash = postLoginPath;
     }
   } catch (error) {
     console.error("Wallet login error:", error);
@@ -152,7 +152,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
       login(data.user?.username || usernameInput.trim());
-      if (navigate) navigate('/dashboard');
+      if (navigate) navigate(postLoginPath);
     } catch (error) {
       console.error(error);
       window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
