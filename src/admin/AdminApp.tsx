@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SysLogo } from '../components/SysLogo';
 import {
   Activity, CircleDollarSign, Gift, LayoutDashboard, LogOut, RefreshCw,
-  Search, ShieldCheck, UserPlus, Users, WalletCards
+  Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2
 } from 'lucide-react';
 
 const API = '/api/admin';
@@ -11,7 +11,8 @@ type AdminUser = { id:string; username:string; email:string; balance:number; loc
 type AdminDeposit = { id:string; depositCode:string; userId:string; username:string; amount:number; durationDays:number; status:string; createdAt:string };
 type AdminAccount = { id:string; email:string; displayName:string; role:string; active:number; createdAt:number };
 type JackpotGrant = { id:string; userId:string; username:string; email:string; amount:number; currency:string; note:string; adminName:string; createdAt:number };
-type Tab = 'overview'|'users'|'transactions'|'jackpot'|'admins';
+type AirdropTask = { id:number; title:string; description:string; category:string; rewardPoints:number; active:number; createdAt:string };
+type Tab = 'overview'|'users'|'transactions'|'jackpot'|'airdrop'|'admins';
 
 export default function AdminApp() {
   const [authenticated,setAuthenticated]=useState(false);
@@ -23,6 +24,7 @@ export default function AdminApp() {
   const [deposits,setDeposits]=useState<AdminDeposit[]>([]);
   const [admins,setAdmins]=useState<AdminAccount[]>([]);
   const [grants,setGrants]=useState<JackpotGrant[]>([]);
+  const [airdropTasks,setAirdropTasks]=useState<AirdropTask[]>([]);
   const [loading,setLoading]=useState(false);
   const [checkingSession,setCheckingSession]=useState(true);
   const [tab,setTab]=useState<Tab>('overview');
@@ -46,8 +48,8 @@ export default function AdminApp() {
     if(!authenticated)return;
     setLoading(true);setError('');
     try{
-      const [u,d,b,a]=await Promise.all([request('/users'),request('/deposits'),request('/bonuses'),request('/admins')]);
-      setUsers(u.users||[]);setDeposits(d.deposits||[]);setGrants(b.grants||[]);setAdmins(a.admins||[]);
+      const [u,d,b,a,t]=await Promise.all([request('/users'),request('/deposits'),request('/bonuses'),request('/admins'),request('/airdrop-tasks')]);
+      setUsers(u.users||[]);setDeposits(d.deposits||[]);setGrants(b.grants||[]);setAdmins(a.admins||[]);setAirdropTasks(t.tasks||[]);
       setAdmin(a.currentAdmin||admin);
     }catch(e:any){
       if(/session|unauthorized/i.test(e?.message||''))setAuthenticated(false);
@@ -78,7 +80,7 @@ export default function AdminApp() {
 
   const logout=async()=>{
     try{await request('/logout',{method:'POST'});}catch{}
-    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setTab('overview');
+    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setAirdropTasks([]);setTab('overview');
   };
 
   const filteredUsers=useMemo(()=>{
@@ -138,6 +140,7 @@ export default function AdminApp() {
               <NavButton active={tab==='users'} onClick={()=>setTab('users')} icon={<Users/>} label="Users"/>
               <NavButton active={tab==='transactions'} onClick={()=>setTab('transactions')} icon={<WalletCards/>} label="Transactions"/>
               <NavButton active={tab==='jackpot'} onClick={()=>setTab('jackpot')} icon={<Gift/>} label="Jackpot Grants"/>
+              <NavButton active={tab==='airdrop'} onClick={()=>setTab('airdrop')} icon={<ListChecks/>} label="User Tasks / Airdrop Task"/>
               {admin?.role==='OWNER'&&<NavButton active={tab==='admins'} onClick={()=>setTab('admins')} icon={<UserPlus/>} label="Admin Accounts"/>}
             </nav>
             <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
@@ -150,7 +153,7 @@ export default function AdminApp() {
             {error&&<div className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm p-4">{error}</div>}
             <div className="mb-6">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
+                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':tab==='airdrop'?'User Tasks / Airdrop Task':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
                 {(tab==='users'||tab==='transactions')&&<div className="relative w-full md:w-80"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder={tab==='users'?'Search user, email...':'Search transaction...'} className="w-full rounded-xl bg-slate-900 border border-slate-800 pl-10 pr-4 py-2.5 text-sm outline-none focus:border-slate-600"/></div>}
               </div>
             </div>
@@ -159,6 +162,7 @@ export default function AdminApp() {
             {tab==='users'&&<UsersTable users={filteredUsers}/>}
             {tab==='transactions'&&<TransactionsTable deposits={deposits}/>}
             {tab==='jackpot'&&<JackpotPanel users={users} grants={grants} onRefresh={()=>void loadDashboard()}/>}
+            {tab==='airdrop'&&<AirdropTaskPanel tasks={airdropTasks} onRefresh={()=>void loadDashboard()}/>}
             {tab==='admins'&&admin?.role==='OWNER'&&<AdminsPanel admins={admins} onRefresh={()=>void loadDashboard()}/>}
           </main>
         </div>
@@ -183,6 +187,28 @@ function JackpotPanel({users,grants,onRefresh}:{users:AdminUser[];grants:Jackpot
  const [userId,setUserId]=useState('');const [amount,setAmount]=useState('');const [note,setNote]=useState('');const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');
  const submit=async(e:React.FormEvent)=>{e.preventDefault();setMessage('');setBusy(true);try{const r=await fetch(API+'/bonuses',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,amount:Number(amount),note})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Grant gagal.');setMessage(`Promotional jackpot ${Number(amount).toFixed(2)} USDT diberikan ke ${d.grant.username||d.grant.email}.`);setAmount('');setNote('');onRefresh();}catch(e:any){setMessage(e?.message||'Grant gagal.')}finally{setBusy(false)}};
  return <div className="space-y-6"><Panel title="Promotional Jackpot Grant" meta="Manual reward credit with audit trail"><div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-5 text-xs text-slate-400">Gunakan fitur ini untuk <strong className="text-slate-200">bonus/promotional jackpot</strong> yang diberikan secara eksplisit kepada user. Grant ini tidak mengubah hasil random Blind Box.</div><form onSubmit={submit} className="grid md:grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-slate-400 mb-2">Select User</label><select value={userId} onChange={e=>setUserId(e.target.value)} className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"><option value="">Choose user...</option>{users.map(u=><option key={u.id} value={u.id}>{u.username} — {u.email}</option>)}</select></div><div><label className="block text-xs font-semibold text-slate-400 mb-2">Jackpot Value (USDT)</label><input type="number" min="0.01" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="e.g. 100" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/></div><div className="md:col-span-2"><label className="block text-xs font-semibold text-slate-400 mb-2">Reason / Audit Note</label><input value={note} onChange={e=>setNote(e.target.value)} placeholder="Campaign, promotion, correction, etc." className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/></div><div className="md:col-span-2 flex items-center gap-3"><button disabled={busy||!userId||!amount} className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold flex items-center gap-2"><Gift className="w-4 h-4"/>{busy?'Processing...':'Grant Jackpot'}</button>{message&&<span className="text-xs text-slate-300">{message}</span>}</div></form></Panel><Panel title="Grant History" meta={`${grants.length} audited records`}><div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">User</th><th className="text-right py-3 pr-4">Amount</th><th className="text-left py-3 pr-4">Note</th><th className="text-left py-3 pr-4">Admin</th><th className="text-left py-3">Date</th></tr></thead><tbody className="divide-y divide-slate-800">{grants.map(g=><tr key={g.id}><td className="py-3 pr-4">{g.username||g.email||g.userId}</td><td className="py-3 pr-4 text-right font-semibold">{formatNumber(Number(g.amount))} {g.currency}</td><td className="py-3 pr-4 text-slate-400">{g.note||'-'}</td><td className="py-3 pr-4 text-slate-400">{g.adminName}</td><td className="py-3 text-slate-500">{new Date(Number(g.createdAt)*1000).toLocaleString()}</td></tr>)}</tbody></table>{!grants.length&&<EmptyState text="No jackpot grants yet."/>}</div></Panel></div>;
+}
+
+function AirdropTaskPanel({tasks,onRefresh}:{tasks:AirdropTask[];onRefresh:()=>void}){
+ const blank={title:'',description:'',category:'social',rewardPoints:'0',active:true};
+ const [form,setForm]=useState(blank); const [editing,setEditing]=useState<number|null>(null); const [busy,setBusy]=useState(false); const [message,setMessage]=useState('');
+ const save=async(e:React.FormEvent)=>{e.preventDefault();setBusy(true);setMessage('');try{const method=editing?'PATCH':'POST';const body={...form,rewardPoints:Number(form.rewardPoints),...(editing?{id:editing}:{})};const r=await fetch(API+'/airdrop-tasks',{method,credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal menyimpan task.');setMessage(editing?'Task diperbarui.':'Task berhasil dibuat.');setForm(blank);setEditing(null);onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menyimpan task.')}finally{setBusy(false)}};
+ const edit=(t:AirdropTask)=>{setEditing(t.id);setForm({title:t.title,description:t.description,category:t.category,rewardPoints:String(t.rewardPoints),active:Boolean(t.active)})};
+ const toggle=async(t:AirdropTask)=>{try{const r=await fetch(API+'/airdrop-tasks',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:t.id,title:t.title,description:t.description,category:t.category,rewardPoints:t.rewardPoints,active:!t.active})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal mengubah status.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal mengubah status.')}}
+ const remove=async(t:AirdropTask)=>{if(!confirm('Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.'))return;try{const r=await fetch(API+'/airdrop-tasks?id='+t.id,{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal menghapus task.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menghapus task.')}}
+ return <div className="space-y-6">
+ <Panel title={editing?'Edit Airdrop Task':'Tambah Airdrop Task'} meta="Task yang aktif langsung tersedia di halaman Airdrop user">
+ <form onSubmit={save} className="grid md:grid-cols-2 gap-4">
+ <input value={form.title} onChange={e=>setForm({...form,title:e.target.value})} placeholder="Nama task" className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/>
+ <input value={form.category} onChange={e=>setForm({...form,category:e.target.value})} placeholder="Kategori: social, deposit, profile..." className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/>
+ <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Instruksi task untuk user" rows={4} className="md:col-span-2 rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/>
+ <input type="number" min="0" step="1" value={form.rewardPoints} onChange={e=>setForm({...form,rewardPoints:e.target.value})} placeholder="Reward points" className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/>
+ <label className="flex items-center gap-3 rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"><input type="checkbox" checked={form.active} onChange={e=>setForm({...form,active:e.target.checked})}/><span>Task aktif dan tampil ke user</span></label>
+ <div className="md:col-span-2 flex items-center gap-3"><button disabled={busy||!form.title.trim()} className="px-5 py-3 rounded-xl bg-amber-500 text-slate-950 font-extrabold">{busy?'Saving...':editing?'Update Task':'Create Task'}</button>{editing&&<button type="button" onClick={()=>{setEditing(null);setForm(blank)}} className="px-4 py-3 rounded-xl border border-slate-700 text-sm">Cancel</button>}{message&&<span className="text-xs text-slate-300">{message}</span>}</div>
+ </form></Panel>
+ <Panel title="Airdrop Tasks" meta={tasks.length+' task records'}>
+ <div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">Task</th><th className="text-left py-3 pr-4">Category</th><th className="text-right py-3 pr-4">Reward</th><th className="text-left py-3 pr-4">Status</th><th className="text-right py-3">Action</th></tr></thead><tbody className="divide-y divide-slate-800">{tasks.map(t=><tr key={t.id}><td className="py-3 pr-4"><div className="font-semibold">{t.title}</div><div className="text-xs text-slate-500 max-w-xl">{t.description}</div></td><td className="py-3 pr-4">{t.category}</td><td className="py-3 pr-4 text-right text-amber-400 font-bold">{Number(t.rewardPoints||0).toLocaleString()} pts</td><td className="py-3 pr-4"><button onClick={()=>void toggle(t)} className={`text-xs rounded-full px-2 py-1 ${t.active?'bg-emerald-500/10 text-emerald-400':'bg-slate-800 text-slate-500'}`}>{t.active?'Active':'Inactive'}</button></td><td className="py-3 text-right"><div className="flex justify-end gap-2"><button onClick={()=>edit(t)} className="p-2 rounded-lg border border-slate-700 hover:border-amber-500"><Pencil className="w-4 h-4"/></button><button onClick={()=>void remove(t)} className="p-2 rounded-lg border border-slate-700 hover:border-red-500 text-red-400"><Trash2 className="w-4 h-4"/></button></div></td></tr>)}</tbody></table>{!tasks.length&&<EmptyState text="Belum ada Airdrop Task production."/></div></Panel>
+ </div>;
 }
 
 function AdminsPanel({admins,onRefresh}:{admins:AdminAccount[];onRefresh:()=>void}){
