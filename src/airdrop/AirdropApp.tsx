@@ -238,9 +238,24 @@ export default function AirdropApp() {
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
   const [lang,setLang]=useState<Lang>(() => {
-    if(typeof window==='undefined') return 'en';
+    if(typeof window==='undefined') return 'id';
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get('lang') as Lang|null;
     const saved=localStorage.getItem('sys_stream_language') as Lang|null;
-    return saved && COPY[saved] ? saved : 'en';
+    const browser = (navigator.language || 'id').toLowerCase();
+    const detected: Lang = browser.startsWith('id') ? 'id'
+      : browser.startsWith('es') ? 'es'
+      : browser.startsWith('pt') ? 'pt'
+      : browser.startsWith('zh') ? 'zh'
+      : browser.startsWith('ja') ? 'ja'
+      : browser.startsWith('ko') ? 'ko'
+      : browser.startsWith('ar') ? 'ar'
+      : 'en';
+    const next = fromUrl && COPY[fromUrl] ? fromUrl
+      : saved && COPY[saved] ? saved
+      : detected;
+    if (fromUrl && COPY[fromUrl]) localStorage.setItem('sys_stream_language', fromUrl);
+    return next;
   });
   const tx=COPY[lang];
 
@@ -252,8 +267,29 @@ export default function AirdropApp() {
       const params = new URLSearchParams(window.location.search);
       const handoff = params.get('handoff');
 
-      // Preferred production path: Dashboard creates a one-time handoff from
-      // the already-authenticated SYS STREAM account. Exchange it here.
+      // The preferred flow is a shared parent-domain HttpOnly session.
+      // Because the Airdrop page is now on the same Cloudflare deployment,
+      // validate its cookie from the current origin first.
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
+        const data = await response.json().catch(() => ({}));
+        if (active && response.ok && data?.success && data?.user) {
+          if (params.has('lang') || params.has('handoff')) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+          setAuthenticated(true);
+          setAuthChecked(true);
+          return;
+        }
+      } catch {
+        // Continue to the one-time handoff fallback.
+      }
+
+      // Backward-compatible production path for sessions created before the
+      // shared cookie redirect was deployed.
       if (handoff) {
         try {
           const response = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
@@ -271,7 +307,7 @@ export default function AirdropApp() {
             return;
           }
         } catch {
-          // Continue to shared-cookie validation below.
+          // Continue to cross-origin session validation.
         }
       }
 
@@ -287,29 +323,17 @@ export default function AirdropApp() {
           return;
         }
       } catch {
-        // Fall through to same-origin validation.
+        // Fall through to the unauthenticated state.
       }
 
-      try {
-        const response = await fetch('/api/auth/me', {
-          credentials: 'include',
-          cache: 'no-store',
-        });
-        const data = await response.json().catch(() => ({}));
-        if (!active) return;
-        setAuthenticated(Boolean(response.ok && data?.success && data?.user));
-      } catch {
-        if (!active) return;
-        setAuthenticated(false);
-      } finally {
-        if (active) setAuthChecked(true);
-      }
+      if (!active) return;
+      setAuthenticated(false);
+      setAuthChecked(true);
     };
 
     void checkSession();
     return () => { active = false; };
   }, []);
-
 
   useEffect(()=>{
     let active=true;
@@ -354,7 +378,7 @@ export default function AirdropApp() {
           </select>
           <button onClick={()=>setTab('tasks')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.tasks}</button>
           <button onClick={()=>setTab('submissions')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.submissions}</button>
-          <a href="https://sysstreamer.asia/login" className="px-4 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">{tx.login}</a>
+          <a href="https://sysstreamer.asia/login?return=%2Fairdrop" className="px-4 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">{tx.login}</a>
         </nav>
         <button className="md:hidden p-2 rounded-lg" onClick={()=>setMenuOpen(v=>!v)} aria-label="Menu">{menuOpen?<X className="w-5 h-5"/>:<Menu className="w-5 h-5"/>}</button>
       </div>
