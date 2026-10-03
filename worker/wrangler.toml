@@ -20,4 +20,12 @@ bindings = [
 tag = "v1"
 new_sqlite_classes = ["RoomDurableObject"]
 
+# Production API routing: keep the React site on Pages while sending /api/*
+# directly to this Worker. This removes the ambiguous Pages/Worker API split.
+[[routes]]
+pattern = "sysstreamer.asia/api/*"
+zone_name = "sysstreamer.asia"
 
+[[routes]]
+pattern = "sysstreamer.asia/ws*"
+zone_name = "sysstreamer.asia"
