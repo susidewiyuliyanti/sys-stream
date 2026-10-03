@@ -53,7 +53,7 @@ async function cloudflareRequest(env: Env, path: string, init: RequestInit = {})
 
 function playbackIframeFromHls(hls: string, uid: string) {
   if (!hls) return "";
-  return hls.replace(/\/manifest\/video\.m3u8(?:\?.*)?$/i, `/${uid}/iframe`);
+  return hls.replace(/\/manifest\/video\.m3u8(?:\?.*)?$/i, "/iframe");
 }
 
 export async function onRequestGet({ request, env }: { request: Request; env: Env }) {
