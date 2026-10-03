@@ -4,6 +4,7 @@ import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
 import { SysLogo } from './SysLogo';
+import { useLanguage } from '../i18n';
 import {
   Wallet,
   Shield,
@@ -13,6 +14,7 @@ import {
 
 export const MobileAuthModal: React.FC = () => {
   const { loginModalOpen, setLoginModalOpen, login } = useGame();
+  const { t } = useLanguage();
 
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,7 +88,11 @@ export const MobileAuthModal: React.FC = () => {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.token || !data?.user) {
-        throw new Error(data?.error || 'Registrasi wallet gagal.');
+        throw new Error(
+          data?.error
+            ? String(data.error) + (data?.code ? ` [${String(data.code)}${data?.requestId ? ` / ${String(data.requestId)}` : ''}]` : '')
+            : t('Registrasi gagal diproses di server.')
+        );
       }
 
       localStorage.setItem('sys_stream_auth_token', String(data.token));
@@ -94,7 +100,7 @@ export const MobileAuthModal: React.FC = () => {
       login(data.user?.username || data.user?.walletAddress || 'User');
     } catch (error) {
       console.error('Wallet registration failed', error);
-      setVerificationNotice(error instanceof Error ? error.message : 'Registrasi wallet gagal.');
+      setVerificationNotice(error instanceof Error ? error.message : t('Registrasi gagal diproses di server.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -206,10 +212,10 @@ export const MobileAuthModal: React.FC = () => {
         {/* Heading & Subtitle */}
         <div className="text-center mb-5">
           <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            {authMode === 'login' ? 'Welcome Back' : 'Create SYS Account'}
+            {authMode === 'login' ? t('Welcome Back') : t('Create SYS Account')}
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Sign in to continue streaming and gaming
+            {t('Login menggunakan wallet Anda.')}
           </p>
         </div>
 
@@ -218,24 +224,24 @@ export const MobileAuthModal: React.FC = () => {
           {authMode === 'login' ? (
             <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-4 text-center">
               <Wallet className="w-8 h-8 mx-auto text-cyan-300 mb-2" />
-              <div className="text-sm font-black text-white">Login dengan Wallet</div>
+              <div className="text-sm font-black text-white">{t('Login dengan Wallet')}</div>
               <p className="mt-1 text-[11px] leading-5 text-slate-400">
-                Hubungkan MetaMask atau wallet EVM lain. Anda akan diminta menandatangani pesan untuk masuk.
+                {t('Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.')}
               </p>
             </div>
           ) : (
             <>
               <div className="rounded-2xl border border-purple-500/25 bg-purple-500/5 p-4 text-center">
                 <Wallet className="w-8 h-8 mx-auto text-purple-300 mb-2" />
-                <div className="text-sm font-black text-white">Buat Wallet Baru</div>
+                <div className="text-sm font-black text-white">{t('Buat Wallet Baru')}</div>
                 <p className="mt-1 text-[11px] leading-5 text-slate-400">
-                  Wallet baru dibuat langsung di perangkat Anda. Tidak perlu email, username, atau password.
+                  {t('Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.')}
                 </p>
               </div>
               <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5">
                 <label className="flex items-start gap-3 text-[11px] leading-5 text-slate-300 cursor-pointer">
                   <input id="mobile-terms-accepted" type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} required className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500" />
-                  <span>Saya menyetujui Terms &amp; Conditions dan pembuatan wallet baru.</span>
+                  <span>{t('Saya menyetujui Terms & Conditions dan pembuatan wallet baru.')}</span>
                 </label>
               </div>
               {verificationNotice && (
@@ -243,8 +249,8 @@ export const MobileAuthModal: React.FC = () => {
               )}
               {generatedWallet && (
                 <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
-                  <div className="text-xs font-black uppercase tracking-wider text-amber-300">Simpan Recovery Phrase</div>
-                  <p className="text-[10px] leading-4 text-amber-100/80">Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.</p>
+                  <div className="text-xs font-black uppercase tracking-wider text-amber-300" >{t('Simpan Recovery Phrase')}</div>
+                  <p className="text-[10px] leading-4 text-amber-100/80">{t('Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.')}</p>
                   <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
                     <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
                     <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
@@ -255,7 +261,7 @@ export const MobileAuthModal: React.FC = () => {
                   </div>
                   <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
                     <input type="checkbox" checked={walletBackupConfirmed} onChange={(e) => setWalletBackupConfirmed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-amber-500 text-amber-500" />
-                    <span>Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.</span>
+                    <span>{t('Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.')}</span>
                   </label>
                 </div>
               )}
@@ -267,8 +273,8 @@ export const MobileAuthModal: React.FC = () => {
             className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 disabled:opacity-40 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all"
           >
             {isSubmitting ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" /> :
-              authMode === 'login' ? 'LOGIN WITH WALLET' :
-              pendingRegistrationAuth ? 'SAYA SUDAH MENYIMPAN — MASUK' : 'GENERATE NEW WALLET'}
+              authMode === 'login' ? t('LOGIN WITH WALLET') :
+              pendingRegistrationAuth ? t('BUAT AKUN DENGAN WALLET INI') : t('GENERATE WALLET')}
           </button>
         </form>
         {/* Divider */}
