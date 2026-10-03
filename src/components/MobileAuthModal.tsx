@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
-import { BrowserProvider, HDNodeWallet } from 'ethers';
+import { HDNodeWallet } from 'ethers';
 import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
 import { SysLogo } from './SysLogo';
 import {
-  User,
-  Lock,
-  Eye,
-  EyeOff,
   Wallet,
   Shield,
   Fingerprint,
   X,
-  Sparkles,
-  CheckCircle,
 } from 'lucide-react';
 
 export const MobileAuthModal: React.FC = () => {
-  const { loginModalOpen, setLoginModalOpen, login, user } = useGame();
+  const { loginModalOpen, setLoginModalOpen, login } = useGame();
 
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [usernameInput, setUsernameInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [verificationNotice, setVerificationNotice] = useState('');
@@ -37,54 +27,55 @@ export const MobileAuthModal: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sound.playClick();
+
+    if (authMode === 'login') {
+      await handleWalletAuth();
+      return;
+    }
+
+    if (!termsAccepted) return;
+
+    if (pendingRegistrationAuth && walletBackupConfirmed) {
+      completeRegistration();
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
-      let body: Record<string, unknown>;
-      let newWallet: HDNodeWallet | null = null;
+      const newWallet = HDNodeWallet.createRandom();
+      const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
 
-      if (authMode === 'login') {
-        await handleWalletAuth();
-        return;
-      } else {
-        if (pendingRegistrationAuth && walletBackupConfirmed) {
-          completeRegistration();
-          return;
-        }
-        // Create the wallet locally. The private key/recovery phrase is never sent to the server.
-        newWallet = HDNodeWallet.createRandom();
-        const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
-        body = {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           username: '',
           password: registrationPassword,
-          termsAccepted,
+          termsAccepted: true,
           termsVersion: TERMS_VERSION,
           walletAddress: newWallet.address,
-        };
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.token || !data?.user) {
+        throw new Error(data?.error || 'Registrasi wallet gagal.');
       }
 
-      const res = await fetch(endpoint, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(body)
+      setGeneratedWallet({
+        address: newWallet.address,
+        phrase: newWallet.mnemonic?.phrase || '',
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
-      if (authMode === 'register' && newWallet) {
-        setGeneratedWallet({ address: newWallet.address, phrase: newWallet.mnemonic?.phrase || '' });
-        setWalletBackupConfirmed(false);
-        setPendingRegistrationAuth({ token: String(data.token), user: data.user });
-        setVerificationNotice('Akun berhasil dibuat tanpa email. Simpan recovery phrase sebelum melanjutkan.');
-        setPasswordInput('');
-        return;
-      }
-      localStorage.setItem('sys_stream_auth_token', data.token);
-      localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
-      login(data.user?.username || usernameInput.trim());
+      setWalletBackupConfirmed(false);
+      setPendingRegistrationAuth({ token: String(data.token), user: data.user });
+      setVerificationNotice('Akun berhasil dibuat. Simpan recovery phrase sebelum melanjutkan.');
     } catch (error) {
-      console.error(error);
-      window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
-    } finally { setIsSubmitting(false); }
+      console.error('Wallet registration failed', error);
+      setVerificationNotice(error instanceof Error ? error.message : 'Registrasi wallet gagal.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const completeRegistration = () => {
@@ -95,52 +86,56 @@ export const MobileAuthModal: React.FC = () => {
   };
 
   const handleWalletAuth = async () => {
-    sound.playClick();
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
+    setVerificationNotice('');
+
     try {
       const ethereum = (window as any).ethereum;
       if (!ethereum) {
-        throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel, lalu coba lagi.');
+        throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
       }
 
-      const provider = new BrowserProvider(ethereum);
-      await provider.send('eth_requestAccounts', []);
-      const signer = await provider.getSigner();
-      const walletAddress = await signer.getAddress();
+      const accounts = (await ethereum.request({ method: 'eth_requestAccounts' })) as string[];
+      const wallet = String(accounts?.[0] || '').toLowerCase();
+      if (!wallet) throw new Error('Wallet address tidak ditemukan.');
 
-      const challengeResponse = await fetch('/api/auth/web3/challenge', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ walletAddress }),
+      const nonceRes = await fetch('/api/auth/wallet/nonce', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wallet }),
       });
-      const challenge = await challengeResponse.json().catch(() => ({}));
-      if (!challengeResponse.ok || !challenge?.success) {
-        throw new Error(challenge?.error || 'Gagal membuat challenge wallet.');
+      const nonceData = await nonceRes.json().catch(() => ({}));
+      if (!nonceRes.ok || !nonceData?.nonce) {
+        throw new Error(nonceData?.error || 'Gagal membuat nonce wallet.');
       }
 
-      const signature = await signer.signMessage(challenge.message);
-      const loginResponse = await fetch('/api/auth/web3/login', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          challengeId: challenge.challengeId,
-          walletAddress,
-          message: challenge.message,
-          signature,
-        }),
+      const message = 'SYS STREAMER LOGIN\\n\\nNonce:' + String(nonceData.nonce);
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [message, wallet],
       });
-      const data = await loginResponse.json().catch(() => ({}));
-      if (!loginResponse.ok || !data?.success || !data?.token) {
-        throw new Error(data?.error || 'Login wallet gagal.');
+
+      const verifyRes = await fetch('/api/auth/wallet/verify', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wallet, signature, message }),
+      });
+      const verifyData = await verifyRes.json().catch(() => ({}));
+
+      if (!verifyRes.ok || !verifyData?.token || !verifyData?.user) {
+        throw new Error(verifyData?.error || 'Verifikasi tanda tangan wallet gagal.');
       }
 
-      localStorage.setItem('sys_stream_auth_token', data.token);
-      localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
-      login(data.user?.username || `Web3_${walletAddress.slice(2,8)}`);
+      localStorage.setItem('sys_stream_auth_token', String(verifyData.token));
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(verifyData.user));
+      login(verifyData.user?.username || `WEB3_${wallet.slice(2, 8).toUpperCase()}`);
     } catch (error) {
       console.error('EVM wallet authentication failed', error);
-      const message = error instanceof Error ? error.message : 'Login wallet gagal.';
-      setVerificationNotice(message);
+      setVerificationNotice(error instanceof Error ? error.message : 'Login wallet gagal.');
     } finally {
       setIsSubmitting(false);
     }
