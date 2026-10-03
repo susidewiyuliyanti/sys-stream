@@ -307,11 +307,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const idType = String(idMeta?.type || "").toUpperCase();
     const legacyIntegerId = !!idMeta && Number(idMeta.pk) === 1 && !/CHAR|CLOB|TEXT|BLOB/.test(idType);
 
+    // Email is no longer part of registration. Some older production D1
+    // schemas, however, still have a NOT NULL legacy email column. Do not ask
+    // the user for an email and do not expose this value; only provide a
+    // deterministic internal placeholder when the old column structurally
+    // requires one. New schemas continue to store NULL.
+    const emailMeta = userColumns.find((column:any) => String(column.name) === "email");
+    const legacyEmailValue =
+      emailMeta && Number(emailMeta.notnull) === 1
+        ? "wallet_" + walletAddress.slice(2).toLowerCase() + "@sysstreamer.invalid"
+        : null;
+
     const values: Record<string, any> = {
       id,
       username,
-      // Legacy column only; email is never collected or used.
-      email: null,
+      // Legacy compatibility only. Email is never collected, validated,
+      // displayed, or used as an authentication credential.
+      email: legacyEmailValue,
       password_hash: passwordHash,
       password: passwordHash,
       display_name: displayName,
