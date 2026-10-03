@@ -58,6 +58,31 @@ async function ensureRegistrationSchema(env: Env) {
     ["avatar_url", "TEXT"],
     ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
+
+    // Legacy production columns from the first SYS STREAM schema.
+    ["cuid", "TEXT DEFAULT ''"],
+    ["uid", "TEXT"],
+    ["password", "TEXT"],
+    ["photo_url", "TEXT DEFAULT ''"],
+    ["streamer_handle", "TEXT"],
+    ["bio", "TEXT"],
+    ["saldo", "REAL NOT NULL DEFAULT 0"],
+    ["wallet_balance", "REAL NOT NULL DEFAULT 0"],
+    ["affiliate_earnings", "REAL NOT NULL DEFAULT 0"],
+    ["affiliate_withdrawn", "REAL NOT NULL DEFAULT 0"],
+    ["is_subscribed", "INTEGER NOT NULL DEFAULT 0"],
+    ["subscription_plan", "TEXT NOT NULL DEFAULT 'free'"],
+    ["subscription_expires_at", "INTEGER"],
+    ["is_lifetime", "INTEGER NOT NULL DEFAULT 0"],
+    ["subscribed_at", "INTEGER"],
+    ["is_blacklisted", "INTEGER NOT NULL DEFAULT 0"],
+    ["is_banned", "INTEGER NOT NULL DEFAULT 0"],
+    ["banned_reason", "TEXT"],
+    ["force_jackpot_next", "INTEGER NOT NULL DEFAULT 0"],
+    ["target_jackpot_nominal", "REAL"],
+    ["last_saldo_modified_by", "TEXT"],
+    ["last_saldo_modification_reason", "TEXT"],
+    ["updated_at", "INTEGER"],
   ];
   // D1 can receive two registration requests at nearly the same time.
   // Both may observe the same missing column and race on ALTER TABLE. A
@@ -209,24 +234,41 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // Secondary records are written afterwards so a non-critical record
     // cannot turn a successfully-created account into a generic 500.
     await env.DB.prepare(
-      `INSERT INTO users(
-        id,username,email,password_hash,display_name,role,
-        available_balance,total_locked,locked_saldo,referral_code,referred_by,created_at,
+      \`INSERT INTO users(
+        id,username,email,password_hash,password,display_name,photo_url,role,
+        available_balance,balance,saldo,wallet_balance,total_locked,locked_saldo,
+        referral_code,referred_by,created_at,updated_at,
         terms_version,terms_accepted_at,email_verified,email_verified_at,
-        registration_bonus_idr,registration_bonus_granted,has_referral_bonus
+        registration_bonus_idr,registration_bonus_granted,has_referral_bonus,
+        cuid,referral_count,affiliate_earnings,affiliate_withdrawn,
+        is_subscribed,subscription_plan,is_lifetime,is_blacklisted,is_banned,
+        force_jackpot_next
       )
-      VALUES(?,?,?,?,?,'USER',0,0,0,?,?,?,?,?,0,NULL,15000,1,0)`
+      VALUES(
+        ?,?,?,?,?,?,?,'USER',
+        0,0,0,0,0,0,
+        ?,?,?,?,
+        ?,?,0,NULL,
+        15000,1,0,
+        ?,0,0,0,
+        0,'free',0,0,0,
+        0
+      )\`
     ).bind(
       id,
       username,
       email,
       passwordHash,
+      passwordHash,
       displayName,
+      "",
       userReferralCode,
       incomingReferralCode || null,
       acceptedAt,
+      acceptedAt,
       TERMS_VERSION,
-      acceptedAt
+      acceptedAt,
+      id,
     ).run();
 
     // Terms acceptance is required by the API contract. If the auxiliary
