@@ -64,18 +64,26 @@ async function currentUser(env: Env, request: Request) {
   return { ok: true as const, user: auth.user as AuthUser };
 }
 
-async function ensureRoom(env: Env, roomId: string, userId: string, now: number) {
-  const room = await env.DB.prepare("SELECT id FROM live_rooms WHERE id = ? LIMIT 1").bind(roomId).first<any>();
-  if (!room) {
+async function getRoom(env: Env, roomId: string) {
+  return env.DB.prepare("SELECT id,owner_user_id,title,description,status,likes FROM live_rooms WHERE id = ? LIMIT 1")
+    .bind(roomId).first<any>();
+}
+
+async function ensureRoom(env: Env, roomId: string, userId: string, now: number, allowCreate = false, title = "", description = "") {
+  let room = await getRoom(env, roomId);
+  if (!room && allowCreate) {
     await env.DB.prepare(
       "INSERT INTO live_rooms(id,owner_user_id,title,description,status,likes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
-    ).bind(roomId, userId, "", "", "LIVE", 0, now, now).run();
+    ).bind(roomId, userId, title, description, "LIVE", 0, now, now).run();
+    room = await getRoom(env, roomId);
   }
+  if (!room) return null;
   await env.DB.prepare(
     `INSERT INTO live_room_members(id,room_id,user_id,joined_at,last_seen_at)
      VALUES(?,?,?,?,?)
      ON CONFLICT(room_id,user_id) DO UPDATE SET last_seen_at=excluded.last_seen_at`
   ).bind(crypto.randomUUID(), roomId, userId, now, now).run();
+  return room;
 }
 
 export async function onRequestGet({ request, env }: { request: Request; env: Env }) {
@@ -85,11 +93,11 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     await ensureLiveSchema(env);
     const roomId = roomIdFrom(request);
     const now = Math.floor(Date.now() / 1000);
+    const room = await getRoom(env, roomId);
+    if (!room) {
+      return json({success:false,error:"Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru."},404);
+    }
     await ensureRoom(env, roomId, String(auth.user.id), now);
-
-    const room = await env.DB.prepare(
-      "SELECT id,owner_user_id,title,description,status,likes FROM live_rooms WHERE id=? LIMIT 1"
-    ).bind(roomId).first<any>();
 
     const members = await env.DB.prepare(
       `SELECT m.user_id AS userId,
@@ -159,6 +167,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const action=String(body?.action||"").trim().toLowerCase();
     const now=Math.floor(Date.now()/1000);
     const userId=String(auth.user.id);
+    const role=String((auth.user as any).role || "user").toLowerCase();
+    const canCreateRoom=role==="streamer" || role==="admin" || role==="owner";
+
+    if(action==="create_room"){
+      if(!canCreateRoom) return json({success:false,error:"Hanya Official Streamer atau Admin/Owner yang dapat membuat room."},403);
+      if(await getRoom(env,roomId)) return json({success:false,error:"Room ID sudah digunakan."},409);
+      const title=String(body?.title||"").trim().slice(0,120);
+      const description=String(body?.description||"").trim().slice(0,500);
+      if(!title) return json({success:false,error:"Judul room wajib diisi."},400);
+      const created=await ensureRoom(env,roomId,userId,now,true,title,description);
+      return json({success:true,room:{
+        id:String(created?.id||roomId),ownerUserId:userId,title,description,status:"LIVE",likes:0,owner:true,participantCount:1
+      }});
+    }
+
+    const existingRoom=await getRoom(env,roomId);
+    if(!existingRoom) return json({success:false,error:"Room tidak ditemukan."},404);
     await ensureRoom(env,roomId,userId,now);
 
     if(action==="message"){
