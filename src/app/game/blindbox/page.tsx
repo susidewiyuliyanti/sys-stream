@@ -253,7 +253,7 @@ export default function BlindboxGamePage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
-            <span>Daily Mystery Blind Box</span>
+            <span>{t('Daily Mystery Blind Box')}</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               Reward harian masuk ke saldo
             </span>
@@ -278,7 +278,7 @@ export default function BlindboxGamePage() {
           ) : (
             <div className="px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-400 flex items-center gap-1.5 font-semibold">
               <Lock className="w-4 h-4" />
-              <span>Lock minimal $4 equivalent untuk membuka Blind Box</span>
+              <span>{t('Lock minimal $4 equivalent untuk membuka Blind Box')}</span>
             </div>
           )}
         </div>
@@ -296,26 +296,26 @@ export default function BlindboxGamePage() {
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>Lock aktif</span>
+            <span>{t('Lock aktif')}</span>
             <span className="text-cyan-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
+          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>Lock aktif</span>
+            <span>{t('Lock aktif')}</span>
             <span className="text-amber-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
+          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>Lock aktif</span>
+            <span>{t('Lock aktif')}</span>
             <span className="text-purple-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
+          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
         </div>
       </div>
 
@@ -326,7 +326,7 @@ export default function BlindboxGamePage() {
             <div className="space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
                 <Lock className="w-3.5 h-3.5" />
-                <span>LOCK SALDO DIBUTUHKAN</span>
+                <span>{t('LOCK SALDO DIBUTUHKAN')}</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white">
                 Lock saldo untuk mendapatkan hak claim Blind Box harian
@@ -377,7 +377,7 @@ export default function BlindboxGamePage() {
                 />
                 <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(71748)}, dapat dimulai dari nominal setara $4 USD; server memvalidasi minimum.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
-                  <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
+                  <span>Quota: <strong className="text-emerald-400">{t('1 Box/Day')}</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
                 </div>
               </div>
@@ -414,7 +414,7 @@ export default function BlindboxGamePage() {
                 className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>Lock Saldo Sekarang</span>
+                <span>{t('Lock Saldo Sekarang')}</span>
               </button>
             </form>
           </div>
@@ -525,7 +525,7 @@ export default function BlindboxGamePage() {
                 <div className="text-base font-bold text-emerald-400 animate-pulse">
                   {unboxingState === 'SHAKING' ? 'Memproses Reward Blind Box...' : 'Opening Mystery Vault!'}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">Server sedang menentukan reward...</div>
+                <div className="text-xs text-slate-400 mt-1">{t('Server sedang menentukan reward...')}</div>
               </div>
             </div>
           )}
@@ -534,7 +534,7 @@ export default function BlindboxGamePage() {
             <div className="flex flex-col items-center text-center space-y-5 z-10 py-4 w-full max-w-md animate-in zoom-in-90 duration-300">
               <div className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4" />
-                <span>Reward Blind Box Harian</span>
+                <span>{t('Reward Blind Box Harian')}</span>
               </div>
 
               {/* USDT Cash Prize Callout Banner */}
@@ -580,13 +580,13 @@ export default function BlindboxGamePage() {
                   className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Package className="w-4 h-4 text-emerald-400" />
-                  <span>Keep in Vault</span>
+                  <span>{t('Keep in Vault')}</span>
                 </button>
                 <button
                   onClick={resetBox}
                   className="py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Done</span>
+                  <span>{t('Done')}</span>
                 </button>
               </div>
 
@@ -634,7 +634,7 @@ export default function BlindboxGamePage() {
                     <p className="text-xs text-slate-400 mt-1">{box.description}</p>
                     <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-500">
                       <span>{box.badge}</span>
-                      {isSelected && <span className="text-emerald-400 font-semibold">Active Selection</span>}
+                      {isSelected && <span className="text-emerald-400 font-semibold">{t('Active Selection')}</span>}
                     </div>
                   </button>
                 );
@@ -646,20 +646,20 @@ export default function BlindboxGamePage() {
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
             <div className="font-semibold text-slate-300 flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-cyan-400" />
-              <span>Jadwal Durasi Lock</span>
+              <span>{t('Jadwal Durasi Lock')}</span>
             </div>
             <div className="space-y-1.5 pt-1">
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">30 Days Term</span>
-                <span className="font-mono text-emerald-400 font-bold">Reward harian sesuai pengaturan server</span>
+                <span className="font-mono text-emerald-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">60 Days Term</span>
-                <span className="font-mono text-cyan-400 font-bold">Reward harian sesuai pengaturan server</span>
+                <span className="font-mono text-cyan-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">90 Days Term</span>
-                <span className="font-mono text-amber-400 font-bold">Reward harian sesuai pengaturan server</span>
+                <span className="font-mono text-amber-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
               </div>
             </div>
           </div>
