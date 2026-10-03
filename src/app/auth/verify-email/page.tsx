@@ -42,7 +42,7 @@ export default function VerifyEmailPage({ navigate }: Props) {
         </div>
         <MailCheck className="mx-auto mb-3 h-5 w-5 text-cyan-400" />
         <h1 className="text-xl font-black">
-          {state === 'loading' ? 'Verifying Email' : state === 'success' ? 'Email Verified' : 'Verification Failed'}
+          {state === 'loading' ? t('Verifying Email') : state === 'success' ? t('Email Verified') : t('Verification Failed')}
         </h1>
         <p className="mt-3 text-sm leading-6 text-slate-400">{message}</p>
         <button
