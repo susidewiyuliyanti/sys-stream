@@ -47,6 +47,10 @@ export const MobileAuthModal: React.FC = () => {
         await handleWalletAuth();
         return;
       } else {
+        if (pendingRegistrationAuth && walletBackupConfirmed) {
+          completeRegistration();
+          return;
+        }
         // Create the wallet locally. The private key/recovery phrase is never sent to the server.
         newWallet = HDNodeWallet.createRandom();
         const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
