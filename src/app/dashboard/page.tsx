@@ -14,6 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
+import { useLanguage, formatRegistrationBonus } from '../../i18n';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -32,6 +33,7 @@ type Post = {
 
 export default function DashboardPage({ navigate }: Props) {
   const { user, isLoggedIn, refreshFinancialState, claimRegistrationBonus } = useGame();
+  const { language } = useLanguage();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -233,7 +235,7 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Registration Bonus</div>
-                <div className="text-lg font-black mt-1 text-emerald-300">Rp15.000</div>
+                <div className="text-lg font-black mt-1 text-emerald-300">{formatRegistrationBonus(language)}</div>
                 <p className="text-xs text-slate-400">Bonus pendaftaran masih tersedia untuk diklaim.</p>
               </div>
               <button onClick={() => void claimRegistrationBonus()} className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300">
