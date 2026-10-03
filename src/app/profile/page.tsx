@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { CryptoDepositModal } from '../../components/CryptoDepositModal';
 import { sound } from '../../lib/sound';
-import { useLanguage } from '../../i18n';
+import { useLanguage, formatRegistrationBonus } from '../../i18n';
 import {
   Settings,
   Bell,
@@ -45,7 +45,7 @@ export default function ProfilePage() {
 
   const [eventStatuses, setEventStatuses] = useState<any[]>([]);
   const [copiedReferral, setCopiedReferral] = useState(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<30 | 60 | 90>(30);
@@ -305,7 +305,7 @@ export default function ProfilePage() {
           <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-slate-950 to-cyan-500/10 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <div className="text-[11px] uppercase tracking-[0.18em] text-emerald-400 font-black">Registration Bonus</div>
-              <div className="text-2xl font-black text-white mt-1">Rp15.000</div>
+              <div className="text-2xl font-black text-white mt-1">{formatRegistrationBonus(language)}</div>
               <div className="text-xs text-slate-400 mt-1">Bonus tersedia dan belum diklaim.</div>
             </div>
             <button disabled={claimingBonus} onClick={() => void handleClaimBonus()} className="px-5 py-3 rounded-2xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300 disabled:opacity-50">
