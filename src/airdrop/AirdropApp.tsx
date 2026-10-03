@@ -355,7 +355,7 @@ export default function AirdropApp() {
         </div>
         {leaderboardError ? <div className="mt-5 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-xs text-red-300">{tx.unavailable} {tx.noDb}</div> :
           <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {(leaders.length?leaders:Array.from({length:3},(_,i)=>({rank:i+1,username:'—',referrals:0}))).map((leader,i)=>
+            {leaders.map((leader,i)=>
               <div key={leader.rank} className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black ${i===0?'bg-amber-400 text-slate-950':'bg-slate-800 text-slate-300'}`}>#{leader.rank}</div>
                 <div className="min-w-0 flex-1"><div className="font-bold truncate">{leader.username}</div><div className="text-[10px] text-slate-500">{tx.successful}</div></div>
