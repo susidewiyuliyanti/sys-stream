@@ -2553,6 +2553,58 @@ export function useLanguage() {
   return context;
 }
 
+const FOOTER_ABOUT_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'About Us':'About Us',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.',
+    'Official Streamer Partner':'Official Streamer Partner',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.'
+  },
+  en: {
+    'About Us':'About Us',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM is a live, social interaction, and game/event platform connecting streamers with communities in real time.',
+    'Official Streamer Partner':'Official Streamer Partner',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAM works with selected streamers. Official Streamer Partners use their platform accounts to create and manage rooms according to their assigned permissions.'
+  },
+  es: {
+    'About Us':'Sobre nosotros',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM es una plataforma de directos, interacción social y juegos/eventos que conecta a streamers con comunidades en tiempo real.',
+    'Official Streamer Partner':'Socio Oficial de Streamers',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAM trabaja con streamers seleccionados. Los socios oficiales utilizan sus cuentas para crear y gestionar salas según los permisos asignados.'
+  },
+  pt: {
+    'About Us':'Sobre nós',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'A SYS STREAM é uma plataforma de lives, interação social e jogos/eventos que conecta streamers e comunidades em tempo real.',
+    'Official Streamer Partner':'Parceiro Oficial de Streamers',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'A SYS STREAM trabalha com streamers selecionados. Os parceiros oficiais usam suas contas para criar e gerenciar salas conforme as permissões atribuídas.'
+  },
+  zh: {
+    'About Us':'关于我们',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM 是一个直播、社交互动及游戏/活动平台，让主播与社区实时连接。',
+    'Official Streamer Partner':'官方主播合作伙伴',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAM 与精选主播合作。官方主播合作伙伴使用平台账号，根据分配的权限创建和管理直播间。'
+  },
+  ja: {
+    'About Us':'私たちについて',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAMは、ストリーマーとコミュニティをリアルタイムでつなぐライブ配信・ソーシャル交流・ゲーム/イベントプラットフォームです。',
+    'Official Streamer Partner':'公式ストリーマーパートナー',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAMは選定されたストリーマーと提携しています。公式ストリーマーパートナーは、付与された権限に従ってアカウントからルームを作成・管理します。'
+  },
+  ko: {
+    'About Us':'회사 소개',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM은 스트리머와 커뮤니티를 실시간으로 연결하는 라이브, 소셜 인터랙션 및 게임/이벤트 플랫폼입니다.',
+    'Official Streamer Partner':'공식 스트리머 파트너',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'SYS STREAM은 선정된 스트리머와 협력합니다. 공식 스트리머 파트너는 부여된 권한에 따라 플랫폼 계정으로 룸을 만들고 관리합니다.'
+  },
+  ar: {
+    'About Us':'من نحن',
+    'SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.':'SYS STREAM هي منصة للبث المباشر والتفاعل الاجتماعي والألعاب/الفعاليات تربط منشئي البث بالمجتمعات في الوقت الفعلي.',
+    'Official Streamer Partner':'شريك البث الرسمي',
+    'SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.':'تتعاون SYS STREAM مع منشئي بث مختارين. يستخدم شركاء البث الرسميون حساباتهم لإنشاء الغرف وإدارتها وفق الصلاحيات الممنوحة لهم.'
+  }
+};
+for (const lang of Object.keys(FOOTER_ABOUT_TRANSLATIONS) as LanguageCode[]) Object.assign(translations[lang], FOOTER_ABOUT_TRANSLATIONS[lang]);
+
 const STREAMER_FOOTER_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
     'Untuk Streamer':'Untuk Streamer','Streamer yang ingin bekerja sama dengan SYS STREAM dapat menghubungi tim platform untuk proses seleksi dan kerja sama.':'Streamer yang ingin bekerja sama dengan SYS STREAM dapat menghubungi tim platform untuk proses seleksi dan kerja sama.','Cara kerja & setting streamer':'Cara kerja & setting streamer','Aktivasi':'Aktivasi','Buat Live Room':'Buat Live Room','Setting streaming':'Setting streaming','Mulai live':'Mulai live','Kelola room':'Kelola room','Keamanan':'Keamanan','Akun harus disetujui sebagai Official Streamer Partner oleh Admin/Owner sebelum dapat membuat Live Room.':'Akun harus disetujui sebagai Official Streamer Partner oleh Admin/Owner sebelum dapat membuat Live Room.','Masuk ke Live Room, buat room dengan judul dan deskripsi, lalu room menjadi milik akun streamer tersebut.':'Masuk ke Live Room, buat room dengan judul dan deskripsi, lalu room menjadi milik akun streamer tersebut.','Di kontrol streamer, buat Live Input Cloudflare lalu salin RTMPS Server dan Stream Key ke OBS. Gunakan Service: Custom.':'Di kontrol streamer, buat Live Input Cloudflare lalu salin RTMPS Server dan Stream Key ke OBS. Gunakan Service: Custom.','Klik Start Streaming di OBS, kemudian periksa status streaming pada room. Video produksi akan tampil setelah stream aktif.':'Klik Start Streaming di OBS, kemudian periksa status streaming pada room. Video produksi akan tampil setelah stream aktif.','Pemilik room dapat memantau peserta, chat, like, dan aktivitas live. Data peserta harus berasal dari pengguna yang benar-benar bergabung.':'Pemilik room dapat memantau peserta, chat, like, dan aktivitas live. Data peserta harus berasal dari pengguna yang benar-benar bergabung.','Jangan membagikan Stream Key. Jika Stream Key bocor, buat ulang Live Input agar kredensial lama tidak dapat digunakan.':'Jangan membagikan Stream Key. Jika Stream Key bocor, buat ulang Live Input agar kredensial lama tidak dapat digunakan.'
