@@ -848,7 +848,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         (typeof data === 'string' ? data : '') ||
         'Server gagal membuat invoice pembayaran crypto.'
       ).trim();
-      throw new Error(message + providerDetail);
+      const error: any = new Error(message + providerDetail);
+      if (data?.minimum_usd != null) error.minimumUsd = Number(data.minimum_usd);
+      if (data?.amount_usd != null) error.amountUsd = Number(data.amount_usd);
+      if (data?.pay_currency) error.payCurrency = String(data.pay_currency);
+      throw error;
     }
 
     const remote = data.invoice;
