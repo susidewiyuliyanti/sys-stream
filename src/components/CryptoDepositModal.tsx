@@ -30,7 +30,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const amount = customUsd ? Number(customUsd) : selectedUsd;
     const currency = selectedCurrency === 'USDT' ? 'usdttrc20' : selectedCurrency.toLowerCase();
     setIsCheckingRules(true);
-    fetch(`/api/payments/create-invoice?currency=${encodeURIComponent(currency)}&amount=${encodeURIComponent(String(Number.isFinite(amount) ? amount : 0))}`, {
+    const timer = setTimeout(() => fetch(`/api/payments/create-invoice?currency=${encodeURIComponent(currency)}&amount=${encodeURIComponent(String(Number.isFinite(amount) ? amount : 0))}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('sys_stream_auth_token') || ''}` },
     })
       .then(async r => ({ ok: r.ok, data: await r.json().catch(() => ({})) }))
@@ -42,7 +42,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
       })
       .catch(() => { if (!cancelled) { setEstimatedCrypto(null); setMinAmountUsd(5); } })
       .finally(() => { if (!cancelled) setIsCheckingRules(false); });
-    return () => { cancelled = true; };
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [isOpen, selectedCurrency, selectedUsd, customUsd]);
 
   if (!isOpen) return null;
