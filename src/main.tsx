@@ -7,9 +7,29 @@ const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
   : '';
 
-const UserApp = lazy(() => import('./App.tsx'));
-const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
-const AirdropApp = lazy(() => import('./airdrop/AirdropApp.tsx'));
+const RECOVERY_KEY = '__sysstream_bundle_recovery';
+
+function lazyWithBundleRecovery<T extends React.ComponentType<any>>(loader: () => Promise<{ default: T }>) {
+  return lazy(async () => {
+    try {
+      return await loader();
+    } catch (error) {
+      // Recover once from a stale HTML/chunk cache after a production deployment.
+      // The second attempt is guarded so a real application error does not loop.
+      if (!sessionStorage.getItem(RECOVERY_KEY)) {
+        sessionStorage.setItem(RECOVERY_KEY, '1');
+        const url = new URL(window.location.href);
+        url.searchParams.set('__sysstream_reload', String(Date.now()));
+        window.location.replace(url.toString());
+      }
+      throw error;
+    }
+  });
+}
+
+const UserApp = lazyWithBundleRecovery(() => import('./App.tsx'));
+const AdminApp = lazyWithBundleRecovery(() => import('./admin/AdminApp.tsx'));
+const AirdropApp = lazyWithBundleRecovery(() => import('./airdrop/AirdropApp.tsx'));
 
 class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null as Error | null };
