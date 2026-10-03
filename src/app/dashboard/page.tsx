@@ -86,7 +86,21 @@ export default function DashboardPage({ navigate }: Props) {
 
   return (
     <section className="min-h-screen bg-[#050814] text-white px-4 py-5 sm:py-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto w-full lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-6">
+        <aside className="hidden lg:flex lg:flex-col lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] rounded-2xl border border-slate-800 bg-slate-900/70 p-3">
+          <div className="px-3 py-3 mb-2">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-black">SYS STREAM</div>
+            <div className="text-sm font-black mt-1 text-white">Workspace</div>
+          </div>
+          <nav className="space-y-1 text-sm">
+            <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">Dashboard</button>
+            <button onClick={() => navigate?.('/room/cyberneko-live')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Live Room</button>
+            <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Games</button>
+            <button onClick={() => navigate?.('/profile')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">Profile</button>
+          </nav>
+          <div className="mt-auto p-3 rounded-xl bg-slate-950 border border-slate-800 text-[10px] text-slate-500">Desktop workspace aktif. Pada Android, navigasi otomatis menggunakan layout mobile.</div>
+        </aside>
+        <main className="min-w-0 space-y-6">
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-cyan-400 font-bold">
@@ -224,6 +238,7 @@ export default function DashboardPage({ navigate }: Props) {
             <Gift className="w-5 h-5 text-emerald-400 mb-2" /><div className="font-bold">Blind Box</div><div className="text-xs text-slate-500 mt-1">Buka Blind Box dengan saldo akun.</div><ArrowRight className="w-4 h-4 mt-3 text-slate-500" />
           </button>
         </section>
+        </main>
       </div>
 
       {joinRoom && (
