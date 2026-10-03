@@ -10,14 +10,10 @@ import {
   Package,
   RefreshCw,
   Lock,
-  Unlock,
-  AlertTriangle,
   Clock,
   ArrowRight,
   CheckCircle,
   Gem,
-  DollarSign,
-  TrendingUp,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -35,7 +31,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    description: 'Unlocked for all active stakers ($4+ USDT). Contains daily cash drops in USDT & cyber gear.',
+    description: 'Tersedia untuk lock aktif minimal Rp 50.000. Reward harian diproses server dan masuk ke saldo tersedia.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: 4,
@@ -49,7 +45,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'apex_lockbox',
     name: 'Apex High-Roller Crate',
-    description: 'Higher drop rate of pure USDT rewards and rare collectibles for $50+ stakers.',
+    description: 'Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
     badge: '$50+ Staker Enhanced',
     accentColor: '#a855f7',
     minLockedRequired: 50,
@@ -63,7 +59,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'dragon_vault',
     name: 'Celestial Dragon Vault',
-    description: 'Supreme vault containing legendary artifacts and maximum USDT rewards for high stakers.',
+    description: 'Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
     badge: 'Supreme Tier ($100+)',
     accentColor: '#f59e0b',
     minLockedRequired: 100,
@@ -79,14 +75,10 @@ const BOX_TIERS: BoxTier[] = [
 export default function BlindboxGamePage() {
   const {
     user,
-    updateCoins,
     addToInventory,
     addGameHistory,
     locks,
     createLock,
-    claimDailyLockYield,
-    unlockEarly,
-    hasActiveLock,
     getTotalLockedUsdt,
     getDailyBoxQuota,
     getRemainingDailyBoxes,
@@ -101,10 +93,8 @@ export default function BlindboxGamePage() {
   const [wonUsdt, setWonUsdt] = useState<number>(0);
 
   // Staking lock modal/form
-  const [lockUsdAmount, setLockUsdAmount] = useState<number>(4);
+  const [lockIdrAmount, setLockIdrAmount] = useState<number>(50000);
   const [lockDuration, setLockDuration] = useState<30 | 60 | 90>(30);
-  const [isEarlyUnlockModalOpen, setIsEarlyUnlockModalOpen] = useState(false);
-  const [targetUnlockLockId, setTargetUnlockLockId] = useState<string | null>(null);
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
@@ -128,7 +118,7 @@ export default function BlindboxGamePage() {
   const totalLocked = getTotalLockedUsdt();
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
-  const isQualified = totalLocked >= 4;
+  const isQualified = totalLocked >= 50000;
 
   const activeLocks = locks.filter((l) => l.status === 'locked');
   const primaryLock: LockRecord | undefined = activeLocks[0];
@@ -136,23 +126,17 @@ export default function BlindboxGamePage() {
   const handleCreateStakingLock = (e: React.FormEvent) => {
     e.preventDefault();
     requireAuth(() => {
-      createLock(lockUsdAmount, lockDuration);
+      createLock(lockIdrAmount, lockDuration);
     });
   };
 
-  const handleConfirmEarlyUnlock = () => {
-    if (!targetUnlockLockId) return;
-    unlockEarly(targetUnlockLockId);
-    setIsEarlyUnlockModalOpen(false);
-    setTargetUnlockLockId(null);
-  };
 
   const startDailyUnboxing = () => {
     requireAuth(async () => {
       if (!isQualified) {
         showToast(
           'Staking Required',
-          'You must lock a minimum of 4.00 USDT to open daily Blind Boxes.',
+          'Anda harus mengunci minimal Rp 50.000 untuk membuka Blind Box harian.',
           'error'
         );
         return;
@@ -181,8 +165,7 @@ export default function BlindboxGamePage() {
           setUnboxingState('REVEALING');
 
           const result = await claimBlindBox(selectedBox.id);
-          const finalUsdtReward = Number(result.rewardUsdt || 0);
-          const coinsEquiv = Math.floor(finalUsdtReward * 100);
+          const rewardIdr = Number(result.reward ?? result.prizeAmount ?? 0);
 
           const baseItem = selectedBox.lootPool.find(item => item.id === result.item?.id) || selectedBox.lootPool[0];
           const uniqueItem: BlindboxItem = {
@@ -190,18 +173,18 @@ export default function BlindboxGamePage() {
             id: 'pull_' + result.claimId,
             name: result.item?.name || baseItem.name,
             rarity: result.item?.rarity || baseItem.rarity,
-            usdtReward: finalUsdtReward,
-            coinValue: coinsEquiv,
+            usdtReward: 0,
+            coinValue: 0,
           };
 
           setUnboxedItem(uniqueItem);
-          setWonUsdt(finalUsdtReward);
+          setWonUsdt(rewardIdr);
 
           setTimeout(() => {
             setUnboxingState('REVEALED');
             sound.playUnboxReveal(uniqueItem.rarity);
 
-            if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || finalUsdtReward >= 10) {
+            if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || rewardIdr >= 100000) {
               sound.playJackpot();
               confetti({
                 particleCount: 130,
@@ -214,10 +197,10 @@ export default function BlindboxGamePage() {
               gameType: 'blindbox',
               gameName: selectedBox.name,
               betAmount: 0,
-              payoutAmount: coinsEquiv,
+              payoutAmount: rewardIdr,
               multiplier: 1.0,
               isWin: true,
-              details: `Daily Box: +$${finalUsdtReward.toFixed(2)} USDT & ${uniqueItem.name}`,
+              details: `Daily Box: +Rp ${rewardIdr.toLocaleString('id-ID')} & ${uniqueItem.name}`,
             });
           }, 700);
         }, 1200);
@@ -269,11 +252,11 @@ export default function BlindboxGamePage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <span>Daily Mystery Blind Box</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              All Rewards in USDT
+              Reward harian masuk ke saldo
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Open your daily mystery box based on your locked USDT balance. Quota resets daily at 00:00 UTC.
+            Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.
           </p>
         </div>
 
@@ -292,7 +275,7 @@ export default function BlindboxGamePage() {
           ) : (
             <div className="px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-400 flex items-center gap-1.5 font-semibold">
               <Lock className="w-4 h-4" />
-              <span>Lock $4+ USDT to Unlock Daily Boxes</span>
+              <span>Lock minimal Rp 50.000 untuk membuka Blind Box</span>
             </div>
           )}
         </div>
@@ -302,34 +285,34 @@ export default function BlindboxGamePage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 text-xs">
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>$4 - $49 USDT</span>
-            <span className="text-emerald-400 font-mono">1 Box / Day</span>
+            <span>Rp 50.000+ Lock</span>
+            <span className="text-emerald-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Minimum qualifying lock. 1 box reset daily.</div>
+          <div className="text-[11px] text-slate-400">Minimum lock Rp 50.000. Maksimal 1 claim per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>$50 - $99 USDT</span>
-            <span className="text-cyan-400 font-mono">2 Boxes / Day</span>
+            <span>Lock aktif</span>
+            <span className="text-cyan-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">2x daily opening quota. Resets every day.</div>
+          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>$100 - $249 USDT</span>
-            <span className="text-amber-400 font-mono">3 Boxes / Day</span>
+            <span>Lock aktif</span>
+            <span className="text-amber-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">3x daily openings + enhanced USDT rewards.</div>
+          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>$500+ USDT</span>
-            <span className="text-purple-400 font-mono">10 Boxes / Day</span>
+            <span>Lock aktif</span>
+            <span className="text-purple-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">VIP Whale status. Maximum daily USDT yields.</div>
+          <div className="text-[11px] text-slate-400">Aturan claim tetap 1 kali per hari.</div>
         </div>
       </div>
 
@@ -340,19 +323,17 @@ export default function BlindboxGamePage() {
             <div className="space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
                 <Lock className="w-3.5 h-3.5" />
-                <span>USDT STAKING LOCK REQUIRED</span>
+                <span>LOCK SALDO DIBUTUHKAN</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white">
-                Lock USDT to Claim Daily Boxes & Earn Passive USDT Yields
+                Lock saldo untuk mendapatkan hak claim Blind Box harian
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
-                  Estimated returns based on commitment: <strong>10% (30 Days)</strong> ·{' '}
-                  <strong>15% (60 Days)</strong> · <strong>20% (90 Days)</strong>.
+                  Durasi lock tersedia: <strong>30 hari</strong> · <strong>60 hari</strong> · <strong>90 hari</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
-                  ⚠️ Early unlock is available anytime; however, if unlocked before completing the committed duration,
-                  all daily rewards are forfeited (reward harian hangus), and only your initial locked principal is refunded.
+                  ⚠️ Lock hanya dapat diselesaikan setelah masa lock berakhir. Sistem tidak menyediakan early unlock melalui Blind Box.
                 </p>
               </div>
             </div>
@@ -364,16 +345,16 @@ export default function BlindboxGamePage() {
             >
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
-                  Lock Amount (USDT)
+                  Nominal Lock (IDR)
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
                   {[4, 50, 100, 250].map((amt) => (
                     <button
                       key={amt}
                       type="button"
-                      onClick={() => { sound.playClick(); setLockUsdAmount(amt); }}
+                      onClick={() => { sound.playClick(); setLockIdrAmount(amt); }}
                       className={`py-1 text-xs font-bold rounded-lg border transition-all ${
-                        lockUsdAmount === amt
+                        lockIdrAmount === amt
                           ? 'bg-amber-500 text-slate-950 border-amber-400'
                           : 'bg-slate-900 border-slate-800 text-slate-300'
                       }`}
@@ -384,23 +365,23 @@ export default function BlindboxGamePage() {
                 </div>
                 <input
                   type="number"
-                  min="4"
-                  step="0.01"
-                  value={lockUsdAmount}
-                  onChange={(e) => setLockUsdAmount(Math.max(4, Number(e.target.value) || 4))}
+                  min="50000"
+                  step="10000"
+                  value={lockIdrAmount}
+                  onChange={(e) => setLockIdrAmount(Math.max(50000, Number(e.target.value) || 50000))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder="Nominal lock pilihan user"
                 />
-                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum 4 USDT.</div>
+                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum Rp 50.000, kelipatan Rp 10.000.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
-                  <span>Quota: <strong className="text-emerald-400">{lockUsdAmount >= 250 ? '5 Boxes/Day' : lockUsdAmount >= 100 ? '3 Boxes/Day' : lockUsdAmount >= 50 ? '2 Boxes/Day' : '1 Box/Day'}</strong></span>
-                  <span className="font-mono text-amber-400">{lockUsdAmount * 100} Coins</span>
+                  <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
+                  <span className="font-mono text-amber-400">Rp {lockIdrAmount.toLocaleString('id-ID')}</span>
                 </div>
               </div>
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
-                  Commitment & Return
+                  Durasi Lock
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
@@ -430,7 +411,7 @@ export default function BlindboxGamePage() {
                 className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>Lock Now</span>
+                <span>Lock Saldo Sekarang</span>
               </button>
             </form>
           </div>
@@ -449,78 +430,19 @@ export default function BlindboxGamePage() {
                     Total Locked: ${totalLocked.toFixed(2)} USDT ({dailyQuota} Boxes/Day Quota)
                   </h3>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-mono font-bold">
-                    Active Commitment
+                    Lock Aktif
                   </span>
                 </div>
                 <div className="text-xs text-slate-400 mt-0.5">
-                  Est. Staking Yield: 10% (30d) · 15% (60d) · 20% (90d) | Daily Claims:{' '}
+                  Daily Claim: 
                   <strong className="text-amber-400">{primaryLock?.dailyClaims}x</strong>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => primaryLock && claimDailyLockYield(primaryLock.id)}
-                className="px-3.5 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold rounded-xl transition-colors cursor-pointer"
-              >
-                Claim Daily Yield
-              </button>
-
-              <button
-                onClick={() => {
-                  if (primaryLock) {
-                    setTargetUnlockLockId(primaryLock.id);
-                    setIsEarlyUnlockModalOpen(true);
-                  }
-                }}
-                className="px-3.5 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <Unlock className="w-3.5 h-3.5" />
-                <span>Early Unlock</span>
-              </button>
+            <div className="text-xs text-slate-400 max-w-xs text-right">
+              Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* EARLY UNLOCK FORFEIT WARNING MODAL */}
-      {isEarlyUnlockModalOpen && primaryLock && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-slate-900 border border-rose-500/40 rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center gap-3 text-rose-400">
-              <AlertTriangle className="w-6 h-6 shrink-0" />
-              <h3 className="text-base font-bold text-white">Confirm Early Unlock</h3>
-            </div>
-
-            <div className="p-3.5 bg-rose-950/40 border border-rose-500/30 rounded-xl text-xs text-rose-200 space-y-1.5">
-              <div className="font-bold">⚠️ Staking Policy Rule:</div>
-              <p>
-                You committed to <strong>{primaryLock.durationDays} Days</strong>. If you unlock early before the term
-                completes:
-              </p>
-              <ul className="list-disc list-inside text-[11px] space-y-0.5 text-rose-300 font-semibold">
-                <li>All daily yield rewards (+{primaryLock.accumulatedYieldCoins} Coins) are forfeited.</li>
-                <li>Only your initial principal of ${primaryLock.amount.toFixed(2)} USDT ({Math.floor(primaryLock.amount * 100)} Coins) will be refunded.</li>
-                <li>Daily blind box unboxing privileges will be suspended until a new lock is active.</li>
-              </ul>
-            </div>
-
-            <div className="flex gap-2.5 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsEarlyUnlockModalOpen(false)}
-                className="flex-1 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
-              >
-                Cancel & Keep Staking
-              </button>
-              <button
-                type="button"
-                onClick={handleConfirmEarlyUnlock}
-                className="flex-1 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl transition-colors"
-              >
-                Forfeit Rewards & Unlock
-              </button>
             </div>
           </div>
         </div>
@@ -572,7 +494,7 @@ export default function BlindboxGamePage() {
                   <Box className="w-4 h-4 fill-current" />
                   <span>
                     {!isQualified
-                      ? 'Lock $4+ USDT to Enable'
+                      ? 'Lock minimal Rp 50.000 untuk mengaktifkan'
                       : remainingBoxes > 0
                       ? `Open Daily Box (${remainingBoxes} Available Today)`
                       : `Daily Limit Reached (Resets in ${timeToReset})`}
@@ -598,9 +520,9 @@ export default function BlindboxGamePage() {
               </div>
               <div className="text-center">
                 <div className="text-base font-bold text-emerald-400 animate-pulse">
-                  {unboxingState === 'SHAKING' ? 'Decrypting Daily USDT Drop...' : 'Opening Mystery Vault!'}
+                  {unboxingState === 'SHAKING' ? 'Memproses Reward Blind Box...' : 'Opening Mystery Vault!'}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">Calibrating USDT Reward Distribution</div>
+                <div className="text-xs text-slate-400 mt-1">Server sedang menentukan reward...</div>
               </div>
             </div>
           )}
@@ -609,19 +531,19 @@ export default function BlindboxGamePage() {
             <div className="flex flex-col items-center text-center space-y-5 z-10 py-4 w-full max-w-md animate-in zoom-in-90 duration-300">
               <div className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4" />
-                <span>Daily USDT Reward Unlocked!</span>
+                <span>Reward Blind Box Harian</span>
               </div>
 
               {/* USDT Cash Prize Callout Banner */}
               <div className="w-full p-4 bg-emerald-500/15 border-2 border-emerald-500/50 rounded-2xl text-center space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  Instant USDT Prize Credited to Wallet
+                  Reward dikreditkan ke saldo tersedia
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
-                  +${wonUsdt.toFixed(2)} USDT
+                  +Rp {wonUsdt.toLocaleString('id-ID')}
                 </div>
                 <div className="text-xs text-slate-400">
-                  (Equivalent to +{unboxedItem.coinValue} Gold Coins)
+                  Reward diproses dalam saldo IDR
                 </div>
               </div>
 
@@ -703,7 +625,7 @@ export default function BlindboxGamePage() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-bold text-white">{box.name}</span>
                       <span className={`text-xs font-mono font-bold ${isTierUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
-                        {isTierUnlocked ? 'Unlocked' : `Requires $${box.minLockedRequired}+ Lock`}
+                        {isTierUnlocked ? 'Unlocked' : `Requires Rp ${box.minLockedRequired.toLocaleString('id-ID')}+ Lock`}
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-1">{box.description}</p>
@@ -717,24 +639,24 @@ export default function BlindboxGamePage() {
             </div>
           </div>
 
-          {/* Staking Return Estimates */}
+          {/* Aturan Lock */}
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
             <div className="font-semibold text-slate-300 flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-cyan-400" />
-              <span>USDT Staking Return Schedule</span>
+              <span>Jadwal Durasi Lock</span>
             </div>
             <div className="space-y-1.5 pt-1">
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">30 Days Term</span>
-                <span className="font-mono text-emerald-400 font-bold">10% Total Yield</span>
+                <span className="font-mono text-emerald-400 font-bold">Reward harian sesuai pengaturan server</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">60 Days Term</span>
-                <span className="font-mono text-cyan-400 font-bold">15% Total Yield</span>
+                <span className="font-mono text-cyan-400 font-bold">Reward harian sesuai pengaturan server</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">90 Days Term</span>
-                <span className="font-mono text-amber-400 font-bold">20% Total Yield</span>
+                <span className="font-mono text-amber-400 font-bold">Reward harian sesuai pengaturan server</span>
               </div>
             </div>
           </div>
