@@ -115,7 +115,7 @@ export async function onRequestPost(context:any){
     await context.env.DB.prepare(`
       INSERT INTO auth_sessions(token, user_id, expires_at)
       VALUES(?,?,?)
-    `).bind(token, user.id, Date.now() + 86400000).run();
+    `).bind(token, user.id, Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).run();
 
     return new Response(JSON.stringify({ token, user }), { headers: { "Content-Type": "application/json", "Set-Cookie": createAuthCookie(token) } });
   } catch (error) {
