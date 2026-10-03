@@ -16,6 +16,7 @@ import TebakGamePage from './app/game/tebak/page';
 import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
 import RoomPage from './app/room/[id]/page';
+import AirdropApp from './airdrop/AirdropApp';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -62,6 +63,7 @@ export default function App() {
     '/game/tebak',
     '/profile',
     '/dashboard',
+    '/airdrop',
     '/room',
   ];
 
@@ -94,6 +96,9 @@ export default function App() {
 
     if (currentPath === '/dashboard' || currentPath === '/room') {
       return <DashboardPage navigate={navigate} />;
+    }
+    if (currentPath === '/airdrop') {
+      return <AirdropApp />;
     }
     if (currentPath.startsWith('/room/')) {
       const roomId = decodeURIComponent(currentPath.slice('/room/'.length)) || 'main';
