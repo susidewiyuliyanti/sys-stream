@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useGame } from '../../../context/GameContext';
+import { useLanguage } from '../../../i18n';
 import { sound } from '../../../lib/sound';
 import {
   Users,
@@ -29,6 +30,7 @@ const PALETTE = [
 
 export default function SpinnerGamePage() {
   const { user, viewerList, addViewer, removeViewer, clearViewers, showToast, requireAuth } = useGame();
+  const { t } = useLanguage();
 
   const [newViewerInput, setNewViewerInput] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
@@ -56,7 +58,7 @@ export default function SpinnerGamePage() {
     requireAuth(() => {
       if (isSpinning) return;
       if (viewers.length < 2) {
-        showToast('Need More Viewers', 'Add at least 2 viewer usernames to spin the raffle wheel.', 'error');
+        showToast(t('Need More Viewers'), t('Add at least 2 viewer usernames to spin the raffle wheel.'), 'error');
         return;
       }
 
@@ -107,7 +109,7 @@ export default function SpinnerGamePage() {
           spread: 85,
           origin: { y: 0.5 },
         });
-        showToast('Winner Picked!', `Congratulations @${selectedWinner}! Selected as Lucky Viewer!`, 'jackpot');
+        showToast(t('Winner Picked!'), `${t('Congratulations')} @${selectedWinner}! ${t('Selected as Lucky Viewer!')}`, 'jackpot');
       }, 4200);
     });
   };
@@ -119,7 +121,7 @@ export default function SpinnerGamePage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <RotateCw className="w-7 h-7 text-cyan-400" />
-            <span>Viewer Username Raffle Spinner</span>
+            <span>{t('Viewer Username Raffle Spinner')}</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!
@@ -239,11 +241,11 @@ export default function SpinnerGamePage() {
                 Streamer Username Manager
               </h2>
               <button
-                onClick={() => showToast('Live Chat', 'Tambahkan peserta yang benar-benar masuk dari live room.', 'info')}
+                onClick={() => showToast(t('Live Chat'), t('Tambahkan peserta yang benar-benar masuk dari live room.'), 'info')}
                 className="text-[11px] text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer"
               >
                 <UserPlus className="w-3.5 h-3.5" />
-                <span>Live Participants Only</span>
+                <span>{t('Live Participants Only')}</span>
               </button>
             </div>
 
@@ -251,7 +253,7 @@ export default function SpinnerGamePage() {
             <form onSubmit={handleAddViewer} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Enter viewer username (e.g. TikTok_User)"
+                placeholder="{t('Enter viewer username (e.g. TikTok_User)')}"
                 value={newViewerInput}
                 onChange={(e) => setNewViewerInput(e.target.value)}
                 className="flex-1 px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400"
@@ -273,7 +275,7 @@ export default function SpinnerGamePage() {
               {isSpinning ? (
                 <>
                   <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                  <span>Spinning for Winner...</span>
+                  <span>{t('Spinning for Winner...')}</span>
                 </>
               ) : (
                 <>
@@ -286,7 +288,7 @@ export default function SpinnerGamePage() {
             {/* Viewers List on Wheel */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Current Viewers on Wheel:</span>
+                <span>{t('Current Viewers on Wheel:')}</span>
                 <button
                   onClick={clearViewers}
                   className="text-rose-400 hover:text-rose-300 text-[11px] font-bold flex items-center gap-1 cursor-pointer"
@@ -325,7 +327,7 @@ export default function SpinnerGamePage() {
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-xs space-y-2">
             <div className="flex items-center gap-1.5 font-bold text-slate-300">
               <Trophy className="w-4 h-4 text-amber-400" />
-              <span>Recent Raffle Winners</span>
+              <span>{t('Recent Raffle Winners')}</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {winnerHistory.map((w, i) => (
