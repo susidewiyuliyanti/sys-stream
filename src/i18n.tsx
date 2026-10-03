@@ -266,6 +266,35 @@ Object.assign(translations.ar, {
   'Verify your email':'تحقق من بريدك الإلكتروني','or Connect with Crypto Wallet':'أو ربط محفظة العملات الرقمية'
 });
 
+
+// Cross-page exact UI labels used by the runtime translator.
+const CROSS_PAGE_UI: Record<LanguageCode, Record<string,string>> = {
+ id: {
+  'Profile':'Profil','Kelola akun, wallet, dan aktivitas kamu.':'Kelola akun, wallet, dan aktivitas kamu.','User ID = Wallet Address':'ID Pengguna = Alamat Wallet','Member':'Anggota','USDT Account':'Akun USDT','EVM Wallet':'Wallet EVM','Available':'Tersedia','Locked':'Terkunci','Wallet':'Wallet','Withdraw':'Tarik Dana','Ajukan penarikan':'Ajukan penarikan','Registration Bonus':'Bonus Registrasi','Bonus tersedia dan belum diklaim.':'Bonus tersedia dan belum diklaim.','Claim Bonus':'Klaim Bonus','Available Balance':'Saldo Tersedia','Referral Link':'Tautan Referral','Transaction History':'Riwayat Transaksi','Refresh':'Muat Ulang','Loading...':'Memuat...','Belum ada transaksi.':'Belum ada transaksi.','Live Now':'Live Sekarang','Buka Live Room →':'Buka Live Room →','Upload / Create Post':'Unggah / Buat Postingan','Community':'Komunitas','Tulis sesuatu untuk dibagikan ke komunitas...':'Tulis sesuatu untuk dibagikan ke komunitas...','URL media (opsional)':'URL media (opsional)','Terbitkan Postingan':'Terbitkan Postingan','Minimum withdrawal':'Penarikan minimum','Copy wallet address':'Salin alamat wallet','Copy referral link':'Salin tautan referral','Back':'Kembali','Legal':'Hukum','Version':'Versi','Important:':'Penting:','Terms & Conditions':'Syarat & Ketentuan','Privacy Policy':'Kebijakan Privasi','Last updated:':'Terakhir diperbarui:'
+ },
+ en: {},
+ es: {
+  'Profile':'Perfil','User ID = Wallet Address':'ID de usuario = dirección de wallet','Member':'Miembro','USDT Account':'Cuenta USDT','EVM Wallet':'Wallet EVM','Available':'Disponible','Locked':'Bloqueado','Withdraw':'Retirar','Registration Bonus':'Bono de registro','Claim Bonus':'Reclamar bono','Available Balance':'Saldo disponible','Referral Link':'Enlace de referidos','Transaction History':'Historial de transacciones','Refresh':'Actualizar','Loading...':'Cargando...','Live Now':'En vivo','Upload / Create Post':'Subir / crear publicación','Community':'Comunidad','Terbitkan Postingan':'Publicar','Back':'Volver','Legal':'Legal','Version':'Versión','Important:':'Importante:','Terms & Conditions':'Términos y condiciones','Privacy Policy':'Política de privacidad'
+ },
+ pt: {
+  'Profile':'Perfil','User ID = Wallet Address':'ID do usuário = endereço da carteira','Member':'Membro','USDT Account':'Conta USDT','EVM Wallet':'Carteira EVM','Available':'Disponível','Locked':'Bloqueado','Withdraw':'Sacar','Registration Bonus':'Bônus de registro','Claim Bonus':'Resgatar bônus','Available Balance':'Saldo disponível','Referral Link':'Link de indicação','Transaction History':'Histórico de transações','Refresh':'Atualizar','Loading...':'Carregando...','Live Now':'Ao vivo','Upload / Create Post':'Enviar / criar publicação','Community':'Comunidade','Terbitkan Postingan':'Publicar','Back':'Voltar','Legal':'Legal','Version':'Versão','Important:':'Importante:','Terms & Conditions':'Termos e condições','Privacy Policy':'Política de privacidade'
+ },
+ zh: {
+  'Profile':'个人资料','User ID = Wallet Address':'用户ID = 钱包地址','Member':'会员','USDT Account':'USDT账户','EVM Wallet':'EVM钱包','Available':'可用','Locked':'已锁定','Withdraw':'提现','Registration Bonus':'注册奖励','Claim Bonus':'领取奖励','Available Balance':'可用余额','Referral Link':'推荐链接','Transaction History':'交易记录','Refresh':'刷新','Loading...':'加载中…','Live Now':'正在直播','Upload / Create Post':'上传 / 创建帖子','Community':'社区','Terbitkan Postingan':'发布','Back':'返回','Legal':'法律','Version':'版本','Important:':'重要：','Terms & Conditions':'条款与条件','Privacy Policy':'隐私政策'
+ },
+ ja: {
+  'Profile':'プロフィール','User ID = Wallet Address':'ユーザーID = ウォレットアドレス','Member':'メンバー','USDT Account':'USDTアカウント','EVM Wallet':'EVMウォレット','Available':'利用可能','Locked':'ロック済み','Withdraw':'出金','Registration Bonus':'登録ボーナス','Claim Bonus':'ボーナスを受け取る','Available Balance':'利用可能残高','Referral Link':'紹介リンク','Transaction History':'取引履歴','Refresh':'更新','Loading...':'読み込み中…','Live Now':'ライブ中','Upload / Create Post':'投稿をアップロード / 作成','Community':'コミュニティ','Terbitkan Postingan':'投稿する','Back':'戻る','Legal':'法務','Version':'バージョン','Important:':'重要：','Terms & Conditions':'利用規約','Privacy Policy':'プライバシーポリシー'
+ },
+ ko: {
+  'Profile':'프로필','User ID = Wallet Address':'사용자 ID = 지갑 주소','Member':'회원','USDT Account':'USDT 계정','EVM Wallet':'EVM 지갑','Available':'사용 가능','Locked':'잠김','Withdraw':'출금','Registration Bonus':'가입 보너스','Claim Bonus':'보너스 받기','Available Balance':'사용 가능 잔액','Referral Link':'추천 링크','Transaction History':'거래 내역','Refresh':'새로고침','Loading...':'로드 중...','Live Now':'라이브','Upload / Create Post':'게시물 업로드 / 만들기','Community':'커뮤니티','Terbitkan Postingan':'게시','Back':'뒤로','Legal':'법률','Version':'버전','Important:':'중요:','Terms & Conditions':'이용약관','Privacy Policy':'개인정보 처리방침'
+ },
+ ar: {
+  'Profile':'الملف الشخصي','User ID = Wallet Address':'معرّف المستخدم = عنوان المحفظة','Member':'عضو','USDT Account':'حساب USDT','EVM Wallet':'محفظة EVM','Available':'متاح','Locked':'مقفل','Withdraw':'سحب','Registration Bonus':'مكافأة التسجيل','Claim Bonus':'استلام المكافأة','Available Balance':'الرصيد المتاح','Referral Link':'رابط الإحالة','Transaction History':'سجل المعاملات','Refresh':'تحديث','Loading...':'جارٍ التحميل...','Live Now':'مباشر الآن','Upload / Create Post':'رفع / إنشاء منشور','Community':'المجتمع','Terbitkan Postingan':'نشر','Back':'رجوع','Legal':'قانوني','Version':'الإصدار','Important:':'مهم:','Terms & Conditions':'الشروط والأحكام','Privacy Policy':'سياسة الخصوصية'
+ }
+};
+for (const lang of Object.keys(CROSS_PAGE_UI) as LanguageCode[]) {
+  Object.assign(translations[lang], CROSS_PAGE_UI[lang]);
+}
 // Shared production UI translations. Every supported language gets an explicit value;
 // unknown keys still fall back to English, never to a mixed-language label.
 Object.assign(translations.en, {
