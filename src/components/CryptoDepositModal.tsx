@@ -170,16 +170,16 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 />
               </div>
               <div className="mt-1.5 text-xs text-slate-500 space-y-1">
-                <div>{t('Platform minimum')}: <span className="text-slate-300">$"+"{minAmountUsd.toFixed(2)} USD</span></div>
+                <div>{t('Platform minimum')}: <span className="text-slate-300">${minAmountUsd.toFixed(2)} USD</span></div>
                 {providerMinAmountUsd !== null && (
                   <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-amber-200">
-                    <div>{t('NOWPayments minimum for this network')}: <span className="font-bold">$"+"{providerMinAmountUsd.toFixed(2)} USD</span></div>
+                    <div>{t('NOWPayments minimum for this network')}: <span className="font-bold">${providerMinAmountUsd.toFixed(2)} USD</span></div>
                     <button type="button" onClick={() => { setCustomUsd(providerMinAmountUsd.toFixed(2)); setSelectedUsd(0); sound.playClick(); }} className="mt-1 text-xs font-bold text-amber-300 hover:text-amber-200 underline">
                       {t('Use NOWPayments minimum')}
                     </button>
                   </div>
                 )}
-                <div>{t('Rate and minimum are checked live by NOWPayments when the payment is created.')}
+                <div>{t('Rate and minimum are checked live by NOWPayments when the payment is created.')}</div>
                 <div>{t('Deposit is credited to your real account balance after payment confirmation.')}</div>
               </div>
             </div>
