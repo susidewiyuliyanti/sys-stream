@@ -20,10 +20,30 @@ bindings = [
 tag = "v1"
 new_sqlite_classes = ["RoomDurableObject"]
 
-# Production API routing: keep the React site on Pages while sending /api/*
-# directly to this Worker. This removes the ambiguous Pages/Worker API split.
+# Production routing: only endpoints implemented by this Worker are routed here.
+# Authentication and other Pages Functions remain on Cloudflare Pages.
 [[routes]]
-pattern = "sysstreamer.asia/api/*"
+pattern = "sysstreamer.asia/api/payments/*"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
+pattern = "sysstreamer.asia/api/locks/*"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
+pattern = "sysstreamer.asia/api/blindbox/*"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
+pattern = "sysstreamer.asia/api/chat*"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
+pattern = "sysstreamer.asia/api/room-state*"
+zone_name = "sysstreamer.asia"
+
+[[routes]]
+pattern = "sysstreamer.asia/api/leaderboard*"
 zone_name = "sysstreamer.asia"
 
 [[routes]]
