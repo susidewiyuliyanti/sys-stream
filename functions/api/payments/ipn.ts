@@ -61,18 +61,40 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const failed = ["failed","expired","refunded"].includes(status);
 
     if (successful && String(tx.status).toUpperCase() !== "COMPLETED") {
-      const credited = Number(data.price_amount || data.actually_paid || tx.amount || 0);
-      if (credited > 0) {
+      // Transactions are stored in USD at checkout, while the platform account
+      // balance is canonical IDR. Never credit the crypto amount or raw USD
+      // directly into an IDR balance.
+      const usdAmount = Number(data.price_amount || tx.amount || 0);
+      const usdToIdr = Number(env.USD_IDR_RATE || 17937);
+      const creditedIdr = usdAmount > 0 && Number.isFinite(usdToIdr)
+        ? Math.round(usdAmount * usdToIdr)
+        : 0;
+
+      if (creditedIdr > 0) {
         const user = await env.DB.prepare(`
-          SELECT CASE WHEN COALESCE(available_balance,0) > 0 THEN COALESCE(available_balance,0) ELSE COALESCE(balance,0) END AS balance
+          SELECT CASE
+            WHEN COALESCE(available_balance,0) > 0 THEN COALESCE(available_balance,0)
+            ELSE COALESCE(balance,0)
+          END AS balance
           FROM users WHERE id = ? LIMIT 1
         `).bind(tx.user_id).first<any>();
+
         const balance = Number(user?.balance || 0);
-        await env.DB.prepare("UPDATE users SET available_balance=?, balance=? WHERE id=?")
-          .bind(balance + credited, balance + credited, tx.user_id).run();
-        await env.DB.prepare(`
-          UPDATE transactions SET amount=?, status='COMPLETED', updated_at=CURRENT_TIMESTAMP WHERE id=?
-        `).bind(credited, tx.id).run();
+        const nextBalance = balance + creditedIdr;
+
+        // Mark the transaction completed only for the matching pending deposit.
+        // This prevents a repeated NOWPayments IPN from crediting the same
+        // payment more than once in the normal callback path.
+        const updated = await env.DB.prepare(`
+          UPDATE transactions
+          SET amount=?, status='COMPLETED', updated_at=CURRENT_TIMESTAMP
+          WHERE id=? AND status <> 'COMPLETED'
+        `).bind(usdAmount, tx.id).run();
+
+        if (Number((updated as any)?.meta?.changes || 0) > 0) {
+          await env.DB.prepare("UPDATE users SET available_balance=?, balance=? WHERE id=?")
+            .bind(nextBalance, nextBalance, tx.user_id).run();
+        }
       }
     } else if (failed) {
       await env.DB.prepare("UPDATE transactions SET status=?, updated_at=CURRENT_TIMESTAMP WHERE id=?")
