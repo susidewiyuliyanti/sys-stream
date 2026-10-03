@@ -387,7 +387,7 @@ export default function AirdropApp() {
           <button onClick={()=>setTab('tasks')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.tasks}</button>
           <button onClick={()=>setTab('submissions')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.submissions}</button>
         </nav>
-        <button className="md:hidden p-2 rounded-lg" onClick={()=>setMenuOpen(v=>!v)} aria-label="Menu">{menuOpen?<X className="w-5 h-5"/>:<Menu className="w-5 h-5"/>}</button>
+        <button className="md:hidden p-2 rounded-lg" onClick={()=>setMenuOpen(v=>!v)} aria-label={tx.menu || "Menu"}>{menuOpen?<X className="w-5 h-5"/>:<Menu className="w-5 h-5"/>}</button>
       </div>
       {menuOpen&&<div className="md:hidden border-t border-slate-800 px-4 py-3 space-y-2">
         <select value={lang} onChange={e=>{const next=e.target.value as Lang;setLang(next);localStorage.setItem('sys_stream_language',next)}} className="w-full px-3 py-2 rounded-lg border border-slate-800 bg-slate-950 text-xs font-bold">
@@ -453,7 +453,7 @@ export default function AirdropApp() {
       </div>
 
       {tab==='tasks'?<section className="mt-6 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">Loading active tasks...</div>:availableTasks.map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:t.reward}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
@@ -465,15 +465,15 @@ export default function AirdropApp() {
 
     {selectedTask&&(()=>{const x=taskText(selectedTask);return <div className="fixed inset-0 z-50 bg-black/70 p-4 flex items-center justify-center" onClick={()=>setSelectedTask(null)}>
       <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6" onClick={e=>e.stopPropagation()}>
-        <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label="Close"><X className="w-5 h-5"/></button></div>
+        <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label={tx.close || "Close"}><X className="w-5 h-5"/></button></div>
         <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p></div>
         <div className="mt-4">
           <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
           <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
           {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
-          {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder="https://..." className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
+          {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder={tx.proofPlaceholder || "https://..."} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
           {submissionMessage&&<div className="mt-3 text-xs text-amber-300">{submissionMessage}</div>}
-          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?'Submitting...':(tx.saveWallet || COPY.en.saveWallet)}</button>
+          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || 'Submitting...'):(tx.saveWallet || COPY.en.saveWallet)}</button>
         </div>
       </div>
     </div>})()}
