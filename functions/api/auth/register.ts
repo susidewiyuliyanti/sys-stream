@@ -238,7 +238,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const userSchema = await env.DB.prepare("PRAGMA table_info(users)").all<any>();
     const userColumns = (userSchema.results || []) as any[];
     const idMeta = userColumns.find((r:any) => String(r.name) === "id");
-    const legacyIntegerId = !!idMeta && String(idMeta.type || "").toUpperCase().includes("INT") && Number(idMeta.pk) === 1;
+    const idType = String(idMeta?.type || "").toUpperCase();
+    const legacyIntegerId = !!idMeta && Number(idMeta.pk) === 1 && !/CHAR|CLOB|TEXT|BLOB/.test(idType);
 
     const values: Record<string, any> = {
       id,
