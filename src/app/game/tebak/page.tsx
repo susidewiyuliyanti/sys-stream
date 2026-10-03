@@ -122,7 +122,7 @@ export default function TebakGamePage() {
       cardTitle: editTitle,
       serialNumber: editSerial,
       digits: editDigits,
-      concealed: edit{t('Concealed')},
+      concealed: editConcealed,
       streamerNote: editNote,
     });
     setIsStreamerPanelOpen(false);
@@ -227,18 +227,18 @@ export default function TebakGamePage() {
                       <button
                         type="button"
                         onClick={() => {
-                          const newC = [...edit{t('Concealed')}] as [boolean, boolean, boolean, boolean];
+                          const newC = [...editConcealed] as [boolean, boolean, boolean, boolean];
                           newC[idx] = !newC[idx];
                           setEdit{t('Concealed')}(newC);
                         }}
                         className={`w-full py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 ${
-                          edit{t('Concealed')}[idx]
+                          editConcealed[idx]
                             ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
                             : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                         }`}
                       >
-                        {edit{t('Concealed')}[idx] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                        <span>{edit{t('Concealed')}[idx] ? 'Hidden' : 'Visible'}</span>
+                        {editConcealed[idx] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                        <span>{editConcealed[idx] ? 'Hidden' : 'Visible'}</span>
                       </button>
                     </div>
                   ))}
