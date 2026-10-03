@@ -1,8 +1,8 @@
-# SYS Token — BSC
+# SYS Token — Base
 
 ## Deployment target
 
-- Network: BNB Smart Chain (BSC)
+- Network: Base (Base Mainnet / Base Sepolia for testing)
 - Token standard: ERC-20 compatible / BEP-20
 - Name: SysStream Token
 - Symbol: SYS
@@ -23,11 +23,11 @@ Do not connect the SYS balance shown in the web app to this contract until the c
 
 ## Deployment flow
 
-1. Deploy to BSC testnet first.
+1. Deploy to Base Sepolia first.
 2. Confirm name, symbol, decimals, total supply, and deployer balance.
 3. Confirm there is no public mint function.
-4. Verify the contract source on the appropriate BSC explorer.
-5. Only after the testnet checks pass, deploy the same source to BSC mainnet.
+4. Verify the contract source on the BaseScan.
+5. Only after the testnet checks pass, deploy the same source to Base Mainnet.
 6. Save the mainnet contract address in the application's production configuration.
 7. Then implement the Airdrop claim/withdraw flow so internal SYS credits can be exchanged for on-chain SYS from a controlled treasury/distribution wallet.
 
