@@ -85,10 +85,9 @@ function providerMessage(data: any, status: number) {
 }
 
 export async function onRequestGet({ request, env }: { request: Request; env: Env }) {
-  const auth = await requireAuth(request, env);
-  if (!auth.ok) return auth.response;
-
   try {
+    const auth = await requireAuth(request, env);
+    if (!auth.ok) return auth.response;
     const url = new URL(request.url);
     const requestedCurrency = String(url.searchParams.get("currency") || "USDT");
     const amountUsd = Number(url.searchParams.get("amount") || "0");
@@ -184,10 +183,9 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
 }
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
-  const auth = await requireAuth(request, env);
-  if (!auth.ok) return auth.response;
-
   try {
+    const auth = await requireAuth(request, env);
+    if (!auth.ok) return auth.response;
     const body = await request.json() as { amountUsd?: number; currency?: string };
     const amountUsd = Number(body.amountUsd);
     const requestedCurrency = String(body.currency || "USDT").trim();
