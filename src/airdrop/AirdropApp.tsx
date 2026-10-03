@@ -291,7 +291,7 @@ export default function AirdropApp() {
         <div className="text-xs font-black tracking-[0.2em] text-amber-400">SYS STREAM AIRDROP</div>
         <h1 className="mt-3 text-2xl font-black text-white">Sesi login diperlukan</h1>
         <p className="mt-2 text-sm text-slate-400">Login di SYS STREAM berlaku juga untuk Airdrop. Anda tidak perlu membuat akun atau login kedua.</p>
-        <a href="https://sysstreamer.asia/#/login?return=/airdrop" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-amber-400 px-4 py-3 font-black text-slate-950">Login SYS STREAM</a>
+        <a href="https://sysstreamer.asia/?return=%2Fairdrop#/login" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-amber-400 px-4 py-3 font-black text-slate-950">Login SYS STREAM</a>
       </div>
     </div>;
   }
