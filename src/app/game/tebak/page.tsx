@@ -151,7 +151,7 @@ export default function TebakGamePage() {
             setEditTitle(cryptoCard.cardTitle);
             setEditSerial(cryptoCard.serialNumber);
             setEditDigits([...cryptoCard.digits]);
-            setEdit{t('Concealed')}([...cryptoCard.concealed]);
+            setEditConcealed([...cryptoCard.concealed]);
             setEditNote(cryptoCard.streamerNote);
             setIsStreamerPanelOpen(true);
           }}
@@ -229,7 +229,7 @@ export default function TebakGamePage() {
                         onClick={() => {
                           const newC = [...editConcealed] as [boolean, boolean, boolean, boolean];
                           newC[idx] = !newC[idx];
-                          setEdit{t('Concealed')}(newC);
+                          setEditConcealed(newC);
                         }}
                         className={`w-full py-1 text-[10px] font-bold rounded flex items-center justify-center gap-1 ${
                           editConcealed[idx]
@@ -316,7 +316,7 @@ export default function TebakGamePage() {
 
               <div className="grid grid-cols-4 gap-3 max-w-sm mx-auto">
                 {[0, 1, 2, 3].map((idx) => {
-                  const is{t('Concealed')} = cryptoCard.concealed[idx];
+                  const isConcealed = cryptoCard.concealed[idx];
                   const digitValue = cryptoCard.digits[idx];
                   const playerInput = playerGuesses[idx];
 
@@ -324,7 +324,7 @@ export default function TebakGamePage() {
                     <div
                       key={idx}
                       className={`relative aspect-square rounded-2xl flex flex-col items-center justify-center border-2 transition-all shadow-inner ${
-                        is{t('Concealed')}
+                        isConcealed
                           ? 'bg-slate-950/90 border-amber-500/70 shadow-amber-500/10'
                           : 'bg-cyan-950/20 border-cyan-500/40'
                       }`}
@@ -333,7 +333,7 @@ export default function TebakGamePage() {
                         Digit #{idx + 1}
                       </span>
 
-                      {is{t('Concealed')} ? (
+                      {isConcealed ? (
                         <div className="flex flex-col items-center justify-center mt-2 w-full px-2">
                           <input
                             type="text"
