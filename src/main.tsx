@@ -2,12 +2,12 @@ import React, { lazy, Suspense, Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { LanguageProvider } from './i18n';
-import UserApp from './App.tsx';
 
 const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
   : '';
 
+const UserApp = lazy(() => import('./App.tsx'));
 const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
 const AirdropApp = lazy(() => import('./airdrop/AirdropApp.tsx'));
 
@@ -27,16 +27,6 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
   };
 
   componentDidCatch(error: Error) {
-    const key = 'sysstream:bundle-recovery';
-    const alreadyRetried = sessionStorage.getItem(key) === '1';
-
-    if (!alreadyRetried) {
-      sessionStorage.setItem(key, '1');
-      window.setTimeout(() => this.reloadWithFreshBundle(), 50);
-    } else {
-      sessionStorage.removeItem(key);
-    }
-
     console.error('[SYS STREAM] Application bundle failed to load:', error);
   }
 
