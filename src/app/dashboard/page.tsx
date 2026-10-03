@@ -134,12 +134,23 @@ export default function DashboardPage({ navigate }: Props) {
               onClick={async () => {
                 try {
                   const token = localStorage.getItem('sys_stream_auth_token');
-                  const response = await fetch('/api/auth/airdrop-handoff', {
+                  let response = await fetch('/api/auth/airdrop-handoff', {
                     method: 'POST',
                     credentials: 'include',
                     headers: token ? { Authorization: 'Bearer ' + token } : {},
                     cache: 'no-store',
                   });
+
+                  // If the cached bearer token is stale, retry using the
+                  // authenticated HttpOnly cookie that powers this dashboard.
+                  if (!response.ok && token) {
+                    response = await fetch('/api/auth/airdrop-handoff', {
+                      method: 'POST',
+                      credentials: 'include',
+                      cache: 'no-store',
+                    });
+                  }
+
                   const data = await response.json().catch(() => ({}));
                   if (response.ok && data?.success && data?.code) {
                     window.location.href = 'https://airdrop.sysstreamer.asia/?handoff=' + encodeURIComponent(data.code);
