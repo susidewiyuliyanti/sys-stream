@@ -83,7 +83,7 @@ export default function ReferralPage() {
 
             {/* Referral Code Quick Copy */}
             <div className="flex items-center gap-3 text-xs text-slate-400">
-              <span>Wallet ID:</span>
+              <span>User ID / Wallet:</span>
               <span className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md truncate max-w-full">
                 {walletAddress || 'Wallet belum terhubung'}
               </span>
