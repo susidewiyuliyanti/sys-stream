@@ -140,9 +140,67 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }, 503);
     }
 
-    // Do not block invoice creation on a separate minimum endpoint call.
-    // NOWPayments' payment endpoint is authoritative for the selected pair and
-    // returns the exact provider error when a pair/amount is not accepted.
+    // Current NOWPayments Payment API requires the concrete pay_amount
+    // for direct payment creation. Calculate it immediately before creating
+    // the payment so the crypto amount is current and matches the selected pair.
+    const estimateController = new AbortController();
+    const estimateTimeout = setTimeout(() => estimateController.abort(), 10000);
+    let estimateResponse: Response;
+    let estimateData: any = {};
+    try {
+      estimateResponse = await fetch(
+        "https://api.nowpayments.io/v1/estimate" +
+        "?amount=" + encodeURIComponent(Number(amountUsd.toFixed(2))) +
+        "&currency_from=usd&currency_to=" + encodeURIComponent(payCurrency),
+        {
+          headers: {
+            "x-api-key": apiKey,
+            "Accept": "application/json",
+          },
+          signal: estimateController.signal,
+        }
+      );
+      const estimateRaw = await estimateResponse.text();
+      try {
+        estimateData = estimateRaw ? JSON.parse(estimateRaw) : {};
+      } catch {
+        estimateData = { message: estimateRaw.slice(0, 500) };
+      }
+    } finally {
+      clearTimeout(estimateTimeout);
+    }
+
+    if (!estimateResponse.ok) {
+      console.error("NOWPayments estimate failed", {
+        status: estimateResponse.status,
+        data: estimateData,
+        payCurrency,
+        amountUsd,
+      });
+      return json({
+        success: false,
+        error: "NOWPayments tidak dapat menghitung jumlah " + payCurrency.toUpperCase() +
+          " untuk deposit " + amountUsd.toFixed(2) + " USD. " +
+          safeErrorMessage(estimateData, estimateResponse.status),
+        provider_status: estimateResponse.status,
+        provider_code: estimateData?.code || null,
+      }, estimateResponse.status >= 400 && estimateResponse.status < 500 ? estimateResponse.status : 502);
+    }
+
+    const payAmount = Number(estimateData?.estimated_amount);
+    if (!Number.isFinite(payAmount) || payAmount <= 0) {
+      console.error("NOWPayments returned invalid estimate", {
+        status: estimateResponse.status,
+        data: estimateData,
+        payCurrency,
+        amountUsd,
+      });
+      return json({
+        success: false,
+        error: "NOWPayments tidak mengembalikan jumlah pembayaran crypto yang valid.",
+      }, 502);
+    }
+
     await ensureTransactions(env);
     const orderId = `DEP-${String(auth.user.id)}-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     const ipnUrl = "https://sysstreamer.asia/api/payments/ipn";
@@ -171,6 +229,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
           price_amount: Number(amountUsd.toFixed(2)),
           price_currency: "usd",
           pay_currency: payCurrency,
+          pay_amount: payAmount,
           ipn_callback_url: ipnUrl,
           order_id: orderId,
           order_description: "SYS STREAM account deposit",
@@ -256,7 +315,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (error?.name === "AbortError") {
       return json({
         success: false,
-        error: "NOWPayments tidak merespons dalam 20 detik. Silakan coba lagi.",
+        error: "NOWPayments tidak merespons dalam batas waktu. Silakan coba lagi.",
       }, 504);
     }
     return json({
