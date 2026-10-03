@@ -446,6 +446,8 @@ const COMMON_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 };
 
 // Global UI coverage for all application pages. These keys are also used by
+// the DOM fallback so pages that still contain legacy hardcoded labels follow the
+// selected language immediately.
 
 // Expanded legacy-label coverage: keeps remaining hardcoded UI labels localized
 // until individual components are migrated to the typed translation helper.
@@ -1094,9 +1096,6 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
 (Object.keys(EXPANDED_LEGACY_TRANSLATIONS) as LanguageCode[]).forEach((lang) => {
   PAGE_UI_TRANSLATIONS[lang] = { ...EXPANDED_LEGACY_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 });
- the
-// DOM fallback so pages that still contain legacy hardcoded labels follow the
-// selected language immediately.
 
 const CORE_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
   id: {
