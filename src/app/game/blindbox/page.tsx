@@ -375,7 +375,7 @@ export default function BlindboxGamePage() {
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`Lock amount (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum Rp 50.000, kelipatan Rp 10.000.</div>
+                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(50000)}, kelipatan sesuai aturan server.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
@@ -430,7 +430,7 @@ export default function BlindboxGamePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-white">
-                    Total Locked: ${formatMoney(totalLocked)} ({dailyQuota} Box/Hari)
+                    Total Locked: {formatMoney(totalLocked)} ({dailyQuota} Box/Hari)
                   </h3>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-mono font-bold">
                     Lock Aktif
@@ -497,7 +497,7 @@ export default function BlindboxGamePage() {
                   <Box className="w-4 h-4 fill-current" />
                   <span>
                     {!isQualified
-                      ? 'Lock minimal Rp 50.000 untuk mengaktifkan'
+                      ? `Lock minimum ${formatMoney(50000)} to activate`
                       : remainingBoxes > 0
                       ? `Open Daily Box (${remainingBoxes} Available Today)`
                       : `Daily Limit Reached (Resets in ${timeToReset})`}
