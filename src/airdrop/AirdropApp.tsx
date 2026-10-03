@@ -247,18 +247,44 @@ export default function AirdropApp() {
   useEffect(()=>{ document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; },[lang]);
   useEffect(() => {
     let active = true;
-    fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' })
-      .then(async response => {
+
+    const checkSharedSession = async () => {
+      // Validate the same HttpOnly SYS STREAM session cookie from the main
+      // origin. This is intentionally the source of truth for Airdrop auth.
+      try {
+        const response = await fetch('https://sysstreamer.asia/api/auth/me', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
+        const data = await response.json().catch(() => ({}));
+        if (active && response.ok && data?.success && data?.user) {
+          setAuthenticated(true);
+          setAuthChecked(true);
+          return;
+        }
+      } catch {
+        // Fall through to the same-origin check below.
+      }
+
+      // Keep a same-origin fallback for environments where the shared-domain
+      // cookie is already visible directly to the Airdrop host.
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
         const data = await response.json().catch(() => ({}));
         if (!active) return;
         setAuthenticated(Boolean(response.ok && data?.success && data?.user));
-        setAuthChecked(true);
-      })
-      .catch(() => {
+      } catch {
         if (!active) return;
         setAuthenticated(false);
-        setAuthChecked(true);
-      });
+      } finally {
+        if (active) setAuthChecked(true);
+      }
+    };
+
+    void checkSharedSession();
     return () => { active = false; };
   }, []);
 
