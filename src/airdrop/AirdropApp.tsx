@@ -422,7 +422,7 @@ export default function AirdropApp() {
   },[lang,tx.unavailable]);
 
   const availableTasks=useMemo<Task[]>(()=>{
-    const configured=dbTasks.map((raw:any,index:number)=>{
+    const configured=dbTasks.filter((raw:any)=>{const t=String(raw.type??raw.task_type??raw.category??raw.key??'').toLowerCase();const k=String(raw.key??'').toLowerCase();return t!=='withdrawal'&&t!=='profile'&&k!=='withdrawal'&&k!=='profile';}).map((raw:any,index:number)=>{
       const category=String(raw.category||raw.type||'social').toLowerCase();
       const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
