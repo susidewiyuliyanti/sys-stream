@@ -813,15 +813,25 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }),
     });
 
-    const data = await response.json().catch(() => ({}));
+    const rawResponse = await response.text();
+    let data: any = {};
+    try {
+      data = rawResponse ? JSON.parse(rawResponse) : {};
+    } catch {
+      data = { error: rawResponse.slice(0, 1000) };
+    }
 
     if (!response.ok || !data?.success || !data?.invoice) {
-      {
       const providerDetail = data?.provider_status
         ? ` [NOWPayments HTTP ${data.provider_status}${data.provider_code ? ` / ${data.provider_code}` : ''}]`
-        : '';
-      throw new Error(String(data?.error || 'Gagal membuat invoice pembayaran crypto.') + providerDetail);
-    }
+        : ` [HTTP ${response.status}]`;
+      const message = String(
+        data?.error ||
+        data?.message ||
+        (typeof data === 'string' ? data : '') ||
+        'Server gagal membuat invoice pembayaran crypto.'
+      ).trim();
+      throw new Error(message + providerDetail);
     }
 
     const remote = data.invoice;
