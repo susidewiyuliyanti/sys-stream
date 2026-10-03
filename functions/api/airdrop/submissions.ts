@@ -37,7 +37,12 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     const totals = await db.prepare("SELECT COALESCE(SUM(CASE WHEN status IN ('APPROVED','PAID') THEN reward_points ELSE 0 END),0) AS approved_points, COALESCE(SUM(CASE WHEN status='PAID' THEN reward_points ELSE 0 END),0) AS paid_points FROM airdrop_submissions WHERE wallet_address=?").bind(wallet).first<any>();
     const approvedPoints = Number(totals?.approved_points || 0);
     const paidPoints = Number(totals?.paid_points || 0);
-    const available = Math.max(0, approvedPoints - paidPoints);
+    let convertedPoints = 0;
+    try {
+      const converted = await db.prepare("SELECT COALESCE(SUM(points),0) AS points FROM airdrop_point_conversions WHERE wallet_address=?").bind(wallet).first<any>();
+      convertedPoints = Number(converted?.points || 0);
+    } catch {}
+    const available = Math.max(0, approvedPoints - paidPoints - convertedPoints);
     if (requested > available) {
       return response(context.request, { success: false, message: "Points tidak mencukupi.", availablePoints: available }, 400);
     }
@@ -83,6 +88,11 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
       .reduce((sum, r) => sum + Number(r.reward_points || 0), 0);
     const paidPoints = rows.filter(r => String(r.status).toUpperCase() === "PAID")
       .reduce((sum, r) => sum + Number(r.reward_points || 0), 0);
+    let convertedPoints = 0;
+    try {
+      const converted = await context.env.DB.prepare("SELECT COALESCE(SUM(points),0) AS points FROM airdrop_point_conversions WHERE wallet_address=?").bind(wallet).first<any>();
+      convertedPoints = Number(converted?.points || 0);
+    } catch {}
     return response(context.request, {
       success: true,
       submissions: rows,
@@ -90,7 +100,8 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
         approved: approvedPoints,
         pending: pendingPoints,
         paid: paidPoints,
-        available: Math.max(0, approvedPoints - paidPoints),
+        converted: convertedPoints,
+        available: Math.max(0, approvedPoints - paidPoints - convertedPoints),
       }
     });
   } catch (error) {
