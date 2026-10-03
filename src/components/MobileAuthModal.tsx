@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserProvider, Wallet as EvmWallet } from 'ethers';
+import { BrowserProvider, HDNodeWallet } from 'ethers';
 import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
@@ -41,14 +41,14 @@ export const MobileAuthModal: React.FC = () => {
     try {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       let body: Record<string, unknown>;
-      let newWallet: EvmWallet | null = null;
+      let newWallet: HDNodeWallet | null = null;
 
       if (authMode === 'login') {
         body = { identifier: usernameInput.trim(), password: passwordInput };
       } else {
         // Email accounts receive a real EVM wallet generated locally in the browser.
         // The private key/recovery phrase is never sent to the server.
-        newWallet = EvmWallet.createRandom();
+        newWallet = HDNodeWallet.createRandom();
         body = {
           username: usernameInput.trim(),
           email: emailInput.trim(),
