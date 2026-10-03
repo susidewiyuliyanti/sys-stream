@@ -19,6 +19,17 @@ import RoomPage from './app/room/[id]/page';
 import AirdropApp from './airdrop/AirdropApp';
 import ReferralPage from './app/referral/page';
 
+function AirdropRedirect() {
+  useEffect(() => {
+    window.location.replace('https://airdrop.sysstreamer.asia');
+  }, []);
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
+      <div className="text-sm text-slate-400">Membuka SYS STREAM Airdrop...</div>
+    </div>
+  );
+}
+
 class AirdropErrorBoundary extends Component<React.PropsWithChildren, { hasError: boolean }> {
   state = { hasError: false };
 
@@ -135,7 +146,7 @@ export default function App() {
       return <DashboardPage navigate={navigate} />;
     }
     if (currentPath === '/airdrop') {
-      return <AirdropErrorBoundary><AirdropApp /></AirdropErrorBoundary>;
+      return <AirdropRedirect />;
     }
     if (currentPath === '/referral') {
       return <ReferralPage />;
