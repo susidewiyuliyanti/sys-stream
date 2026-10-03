@@ -216,6 +216,49 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
+    // Validate the exact currency enabled for this merchant and the current minimum
+    // before attempting POST /payment. The public /currencies endpoint is not merchant-specific.
+    const base = "https://api.nowpayments.io/v1";
+    const providerHeaders = { "x-api-key": apiKey, "Accept": "application/json" };
+
+    const merchantCoinsResponse = await fetch(base + "/merchant/coins", { headers: providerHeaders });
+    const merchantCoinsData = await merchantCoinsResponse.json().catch(() => ({}));
+    if (!merchantCoinsResponse.ok) {
+      console.error("NOWPayments merchant coins check failed", { status: merchantCoinsResponse.status, data: merchantCoinsData, payCurrency });
+      return json({ success: false, error: "Tidak dapat memeriksa mata uang yang aktif pada akun NOWPayments. " + safeErrorMessage(merchantCoinsData, merchantCoinsResponse.status), provider_status: merchantCoinsResponse.status }, 502);
+    }
+
+    const merchantCurrencies = Array.isArray(merchantCoinsData?.currencies) ? merchantCoinsData.currencies :
+      Array.isArray(merchantCoinsData?.coins) ? merchantCoinsData.coins :
+      Array.isArray(merchantCoinsData) ? merchantCoinsData : [];
+    const merchantCurrencyIds = merchantCurrencies.map((coin: any) => {
+      if (typeof coin === "string") return coin.toLowerCase();
+      return String(coin?.currency || coin?.ticker || coin?.code || coin?.id || "").toLowerCase();
+    }).filter(Boolean);
+
+    if (merchantCurrencyIds.length && !merchantCurrencyIds.includes(payCurrency.toLowerCase())) {
+      return json({ success: false, error: payCurrency.toUpperCase() + " belum aktif untuk payment pada akun NOWPayments ini. Aktifkan coin tersebut di akun NOWPayments atau pilih coin lain.", provider_status: 400, provider_code: "MERCHANT_CURRENCY_DISABLED", pay_currency: payCurrency }, 400);
+    }
+
+    const minResponse = await fetch(base + "/min-amount?currency_from=usd&currency_to=" + encodeURIComponent(payCurrency), { headers: providerHeaders });
+    const minData = await minResponse.json().catch(() => ({}));
+    if (!minResponse.ok) {
+      console.error("NOWPayments minimum check failed", { status: minResponse.status, data: minData, payCurrency, amountUsd });
+      return json({ success: false, error: "NOWPayments tidak dapat menentukan minimum payment untuk " + payCurrency.toUpperCase() + ". " + safeErrorMessage(minData, minResponse.status), provider_status: minResponse.status }, 502);
+    }
+
+    const minimumCrypto = Number(minData?.min_amount);
+    const estimateResponse = await fetch(base + "/estimate?amount=" + encodeURIComponent(amountUsd) + "&currency_from=usd&currency_to=" + encodeURIComponent(payCurrency), { headers: providerHeaders });
+    const estimateData = await estimateResponse.json().catch(() => ({}));
+    if (!estimateResponse.ok) {
+      console.error("NOWPayments estimate check failed", { status: estimateResponse.status, data: estimateData, payCurrency, amountUsd });
+      return json({ success: false, error: "NOWPayments tidak dapat menghitung estimasi " + payCurrency.toUpperCase() + " untuk nominal ini. " + safeErrorMessage(estimateData, estimateResponse.status), provider_status: estimateResponse.status }, 502);
+    }
+
+    const estimatedCrypto = Number(estimateData?.estimated_amount);
+    if (Number.isFinite(minimumCrypto) && minimumCrypto > 0 && Number.isFinite(estimatedCrypto) && estimatedCrypto < minimumCrypto) {
+      return json({ success: false, error: "Nominal " + amountUsd.toFixed(2) + " USD terlalu kecil untuk " + payCurrency.toUpperCase() + " saat ini. Minimum payment adalah " + minimumCrypto + " " + payCurrency.toUpperCase() + ".", provider_status: 400, provider_code: "BELOW_MINIMUM_PAYMENT_AMOUNT", pay_currency: payCurrency, amount_usd: amountUsd, estimated_amount: estimatedCrypto, minimum_amount: minimumCrypto }, 400);
+    }
     // NOWPayments can calculate the crypto amount from price_amount + price_currency.
     // pay_amount is optional; NOWPayments calculates it from the current rate.
     const controller = new AbortController();
