@@ -291,7 +291,7 @@ export default function BlindboxGamePage() {
             <span>{t('$4 equivalent+ Lock')}</span>
             <span className="text-emerald-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">{t('Lock Amount (IDR)')}: {formatMoney(71748)} ($4 USD equivalent). {t('You have opened all')}.</div>
+          <div className="text-[11px] text-slate-400">{t('Lock Amount (IDR)')}: {formatMoney(71748)} ($4 USD equivalent). {t('Claim Daily Blind Box')}: 1/day.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
