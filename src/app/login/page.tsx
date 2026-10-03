@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { sound } from '../../lib/sound';
 import { TERMS_VERSION } from '../terms/page';
 import { useLanguage } from '../../i18n';
+import { useGame } from '../../context/GameContext';
 import { Wallet, Shield, Fingerprint } from 'lucide-react';
 import { HDNodeWallet } from 'ethers';
 
@@ -21,6 +22,7 @@ type AuthUser = Record<string, any>;
 
 export default function LoginPage({ navigate }: Props) {
   const { t } = useLanguage();
+  const { login } = useGame();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,10 +58,14 @@ export default function LoginPage({ navigate }: Props) {
     );
     localStorage.setItem('sys_is_logged_in', 'true');
 
+    // Synchronize the shared GameProvider immediately. Without this, the
+    // provider still has isLoggedIn=false until a full browser refresh.
+    login(user.walletAddress || user.username || user.displayName || 'User');
+
     if (postLoginPath === '/airdrop') {
       window.location.replace('https://airdrop.sysstreamer.asia/');
     } else {
-      window.location.replace('/#' + postLoginPath);
+      navigate?.(postLoginPath);
     }
   };
 
