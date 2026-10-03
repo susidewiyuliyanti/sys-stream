@@ -109,7 +109,7 @@ async function ensureRegistrationSchema(env: Env) {
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, terms_version TEXT NOT NULL,
     accepted_at INTEGER NOT NULL, created_at INTEGER NOT NULL
   )`).run();
-  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS email_verification_tokens_v2 (
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, token_hash TEXT NOT NULL UNIQUE,
     expires_at INTEGER NOT NULL, used_at INTEGER, created_at INTEGER NOT NULL
   )`).run();
@@ -134,10 +134,7 @@ async function ensureRegistrationSchema(env: Env) {
     }
   };
 
-  await repairTable("email_verification_tokens", [
-    ["id", "TEXT"], ["user_id", "TEXT"], ["token_hash", "TEXT"],
-    ["expires_at", "INTEGER"], ["used_at", "INTEGER"], ["created_at", "INTEGER"],
-  ]);
+  
   await repairTable("terms_acceptances", [
     ["id", "TEXT"], ["user_id", "TEXT"], ["terms_version", "TEXT"],
     ["accepted_at", "INTEGER"], ["created_at", "INTEGER"],
@@ -152,7 +149,7 @@ async function ensureRegistrationSchema(env: Env) {
   for (const sql of [
     "CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals(referral_code)",
     "CREATE INDEX IF NOT EXISTS idx_terms_acceptances_user ON terms_acceptances(user_id)",
-    "CREATE INDEX IF NOT EXISTS idx_email_verification_user ON email_verification_tokens(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_email_verification_v2_user ON email_verification_tokens_v2(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)"
   ]) {
     try {
@@ -397,7 +394,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     try {
       await env.DB.prepare(
-        `INSERT INTO email_verification_tokens(
+        `INSERT INTO email_verification_tokens_v2(
           id,user_id,token_hash,expires_at,used_at,created_at
         ) VALUES(?,?,?,?,NULL,?)`
       ).bind(
@@ -411,7 +408,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       // Production D1 can contain an older verification-token row for the
       // same user. Remove only that user's unused tokens and retry once so
       // a stale token/constraint cannot turn a valid registration into 500.
-      console.error("register verification token first write failed", {
+      console.error("register verification token v2 first write failed", {
         requestId,
         userId: id,
         error: String(error),
@@ -419,11 +416,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       try {
         await env.DB.prepare(
-          `DELETE FROM email_verification_tokens
+          `DELETE FROM email_verification_tokens_v2
            WHERE user_id = ? AND used_at IS NULL`
         ).bind(id).run();
 
-        await insertIntoExistingSchema(env, "email_verification_tokens", {
+        await insertIntoExistingSchema(env, "email_verification_tokens_v2", {
           id: crypto.randomUUID(),
           user_id: id,
           token_hash: verificationHash,
@@ -432,7 +429,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
           created_at: acceptedAt,
         });
       } catch (retryError) {
-        console.error("register verification token retry failed", {
+        console.error("register verification token v2 retry failed", {
           requestId,
           userId: id,
           error: String(retryError),
