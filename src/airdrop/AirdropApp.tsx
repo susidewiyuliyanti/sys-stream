@@ -568,10 +568,10 @@ export default function AirdropApp() {
                 {Array.from({length:daysInMonth},(_,i)=>{
                   const day=i+1, item=checkins.get(day), isToday=checkinMonth===new Date().toISOString().slice(0,7)&&day===new Date().getDate();
                   return <tr key={day} className="border-t border-slate-800">
-                    <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">TODAY</span>:null}</td>
+                    <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">{AIRDROP_UI[lang].today}</span>:null}</td>
                     <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">{AIRDROP_UI[lang].notChecked}</span>}</td>
                     <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} pts</td>
-                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">Check-in</button>:<span className="text-slate-600">—</span>}</td>
+                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">{AIRDROP_UI[lang].checkin}</button>:<span className="text-slate-600">—</span>}</td>
                   </tr>;
                 })}
               </tbody>
@@ -583,9 +583,9 @@ export default function AirdropApp() {
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
           <div>
-            <div className="text-xs font-black tracking-wider text-amber-400">AIRDROP POINTS</div>
-            <h2 className="mt-1 text-xl font-black">Points → SYS</h2>
-            <p className="mt-1 text-xs text-slate-500">Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.</p>
+            <div className="text-xs font-black tracking-wider text-amber-400">{AIRDROP_UI[lang].airdropPoints}</div>
+            <h2 className="mt-1 text-xl font-black">{AIRDROP_UI[lang].pointsSys}</h2>
+            <p className="mt-1 text-xs text-slate-500">{AIRDROP_UI[lang].pointsDesc}</p>
           </div>
           <div className="grid grid-cols-3 gap-2 w-full lg:w-auto">
             <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">{AIRDROP_UI[lang].available}</div><div className="font-black text-amber-400">{points.available}</div></div>
