@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../../../i18n';
 import { CheckCircle2, XCircle, Loader2, MailCheck } from 'lucide-react';
 
 interface Props { navigate?: (path: string) => void; }
 
 export default function VerifyEmailPage({ navigate }: Props) {
+  const { t } = useLanguage();
   const [state, setState] = useState<'loading'|'success'|'error'>('loading');
   const [message, setMessage] = useState('Memverifikasi email Anda...');
 
@@ -50,7 +52,7 @@ export default function VerifyEmailPage({ navigate }: Props) {
           onClick={() => navigate?.('/login')}
           className="mt-7 w-full rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 py-3.5 text-sm font-black uppercase tracking-wider"
         >
-          {state === 'success' ? 'GO TO LOGIN' : 'BACK TO LOGIN'}
+          {state === 'success' ? t('GO TO LOGIN') : t('BACK TO LOGIN')}
         </button>
       </div>
     </div>
