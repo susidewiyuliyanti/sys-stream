@@ -1059,6 +1059,17 @@ const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
+const AIRDROP_STATUS_LABELS: Record<LanguageCode, Record<string,string>> = {
+ id:{'Task':'Tugas','Open Task':'Buka Tugas','Pending':'Menunggu','Approved':'Disetujui','Rejected':'Ditolak','Paid':'Dibayar'},
+ en:{'Task':'Task','Open Task':'Open Task','Pending':'Pending','Approved':'Approved','Rejected':'Rejected','Paid':'Paid'},
+ es:{'Task':'Tarea','Open Task':'Abrir tarea','Pending':'Pendiente','Approved':'Aprobado','Rejected':'Rechazado','Paid':'Pagado'},
+ pt:{'Task':'Tarefa','Open Task':'Abrir tarefa','Pending':'Pendente','Approved':'Aprovado','Rejected':'Rejeitado','Paid':'Pago'},
+ zh:{'Task':'任务','Open Task':'打开任务','Pending':'待审核','Approved':'已通过','Rejected':'已拒绝','Paid':'已支付'},
+ ja:{'Task':'タスク','Open Task':'タスクを開く','Pending':'審査待ち','Approved':'承認済み','Rejected':'却下','Paid':'支払い済み'},
+ ko:{'Task':'작업','Open Task':'작업 열기','Pending':'대기 중','Approved':'승인됨','Rejected':'거부됨','Paid':'지급됨'},
+ ar:{'Task':'مهمة','Open Task':'فتح المهمة','Pending':'قيد المراجعة','Approved':'تمت الموافقة','Rejected':'مرفوض','Paid':'تم الدفع'}
+};
+for(const lang of Object.keys(AIRDROP_STATUS_LABELS) as LanguageCode[])Object.assign(translations[lang],AIRDROP_STATUS_LABELS[lang]);
 const AIRDROP_FINAL_LABELS: Record<LanguageCode, Record<string,string>> = {
  id:{'Loading active tasks...':'Memuat tugas aktif...','Submitting...':'Mengirim...','Menu':'Menu','Close':'Tutup','https://...':'https://...'},
  en:{'Loading active tasks...':'Loading active tasks...','Submitting...':'Submitting...','Menu':'Menu','Close':'Close','https://...':'https://...'},
