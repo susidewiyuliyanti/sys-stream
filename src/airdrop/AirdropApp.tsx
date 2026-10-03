@@ -430,7 +430,7 @@ export default function AirdropApp() {
         id:String(raw.id??`db-${index}`),
         key,
         type,
-        reward:raw.reward!==undefined?String(raw.reward):String(raw.reward_points??'program'),
+        reward:raw.reward_points!==undefined?String(raw.reward_points):raw.reward!==undefined?String(raw.reward):'0',
         estimated:String(raw.estimated||''),
         daily:Boolean(raw.daily),
         priority:Boolean(raw.priority),
