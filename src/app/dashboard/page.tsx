@@ -139,20 +139,6 @@ export default function DashboardPage({ navigate }: Props) {
                   const token = localStorage.getItem('sys_stream_auth_token');
                   const language = localStorage.getItem('sys_stream_language_v2') || 'en';
 
-                  const sessionResponse = await fetch('/api/auth/session', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: token ? { Authorization: 'Bearer ' + token } : {},
-                    cache: 'no-store',
-                  });
-
-                  if (sessionResponse.ok) {
-                    window.location.href =
-                      'https://sysstreamer.asia/api/auth/airdrop-redirect?lang=' +
-                      encodeURIComponent(language);
-                    return;
-                  }
-
                   if (token) {
                     const response = await fetch('/api/auth/airdrop-handoff', {
                       method: 'POST',
