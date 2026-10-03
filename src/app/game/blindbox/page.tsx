@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGame } from '../../../context/GameContext';
 import { BlindboxItem, RarityTier, LockRecord } from '../../../types';
 import { sound } from '../../../lib/sound';
+import { formatIdrAsSelectedCurrency, getLocaleConfig, IDR_PER_CURRENCY_UNIT } from '../../../i18n';
 import {
   Box,
   Sparkles,
@@ -29,7 +30,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    description: 'Tersedia untuk lock aktif minimal Rp 50.000. Reward harian diproses server dan masuk ke saldo tersedia.',
+    description: 'Tersedia untuk lock aktif minimum {formatMoney(50000)}. Reward harian diproses server dan masuk ke saldo tersedia.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: 50000,
@@ -96,6 +97,10 @@ export default function BlindboxGamePage() {
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
+  const { language } = require('../../../i18n').useLanguage();
+  const currencyConfig = getLocaleConfig(language);
+  const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
+  const toIdr = (displayAmount: number) => Math.round(displayAmount * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -198,7 +203,7 @@ export default function BlindboxGamePage() {
               payoutAmount: rewardIdr,
               multiplier: 1.0,
               isWin: true,
-              details: `Daily Box: +Rp ${rewardIdr.toLocaleString('id-ID')} & ${uniqueItem.name}`,
+              details: `Daily Box: +${formatMoney(rewardIdr)} & ${uniqueItem.name}`,
             });
           }, 700);
         }, 1200);
@@ -286,7 +291,7 @@ export default function BlindboxGamePage() {
             <span>Rp 50.000+ Lock</span>
             <span className="text-emerald-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Minimum lock Rp 50.000. Maksimal 1 claim per hari.</div>
+          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(50000)}. Maksimal 1 claim per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -343,7 +348,7 @@ export default function BlindboxGamePage() {
             >
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
-                  Nominal Lock (IDR)
+                  Lock Amount
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
                   {[50000, 500000, 1000000, 2500000].map((amt) => (
@@ -357,7 +362,7 @@ export default function BlindboxGamePage() {
                           : 'bg-slate-900 border-slate-800 text-slate-300'
                       }`}
                     >
-                      Rp {amt.toLocaleString('id-ID')}
+                      {formatMoney(amt)}
                     </button>
                   ))}
                 </div>
@@ -365,15 +370,15 @@ export default function BlindboxGamePage() {
                   type="number"
                   min="50000"
                   step="10000"
-                  value={lockIdrAmount}
-                  onChange={(e) => setLockIdrAmount(Math.max(50000, Number(e.target.value) || 50000))}
+                  value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
+                  onChange={(e) => setLockIdrAmount(Math.max(50000, toIdr(Number(e.target.value) || 0)))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
-                  placeholder="Nominal lock pilihan user"
+                  placeholder={`Lock amount (${currencyConfig.currency})`}
                 />
                 <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum Rp 50.000, kelipatan Rp 10.000.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
-                  <span className="font-mono text-amber-400">Rp {lockIdrAmount.toLocaleString('id-ID')}</span>
+                  <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
                 </div>
               </div>
 
@@ -425,7 +430,7 @@ export default function BlindboxGamePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-white">
-                    Total Locked: Rp ${totalLocked.toLocaleString('id-ID')} ({dailyQuota} Box/Hari)
+                    Total Locked: ${formatMoney(totalLocked)} ({dailyQuota} Box/Hari)
                   </h3>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-mono font-bold">
                     Lock Aktif
@@ -538,10 +543,10 @@ export default function BlindboxGamePage() {
                   Reward dikreditkan ke saldo tersedia
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
-                  +Rp {wonIdr.toLocaleString('id-ID')}
+                  +{formatMoney(wonIdr)}
                 </div>
                 <div className="text-xs text-slate-400">
-                  Reward diproses dalam saldo IDR
+                  Reward is credited to the account balance in the selected currency display
                 </div>
               </div>
 
@@ -623,7 +628,7 @@ export default function BlindboxGamePage() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-bold text-white">{box.name}</span>
                       <span className={`text-xs font-mono font-bold ${isTierUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
-                        {isTierUnlocked ? 'Unlocked' : `Requires Rp ${box.minLockedRequired.toLocaleString('id-ID')}+ Lock`}
+                        {isTierUnlocked ? 'Unlocked' : `Requires ${formatMoney(box.minLockedRequired)}+ Lock`}
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-1">{box.description}</p>
