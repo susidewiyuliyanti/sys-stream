@@ -1,6 +1,6 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { getAddress, isAddress } from "ethers";
-import { hashPassword, createSession } from "../../_lib/auth";
+import { createSession } from "../../_lib/auth";
 
 const TERMS_VERSION = "2026-10-01";
 async function ensureRegistrationSchema(env: Env) {
