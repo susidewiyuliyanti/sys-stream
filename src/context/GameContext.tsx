@@ -88,7 +88,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
       if (cached && (cached.id || cached.walletAddress || cached.username)) {
-        return { ...DEFAULT_USER, ...cached };
+        return {
+          ...DEFAULT_USER,
+          ...cached,
+          // Browser cache may contain an old account balance. Financial values
+          // must be reloaded from /api/auth/me before being displayed as current.
+          coins: 0,
+          lockedBalance: 0,
+        };
       }
     } catch {}
     return DEFAULT_USER;
@@ -311,7 +318,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
           if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
-            setUser(prev => ({ ...prev, ...cached }));
+            setUser(prev => ({
+              ...prev,
+              id: String(cached.id || prev.id || ''),
+              username: String(cached.username || prev.username || ''),
+              avatar: String(cached.avatar || prev.avatar || ''),
+              referralCode: String(cached.referralCode || prev.referralCode || ''),
+              walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
+              // Never let stale browser cache overwrite server-owned financial state.
+              coins: prev.coins,
+              lockedBalance: prev.lockedBalance,
+            }));
           }
         } catch {}
       });
