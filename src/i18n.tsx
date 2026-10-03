@@ -594,6 +594,15 @@ Object.assign(translations.ja,{ 'Leaderboard & Referral':'ランキングと紹�
 Object.assign(translations.ko,{ 'Leaderboard & Referral':'순위 및 추천','Leaderboard':'순위표','Referral Event':'추천 이벤트','Production Leaderboard':'운영 순위표','Wallet not connected':'지갑이 연결되지 않음','Copy Referral ID':'추천 ID 복사','Live Referral Data':'실시간 추천 데이터','Referral':'추천','No new notifications.':'새 알림이 없습니다.'});
 Object.assign(translations.ar,{ 'Leaderboard & Referral':'المتصدرون والإحالات','Leaderboard':'المتصدرون','Referral Event':'حدث الإحالة','Production Leaderboard':'ترتيب الإنتاج','Wallet not connected':'المحفظة غير متصلة','Copy Referral ID':'نسخ معرّف الإحالة','Live Referral Data':'بيانات الإحالة المباشرة','Referral':'الإحالة','No new notifications.':'لا توجد إشعارات جديدة.'});
 
+Object.assign(translations.id, {'Username, Email or Wallet':'Username, Email atau Wallet'});
+Object.assign(translations.en, {'Username, Email or Wallet':'Username, Email or Wallet'});
+Object.assign(translations.es, {'Username, Email or Wallet':'Usuario, correo o wallet'});
+Object.assign(translations.pt, {'Username, Email or Wallet':'Usuário, e-mail ou carteira'});
+Object.assign(translations.zh, {'Username, Email or Wallet':'用户名、邮箱或钱包'});
+Object.assign(translations.ja, {'Username, Email or Wallet':'ユーザー名、メール、またはウォレット'});
+Object.assign(translations.ko, {'Username, Email or Wallet':'사용자 이름, 이메일 또는 지갑'});
+Object.assign(translations.ar, {'Username, Email or Wallet':'اسم المستخدم أو البريد أو المحفظة'});
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
