@@ -113,49 +113,10 @@ const handleWalletAuth = async () => {
     }));
     localStorage.setItem("sys_is_logged_in", "true");
 
-    // Explicitly synchronize the bearer session into the parent-domain cookie.
-    // This is required so airdrop.sysstreamer.asia can use the same login session.
-    const sessionRes = await fetch("/api/auth/session", {
-      method: "POST",
-      credentials: "include",
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    const sessionData = await sessionRes.json().catch(() => ({}));
-    if (!sessionRes.ok || !sessionData?.success) {
-      throw new Error(sessionData?.error || "Session wallet belum berhasil disinkronkan.");
-    }
-
-    // Do not navigate until the exact token has been accepted by the production API.
-    const meRes = await fetch("/api/auth/me", {
-      method: "GET",
-      credentials: "include",
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    const meData = await meRes.json().catch(() => ({}));
-    if (!meRes.ok || !meData?.success || !meData?.user) {
-      localStorage.removeItem("sys_stream_auth_token");
-      localStorage.removeItem("sys_stream_auth_user");
-      localStorage.removeItem("sys_stream_profile_cache");
-      localStorage.setItem("sys_is_logged_in", "false");
-      throw new Error(meData?.error || "Session wallet belum aktif.");
-    }
-
-    // Replace the stored profile with the server-authoritative record.
-    const authenticatedUser = meData.user;
-    localStorage.setItem("sys_stream_auth_user", JSON.stringify(authenticatedUser));
-    localStorage.setItem("sys_stream_profile_cache", JSON.stringify({
-      id: authenticatedUser.id,
-      username: authenticatedUser.username || authenticatedUser.displayName || "",
-      avatar: authenticatedUser.avatarUrl || "",
-      referralCode: authenticatedUser.referralCode || "",
-      walletAddress: authenticatedUser.walletAddress || wallet,
-      registrationBonusIdr: Number(authenticatedUser.registrationBonusIdr || 0),
-      registrationBonusGranted: Boolean(authenticatedUser.registrationBonusGranted),
-      vipTier: Number(authenticatedUser.vipTier || 0),
-      lockedBalance: Number(authenticatedUser.lockedBalance || 0),
-    }));
+    // wallet/verify already creates the auth_sessions row and returns the
+    // authenticated user. Do not perform a second session-sync request here.
+    // That extra request can reject an otherwise valid wallet login and was the
+    // source of the "session wallet belum berhasil disinkronkan" error.
 
     // Wallet login is already authenticated. Do not call the legacy login()
     // helper here because it performs another asynchronous auth refresh and can
