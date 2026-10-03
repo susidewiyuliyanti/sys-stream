@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React, { lazy, Suspense } from 'react';
 import App from './App.tsx';
+import AirdropApp from './airdrop/AirdropApp.tsx';
 import './index.css';
 import { LanguageProvider } from './i18n';
 
@@ -22,7 +23,7 @@ const HostApp = () => {
   }
 
   if (hostname === 'airdrop.sysstreamer.asia') {
-    return <App />;
+    return <AirdropApp />;
   }
 
   // sysstreamer.asia and every non-admin/non-airdrop hostname
