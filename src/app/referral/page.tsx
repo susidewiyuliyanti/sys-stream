@@ -16,8 +16,10 @@ export default function ReferralPage() {
   const [calcWagerPerFriend, setCalcWagerPerFriend] = useState(1000);
 
   const PRODUCTION_DOMAIN = 'https://sysstreamer.asia';
-  const referralTarget = String(user.walletAddress || '').trim() || String(user.referralCode || '').trim();
-  const referralLink = `${PRODUCTION_DOMAIN}/login?ref=${encodeURIComponent(referralTarget)}`;
+  const walletAddress = String(user.walletAddress || '').trim();
+  const referralLink = walletAddress
+    ? `${PRODUCTION_DOMAIN}/login?ref=${encodeURIComponent(walletAddress)}`
+    : '';
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -84,7 +86,7 @@ export default function ReferralPage() {
             {/* Share Link Input */}
             <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl p-2 pl-3">
               <span className="text-xs font-mono text-slate-300 truncate flex-1 select-all">
-                {referralLink}
+                {referralLink || 'Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.'}
               </span>
               <button
                 onClick={copyLink}
