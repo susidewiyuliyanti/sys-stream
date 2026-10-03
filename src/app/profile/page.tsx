@@ -155,7 +155,7 @@ export default function ProfilePage() {
         body: JSON.stringify({ amount, walletAddress: withdrawAddress.trim(), currency: 'USDT' }),
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok || !data?.success) throw new Error(data?.error || 'Penarikan gagal.');
+      if (!r.ok || !data?.success) throw new Error(data?.error || t('Penarikan gagal.'));
       showToast(t('Withdrawal'), t('Permintaan penarikan berhasil dibuat dan menunggu proses.'), 'success');
       setWithdrawOpen(false);
       setWithdrawAmount('');
