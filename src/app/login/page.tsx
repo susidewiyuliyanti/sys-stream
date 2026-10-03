@@ -75,47 +75,49 @@ export default function LoginPage({ navigate }: Props) {
       window.alert(t('Install MetaMask atau wallet Web3 terlebih dahulu.'));
       return;
     }
-
     setIsSubmitting(true);
     setNotice('');
-
     try {
-      const accounts = (await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })) as string[];
-      const wallet = String(accounts?.[0] || '').toLowerCase();
-      if (!wallet) throw new Error(t('Wallet address tidak ditemukan.'));
+      const ethereum = window.ethereum;
+      const accounts = (await ethereum.request({ method: 'eth_requestAccounts' })) as string[];
+      const walletAddress = String(accounts?.[0] || '').trim();
+      if (!walletAddress) throw new Error(t('Wallet address tidak ditemukan.'));
 
-      const nonceRes = await fetch('/api/auth/wallet/nonce', {
+      // Always obtain a fresh server challenge for the exact wallet currently connected.
+      const challengeRes = await fetch('/api/auth/web3/challenge', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet }),
+        body: JSON.stringify({ walletAddress }),
       });
-      const nonceData = await nonceRes.json().catch(() => ({}));
-      if (!nonceRes.ok || !nonceData?.nonce) {
-        throw new Error(nonceData?.error || t('Gagal membuat nonce wallet.'));
+      const challengeData = await challengeRes.json().catch(() => ({}));
+      if (!challengeRes.ok || !challengeData?.success || !challengeData?.challengeId || !challengeData?.message) {
+        throw new Error(challengeData?.error || t('Gagal membuat challenge wallet.'));
       }
 
-      const message = 'SYS STREAMER LOGIN\\n\\nNonce:' + String(nonceData.nonce);
-      const signature = await window.ethereum.request({
+      const challengeWallet = String(challengeData.walletAddress || walletAddress).trim();
+      const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [message, wallet],
+        params: [String(challengeData.message), challengeWallet],
       });
 
-      const verifyRes = await fetch('/api/auth/wallet/verify', {
+      const loginRes = await fetch('/api/auth/web3/login', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet, signature, message }),
+        body: JSON.stringify({
+          challengeId: String(challengeData.challengeId),
+          walletAddress: challengeWallet,
+          message: String(challengeData.message),
+          signature: String(signature),
+        }),
       });
-      const verifyData = await verifyRes.json().catch(() => ({}));
-
-      if (!verifyRes.ok || !verifyData?.token || !verifyData?.user) {
-        throw new Error(verifyData?.error || t('Verifikasi tanda tangan wallet gagal.'));
+      const loginData = await loginRes.json().catch(() => ({}));
+      if (!loginRes.ok || !loginData?.success || !loginData?.token || !loginData?.user) {
+        throw new Error(loginData?.error || t('Verifikasi tanda tangan wallet gagal.'));
       }
 
-      finishAuth(String(verifyData.token), verifyData.user);
+      finishAuth(String(loginData.token), loginData.user);
     } catch (error) {
       console.error('Wallet login error:', error);
       window.alert(error instanceof Error ? error.message : t('Wallet login gagal.'));
@@ -123,7 +125,6 @@ export default function LoginPage({ navigate }: Props) {
       setIsSubmitting(false);
     }
   };
-
   const generateRegistrationWallet = () => {
     if (isSubmitting || !termsAccepted || generatedWallet) return;
 
