@@ -16,7 +16,6 @@ import TebakGamePage from './app/game/tebak/page';
 import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
 import RoomPage from './app/room/[id]/page';
-import AirdropApp from './airdrop/AirdropApp';
 import ReferralPage from './app/referral/page';
 
 function AirdropRedirect() {
@@ -28,41 +27,6 @@ function AirdropRedirect() {
       <div className="text-sm text-slate-400">Membuka SYS STREAM Airdrop...</div>
     </div>
   );
-}
-
-class AirdropErrorBoundary extends Component<React.PropsWithChildren, { hasError: boolean }> {
-  state = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: unknown) {
-    console.error('Airdrop page runtime error:', error);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-[70vh] flex items-center justify-center px-4">
-          <div className="w-full max-w-lg rounded-2xl border border-red-500/20 bg-slate-900 p-6 text-center">
-            <div className="text-lg font-black text-white">Airdrop gagal dimuat</div>
-            <p className="mt-2 text-sm text-slate-400">
-              Halaman Airdrop mengalami error saat dimuat. Silakan buka kembali Airdrop dari Dashboard.
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-5 rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-black text-slate-950"
-            >
-              Muat Ulang
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
 }
 
 export default function App() {
