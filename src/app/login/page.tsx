@@ -169,7 +169,7 @@ export default function LoginPage({ navigate }: Props) {
       if (!res.ok || !data?.token || !data?.user) {
         throw new Error(
           data?.error
-            ? String(data.error) + (data?.code ? ` [${String(data.code)}${data?.requestId ? ` / ${String(data.requestId)}` : ''}]` : '')
+            ? String(data.error) + ([data?.code, data?.stage, data?.requestId].filter(Boolean).length ? ` [${[data?.code, data?.stage, data?.requestId].filter(Boolean).join(' / ')}]` : '')
             : t('Registrasi gagal diproses di server.')
         );
       }
