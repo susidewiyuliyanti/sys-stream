@@ -514,18 +514,60 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const translatePageText = React.useCallback(() => {
     const dict = PAGE_UI_TRANSLATIONS[language] || {};
-    if (!Object.keys(dict).length) return;
+    const reverse = Object.fromEntries(
+      Object.entries(PAGE_UI_TRANSLATIONS).flatMap(([lang, values]) =>
+        lang === language ? [] : Object.entries(values).map(([source, translated]) => [translated, source])
+      )
+    ) as Record<string, string>;
+
+    const translateValue = (value: string) => {
+      const trimmed = value.trim();
+      if (!trimmed || trimmed.length > 240) return value;
+      const source = trimmed;
+      const original = reverse[source] || source;
+      const translated = dict[original];
+      if (!translated) return value;
+      const leading = value.slice(0, value.indexOf(trimmed));
+      const trailing = value.slice(value.indexOf(trimmed) + trimmed.length);
+      return leading + translated + trailing;
+    };
+
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const nodes: Text[] = [];
     let node: Node | null;
     while ((node = walker.nextNode())) nodes.push(node as Text);
+
     nodes.forEach((textNode) => {
       const raw = textNode.nodeValue || '';
-      const key = raw.trim();
-      if (!key || key.length > 180 || !dict[key]) return;
-      const leading = raw.slice(0, raw.indexOf(key));
-      const trailing = raw.slice(raw.indexOf(key) + key.length);
-      textNode.nodeValue = leading + dict[key] + trailing;
+      if (!raw.trim()) return;
+      const element = textNode.parentElement;
+      if (element?.closest('script,style,noscript,textarea')) return;
+
+      // Preserve the original source label so changing language never translates
+      // an already-translated value and switching languages works repeatedly.
+      const source = textNode.dataset?.i18nSource || raw;
+      if (textNode instanceof Text) {
+        try { (textNode as any).dataset.i18nSource = source; } catch {}
+      }
+      const translated = translateValue(source);
+      if (translated !== raw) textNode.nodeValue = translated;
+    });
+
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(
+      '[placeholder],[title],[aria-label],[data-i18n]'
+    ));
+    elements.forEach((el) => {
+      const attrs = ['placeholder', 'title', 'aria-label'] as const;
+      attrs.forEach((attr) => {
+        const current = el.getAttribute(attr);
+        if (!current) return;
+        const key = el.getAttribute(`data-i18n-${attr}`) || current;
+        const translated = dict[key] || reverse[key] && dict[reverse[key]];
+        if (translated) {
+          el.setAttribute(`data-i18n-${attr}`, key);
+          el.setAttribute(attr, translated);
+        }
+      });
     });
   }, [language]);
 
