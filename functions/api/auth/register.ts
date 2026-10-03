@@ -1,16 +1,8 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { getAddress, isAddress } from "ethers";
-import { hashPassword } from "../../_lib/auth";
-import {
-  createVerificationToken,
-  hashVerificationToken,
-  sendVerificationEmail,
-  verificationExpiry,
-} from "../../_lib/email";
+import { hashPassword, createSession } from "../../_lib/auth";
 
 const TERMS_VERSION = "2026-10-01";
-const PRODUCTION_ORIGIN = "https://sysstreamer.asia";
-
 async function ensureRegistrationSchema(env: Env) {
   // The production D1 may contain an older users table. Repair only missing
   // columns so registration does not depend on a local migration having run.
@@ -162,8 +154,6 @@ async function ensureRegistrationSchema(env: Env) {
   }
 }
 
-function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
-
 function errorText(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -228,7 +218,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     const body = await readJson<{
       username?: string;
-      email?: string;
       password?: string;
       displayName?: string;
       termsAccepted?: boolean;
@@ -238,22 +227,18 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }>(request);
 
     const suppliedUsername = String(body.username || "").trim();
-    const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const incomingReferralCode = String(body.referralCode || "").trim();
     const incomingWalletAddress = String(body.walletAddress || "").trim();
 
-    // Registration is email-first. Username is optional and generated server-side.
-    if (!validEmail(email)) {
-      return json({ success: false, error: "Email tidak valid." }, 400);
-    }
+    // Registration is wallet-first. Email is not collected or required.
     if (password.length < 6) {
       return json({ success: false, error: "Password minimal 6 karakter." }, 400);
     }
-    if (incomingWalletAddress && !isAddress(incomingWalletAddress)) {
-      return json({ success: false, error: "Alamat wallet EVM tidak valid." }, 400);
+    if (!incomingWalletAddress || !isAddress(incomingWalletAddress)) {
+      return json({ success: false, error: "Wallet wajib dihubungkan untuk membuat akun." }, 400);
     }
-    const walletAddress = incomingWalletAddress ? getAddress(incomingWalletAddress) : null;
+    const walletAddress = getAddress(incomingWalletAddress);
     if (
       body.termsAccepted !== true ||
       String(body.termsVersion || "") !== TERMS_VERSION
@@ -262,14 +247,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         success: false,
         error: "Anda harus menyetujui Terms & Conditions versi terbaru sebelum membuat akun.",
       }, 400);
-    }
-
-    const emailExists = await env.DB.prepare(
-      "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
-    ).bind(email).first();
-
-    if (emailExists) {
-      return json({ success: false, error: "Email sudah terdaftar." }, 409);
     }
 
     if (walletAddress) {
@@ -286,13 +263,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     let id: string = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
 
-    const emailLocalPart = email.split("@")[0]
-      .replace(/[^a-zA-Z0-9_]/g, "_")
-      .replace(/^_+|_+$/g, "")
-      .slice(0, 20) || "user";
-
-    let username = suppliedUsername || emailLocalPart;
-    if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) username = "user";
+    let username = suppliedUsername || "user_" + walletAddress.slice(2, 10).toLowerCase();
+    if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) username = "user_" + crypto.randomUUID().slice(0, 8);
     const usernameTaken = await env.DB.prepare(
       "SELECT id FROM users WHERE lower(username)=lower(?) LIMIT 1"
     ).bind(username).first();
@@ -317,7 +289,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const values: Record<string, any> = {
       id,
       username,
-      email,
+      // Legacy column only; email is never collected or used.
+      email: "",
       password_hash: passwordHash,
       password: passwordHash,
       display_name: displayName,
@@ -380,7 +353,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       insertValues.push(values[name]);
     }
 
-    if (!insertColumns.includes("email") || !insertColumns.includes("username")) {
+    if (!insertColumns.includes("username")) {
       throw new Error("USERS_SCHEMA_MISSING_REQUIRED_ACCOUNT_COLUMNS");
     }
 
@@ -394,24 +367,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       // a production UNIQUE constraint. Return a normal conflict instead of
       // exposing it as a generic 500 server error.
       if (isUniqueConstraintError(error)) {
-        const existingByEmail = await env.DB.prepare(
-          "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
-        ).bind(email).first();
-        if (existingByEmail) {
-          return json({ success: false, error: "Email sudah terdaftar." }, 409);
-        }
-
         const existingByUsername = await env.DB.prepare(
           "SELECT id FROM users WHERE lower(username)=lower(?) LIMIT 1"
         ).bind(username).first();
         if (existingByUsername) {
           return json({ success: false, error: "Username sudah digunakan." }, 409);
         }
+        const existingByWallet = await env.DB.prepare(
+          "SELECT id FROM users WHERE lower(wallet_address)=lower(?) LIMIT 1"
+        ).bind(walletAddress).first();
+        if (existingByWallet) {
+          return json({ success: false, error: "Wallet tersebut sudah terhubung ke akun lain." }, 409);
+        }
       }
 
       console.error("register users insert failed", {
         requestId,
-        email,
+        walletAddress,
         error: errorText(error),
       });
       return json({
@@ -424,8 +396,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     if (legacyIntegerId) {
       const created = await env.DB.prepare(
-        "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
-      ).bind(email).first<any>();
+        "SELECT id FROM users WHERE lower(wallet_address)=lower(?) LIMIT 1"
+      ).bind(walletAddress).first<any>();
       if (!created || created.id === undefined || created.id === null) {
         throw new Error("LEGACY_USER_ID_NOT_FOUND_AFTER_INSERT");
       }
@@ -448,62 +420,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         userId: id,
         error: String(error),
       });
-    }
-
-    const verificationToken = createVerificationToken();
-    const verificationHash = await hashVerificationToken(verificationToken);
-    const verificationExpires = verificationExpiry();
-
-    try {
-      await env.DB.prepare(
-        `INSERT INTO email_verification_tokens_v2(
-          id,user_id,token_hash,expires_at,used_at,created_at
-        ) VALUES(?,?,?,?,NULL,?)`
-      ).bind(
-        crypto.randomUUID(),
-        id,
-        verificationHash,
-        verificationExpires,
-        acceptedAt
-      ).run();
-    } catch (error) {
-      // Production D1 can contain an older verification-token row for the
-      // same user. Remove only that user's unused tokens and retry once so
-      // a stale token/constraint cannot turn a valid registration into 500.
-      console.error("register verification token v2 first write failed", {
-        requestId,
-        userId: id,
-        error: String(error),
-      });
-
-      try {
-        await env.DB.prepare(
-          `DELETE FROM email_verification_tokens_v2
-           WHERE user_id = ? AND used_at IS NULL`
-        ).bind(id).run();
-
-        await insertIntoExistingSchema(env, "email_verification_tokens_v2", {
-          id: crypto.randomUUID(),
-          user_id: id,
-          token_hash: verificationHash,
-          expires_at: verificationExpires,
-          used_at: null,
-          created_at: acceptedAt,
-        });
-      } catch (retryError) {
-        console.error("register verification token v2 retry failed", {
-          requestId,
-          userId: id,
-          error: String(retryError),
-        });
-
-        return json({
-          success: false,
-          code: "REGISTRATION_VERIFICATION_STORAGE_ERROR",
-          requestId,
-          error: "Akun belum dapat menyelesaikan verifikasi email. Silakan coba registrasi kembali.",
-        }, 500);
-      }
     }
 
     // Referral is optional. A referral failure must never prevent the new
@@ -544,16 +460,28 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
-    const origin = PRODUCTION_ORIGIN;
-    let sent: Awaited<ReturnType<typeof sendVerificationEmail>>;
-    try {
-      sent = await sendVerificationEmail(
-        env,
-        email,
-        verificationToken,
-        origin
-      );
-    } catch (error) {
+    const token = await createSession(env, id);
+    return json({
+      success: true,
+      token,
+      user: {
+        id: String(id),
+        username,
+        displayName,
+        role: "USER",
+        balance: 0,
+        lockedBalance: 0,
+        walletAddress,
+        referralCode: userReferralCode,
+        emailVerified: true,
+        registrationBonusIdr: 15000,
+        registrationBonusGranted: true,
+      },
+      registrationBonusIdr: 15000,
+      registrationBonusUsdt: 0.8363,
+      message: "Akun berhasil dibuat dan langsung login. Tidak diperlukan email.",
+    });
+  } catch (error) {
       console.error("registration verification email threw", {
         requestId,
         userId: id,
