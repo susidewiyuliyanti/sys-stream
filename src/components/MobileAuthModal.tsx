@@ -20,7 +20,7 @@ export const MobileAuthModal: React.FC = () => {
   const [verificationNotice, setVerificationNotice] = useState('');
   const [generatedWallet, setGeneratedWallet] = useState<{ address: string; phrase: string } | null>(null);
   const [walletBackupConfirmed, setWalletBackupConfirmed] = useState(false);
-  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ token: string; user: any } | null>(null);
+  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ password: string } | null>(null);
 
   if (!loginModalOpen) return null;
 
@@ -36,25 +36,51 @@ export const MobileAuthModal: React.FC = () => {
     if (!termsAccepted) return;
 
     if (pendingRegistrationAuth && walletBackupConfirmed) {
-      completeRegistration();
+      await completeRegistration();
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      const newWallet = HDNodeWallet.createRandom();
-      const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
+    if (generatedWallet) return;
 
+    try {
+      // Generate the wallet locally first. The server is only contacted after
+      // the user confirms that the recovery phrase has been backed up.
+      const newWallet = HDNodeWallet.createRandom();
+      const phrase = newWallet.mnemonic?.phrase || '';
+      if (!phrase) throw new Error('Recovery phrase gagal dibuat.');
+
+      setGeneratedWallet({
+        address: newWallet.address,
+        phrase,
+      });
+      setWalletBackupConfirmed(false);
+      setPendingRegistrationAuth({
+        password: crypto.randomUUID() + crypto.randomUUID(),
+      });
+      setVerificationNotice('Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.');
+    } catch (error) {
+      console.error('Local wallet generation failed', error);
+      setVerificationNotice(error instanceof Error ? error.message : 'Gagal membuat wallet baru.');
+    }
+  };
+
+  const completeRegistration = async () => {
+    if (!pendingRegistrationAuth || !generatedWallet || !walletBackupConfirmed || isSubmitting) return;
+
+    setIsSubmitting(true);
+    setVerificationNotice('');
+
+    try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: '',
-          password: registrationPassword,
+          password: pendingRegistrationAuth.password,
           termsAccepted: true,
           termsVersion: TERMS_VERSION,
-          walletAddress: newWallet.address,
+          walletAddress: generatedWallet.address,
         }),
       });
 
@@ -63,26 +89,15 @@ export const MobileAuthModal: React.FC = () => {
         throw new Error(data?.error || 'Registrasi wallet gagal.');
       }
 
-      setGeneratedWallet({
-        address: newWallet.address,
-        phrase: newWallet.mnemonic?.phrase || '',
-      });
-      setWalletBackupConfirmed(false);
-      setPendingRegistrationAuth({ token: String(data.token), user: data.user });
-      setVerificationNotice('Akun berhasil dibuat. Simpan recovery phrase sebelum melanjutkan.');
+      localStorage.setItem('sys_stream_auth_token', String(data.token));
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
+      login(data.user?.username || data.user?.walletAddress || 'User');
     } catch (error) {
       console.error('Wallet registration failed', error);
       setVerificationNotice(error instanceof Error ? error.message : 'Registrasi wallet gagal.');
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const completeRegistration = () => {
-    if (!pendingRegistrationAuth || !walletBackupConfirmed) return;
-    localStorage.setItem('sys_stream_auth_token', pendingRegistrationAuth.token);
-    localStorage.setItem('sys_stream_auth_user', JSON.stringify(pendingRegistrationAuth.user));
-    login(pendingRegistrationAuth.user?.username || 'User');
   };
 
   const handleWalletAuth = async () => {
