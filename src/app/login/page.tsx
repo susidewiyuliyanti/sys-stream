@@ -33,15 +33,12 @@ export default function LoginPage({ navigate }: Props) {
   const { t } = useLanguage();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
-  const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [verificationEmail, setVerificationEmail] = useState('');
   const [verificationNotice, setVerificationNotice] = useState('');
-  const [resendBusy, setResendBusy] = useState(false);
   const [registerWallet, setRegisterWallet] = useState('');
   const [walletConnecting, setWalletConnecting] = useState(false);
   const referralParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') || '' : '';
@@ -170,27 +167,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body = authMode === 'login'
         ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, walletAddress: registerWallet || undefined, ...(referralParam ? { referralCode: referralParam } : {}) };
+        : { password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION, walletAddress: registerWallet, ...(referralParam ? { referralCode: referralParam } : {}) };
       const res = await fetch(endpoint, { method:'POST', credentials:'include', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        if (data.code === 'EMAIL_NOT_VERIFIED') {
-          setVerificationEmail(String(data.email || emailInput || usernameInput.trim()));
-          setVerificationNotice(t('Email Anda belum diverifikasi. Cek inbox atau kirim ulang email verifikasi.'));
-          return;
-        }
-        if (data.code === 'EMAIL_SERVICE_UNAVAILABLE') {
-          setVerificationEmail(String(data.email || emailInput.trim()));
-          setVerificationNotice(data.error || t('Layanan email belum aktif.'));
-          return;
-        }
         throw new Error(data.error || t('Autentikasi gagal.'));
-      }
-      if (authMode === 'register' && data.requiresEmailVerification) {
-        setVerificationEmail(String(data.email || emailInput.trim()));
-        setVerificationNotice(data.message || t('Akun dibuat. Silakan verifikasi email sebelum login.'));
-        setPasswordInput('');
-        return;
       }
       if (!data?.token || !data?.user) {
         throw new Error(t('Sesi autentikasi tidak diterima dari server.'));
@@ -224,23 +205,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     } finally { setIsSubmitting(false); }
   };
 
-  const handleResendVerification = async () => {
-    if (!verificationEmail || resendBusy) return;
-    setResendBusy(true);
-    try {
-      const res = await fetch('/api/auth/resend-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: verificationEmail.trim() }),
-      });
-      const data = await res.json().catch(() => ({}));
-      setVerificationNotice(data.message || t('Jika akun membutuhkan verifikasi, email akan dikirim.'));
-    } catch {
-      setVerificationNotice(t('Permintaan kirim ulang gagal. Coba lagi beberapa saat.'));
-    } finally {
-      setResendBusy(false);
-    }
-  };
 
  return (
     <div className="min-h-screen bg-[#060a14] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">
@@ -286,49 +250,21 @@ const handleSubmit = async (e: React.FormEvent) => {
           </p>
         </div>
 
-        {verificationEmail && (
-          <div className="mb-5 rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-4">
-            <div className="text-sm font-bold text-cyan-300">{t('Verify your email')}</div>
-            <p className="mt-1 text-[11px] leading-5 text-slate-400">
-              {t('We sent a verification link to')} <span className="text-slate-200 font-semibold">{verificationEmail}</span>.
-              {t('You must verify it before you can log in.')}
-            </p>
-            {verificationNotice && (
-              <p className="mt-2 text-[11px] leading-5 text-slate-300">{verificationNotice}</p>
-            )}
-            <button
-              type="button"
-              onClick={handleResendVerification}
-              disabled={resendBusy}
-              className="mt-3 w-full rounded-xl border border-cyan-500/30 bg-slate-950/70 py-2.5 text-[11px] font-bold text-cyan-300 hover:text-white disabled:opacity-50"
-            >
-              {resendBusy ? t('SENDING...') : t('RESEND VERIFICATION EMAIL')}
-            </button>
-          </div>
-        )}
-
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {/* Username / Email */}
-          {authMode === 'login' ? (
-            <div className="relative">
-              <span className="absolute left-3.5 top-3.5 text-cyan-400">
-                <User className="w-4 h-4" />
-              </span>
-              <input
-                type="text"
-                placeholder={t('Username, Email or Wallet')}
-                value={usernameInput}
-                onChange={(e) => setUsernameInput(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
-              />
-            </div>
-          ) : (
-            <div className="relative">
-              <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
-              <input type="email" placeholder={t('Email address')} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} required className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
-            </div>
-          )}
+          <div className="relative">
+            <span className="absolute left-3.5 top-3.5 text-cyan-400">
+              <User className="w-4 h-4" />
+            </span>
+            <input
+              type="text"
+              placeholder={authMode === 'login' ? t('Username or Wallet') : t('Wallet is required for registration')}
+              value={usernameInput}
+              onChange={(e) => setUsernameInput(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+            />
+          </div>
 
           {/* Password */}
           <div className="relative">
