@@ -47,7 +47,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
   const headers = { "x-api-key": apiKey, "Accept": "application/json" };
 
   try {
-    const currenciesResponse = await fetch(base + "/currencies", { headers });
+    const currenciesResponse = await fetch(base + "/full-currencies", { headers });
     const currenciesData = await currenciesResponse.json().catch(() => ({}));
 
     const result: any = {

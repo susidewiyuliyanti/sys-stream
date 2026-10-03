@@ -14,7 +14,7 @@ function normalizePayCurrency(currency: string) {
 async function preflightNowPayments(base: string, apiKey: string, payCurrency: string, amountUsd: number) {
   const headers = { "x-api-key": apiKey, "Accept": "application/json" };
 
-  const currenciesResponse = await fetch(base + "/currencies", { headers });
+  const currenciesResponse = await fetch(base + "/full-currencies", { headers });
   const currenciesData = await currenciesResponse.json().catch(() => ({}));
 
   if (!currenciesResponse.ok) {
