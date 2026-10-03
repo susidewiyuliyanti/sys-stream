@@ -66,6 +66,7 @@ async function ensureRegistrationSchema(env: Env) {
     ["photo_url", "TEXT DEFAULT ''"],
     ["streamer_handle", "TEXT"],
     ["bio", "TEXT"],
+    ["balance", "REAL NOT NULL DEFAULT 0"],
     ["saldo", "REAL NOT NULL DEFAULT 0"],
     ["wallet_balance", "REAL NOT NULL DEFAULT 0"],
     ["affiliate_earnings", "REAL NOT NULL DEFAULT 0"],
