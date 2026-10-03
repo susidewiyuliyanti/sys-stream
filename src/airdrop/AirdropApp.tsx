@@ -267,11 +267,11 @@ export default function AirdropApp() {
       const params = new URLSearchParams(window.location.search);
       const handoff = params.get('handoff');
 
-      // The preferred flow is a shared parent-domain HttpOnly session.
-      // Because the Airdrop page is now on the same Cloudflare deployment,
-      // validate its cookie from the current origin first.
+      // IMPORTANT: the canonical authenticated profile lives on the main
+      // SYS STREAM origin. Validate that shared parent-domain cookie there,
+      // then use the returned user as the same profile in Airdrop.
       try {
-        const response = await fetch('/api/auth/me', {
+        const response = await fetch('https://sysstreamer.asia/api/auth/me', {
           credentials: 'include',
           cache: 'no-store',
         });
@@ -285,11 +285,9 @@ export default function AirdropApp() {
           return;
         }
       } catch {
-        // Continue to the one-time handoff fallback.
+        // Continue to the legacy handoff fallback.
       }
 
-      // Backward-compatible production path for sessions created before the
-      // shared cookie redirect was deployed.
       if (handoff) {
         try {
           const response = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
@@ -307,23 +305,8 @@ export default function AirdropApp() {
             return;
           }
         } catch {
-          // Continue to cross-origin session validation.
+          // Continue to unauthenticated state.
         }
-      }
-
-      try {
-        const response = await fetch('https://sysstreamer.asia/api/auth/me', {
-          credentials: 'include',
-          cache: 'no-store',
-        });
-        const data = await response.json().catch(() => ({}));
-        if (active && response.ok && data?.success && data?.user) {
-          setAuthenticated(true);
-          setAuthChecked(true);
-          return;
-        }
-      } catch {
-        // Fall through to the unauthenticated state.
       }
 
       if (!active) return;
