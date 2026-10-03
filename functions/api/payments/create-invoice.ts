@@ -152,6 +152,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
+    const base = "https://api.nowpayments.io/v1";
+    const providerHeaders = {
+      "x-api-key": apiKey,
+      "Accept": "application/json",
+    };
+
     // Validate the selected network-specific ticker against the merchant account.
     // NOWPayments uses USDTTRC20 for USDT on TRON.
     const currenciesResponse = await fetch(base + "/currencies", { headers: providerHeaders });
