@@ -12,7 +12,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       `SELECT id, username, email, password_hash, display_name AS displayName, role,
               COALESCE(email_verified,0) AS emailVerified,
               COALESCE(available_balance,0) AS balance,
-              COALESCE(total_locked,0) AS lockedBalance
+              COALESCE(total_locked,0) AS lockedBalance,
+              wallet_address AS walletAddress,
+              referral_code AS referralCode
        FROM users
        WHERE lower(username)=lower(?) OR lower(email)=lower(?)
        LIMIT 1`
@@ -38,6 +40,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         id:String(user.id), username:user.username, email:user.email,
         displayName:user.displayName, role:user.role || "USER",
         balance:Number(user.balance||0), lockedBalance:Number(user.lockedBalance||0),
+        walletAddress:user.walletAddress || null, referralCode:user.referralCode || null,
         emailVerified:true
       }
     });
