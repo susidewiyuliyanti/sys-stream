@@ -38,7 +38,8 @@ async function ensureProfileSchema(env: Env) {
 async function getProfile(env: Env, userId: string) {
   return env.DB.prepare(`
     SELECT id, username, email, display_name AS displayName,
-           role, referral_code AS referralCode, avatar_url AS avatarUrl,
+           role, referral_code AS referralCode, wallet_address AS walletAddress,
+           avatar_url AS avatarUrl,
            COALESCE(email_verified,0) AS emailVerified,
            COALESCE(available_balance,0) AS balance,
            COALESCE(total_locked,0) AS lockedBalance,
