@@ -583,7 +583,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) return false;
     try {
-      const response = await fetch('/api/locks/create', {
+      const response = await fetch('/api/deposits', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ amount, durationDays }),
@@ -595,7 +595,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       await refreshFinancialState();
       sound.playWin();
-      showToast('Funds Staked & Locked', `Locked $${amount.toFixed(2)} USDT for ${durationDays} days.`, 'success');
+      showToast('Blind Box Lock Aktif', `Saldo Rp ${amount.toLocaleString('id-ID')} dikunci untuk Blind Box selama ${durationDays} hari.`, 'success');
       return true;
     } catch {
       showToast('Lock Failed', 'Server tidak dapat memproses lock.', 'error');
@@ -607,19 +607,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) return false;
     try {
-      const response = await fetch('/api/locks/claim', {
+      const response = await fetch(`/api/deposits/${encodeURIComponent(lockId)}/claim`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ lockId }),
+        body: undefined,
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.success) {
-        showToast('Daily Yield', data?.error || 'Claim gagal.', 'error');
+        showToast('Blind Box', data?.error || 'Claim Blind Box gagal.', 'error');
         return false;
       }
       await refreshFinancialState();
       sound.playWin();
-      showToast('Daily Yield Claimed', `+${Number(data.claimedAmount || 0).toFixed(4)} USDT added to your balance.`, 'success');
+      showToast('Blind Box Claimed', `+Rp ${Number(data.reward ?? data.prizeAmount ?? 0).toLocaleString('id-ID')} masuk ke saldo Anda.`, 'success');
       return true;
     } catch {
       showToast('Daily Yield', 'Server tidak dapat memproses claim.', 'error');
@@ -631,10 +631,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) return false;
     try {
-      const response = await fetch('/api/locks/unlock', {
+      const response = await fetch(`/api/deposits/${encodeURIComponent(lockId)}/settle`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ lockId }),
+        body: undefined,
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.success) {
@@ -643,7 +643,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       await refreshFinancialState();
       sound.playJackpot();
-      showToast('Funds Unlocked', `+${Number(data.payout || 0).toFixed(4)} USDT returned to available balance.`, 'success');
+      showToast('Lock Selesai', `Principal Rp ${Number(data.principalReturned ?? data.balance ?? 0).toLocaleString('id-ID')} telah dikembalikan ke saldo tersedia.`, 'success');
       return true;
     } catch {
       showToast('Unlock Failed', 'Server tidak dapat memproses unlock.', 'error');
