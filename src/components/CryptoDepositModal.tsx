@@ -22,6 +22,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [minAmountUsd] = useState<number>(5);
   const [depositError, setDepositError] = useState<string>('');
+  const [diagnosticError, setDiagnosticError] = useState<string>('');
 
 
   if (!isOpen) return null;
@@ -46,12 +47,28 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
     setIsLoading(true);
     setDepositError('');
+    setDiagnosticError('');
     try {
       const inv = await createCryptoInvoice(finalAmount, selectedCurrency);
       setInvoice(inv);
     } catch (err: any) {
       const message = String(err?.message || t('Failed to generate invoice'));
       setDepositError(message);
+      try {
+        const token = localStorage.getItem('sys_stream_auth_token');
+        if (token) {
+          const diagnosticResponse = await fetch(`/api/payments/diagnostics?currency=${encodeURIComponent(selectedCurrency)}&amount=${encodeURIComponent(finalAmount)}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            cache: 'no-store',
+          });
+          const diagnostic = await diagnosticResponse.json().catch(() => ({}));
+          if (diagnostic?.diagnosis?.length) {
+            setDiagnosticError(diagnostic.diagnosis.join(' '));
+          } else if (diagnostic?.error) {
+            setDiagnosticError(String(diagnostic.error));
+          }
+        }
+      } catch {}
       showToast(t('Error'), message, 'error');
     } finally {
       setIsLoading(false);
