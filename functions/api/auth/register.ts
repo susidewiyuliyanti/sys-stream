@@ -281,7 +281,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
-    let id = String(created.id) as typeof id;
+    // Use a UUID for the current TEXT/UUID schema. Legacy integer-ID schemas\n    // are resolved to their database-generated id immediately after insert.\n    let id: string = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
 
     const emailLocalPart = email.split("@")[0]
@@ -427,7 +427,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       if (!created || created.id === undefined || created.id === null) {
         throw new Error("LEGACY_USER_ID_NOT_FOUND_AFTER_INSERT");
       }
-      id = crypto.randomUUID();
+      id = String(created.id);
     }
 
     // Terms acceptance is required by the API contract. If the auxiliary
