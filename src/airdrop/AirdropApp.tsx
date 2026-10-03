@@ -6,8 +6,8 @@ import {
 import { SysLogo } from '../components/SysLogo';
 
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
-type TaskType = 'youtube'|'tiktok'|'instagram'|'shorts'|'social'|'deposit'|'withdrawal'|'profile'|'checkin';
-type TaskKey = 'checkin'|'tiktok'|'instagram'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile';
+type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'deposit'|'withdrawal'|'profile'|'checkin';
+type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile';
 type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
 const TASKS: Task[] = [
@@ -217,6 +217,10 @@ function typeIcon(type:TaskType) {
   if(type==='youtube'||type==='shorts') return <Youtube className="w-5 h-5"/>;
   if(type==='tiktok') return <span className="text-sm font-black">♪</span>;
   if(type==='instagram') return <span className="text-sm font-black">◎</span>;
+  if(type==='twitter') return <span className="text-sm font-black">𝕏</span>;
+  if(type==='facebook') return <span className="text-sm font-black">f</span>;
+  if(type==='telegram') return <span className="text-sm font-black">✈</span>;
+  if(type==='discord') return <span className="text-sm font-black">◈</span>;
   if(type==='checkin') return <Clock3 className="w-5 h-5"/>;
   if(type==='deposit') return <CircleDollarSign className="w-5 h-5"/>;
   if(type==='withdrawal') return <WalletCards className="w-5 h-5"/>;
@@ -224,7 +228,7 @@ function typeIcon(type:TaskType) {
   return <Link2 className="w-5 h-5"/>;
 }
 function typeLabel(type:TaskType,tx:Record<string,string>) {
-  const map:Record<TaskType,string>={youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE'};
+  const map:Record<TaskType,string>={youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE'};
   return map[type]||'SOCIAL';
 }
 
@@ -404,7 +408,7 @@ export default function AirdropApp() {
   const availableTasks=useMemo<Task[]>(()=>{
     const fallback=dbTasks.map((raw:any,index:number)=>{
       const category=String(raw.category||'social').toLowerCase();
-      const type:TaskType=(['youtube','tiktok','instagram','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
+      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
       const title=String(raw.title||'').trim();
       const desc=String(raw.description||'').trim();
@@ -537,7 +541,7 @@ export default function AirdropApp() {
           ].map(([key,label])=><button key={key} onClick={()=>setTaskCategory(key as 'all'|'youtube'|'social'|'checkin')} className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-3 text-xs font-bold hover:border-amber-400/40">{label}</button>)}
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>setSelectedTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
