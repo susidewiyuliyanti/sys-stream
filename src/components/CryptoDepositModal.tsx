@@ -23,6 +23,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [minAmountUsd] = useState<number>(5);
   const [depositError, setDepositError] = useState<string>('');
   const [diagnosticError, setDiagnosticError] = useState<string>('');
+  const [paymentStatus, setPaymentStatus] = useState<string>('waiting');
 
 
   if (!isOpen) return null;
@@ -50,6 +51,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     setDiagnosticError('');
     try {
       const inv = await createCryptoInvoice(finalAmount, selectedCurrency);
+      setPaymentStatus(inv.status || 'waiting');
       setInvoice(inv);
     } catch (err: any) {
       const message = String(err?.message || t('Failed to generate invoice'));
@@ -74,6 +76,27 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
       setIsLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (!invoice?.paymentId) return;
+    let stopped = false;
+    const check = async () => {
+      try {
+        const token = localStorage.getItem('sys_stream_auth_token');
+        if (!token) return;
+        const response = await fetch('/api/payments/status?payment_id=' + encodeURIComponent(invoice.paymentId), {
+          headers: { Authorization: 'Bearer ' + token },
+          cache: 'no-store',
+        });
+        const data = await response.json().catch(() => ({}));
+        const status = String(data?.payment?.payment_status || '').toLowerCase();
+        if (!stopped && status) setPaymentStatus(status);
+      } catch {}
+    };
+    check();
+    const timer = window.setInterval(check, 10000);
+    return () => { stopped = true; window.clearInterval(timer); };
+  }, [invoice?.paymentId]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
