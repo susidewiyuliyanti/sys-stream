@@ -30,6 +30,16 @@ async function ensureTransactions(env: Env) {
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`).run();
+
+  const columns = await env.DB.prepare("PRAGMA table_info(transactions)").all();
+  const names = new Set((columns.results || []).map((r: any) => String(r.name)));
+  if (!names.has("payment_id")) {
+    try {
+      await env.DB.prepare("ALTER TABLE transactions ADD COLUMN payment_id TEXT").run();
+    } catch (error) {
+      console.error("transactions payment_id schema repair skipped", String(error));
+    }
+  }
 }
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
@@ -61,9 +71,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const failed = ["failed","expired","refunded"].includes(status);
 
     if (successful && String(tx.status).toUpperCase() !== "COMPLETED") {
-      // Transactions are stored in USD at checkout, while the platform account
-      // balance is canonical IDR. Never credit the crypto amount or raw USD
-      // directly into an IDR balance.
       const usdAmount = Number(data.price_amount || tx.amount || 0);
       const usdToIdr = 17937;
       const creditedIdr = usdAmount > 0 && Number.isFinite(usdToIdr)
@@ -82,9 +89,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         const balance = Number(user?.balance || 0);
         const nextBalance = balance + creditedIdr;
 
-        // Mark the transaction completed only for the matching pending deposit.
-        // This prevents a repeated NOWPayments IPN from crediting the same
-        // payment more than once in the normal callback path.
         const updated = await env.DB.prepare(`
           UPDATE transactions
           SET amount=?, status='COMPLETED', updated_at=CURRENT_TIMESTAMP
