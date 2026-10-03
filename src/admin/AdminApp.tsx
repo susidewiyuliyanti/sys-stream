@@ -12,7 +12,8 @@ type AdminDeposit = { id:string; depositCode:string; userId:string; username:str
 type AdminAccount = { id:string; email:string; displayName:string; role:string; active:number; createdAt:number };
 type JackpotGrant = { id:string; userId:string; username:string; email:string; amount:number; currency:string; note:string; adminName:string; createdAt:number };
 type AirdropTask = { id:number; title:string; description:string; category:string; rewardPoints:number; active:number; createdAt:string };
-type Streamer = { id:string; username:string; email:string; walletAddress:string; role:string; createdAt?:string };\ntype Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins';
+type Streamer = { id:string; username:string; email:string; walletAddress:string; role:string; createdAt?:string };
+type Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins';
 
 export default function AdminApp() {
   const [authenticated,setAuthenticated]=useState(false);
@@ -22,7 +23,8 @@ export default function AdminApp() {
   const [error,setError]=useState('');
   const [users,setUsers]=useState<AdminUser[]>([]);
   const [deposits,setDeposits]=useState<AdminDeposit[]>([]);
-  const [admins,setAdmins]=useState<AdminAccount[]>([]);\n  const [streamers,setStreamers]=useState<Streamer[]>([]);
+  const [admins,setAdmins]=useState<AdminAccount[]>([]);
+  const [streamers,setStreamers]=useState<Streamer[]>([]);
   const [grants,setGrants]=useState<JackpotGrant[]>([]);
   const [airdropTasks,setAirdropTasks]=useState<AirdropTask[]>([]);
   const [loading,setLoading]=useState(false);
@@ -137,7 +139,8 @@ export default function AdminApp() {
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <nav className="bg-slate-900 border border-slate-800 rounded-2xl p-2 space-y-1">
               <NavButton active={tab==='overview'} onClick={()=>setTab('overview')} icon={<LayoutDashboard/>} label="Overview"/>
-              <NavButton active={tab==='users'} onClick={()=>setTab('users')} icon={<Users/>} label="Users"/>\n              <NavButton active={tab==='streamers'} onClick={()=>setTab('streamers')} icon={<Activity/>} label="Streamers"/>
+              <NavButton active={tab==='users'} onClick={()=>setTab('users')} icon={<Users/>} label="Users"/>
+              <NavButton active={tab==='streamers'} onClick={()=>setTab('streamers')} icon={<Activity/>} label="Streamers"/>
               <NavButton active={tab==='transactions'} onClick={()=>setTab('transactions')} icon={<WalletCards/>} label="Transactions"/>
               <NavButton active={tab==='jackpot'} onClick={()=>setTab('jackpot')} icon={<Gift/>} label="Jackpot Grants"/>
               <NavButton active={tab==='airdrop'} onClick={()=>setTab('airdrop')} icon={<ListChecks/>} label="User Tasks / Airdrop Task"/>
