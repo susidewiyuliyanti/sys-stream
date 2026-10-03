@@ -58,7 +58,7 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     }
     if (!task) return response(context.request, { success: false, message: "Task tidak ditemukan atau belum diaktifkan" }, 404);
 
-    const existing = await db.prepare("SELECT id,status FROM airdrop_submissions WHERE wallet_address=? AND task_id=? AND status IN ('PENDING','APPROVED') ORDER BY id DESC LIMIT 1").bind(wallet, task.id).first();
+    const existing = await db.prepare("SELECT id,status FROM airdrop_submissions WHERE wallet_address=? AND task_id=? AND status IN ('PENDING','APPROVED') ORDER BY id DESC LIMIT 1").bind(wallet, task.id).first<{ id: number; status: string }>();
     if (existing) return response(context.request, { success: false, message: "Task ini sudah pernah diajukan untuk wallet tersebut", status: existing.status }, 409);
 
     await db.prepare("INSERT INTO airdrop_submissions (wallet_address,email,task_id,evidence_link,status,reward_points) VALUES (?,?,?,?,?,?)").bind(wallet, wallet, task.id, link, "PENDING", Number(task.reward_points || 0)).run();
