@@ -509,8 +509,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (incomingReferralCode) {
       try {
         const referrer = await env.DB.prepare(
-          "SELECT id, referral_code FROM users WHERE upper(referral_code)=upper(?) LIMIT 1"
-        ).bind(incomingReferralCode).first<any>();
+          `SELECT id, referral_code, wallet_address
+           FROM users
+           WHERE upper(referral_code)=upper(?)
+              OR lower(wallet_address)=lower(?)
+           LIMIT 1`
+        ).bind(incomingReferralCode, incomingReferralCode).first<any>();
 
         if (referrer && String(referrer.id) !== id) {
           await env.DB.prepare(
