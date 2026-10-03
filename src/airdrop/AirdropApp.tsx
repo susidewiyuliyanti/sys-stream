@@ -446,7 +446,7 @@ export default function AirdropApp() {
     const catalog=TASKS.filter(t=>!configuredTypes.has(t.type));
     return [...configured,...catalog];
   },[dbTasks]);
-  const taskText=(task:Task)=>{if(task.title||task.desc)return {title:task.title||TASK_TEXT[task.key]?.title||tx.task,desc:task.desc||'',action:TASK_TEXT[task.key]?.action?tx[TASK_TEXT[task.key].action]:tx.openTask};const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
+  const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];const fallbackTitle=typeLabel(task.type,tx);const fallbackDesc=lang==='id'?`Selesaikan tugas ${fallbackTitle} sesuai brief campaign dan kirim bukti yang valid.`:`Complete the ${fallbackTitle} task according to the campaign brief and submit valid proof.`;const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';if(task.title||task.desc)return {title:task.title||fallbackTitle,desc:task.desc||fallbackDesc,action:x?.action?tx[x.action]:fallbackAction};return x?{title:tx[x.title],desc:tx[x.desc],action:tx[x.action]}:{title:fallbackTitle,desc:fallbackDesc,action:fallbackAction};};
 
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
