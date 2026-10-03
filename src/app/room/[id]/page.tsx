@@ -1,559 +1,284 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
-import { sound } from "../../../lib/sound";
-import {
-  Radio,
-  Eye,
-  Heart,
-  Share2,
-  Tv,
-  X,
-  Plus,
-  Target,
-  Clock,
-  Send,
-  Gift,
-  Smile,
-  RotateCw,
-  Coins,
-  CheckCircle,
-  User,
-  Sparkles,
-  ChevronRight,
-  Flame,
-  Lock,
-} from "lucide-react";
-import confetti from "canvas-confetti";
+import { Heart, Send, Radio, Users, MessageCircle, User, LogIn } from "lucide-react";
 
-interface ChatItem {
-  user: string;
-  badge: "USER" | "TikTok" | "VIP";
-  text: string;
-  timeAgo: string;
-  avatar?: string;
-  isSystem?: boolean;
-}
+type Participant = {
+  userId: string;
+  username: string;
+  displayName: string;
+  avatarUrl: string;
+};
 
-const PARTICIPANTS = [
-  { name: "reno_x92", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80", tiktok: true },
-  { name: "lina.neon", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80", tiktok: false },
-  { name: "ghostbyte", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80", tiktok: false },
-  { name: "alex_cyber", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80", tiktok: true },
-  { name: "valk_77", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80", tiktok: false },
-  { name: "neo_fox", avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&auto=format&fit=crop&q=80", tiktok: true },
-  { name: "shadow_k", avatar: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100&auto=format&fit=crop&q=80", tiktok: false },
-  { name: "matrix_88", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80", tiktok: true },
-];
+type RoomMessage = Participant & {
+  id: string;
+  message: string;
+  createdAt: number;
+};
+
+type RoomState = {
+  id: string;
+  ownerUserId: string;
+  title: string;
+  description: string;
+  status: string;
+  likes: number;
+  participantCount: number;
+};
 
 export default function Room({
-  roomId = "ROOM-777",
+  roomId = "main",
   navigate,
 }: {
   roomId?: string;
   navigate?: (path: string) => void;
 }) {
-  const { user, updateCoins, requireAuth, showToast } = useGame();
-
-  const [activeTab, setActiveTab] = useState<"chat" | "viewers">("chat");
-  const [tebakInput, setTebakInput] = useState("");
+  const { user, isLoggedIn, requireAuth, showToast } = useGame();
+  const [room, setRoom] = useState<RoomState | null>(null);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [messages, setMessages] = useState<RoomMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
-  const [timerSeconds, setTimerSeconds] = useState(28);
-  const [likes, setLikes] = useState(1200);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isSpinning, setIsSpinning] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+  const [activeTab, setActiveTab] = useState<"chat" | "viewers">("chat");
+  const chatRef = useRef<HTMLDivElement>(null);
 
-  const [chatList, setChatList] = useState<ChatItem[]>([
-    {
-      user: "@reno_x92",
-      badge: "USER",
-      text: "gasss 42 dong!! 🔥",
-      timeAgo: "baru saja",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
-    },
-    {
-      user: "@lina.neon",
-      badge: "TikTok",
-      text: "77 mungkin? aku ikut spin juga",
-      timeAgo: "1m",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80",
-    },
-    {
-      user: "@ghostbyte_",
-      badge: "USER",
-      text: "streamer keren banget kak!! ✨",
-      timeAgo: "2m",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
-    },
-  ]);
+  const effectiveRoomId = useMemo(() => String(roomId || "main"), [roomId]);
 
-  const chatScrollRef = useRef<HTMLDivElement>(null);
-
-  // Timer countdown
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimerSeconds((prev) => (prev <= 1 ? 60 : prev - 1));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Periodic random live comments
-  useEffect(() => {
-    const liveInterval = setInterval(() => {
-      const randomComments = [
-        { u: "@cyber_dave", b: "TikTok" as const, t: "Prediksi 55 tembus nih! 🚀" },
-        { u: "@rina_cute", b: "USER" as const, t: "Sent 1x Rose 🌹 streamer makasi!" },
-        { u: "@nexus_whale", b: "VIP" as const, t: "Spin lagi dong hadiahnya mantep!" },
-      ];
-      const pick = randomComments[Math.floor(Math.random() * randomComments.length)];
-      setChatList((prev) => [
-        ...prev.slice(-25),
-        {
-          user: pick.u,
-          badge: pick.b,
-          text: pick.t,
-          timeAgo: "baru saja",
-          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80",
-        },
-      ]);
-      setLikes((prev) => prev + 1);
-    }, 5500);
-
-    return () => clearInterval(liveInterval);
-  }, []);
-
-  useEffect(() => {
-    if (chatScrollRef.current) {
-      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+  const loadRoom = useCallback(async (silent = false) => {
+    const token = localStorage.getItem("sys_stream_auth_token");
+    if (!token) {
+      if (!silent) setLoading(false);
+      return;
     }
-  }, [chatList]);
+    try {
+      const response = await fetch("/api/live/room?roomId=" + encodeURIComponent(effectiveRoomId), {
+        headers: { Authorization: "Bearer " + token },
+        cache: "no-store",
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) throw new Error(data?.error || "Live room tidak dapat dimuat.");
+      setRoom(data.room || null);
+      setParticipants(Array.isArray(data.participants) ? data.participants : []);
+      setMessages(Array.isArray(data.messages) ? data.messages : []);
+    } catch (error: any) {
+      if (!silent) showToast("Live Room", error?.message || "Gagal memuat live room.", "error");
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  }, [effectiveRoomId, showToast]);
 
-  // Protected Tebak Submission
-  const handleSendTebak = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setLoading(false);
+      return;
+    }
+    void loadRoom();
+    const interval = window.setInterval(() => void loadRoom(true), 3000);
+    return () => window.clearInterval(interval);
+  }, [isLoggedIn, loadRoom]);
+
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages]);
+
+  const postRoomAction = async (action: string, payload: Record<string, unknown> = {}) => {
+    const token = localStorage.getItem("sys_stream_auth_token");
+    if (!token) return null;
+    const response = await fetch("/api/live/room", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ roomId: effectiveRoomId, action, ...payload }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data?.success) throw new Error(data?.error || "Aksi live room gagal.");
+    return data;
+  };
+
+  const sendMessage = (event: React.FormEvent) => {
+    event.preventDefault();
+    const message = chatInput.trim();
+    if (!message || sending) return;
+
     requireAuth(() => {
-      const num = parseInt(tebakInput);
-      if (isNaN(num) || num < 1 || num > 100) {
-        showToast("Invalid Input", "Masukkan angka antara 1 sampai 100.", "error");
-        return;
-      }
-
-      sound.playClick();
-      setChatList((prev) => [
-        ...prev,
-        {
-          user: `@${user.username || "neo_user_922"}`,
-          badge: "USER",
-          text: `🎯 Tebak Angka: ${num}! Semoga tembus 500 Coins!`,
-          timeAgo: "baru saja",
-          avatar: user.avatar,
-        },
-      ]);
-
-      setTebakInput("");
-      sound.playDiceRoll();
-
-      setTimeout(() => {
-        const winningNumber = 42;
-        if (num === winningNumber) {
-          updateCoins(500);
-          sound.playJackpot();
-          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-          showToast("Tebakan Tepat!", `Angka rahasia adalah ${winningNumber}! Menang +500 Coins!`, "jackpot");
-        } else {
-          showToast("Tebakan Terkirim", `Tebakan ${num} tercatat. Hasil diundi sebentar lagi!`, "info");
-        }
-      }, 1200);
+      setSending(true);
+      void postRoomAction("message", { message })
+        .then((data: any) => {
+          if (data?.message) setMessages(prev => [...prev, data.message].slice(-100));
+          setChatInput("");
+        })
+        .catch((error: any) => showToast("Chat", error?.message || "Pesan gagal dikirim.", "error"))
+        .finally(() => setSending(false));
     });
   };
 
-  // Protected Spin Action
-  const handleSpinAndWin = () => {
+  const likeRoom = () => {
     requireAuth(() => {
-      if (isSpinning) return;
-      setIsSpinning(true);
-      sound.playWheelTick(700);
-
-      setTimeout(() => {
-        setIsSpinning(false);
-        const rewards = [
-          { name: "100 Coins", coins: 100 },
-          { name: "Skin Cyberpunk Neon Visor", coins: 250 },
-          { name: "2x Staking Booster", coins: 150 },
-        ];
-        const won = rewards[Math.floor(Math.random() * rewards.length)];
-        updateCoins(won.coins);
-        sound.playWin();
-        confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
-        showToast("Spin Berhasil!", `Selamat! Mendapatkan ${won.name} (+${won.coins} Coins)!`, "success");
-      }, 2500);
+      void postRoomAction("like")
+        .then((data: any) => {
+          setRoom(prev => prev ? { ...prev, likes: Number(data?.likes || prev.likes) } : prev);
+        })
+        .catch((error: any) => showToast("Live", error?.message || "Like gagal dikirim.", "error"));
     });
   };
 
-  // Protected Chat Message
-  const handleSendChat = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim()) return;
+  const currentUserId = String(user?.id || "");
+  const currentUser = participants.find(p => p.userId === currentUserId);
+  const displayCurrentName = currentUser?.username || user?.username || "User";
 
-    requireAuth(() => {
-      sound.playClick();
-      setChatList((prev) => [
-        ...prev,
-        {
-          user: `@${user.username || "neo_user_922"}`,
-          badge: "USER",
-          text: chatInput.trim(),
-          timeAgo: "baru saja",
-          avatar: user.avatar,
-        },
-      ]);
-      setChatInput("");
-    });
-  };
-
-  const handleLikeStream = () => {
-    sound.playClick(900);
-    setLikes((l) => l + 1);
-  };
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-[#050814] text-white flex items-center justify-center p-6">
+        <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-950/80 p-7 text-center">
+          <LogIn className="w-10 h-10 mx-auto text-cyan-400 mb-4" />
+          <h1 className="text-xl font-black">Masuk untuk bergabung ke Live Room</h1>
+          <p className="text-sm text-slate-400 mt-2">Setiap akun memiliki profil dan identitasnya sendiri di dalam room.</p>
+          <button
+            onClick={() => requireAuth(() => undefined)}
+            className="mt-6 w-full rounded-xl bg-cyan-500 px-4 py-3 font-black text-slate-950"
+          >
+            LOGIN / REGISTER
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white font-sans pb-20 selection:bg-pink-500 selection:text-white">
-      <div className="w-full max-w-md lg:max-w-7xl mx-auto relative flex flex-col min-h-screen px-0 lg:px-5">
-        {/* TOP STATUS BAR & TIKTOK LIVE HEADER matching Screenshot 3 */}
-        <div className="p-3 pb-2 flex items-center justify-between text-xs border-b border-slate-900 bg-[#050814]/90 backdrop-blur-md sticky top-0 z-30">
-          <div className="flex items-center gap-2">
-            {/* Pink LIVE badge */}
-            <span className="px-2 py-0.5 rounded-lg bg-pink-600 text-white font-black text-[11px] shadow-[0_0_10px_rgba(219,39,119,0.8)] tracking-wider animate-pulse flex items-center gap-1">
-              LIVE
-            </span>
-
-            {/* TikTok LIVE Branding */}
-            <div className="flex items-center gap-1 font-black text-white text-xs tracking-tight">
-              <span className="text-cyan-400 font-bold">♪</span>
-              <span>TikTok</span>
-              <span className="text-pink-500">LIVE</span>
+    <div className="min-h-screen bg-[#050814] text-white pb-20">
+      <div className="w-full max-w-7xl mx-auto px-0 lg:px-5">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-slate-900 bg-[#050814]/95 backdrop-blur-md p-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <Radio className="w-5 h-5 text-pink-500 shrink-0" />
+            <div className="min-w-0">
+              <div className="font-black truncate">{room?.title || "Live Room"}</div>
+              <div className="text-[11px] text-slate-500 truncate">Room: {effectiveRoomId}</div>
             </div>
           </div>
-
-          {/* Metrics & Actions */}
-          <div className="flex items-center gap-2.5 text-[11px] text-slate-300">
-            <span className="flex items-center gap-1">
-              <Eye className="w-3.5 h-3.5 text-cyan-400" />
-              <strong className="text-white">12.4K</strong>
-            </span>
-
-            <button
-              onClick={handleLikeStream}
-              className="flex items-center gap-1 text-pink-400 hover:scale-110 transition-transform cursor-pointer"
-            >
-              <Heart className="w-3.5 h-3.5 fill-pink-500" />
-              <strong className="text-white">{(likes / 1000).toFixed(1)}K</strong>
-            </button>
-
-            <button className="text-slate-400 hover:text-white">
-              <Share2 className="w-3.5 h-3.5" />
-            </button>
-            <button className="text-slate-400 hover:text-white">
-              <Tv className="w-3.5 h-3.5" />
-            </button>
-            <button className="text-slate-400 hover:text-white">
-              <X className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-3 text-xs text-slate-300">
+            <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-cyan-400" />{room?.participantCount || 0}</span>
+            <button onClick={likeRoom} className="flex items-center gap-1 text-pink-400 hover:text-pink-300">
+              <Heart className="w-4 h-4" />{room?.likes || 0}
             </button>
           </div>
-        </div>
+        </header>
 
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-5 lg:items-start">
-          <div className="min-w-0">
-        {/* STREAMER VIDEO VIEWPORT matching Screenshot 3 */}
-        <div className="relative aspect-[16/11] lg:aspect-video bg-slate-950 overflow-hidden border-b border-cyan-500/20 shadow-2xl">
-          {/* Cyberpunk Anime Streamer Girl */}
-          <img
-            src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80"
-            alt="CyberNeko Streamer"
-            className="w-full h-full object-cover object-top filter brightness-95"
-          />
-
-          {/* Ambient Lighting Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050814] via-transparent to-black/30 pointer-events-none" />
-
-          {/* Floating Neon Streamer Tag in Stream */}
-          <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-xl border border-pink-500/40 flex items-center gap-2 text-[11px]">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="font-bold text-white">Stream: 1080p 60FPS</span>
-          </div>
-        </div>
-
-        {/* STREAMER PROFILE INFO & FOLLOW BUTTON */}
-        <div className="p-3.5 flex items-center justify-between border-b border-slate-900 bg-slate-950/60">
-          <div className="flex items-center gap-2.5">
-            <div className="w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-400 overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=150&auto=format&fit=crop&q=80"
-                alt="CYBERNEKO"
-                className="w-full h-full rounded-full object-cover"
-              />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-black text-sm text-white tracking-wide">
-                  CYBERNEKO • LIVE
-                </span>
-                <CheckCircle className="w-3.5 h-3.5 fill-cyan-400 text-slate-950" />
-              </div>
-              <p className="text-[11px] text-slate-400">
-                Cyberpunk vibes • Main tebak nomer & spin! 🎮
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              sound.playClick();
-              setIsFollowing(!isFollowing);
-              showToast(isFollowing ? "Unfollowed" : "Following!", isFollowing ? "You unfollowed CYBERNEKO." : "You are now following CYBERNEKO!", "success");
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-              isFollowing
-                ? "bg-slate-800 text-slate-300 border border-slate-700"
-                : "bg-pink-600 hover:bg-pink-500 text-white shadow-[0_0_12px_rgba(219,39,119,0.5)]"
-            }`}
-          >
-            {isFollowing ? "Followed" : "Follow +"}
-          </button>
-        </div>
-
-        {/* PARTICIPANTS HORIZONTAL ROW matching Screenshot 3 */}
-        <div className="px-3.5 py-2.5 border-b border-slate-900 bg-[#050814]/90">
-          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-            <span className="font-bold text-white">Peserta (8)</span>
-            <span className="text-cyan-400 hover:underline flex items-center gap-0.5 cursor-pointer">
-              +276 lainnya <ChevronRight className="w-3 h-3" />
-            </span>
-          </div>
-
-          <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-            {PARTICIPANTS.map((p, i) => (
-              <div key={i} className="relative shrink-0">
-                <div className="w-9 h-9 rounded-full p-0.5 bg-gradient-to-tr from-cyan-500 to-purple-600 overflow-hidden">
-                  <img
-                    src={p.avatar}
-                    alt={p.name}
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                </div>
-                {p.tiktok && (
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-black rounded-full border border-pink-500 flex items-center justify-center text-[7px] text-cyan-400 font-bold">
-                    ♪
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CHAT LIVE vs PENONTON TABS */}
-        <div className="grid grid-cols-2 text-xs font-black uppercase tracking-wider border-b border-slate-900">
-          <button
-            onClick={() => setActiveTab("chat")}
-            className={`py-2.5 border-b-2 transition-all cursor-pointer ${
-              activeTab === "chat"
-                ? "border-cyan-400 text-cyan-400 bg-cyan-500/5 font-extrabold"
-                : "border-transparent text-slate-400 hover:text-white"
-            }`}
-          >
-            CHAT LIVE
-          </button>
-          <button
-            onClick={() => setActiveTab("viewers")}
-            className={`py-2.5 border-b-2 transition-all cursor-pointer ${
-              activeTab === "viewers"
-                ? "border-cyan-400 text-cyan-400 bg-cyan-500/5 font-extrabold"
-                : "border-transparent text-slate-400 hover:text-white"
-            }`}
-          >
-            PENONTON (284)
-          </button>
-        </div>
-
-        {/* INTERACTIVE EVENT CARDS matching Screenshot 3 */}
-        <div className="p-3.5 space-y-3">
-          {/* Card 1: TEBAK NOMER - EVENT LIVE */}
-          <div className="relative overflow-hidden bg-gradient-to-r from-[#0c1228] to-[#120e24] border-2 border-pink-500/40 rounded-2xl p-3.5 shadow-lg space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg bg-pink-500/20 border border-pink-500/50 flex items-center justify-center text-pink-400">
-                  <Target className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 tracking-wide uppercase">
-                    TEBAK NOMER
-                  </h3>
-                  <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                    EVENT LIVE
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 font-mono font-bold text-[11px]">
-                <Clock className="w-3 h-3" />
-                <span>00:{timerSeconds.toString().padStart(2, "0")}</span>
-              </div>
-            </div>
-
-            <p className="text-[11px] text-slate-300">
-              Aku pikir angka 1-100... Tebak sekarang!{" "}
-              <strong className="text-yellow-400">Hadiah: 500 Coins</strong>
-            </p>
-
-            {/* Progress Bar */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-[9px] font-mono text-cyan-400">
-                <span>60%</span>
-                <span>60%</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                <div className="w-[60%] h-full bg-gradient-to-r from-cyan-400 to-pink-500 rounded-full shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
-              </div>
-            </div>
-
-            {/* Guess Input & Pink KIRIM Button */}
-            <form onSubmit={handleSendTebak} className="flex gap-2 pt-1">
-              <input
-                type="number"
-                min="1"
-                max="100"
-                placeholder="Masukkan tebakanmu (1-100)"
-                value={tebakInput}
-                onChange={(e) => setTebakInput(e.target.value)}
-                className="flex-1 px-3 py-2 bg-slate-950/90 border border-cyan-500/50 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2 bg-gradient-to-r from-pink-600 to-pink-500 hover:from-pink-500 hover:to-pink-400 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[0_0_12px_rgba(219,39,119,0.6)] cursor-pointer"
-              >
-                KIRIM
-              </button>
-            </form>
-          </div>
-
-          {/* Card 2: SPIN & WIN */}
-          <div className="relative overflow-hidden bg-gradient-to-r from-[#06152a] to-[#0d1326] border-2 border-cyan-500/40 rounded-2xl p-3 flex items-center justify-between gap-3 shadow-lg">
-            <div className="flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shrink-0">
-                <Gift className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-black text-cyan-300 uppercase tracking-wide">
-                  SPIN & WIN
-                </h4>
-                <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">
-                  Spin untuk hadiah: Skin Cyberpunk, 100 Coins, Booster!
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-5 mt-4">
+          <main className="min-w-0">
+            <section className="aspect-video rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden">
+              <div className="text-center px-6">
+                <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
+                <h2 className="font-black text-lg">{room?.status === "LIVE" ? "Live Room Aktif" : "Live belum aktif"}</h2>
+                <p className="text-sm text-slate-500 mt-2">
+                  Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.
                 </p>
               </div>
-            </div>
+            </section>
 
-            <button
-              onClick={handleSpinAndWin}
-              disabled={isSpinning}
-              className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-95 text-slate-950 font-black text-[10px] uppercase tracking-wider rounded-xl shadow-[0_0_10px_rgba(6,182,212,0.4)] whitespace-nowrap cursor-pointer flex items-center gap-1.5"
-            >
-              <RotateCw className={`w-3 h-3 text-slate-950 ${isSpinning ? "animate-spin" : ""}`} />
-              <span>PUTAR SEKARANG</span>
-            </button>
-          </div>
-        </div>
-
-          </div>
-
-          <aside className="min-w-0 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] lg:flex lg:flex-col lg:rounded-2xl lg:border lg:border-slate-800 lg:bg-slate-950/70 lg:overflow-hidden">
-        {/* LIVE CHAT MESSAGES FEED matching Screenshot 3 */}
-        <div
-          ref={chatScrollRef}
-          className="flex-1 px-3.5 space-y-2 overflow-y-auto max-h-56 lg:max-h-none lg:min-h-0 scrollbar-none text-xs"
-        >
-          {chatList.map((c, i) => (
-            <div key={i} className="flex items-start gap-2 py-0.5 animate-in fade-in-50">
-              {c.avatar && (
-                <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 mt-0.5">
-                  <img src={c.avatar} alt={c.user} className="w-full h-full object-cover" />
+            <section className="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full overflow-hidden border border-slate-700 bg-slate-900 flex items-center justify-center">
+                  {currentUser?.avatarUrl || user?.avatar ? (
+                    <img src={currentUser?.avatarUrl || user.avatar} alt={displayCurrentName} className="w-full h-full object-cover" />
+                  ) : <User className="w-5 h-5 text-slate-500" />}
                 </div>
-              )}
-              <div className="flex-1">
-                <div className="flex items-center gap-1.5 leading-none">
-                  <span
-                    className={`px-1.5 py-0.2 rounded text-[9px] font-black uppercase ${
-                      c.badge === "TikTok"
-                        ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-                        : c.badge === "VIP"
-                        ? "bg-amber-500/20 text-amber-400 border border-amber-500/40"
-                        : "bg-pink-600 text-white"
-                    }`}
-                  >
-                    {c.badge}
-                  </span>
-                  <span className="font-bold text-slate-300 text-[11px]">{c.user}</span>
-                  <span className="text-[10px] text-slate-500 ml-auto">{c.timeAgo}</span>
-                </div>
-                <div className="text-white text-xs mt-1 leading-snug break-words">
-                  {c.text}
+                <div className="min-w-0">
+                  <div className="font-black truncate">{displayCurrentName}</div>
+                  <div className="text-[11px] text-cyan-400">Profil akun Anda</div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+              {room?.description && <p className="text-sm text-slate-400 mt-3">{room.description}</p>}
+              {!room?.description && <p className="text-sm text-slate-500 mt-3">Belum ada deskripsi room dari pemilik room.</p>}
+            </section>
 
-        {/* SYSTEM TICKER ANNOUNCEMENT */}
-        <div className="px-3.5 py-1 text-[10px] text-yellow-400 flex items-center gap-1 bg-yellow-500/10 border-t border-b border-yellow-500/20 font-semibold">
-          <Sparkles className="w-3 h-3 text-yellow-400 shrink-0" />
-          <span className="truncate">
-            [SYSTEM] 23 orang ikut Tebak Nomer. Tinggal {timerSeconds} detik!
-          </span>
-        </div>
+            <section className="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h2 className="font-black">Peserta Live</h2>
+                  <p className="text-[11px] text-slate-500">Hanya akun yang benar-benar bergabung yang ditampilkan.</p>
+                </div>
+                <span className="text-xs text-cyan-400">{participants.length} aktif</span>
+              </div>
+              {loading && participants.length === 0 ? (
+                <div className="text-sm text-slate-500 py-6 text-center">Memuat peserta...</div>
+              ) : participants.length === 0 ? (
+                <div className="text-sm text-slate-500 py-6 text-center">Belum ada peserta lain.</div>
+              ) : (
+                <div className="flex gap-3 overflow-x-auto pb-1">
+                  {participants.map(p => (
+                    <div key={p.userId} className="shrink-0 w-20 text-center">
+                      <div className="w-11 h-11 mx-auto rounded-full overflow-hidden border border-slate-700 bg-slate-900 flex items-center justify-center">
+                        {p.avatarUrl ? <img src={p.avatarUrl} alt={p.username} className="w-full h-full object-cover" /> : <User className="w-5 h-5 text-slate-500" />}
+                      </div>
+                      <div className="text-[10px] text-slate-300 truncate mt-1">{p.username}{p.userId === currentUserId ? " (Anda)" : ""}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          </main>
 
-        {/* BOTTOM LIVE BAR INPUT matching Screenshot 3 */}
-        <div className="p-3 bg-[#050814]/95 border-t border-slate-900 sticky bottom-14 lg:bottom-auto lg:mt-auto z-30">
-          <form onSubmit={handleSendChat} className="flex items-center gap-2">
-            {/* Gift Icon Button */}
-            <button
-              type="button"
-              onClick={() => {
-                sound.playWin();
-                showToast("Send Gift", "Pilih gift rose 🌹 atau crown 👑!", "info");
-              }}
-              className="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <Gift className="w-4 h-4" />
-            </button>
-
-            {/* Emoji Button */}
-            <button
-              type="button"
-              onClick={() => setChatInput((prev) => prev + " 🔥")}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <Smile className="w-4 h-4" />
-            </button>
-
-            {/* Chat Input Pill */}
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Kirim komentar..."
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                className="w-full pl-3.5 pr-10 py-2.5 bg-slate-950 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans"
-              />
-              <button
-                type="submit"
-                className="absolute right-2 top-2 p-1.5 text-pink-500 hover:text-pink-400"
-              >
-                <Send className="w-3.5 h-3.5" />
+          <aside className="min-w-0 lg:sticky lg:top-20 lg:h-[calc(100vh-6rem)] rounded-2xl border border-slate-800 bg-slate-950/70 overflow-hidden flex flex-col">
+            <div className="grid grid-cols-2 border-b border-slate-800">
+              <button onClick={() => setActiveTab("chat")} className={`py-3 text-xs font-black ${activeTab === "chat" ? "text-cyan-400 border-b-2 border-cyan-400" : "text-slate-500"}`}>
+                <MessageCircle className="w-3.5 h-3.5 inline mr-1" /> CHAT
+              </button>
+              <button onClick={() => setActiveTab("viewers")} className={`py-3 text-xs font-black ${activeTab === "viewers" ? "text-cyan-400 border-b-2 border-cyan-400" : "text-slate-500"}`}>
+                <Users className="w-3.5 h-3.5 inline mr-1" /> PESERTA
               </button>
             </div>
-          </form>
-          </div>
-        </aside>
+
+            {activeTab === "chat" ? (
+              <>
+                <div ref={chatRef} className="flex-1 overflow-y-auto p-3 space-y-3">
+                  {messages.length === 0 ? (
+                    <div className="h-full flex items-center justify-center text-center text-sm text-slate-500 px-5">
+                      Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.
+                    </div>
+                  ) : messages.map(m => (
+                    <div key={m.id} className="flex gap-2">
+                      <div className="w-7 h-7 rounded-full overflow-hidden bg-slate-900 border border-slate-800 shrink-0 flex items-center justify-center">
+                        {m.avatarUrl ? <img src={m.avatarUrl} alt={m.username} className="w-full h-full object-cover" /> : <User className="w-3.5 h-3.5 text-slate-500" />}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[11px] font-black text-cyan-300">{m.username}{m.userId === currentUserId ? " • Anda" : ""}</div>
+                        <div className="text-xs text-slate-200 break-words">{m.message}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={sendMessage} className="p-3 border-t border-slate-800 flex gap-2">
+                  <input
+                    value={chatInput}
+                    onChange={e => setChatInput(e.target.value)}
+                    maxLength={1000}
+                    placeholder={`Tulis sebagai @${displayCurrentName}`}
+                    className="flex-1 min-w-0 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-xs outline-none focus:border-cyan-400"
+                  />
+                  <button disabled={sending || !chatInput.trim()} className="rounded-xl bg-cyan-500 text-slate-950 px-3 disabled:opacity-40">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="flex-1 overflow-y-auto p-3">
+                {participants.length === 0 ? (
+                  <div className="text-sm text-slate-500 text-center py-8">Belum ada peserta.</div>
+                ) : participants.map(p => (
+                  <div key={p.userId} className="flex items-center gap-3 py-2 border-b border-slate-900">
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-900 flex items-center justify-center">
+                      {p.avatarUrl ? <img src={p.avatarUrl} alt={p.username} className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-slate-500" />}
+                    </div>
+                    <div className="text-xs font-bold truncate">{p.username}{p.userId === currentUserId ? " (Anda)" : ""}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </aside>
         </div>
       </div>
     </div>
