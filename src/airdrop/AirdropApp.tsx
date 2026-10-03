@@ -6,7 +6,7 @@ import {
 import { SysLogo } from '../components/SysLogo';
 
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
-type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'deposit'|'withdrawal'|'profile'|'checkin';
+type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'deposit'|'withdrawal'|'profile'|'checkin';
 type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile';
 type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
@@ -18,6 +18,10 @@ const TASKS: Task[] = [
   {id:'youtube-upload',key:'youtube',type:'youtube',reward:'program',estimated:'15–30 minutes',daily:true,priority:true},
   {id:'youtube-review',key:'review',type:'youtube',reward:'program',estimated:'5–10 minutes',daily:true},
   {id:'social-daily',key:'social',type:'social',reward:'program',estimated:'2–5 minutes',daily:true},
+  {id:'twitter-post',key:'twitter',type:'twitter',reward:'program',estimated:'5–10 minutes',daily:true},
+  {id:'facebook-post',key:'facebook',type:'facebook',reward:'program',estimated:'5–10 minutes',daily:true},
+  {id:'telegram-share',key:'telegram',type:'telegram',reward:'program',estimated:'2–5 minutes',daily:true},
+  {id:'discord-activity',key:'discord',type:'discord',reward:'program',estimated:'5–10 minutes',daily:true},
   {id:'deposit',key:'deposit',type:'deposit',reward:'program',estimated:'5 minutes'},
   {id:'withdrawal',key:'withdrawal',type:'withdrawal',reward:'program',estimated:'5 minutes'},
   {id:'profile',key:'profile',type:'profile',reward:'program',estimated:'2 minutes'}
@@ -228,7 +232,7 @@ function typeIcon(type:TaskType) {
   return <Link2 className="w-5 h-5"/>;
 }
 function typeLabel(type:TaskType,tx:Record<string,string>) {
-  const map:Record<TaskType,string>={youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE'};
+  const map:Record<TaskType,string>={review:'REVIEW',youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE'};
   return map[type]||'SOCIAL';
 }
 
@@ -420,7 +424,7 @@ export default function AirdropApp() {
   const availableTasks=useMemo<Task[]>(()=>{
     const configured=dbTasks.map((raw:any,index:number)=>{
       const category=String(raw.category||raw.type||'social').toLowerCase();
-      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
+      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
       return {
         id:String(raw.id??`db-${index}`),
