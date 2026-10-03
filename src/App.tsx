@@ -17,6 +17,7 @@ import ProfilePage from './app/profile/page';
 import DashboardPage from './app/dashboard/page';
 import RoomPage from './app/room/[id]/page';
 import AirdropApp from './airdrop/AirdropApp';
+import ReferralPage from './app/referral/page';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -64,6 +65,7 @@ export default function App() {
     '/profile',
     '/dashboard',
     '/airdrop',
+    '/referral',
     '/room',
   ];
 
@@ -99,6 +101,9 @@ export default function App() {
     }
     if (currentPath === '/airdrop') {
       return <AirdropApp />;
+    }
+    if (currentPath === '/referral') {
+      return <ReferralPage />;
     }
     if (currentPath.startsWith('/room/')) {
       const roomId = decodeURIComponent(currentPath.slice('/room/'.length)) || 'main';
