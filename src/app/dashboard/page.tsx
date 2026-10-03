@@ -76,7 +76,7 @@ export default function DashboardPage({ navigate }: Props) {
     const content = postContent.trim();
     const media = mediaUrl.trim();
     if (!content && !media) {
-      setPostError('Tulis sesuatu atau masukkan media terlebih dahulu.');
+      setPostError(t('Tulis sesuatu atau masukkan media terlebih dahulu.'));
       return;
     }
 
@@ -98,7 +98,7 @@ export default function DashboardPage({ navigate }: Props) {
       });
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setPostError(data.error || 'Posting gagal dibuat.');
+        setPostError(data.error || t('Posting gagal dibuat.'));
         return;
       }
       setPostContent('');
@@ -106,7 +106,7 @@ export default function DashboardPage({ navigate }: Props) {
       setIsCreateOpen(false);
       setPosts((current) => data.post ? [data.post, ...current] : current);
     } catch {
-      setPostError('Koneksi gagal. Silakan coba lagi.');
+      setPostError(t('Koneksi gagal. Silakan coba lagi.'));
     } finally {
       setIsPosting(false);
     }
