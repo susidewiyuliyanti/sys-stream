@@ -177,8 +177,8 @@ export default function DashboardPage({ navigate }: Props) {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 SYS STREAM
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black mt-2">Halo, {user.walletAddress || user.username || 'User'}</h1>
-              <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · Live, komunitas, dan postingan dari pengguna SYS STREAM.</p>
+              <h1 className="text-2xl sm:text-3xl font-black mt-2">{t('Halo')}, {user.walletAddress || user.username || t('User')}</h1>
+              <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · {t('Live, komunitas, dan postingan dari pengguna SYS STREAM.')}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
