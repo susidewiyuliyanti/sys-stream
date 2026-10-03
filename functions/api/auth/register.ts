@@ -162,6 +162,15 @@ async function ensureRegistrationSchema(env: Env) {
 
 function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
 
+function errorText(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+function isUniqueConstraintError(error: unknown): boolean {
+  return /UNIQUE constraint failed|constraint failed.*UNIQUE|already exists/i.test(errorText(error));
+}
+
 async function insertIntoExistingSchema(env: Env, table: string, values: Record<string, any>) {
   const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all<any>();
   const columns = (info.results || []) as any[];
@@ -356,9 +365,42 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
 
     const placeholders = insertColumns.map(() => "?").join(",");
-    await env.DB.prepare(
-      \`INSERT INTO users(\${insertColumns.join(",")}) VALUES(\${placeholders})\`
-    ).bind(...insertValues).run();
+    try {
+      await env.DB.prepare(
+        \`INSERT INTO users(\${insertColumns.join(",")}) VALUES(\${placeholders})\`
+      ).bind(...insertValues).run();
+    } catch (error) {
+      // A concurrent registration can pass the pre-check and then collide on
+      // a production UNIQUE constraint. Return a normal conflict instead of
+      // exposing it as a generic 500 server error.
+      if (isUniqueConstraintError(error)) {
+        const existingByEmail = await env.DB.prepare(
+          "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
+        ).bind(email).first();
+        if (existingByEmail) {
+          return json({ success: false, error: "Email sudah terdaftar." }, 409);
+        }
+
+        const existingByUsername = await env.DB.prepare(
+          "SELECT id FROM users WHERE lower(username)=lower(?) LIMIT 1"
+        ).bind(username).first();
+        if (existingByUsername) {
+          return json({ success: false, error: "Username sudah digunakan." }, 409);
+        }
+      }
+
+      console.error("register users insert failed", {
+        requestId,
+        email,
+        error: errorText(error),
+      });
+      return json({
+        success: false,
+        code: "REGISTRATION_DATABASE_ERROR",
+        requestId,
+        error: "Registrasi tidak dapat menyimpan akun ke database. Silakan coba lagi.",
+      }, 503);
+    }
 
     if (legacyIntegerId) {
       const created = await env.DB.prepare(
@@ -526,17 +568,28 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   } catch (error) {
     console.error("register error", {
       requestId,
-      error: String(error),
+      error: errorText(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
 
-    // Do not expose SQL/schema/provider details to the browser.
+    // Keep production diagnostics in Cloudflare logs while returning a stable
+    // response to the client. This is deliberately not a dummy/fallback path.
+    const message = errorText(error);
+    if (/D1|database|SQLITE|table|column|schema|constraint/i.test(message)) {
+      return json({
+        success: false,
+        code: "REGISTRATION_DATABASE_ERROR",
+        requestId,
+        error: "Registrasi tidak dapat diproses oleh database. Silakan coba lagi.",
+      }, 503);
+    }
+
     return json({
       success: false,
       code: "REGISTRATION_SERVER_ERROR",
       requestId,
-      error: "Registrasi gagal di server. Gunakan kode referensi tersebut jika perlu pemeriksaan log.",
-    }, 500);
+      error: "Registrasi gagal diproses di server. Silakan coba lagi.",
+    }, 503);
   }
 }
 
