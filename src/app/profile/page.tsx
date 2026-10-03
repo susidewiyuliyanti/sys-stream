@@ -232,7 +232,7 @@ export default function ProfilePage() {
                 <h2 className="text-xl font-black truncate">{user.username || t('Guest')}</h2>
                 {isLoggedIn && <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />}
               </div>
-              <p className="text-xs text-slate-500 mt-1 truncate">{user.email || 'SYS STREAM member'}</p>
+              <p className="text-xs text-slate-500 mt-1 truncate">'SYS STREAM member'</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold text-cyan-300">Member</span>
                 <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-[10px] font-bold text-slate-400">USDT Account</span>
