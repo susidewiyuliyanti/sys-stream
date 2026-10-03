@@ -1,4 +1,5 @@
 import { verifyMessage } from "ethers";
+import { createAuthCookie } from "../../../_lib/auth";
 
 export async function onRequestPost(context:any){
   try {
@@ -116,7 +117,7 @@ export async function onRequestPost(context:any){
       VALUES(?,?,?)
     `).bind(token, user.id, Date.now() + 86400000).run();
 
-    return Response.json({ token, user });
+    return new Response(JSON.stringify({ token, user }), { headers: { "Content-Type": "application/json", "Set-Cookie": createAuthCookie(token) } });
   } catch (error) {
     console.error("wallet verify error:", error);
     return Response.json(
