@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BrowserProvider, Wallet } from 'ethers';
 import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
@@ -28,6 +29,8 @@ export const MobileAuthModal: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [verificationNotice, setVerificationNotice] = useState('');
+  const [generatedWallet, setGeneratedWallet] = useState<{ address: string; phrase: string } | null>(null);
+  const [walletBackupConfirmed, setWalletBackupConfirmed] = useState(false);
 
   if (!loginModalOpen) return null;
 
@@ -37,13 +40,37 @@ export const MobileAuthModal: React.FC = () => {
     setIsSubmitting(true);
     try {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
-      const body = authMode === 'login'
-        ? { identifier: usernameInput.trim(), password: passwordInput }
-        : { username: usernameInput.trim(), email: emailInput.trim(), password: passwordInput, termsAccepted, termsVersion: TERMS_VERSION };
-      const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      let body: Record<string, unknown>;
+      let newWallet: Wallet | null = null;
+
+      if (authMode === 'login') {
+        body = { identifier: usernameInput.trim(), password: passwordInput };
+      } else {
+        // Email accounts receive a real EVM wallet generated locally in the browser.
+        // The private key/recovery phrase is never sent to the server.
+        newWallet = Wallet.createRandom();
+        body = {
+          username: usernameInput.trim(),
+          email: emailInput.trim(),
+          password: passwordInput,
+          termsAccepted,
+          termsVersion: TERMS_VERSION,
+          walletAddress: newWallet.address,
+        };
+      }
+
+      const res = await fetch(endpoint, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
       if (authMode === 'register' && data.requiresEmailVerification) {
+        if (newWallet) {
+          setGeneratedWallet({ address: newWallet.address, phrase: newWallet.mnemonic?.phrase || '' });
+          setWalletBackupConfirmed(false);
+        }
         setVerificationNotice(data.message || 'Akun dibuat. Silakan verifikasi email.');
         setPasswordInput('');
         return;
@@ -57,14 +84,53 @@ export const MobileAuthModal: React.FC = () => {
     } finally { setIsSubmitting(false); }
   };
 
-  const handleWalletAuth = () => {
+  const handleWalletAuth = async () => {
     sound.playClick();
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const ethereum = (window as any).ethereum;
+      if (!ethereum) throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
+
+      const provider = new BrowserProvider(ethereum);
+      await provider.send('eth_requestAccounts', []);
+      const signer = await provider.getSigner();
+      const walletAddress = await signer.getAddress();
+
+      const challengeResponse = await fetch('/api/auth/web3/challenge', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ walletAddress }),
+      });
+      const challenge = await challengeResponse.json().catch(() => ({}));
+      if (!challengeResponse.ok || !challenge?.success) {
+        throw new Error(challenge?.error || 'Gagal membuat challenge wallet.');
+      }
+
+      const signature = await signer.signMessage(challenge.message);
+      const loginResponse = await fetch('/api/auth/web3/login', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          challengeId: challenge.challengeId,
+          walletAddress,
+          message: challenge.message,
+          signature,
+        }),
+      });
+      const data = await loginResponse.json().catch(() => ({}));
+      if (!loginResponse.ok || !data?.success || !data?.token) {
+        throw new Error(data?.error || 'Login wallet gagal.');
+      }
+
+      localStorage.setItem('sys_stream_auth_token', data.token);
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
+      login(data.user?.username || `Web3_${walletAddress.slice(2,8)}`);
+    } catch (error) {
+      console.error(error);
+      window.alert(error instanceof Error ? error.message : 'Login wallet gagal.');
+    } finally {
       setIsSubmitting(false);
-      const shortAddr = '0x' + Math.random().toString(16).substring(2, 6) + '...' + Math.random().toString(16).substring(2, 6);
-      login(`Web3_${shortAddr.slice(2, 6)}`);
-    }, 900);
+    }
   };
 
   return (
@@ -206,6 +272,33 @@ export const MobileAuthModal: React.FC = () => {
             <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
           )}
 
+          {generatedWallet && authMode === 'register' && (
+            <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
+              <div className="text-xs font-black uppercase tracking-wider text-amber-300">EVM Wallet Recovery Phrase</div>
+              <p className="text-[10px] leading-4 text-amber-100/80">
+                Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.
+                Simpan offline sebelum menutup halaman.
+              </p>
+              <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
+                <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
+              </div>
+              <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
+                <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
+              </div>
+              <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={walletBackupConfirmed}
+                  onChange={(e) => setWalletBackupConfirmed(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-amber-500 text-amber-500"
+                />
+                <span>Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.</span>
+              </label>
+            </div>
+          )}
+
           {/* Remember me & Forgot Password */}
           <div className="flex items-center justify-between text-xs pt-1">
             <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
@@ -229,7 +322,7 @@ export const MobileAuthModal: React.FC = () => {
           {/* Glowing Neon Login Button */}
           <button
             type="submit"
-            disabled={isSubmitting || (authMode === 'register' && !termsAccepted)}
+            disabled={isSubmitting || (authMode === 'register' && (!termsAccepted || (generatedWallet && !walletBackupConfirmed)))}
             className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
