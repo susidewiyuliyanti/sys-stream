@@ -22,7 +22,6 @@ export const MobileAuthModal: React.FC = () => {
 
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
-  const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -46,12 +45,10 @@ export const MobileAuthModal: React.FC = () => {
       if (authMode === 'login') {
         body = { identifier: usernameInput.trim(), password: passwordInput };
       } else {
-        // Email accounts receive a real EVM wallet generated locally in the browser.
-        // The private key/recovery phrase is never sent to the server.
+        // Create the wallet locally. The private key/recovery phrase is never sent to the server.
         newWallet = HDNodeWallet.createRandom();
         body = {
           username: usernameInput.trim(),
-          email: emailInput.trim(),
           password: passwordInput,
           termsAccepted,
           termsVersion: TERMS_VERSION,
@@ -66,14 +63,11 @@ export const MobileAuthModal: React.FC = () => {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Autentikasi gagal.');
-      if (authMode === 'register' && data.requiresEmailVerification) {
-        if (newWallet) {
-          setGeneratedWallet({ address: newWallet.address, phrase: newWallet.mnemonic?.phrase || '' });
-          setWalletBackupConfirmed(false);
-        }
-        setVerificationNotice(data.message || 'Akun dibuat. Silakan verifikasi email.');
+      if (authMode === 'register' && newWallet) {
+        setGeneratedWallet({ address: newWallet.address, phrase: newWallet.mnemonic?.phrase || '' });
+        setWalletBackupConfirmed(false);
+        setVerificationNotice('Akun berhasil dibuat tanpa email. Simpan recovery phrase sebelum melanjutkan.');
         setPasswordInput('');
-        return;
       }
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
@@ -193,7 +187,7 @@ export const MobileAuthModal: React.FC = () => {
           </p>
         </div>
 
-        {/* Form Inputs */}
+        {/* Form Inputs — registration no longer collects email */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {/* Username / Email */}
           <div className="relative">
@@ -202,19 +196,13 @@ export const MobileAuthModal: React.FC = () => {
             </span>
             <input
               type="text"
-              placeholder="Username or Email"
+              placeholder="Username or Wallet"
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
             />
           </div>
 
-          {authMode === 'register' && (
-            <div className="relative">
-              <span className="absolute left-3.5 top-3.5 text-cyan-400"><User className="w-4 h-4" /></span>
-              <input type="email" placeholder="Email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
-            </div>
-          )}
 
           {/* Password */}
           <div className="relative">
