@@ -26,7 +26,7 @@ export default function LoginPage({ navigate }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedWallet, setGeneratedWallet] = useState<{ address: string; phrase: string } | null>(null);
   const [walletBackupConfirmed, setWalletBackupConfirmed] = useState(false);
-  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ token: string; user: AuthUser } | null>(null);
+  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ password: string } | null>(null);
   const [notice, setNotice] = useState('');
 
   const referralParam =
@@ -118,56 +118,65 @@ export default function LoginPage({ navigate }: Props) {
     }
   };
 
-  const generateRegistrationWallet = async () => {
-    if (isSubmitting || !termsAccepted) return;
+  const generateRegistrationWallet = () => {
+    if (isSubmitting || !termsAccepted || generatedWallet) return;
+
+    setNotice('');
+    try {
+      // Wallet generation is completely local. No registration API call is
+      // made until the user has seen and confirmed the recovery phrase.
+      const newWallet = HDNodeWallet.createRandom();
+      const phrase = newWallet.mnemonic?.phrase || '';
+      if (!phrase) throw new Error(t('Recovery phrase gagal dibuat.'));
+      
+      setGeneratedWallet({
+        address: newWallet.address,
+        phrase,
+      });
+      setWalletBackupConfirmed(false);
+      setPendingRegistrationAuth({
+        password: crypto.randomUUID() + crypto.randomUUID(),
+      });
+      setNotice(t('Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.'));
+    } catch (error) {
+      console.error('Local wallet generation error:', error);
+      window.alert(error instanceof Error ? error.message : t('Gagal membuat wallet baru.'));
+    }
+  };
+
+  const completeRegistration = async () => {
+    if (!pendingRegistrationAuth || !generatedWallet || !walletBackupConfirmed || isSubmitting) return;
 
     setIsSubmitting(true);
     setNotice('');
 
     try {
-      const newWallet = HDNodeWallet.createRandom();
-      const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
-
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: '',
-          password: registrationPassword,
+          password: pendingRegistrationAuth.password,
           termsAccepted: true,
           termsVersion: TERMS_VERSION,
-          walletAddress: newWallet.address,
+          walletAddress: generatedWallet.address,
           ...(referralParam ? { referralCode: referralParam } : {}),
         }),
       });
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.token || !data?.user) {
-        throw new Error(data?.error || t('Gagal membuat wallet baru.'));
+        throw new Error(data?.error || t('Registrasi gagal diproses di server.'));
       }
 
-      setGeneratedWallet({
-        address: newWallet.address,
-        phrase: newWallet.mnemonic?.phrase || '',
-      });
-      setWalletBackupConfirmed(false);
-      setPendingRegistrationAuth({
-        token: String(data.token),
-        user: data.user,
-      });
-      setNotice(t('Wallet baru berhasil dibuat. Simpan recovery phrase sebelum masuk.'));
+      finishAuth(String(data.token), data.user);
     } catch (error) {
-      console.error('New wallet registration error:', error);
-      window.alert(error instanceof Error ? error.message : t('Gagal membuat wallet baru.'));
+      console.error('Wallet registration error:', error);
+      window.alert(error instanceof Error ? error.message : t('Registrasi gagal diproses di server.'));
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const completeRegistration = () => {
-    if (!pendingRegistrationAuth || !walletBackupConfirmed) return;
-    finishAuth(pendingRegistrationAuth.token, pendingRegistrationAuth.user);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -180,11 +189,11 @@ export default function LoginPage({ navigate }: Props) {
     }
 
     if (pendingRegistrationAuth) {
-      completeRegistration();
+      await completeRegistration();
       return;
     }
 
-    await generateRegistrationWallet();
+    generateRegistrationWallet();
   };
 
   const switchMode = (mode: 'login' | 'register') => {
@@ -292,8 +301,8 @@ export default function LoginPage({ navigate }: Props) {
               : authMode === 'login'
                 ? t('LOGIN WITH WALLET')
                 : pendingRegistrationAuth
-                  ? t('SAYA SUDAH MENYIMPAN — MASUK')
-                  : t('GENERATE NEW WALLET')}
+                  ? t('BUAT AKUN DENGAN WALLET INI')
+                  : t('GENERATE WALLET')}
           </button>
         </form>
 
