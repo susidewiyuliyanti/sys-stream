@@ -36,6 +36,7 @@ async function ensureTransactions(env: Env) {
     ["metadata", "TEXT"],
     ["created_at", "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP"],
     ["updated_at", "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP"],
+    ["payment_id", "TEXT"],
   ];
 
   for (const [name, definition] of additions) {
@@ -287,8 +288,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     }
 
     await env.DB.prepare(`
-      INSERT INTO transactions(user_id,type,amount,currency,status,reference,description,metadata)
-      VALUES(?,?,?,?,?,?,?,?)
+      INSERT INTO transactions(user_id,type,amount,currency,status,reference,description,metadata,payment_id)
+      VALUES(?,?,?,?,?,?,?,?,?)
     `).bind(
       auth.user.id,
       "DEPOSIT",
@@ -301,7 +302,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         paymentId: String(paymentId),
         payCurrency,
         payAddress: String(payAddress),
-      })
+      }),
+      String(paymentId)
     ).run();
 
     return json({
