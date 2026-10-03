@@ -39,7 +39,23 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
 
   try {
     const result = await context.env.DB.prepare("SELECT s.id,s.task_id,t.title AS task_title,s.evidence_link,s.status,s.reward_points,s.created_at FROM airdrop_submissions s LEFT JOIN airdrop_tasks t ON t.id=s.task_id WHERE s.wallet_address=? ORDER BY s.id DESC").bind(wallet).all();
-    return response(context.request, { success: true, submissions: result.results || [] });
+    const rows = (result.results || []) as any[];
+    const approvedPoints = rows.filter(r => String(r.status).toUpperCase() === "APPROVED" || String(r.status).toUpperCase() === "PAID")
+      .reduce((sum, r) => sum + Number(r.reward_points || 0), 0);
+    const pendingPoints = rows.filter(r => String(r.status).toUpperCase() === "PENDING")
+      .reduce((sum, r) => sum + Number(r.reward_points || 0), 0);
+    const paidPoints = rows.filter(r => String(r.status).toUpperCase() === "PAID")
+      .reduce((sum, r) => sum + Number(r.reward_points || 0), 0);
+    return response(context.request, {
+      success: true,
+      submissions: rows,
+      points: {
+        approved: approvedPoints,
+        pending: pendingPoints,
+        paid: paidPoints,
+        available: Math.max(0, approvedPoints - paidPoints),
+      }
+    });
   } catch (error) {
     return response(context.request, { success: false, error: String(error), submissions: [] }, 500);
   }
