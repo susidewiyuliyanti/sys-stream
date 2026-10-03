@@ -19,9 +19,8 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function TebakGamePage() {
-  const { user, updateCoins, addGameHistory, cryptoCard, updateCryptoCard, showToast, requireAuth } = useGame();
+  const { user, addGameHistory, cryptoCard, updateCryptoCard, showToast, requireAuth } = useGame();
 
-  const [betAmount, setBetAmount] = useState<number>(50);
   const [playerGuesses, setPlayerGuesses] = useState<string[]>(['', '', '', '']);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [lastOutcome, setLastOutcome] = useState<{
@@ -41,11 +40,6 @@ export default function TebakGamePage() {
 
   const concealedCount = cryptoCard.concealed.filter(Boolean).length;
   const winMultiplier = concealedCount === 1 ? 5.0 : concealedCount === 2 ? 15.0 : concealedCount === 3 ? 35.0 : 80.0;
-
-  const handleBetChange = (amount: number) => {
-    sound.playClick();
-    setBetAmount(Math.max(10, Math.min(user.coins, amount)));
-  };
 
   const handleDigitGuessChange = (index: number, val: string) => {
     if (val.length > 1) return;
@@ -68,14 +62,6 @@ export default function TebakGamePage() {
         }
       }
 
-      if (betAmount > user.coins) {
-        showToast('Insufficient Coins', 'Not enough coins to place this guess bet.', 'error');
-        return;
-      }
-
-      const deducted = updateCoins(-betAmount);
-      if (!deducted) return;
-
       setIsVerifying(true);
       setLastOutcome(null);
       sound.playDiceRoll();
@@ -95,13 +81,12 @@ export default function TebakGamePage() {
           }
         }
 
-        const payout = allMatched ? Math.floor(betAmount * winMultiplier) : 0;
+        const payout = 0;
 
         if (allMatched) {
-          updateCoins(payout);
           sound.playJackpot();
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
-          showToast('Card Cracked!', `All ${concealedCount} concealed digits matched! Won +${payout.toLocaleString()} Coins!`, 'jackpot');
+          showToast('Card Cracked!', `All ${concealedCount} concealed digits matched! Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.`, 'jackpot');
         } else {
           sound.playClick();
           showToast('Guess Missed', `Matched ${matchedCount}/${concealedCount} digits. Try another prediction!`, 'info');
@@ -117,9 +102,9 @@ export default function TebakGamePage() {
         addGameHistory({
           gameType: 'tebak',
           gameName: 'Crypto Card Number Guess',
-          betAmount,
-          payoutAmount: payout,
-          multiplier: allMatched ? winMultiplier : 0,
+          betAmount: 0,
+          payoutAmount: 0,
+          multiplier: 0,
           isWin: allMatched,
           details: `${cryptoCard.serialNumber} (${matchedCount}/${concealedCount} digits matched)`,
         });
@@ -404,64 +389,21 @@ export default function TebakGamePage() {
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Wager & Payout Multiplier
+              Interaction Challenge — No Financial Stake
             </h2>
 
-            {/* Bet Input */}
-            <div>
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-                <span>Bet Amount</span>
-                <span className="text-amber-400 font-mono">Wallet: {user.coins.toLocaleString()} Coins</span>
-              </div>
-              <div className="relative">
-                <input
-                  type="number"
-                  min="10"
-                  max={user.coins}
-                  value={betAmount}
-                  onChange={(e) => setBetAmount(Math.max(1, parseInt(e.target.value) || 0))}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono font-bold text-base focus:outline-none focus:border-amber-500"
-                />
-                <span className="absolute right-3.5 top-3 text-xs text-slate-400">Coins</span>
-              </div>
-
-              {/* Quick Preset Buttons */}
-              <div className="grid grid-cols-4 gap-1.5 mt-2">
-                {[25, 50, 100, 250].map((amt) => (
-                  <button
-                    key={amt}
-                    type="button"
-                    onClick={() => handleBetChange(amt)}
-                    className="py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
-                  >
-                    {amt}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Payout Overview */}
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-1.5 text-xs">
-              <div className="flex items-center justify-between text-slate-400">
-                <span>Concealed Slots:</span>
-                <span className="font-mono font-bold text-white">{concealedCount} of 4 Digits</span>
-              </div>
-              <div className="flex items-center justify-between text-slate-400">
-                <span>Multiplier:</span>
-                <span className="font-mono font-bold text-emerald-400">{winMultiplier}x</span>
-              </div>
-              <div className="flex items-center justify-between text-slate-400 pt-1 border-t border-slate-800">
-                <span>Potential Payout:</span>
-                <span className="font-mono font-black text-amber-400 text-sm">
-                  +{Math.floor(betAmount * winMultiplier).toLocaleString()} Coins
-                </span>
-              </div>
+            {/* Non-financial challenge notice */}
+            <div className="p-4 bg-slate-950 border border-cyan-500/20 rounded-xl space-y-2 text-xs">
+              <div className="font-black text-cyan-300">Mode Interaksi</div>
+              <p className="text-slate-400 leading-relaxed">
+                Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.
+              </p>
             </div>
 
             {/* Submit Verification Button */}
             <button
               onClick={handleVerifyGuess}
-              disabled={isVerifying || betAmount > user.coins}
+              disabled={isVerifying}
               className="w-full py-4 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold text-sm rounded-xl transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isVerifying ? (
@@ -472,7 +414,7 @@ export default function TebakGamePage() {
               ) : (
                 <>
                   <Play className="w-4 h-4 fill-current" />
-                  <span>Verify Card Guess ({betAmount} Coins)</span>
+                  <span>Verify Challenge</span>
                 </>
               )}
             </button>
