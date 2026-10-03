@@ -376,10 +376,10 @@ export default function AirdropApp() {
         <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label="Close"><X className="w-5 h-5"/></button></div>
         <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p></div>
         <div className="mt-4">
-          <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet}</label>
-          <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
-          {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired}</div>}
-          <button disabled={!walletAddress.trim()} onClick={()=>{localStorage.setItem('sys_stream_airdrop_wallet',walletAddress.trim());setSelectedTask(null)}} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{tx.saveWallet}</button>
+          <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
+          <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
+          {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
+          <button disabled={!walletAddress.trim()} onClick={()=>{localStorage.setItem('sys_stream_airdrop_wallet',walletAddress.trim());setSelectedTask(null)}} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed"{tx.saveWallet || COPY.en.saveWallet}</button>
         </div>
       </div>
     </div>})()}
