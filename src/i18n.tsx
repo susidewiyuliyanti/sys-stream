@@ -319,14 +319,14 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<LanguageCode>(() => {
-    const saved = localStorage.getItem('sys_stream_language') as LanguageCode | null;
+    const saved = localStorage.getItem('sys_stream_language_v2') as LanguageCode | null;
     return saved && LANGUAGES.some(l => l.code === saved) ? saved : 'en';
   });
 
   const setLanguage = (next: LanguageCode) => {
     const safeLanguage = LANGUAGES.some(l => l.code === next) ? next : 'en';
     setLanguageState(safeLanguage);
-    localStorage.setItem('sys_stream_language', safeLanguage);
+    localStorage.setItem('sys_stream_language_v2', safeLanguage);
   };
 
   useEffect(() => {
