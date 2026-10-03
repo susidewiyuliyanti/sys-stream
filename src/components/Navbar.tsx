@@ -18,7 +18,7 @@ export const Navbar: React.FC<Props> = ({ navigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <button
           onClick={() => { sound.playClick(); navigate('/dashboard'); }}
-          aria-label="Go to SYS STREAM home"
+          aria-label={t('Go to SYS STREAM home')}
           className="text-left transition-transform hover:scale-[1.02] cursor-pointer"
         >
           <SysLogo size="md" showText={true} />
