@@ -131,7 +131,7 @@ export default function DashboardPage({ navigate }: Props) {
           </div>
           <nav className="space-y-1 text-sm">
             <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">{t('Home')}</button>
-            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('{t('Live Now')}')}</button>
+            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Live Now')}</button>
             <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Games')}</button>
             <button
               onClick={async () => {
