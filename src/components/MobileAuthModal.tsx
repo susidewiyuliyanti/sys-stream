@@ -48,7 +48,7 @@ export const MobileAuthModal: React.FC = () => {
       } else {
         // Email accounts receive a real EVM wallet generated locally in the browser.
         // The private key/recovery phrase is never sent to the server.
-        newWallet = EvmWallet.createRandom();
+        newWallet = EvmEvmWallet.createRandom();
         body = {
           username: usernameInput.trim(),
           email: emailInput.trim(),
