@@ -196,6 +196,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
         const depositsData = await depositsResponse.json().catch(() => ({}));
         if (depositsResponse.ok && depositsData?.success && Array.isArray(depositsData?.deposits)) {
+          setDailyBoxesClaimed(depositsData.hasClaimedToday ? 1 : 0);
           setLocks(depositsData.deposits.map((d: any) => {
             const start = new Date(d.startDate || 0).getTime();
             const end = new Date(d.endDate || 0).getTime();
@@ -371,7 +372,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!isLoggedIn) {
       sound.playClick();
       setLoginModalOpen(true);
-      showToast('Login Required', 'You must log in to play games or place bets.', 'info');
+      showToast('Login Required', 'You must log in to continue.', 'info');
       return false;
     }
     action();
@@ -573,10 +574,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     showToast('Item Sold', `Sold ${item.name} for +${item.coinValue} coins!`, 'success');
   };
 
-  const [dailyBoxesClaimed, setDailyBoxesClaimed] = useState<number>(() => {
-    const key = 'nexus_claimed_boxes_' + new Date().toDateString();
-    return parseInt(localStorage.getItem(key) || '0', 10);
-  });
+  const [dailyBoxesClaimed, setDailyBoxesClaimed] = useState<number>(0);
 
   const createLock = async (amount: number, durationDays: 30 | 60 | 90): Promise<boolean> => {
     if (!isLoggedIn) return false;
@@ -687,34 +685,36 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const claimBlindBox = async (boxId: string): Promise<any> => {
+  const claimBlindBox = async (_boxId: string): Promise<any> => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) throw new Error('Silakan login terlebih dahulu.');
-    const response = await fetch('/api/blindbox/claim', {
+
+    const activeLock = locks.find((lock) => lock.status === 'locked');
+    if (!activeLock) throw new Error('Tidak ada lock Blind Box yang aktif.');
+
+    const response = await fetch(`/api/deposits/${encodeURIComponent(activeLock.id)}/claim`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ boxId }),
+      headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || !data?.success) throw new Error(data?.error || 'Blind Box claim gagal.');
+
+    setDailyBoxesClaimed(1);
     await refreshFinancialState();
     return data;
   };
 
 
   const getTotalLockedUsdt = (): number => {
+    // Kept for compatibility with existing consumers; the production
+    // financial unit is IDR, not USDT.
     return Number(user.lockedBalance || 0);
   };
 
-  // Quota rule: $4 = 1 box, $50 = 2 boxes, $100 = 3 boxes, $250 = 5 boxes, $500+ = 10 boxes
+  // Production deposits currently allow one Blind Box claim per active lock per WIB day.
+  // Keep the frontend quota aligned with the server-side claim rule.
   const getDailyBoxQuota = (): number => {
-    const total = getTotalLockedUsdt();
-    if (total < 4) return 0;
-    if (total < 50) return 1;
-    if (total < 100) return 2;
-    if (total < 250) return 3;
-    if (total < 500) return 5;
-    return 10;
+    return getTotalLockedUsdt() >= 50000 ? 1 : 0;
   };
 
   const getRemainingDailyBoxes = (): number => {
@@ -725,11 +725,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const consumeDailyBoxClaim = (): boolean => {
     const remaining = getRemainingDailyBoxes();
     if (remaining <= 0) return false;
-
-    const next = dailyBoxesClaimed + 1;
-    setDailyBoxesClaimed(next);
-    const key = 'nexus_claimed_boxes_' + new Date().toDateString();
-    localStorage.setItem(key, String(next));
+    setDailyBoxesClaimed(1);
     return true;
   };
 
