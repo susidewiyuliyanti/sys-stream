@@ -61,6 +61,7 @@ const handleWalletAuth = async () => {
 
     const nonceRes = await fetch("/api/auth/wallet/nonce", {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ wallet }),
     });
@@ -70,7 +71,7 @@ const handleWalletAuth = async () => {
       throw new Error(nonceData?.error || "Gagal membuat nonce wallet.");
     }
 
-    const message = "SYS STREAMER LOGIN\n\nNonce:" + String(nonceData.nonce);
+    const message = "SYS STREAMER LOGIN\\n\\nNonce:" + String(nonceData.nonce);
 
     const signature = await window.ethereum.request({
       method: "personal_sign",
@@ -79,6 +80,7 @@ const handleWalletAuth = async () => {
 
     const verifyRes = await fetch("/api/auth/wallet/verify", {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         wallet,
@@ -93,23 +95,75 @@ const handleWalletAuth = async () => {
       throw new Error(verifyData?.error || "Verifikasi tanda tangan wallet gagal.");
     }
 
-    // Simpan session yang dikembalikan backend sebelum melakukan navigasi.
-    localStorage.setItem("sys_stream_auth_token", String(verifyData.token));
-    localStorage.setItem("sys_stream_auth_user", JSON.stringify(verifyData.user));
+    const token = String(verifyData.token);
+    const serverUser = verifyData.user;
 
-    const walletLabel =
-      String(verifyData.user.username || verifyData.user.display_name || "").trim() ||
-      ("Web3_" + wallet.slice(2, 8));
+    // Persist the account identity BEFORE any navigation.
+    // The wallet address is the canonical user identity for wallet-authenticated users.
+    localStorage.setItem("sys_stream_auth_token", token);
+    localStorage.setItem("sys_stream_auth_user", JSON.stringify(serverUser));
+    localStorage.setItem("sys_stream_profile_cache", JSON.stringify({
+      id: serverUser.id,
+      username: serverUser.username || serverUser.displayName || serverUser.display_name || "",
+      avatar: serverUser.avatarUrl || serverUser.avatar_url || "",
+      referralCode: serverUser.referralCode || serverUser.referral_code || "",
+      walletAddress: serverUser.walletAddress || serverUser.wallet_address || wallet,
+      registrationBonusIdr: Number(serverUser.registrationBonusIdr ?? serverUser.registration_bonus_idr ?? 0),
+      registrationBonusGranted: Boolean(serverUser.registrationBonusGranted ?? serverUser.registration_bonus_granted),
+    }));
+    localStorage.setItem("sys_is_logged_in", "true");
 
-    // Backend is the source of truth for the wallet profile.
-    // Do not overwrite the saved username with a UI-generated label.
-    login();
+    // Explicitly synchronize the bearer session into the parent-domain cookie.
+    // This is required so airdrop.sysstreamer.asia can use the same login session.
+    const sessionRes = await fetch("/api/auth/session", {
+      method: "POST",
+      credentials: "include",
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    const sessionData = await sessionRes.json().catch(() => ({}));
+    if (!sessionRes.ok || !sessionData?.success) {
+      throw new Error(sessionData?.error || "Session wallet belum berhasil disinkronkan.");
+    }
 
-    // Wallet login mengikuti alur login email: langsung masuk ke beranda/dashboard.
-    if (navigate) {
-      navigate(postLoginPath);
+    // Do not navigate until the exact token has been accepted by the production API.
+    const meRes = await fetch("/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    const meData = await meRes.json().catch(() => ({}));
+    if (!meRes.ok || !meData?.success || !meData?.user) {
+      localStorage.removeItem("sys_stream_auth_token");
+      localStorage.removeItem("sys_stream_auth_user");
+      localStorage.removeItem("sys_stream_profile_cache");
+      localStorage.setItem("sys_is_logged_in", "false");
+      throw new Error(meData?.error || "Session wallet belum aktif.");
+    }
+
+    // Replace the stored profile with the server-authoritative record.
+    const authenticatedUser = meData.user;
+    localStorage.setItem("sys_stream_auth_user", JSON.stringify(authenticatedUser));
+    localStorage.setItem("sys_stream_profile_cache", JSON.stringify({
+      id: authenticatedUser.id,
+      username: authenticatedUser.username || authenticatedUser.displayName || "",
+      avatar: authenticatedUser.avatarUrl || "",
+      referralCode: authenticatedUser.referralCode || "",
+      walletAddress: authenticatedUser.walletAddress || wallet,
+      registrationBonusIdr: Number(authenticatedUser.registrationBonusIdr || 0),
+      registrationBonusGranted: Boolean(authenticatedUser.registrationBonusGranted),
+      vipTier: Number(authenticatedUser.vipTier || 0),
+      lockedBalance: Number(authenticatedUser.lockedBalance || 0),
+    }));
+
+    // Wallet login is already authenticated. Do not call the legacy login()
+    // helper here because it performs another asynchronous auth refresh and can
+    // race with navigation. Reload the authenticated dashboard directly.
+    if (postLoginPath === "/airdrop") {
+      window.location.replace("https://airdrop.sysstreamer.asia/");
     } else {
-      window.location.hash = postLoginPath;
+      window.location.replace(`/#${postLoginPath}`);
     }
   } catch (error) {
     console.error("Wallet login error:", error);
@@ -118,7 +172,6 @@ const handleWalletAuth = async () => {
     setIsSubmitting(false);
   }
 };
-
 const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sound.playClick();
