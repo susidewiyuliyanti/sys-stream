@@ -124,7 +124,7 @@ export default function MiningPage() {
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8 text-center">
             <RefreshCw className="mx-auto mb-3 h-7 w-7 animate-spin text-emerald-400" />
-            <p className="text-slate-400">Memuat status Mining...</p>
+            <p className="text-slate-400">{tx.loading}</p>
           </div>
         </div>
       </main>
@@ -150,7 +150,7 @@ export default function MiningPage() {
                   <Pickaxe className="h-7 w-7 text-emerald-400" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-black">SYS Mining</h1>
+                  <h1 className="text-2xl font-black">{tx.title}</h1>
                   <p className="text-sm text-slate-400">
                     Mining mengikuti Blind Box Lock aktif.
                   </p>
@@ -179,7 +179,7 @@ export default function MiningPage() {
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <div className="mb-2 flex items-center gap-2 text-slate-400">
               <LockKeyhole className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase">Active Lock</span>
+              <span className="text-xs font-bold uppercase">{tx.activeLock}</span>
             </div>
             <div className="text-2xl font-black">Rp {lockAmountIdr.toLocaleString('id-ID')}</div>
             <div className="mt-1 text-xs text-slate-500">≈ {'$'}{lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
@@ -188,7 +188,7 @@ export default function MiningPage() {
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <div className="mb-2 flex items-center gap-2 text-slate-400">
               <Coins className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase">Daily SYS</span>
+              <span className="text-xs font-bold uppercase">{tx.dailySys}</span>
             </div>
             <div className="text-2xl font-black text-emerald-400">
               {dailyReward.toLocaleString('en-US')} SYS
@@ -198,7 +198,7 @@ export default function MiningPage() {
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <div className="mb-2 flex items-center gap-2 text-slate-400">
               <Coins className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase">SYS Balance</span>
+              <span className="text-xs font-bold uppercase">{tx.sysBalance}</span>
             </div>
             <div className="text-2xl font-black">
               {sysBalance.toLocaleString('en-US', {
@@ -213,7 +213,7 @@ export default function MiningPage() {
           {!miningActive ? (
             <div className="text-center py-8">
               <LockKeyhole className="mx-auto mb-4 h-10 w-10 text-slate-600" />
-              <h2 className="text-xl font-black">Mining belum aktif</h2>
+              <h2 className="text-xl font-black">{tx.inactive}</h2>
               <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-400">
                 Mining aktif otomatis jika Anda memiliki Blind Box Lock yang masih aktif dengan nilai minimal $10 (≈ Rp 179.370).
               </p>
@@ -293,13 +293,13 @@ export default function MiningPage() {
           <div className="flex items-start gap-3">
             <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />
             <div>
-              <h3 className="font-bold">Aturan Mining</h3>
+              <h3 className="font-bold">{tx.rules}</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
-                <li>• Mining membutuhkan Blind Box Lock aktif minimal $10 (≈ Rp 179.370).</li>
-                <li>• Setiap kelipatan $10 lock menghasilkan 1 SYS per hari.</li>
-                <li>• Claim dibatasi 1 kali per user per hari oleh server.</li>
-                <li>• Reward ditentukan server dan masuk ke saldo SYS user.</li>
-                <li>• Mining berhenti otomatis ketika Lock berakhir.</li>
+                <li>• {tx.rule1}</li>
+                <li>• {tx.rule2}</li>
+                <li>• {tx.rule3}</li>
+                <li>• {tx.rule4}</li>
+                <li>• {tx.rule5}</li>
               </ul>
             </div>
           </div>
