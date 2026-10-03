@@ -272,8 +272,34 @@ export default function AirdropApp() {
 
   useEffect(() => {
     let active = true;
+
     const loadAuthenticatedWallet = async () => {
       try {
+        const params = new URLSearchParams(window.location.search);
+        const handoff = String(params.get('handoff') || '').trim();
+
+        // Airdrop lives on a different origin. Exchange the short-lived
+        // handoff code first so this origin receives its own auth cookie.
+        if (handoff) {
+          const exchange = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            cache: 'no-store',
+            body: JSON.stringify({ code: handoff }),
+          });
+          const exchangeData = await exchange.json().catch(() => ({}));
+
+          // Never keep a one-time handoff code in the URL after exchange.
+          const cleanUrl = new URL(window.location.href);
+          cleanUrl.searchParams.delete('handoff');
+          window.history.replaceState({}, document.title, cleanUrl.toString());
+
+          if (!exchange.ok || !exchangeData?.success) {
+            throw new Error(exchangeData?.error || 'Airdrop handoff failed');
+          }
+        }
+
         const res = await fetch('https://sysstreamer.asia/api/auth/me', {
           method: 'GET',
           credentials: 'include',
@@ -281,14 +307,18 @@ export default function AirdropApp() {
         });
         const data = await res.json().catch(() => ({}));
         const wallet = String(data?.user?.walletAddress || '').trim().toLowerCase();
+
         if (active) {
           setWalletAddress(data?.success && wallet ? wallet : '');
-          if (data?.success && wallet) localStorage.setItem('sys_stream_airdrop_wallet', wallet);
+          if (data?.success && wallet) {
+            localStorage.setItem('sys_stream_airdrop_wallet', wallet);
+          }
         }
       } catch {
         if (active) setWalletAddress('');
       }
     };
+
     void loadAuthenticatedWallet();
     return () => { active = false; };
   }, []);
