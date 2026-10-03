@@ -215,6 +215,57 @@ translations.en = Object.fromEntries([
 ]);
 
 
+
+// Auth registration strings
+Object.assign(translations.id, {
+  'Wallet Identity':'Identitas Wallet','CONNECTING WALLET...':'MENGHUBUNGKAN WALLET...','Wallet Connected':'Wallet Terhubung',
+  'Connect Wallet for Registration':'Hubungkan Wallet untuk Registrasi','Register Now':'Daftar Sekarang','Forgot Password?':'Lupa Kata Sandi?',
+  'Verify your email':'Verifikasi email Anda','or Connect with Crypto Wallet':'atau Hubungkan dengan Crypto Wallet',
+  'Install MetaMask atau wallet Web3 terlebih dahulu.':'Install MetaMask atau wallet Web3 terlebih dahulu.',
+  'Wallet address tidak ditemukan.':'Alamat wallet tidak ditemukan.','Gagal menghubungkan wallet.':'Gagal menghubungkan wallet.',
+  'Wallet ini akan menjadi identitas User ID dan referral link akun Anda.':'Wallet ini akan menjadi identitas User ID dan referral link akun Anda.',
+  'Akun dibuat. Silakan verifikasi email sebelum login.':'Akun dibuat. Silakan verifikasi email sebelum login.'
+});
+Object.assign(translations.en, {
+  'Wallet Identity':'Wallet Identity','CONNECTING WALLET...':'CONNECTING WALLET...','Wallet Connected':'Wallet Connected',
+  'Connect Wallet for Registration':'Connect Wallet for Registration','Register Now':'Register Now','Forgot Password?':'Forgot Password?',
+  'Verify your email':'Verify your email','or Connect with Crypto Wallet':'or Connect with Crypto Wallet',
+  'Install MetaMask atau wallet Web3 terlebih dahulu.':'Install MetaMask or a Web3 wallet first.',
+  'Wallet address tidak ditemukan.':'Wallet address was not found.','Gagal menghubungkan wallet.':'Failed to connect wallet.',
+  'Wallet ini akan menjadi identitas User ID dan referral link akun Anda.':'This wallet will be your User ID identity and account referral link.',
+  'Akun dibuat. Silakan verifikasi email sebelum login.':'Account created. Please verify your email before logging in.'
+});
+Object.assign(translations.es, {
+  'Wallet Identity':'Identidad de la wallet','CONNECTING WALLET...':'CONECTANDO WALLET...','Wallet Connected':'Wallet conectada',
+  'Connect Wallet for Registration':'Conectar wallet para registrarse','Register Now':'Registrarse ahora','Forgot Password?':'¿Olvidaste la contraseña?',
+  'Verify your email':'Verifica tu correo','or Connect with Crypto Wallet':'o conectar con una wallet'
+});
+Object.assign(translations.pt, {
+  'Wallet Identity':'Identidade da carteira','CONNECTING WALLET...':'CONECTANDO CARTEIRA...','Wallet Connected':'Carteira conectada',
+  'Connect Wallet for Registration':'Conectar carteira para cadastro','Register Now':'Registrar agora','Forgot Password?':'Esqueceu a senha?',
+  'Verify your email':'Verifique seu e-mail','or Connect with Crypto Wallet':'ou conectar com carteira cripto'
+});
+Object.assign(translations.zh, {
+  'Wallet Identity':'钱包身份','CONNECTING WALLET...':'正在连接钱包…','Wallet Connected':'钱包已连接',
+  'Connect Wallet for Registration':'连接钱包进行注册','Register Now':'立即注册','Forgot Password?':'忘记密码？',
+  'Verify your email':'验证您的邮箱','or Connect with Crypto Wallet':'或连接加密钱包'
+});
+Object.assign(translations.ja, {
+  'Wallet Identity':'ウォレットID','CONNECTING WALLET...':'ウォレット接続中…','Wallet Connected':'ウォレット接続済み',
+  'Connect Wallet for Registration':'登録用ウォレットを接続','Register Now':'今すぐ登録','Forgot Password?':'パスワードを忘れましたか？',
+  'Verify your email':'メールを確認','or Connect with Crypto Wallet':'または暗号資産ウォレットを接続'
+});
+Object.assign(translations.ko, {
+  'Wallet Identity':'지갑 ID','CONNECTING WALLET...':'지갑 연결 중...','Wallet Connected':'지갑 연결됨',
+  'Connect Wallet for Registration':'가입용 지갑 연결','Register Now':'지금 가입','Forgot Password?':'비밀번호를 잊으셨나요?',
+  'Verify your email':'이메일 인증','or Connect with Crypto Wallet':'또는 암호화폐 지갑 연결'
+});
+Object.assign(translations.ar, {
+  'Wallet Identity':'هوية المحفظة','CONNECTING WALLET...':'جارٍ ربط المحفظة...','Wallet Connected':'تم ربط المحفظة',
+  'Connect Wallet for Registration':'ربط المحفظة للتسجيل','Register Now':'سجّل الآن','Forgot Password?':'هل نسيت كلمة المرور؟',
+  'Verify your email':'تحقق من بريدك الإلكتروني','or Connect with Crypto Wallet':'أو ربط محفظة العملات الرقمية'
+});
+
 // Shared production UI translations. Every supported language gets an explicit value;
 // unknown keys still fall back to English, never to a mixed-language label.
 Object.assign(translations.en, {
