@@ -152,37 +152,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
-    const base = "https://api.nowpayments.io/v1";
-    const providerHeaders = {
-      "x-api-key": apiKey,
-      "Accept": "application/json",
-    };
-
-    // Validate the selected network-specific ticker against the merchant account.
-    // NOWPayments uses USDTTRC20 for USDT on TRON.
-    const currenciesResponse = await fetch(base + "/currencies", { headers: providerHeaders });
-    const currenciesData = await currenciesResponse.json().catch(() => ({}));
-    if (!currenciesResponse.ok) {
-      return json({
-        success: false,
-        error: safeErrorMessage(currenciesData, currenciesResponse.status),
-        provider_status: currenciesResponse.status,
-        provider_code: currenciesData?.code || null,
-      }, 502);
-    }
-    const availableCurrencies = Array.isArray(currenciesData?.currencies)
-      ? currenciesData.currencies.map((v: any) => String(v).toLowerCase())
-      : [];
-    if (!availableCurrencies.includes(payCurrency.toLowerCase())) {
-      return json({
-        success: false,
-        error: payCurrency.toUpperCase() + " tidak tersedia pada akun NOWPayments yang sedang terhubung. Aktifkan wallet/network tersebut di NOWPayments atau pilih crypto lain.",
-        provider_status: 400,
-        provider_code: "CURRENCY_NOT_AVAILABLE",
-        pay_currency: payCurrency,
-      }, 400);
-    }
-
+    // Keep payment creation to a single NOWPayments API call.
+    // Extra provider preflight calls can cause Cloudflare Pages Function timeouts.
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
 
