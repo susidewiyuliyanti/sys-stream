@@ -167,7 +167,11 @@ export default function LoginPage({ navigate }: Props) {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.token || !data?.user) {
-        throw new Error(data?.error || t('Registrasi gagal diproses di server.'));
+        throw new Error(
+          data?.error
+            ? String(data.error) + (data?.code ? ` [${String(data.code)}${data?.requestId ? ` / ${String(data.requestId)}` : ''}]` : '')
+            : t('Registrasi gagal diproses di server.')
+        );
       }
 
       finishAuth(String(data.token), data.user);
