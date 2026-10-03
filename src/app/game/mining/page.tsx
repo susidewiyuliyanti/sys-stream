@@ -11,7 +11,8 @@ interface MiningState {
   dailyReward: number;
   lock?: {
     id: number;
-    amount: number;
+    amountIdr: number;
+    amountUsd: number;
     durationDays: number;
     startDate: number;
     endDate: number;
@@ -117,7 +118,8 @@ export default function MiningPage() {
 
   const miningActive = Boolean(state?.miningActive);
   const claimedToday = Boolean(state?.claimedToday);
-  const lockAmount = Number(state?.lock?.amount || 0);
+  const lockAmountIdr = Number(state?.lock?.amountIdr || 0);
+  const lockAmountUsd = Number(state?.lock?.amountUsd || 0);
   const dailyReward = Number(state?.dailyReward || 0);
   const sysBalance = Number(state?.sysBalance || 0);
 
@@ -164,12 +166,8 @@ export default function MiningPage() {
               <LockKeyhole className="h-4 w-4" />
               <span className="text-xs font-bold uppercase">Active Lock</span>
             </div>
-            <div className="text-2xl font-black">
-              ${lockAmount.toLocaleString('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2,
-              })}
-            </div>
+            <div className="text-2xl font-black">Rp {lockAmountIdr.toLocaleString('id-ID')}</div>
+            <div className="mt-1 text-xs text-slate-500">≈ ${lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }){'}'}</div>
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
@@ -202,8 +200,7 @@ export default function MiningPage() {
               <LockKeyhole className="mx-auto mb-4 h-10 w-10 text-slate-600" />
               <h2 className="text-xl font-black">Mining belum aktif</h2>
               <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-400">
-                Mining aktif otomatis jika Anda memiliki Blind Box Lock
-                yang masih aktif dengan nilai minimal $10.
+                Mining aktif otomatis jika Anda memiliki Blind Box Lock yang masih aktif dengan nilai minimal $10 (≈ Rp 179.370).
               </p>
 
               <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-800 bg-slate-950 p-4 text-left text-sm">
@@ -283,8 +280,8 @@ export default function MiningPage() {
             <div>
               <h3 className="font-bold">Aturan Mining</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
-                <li>• Mining membutuhkan Blind Box Lock aktif minimal $10.</li>
-                <li>• Setiap kelipatan $10 menghasilkan 1 SYS per hari.</li>
+                <li>• Mining membutuhkan Blind Box Lock aktif minimal $10 (≈ Rp 179.370).</li>
+                <li>• Setiap kelipatan $10 lock menghasilkan 1 SYS per hari.</li>
                 <li>• Claim dibatasi 1 kali per user per hari oleh server.</li>
                 <li>• Reward ditentukan server dan masuk ke saldo SYS user.</li>
                 <li>• Mining berhenti otomatis ketika Lock berakhir.</li>
