@@ -9,6 +9,21 @@ type AuthUser = {
 };
 
 async function ensureLiveSchema(env: Env) {
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS live_streams (
+    id TEXT PRIMARY KEY,
+    room_id TEXT NOT NULL UNIQUE,
+    provider TEXT NOT NULL DEFAULT 'cloudflare_stream',
+    input_uid TEXT NOT NULL,
+    ingest_url TEXT NOT NULL DEFAULT '',
+    stream_key TEXT NOT NULL DEFAULT '',
+    playback_url TEXT NOT NULL DEFAULT '',
+    playback_hls TEXT NOT NULL DEFAULT '',
+    playback_webrtc TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'created',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+  `).run();
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_live_streams_room ON live_streams(room_id)").run();
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS live_rooms (
     id TEXT PRIMARY KEY,
     owner_user_id TEXT NOT NULL,
@@ -88,6 +103,10 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
        ORDER BY m.joined_at ASC LIMIT 100`
     ).bind(roomId, now - 90).all<any>();
 
+    const stream = await env.DB.prepare(
+      "SELECT provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,status,updated_at FROM live_streams WHERE room_id=? LIMIT 1"
+    ).bind(roomId).first<any>();
+
     const messages = await env.DB.prepare(
       `SELECT m.id,m.user_id AS userId,
               COALESCE(NULLIF(u.username,''),NULLIF(u.display_name,''),'user') AS username,
@@ -109,7 +128,19 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
       },
       participants:members.results||[],
       messages:(messages.results||[]).reverse(),
-      currentUserId:String(auth.user.id)
+      currentUserId:String(auth.user.id),
+      stream: stream ? {
+        provider:String(stream.provider||""),
+        inputUid:String(stream.input_uid||""),
+        playbackUrl:String(stream.playback_url||""),
+        playbackHls:String(stream.playback_hls||""),
+        playbackWebrtc:String(stream.playback_webrtc||""),
+        status:String(stream.status||"created"),
+        updatedAt:Number(stream.updated_at||0),
+        // Stream credentials are returned only to the authenticated room owner.
+        ingestUrl:String(stream.ingest_url||""),
+        streamKey:String(room.owner_user_id)===String(auth.user.id) ? String(stream.stream_key||"") : ""
+      } : null
     });
   } catch(error) {
     console.error("live room GET failed",error);
