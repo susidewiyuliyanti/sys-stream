@@ -56,7 +56,7 @@ export default function ReferralPage() {
           {t('Earn Passive Crypto & Gold Coins')}
         </h1>
         <p className="mt-2 text-sm text-slate-400">
-          {t('Invite fellow gamers to NEXUS. Earn up to 5% lifetime commission on every bet across 3 tiers, plus instant sign-up bonuses.')}
+          {t('Invite fellow gamers to NEXUS...')}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export default function ReferralPage() {
           <div className="md:col-span-7 space-y-4">
             <h2 className="text-lg font-bold text-white">{t('Your Personal Affiliate Link')}</h2>
             <p className="text-xs text-slate-400">
-              {t('Anyone registering with your link receives a free')} <strong className="text-amber-400">+500 Gold Coins</strong> {t('starter bonus.')}
+              {t('Anyone registering with your link receives...')} <strong className="text-amber-400">+500 Gold Coins</strong>
             </p>
 
             {/* Share Link Input */}
@@ -178,7 +178,7 @@ export default function ReferralPage() {
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
         <h3 className="text-base font-bold text-white mb-1">{t('Affiliate Income Calculator')}</h3>
         <p className="text-xs text-slate-400 mb-6">
-          {t('Slide to project your estimated monthly passive revenue based on active friends.')}
+          {t('Slide to project your estimated monthly passive revenue...')}
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -186,7 +186,7 @@ export default function ReferralPage() {
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
                 <span>{t('Active Friends Invited:')}</span>
-                <span className="font-mono font-bold text-amber-400">{calcFriends} {t('Friends')}</span>
+                <span className="font-mono font-bold text-amber-400">{calcFriends} {t('Active Friends Invited:')}</span>
               </div>
               <input
                 type="range"
@@ -201,7 +201,7 @@ export default function ReferralPage() {
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
                 <span>{t('Average Weekly Wager per Friend:')}</span>
-                <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} {t('Coins')}</span>
+                <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} {t('Gold Coins')}</span>
               </div>
               <input
                 type="range"
@@ -218,7 +218,7 @@ export default function ReferralPage() {
           <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center">
             <div className="text-xs text-slate-400 uppercase font-semibold">{t('Estimated Monthly Earnings')}</div>
             <div className="text-3xl sm:text-4xl font-mono font-black text-amber-400 mt-2">
-              +{estMonthlyEarnings.toLocaleString()} {t('Coins')}
+              +{estMonthlyEarnings.toLocaleString()} {t('Gold Coins')}
             </div>
             <div className="text-xs text-emerald-400 font-mono mt-1">
               ≈ ${(estMonthlyEarnings / 100).toFixed(2)} USD / month
