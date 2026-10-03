@@ -13,32 +13,6 @@ function normalizePayCurrency(currency: string) {
 
 async function preflightNowPayments(base: string, apiKey: string, payCurrency: string, amountUsd: number) {
   const headers = { "x-api-key": apiKey, "Accept": "application/json" };
-
-  const currenciesResponse = await fetch(base + "/full-currencies", { headers });
-  const currenciesData = await currenciesResponse.json().catch(() => ({}));
-
-  if (!currenciesResponse.ok) {
-    return {
-      ok: false,
-      status: currenciesResponse.status,
-      error: safeErrorMessage(currenciesData, currenciesResponse.status),
-      stage: "currencies"
-    };
-  }
-
-  const available = Array.isArray(currenciesData?.currencies)
-    ? currenciesData.currencies.map((v: any) => String(v).toLowerCase())
-    : [];
-
-  if (available.length && !available.includes(payCurrency.toLowerCase())) {
-    return {
-      ok: false,
-      status: 400,
-      error: payCurrency.toUpperCase() + " tidak tersedia untuk API key NOWPayments ini.",
-      stage: "currency"
-    };
-  }
-
   const minResponse = await fetch(
     `${base}/min-amount?currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`,
     { headers }
@@ -67,7 +41,6 @@ async function preflightNowPayments(base: string, apiKey: string, payCurrency: s
 
   return { ok: true, minAmountUsd };
 }
-
 async function ensureTransactions(env: Env) {
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -265,10 +238,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
-    // Validate the merchant/API configuration and the selected pair before POST /payment.
-    // This prevents avoidable HTTP 400 responses caused by an unavailable currency,
-    // a dynamic minimum, or an invalid NOWPayments account configuration.
-    const preflight = await preflightNowPayments(apiUrl.replace(/\/payment(?:\?.*)?$/i, ""), apiKey, payCurrency, amountUsd);
+    // Check only the dynamic minimum before creating the payment.\n    const preflight = await preflightNowPayments(apiUrl.replace(/\/payment(?:\?.*)?$/i, ""), apiKey, payCurrency, amountUsd);
     if (!preflight.ok) {
       console.error("NOWPayments preflight rejected payment", {
         stage: preflight.stage,
