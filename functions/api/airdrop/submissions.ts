@@ -32,7 +32,13 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       return response(context.request, { success: false, message: "Wallet atau jumlah points tidak valid." }, 400);
     }
 
+    await db.prepare("ALTER TABLE users ADD COLUMN sys_balance REAL NOT NULL DEFAULT 0").run().catch((error) => {
+      if (!/duplicate column name|already exists/i.test(String(error))) throw error;
+    });
     await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_point_conversions (id INTEGER PRIMARY KEY AUTOINCREMENT, wallet_address TEXT NOT NULL, points INTEGER NOT NULL, sys_amount REAL NOT NULL, rate REAL NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
+    await db.prepare("ALTER TABLE airdrop_point_conversions ADD COLUMN credited_at INTEGER").run().catch((error) => {
+      if (!/duplicate column name|already exists/i.test(String(error))) throw error;
+    });
 
     const totals = await db.prepare("SELECT COALESCE(SUM(CASE WHEN status IN ('APPROVED','PAID') THEN reward_points ELSE 0 END),0) AS approved_points, COALESCE(SUM(CASE WHEN status='PAID' THEN reward_points ELSE 0 END),0) AS paid_points FROM airdrop_submissions WHERE wallet_address=?").bind(wallet).first<any>();
     const approvedPoints = Number(totals?.approved_points || 0);
@@ -49,9 +55,21 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
 
     const rate = 1000;
     const sysAmount = requested / rate;
-    await db.prepare("INSERT INTO airdrop_point_conversions (wallet_address,points,sys_amount,rate) VALUES (?,?,?,?)").bind(wallet, requested, sysAmount, rate).run();
+    const now = Math.floor(Date.now() / 1000);
+    const conversionId = crypto.randomUUID();
 
-    return response(context.request, { success: true, message: "Conversion points berhasil dicatat.", convertedPoints: requested, sysAmount, conversionRate: "1 SYS = 1000 points", remainingPoints: available - requested });
+    // The conditional UPDATE is the server-side spend check. It is evaluated
+    // against the latest conversion ledger inside the same atomic D1 batch,
+    // so two simultaneous requests cannot both spend the same points.
+    const results = await db.batch([
+      db.prepare("UPDATE users SET sys_balance=COALESCE(sys_balance,0)+? WHERE id=? AND (SELECT COALESCE(SUM(CASE WHEN status IN ('APPROVED','PAID') THEN reward_points ELSE 0 END),0) FROM airdrop_submissions WHERE wallet_address=?) - (SELECT COALESCE(SUM(CASE WHEN status='PAID' THEN reward_points ELSE 0 END),0) FROM airdrop_submissions WHERE wallet_address=?) - (SELECT COALESCE(SUM(points),0) FROM airdrop_point_conversions WHERE wallet_address=?) >= ?").bind(sysAmount, String(auth.user.id), wallet, wallet, wallet, requested),
+      db.prepare("INSERT INTO airdrop_point_conversions (wallet_address,points,sys_amount,rate,credited_at) VALUES (?,?,?,?,?)").bind(wallet, requested, sysAmount, rate, now),
+    ]);
+    if (!results[0]?.meta?.changes) {
+      return response(context.request, { success: false, message: "Points sudah berubah atau tidak mencukupi. Silakan refresh.", availablePoints: available }, 409);
+    }
+
+    return response(context.request, { success: true, message: "Points berhasil dikonversi menjadi SYS.", convertedPoints: requested, sysAmount, conversionRate: "1 SYS = 1000 points", remainingPoints: available - requested, sysBalanceAdded: sysAmount });
   } catch (error) {
     return response(context.request, { success: false, error: String(error) }, 500);
   }
