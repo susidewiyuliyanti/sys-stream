@@ -97,7 +97,7 @@ export default function BlindboxGamePage() {
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const currencyConfig = getLocaleConfig(language);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const toIdr = (displayAmount: number) => Math.round(displayAmount * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
