@@ -1,4 +1,4 @@
-import { verifyMessage } from "ethers";
+import { getAddress, verifyMessage } from "ethers";
 import { createAuthCookie, createSession } from "../../../_lib/auth";
 
 export async function onRequestPost(context:any){
@@ -67,7 +67,22 @@ export async function onRequestPost(context:any){
       return Response.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    if (recovered.toLowerCase() !== wallet) {
+    let recoveredCanonical: string;
+    let walletCanonical: string;
+
+    try {
+      recoveredCanonical = getAddress(recovered);
+      walletCanonical = getAddress(wallet);
+    } catch (error) {
+      console.error("wallet address normalization error:", error);
+      return Response.json({ error: "Invalid wallet address" }, { status: 401 });
+    }
+
+    if (recoveredCanonical !== walletCanonical) {
+      console.error("Wallet mismatch:", {
+        requestedWallet: walletCanonical,
+        recoveredWallet: recoveredCanonical,
+      });
       return Response.json({ error: "Wallet mismatch" }, { status: 401 });
     }
 
