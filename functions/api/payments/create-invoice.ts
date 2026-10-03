@@ -152,6 +152,31 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
     }
 
+    // Validate the selected network-specific ticker against the merchant account.
+    // NOWPayments uses USDTTRC20 for USDT on TRON.
+    const currenciesResponse = await fetch(base + "/currencies", { headers: providerHeaders });
+    const currenciesData = await currenciesResponse.json().catch(() => ({}));
+    if (!currenciesResponse.ok) {
+      return json({
+        success: false,
+        error: safeErrorMessage(currenciesData, currenciesResponse.status),
+        provider_status: currenciesResponse.status,
+        provider_code: currenciesData?.code || null,
+      }, 502);
+    }
+    const availableCurrencies = Array.isArray(currenciesData?.currencies)
+      ? currenciesData.currencies.map((v: any) => String(v).toLowerCase())
+      : [];
+    if (!availableCurrencies.includes(payCurrency.toLowerCase())) {
+      return json({
+        success: false,
+        error: payCurrency.toUpperCase() + " tidak tersedia pada akun NOWPayments yang sedang terhubung. Aktifkan wallet/network tersebut di NOWPayments atau pilih crypto lain.",
+        provider_status: 400,
+        provider_code: "CURRENCY_NOT_AVAILABLE",
+        pay_currency: payCurrency,
+      }, 400);
+    }
+
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
 
@@ -190,13 +215,21 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       console.error("NOWPayments create payment failed", {
         status: response.status,
         data,
+        payCurrency,
+        amountUsd,
       });
+      const providerMessage = safeErrorMessage(data, response.status);
+      const detail = response.status === 400
+        ? "NOWPayments menolak payment " + payCurrency.toUpperCase() + " sebesar " + amountUsd.toFixed(2) + " USD. Kode provider: " + String(data?.code || "400") + ". Detail: " + providerMessage
+        : providerMessage;
       return json({
         success: false,
-        error: safeErrorMessage(data, response.status),
+        error: detail,
         provider_status: response.status,
         provider_code: data?.code || null,
         provider_error: typeof data?.error === "string" ? data.error : null,
+        pay_currency: payCurrency,
+        amount_usd: amountUsd,
       }, response.status >= 400 && response.status < 500 ? response.status : 502);
     }
 
