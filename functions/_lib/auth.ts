@@ -32,6 +32,7 @@ export interface AuthUser {
   registrationBonusIdr?: number;
   registrationBonusGranted?: boolean;
   walletAddress?: string;
+  sysBalance?: number;
 }
 
 const textEncoder = new TextEncoder();
@@ -183,6 +184,7 @@ async function ensureAuthUserColumns(env: Env) {
     ["total_locked", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
+    ["sys_balance", "REAL NOT NULL DEFAULT 0"],
   ];
   for (const [name, definition] of additions) {
     if (!names.has(name)) {
@@ -209,6 +211,7 @@ export async function requireAuth(request: Request, env: Env) {
             COALESCE(u.referral_count,0) AS referralCount,
             COALESCE(u.registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(u.registration_bonus_granted,0) AS registrationBonusGranted,
+            COALESCE(u.sys_balance,0) AS sysBalance,
             COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance, u.balance, 0) AS balance,
             COALESCE(u.total_locked, u.locked_saldo, 0) AS lockedBalance
@@ -240,6 +243,7 @@ export async function getUserById(env: Env, userId: string) {
             COALESCE(referral_count,0) AS referralCount,
             COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(registration_bonus_granted,0) AS registrationBonusGranted,
+            COALESCE(sys_balance,0) AS sysBalance,
             COALESCE(email_verified,0) AS emailVerified,
             CASE WHEN COALESCE(available_balance,0) > 0
                  THEN COALESCE(available_balance,0)
