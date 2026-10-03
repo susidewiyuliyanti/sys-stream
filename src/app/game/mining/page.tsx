@@ -4,6 +4,21 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Pickaxe, LockKeyhole, Coins, Clock3, CheckCircle2, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../../../i18n';
 
+// Fallback values referenced by locale entries below.
+// Keep this outside the component so MINING_COPY is safe during module initialization.
+const tx = {
+  loading: 'Loading Mining status...', errorStatus: 'Failed to load Mining status.', claimFailed: 'Mining claim failed.',
+  success: 'Successfully received {reward} SYS.', title: 'Mining', subtitle: 'Mining follows your active Blind Box Lock.',
+  on: 'MINING ACTIVE', off: 'MINING INACTIVE', activeLock: 'Active Lock', dailySys: 'Daily SYS', sysBalance: 'SYS Balance',
+  inactive: 'Mining is not active', inactiveDesc: 'Mining activates automatically when you have an active Blind Box Lock worth at least $10.',
+  lock: 'Lock', perDay: '/ day', claimed: "Today's Mining reward has been claimed", todayReward: "Today's reward:",
+  nextDay: 'The next claim is available on the following day.', available: 'Mining reward available', activeReward: 'Your active lock provides:',
+  claim: 'Claim Mining Reward', processing: 'Processing...', rules: 'Mining Rules',
+  rule1: 'Mining requires an active Blind Box Lock of at least $10.', rule2: 'Each $10 of lock earns 1 SYS per day.',
+  rule3: 'Claims are limited to once per user per day by the server.', rule4: 'Rewards are determined by the server and credited to the user SYS balance.',
+  rule5: 'Mining stops automatically when the Lock expires.',
+};
+
 const MINING_COPY: Record<string, Record<string,string>> = {
   id: {loading:tx.loading,errorStatus:tx.errorStatus,claimFailed:tx.claimFailed,success:'Berhasil mendapatkan {reward} SYS.',title:tx.title,subtitle:tx.subtitle,on:tx.on,off:tx.off,activeLock:'Lock Aktif',dailySys:'SYS Harian',sysBalance:'Saldo SYS',inactive:tx.inactive,inactiveDesc:tx.inactiveDesc,lock:tx.lock,perDay:tx.perDay,claimed:tx.claimed,todayReward:tx.todayReward,nextDay:tx.nextDay,available:'Reward Mining tersedia',activeReward:tx.activeReward,claim:'Klaim Reward Mining',processing:'Memproses...',rules:tx.rules,rule1:'Mining membutuhkan Blind Box Lock aktif minimal $10 (≈ Rp 179.370).',rule2:'Setiap kelipatan $10 lock menghasilkan 1 SYS per hari.',rule3:'Claim dibatasi 1 kali per user per hari oleh server.',rule4:'Reward ditentukan server dan masuk ke saldo SYS user.',rule5:'Mining berhenti otomatis ketika Lock berakhir.'},
   en: {loading:'Loading Mining status...',errorStatus:'Failed to load Mining status.',claimFailed:'Mining claim failed.',success:'Successfully received {reward} SYS.',title:tx.title,subtitle:'Mining follows your active Blind Box Lock.',on:tx.on,off:tx.off,activeLock:tx.activeLock,dailySys:tx.dailySys,sysBalance:tx.sysBalance,inactive:'Mining is not active',inactiveDesc:'Mining activates automatically when you have an active Blind Box Lock worth at least $10 (≈ Rp 179,370).',lock:tx.lock,perDay:'/ day',claimed:'Today\'s Mining reward has been claimed',todayReward:'Today\'s reward:',nextDay:'The next claim is available on the following day.',available:'Mining reward available',activeReward:'Your active lock provides:',claim:tx.claim,processing:tx.processing,rules:'Mining Rules',rule1:'Mining requires an active Blind Box Lock of at least $10 (≈ Rp 179,370).',rule2:'Each $10 of lock earns 1 SYS per day.',rule3:'Claims are limited to once per user per day by the server.',rule4:'Rewards are determined by the server and credited to the user SYS balance.',rule5:'Mining stops automatically when the Lock expires.'},
