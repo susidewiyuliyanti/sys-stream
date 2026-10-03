@@ -151,7 +151,8 @@ async function ensureRegistrationSchema(env: Env) {
     "CREATE INDEX IF NOT EXISTS idx_referrals_code ON referrals(referral_code)",
     "CREATE INDEX IF NOT EXISTS idx_terms_acceptances_user ON terms_acceptances(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_email_verification_v2_user ON email_verification_tokens_v2(user_id)",
-    "CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)"
+    "CREATE INDEX IF NOT EXISTS idx_users_email_lookup ON users(email)",
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_wallet_unique ON users(wallet_address)"
   ]) {
     try {
       await env.DB.prepare(sql).run();
