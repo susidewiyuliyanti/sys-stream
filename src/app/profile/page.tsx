@@ -32,7 +32,7 @@ export default function ProfilePage() {
   const {
     user,
     locks,
-    getTotalLockedUsdt,
+    getTotal{t('Locked')}Usdt,
     updateAvatar,
     updateUsername,
     updateProfile,
@@ -50,16 +50,16 @@ export default function ProfilePage() {
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<30 | 60 | 90>(30);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  const [withdrawOpen, setWithdrawOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState('');
-  const [withdrawAddress, setWithdrawAddress] = useState('');
+  const [withdrawOpen, set{t('Withdraw')}Open] = useState(false);
+  const [withdrawAmount, set{t('Withdraw')}Amount] = useState('');
+  const [withdrawAddress, set{t('Withdraw')}Address] = useState('');
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loadingTransactions, setLoadingTransactions] = useState(false);
   const [claimingBonus, setClaimingBonus] = useState(false);
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
-  const totalLocked = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
+  const total{t('Locked')} = Number(user.lockedBalance || getTotal{t('Locked')}Usdt() || 0);
   const availableBalance = Number(user.coins || 0) / 100;
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const withdrawalMinIdr = 100000;
@@ -83,10 +83,10 @@ export default function ProfilePage() {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopiedReferral(true);
-      showToast(t('Referral Link'), t('Referral link berhasil disalin.'), 'success');
+      showToast(t('{t('Referral Link')}'), t('Referral link berhasil disalin.'), 'success');
       setTimeout(() => setCopiedReferral(false), 1800);
     } catch {
-      showToast('Referral Link', referralLink, 'info');
+      showToast('{t('Referral Link')}', referralLink, 'info');
     }
   };
 
@@ -132,19 +132,19 @@ export default function ProfilePage() {
     }
   };
 
-  const handleWithdraw = async () => {
+  const handle{t('Withdraw')} = async () => {
     const amountDisplay = Number(withdrawAmount);
     const amount = Math.round(amountDisplay * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
     if (!Number.isFinite(amountDisplay) || amount < withdrawalMinIdr) {
-      showToast('Withdrawal', `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
+      showToast('{t('Withdraw')}al', `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
       return;
     }
     if (!withdrawAddress.trim()) {
-      showToast(t('Withdrawal'), t('Masukkan alamat wallet tujuan.'), 'error');
+      showToast(t('{t('Withdraw')}al'), t('Masukkan alamat wallet tujuan.'), 'error');
       return;
     }
     if (amount > availableBalance) {
-      showToast(t('Withdrawal'), t('Saldo tersedia tidak mencukupi.'), 'error');
+      showToast(t('{t('Withdraw')}al'), t('Saldo tersedia tidak mencukupi.'), 'error');
       return;
     }
     const token = localStorage.getItem('sys_stream_auth_token');
@@ -156,13 +156,13 @@ export default function ProfilePage() {
       });
       const data = await r.json().catch(() => ({}));
       if (!r.ok || !data?.success) throw new Error(data?.error || 'Penarikan gagal.');
-      showToast(t('Withdrawal'), t('Permintaan penarikan berhasil dibuat dan menunggu proses.'), 'success');
-      setWithdrawOpen(false);
-      setWithdrawAmount('');
-      setWithdrawAddress('');
+      showToast(t('{t('Withdraw')}al'), t('Permintaan penarikan berhasil dibuat dan menunggu proses.'), 'success');
+      set{t('Withdraw')}Open(false);
+      set{t('Withdraw')}Amount('');
+      set{t('Withdraw')}Address('');
       await loadTransactions();
     } catch (e: any) {
-      showToast(t('Withdrawal'), e?.message || t('Penarikan gagal.'), 'error');
+      showToast(t('{t('Withdraw')}al'), e?.message || t('Penarikan gagal.'), 'error');
     }
   };
 
@@ -187,8 +187,8 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-bold">SYS STREAM</div>
-            <h1 className="text-2xl font-black mt-1">Profile</h1>
-            <p className="text-xs text-slate-500 mt-1">Kelola akun, wallet, dan aktivitas kamu.</p>
+            <h1 className="text-2xl font-black mt-1">{t('Profile')}</h1>
+            <p className="text-xs text-slate-500 mt-1">{t('Kelola akun, wallet, dan aktivitas kamu.')}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -237,10 +237,10 @@ export default function ProfilePage() {
                 <h2 className="text-xl font-black truncate">{walletAddress || t('Guest')}</h2>
                 {isLoggedIn && <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />}
               </div>
-              <p className="text-xs text-slate-500 mt-1 truncate">User ID = Wallet Address</p>
+              <p className="text-xs text-slate-500 mt-1 truncate">{t('User ID = Wallet Address')}</p>
               <div className="flex flex-wrap gap-2 mt-3">
-                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold text-cyan-300">Member</span>
-                <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-[10px] font-bold text-slate-400">USDT Account</span>
+                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold text-cyan-300">{t('Member')}</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-[10px] font-bold text-slate-400">{t('USDT Account')}</span>
               </div>
             </div>
 
@@ -265,9 +265,9 @@ export default function ProfilePage() {
           <section className="rounded-3xl border border-cyan-500/20 bg-slate-950/80 p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <div className="text-[10px] uppercase tracking-wider text-slate-500">EVM Wallet</div>
+                <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('EVM Wallet')}</div>
                 <div className="text-sm font-mono font-bold text-cyan-300 mt-1 break-all">
-                  {user.walletAddress || 'Wallet belum terhubung'}
+                  {user.walletAddress || '{t('Wallet belum terhubung')}'}
                 </div>
                 <div className="text-[10px] text-slate-500 mt-2">
                   Alamat wallet akun. Recovery phrase tidak disimpan di server.
@@ -277,7 +277,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => {
                     void navigator.clipboard.writeText(user.walletAddress || '');
-                    showToast('Wallet', 'Alamat wallet berhasil disalin.', 'success');
+                    showToast('Wallet', '{t('Alamat wallet berhasil disalin.')}', 'success');
                   }}
                   className="shrink-0 p-2 rounded-xl border border-slate-700 text-cyan-400 hover:border-cyan-400"
                   title="Copy wallet address"
@@ -291,26 +291,26 @@ export default function ProfilePage() {
 
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-4">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Available</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available')}</div>
             <div className="text-lg font-black text-cyan-300 mt-1">{formatMoney(availableBalance)}</div>
           </div>
           <div className="rounded-2xl border border-amber-500/20 bg-slate-900/70 p-4">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Locked</div>
-            <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(totalLocked)}</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Locked')}</div>
+            <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(total{t('Locked')})}</div>
           </div>
-          <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
+          <button onClick={() => set{t('Withdraw')}Open(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
-            <div className="text-lg font-black text-white mt-1">Withdraw</div>
-            <div className="text-[10px] text-slate-500 mt-1">Ajukan penarikan</div>
+            <div className="text-lg font-black text-white mt-1">{t('Withdraw')}</div>
+            <div className="text-[10px] text-slate-500 mt-1">{t('Ajukan penarikan')}</div>
           </button>
         </div>
 
         {isLoggedIn && user.registrationBonusGranted && (
           <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-slate-950 to-cyan-500/10 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-emerald-400 font-black">Registration Bonus</div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-emerald-400 font-black">{t('Registration Bonus')}</div>
               <div className="text-2xl font-black text-white mt-1">{formatRegistrationBonus(language)}</div>
-              <div className="text-xs text-slate-400 mt-1">Bonus tersedia dan belum diklaim.</div>
+              <div className="text-xs text-slate-400 mt-1">{t('Bonus tersedia dan belum diklaim.')}</div>
             </div>
             <button disabled={claimingBonus} onClick={() => void handleClaimBonus()} className="px-5 py-3 rounded-2xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300 disabled:opacity-50">
               {claimingBonus ? 'Processing...' : 'Claim Bonus'}
@@ -320,12 +320,12 @@ export default function ProfilePage() {
 
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-2xl border border-cyan-500/20 bg-slate-950 p-4">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Available Balance</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available')} Balance</div>
             <div className="text-xl font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
           </div>
-          <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
+          <button onClick={() => set{t('Withdraw')}Open(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
-            <div className="text-xl font-black text-amber-300 mt-1">Withdraw</div>
+            <div className="text-xl font-black text-amber-300 mt-1">{t('Withdraw')}</div>
             <div className="text-[10px] text-slate-500 mt-1">Minimum withdrawal {formatMoney(withdrawalMinIdr)}</div>
           </button>
         </div>
@@ -336,8 +336,8 @@ export default function ProfilePage() {
             <div className="relative overflow-hidden bg-slate-950/90 border border-purple-500/30 rounded-3xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-black uppercase tracking-wider text-purple-400">Referral Link</div>
-                  <div className="text-[11px] text-slate-500 mt-1">Bagikan link ini untuk mengundang user baru.</div>
+                  <div className="text-xs font-black uppercase tracking-wider text-purple-400">{t('Referral Link')}</div>
+                  <div className="text-[11px] text-slate-500 mt-1">{t('Bagikan link ini untuk mengundang user baru.')}</div>
                 </div>
                 <span className="text-[10px] font-mono text-cyan-400">{walletAddress || 'WALLET REQUIRED'}</span>
               </div>
@@ -351,9 +351,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="bg-slate-950/90 border border-cyan-500/20 rounded-3xl p-5 space-y-3">
-              <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm"><CalendarDays className="w-4 h-4" /> Event Participation Status</div>
+              <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm"><CalendarDays className="w-4 h-4" /> {t('Event Participation Status')}</div>
               {eventStatuses.length === 0 ? (
-                <div className="py-4 text-center text-xs text-slate-500">Belum ada event yang diikuti.</div>
+                <div className="py-4 text-center text-xs text-slate-500">{t('Belum ada event yang diikuti.')}</div>
               ) : (
                 <div className="space-y-2">
                   {eventStatuses.map((event) => (
@@ -371,13 +371,13 @@ export default function ProfilePage() {
         <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="text-sm font-black text-white">Transaction History</div>
-              <div className="text-[10px] text-slate-500">Deposit, withdrawal, lock, reward & bonus</div>
+              <div className="text-sm font-black text-white">{t('Transaction History')}</div>
+              <div className="text-[10px] text-slate-500">{t('Deposit, withdrawal, lock, reward & bonus')}</div>
             </div>
-            <button onClick={() => void loadTransactions()} className="text-xs text-cyan-400 hover:text-white">Refresh</button>
+            <button onClick={() => void loadTransactions()} className="text-xs text-cyan-400 hover:text-white">{t('Refresh')}</button>
           </div>
-          {loadingTransactions ? <div className="text-xs text-slate-500 py-5 text-center">Loading...</div> :
-            transactions.length === 0 ? <div className="text-xs text-slate-500 py-5 text-center">Belum ada transaksi.</div> :
+          {loadingTransactions ? <div className="text-xs text-slate-500 py-5 text-center">{t('Loading...')}</div> :
+            transactions.length === 0 ? <div className="text-xs text-slate-500 py-5 text-center">{t('Belum ada transaksi.')}</div> :
             <div className="space-y-2">{transactions.slice(0,20).map((tx:any) => (
               <div key={String(tx.id)} className="flex items-center justify-between gap-3 rounded-2xl bg-slate-900 border border-slate-800 p-3">
                 <div className="min-w-0"><div className="text-xs font-bold text-white">{String(tx.type || 'TRANSACTION').replace(/_/g,' ')}</div><div className="text-[10px] text-slate-500">{tx.createdAt ? new Date(tx.createdAt).toLocaleString() : ''}</div></div>
@@ -392,13 +392,13 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-cyan-400 font-bold">
               <Lock className="w-4 h-4" />
-              <span>{t('Locked Balance')}</span>
+              <span>{t('{t('Locked')} Balance')}</span>
             </div>
             <button
               onClick={() =>
                 showToast(
-                  'Locked Balance Policy',
-                  'Locked USDT earns passive daily yield (10% 30d, 15% 60d, 20% 90d) and unlocks daily blind box claims.',
+                  '{t('Locked')} Balance Policy',
+                  '{t('Locked')} USDT earns passive daily yield (10% 30d, 15% 60d, 20% 90d) and unlocks daily blind box claims.',
                   'info'
                 )
               }
@@ -411,10 +411,10 @@ export default function ProfilePage() {
           {/* Huge Glowing Cyan Amount */}
           <div>
             <div className="text-4xl sm:text-5xl font-black font-mono text-cyan-400 tracking-tight drop-shadow-[0_0_16px_rgba(6,182,212,0.6)]">
-              {totalLocked.toFixed(2)} USDT
+              {total{t('Locked')}.toFixed(2)} USDT
             </div>
             <div className="text-xs text-slate-400 mt-1">
-              Locked • Earns passive yield
+              {t('Locked')} • Earns passive yield
             </div>
           </div>
 
@@ -493,11 +493,11 @@ export default function ProfilePage() {
       {withdrawOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-[#080d1a] border border-amber-500/30 p-6 space-y-4">
-            <div className="flex justify-between"><h3 className="font-black text-lg">Withdraw USDT</h3><button onClick={() => setWithdrawOpen(false)}><X className="w-5 h-5"/></button></div>
-            <div className="text-xs text-slate-500">Available: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
-            <input type="number" min={100000 / (IDR_PER_CURRENCY_UNIT[language] ?? 1)} step="0.01" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder={`Amount (${getLocaleConfig(language).currency})`} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
-            <input value={withdrawAddress} onChange={e => setWithdrawAddress(e.target.value)} placeholder="USDT wallet address" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
-            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">Submit Withdrawal</button>
+            <div className="flex justify-between"><h3 className="font-black text-lg">{t('Withdraw')} USDT</h3><button onClick={() => set{t('Withdraw')}Open(false)}><X className="w-5 h-5"/></button></div>
+            <div className="text-xs text-slate-500">{t('Available')}: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
+            <input type="number" min={100000 / (IDR_PER_CURRENCY_UNIT[language] ?? 1)} step="0.01" value={withdrawAmount} onChange={e => set{t('Withdraw')}Amount(e.target.value)} placeholder={`Amount (${getLocaleConfig(language).currency})`} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
+            <input value={withdrawAddress} onChange={e => set{t('Withdraw')}Address(e.target.value)} placeholder="USDT wallet address" className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
+            <button onClick={() => void handle{t('Withdraw')}()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">Submit {t('Withdraw')}al</button>
           </div>
         </div>
       )}
@@ -546,7 +546,7 @@ export default function ProfilePage() {
                     <Upload className="w-8 h-8 text-slate-500" />
                   )}
                   <span className="text-xs font-bold text-slate-300">{newAvatarInput ? t('Change photo from device') : t('Upload photo from device')}</span>
-                  <span className="text-[10px] text-slate-500">JPG, PNG, WEBP • photo stays from your device storage</span>
+                  <span className="text-[10px] text-slate-500">{t('JPG, PNG, WEBP • photo stays from your device storage')}</span>
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
