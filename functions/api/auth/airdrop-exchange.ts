@@ -11,6 +11,23 @@ async function ensureHandoffTable(env: Env) {
   ).run();
 }
 
+export async function onRequestOptions({ request }: { request: Request }) {
+  const origin = request.headers.get("Origin") || "";
+  if (origin !== "https://airdrop.sysstreamer.asia") {
+    return new Response(null, { status: 403 });
+  }
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Vary": "Origin",
+    },
+  });
+}
+
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   await ensureHandoffTable(env);
   const body = await request.json().catch(() => ({})) as { code?: string };
