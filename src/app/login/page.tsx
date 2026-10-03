@@ -253,6 +253,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {/* Username / Email */}
+          {authMode === 'login' && (
           <div className="relative">
             <span className="absolute left-3.5 top-3.5 text-cyan-400">
               <User className="w-4 h-4" />
@@ -265,6 +266,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
             />
           </div>
+          )}
 
           {/* Password */}
           <div className="relative">
