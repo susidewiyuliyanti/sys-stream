@@ -55,7 +55,7 @@ export default function LoginPage({ navigate }: Props) {
     }
     setWalletConnecting(true);
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts = (await window.ethereum.request({ method: 'eth_requestAccounts' })) as string[];
       const wallet = String(accounts?.[0] || '').toLowerCase();
       if (!wallet) throw new Error(t('Wallet address tidak ditemukan.'));
       setRegisterWallet(wallet);
@@ -79,9 +79,9 @@ const handleWalletAuth = async () => {
   setIsSubmitting(true);
 
   try {
-    const accounts = await window.ethereum.request({
+    const accounts = (await window.ethereum.request({
       method: "eth_requestAccounts",
-    });
+    })) as string[];
 
     const wallet = String(accounts?.[0] || "").toLowerCase();
     if (!wallet) {
