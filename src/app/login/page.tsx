@@ -72,7 +72,7 @@ const handleWalletAuth = async () => {
   if (isSubmitting) return;
 
   if (!window.ethereum) {
-    window.alert("Install MetaMask atau wallet Web3 terlebih dahulu.");
+    window.alert(t('Install MetaMask atau wallet Web3 terlebih dahulu.'));
     return;
   }
 
@@ -85,7 +85,7 @@ const handleWalletAuth = async () => {
 
     const wallet = String(accounts?.[0] || "").toLowerCase();
     if (!wallet) {
-      throw new Error("Wallet address tidak ditemukan.");
+      throw new Error(t('Wallet address tidak ditemukan.'));
     }
 
     const nonceRes = await fetch("/api/auth/wallet/nonce", {
@@ -97,7 +97,7 @@ const handleWalletAuth = async () => {
 
     const nonceData = await nonceRes.json().catch(() => ({}));
     if (!nonceRes.ok || !nonceData?.nonce) {
-      throw new Error(nonceData?.error || "Gagal membuat nonce wallet.");
+      throw new Error(nonceData?.error || t('Gagal membuat nonce wallet.'));
     }
 
     const message = "SYS STREAMER LOGIN\n\nNonce:" + String(nonceData.nonce);
@@ -121,7 +121,7 @@ const handleWalletAuth = async () => {
     const verifyData = await verifyRes.json().catch(() => ({}));
 
     if (!verifyRes.ok || !verifyData?.token || !verifyData?.user) {
-      throw new Error(verifyData?.error || "Verifikasi tanda tangan wallet gagal.");
+      throw new Error(verifyData?.error || t('Verifikasi tanda tangan wallet gagal.'));
     }
 
     const token = String(verifyData.token);
@@ -157,7 +157,7 @@ const handleWalletAuth = async () => {
     }
   } catch (error) {
     console.error("Wallet login error:", error);
-    window.alert(error instanceof Error ? error.message : "Wallet login gagal.");
+    window.alert(error instanceof Error ? error.message : t('Wallet login gagal.'));
   } finally {
     setIsSubmitting(false);
   }
@@ -176,15 +176,15 @@ const handleSubmit = async (e: React.FormEvent) => {
       if (!res.ok) {
         if (data.code === 'EMAIL_NOT_VERIFIED') {
           setVerificationEmail(String(data.email || emailInput || usernameInput.trim()));
-          setVerificationNotice('Email Anda belum diverifikasi. Cek inbox atau kirim ulang email verifikasi.');
+          setVerificationNotice(t('Email Anda belum diverifikasi. Cek inbox atau kirim ulang email verifikasi.'));
           return;
         }
         if (data.code === 'EMAIL_SERVICE_UNAVAILABLE') {
           setVerificationEmail(String(data.email || emailInput.trim()));
-          setVerificationNotice(data.error || 'Layanan email belum aktif.');
+          setVerificationNotice(data.error || t('Layanan email belum aktif.'));
           return;
         }
-        throw new Error(data.error || 'Autentikasi gagal.');
+        throw new Error(data.error || t('Autentikasi gagal.'));
       }
       if (authMode === 'register' && data.requiresEmailVerification) {
         setVerificationEmail(String(data.email || emailInput.trim()));
@@ -193,7 +193,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         return;
       }
       if (!data?.token || !data?.user) {
-        throw new Error('Sesi autentikasi tidak diterima dari server.');
+        throw new Error(t('Sesi autentikasi tidak diterima dari server.'));
       }
 
       // The login endpoint already creates the server auth session and shared
@@ -220,7 +220,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       }
     } catch (error) {
       console.error(error);
-      window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
+      window.alert(error instanceof Error ? error.message : t('Autentikasi gagal.'));
     } finally { setIsSubmitting(false); }
   };
 
@@ -234,9 +234,9 @@ const handleSubmit = async (e: React.FormEvent) => {
         body: JSON.stringify({ email: verificationEmail.trim() }),
       });
       const data = await res.json().catch(() => ({}));
-      setVerificationNotice(data.message || 'Jika akun membutuhkan verifikasi, email akan dikirim.');
+      setVerificationNotice(data.message || t('Jika akun membutuhkan verifikasi, email akan dikirim.'));
     } catch {
-      setVerificationNotice('Permintaan kirim ulang gagal. Coba lagi beberapa saat.');
+      setVerificationNotice(t('Permintaan kirim ulang gagal. Coba lagi beberapa saat.'));
     } finally {
       setResendBusy(false);
     }
@@ -290,8 +290,8 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="mb-5 rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-4">
             <div className="text-sm font-bold text-cyan-300">{t('Verify your email')}</div>
             <p className="mt-1 text-[11px] leading-5 text-slate-400">
-              We sent a verification link to <span className="text-slate-200 font-semibold">{verificationEmail}</span>.
-              You must verify it before you can log in.
+              {t('We sent a verification link to')} <span className="text-slate-200 font-semibold">{verificationEmail}</span>.
+              {t('You must verify it before you can log in.')}
             </p>
             {verificationNotice && (
               <p className="mt-2 text-[11px] leading-5 text-slate-300">{verificationNotice}</p>
@@ -302,7 +302,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               disabled={resendBusy}
               className="mt-3 w-full rounded-xl border border-cyan-500/30 bg-slate-950/70 py-2.5 text-[11px] font-bold text-cyan-300 hover:text-white disabled:opacity-50"
             >
-              {resendBusy ? 'SENDING...' : 'RESEND VERIFICATION EMAIL'}
+              {resendBusy ? t('SENDING...') : t('RESEND VERIFICATION EMAIL')}
             </button>
           </div>
         )}
@@ -402,7 +402,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               onClick={() => sound.playClick()}
               className="text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold"
             >
-              Forgot Password?
+              {t('Forgot Password?')}
             </button>
           </div>
 
@@ -415,7 +415,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             {isSubmitting ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              <span>{authMode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT'}</span>
+              <span>{authMode === 'login' ? t('LOGIN') : t('CREATE ACCOUNT')}</span>
             )}
           </button>
         </form>
@@ -448,7 +448,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
             className="text-purple-400 hover:text-purple-300 font-bold underline"
           >
-            Register Now
+            {t('Register Now')}
           </button>
         </div>
 
