@@ -82,9 +82,81 @@ export async function verifyPassword(password: string, stored: string): Promise<
 export async function createSession(env: Env, userId: string): Promise<string> {
   const token = crypto.randomUUID() + "." + crypto.randomUUID();
   const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
+
+  // Production has had multiple auth_sessions schemas over time. Keep session
+  // creation compatible with all of them instead of assuming the current
+  // three-column schema.
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS auth_sessions (
+    token TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    expires_at INTEGER NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch())
+  )`).run();
+
+  const info = await env.DB.prepare("PRAGMA table_info(auth_sessions)").all<any>();
+  const columns = (info.results || []) as any[];
+  const names = new Set(columns.map((row:any) => String(row.name)));
+
+  // Add required columns if an older table is missing them.
+  for (const [name, definition] of [
+    ["token", "TEXT"],
+    ["user_id", "TEXT"],
+    ["expires_at", "INTEGER"],
+    ["created_at", "INTEGER"],
+  ] as Array<[string,string]>) {
+    if (!names.has(name)) {
+      try {
+        await env.DB.prepare(`ALTER TABLE auth_sessions ADD COLUMN ${name} ${definition}`).run();
+      } catch (error) {
+        if (!/duplicate column name|already exists/i.test(String(error))) {
+          console.error("auth session schema repair skipped", { name, error: String(error) });
+        }
+      }
+    }
+  }
+
+  const refreshed = await env.DB.prepare("PRAGMA table_info(auth_sessions)").all<any>();
+  const sessionColumns = (refreshed.results || []) as any[];
+  const idMeta = sessionColumns.find((row:any) => String(row.name) === "id");
+  const integerPrimaryId =
+    !!idMeta &&
+    Number(idMeta.pk) === 1 &&
+    !/CHAR|CLOB|TEXT|BLOB/i.test(String(idMeta.type || ""));
+
+  const values: Record<string, any> = {
+    id: crypto.randomUUID(),
+    token,
+    user_id: String(userId),
+    expires_at: expiresAt,
+    created_at: Math.floor(Date.now() / 1000),
+  };
+
+  const insertColumns:string[] = [];
+  const insertValues:any[] = [];
+  for (const column of sessionColumns) {
+    const name = String(column.name);
+    if (name === "id" && integerPrimaryId) continue;
+    if (Object.prototype.hasOwnProperty.call(values, name)) {
+      insertColumns.push(name);
+      insertValues.push(values[name]);
+      continue;
+    }
+    const notNull = Number(column.notnull) === 1;
+    const hasDefault = column.dflt_value !== null && column.dflt_value !== undefined;
+    if (notNull && !hasDefault) {
+      throw new Error("UNSUPPORTED_AUTH_SESSIONS_REQUIRED_COLUMN:" + name);
+    }
+  }
+
+  if (!insertColumns.includes("token") || !insertColumns.includes("user_id") || !insertColumns.includes("expires_at")) {
+    throw new Error("AUTH_SESSIONS_SCHEMA_MISSING_REQUIRED_COLUMNS");
+  }
+
+  const placeholders = insertColumns.map(() => "?").join(",");
   await env.DB.prepare(
-    "INSERT INTO auth_sessions(token,user_id,expires_at) VALUES(?,?,?)"
-  ).bind(token, String(userId), expiresAt).run();
+    `INSERT INTO auth_sessions(${insertColumns.join(",")}) VALUES(${placeholders})`
+  ).bind(...insertValues).run();
+
   return token;
 }
 
