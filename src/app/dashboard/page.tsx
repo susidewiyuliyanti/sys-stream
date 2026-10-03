@@ -9,7 +9,6 @@ import {
   RefreshCw,
   Search,
   Target,
-  UserPlus,
   Users,
   Wallet,
   X,
