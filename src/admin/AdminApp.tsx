@@ -163,6 +163,7 @@ export default function AdminApp() {
 
             {tab==='overview'&&<Overview users={users} deposits={deposits} totalBalance={totalBalance} totalLocked={totalLocked}/>}
             {tab==='users'&&<UsersTable users={filteredUsers}/>}
+            {tab==='streamers'&&<StreamersPanel users={users} streamers={streamers} onRefresh={()=>void loadDashboard()}/>}
             {tab==='transactions'&&<TransactionsTable deposits={deposits}/>}
             {tab==='jackpot'&&<JackpotPanel users={users} grants={grants} onRefresh={()=>void loadDashboard()}/>}
             {tab==='airdrop'&&<AirdropTaskPanel tasks={airdropTasks} onRefresh={()=>void loadDashboard()}/>}
