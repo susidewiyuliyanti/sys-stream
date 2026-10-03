@@ -2,8 +2,12 @@ import { Env, json } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
 
 function normalizePayCurrency(currency: string) {
-  const value = currency.trim().toLowerCase();
+  const value = currency.trim().toLowerCase().replace(/[-_\s]/g, "");
   if (value === "usdt" || value === "usdttrc20") return "usdttrc20";
+  if (value === "bitcoin") return "btc";
+  if (value === "ethereum") return "eth";
+  if (value === "solana") return "sol";
+  if (value === "tron") return "trx";
   return value;
 }
 
@@ -48,6 +52,9 @@ async function ensureTransactions(env: Env) {
 function safeErrorMessage(data: any, status: number) {
   const message = data?.message || data?.error || data?.code;
   if (typeof message === "string" && message.trim()) return message.trim();
+  if (Array.isArray(data?.errors) && data.errors.length) {
+    return data.errors.map((item: any) => typeof item === "string" ? item : item?.message || item?.error || JSON.stringify(item)).join("; ");
+  }
   if (status === 401 || status === 403) return "NOWPayments menolak API key. Periksa NOWPAYMENTS_API_KEY di Cloudflare Secrets.";
   if (status === 400) return "Parameter deposit ditolak oleh NOWPayments. Periksa mata uang pembayaran dan konfigurasi akun.";
   if (status === 429) return "NOWPayments sedang membatasi permintaan. Coba lagi beberapa saat.";
@@ -62,13 +69,16 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const body = await request.json() as { amountUsd?: number; currency?: string };
     const amountUsd = Number(body.amountUsd);
     const requestedCurrency = String(body.currency || "USDT").trim();
+    if (!Number.isFinite(amountUsd)) {
+      return json({ success: false, error: "Nominal deposit tidak valid." }, 400);
+    }
     const payCurrency = normalizePayCurrency(requestedCurrency);
     const supportedCurrencies = new Set(["usdttrc20", "btc", "eth", "sol", "trx"]);
     if (!supportedCurrencies.has(payCurrency)) {
       return json({ success: false, error: "Mata uang crypto yang dipilih belum didukung untuk deposit." }, 400);
     }
 
-    if (!Number.isFinite(amountUsd) || amountUsd < 5) {
+    if (amountUsd < 5) {
       return json({ success: false, error: "Minimum deposit adalah 5 USD." }, 400);
     }
 
@@ -133,7 +143,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         success: false,
         error: safeErrorMessage(data, response.status),
         provider_status: response.status,
-      }, response.status === 400 ? 400 : 502);
+        provider_code: data?.code || null,
+      }, response.status >= 400 && response.status < 500 ? response.status : 502);
     }
 
     const paymentId = data?.payment_id;
@@ -153,7 +164,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       auth.user.id,
       "DEPOSIT",
       amountUsd,
-      "USDT",
+      String(payCurrency).toUpperCase(),
       "PENDING",
       orderId,
       "Crypto deposit",
