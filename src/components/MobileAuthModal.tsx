@@ -44,13 +44,15 @@ export const MobileAuthModal: React.FC = () => {
       let newWallet: HDNodeWallet | null = null;
 
       if (authMode === 'login') {
-        body = { identifier: usernameInput.trim(), password: passwordInput };
+        await handleWalletAuth();
+        return;
       } else {
         // Create the wallet locally. The private key/recovery phrase is never sent to the server.
         newWallet = HDNodeWallet.createRandom();
+        const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
         body = {
-          username: usernameInput.trim(),
-          password: passwordInput,
+          username: '',
+          password: registrationPassword,
           termsAccepted,
           termsVersion: TERMS_VERSION,
           walletAddress: newWallet.address,
@@ -197,154 +199,64 @@ export const MobileAuthModal: React.FC = () => {
           </p>
         </div>
 
-        {/* Form Inputs — registration no longer collects email */}
+        {/* Wallet-native authentication */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
-          {/* Username / Email */}
-          <div className="relative">
-            <span className="absolute left-3.5 top-3.5 text-cyan-400">
-              <User className="w-4 h-4" />
-            </span>
-            <input
-              type="text"
-              placeholder="Username or Wallet"
-              value={usernameInput}
-              onChange={(e) => setUsernameInput(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
-            />
-          </div>
-
-
-          {/* Password */}
-          <div className="relative">
-            <span className="absolute left-3.5 top-3.5 text-purple-400">
-              <Lock className="w-4 h-4" />
-            </span>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••••"
-              value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
-              className="w-full pl-10 pr-10 py-3 bg-slate-950/80 border border-purple-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400 transition-colors font-mono"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-3.5 text-slate-400 hover:text-white"
-            >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-
-
-          {authMode === 'register' && (
-            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-3.5">
-              <div className="flex items-start gap-3">
-                <input
-                  id="mobile-terms-accepted"
-                  type="checkbox"
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  required
-                  className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer shrink-0"
-                />
-                <label htmlFor="mobile-terms-accepted" className="text-[11px] leading-5 text-slate-300 cursor-pointer">
-                  I have read and agree to the{' '}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setLoginModalOpen(false);
-                      window.location.hash = '/terms';
-                    }}
-                    className="text-cyan-300 hover:text-cyan-200 underline font-bold"
-                  >
-                    Terms &amp; Conditions
-                  </button>
-                  .
+          {authMode === 'login' ? (
+            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-4 text-center">
+              <Wallet className="w-8 h-8 mx-auto text-cyan-300 mb-2" />
+              <div className="text-sm font-black text-white">Login dengan Wallet</div>
+              <p className="mt-1 text-[11px] leading-5 text-slate-400">
+                Hubungkan MetaMask atau wallet EVM lain. Anda akan diminta menandatangani pesan untuk masuk.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="rounded-2xl border border-purple-500/25 bg-purple-500/5 p-4 text-center">
+                <Wallet className="w-8 h-8 mx-auto text-purple-300 mb-2" />
+                <div className="text-sm font-black text-white">Buat Wallet Baru</div>
+                <p className="mt-1 text-[11px] leading-5 text-slate-400">
+                  Wallet baru dibuat langsung di perangkat Anda. Tidak perlu email, username, atau password.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5">
+                <label className="flex items-start gap-3 text-[11px] leading-5 text-slate-300 cursor-pointer">
+                  <input id="mobile-terms-accepted" type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} required className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500" />
+                  <span>Saya menyetujui Terms &amp; Conditions dan pembuatan wallet baru.</span>
                 </label>
               </div>
-              <div className="mt-2 pl-7 text-[10px] leading-4 text-slate-500">
-                Wajib membaca dan menyetujui Terms &amp; Conditions sebelum membuat akun.
-              </div>
-            </div>
+              {verificationNotice && (
+                <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
+              )}
+              {generatedWallet && (
+                <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
+                  <div className="text-xs font-black uppercase tracking-wider text-amber-300">Simpan Recovery Phrase</div>
+                  <p className="text-[10px] leading-4 text-amber-100/80">Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.</p>
+                  <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                    <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
+                    <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
+                  </div>
+                  <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                    <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
+                    <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
+                  </div>
+                  <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
+                    <input type="checkbox" checked={walletBackupConfirmed} onChange={(e) => setWalletBackupConfirmed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-amber-500 text-amber-500" />
+                    <span>Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.</span>
+                  </label>
+                </div>
+              )}
+            </>
           )}
-          {verificationNotice && (
-            <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
-          )}
-
-          {generatedWallet && authMode === 'register' && (
-            <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
-              <div className="text-xs font-black uppercase tracking-wider text-amber-300">EVM Wallet Recovery Phrase</div>
-              <p className="text-[10px] leading-4 text-amber-100/80">
-                Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.
-                Simpan offline sebelum menutup halaman.
-              </p>
-              <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
-                <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
-              </div>
-              <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
-                <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
-                <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
-              </div>
-              <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={walletBackupConfirmed}
-                  onChange={(e) => setWalletBackupConfirmed(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-amber-500 text-amber-500"
-                />
-                <span>Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.</span>
-              </label>
-            </div>
-          )}
-
-          {/* Remember me & Forgot Password */}
-          <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-3.5 h-3.5 rounded bg-slate-950 border-cyan-500 text-cyan-500 focus:ring-0 cursor-pointer"
-              />
-              <span className="text-[11px]">Remember me</span>
-            </label>
-            <button
-              type="button"
-              onClick={() => sound.playClick()}
-              className="text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold"
-            >
-              Forgot Password?
-            </button>
-          </div>
-
-          {/* Glowing Neon Login / Register Button */}
-          {pendingRegistrationAuth && authMode === 'register' ? (
-            <button
-              type="button"
-              onClick={completeRegistration}
-              disabled={!walletBackupConfirmed}
-              className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all"
-            >
-              {walletBackupConfirmed ? 'SAYA SUDAH MENYIMPAN — MASUK' : 'SIMPAN RECOVERY PHRASE TERLEBIH DAHULU'}
-            </button>
-          ) : (
           <button
             type="submit"
-            disabled={Boolean(isSubmitting || (authMode === 'register' && (!termsAccepted || (generatedWallet && !walletBackupConfirmed))))}
-            className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            disabled={isSubmitting || (authMode === 'register' && (!termsAccepted || Boolean(pendingRegistrationAuth && !walletBackupConfirmed)))}
+            className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 disabled:opacity-40 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all"
           >
-            {isSubmitting ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <span>{authMode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT'}</span>
-            )}
+            {isSubmitting ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" /> :
+              authMode === 'login' ? 'LOGIN WITH WALLET' :
+              pendingRegistrationAuth ? 'SAYA SUDAH MENYIMPAN — MASUK' : 'GENERATE NEW WALLET'}
           </button>
-          )}
         </form>
-
         {/* Divider */}
         <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
