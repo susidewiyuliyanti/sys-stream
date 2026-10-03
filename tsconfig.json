@@ -29,6 +29,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "sys-stream-backup-before-v0.2"
+    "sys-stream-backup-before-v0.2",
+    "src/app/login/page.broken-wallet.tsx"
   ]
 }
