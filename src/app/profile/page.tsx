@@ -497,7 +497,7 @@ export default function ProfilePage() {
             <div className="text-xs text-slate-500">{t('Available')}: <span className="text-cyan-300 font-bold">{availableBalance.toFixed(4)} USDT</span></div>
             <input type="number" min={100000 / (IDR_PER_CURRENCY_UNIT[language] ?? 1)} step="0.01" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} placeholder={`Amount (${getLocaleConfig(language).currency})`} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
             <input value={withdrawAddress} onChange={e => setWithdrawAddress(e.target.value)} placeholder={t('USDT wallet address')} className="w-full rounded-xl bg-slate-950 border border-slate-800 p-3 text-sm outline-none focus:border-amber-400"/>
-            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">{t('Submit')} {t('Withdraw')}al</button>
+            <button onClick={() => void handleWithdraw()} className="w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-black">{t('Submit')} {t('Withdraw')}</button>
           </div>
         </div>
       )}
