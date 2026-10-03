@@ -76,6 +76,7 @@ async function ensureAuthUserColumns(env: Env) {
   const names = new Set((columns.results || []).map((r:any) => String(r.name)));
   const additions: Array<[string,string]> = [
     ["avatar_url", "TEXT"],
+    ["wallet_address", "TEXT"],
     ["referral_code", "TEXT"],
     ["referral_count", "INTEGER NOT NULL DEFAULT 0"],
     ["email_verified", "INTEGER NOT NULL DEFAULT 0"],
