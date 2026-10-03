@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  CheckCircle2, CircleDollarSign, Clock3, ExternalLink, FileVideo,
+  CheckCircle2, CircleDollarSign, Clock3, FileVideo,
   Link2, Menu, ShieldCheck, Trophy, Upload, WalletCards, X, Youtube
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
@@ -25,7 +25,7 @@ const TASKS: Task[] = [
 
 const COPY: Record<Lang, Record<string,string>> = {
   id:{
-    tasks:'Tugas', submissions:'Pengajuan Saya', login:'Masuk', hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',
+    tasks:'Tugas', submissions:'Pengajuan Saya', login:'Masuk', wallet:'Alamat Wallet', walletPlaceholder:'Masukkan alamat wallet', saveWallet:'Simpan Wallet', walletRequired:'Alamat wallet wajib diisi untuk mengikuti task.', hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',
     intro:'Selesaikan tugas campaign di YouTube, TikTok, dan Instagram. Kirim link bukti publik dan ikuti aturan setiap tugas.',
     daily:'MISI HARIAN HARI INI', dailySub:'Tugas harian dapat berubah sesuai campaign aktif.', available:'Tugas Tersedia',
     empty:'Belum ada pengajuan', emptySub:'Pengajuan yang kamu kirim akan tampil di sini setelah akun terhubung.',
@@ -48,7 +48,7 @@ const COPY: Record<Lang, Record<string,string>> = {
     profileTitle:'Lengkapi Profil', profileDesc:'Lengkapi informasi profil dasar agar akun siap mengikuti campaign dan proses reward.', profileAction:'Buka Profil'
   },
   en:{
-    tasks:'Tasks', submissions:'My Submissions', login:'Login', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
+    tasks:'Tasks', submissions:'My Submissions', login:'Login', wallet:'Wallet Address', walletPlaceholder:'Enter wallet address', saveWallet:'Save Wallet', walletRequired:'Wallet address is required to join a task.', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
     intro:'Complete campaign tasks across YouTube, TikTok, and Instagram. Submit public proof links and follow each task rule.',
     daily:"TODAY'S DAILY MISSIONS", dailySub:'Daily tasks may change based on the active campaign.', available:'Available Tasks',
     empty:'No submissions yet', emptySub:'Your submissions will appear here after your account is connected.',
@@ -230,8 +230,7 @@ function typeLabel(type:TaskType,tx:Record<string,string>) {
 
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
-  const [authChecked,setAuthChecked]=useState(false);
-  const [authenticated,setAuthenticated]=useState(false);
+  const [walletAddress,setWalletAddress]=useState('');
   const [menuOpen,setMenuOpen]=useState(false);
   const [tab,setTab]=useState<'tasks'|'submissions'>('tasks');
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
@@ -261,62 +260,11 @@ export default function AirdropApp() {
 
   useEffect(()=>{ document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; },[lang]);
   useEffect(() => {
-    let active = true;
-
-    const checkSession = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const handoff = params.get('handoff');
-
-      // IMPORTANT: the canonical authenticated profile lives on the main
-      // SYS STREAM origin. Validate that shared parent-domain cookie there,
-      // then use the returned user as the same profile in Airdrop.
-      try {
-        const response = await fetch('https://sysstreamer.asia/api/auth/me', {
-          credentials: 'include',
-          cache: 'no-store',
-        });
-        const data = await response.json().catch(() => ({}));
-        if (active && response.ok && data?.success && data?.user) {
-          if (params.has('lang') || params.has('handoff')) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-          }
-          setAuthenticated(true);
-          setAuthChecked(true);
-          return;
-        }
-      } catch {
-        // Continue to the legacy handoff fallback.
-      }
-
-      if (handoff) {
-        try {
-          const response = await fetch('https://sysstreamer.asia/api/auth/airdrop-exchange', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: handoff }),
-            cache: 'no-store',
-          });
-          const data = await response.json().catch(() => ({}));
-          if (active && response.ok && data?.success && data?.user) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-            setAuthenticated(true);
-            setAuthChecked(true);
-            return;
-          }
-        } catch {
-          // Continue to unauthenticated state.
-        }
-      }
-
-      if (!active) return;
-      setAuthenticated(false);
-      setAuthChecked(true);
-    };
-
-    void checkSession();
-    return () => { active = false; };
+    if (typeof window === 'undefined') return;
+    const savedWallet = localStorage.getItem('sys_stream_airdrop_wallet') || '';
+    setWalletAddress(savedWallet);
   }, []);
+
 
   useEffect(()=>{
     let active=true;
@@ -336,21 +284,6 @@ export default function AirdropApp() {
   const availableTasks=useMemo(()=>TASKS,[]);
   const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
 
-  if (!authChecked) {
-    return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center"><div className="text-sm text-slate-400">Memeriksa sesi login...</div></div>;
-  }
-
-  if (!authenticated) {
-    return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-7 text-center">
-        <div className="text-xs font-black tracking-[0.2em] text-amber-400">SYS STREAM AIRDROP</div>
-        <h1 className="mt-3 text-2xl font-black text-white">Sesi login diperlukan</h1>
-        <p className="mt-2 text-sm text-slate-400">Login di SYS STREAM berlaku juga untuk Airdrop. Anda tidak perlu membuat akun atau login kedua.</p>
-        <a href="https://sysstreamer.asia/?return=%2Fairdrop#/login" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-amber-400 px-4 py-3 font-black text-slate-950">Login SYS STREAM</a>
-      </div>
-    </div>;
-  }
-
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
       <div className="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between gap-3">
@@ -361,7 +294,6 @@ export default function AirdropApp() {
           </select>
           <button onClick={()=>setTab('tasks')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.tasks}</button>
           <button onClick={()=>setTab('submissions')} className="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900">{tx.submissions}</button>
-          <a href="https://sysstreamer.asia/login?return=%2Fairdrop" className="px-4 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">{tx.login}</a>
         </nav>
         <button className="md:hidden p-2 rounded-lg" onClick={()=>setMenuOpen(v=>!v)} aria-label="Menu">{menuOpen?<X className="w-5 h-5"/>:<Menu className="w-5 h-5"/>}</button>
       </div>
@@ -371,7 +303,6 @@ export default function AirdropApp() {
         </select>
         <button onClick={()=>{setTab('tasks');setMenuOpen(false)}} className="block w-full text-left px-3 py-2">{tx.tasks}</button>
         <button onClick={()=>{setTab('submissions');setMenuOpen(false)}} className="block w-full text-left px-3 py-2">{tx.submissions}</button>
-        <a href="https://sysstreamer.asia/login" className="block px-3 py-2 rounded-lg bg-slate-100 text-slate-950 font-bold">{tx.login}</a>
       </div>}
     </header>
 
@@ -444,7 +375,12 @@ export default function AirdropApp() {
       <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6" onClick={e=>e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label="Close"><X className="w-5 h-5"/></button></div>
         <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p></div>
-        <a href="https://sysstreamer.asia/login" className="mt-4 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold"><ExternalLink className="w-4 h-4"/> {tx.loginContinue}</a>
+        <div className="mt-4">
+          <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet}</label>
+          <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
+          {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired}</div>}
+          <button disabled={!walletAddress.trim()} onClick={()=>{localStorage.setItem('sys_stream_airdrop_wallet',walletAddress.trim());setSelectedTask(null)}} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{tx.saveWallet}</button>
+        </div>
       </div>
     </div>})()}
   </div>;
