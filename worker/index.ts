@@ -244,6 +244,16 @@ async function getAuthenticatedUser(request: Request, env: Env) {
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    try {
+      return await this.handleRequest(request, env, ctx);
+    } catch (err: any) {
+      return new Response(JSON.stringify({success:false,error:err?.message || 'Worker request failed'}), {
+        status: 500,
+        headers: {'Content-Type':'application/json','Cache-Control':'no-store','Access-Control-Allow-Origin':'*'}
+      });
+    }
+  },
+  async handleRequest(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     if (request.method === 'OPTIONS') {
