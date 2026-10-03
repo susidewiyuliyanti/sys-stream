@@ -927,6 +927,96 @@ for (const lang of Object.keys(FINAL_MISSING_PAGE_TRANSLATIONS) as LanguageCode[
 }
 
 
+const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  id: {
+    'Sign in to continue streaming and gaming':'Masuk untuk melanjutkan streaming dan bermain',
+    'Username or Email':'Username atau Email','Connect Wallet':'Hubungkan Wallet','Forgot Password?':'Lupa Kata Sandi?',
+    "Don't have an account?":"Belum punya akun?",'Register Now':'Daftar Sekarang','Secured with Web3':'Diamankan dengan Web3','Biometric Login Available':'Login biometrik tersedia',
+    'CREATE ACCOUNT':'BUAT AKUN','LOGIN':'MASUK','or Connect with Crypto Wallet':'atau Hubungkan dengan Crypto Wallet',
+    'EVM Wallet Recovery Phrase':'Frasa Pemulihan Wallet EVM','Wallet Address':'Alamat Wallet','Recovery Phrase':'Frasa Pemulihan',
+    'Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Wajib membaca dan menyetujui Syarat & Ketentuan sebelum membuat akun.',
+    'I have read and agree to the':'Saya telah membaca dan menyetujui','Terms & Conditions':'Syarat & Ketentuan',
+    'Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan frasa pemulihan ini.',
+    'Simpan offline sebelum menutup halaman.':'Simpan secara offline sebelum menutup halaman.',
+    'Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Saya sudah menyimpan frasa pemulihan di tempat yang aman dan memahami bahwa frasa tersebut tidak dapat dipulihkan oleh SYS STREAM.',
+    'Loading active tasks...':'Memuat tugas aktif...','Submitting...':'Mengirim...','Open Task':'Buka Tugas',
+    'Task':'Tugas','Save Wallet':'Simpan Wallet','Proof link is required.':'Link bukti wajib diisi.','Submission failed':'Pengajuan gagal',
+    'Login to continue':'Masuk untuk melanjutkan'
+  },
+  en: {
+    'Sign in to continue streaming and gaming':'Sign in to continue streaming and gaming','Username or Email':'Username or Email','Connect Wallet':'Connect Wallet','Forgot Password?':'Forgot Password?',
+    "Don't have an account?":"Don't have an account?",'Register Now':'Register Now','Secured with Web3':'Secured with Web3','Biometric Login Available':'Biometric Login Available',
+    'CREATE ACCOUNT':'CREATE ACCOUNT','LOGIN':'LOGIN','or Connect with Crypto Wallet':'or Connect with Crypto Wallet','EVM Wallet Recovery Phrase':'EVM Wallet Recovery Phrase',
+    'Wallet Address':'Wallet Address','Recovery Phrase':'Recovery Phrase','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'You must read and agree to the Terms & Conditions before creating an account.',
+    'I have read and agree to the':'I have read and agree to the','Terms & Conditions':'Terms & Conditions',
+    'Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'The wallet is created on your device. SYS STREAM does not receive or store this recovery phrase.',
+    'Simpan offline sebelum menutup halaman.':'Save it offline before closing this page.',
+    'Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'I have saved the recovery phrase in a safe place and understand that SYS STREAM cannot recover it.',
+    'Loading active tasks...':'Loading active tasks...','Submitting...':'Submitting...','Open Task':'Open Task','Task':'Task','Save Wallet':'Save Wallet',
+    'Proof link is required.':'Proof link is required.','Submission failed':'Submission failed','Login to continue':'Login to continue'
+  },
+  es: {
+    'Sign in to continue streaming and gaming':'Inicia sesión para continuar con el streaming y los juegos','Username or Email':'Usuario o correo electrónico','Connect Wallet':'Conectar wallet','Forgot Password?':'¿Olvidaste la contraseña?',
+    "Don't have an account?":"¿No tienes una cuenta?",'Register Now':'Registrarse ahora','Secured with Web3':'Protegido con Web3','Biometric Login Available':'Inicio de sesión biométrico disponible',
+    'CREATE ACCOUNT':'CREAR CUENTA','LOGIN':'INICIAR SESIÓN','or Connect with Crypto Wallet':'o conectar con una wallet','EVM Wallet Recovery Phrase':'Frase de recuperación de la wallet EVM',
+    'Wallet Address':'Dirección de wallet','Recovery Phrase':'Frase de recuperación','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Debes leer y aceptar los Términos y condiciones antes de crear una cuenta.',
+    'I have read and agree to the':'He leído y acepto los','Terms & Conditions':'Términos y condiciones','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'La wallet se crea en tu dispositivo. SYS STREAM no recibe ni almacena esta frase de recuperación.',
+    'Simpan offline sebelum menutup halaman.':'Guárdala sin conexión antes de cerrar la página.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'He guardado la frase de recuperación en un lugar seguro y entiendo que SYS STREAM no puede recuperarla.',
+    'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Open Task':'Abrir tarea','Task':'Tarea','Save Wallet':'Guardar wallet','Proof link is required.':'El enlace de prueba es obligatorio.','Submission failed':'Error al enviar','Login to continue':'Inicia sesión para continuar'
+  },
+  pt: {
+    'Sign in to continue streaming and gaming':'Entre para continuar no streaming e nos jogos','Username or Email':'Usuário ou e-mail','Connect Wallet':'Conectar carteira','Forgot Password?':'Esqueceu a senha?',
+    "Don't have an account?":"Não tem uma conta?",'Register Now':'Registrar agora','Secured with Web3':'Protegido com Web3','Biometric Login Available':'Login biométrico disponível',
+    'CREATE ACCOUNT':'CRIAR CONTA','LOGIN':'ENTRAR','or Connect with Crypto Wallet':'ou conectar carteira cripto','EVM Wallet Recovery Phrase':'Frase de recuperação da carteira EVM',
+    'Wallet Address':'Endereço da carteira','Recovery Phrase':'Frase de recuperação','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Você deve ler e aceitar os Termos e condições antes de criar uma conta.',
+    'I have read and agree to the':'Li e concordo com os','Terms & Conditions':'Termos e condições','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'A carteira é criada no seu dispositivo. A SYS STREAM não recebe nem armazena esta frase de recuperação.',
+    'Simpan offline sebelum menutup halaman.':'Guarde-a offline antes de fechar a página.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Guardei a frase de recuperação em local seguro e entendo que a SYS STREAM não pode recuperá-la.',
+    'Loading active tasks...':'Carregando tarefas ativas...','Submitting...':'Enviando...','Open Task':'Abrir tarefa','Task':'Tarefa','Save Wallet':'Salvar carteira','Proof link is required.':'O link de prova é obrigatório.','Submission failed':'Falha no envio','Login to continue':'Entre para continuar'
+  },
+  zh: {
+    'Sign in to continue streaming and gaming':'登录后继续直播和游戏','Username or Email':'用户名或邮箱','Connect Wallet':'连接钱包','Forgot Password?':'忘记密码？',
+    "Don't have an account?":"还没有账户？",'Register Now':'立即注册','Secured with Web3':'由 Web3 安全保护','Biometric Login Available':'支持生物识别登录',
+    'CREATE ACCOUNT':'创建账户','LOGIN':'登录','or Connect with Crypto Wallet':'或连接加密钱包','EVM Wallet Recovery Phrase':'EVM 钱包恢复短语',
+    'Wallet Address':'钱包地址','Recovery Phrase':'恢复短语','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'创建账户前必须阅读并同意条款与条件。',
+    'I have read and agree to the':'我已阅读并同意','Terms & Conditions':'条款与条件','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'钱包在您的设备上创建。SYS STREAM 不会接收或存储此恢复短语。',
+    'Simpan offline sebelum menutup halaman.':'请在关闭页面前离线保存。','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'我已将恢复短语保存在安全位置，并了解 SYS STREAM 无法恢复该短语。',
+    'Loading active tasks...':'正在加载活动任务…','Submitting...':'正在提交…','Open Task':'打开任务','Task':'任务','Save Wallet':'保存钱包','Proof link is required.':'必须提供证明链接。','Submission failed':'提交失败','Login to continue':'登录后继续'
+  },
+  ja: {
+    'Sign in to continue streaming and gaming':'ログインして配信とゲームを続ける','Username or Email':'ユーザー名またはメール','Connect Wallet':'ウォレットを接続','Forgot Password?':'パスワードを忘れましたか？',
+    "Don't have an account?":"アカウントをお持ちではありませんか？",'Register Now':'今すぐ登録','Secured with Web3':'Web3で保護されています','Biometric Login Available':'生体認証ログイン対応',
+    'CREATE ACCOUNT':'アカウントを作成','LOGIN':'ログイン','or Connect with Crypto Wallet':'または暗号資産ウォレットを接続','EVM Wallet Recovery Phrase':'EVMウォレットのリカバリーフレーズ',
+    'Wallet Address':'ウォレットアドレス','Recovery Phrase':'リカバリーフレーズ','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'アカウント作成前に利用規約を読み、同意してください。',
+    'I have read and agree to the':'以下を読み、同意します：','Terms & Conditions':'利用規約','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'ウォレットは端末上で作成されます。SYS STREAMはこのリカバリーフレーズを受信・保存しません。',
+    'Simpan offline sebelum menutup halaman.':'ページを閉じる前にオフラインで保存してください。','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'リカバリーフレーズを安全な場所に保存し、SYS STREAMでは復元できないことを理解しました。',
+    'Loading active tasks...':'アクティブなタスクを読み込み中…','Submitting...':'送信中…','Open Task':'タスクを開く','Task':'タスク','Save Wallet':'ウォレットを保存','Proof link is required.':'証拠リンクが必要です。','Submission failed':'送信に失敗しました','Login to continue':'ログインして続行'
+  },
+  ko: {
+    'Sign in to continue streaming and gaming':'로그인하여 스트리밍과 게임을 계속하세요','Username or Email':'사용자 이름 또는 이메일','Connect Wallet':'지갑 연결','Forgot Password?':'비밀번호를 잊으셨나요?',
+    "Don't have an account?":"계정이 없으신가요?",'Register Now':'지금 가입','Secured with Web3':'Web3로 보안됨','Biometric Login Available':'생체 인증 로그인 지원',
+    'CREATE ACCOUNT':'계정 만들기','LOGIN':'로그인','or Connect with Crypto Wallet':'또는 암호화폐 지갑 연결','EVM Wallet Recovery Phrase':'EVM 지갑 복구 문구',
+    'Wallet Address':'지갑 주소','Recovery Phrase':'복구 문구','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'계정을 만들기 전에 이용약관을 읽고 동의해야 합니다.',
+    'I have read and agree to the':'다음을 읽고 동의합니다:','Terms & Conditions':'이용약관','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'지갑은 기기에서 생성됩니다. SYS STREAM은 이 복구 문구를 받거나 저장하지 않습니다.',
+    'Simpan offline sebelum menutup halaman.':'페이지를 닫기 전에 오프라인으로 안전하게 저장하세요.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'복구 문구를 안전한 곳에 저장했으며 SYS STREAM에서 복구할 수 없음을 이해합니다.',
+    'Loading active tasks...':'활성 작업을 불러오는 중...','Submitting...':'제출 중...','Open Task':'작업 열기','Task':'작업','Save Wallet':'지갑 저장','Proof link is required.':'증빙 링크가 필요합니다.','Submission failed':'제출 실패','Login to continue':'로그인하여 계속'
+  },
+  ar: {
+    'Sign in to continue streaming and gaming':'سجّل الدخول لمتابعة البث والألعاب','Username or Email':'اسم المستخدم أو البريد الإلكتروني','Connect Wallet':'ربط المحفظة','Forgot Password?':'هل نسيت كلمة المرور؟',
+    "Don't have an account?":"ليس لديك حساب؟",'Register Now':'سجّل الآن','Secured with Web3':'محمي بواسطة Web3','Biometric Login Available':'تسجيل الدخول البيومتري متاح',
+    'CREATE ACCOUNT':'إنشاء حساب','LOGIN':'تسجيل الدخول','or Connect with Crypto Wallet':'أو ربط محفظة العملات الرقمية','EVM Wallet Recovery Phrase':'عبارة استرداد محفظة EVM',
+    'Wallet Address':'عنوان المحفظة','Recovery Phrase':'عبارة الاسترداد','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'يجب قراءة الشروط والأحكام والموافقة عليها قبل إنشاء الحساب.',
+    'I have read and agree to the':'لقد قرأت وأوافق على','Terms & Conditions':'الشروط والأحكام','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'يتم إنشاء المحفظة على جهازك. لا تستقبل SYS STREAM عبارة الاسترداد هذه ولا تخزنها.',
+    'Simpan offline sebelum menutup halaman.':'احفظها دون اتصال قبل إغلاق الصفحة.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'لقد حفظت عبارة الاسترداد في مكان آمن وأفهم أن SYS STREAM لا يمكنه استعادتها.',
+    'Loading active tasks...':'جارٍ تحميل المهام النشطة...','Submitting...':'جارٍ الإرسال...','Open Task':'فتح المهمة','Task':'مهمة','Save Wallet':'حفظ المحفظة','Proof link is required.':'رابط الإثبات مطلوب.','Submission failed':'فشل الإرسال','Login to continue':'سجّل الدخول للمتابعة'
+  }
+};
+
+for (const lang of Object.keys(ADDITIONAL_UI_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], ADDITIONAL_UI_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...ADDITIONAL_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
