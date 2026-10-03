@@ -385,7 +385,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const placeholders = insertColumns.map(() => "?").join(",");
     try {
       await env.DB.prepare(
-        \`INSERT INTO users(\${insertColumns.join(",")}) VALUES(\${placeholders})\`
+        `INSERT INTO users(${insertColumns.join(",")}) VALUES(${placeholders})`
       ).bind(...insertValues).run();
     } catch (error) {
       // A concurrent registration can pass the pre-check and then collide on
