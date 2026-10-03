@@ -14,6 +14,7 @@ export interface AuthUser {
   referralCount?: number;
   registrationBonusIdr?: number;
   registrationBonusGranted?: boolean;
+  walletAddress?: string;
 }
 
 const textEncoder = new TextEncoder();
@@ -102,6 +103,7 @@ export async function requireAuth(request: Request, env: Env) {
   const row = await env.DB.prepare(
     `SELECT u.id, u.username, u.email, u.display_name AS displayName, u.role,
             u.referral_code AS referralCode,
+            u.wallet_address AS walletAddress,
             u.avatar_url AS avatarUrl,
             COALESCE(u.referral_count,0) AS referralCount,
             COALESCE(u.registration_bonus_idr,0) AS registrationBonusIdr,
@@ -143,7 +145,7 @@ export async function requireAuth(request: Request, env: Env) {
 export async function getUserById(env: Env, userId: string) {
   return env.DB.prepare(
     `SELECT id, username, email, display_name AS displayName, role,
-            referral_code AS referralCode, avatar_url AS avatarUrl,
+            referral_code AS referralCode, wallet_address AS walletAddress, avatar_url AS avatarUrl,
             COALESCE(referral_count,0) AS referralCount,
             COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(registration_bonus_granted,0) AS registrationBonusGranted,
