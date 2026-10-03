@@ -165,6 +165,53 @@ async function ensureRegistrationSchema(env: Env) {
 
 function validEmail(value:string){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
 
+async function insertIntoExistingSchema(env: Env, table: string, values: Record<string, any>) {
+  const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all<any>();
+  const columns = (info.results || []) as any[];
+  const idMeta = columns.find((r:any) => String(r.name) === "id");
+  const idType = String(idMeta?.type || "").toUpperCase();
+  const integerPrimaryId =
+    !!idMeta &&
+    Number(idMeta.pk) === 1 &&
+    !/CHAR|CLOB|TEXT|BLOB/.test(idType);
+
+  const insertColumns: string[] = [];
+  const insertValues: any[] = [];
+
+  for (const column of columns) {
+    const name = String(column.name);
+
+    // Historical auxiliary tables sometimes used INTEGER PRIMARY KEY ids.
+    // Let SQLite allocate those ids instead of binding a UUID into them.
+    if (name === "id" && integerPrimaryId) continue;
+
+    if (!Object.prototype.hasOwnProperty.call(values, name)) {
+      const notNull = Number(column.notnull) === 1;
+      const hasDefault =
+        column.dflt_value !== null && column.dflt_value !== undefined;
+      if (notNull && !hasDefault) {
+        throw new Error(
+          "UNSUPPORTED_" + table.toUpperCase() + "_REQUIRED_COLUMN:" + name
+        );
+      }
+      continue;
+    }
+
+    insertColumns.push(name);
+    insertValues.push(values[name]);
+  }
+
+  if (!insertColumns.length) {
+    throw new Error("EMPTY_" + table.toUpperCase() + "_INSERT");
+  }
+
+  const placeholders = insertColumns.map(() => "?").join(",");
+  await env.DB.prepare(
+    `INSERT INTO ${table}(${insertColumns.join(",")}) VALUES(${placeholders})`
+  ).bind(...insertValues).run();
+}
+
+
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   const requestId = crypto.randomUUID();
 
@@ -329,17 +376,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // Terms acceptance is required by the API contract. If the auxiliary
     // audit record fails, keep the account and report a trackable server error.
     try {
-      await env.DB.prepare(
-        `INSERT INTO terms_acceptances(
-          id,user_id,terms_version,accepted_at,created_at
-        ) VALUES(?,?,?,?,?)`
-      ).bind(
-        crypto.randomUUID(),
-        id,
-        TERMS_VERSION,
-        acceptedAt,
-        acceptedAt
-      ).run();
+      await insertIntoExistingSchema(env, "terms_acceptances", {
+        id: crypto.randomUUID(),
+        user_id: id,
+        terms_version: TERMS_VERSION,
+        accepted_at: acceptedAt,
+        created_at: acceptedAt,
+      });
     } catch (error) {
       console.error("register terms acceptance write failed", {
         requestId,
@@ -380,17 +423,14 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
            WHERE user_id = ? AND used_at IS NULL`
         ).bind(id).run();
 
-        await env.DB.prepare(
-          `INSERT INTO email_verification_tokens(
-            id,user_id,token_hash,expires_at,used_at,created_at
-          ) VALUES(?,?,?,?,NULL,?)`
-        ).bind(
-          crypto.randomUUID(),
-          id,
-          verificationHash,
-          verificationExpires,
-          acceptedAt
-        ).run();
+        await insertIntoExistingSchema(env, "email_verification_tokens", {
+          id: crypto.randomUUID(),
+          user_id: id,
+          token_hash: verificationHash,
+          expires_at: verificationExpires,
+          used_at: null,
+          created_at: acceptedAt,
+        });
       } catch (retryError) {
         console.error("register verification token retry failed", {
           requestId,
