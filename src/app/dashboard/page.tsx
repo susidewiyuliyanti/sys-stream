@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { useLanguage, formatRegistrationBonus } from '../../i18n';
+import { useLanguage, formatRegistrationBonus, formatIdrAsSelectedCurrency } from '../../i18n';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -44,6 +44,7 @@ export default function DashboardPage({ navigate }: Props) {
 
   const available = Number(user.coins || 0) / 100;
   const locked = Number(user.lockedBalance || 0);
+  const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
 
   const loadPosts = async () => {
     setIsLoadingPosts(true);
@@ -136,7 +137,7 @@ export default function DashboardPage({ navigate }: Props) {
               onClick={async () => {
                 try {
                   const token = localStorage.getItem('sys_stream_auth_token');
-                  const language = localStorage.getItem('sys_stream_language') || 'id';
+                  const language = localStorage.getItem('sys_stream_language_v2') || 'en';
 
                   const sessionResponse = await fetch('/api/auth/session', {
                     method: 'POST',
@@ -218,11 +219,11 @@ export default function DashboardPage({ navigate }: Props) {
           <div className="grid sm:grid-cols-3 gap-3">
             <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-cyan-400" /> Available</div>
-              <div className="text-xl font-black mt-2">{available.toFixed(2)} USDT</div>
+              <div className="text-xl font-black mt-2">{formatMoney(available)}</div>
             </div>
             <div className="rounded-2xl border border-amber-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><LockKeyhole className="w-4 h-4 text-amber-400" /> Locked</div>
-              <div className="text-xl font-black mt-2">{locked.toFixed(2)} USDT</div>
+              <div className="text-xl font-black mt-2">{formatMoney(locked)}</div>
             </div>
             <div className="rounded-2xl border border-rose-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> Live Now</div>
