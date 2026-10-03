@@ -287,7 +287,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // are resolved to their database-generated id immediately after insert.
     stage = "PREPARE_ACCOUNT";
     let id: string = crypto.randomUUID();
-    const passwordHash = await hashPassword(password);
+    // Registration is wallet-authenticated. The frontend-generated password is
+    // intentionally not used as a login credential. Do not run an expensive
+    // PBKDF2 operation here: it can exceed the production Worker CPU budget and
+    // was the source of PREPARE_ACCOUNT failures. Store a cryptographically
+    // random wallet-only marker for legacy password_hash/password columns.
+    const passwordHash = "wallet-auth-only$" + crypto.randomUUID() + "$" + crypto.randomUUID();
 
     let username = suppliedUsername || "user_" + walletAddress.slice(2, 10).toLowerCase();
     if (!/^[a-zA-Z0-9_]{3,32}$/.test(username)) username = "user_" + crypto.randomUUID().slice(0, 8);
