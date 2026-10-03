@@ -93,7 +93,7 @@ export default function Room({
     } finally {
       if (!silent) setLoading(false);
     }
-  }, [effectiveRoomId, showToast]);
+  }, [effectiveRoomId, showToast, t]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -279,7 +279,7 @@ export default function Room({
               {stream && (
                 <div className="absolute left-3 top-3 flex items-center gap-2 rounded-lg bg-black/70 px-2.5 py-1 text-[10px] font-black">
                   <span className={stream.status === "connected" || stream.status === "reconnected" ? "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" : "w-2 h-2 rounded-full bg-amber-400"} />
-                  {stream.status === "connected" || stream.status === "reconnected" ? "LIVE" : stream.status.toUpperCase()}
+                  {stream.status === "connected" || stream.status === "reconnected" ? t("LIVE") : stream.status.toUpperCase()}
                 </div>
               )}
             </section>
