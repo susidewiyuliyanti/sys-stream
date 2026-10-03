@@ -9,7 +9,6 @@ const hostname = typeof window !== 'undefined'
   : '';
 
 const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
-const AirdropApp = lazy(() => import('./airdrop/AirdropApp.tsx'));
 
 const Loading = () => (
   <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
@@ -23,7 +22,7 @@ const HostApp = () => {
   }
 
   if (hostname === 'airdrop.sysstreamer.asia') {
-    return <AirdropApp />;
+    return <App />;
   }
 
   // sysstreamer.asia and every non-admin/non-airdrop hostname
