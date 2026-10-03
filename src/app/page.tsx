@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SysLogo } from "../components/SysLogo";
+import { useLanguage } from "../i18n";
 
 export default function Root({ onLoaded }: { onLoaded?: () => void }) {
   const [dots, setDots] = useState("");
+  const { t } = useLanguage();
 
   useEffect(() => {
     const timer = setInterval(() => {
