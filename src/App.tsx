@@ -169,12 +169,12 @@ export default function App() {
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-3 gap-6 mb-7">
               <div>
-                <div className="text-sm font-black text-slate-200 mb-2">About Us</div>
-                <p className="leading-5">SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.</p>
+                <div className="text-sm font-black text-slate-200 mb-2">{t('About Us')}</div>
+                <p className="leading-5">{t('SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.')}</p>
               </div>
               <div>
-                <div className="text-sm font-black text-slate-200 mb-2">Official Streamer Partner</div>
-                <p className="leading-5">SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.</p>
+                <div className="text-sm font-black text-slate-200 mb-2">{t('Official Streamer Partner')}</div>
+                <p className="leading-5">{t('SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.')}</p>
               </div>
               <div>
                 <div className="text-sm font-black text-slate-200 mb-2">{t('Untuk Streamer')}</div>
