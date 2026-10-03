@@ -131,7 +131,7 @@ export default function DashboardPage({ navigate }: Props) {
           </div>
           <nav className="space-y-1 text-sm">
             <button onClick={() => navigate?.('/dashboard')} className="w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">{t('Home')}</button>
-            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Live Now')}</button>
+            <button onClick={() => navigate?.('/room/main')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('{t('Live Now')}')}</button>
             <button onClick={() => navigate?.('/game/tebak')} className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white">{t('Games')}</button>
             <button
               onClick={async () => {
@@ -198,7 +198,7 @@ export default function DashboardPage({ navigate }: Props) {
                 onClick={() => navigate?.('/room/main')}
                 className="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-4 py-2.5 text-sm font-black text-white hover:bg-rose-400 transition-colors"
               >
-                <Radio className="w-4 h-4" /> Live Now
+                <Radio className="w-4 h-4" /> {t('Live Now')}
               </button>
               <button
                 onClick={() => { setPostError(''); setIsCreateOpen(true); }}
@@ -209,7 +209,7 @@ export default function DashboardPage({ navigate }: Props) {
               <button
                 onClick={() => void refreshFinancialState()}
                 className="p-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:border-cyan-500/50 transition-colors"
-                aria-label="Refresh balance"
+                aria-label={t('Refresh balance')}
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -218,17 +218,17 @@ export default function DashboardPage({ navigate }: Props) {
 
           <div className="grid sm:grid-cols-3 gap-3">
             <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/80 p-4">
-              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-cyan-400" /> Available</div>
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-cyan-400" /> {t('Available')}</div>
               <div className="text-xl font-black mt-2">{formatMoney(available)}</div>
             </div>
             <div className="rounded-2xl border border-amber-500/20 bg-slate-900/80 p-4">
-              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><LockKeyhole className="w-4 h-4 text-amber-400" /> Locked</div>
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><LockKeyhole className="w-4 h-4 text-amber-400" /> {t('Locked')}</div>
               <div className="text-xl font-black mt-2">{formatMoney(locked)}</div>
             </div>
             <div className="rounded-2xl border border-rose-500/20 bg-slate-900/80 p-4">
-              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> Live Now</div>
-              <div className="text-xl font-black mt-2">Live</div>
-              <button onClick={() => navigate?.('/room/main')} className="text-[11px] text-rose-300 mt-1 hover:text-rose-200">Buka Live Room →</button>
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> {t('Live Now')}</div>
+              <div className="text-xl font-black mt-2">{t('Live')}</div>
+              <button onClick={() => navigate?.('/room/main')} className="text-[11px] text-rose-300 mt-1 hover:text-rose-200">{t('Buka Live Room →')}</button>
             </div>
           </div>
 
@@ -254,7 +254,7 @@ export default function DashboardPage({ navigate }: Props) {
                 </div>
                 <p className="text-xs text-slate-500 mt-1">{t('Setiap user dapat membagikan tulisan dan postingan.')}</p>
               </div>
-              <button onClick={() => void loadPosts()} className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white" aria-label="Refresh posts">
+              <button onClick={() => void loadPosts()} className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white" aria-label={t('Refresh posts')}>
                 <RefreshCw className="w-4 h-4" />
               </button>
             </div>
@@ -303,7 +303,7 @@ export default function DashboardPage({ navigate }: Props) {
           <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5">
             <div className="flex items-center gap-2 mb-4">
               <Radio className="w-5 h-5 text-rose-400" />
-              <h2 className="text-xl font-black">{t('Live Now')}</h2>
+              <h2 className="text-xl font-black">{t('{t('Live Now')}')}</h2>
             </div>
             <div className="rounded-xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center">
               <Radio className="w-8 h-8 mx-auto text-slate-600" />
@@ -335,7 +335,7 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-xs uppercase tracking-wider text-cyan-400 font-bold">{t('Community')}</div>
-                <h3 className="text-xl font-black mt-1">Upload / Create Post</h3>
+                <h3 className="text-xl font-black mt-1">{t('Upload / Create Post')}</h3>
               </div>
               <button onClick={() => !isPosting && setIsCreateOpen(false)} className="p-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white">
                 <X className="w-4 h-4" />
@@ -347,7 +347,7 @@ export default function DashboardPage({ navigate }: Props) {
               onChange={(e) => setPostContent(e.target.value)}
               maxLength={5000}
               rows={6}
-              placeholder="Tulis sesuatu untuk dibagikan ke komunitas..."
+              placeholder={t('Tulis sesuatu untuk dibagikan ke komunitas...')}
               className="w-full mt-5 rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-white outline-none resize-none focus:border-cyan-500/50"
             />
             <div className="text-[10px] text-slate-600 text-right mt-1">{postContent.length}/5000</div>
@@ -355,7 +355,7 @@ export default function DashboardPage({ navigate }: Props) {
             <input
               value={mediaUrl}
               onChange={(e) => setMediaUrl(e.target.value)}
-              placeholder="URL media (opsional)"
+              placeholder={t('URL media (opsional)')}
               className="w-full mt-3 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white outline-none focus:border-cyan-500/50"
             />
 
@@ -366,7 +366,7 @@ export default function DashboardPage({ navigate }: Props) {
               disabled={isPosting}
               className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-400 py-3 text-sm font-black text-slate-950 hover:bg-cyan-300 disabled:opacity-50"
             >
-              <Send className="w-4 h-4" /> {isPosting ? 'Menerbitkan...' : 'Terbitkan Postingan'}
+              <Send className="w-4 h-4" /> {isPosting ? t('Menerbitkan...') : t('Terbitkan Postingan')}
             </button>
           </div>
         </div>
