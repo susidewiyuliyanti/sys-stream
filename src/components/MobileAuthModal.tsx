@@ -41,14 +41,14 @@ export const MobileAuthModal: React.FC = () => {
     try {
       const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
       let body: Record<string, unknown>;
-      let newWallet: Wallet | null = null;
+      let newWallet: EvmWallet | null = null;
 
       if (authMode === 'login') {
         body = { identifier: usernameInput.trim(), password: passwordInput };
       } else {
         // Email accounts receive a real EVM wallet generated locally in the browser.
         // The private key/recovery phrase is never sent to the server.
-        newWallet = EvmEvmEvmWallet.createRandom();
+        newWallet = EvmWallet.createRandom();
         body = {
           username: usernameInput.trim(),
           email: emailInput.trim(),
@@ -325,7 +325,7 @@ export const MobileAuthModal: React.FC = () => {
           {/* Glowing Neon Login Button */}
           <button
             type="submit"
-            disabled={isSubmitting || (authMode === 'register' && (!termsAccepted || (generatedWallet && !walletBackupConfirmed)))}
+            disabled={Boolean(isSubmitting || (authMode === 'register' && (!termsAccepted || (generatedWallet && !walletBackupConfirmed))))}
             className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
