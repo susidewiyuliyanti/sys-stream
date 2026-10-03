@@ -482,42 +482,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       message: "Akun berhasil dibuat dan langsung login. Tidak diperlukan email.",
     });
   } catch (error) {
-      console.error("registration verification email threw", {
-        requestId,
-        userId: id,
-        error: String(error),
-      });
-      sent = { ok: false, error: "Email provider request failed." };
-    }
-
-    if (!sent.ok) {
-      console.error("registration verification email failed", {
-        requestId,
-        userId: id,
-        error: sent.error,
-      });
-
-      return json({
-        success: true,
-        code: "EMAIL_SERVICE_UNAVAILABLE",
-        requiresEmailVerification: true,
-        email,
-        requestId,
-        message:
-          "Akun berhasil dibuat, tetapi email verifikasi belum dapat dikirim. Gunakan Kirim Ulang Verifikasi setelah layanan email aktif.",
-      });
-    }
-
-    return json({
-      success: true,
-      requiresEmailVerification: true,
-      email,
-      requestId,
-      registrationBonusIdr: 15000,
-      registrationBonusUsdt: 0.8363,
-      message: "Akun dibuat. Bonus registrasi Rp15.000 tersedia untuk di-claim satu kali setelah login. Silakan verifikasi email sebelum login.",
-    });
-  } catch (error) {
     console.error("register error", {
       requestId,
       error: errorText(error),
