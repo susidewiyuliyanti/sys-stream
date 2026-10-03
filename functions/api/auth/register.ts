@@ -211,9 +211,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Email sudah terdaftar." }, 409);
     }
 
-    const schemaInfo = await env.DB.prepare("PRAGMA table_info(users)").all();
-    const idColumn = (schemaInfo.results || []).find((r:any) => String(r.name) === "id") as any;
-    const legacyIntegerId = !!idColumn && String(idColumn.type || "").toUpperCase().includes("INT") && Number(idColumn.pk) === 1;
     let id = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
 
