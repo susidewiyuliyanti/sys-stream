@@ -23,8 +23,6 @@ const TASKS: Task[] = [
   {id:'telegram-share',key:'telegram',type:'telegram',reward:'program',estimated:'2–5 minutes',daily:true},
   {id:'discord-activity',key:'discord',type:'discord',reward:'program',estimated:'5–10 minutes',daily:true},
   {id:'deposit',key:'deposit',type:'deposit',reward:'program',estimated:'5 minutes'},
-  {id:'withdrawal',key:'withdrawal',type:'withdrawal',reward:'program',estimated:'5 minutes'},
-  {id:'profile',key:'profile',type:'profile',reward:'program',estimated:'2 minutes'},
   {id:'mining-tutorial',key:'mining',type:'mining',reward:'program',estimated:'2–5 minutes',priority:true}
 ];
 
