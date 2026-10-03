@@ -41,7 +41,7 @@ export default function SpinnerGamePage() {
   ]);
 
   const currentAngleRef = useRef(0);
-  const viewers = viewerList.length > 0 ? viewerList : ['Viewer_1', 'Viewer_2'];
+  const viewers = viewerList;
   const segmentCount = viewers.length;
   const segmentAngle = 360 / segmentCount;
 
@@ -50,12 +50,6 @@ export default function SpinnerGamePage() {
     if (!newViewerInput.trim()) return;
     addViewer(newViewerInput);
     setNewViewerInput('');
-  };
-
-  const handleQuickAddChatViewers = () => {
-    const batch = ['TikTok_Budi', 'App_Gamer88', 'CyberQueen', 'PixelHunter'];
-    batch.forEach((v) => addViewer(v));
-    showToast('Batch Viewers Added', 'Added 4 active stream viewers to the wheel!', 'success');
   };
 
   const spinWheel = () => {
@@ -245,11 +239,11 @@ export default function SpinnerGamePage() {
                 Streamer Username Manager
               </h2>
               <button
-                onClick={handleQuickAddChatViewers}
+                onClick={() => showToast('Live Chat', 'Tambahkan peserta yang benar-benar masuk dari live room.', 'info')}
                 className="text-[11px] text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer"
               >
                 <UserPlus className="w-3.5 h-3.5" />
-                <span>+ Add from Live Chat</span>
+                <span>Live Participants Only</span>
               </button>
             </div>
 
