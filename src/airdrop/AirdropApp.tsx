@@ -323,7 +323,7 @@ export default function AirdropApp() {
   },[lang,tx.unavailable]);
 
   const availableTasks=useMemo<Task[]>(()=>{
-    const fallback=(dbTasks.length?dbTasks:TASKS as any[]).map((raw:any,index:number)=>{
+    const fallback=dbTasks.map((raw:any,index:number)=>{
       const category=String(raw.category||'social').toLowerCase();
       const type:TaskType=(['youtube','tiktok','instagram','shorts','social','deposit','withdrawal','profile','checkin'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
@@ -396,10 +396,10 @@ export default function AirdropApp() {
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div><div className="text-xs font-black tracking-wider text-amber-400">{tx.daily}</div><h2 className="mt-1 text-xl font-black">{tx.daily}</h2><p className="mt-1 text-xs text-slate-500">{tx.dailySub}</p></div>
-          <div className="text-xs text-slate-400">{availableTasks.filter(t=>t.daily).length || Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
+          <div className="text-xs text-slate-400">{Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {availableTasks.filter(t=>t.daily).slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>setSelectedTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
+          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>setSelectedTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.estimated} · {tx.proof}</div>
           </button>})}
