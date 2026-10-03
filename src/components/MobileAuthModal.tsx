@@ -4,7 +4,6 @@ import { TERMS_VERSION } from '../app/terms/page';
 import { useGame } from '../context/GameContext';
 import { sound } from '../lib/sound';
 import { SysLogo } from './SysLogo';
-import { useLanguage } from '../i18n';
 import {
   User,
   Lock,
@@ -20,7 +19,6 @@ import {
 
 export const MobileAuthModal: React.FC = () => {
   const { loginModalOpen, setLoginModalOpen, login, user } = useGame();
-  const { t } = useLanguage();
 
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [usernameInput, setUsernameInput] = useState('');
