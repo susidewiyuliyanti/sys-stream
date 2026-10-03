@@ -281,7 +281,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }
     }
 
-    // Use a UUID for the current TEXT/UUID schema. Legacy integer-ID schemas\n    // are resolved to their database-generated id immediately after insert.\n    let id: string = crypto.randomUUID();
+    // Use a UUID for the current TEXT/UUID schema. Legacy integer-ID schemas
+    // are resolved to their database-generated id immediately after insert.
+    let id: string = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
 
     const emailLocalPart = email.split("@")[0]
