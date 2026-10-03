@@ -816,7 +816,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || !data?.success || !data?.invoice) {
-      throw new Error(data?.error || 'Gagal membuat invoice pembayaran crypto.');
+      {
+      const providerDetail = data?.provider_status
+        ? ` [NOWPayments HTTP ${data.provider_status}${data.provider_code ? ` / ${data.provider_code}` : ''}]`
+        : '';
+      throw new Error(String(data?.error || 'Gagal membuat invoice pembayaran crypto.') + providerDetail);
+    }
     }
 
     const remote = data.invoice;
