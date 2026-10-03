@@ -89,7 +89,9 @@ export const MobileAuthModal: React.FC = () => {
     setIsSubmitting(true);
     try {
       const ethereum = (window as any).ethereum;
-      if (!ethereum) throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
+      if (!ethereum) {
+        throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel, lalu coba lagi.');
+      }
 
       const provider = new BrowserProvider(ethereum);
       await provider.send('eth_requestAccounts', []);
@@ -126,8 +128,9 @@ export const MobileAuthModal: React.FC = () => {
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
       login(data.user?.username || `Web3_${walletAddress.slice(2,8)}`);
     } catch (error) {
-      console.error(error);
-      window.alert(error instanceof Error ? error.message : 'Login wallet gagal.');
+      console.error('EVM wallet authentication failed', error);
+      const message = error instanceof Error ? error.message : 'Login wallet gagal.';
+      setVerificationNotice(message);
     } finally {
       setIsSubmitting(false);
     }
