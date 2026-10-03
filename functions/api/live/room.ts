@@ -124,6 +124,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
         id:String(room.id), ownerUserId:String(room.owner_user_id),
         title:String(room.title||""), description:String(room.description||""),
         status:String(room.status||"LIVE"), likes:Number(room.likes||0),
+        owner:String(room.owner_user_id)===String(auth.user.id),
         participantCount:(members.results||[]).length
       },
       participants:members.results||[],
