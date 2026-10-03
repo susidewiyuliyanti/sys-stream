@@ -2,12 +2,12 @@ import React, { lazy, Suspense, Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { LanguageProvider } from './i18n';
+import UserApp from './App.tsx';
 
 const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
   : '';
 
-const UserApp = lazy(() => import('./App.tsx'));
 const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
 const AirdropApp = lazy(() => import('./airdrop/AirdropApp.tsx'));
 
@@ -51,6 +51,12 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
           <p className="mt-2 text-sm text-slate-400">
             Muat ulang halaman untuk mengambil bundle produksi terbaru.
           </p>
+          <details className="mt-4 text-left">
+            <summary className="cursor-pointer text-xs font-bold text-red-300">Detail error</summary>
+            <pre className="mt-2 max-h-56 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-black/40 p-3 text-[10px] leading-4 text-red-200">
+{this.state.error?.stack || this.state.error?.message || 'Unknown runtime error'}
+            </pre>
+          </details>
           <button
             type="button"
             onClick={this.reloadWithFreshBundle}
