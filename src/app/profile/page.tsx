@@ -61,8 +61,9 @@ export default function ProfilePage() {
 
   const totalLocked = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
   const availableBalance = Number(user.coins || 0) / 100;
-  const referralLink = user.referralCode
-    ? `https://sysstreamer.asia/register?ref=${encodeURIComponent(user.referralCode)}`
+  const walletAddress = String(user.walletAddress || '').trim();
+  const referralLink = walletAddress
+    ? `https://sysstreamer.asia/login?ref=${encodeURIComponent(walletAddress)}`
     : '';
 
   useEffect(() => {
@@ -229,10 +230,10 @@ export default function ProfilePage() {
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-black truncate">{user.username || t('Guest')}</h2>
+                <h2 className="text-xl font-black truncate">{walletAddress || t('Guest')}</h2>
                 {isLoggedIn && <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />}
               </div>
-              <p className="text-xs text-slate-500 mt-1 truncate">'SYS STREAM member'</p>
+              <p className="text-xs text-slate-500 mt-1 truncate">User ID = Wallet Address</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-bold text-cyan-300">Member</span>
                 <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-[10px] font-bold text-slate-400">USDT Account</span>
@@ -334,7 +335,7 @@ export default function ProfilePage() {
                   <div className="text-xs font-black uppercase tracking-wider text-purple-400">Referral Link</div>
                   <div className="text-[11px] text-slate-500 mt-1">Bagikan link ini untuk mengundang user baru.</div>
                 </div>
-                <span className="text-[10px] font-mono text-cyan-400">{user.referralCode || 'GENERATING...'}</span>
+                <span className="text-[10px] font-mono text-cyan-400">{walletAddress || 'WALLET REQUIRED'}</span>
               </div>
               <div className="flex gap-2">
                 <input readOnly value={referralLink} className="min-w-0 flex-1 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[10px] text-slate-300 font-mono" />
