@@ -1,0 +1,16 @@
+{
+  "name": "sysstream-token-contracts",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "compile": "node deploy-base.mjs --compile-only",
+    "deploy:base-sepolia": "node deploy-base.mjs --network base-sepolia",
+    "deploy:base": "node deploy-base.mjs --network base"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.6.1",
+    "ethers": "^6.17.0",
+    "solc": "^0.8.30"
+  }
+}
