@@ -377,12 +377,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('nexus_user');
     localStorage.removeItem('sys_stream_auth_token');
     localStorage.removeItem('sys_stream_auth_user');
-    localStorage.setItem('sys_is_logged_in', 'false');
+    localStorage.removeItem('sys_is_logged_in');
+    sessionStorage.clear();
     setIsLoggedIn(false);
     setUser(DEFAULT_USER);
     setLocks([]);
+    setLoginModalOpen(false);
     sound.playClick();
-    showToast('Logged Out', 'You must log in again before playing.', 'info');
+
+    // Force a clean application boot. This removes the current authenticated
+    // React tree instead of leaving an old dashboard mounted in memory.
+    window.location.replace('/#/login');
   };
 
   const requireAuth = (action: () => void): boolean => {
