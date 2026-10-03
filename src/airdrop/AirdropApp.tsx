@@ -241,6 +241,7 @@ export default function AirdropApp() {
   const [walletAddress,setWalletAddress]=useState('');
   const [proofLink,setProofLink]=useState('');
   const [submissions,setSubmissions]=useState<Array<{id:number;task_id:number|string;task_title?:string;evidence_link:string;status:string;reward_points:number;created_at:string}>>([]);
+  const [checkinMonth,setCheckinMonth]=useState<string>(()=>new Date().toISOString().slice(0,7));
   const [submissionLoading,setSubmissionLoading]=useState(false);
   const [submissionMessage,setSubmissionMessage]=useState('');
   const [menuOpen,setMenuOpen]=useState(false);
@@ -483,12 +484,58 @@ export default function AirdropApp() {
         </div>
       </section>
 
+      {(() => {
+        const checkinTask = availableTasks.find(t => t.type === 'checkin');
+        if (!checkinTask) return null;
+        const [year, month] = checkinMonth.split('-').map(Number);
+        const daysInMonth = new Date(year, month, 0).getDate();
+        const checkins = new Map<number, {status:string;points:number}>();
+        submissions.filter(s => String(s.task_id) === String(checkinTask.id)).forEach(s => {
+          const d = new Date(s.created_at);
+          if (d.getFullYear() === year && d.getMonth()+1 === month) checkins.set(d.getDate(), {status:s.status,points:Number(s.reward_points||0)});
+        });
+        return <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <div className="text-xs font-black tracking-wider text-amber-400">DAILY CHECK-IN</div>
+              <h2 className="mt-1 text-xl font-black">{taskText(checkinTask).title}</h2>
+              <p className="mt-1 text-xs text-slate-500">Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.</p>
+            </div>
+            <input type="month" value={checkinMonth} onChange={e=>setCheckinMonth(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" />
+          </div>
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-800">
+            <table className="w-full min-w-[620px] text-sm">
+              <thead className="bg-slate-950 text-slate-400 text-xs uppercase">
+                <tr><th className="text-left px-4 py-3">Tanggal</th><th className="text-left px-4 py-3">Status</th><th className="text-left px-4 py-3">Points</th><th className="text-right px-4 py-3">Aksi</th></tr>
+              </thead>
+              <tbody>
+                {Array.from({length:daysInMonth},(_,i)=>{
+                  const day=i+1, item=checkins.get(day), isToday=checkinMonth===new Date().toISOString().slice(0,7)&&day===new Date().getDate();
+                  return <tr key={day} className="border-t border-slate-800">
+                    <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">TODAY</span>:null}</td>
+                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status} </span>:<span className="text-slate-500">Belum check-in</span>}</td>
+                    <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} pts</td>
+                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>setSelectedTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">Check-in</button>:<span className="text-slate-600">—</span>}</td>
+                  </tr>;
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>;
+      })()}
+
       <div className="mt-8 flex items-center gap-2 border-b border-slate-800">
         <button onClick={()=>setTab('tasks')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='tasks'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>{tx.available}</button>
         <button onClick={()=>setTab('submissions')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='submissions'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>{tx.submissions}</button>
       </div>
 
-      {tab==='tasks'?<section className="mt-6 grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+      {tab==='tasks'?<section className="mt-6">
+        <div className="mb-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {[
+            ['all','Semua'],['youtube','YouTube'],['social','Sosial Media'],['checkin','Daily Check-in']
+          ].map(([key,label])=><button key={key} onClick={()=>document.getElementById('airdrop-category-'+key)?.scrollIntoView({behavior:'smooth',block:'start'})} className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-3 text-xs font-bold hover:border-amber-400/40">{label}</button>)}
+        </div>
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
         {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || "Loading active tasks..."}</div>:availableTasks.map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
