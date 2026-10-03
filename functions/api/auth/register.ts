@@ -427,7 +427,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       if (!created || created.id === undefined || created.id === null) {
         throw new Error("LEGACY_USER_ID_NOT_FOUND_AFTER_INSERT");
       }
-      id = String(created.id);
+      id = crypto.randomUUID();
     }
 
     // Terms acceptance is required by the API contract. If the auxiliary
