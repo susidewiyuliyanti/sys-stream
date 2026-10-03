@@ -231,7 +231,7 @@ export default function TebakGamePage() {
                         }`}
                       >
                         {editConcealed[idx] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                        <span>{editConcealed[idx] ? 'Hidden' : 'Visible'}</span>
+                        <span>{editConcealed[idx] ? t('Hidden') : t('Visible')}</span>
                       </button>
                     </div>
                   ))}
