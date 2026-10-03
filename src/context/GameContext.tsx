@@ -80,9 +80,14 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile>(() => {
+    // Never hydrate a previous account when there is no authenticated session.
+    // The server session is the source of truth for the active account.
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return DEFAULT_USER;
+
     try {
       const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
-      if (cached && (cached.username || cached.avatar || cached.referralCode)) {
+      if (cached && (cached.id || cached.walletAddress || cached.username)) {
         return { ...DEFAULT_USER, ...cached };
       }
     } catch {}
@@ -297,40 +302,43 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (customName?: string) => {
+    // A login starts a new authenticated account context.
+    // Clear any previous browser profile before loading the server-owned user.
+    localStorage.removeItem('sys_stream_profile_cache');
+    localStorage.removeItem('nexus_user');
+    setUser(DEFAULT_USER);
+    setLocks([]);
     setIsLoggedIn(true);
     localStorage.setItem('sys_is_logged_in', 'true');
-    if (customName && customName.trim()) {
-      setUser(prev => ({ ...prev, username: customName.trim() }));
-    }
     setLoginModalOpen(false);
-    void refreshFinancialState();
+
+    void refreshFinancialState().then(ok => {
+      if (!ok) {
+        // Do not leave stale account identity visible if the new session cannot
+        // be resolved from the production backend.
+        setUser(DEFAULT_USER);
+        setLocks([]);
+        setIsLoggedIn(false);
+        localStorage.removeItem('sys_stream_auth_token');
+        localStorage.removeItem('sys_stream_auth_user');
+        localStorage.setItem('sys_is_logged_in', 'false');
+      }
+    });
+
     sound.playWin();
-    showToast('Logged In Successfully', `Welcome back, ${customName || user.username}!`, 'success');
+    showToast('Logged In Successfully', `Welcome back, ${customName || 'User'}!`, 'success');
   };
 
   const logout = () => {
-    // Keep the saved profile locally so logout does not reset the user's
-    // username/avatar/referral identity. Financial/session data is still cleared.
-    localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
-      id: user.id,
-      username: user.username,
-      avatar: user.avatar,
-      referralCode: user.referralCode,
-      walletAddress: user.walletAddress,
-      vipTier: user.vipTier,
-    }));
+    // Clear the complete account context. A different user must never inherit
+    // the previous user's wallet, profile, balance, referrals, or local state.
+    localStorage.removeItem('sys_stream_profile_cache');
+    localStorage.removeItem('nexus_user');
     localStorage.removeItem('sys_stream_auth_token');
     localStorage.removeItem('sys_stream_auth_user');
     localStorage.setItem('sys_is_logged_in', 'false');
     setIsLoggedIn(false);
-    setUser(prev => ({
-      ...DEFAULT_USER,
-      id: prev.id,
-      username: prev.username,
-      avatar: prev.avatar,
-      referralCode: prev.referralCode,
-      vipTier: prev.vipTier,
-    }));
+    setUser(DEFAULT_USER);
     setLocks([]);
     sound.playClick();
     showToast('Logged Out', 'You must log in again before playing.', 'info');
