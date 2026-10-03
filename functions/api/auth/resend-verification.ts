@@ -9,12 +9,12 @@ import {
 const PRODUCTION_ORIGIN = "https://sysstreamer.asia";
 
 async function ensureVerificationSchema(env: Env) {
-  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS email_verification_tokens_v2 (
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, token_hash TEXT NOT NULL UNIQUE,
     expires_at INTEGER NOT NULL, used_at INTEGER, created_at INTEGER NOT NULL
   )`).run();
 
-  const info = await env.DB.prepare("PRAGMA table_info(email_verification_tokens)").all();
+  const info = await env.DB.prepare("PRAGMA table_info(email_verification_tokens_v2)").all();
   const existing = new Set((info.results || []).map((r:any) => String(r.name)));
   const additions: Array<[string,string]> = [
     ["id","TEXT"],["user_id","TEXT"],["token_hash","TEXT"],["expires_at","INTEGER"],
@@ -23,7 +23,7 @@ async function ensureVerificationSchema(env: Env) {
   for (const [name,definition] of additions) {
     if (!existing.has(name)) {
       try {
-        await env.DB.prepare(`ALTER TABLE email_verification_tokens ADD COLUMN ${name} ${definition}`).run();
+        await env.DB.prepare(`ALTER TABLE email_verification_tokens_v2 ADD COLUMN ${name} ${definition}`).run();
       } catch (error) {
         console.error("resend schema repair skipped",{name,error:String(error)});
       }
@@ -54,19 +54,19 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     const now = Math.floor(Date.now() / 1000);
     const recent = await env.DB.prepare(
-      `SELECT created_at FROM email_verification_tokens
+      `SELECT created_at FROM email_verification_tokens_v2
        WHERE user_id = ? ORDER BY created_at DESC LIMIT 1`
     ).bind(String(user.id)).first<any>();
 
     if (recent && now - Number(recent.created_at) < 60) return json(GENERIC_RESPONSE);
 
-    await env.DB.prepare("DELETE FROM email_verification_tokens WHERE user_id = ?")
+    await env.DB.prepare("DELETE FROM email_verification_tokens_v2 WHERE user_id = ?")
       .bind(String(user.id)).run();
 
     const token = createVerificationToken();
     const tokenHash = await hashVerificationToken(token);
     await env.DB.prepare(
-      `INSERT INTO email_verification_tokens(id,user_id,token_hash,expires_at,used_at,created_at)
+      `INSERT INTO email_verification_tokens_v2(id,user_id,token_hash,expires_at,used_at,created_at)
        VALUES(?,?,?,?,NULL,?)`
     ).bind(crypto.randomUUID(), String(user.id), tokenHash, verificationExpiry(), now).run();
 
