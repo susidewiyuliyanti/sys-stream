@@ -134,31 +134,42 @@ export default function DashboardPage({ navigate }: Props) {
               onClick={async () => {
                 try {
                   const token = localStorage.getItem('sys_stream_auth_token');
-                  let response = await fetch('/api/auth/airdrop-handoff', {
+                  const language = localStorage.getItem('sys_stream_language') || 'id';
+
+                  const sessionResponse = await fetch('/api/auth/session', {
                     method: 'POST',
                     credentials: 'include',
                     headers: token ? { Authorization: 'Bearer ' + token } : {},
                     cache: 'no-store',
                   });
 
-                  // If the cached bearer token is stale, retry using the
-                  // authenticated HttpOnly cookie that powers this dashboard.
-                  if (!response.ok && token) {
-                    response = await fetch('/api/auth/airdrop-handoff', {
-                      method: 'POST',
-                      credentials: 'include',
-                      cache: 'no-store',
-                    });
-                  }
-
-                  const data = await response.json().catch(() => ({}));
-                  if (response.ok && data?.success && data?.code) {
-                    window.location.href = 'https://airdrop.sysstreamer.asia/?handoff=' + encodeURIComponent(data.code);
+                  if (sessionResponse.ok) {
+                    window.location.href =
+                      'https://sysstreamer.asia/api/auth/airdrop-redirect?lang=' +
+                      encodeURIComponent(language);
                     return;
                   }
-                  window.location.href = 'https://airdrop.sysstreamer.asia';
+
+                  if (token) {
+                    const response = await fetch('/api/auth/airdrop-handoff', {
+                      method: 'POST',
+                      credentials: 'include',
+                      headers: { Authorization: 'Bearer ' + token },
+                      cache: 'no-store',
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (response.ok && data?.success && data?.code) {
+                      window.location.href =
+                        'https://airdrop.sysstreamer.asia/?handoff=' +
+                        encodeURIComponent(data.code) + '&lang=' +
+                        encodeURIComponent(language);
+                      return;
+                    }
+                  }
+
+                  window.location.href = 'https://sysstreamer.asia/login';
                 } catch {
-                  window.location.href = 'https://airdrop.sysstreamer.asia';
+                  window.location.href = 'https://sysstreamer.asia/login';
                 }
               }}
               className="w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white"
