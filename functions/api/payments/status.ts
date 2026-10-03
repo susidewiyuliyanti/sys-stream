@@ -18,8 +18,8 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     if (!apiKey) return json({ success: false, error: "NOWPayments belum dikonfigurasi di server." }, 503);
 
     const tx = await env.DB.prepare(
-      "SELECT id,user_id,amount,status,reference,metadata FROM transactions WHERE type='DEPOSIT' AND user_id=? AND metadata LIKE ? LIMIT 1"
-    ).bind(auth.user.id, '%"paymentId":"' + paymentId + '%"' ).first<any>();
+      "SELECT id,user_id,amount,status,reference,metadata FROM transactions WHERE type='DEPOSIT' AND user_id=? AND payment_id=? LIMIT 1"
+    ).bind(auth.user.id, paymentId).first<any>();
 
     if (!tx) return json({ success: false, error: "Payment tidak ditemukan untuk akun ini." }, 404);
 
