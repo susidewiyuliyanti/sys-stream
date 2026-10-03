@@ -16,7 +16,8 @@ export default function ReferralPage() {
   const [calcWagerPerFriend, setCalcWagerPerFriend] = useState(1000);
 
   const PRODUCTION_DOMAIN = 'https://sysstreamer.asia';
-  const referralLink = `${PRODUCTION_DOMAIN}/login?ref=${encodeURIComponent(user.referralCode)}`;
+  const referralTarget = String(user.walletAddress || '').trim() || String(user.referralCode || '').trim();
+  const referralLink = `${PRODUCTION_DOMAIN}/login?ref=${encodeURIComponent(referralTarget)}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -96,7 +97,7 @@ export default function ReferralPage() {
 
             {/* Referral Code Quick Copy */}
             <div className="flex items-center gap-3 text-xs text-slate-400">
-              <span>Direct Promo Code:</span>
+              <span>Referral ID:</span>
               <button
                 onClick={copyCode}
                 className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md hover:border-amber-500/50 transition-colors flex items-center gap-1.5"
