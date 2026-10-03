@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  const { createCryptoInvoice, showToast } = useGame();
+  const { createCryptoInvoice, refreshFinancialState, showToast } = useGame();
   const { t } = useLanguage();
   const [selectedUsd, setSelectedUsd] = useState<number>(50);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USDT');
@@ -25,6 +25,34 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [diagnosticError, setDiagnosticError] = useState<string>('');
   const [paymentStatus, setPaymentStatus] = useState<string>('waiting');
 
+  React.useEffect(() => {
+    if (!isOpen || !invoice?.paymentId) return;
+    let stopped = false;
+    let refreshed = false;
+    const check = async () => {
+      try {
+        const token = localStorage.getItem('sys_stream_auth_token');
+        if (!token) return;
+        const response = await fetch('/api/payments/status?payment_id=' + encodeURIComponent(invoice.paymentId), {
+          headers: { Authorization: 'Bearer ' + token },
+          cache: 'no-store',
+        });
+        const data = await response.json().catch(() => ({}));
+        const status = String(data?.payment?.payment_status || '').toLowerCase();
+        if (!stopped && status) {
+          setPaymentStatus(status);
+          if (status === 'finished' && !refreshed) {
+            refreshed = true;
+            await refreshFinancialState();
+            showToast(t('Deposit confirmed'), t('Your account balance has been updated.'), 'success');
+          }
+        }
+      } catch {}
+    };
+    check();
+    const timer = window.setInterval(check, 10000);
+    return () => { stopped = true; window.clearInterval(timer); };
+  }, [isOpen, invoice?.paymentId, refreshFinancialState, showToast, t]);
 
   if (!isOpen) return null;
 
@@ -76,27 +104,6 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
       setIsLoading(false);
     }
   };
-
-  React.useEffect(() => {
-    if (!invoice?.paymentId) return;
-    let stopped = false;
-    const check = async () => {
-      try {
-        const token = localStorage.getItem('sys_stream_auth_token');
-        if (!token) return;
-        const response = await fetch('/api/payments/status?payment_id=' + encodeURIComponent(invoice.paymentId), {
-          headers: { Authorization: 'Bearer ' + token },
-          cache: 'no-store',
-        });
-        const data = await response.json().catch(() => ({}));
-        const status = String(data?.payment?.payment_status || '').toLowerCase();
-        if (!stopped && status) setPaymentStatus(status);
-      } catch {}
-    };
-    check();
-    const timer = window.setInterval(check, 10000);
-    return () => { stopped = true; window.clearInterval(timer); };
-  }, [invoice?.paymentId]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
