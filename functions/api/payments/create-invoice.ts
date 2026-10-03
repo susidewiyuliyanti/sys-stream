@@ -77,7 +77,7 @@ function safeErrorMessage(data: any, status: number) {
   }
 
   if (status === 400) {
-    return "Parameter payment ditolak oleh NOWPayments. Periksa Outcome Wallet, mata uang pembayaran, dan minimum pair.";
+    return "NOWPayments menolak parameter payment. Periksa mata uang/network, nominal minimum, dan konfigurasi akun NOWPayments.";
   }
 
   if (status === 429) {
@@ -257,9 +257,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       const detail = response.status === 400
         ? "NOWPayments menolak payment " + payCurrency.toUpperCase() +
           " sebesar " + amountUsd.toFixed(2) + " USD. Kode provider: " +
-          String(data?.code || "400") + ". Detail: " + providerMessage +
-          " Pastikan Outcome Wallet " + payCurrency.toUpperCase() +
-          " sudah dikonfigurasi di akun NOWPayments."
+          String(data?.code || "400") + ". Detail: " + providerMessage
         : providerMessage;
 
       return json({
