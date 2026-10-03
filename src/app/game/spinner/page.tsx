@@ -227,7 +227,7 @@ export default function SpinnerGamePage() {
             {winnerName && (
               <div className="px-5 py-2 rounded-full text-xs font-black bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/25 flex items-center gap-1.5 animate-bounce">
                 <Trophy className="w-4 h-4" />
-                <span>Selected Winner: @{winnerName}!</span>
+                <span>{t('Selected Winner')}: @{winnerName}!</span>
               </div>
             )}
           </div>
@@ -280,7 +280,7 @@ export default function SpinnerGamePage() {
               ) : (
                 <>
                   <Play className="w-4 h-4 fill-current" />
-                  <span>Spin Raffle Wheel ({viewers.length} Viewers)</span>
+                  <span>{t('Spin Raffle Wheel')} ({viewers.length} {t('Viewers')})</span>
                 </>
               )}
             </button>
