@@ -251,6 +251,10 @@ export default function AirdropApp() {
   const [menuOpen,setMenuOpen]=useState(false);
   const [tab,setTab]=useState<'tasks'|'submissions'>('tasks');
   const [taskCategory,setTaskCategory]=useState<'all'|'youtube'|'social'|'checkin'>('all');
+  const [points,setPoints]=useState({approved:0,pending:0,paid:0,available:0});
+  const [conversionPoints,setConversionPoints]=useState('');
+  const [conversionMessage,setConversionMessage]=useState('');
+  const [conversionLoading,setConversionLoading]=useState(false);
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
@@ -362,7 +366,15 @@ export default function AirdropApp() {
       try{
         const res=await fetch('/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
         const data=await res.json().catch(()=>({}));
-        if(active)setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);
+        if(active){
+          setSubmissions(Array.isArray(data.submissions)?data.submissions:[]);
+          if(data.points) setPoints({
+            approved:Number(data.points.approved||0),
+            pending:Number(data.points.pending||0),
+            paid:Number(data.points.paid||0),
+            available:Number(data.points.available||0)
+          });
+        }
       }catch{if(active)setSubmissions([]);}
     };
     loadSubmissions(); return()=>{active=false;};
@@ -528,6 +540,40 @@ export default function AirdropApp() {
           </div>
         </section>;
       })()}
+
+      <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+          <div>
+            <div className="text-xs font-black tracking-wider text-amber-400">AIRDROP POINTS</div>
+            <h2 className="mt-1 text-xl font-black">Points → SYS</h2>
+            <p className="mt-1 text-xs text-slate-500">Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-2 w-full lg:w-auto">
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Available</div><div className="font-black text-amber-400">{points.available}</div></div>
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Pending</div><div className="font-black">{points.pending}</div></div>
+            <div className="rounded-xl bg-slate-950 border border-slate-800 p-3"><div className="text-[10px] text-slate-500">Converted</div><div className="font-black">{points.paid}</div></div>
+          </div>
+        </div>
+        <div className="mt-5 flex flex-col sm:flex-row gap-3">
+          <input type="number" min="1" step="1" value={conversionPoints} onChange={e=>setConversionPoints(e.target.value)} placeholder="Jumlah points" className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm" />
+          <button disabled={conversionLoading||!Number(conversionPoints)||Number(conversionPoints)>points.available} onClick={async()=>{
+            setConversionLoading(true);setConversionMessage('');
+            try{
+              const res=await fetch('/api/airdrop/submissions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'convert',points:Number(conversionPoints)})});
+              const data=await res.json().catch(()=>({}));
+              if(!res.ok||!data.success) throw new Error(data.message||data.error||'Conversion gagal');
+              setConversionMessage(`Berhasil dicatat: ${data.convertedPoints} points = ${data.sysAmount} SYS.`);
+              setConversionPoints('');
+              const refreshed=await fetch('/api/airdrop/submissions',{credentials:'include',cache:'no-store'});
+              const next=await refreshed.json().catch(()=>({}));
+              if(next.points) setPoints({approved:Number(next.points.approved||0),pending:Number(next.points.pending||0),paid:Number(next.points.paid||0),available:Number(next.points.available||0)});
+            }catch(e){setConversionMessage(e instanceof Error?e.message:'Conversion gagal');}
+            finally{setConversionLoading(false);}
+          }} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">Convert to SYS</button>
+        </div>
+        <div className="mt-2 text-[10px] text-slate-500">Rate saat ini: 1 SYS = 1.000 points.</div>
+        {conversionMessage&&<div className="mt-3 text-xs text-amber-300">{conversionMessage}</div>}
+      </section>
 
       <div className="mt-8 flex items-center gap-2 border-b border-slate-800">
         <button onClick={()=>setTab('tasks')} className={`px-4 py-3 text-sm font-bold border-b-2 ${tab==='tasks'?'border-amber-400 text-white':'border-transparent text-slate-500'}`}>{tx.available}</button>
