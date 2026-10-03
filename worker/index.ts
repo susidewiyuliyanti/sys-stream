@@ -885,169 +885,68 @@ if (url.pathname === '/api/payments/nowpayments-diagnostic' && request.method ==
     if (url.pathname === '/api/payments/create-invoice' && request.method === 'POST') {
       try {
         const body: any = await request.json();
-
         const authUser = await getAuthenticatedUser(request, env);
-        if (!authUser) {
-          return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-            status: 401,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
-        }
+        if (!authUser) return new Response(JSON.stringify({success:false,error:'Unauthorized'}), {status:401,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
         const userId = String(authUser.id);
         const amountUsd = Number(body.amountUsd ?? body.amount);
-        const currency = String(body.currency ?? body.payCurrency ?? 'usdttrc20').trim().toLowerCase();
+        const raw = String(body.currency ?? body.payCurrency ?? 'usdttrc20').trim().toLowerCase();
+        const payCurrency = raw === 'usdt' ? 'usdttrc20' : raw === 'bitcoin' ? 'btc' : raw === 'ethereum' ? 'eth' : raw === 'solana' ? 'sol' : raw === 'tron' ? 'trx' : raw;
 
-        if (!Number.isFinite(amountUsd) || amountUsd <= 0) {
-          return new Response(JSON.stringify({ error: 'amountUsd must be greater than 0' }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
-        }
+        if (!Number.isFinite(amountUsd) || amountUsd < 5) return new Response(JSON.stringify({success:false,error:'Minimum deposit is 5 USD.'}), {status:400,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+        if (!['usdttrc20','btc','eth','sol','trx'].includes(payCurrency)) return new Response(JSON.stringify({success:false,error:'Unsupported cryptocurrency/network.'}), {status:400,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+        if (!env.DB) throw new Error('D1 database binding is unavailable');
 
-        if (!currency) {
-          return new Response(JSON.stringify({ error: 'currency is required' }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
-        }
+        const user: any = await env.DB.prepare('SELECT id FROM users WHERE id = ? LIMIT 1').bind(userId).first();
+        if (!user) return new Response(JSON.stringify({success:false,error:'User not found'}), {status:404,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
-        if (!env.DB) {
-          throw new Error('D1 database binding is unavailable');
-        }
+        const apiKey = String(env.NOWPAYMENTS_API_KEY || '').trim();
+        if (!apiKey) return new Response(JSON.stringify({success:false,error:'NOWPayments API key is not configured.'}), {status:503,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
-        const user: any = await env.DB
-          .prepare('SELECT id, username, available_balance, total_locked FROM users WHERE id = ?')
-          .bind(userId)
-          .first();
+        const minResponse = await fetch('https://api.nowpayments.io/v1/min-amount?currency_from=usd&currency_to='+encodeURIComponent(payCurrency), {headers:{'x-api-key':apiKey,'Accept':'application/json'}});
+        const minText = await minResponse.text();
+        let minData:any = {}; try { minData = minText ? JSON.parse(minText) : {}; } catch { minData = {raw:minText.slice(0,500)}; }
+        if (!minResponse.ok) return new Response(JSON.stringify({success:false,error:'NOWPayments minimum-amount check failed.',provider_status:minResponse.status,provider:minData}), {status:502,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
-        if (!user) {
-          return new Response(JSON.stringify({
-            error: 'User not found',
-            userId
-          }), {
-            status: 404,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
-        }
+        const minAmountUsd = Number(minData?.min_amount || 0);
+        if (minAmountUsd > 0 && amountUsd < minAmountUsd) return new Response(JSON.stringify({success:false,error:'Nominal di bawah minimum NOWPayments untuk network yang dipilih.',minimum_usd:minAmountUsd,amount_usd:amountUsd,pay_currency:payCurrency}), {status:400,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
-        if (!env.NOWPAYMENTS_API_KEY) {
-          return new Response(JSON.stringify({
-            error: 'NOWPayments API key is not configured'
-          }), {
-            status: 503,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
-        }
-
-        const orderId = `DEP_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
-
-        const npResponse = await fetch('https://api.nowpayments.io/v1/payment', {
-          method: 'POST',
-          headers: {
-            'x-api-key': env.NOWPAYMENTS_API_KEY,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            price_amount: amountUsd,
-            price_currency: 'usd',
-            pay_currency: currency,
-            ipn_callback_url: `${env.BASE_URL}/api/payments/ipn`,
-            order_id: orderId,
-            order_description: `SYS Streamer deposit for ${userId}`
-          })
-        });
-
-        const npText = await npResponse.text();
-
-        let npData: any;
+        const orderId = 'DEP-'+userId+'-'+Date.now()+'-'+crypto.randomUUID().slice(0,8);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
+        let npResponse: Response; let npData:any = {};
         try {
-          npData = JSON.parse(npText);
-        } catch {
-          npData = { raw: npText };
-        }
+          npResponse = await fetch('https://api.nowpayments.io/v1/payment', {
+            method:'POST',
+            headers:{'x-api-key':apiKey,'Content-Type':'application/json','Accept':'application/json'},
+            body:JSON.stringify({
+              price_amount:Number(amountUsd.toFixed(2)),
+              price_currency:'usd',
+              pay_currency:payCurrency,
+              ipn_callback_url:'https://sysstreamer.asia/api/payments/ipn',
+              order_id:orderId,
+              order_description:'SYS STREAM account deposit'
+            }),
+            signal:controller.signal
+          });
+          const text = await npResponse.text();
+          try { npData = text ? JSON.parse(text) : {}; } catch { npData = {raw:text.slice(0,1000)}; }
+        } finally { clearTimeout(timeout); }
 
         if (!npResponse.ok) {
-          return new Response(JSON.stringify({
-            error: 'NOWPayments create payment failed',
-            nowpayments_status: npResponse.status,
-            details: npData
-          }), {
-            status: 502,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-          });
+          const providerMessage = npData?.message || npData?.error?.message || (typeof npData?.error === 'string' ? npData.error : null) || npData?.description || 'Provider rejected the payment request.';
+          return new Response(JSON.stringify({success:false,error:'NOWPayments menolak pembuatan payment.',provider_status:npResponse.status,provider_message:String(providerMessage),provider_code:npData?.code ?? null,provider_error:typeof npData?.error === 'string' ? npData.error : null,pay_currency:payCurrency,amount_usd:amountUsd,minimum_usd:minAmountUsd || null}), {status:npResponse.status >= 400 && npResponse.status < 500 ? npResponse.status : 502,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
         }
 
         const paymentId = String(npData.payment_id || '');
-        const invoiceId = npData.invoice_id != null
-          ? String(npData.invoice_id)
-          : null;
+        if (!paymentId || !npData.pay_address) return new Response(JSON.stringify({success:false,error:'NOWPayments returned an incomplete payment response.',provider_status:npResponse.status,provider:npData}), {status:502,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
 
-        if (!paymentId) {
-          throw new Error('NOWPayments response did not contain payment_id');
-        }
+        await env.DB.prepare(`INSERT INTO payments (payment_id,invoice_id,user_id,amount,status,credited,created_at,nowpayments_status,pay_currency,pay_amount,pay_address,order_id) VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)`).bind(paymentId,npData.invoice_id != null ? String(npData.invoice_id) : null,userId,amountUsd,'PENDING',Math.floor(Date.now()/1000),npData.payment_status || 'waiting',npData.pay_currency || payCurrency,npData.pay_amount ?? null,npData.pay_address,orderId).run();
 
-        await env.DB.prepare(
-          `INSERT INTO payments (
-            payment_id,
-            invoice_id,
-            user_id,
-            amount,
-            status,
-            credited,
-            created_at,
-            nowpayments_status,
-            pay_currency,
-            pay_amount,
-            pay_address,
-            order_id
-          ) VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)`
-        ).bind(
-          paymentId,
-          invoiceId,
-          userId,
-          amountUsd,
-          'PENDING',
-          Math.floor(Date.now() / 1000),
-          npData.payment_status || 'waiting',
-          npData.pay_currency || currency,
-          npData.pay_amount ?? null,
-          npData.pay_address ?? null,
-          orderId
-        ).run();
-
-        return new Response(JSON.stringify({
-          success: true,
-          invoice: {
-            payment_id: paymentId,
-            invoice_id: invoiceId,
-            user_id: userId,
-            amount_usd: amountUsd,
-            pay_currency: npData.pay_currency || currency,
-            pay_amount: npData.pay_amount ?? null,
-            pay_address: npData.pay_address ?? null,
-            order_id: orderId,
-            status: 'PENDING',
-            nowpayments_status: npData.payment_status || 'waiting'
-          }
-        }), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }
-        });
-
-      } catch (err: any) {
-        return new Response(JSON.stringify({
-          error: err?.message || String(err)
-        }), {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }
-        });
+        return new Response(JSON.stringify({success:true,invoice:{payment_id:paymentId,invoice_id:npData.invoice_id != null ? String(npData.invoice_id) : null,user_id:userId,amount_usd:amountUsd,pay_currency:String(npData.pay_currency || payCurrency).toUpperCase(),pay_amount:Number(npData.pay_amount || 0),pay_address:String(npData.pay_address),order_id:orderId,status:'PENDING',nowpayments_status:String(npData.payment_status || 'waiting'),invoice_url:String(npData.invoice_url || npData.payment_url || '')}}), {status:200,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+      } catch (err:any) {
+        console.error('create-invoice worker error', err);
+        return new Response(JSON.stringify({success:false,error:err?.name === 'AbortError' ? 'NOWPayments timeout. Silakan coba lagi.' : (err?.message || String(err) || 'Payment creation failed.')}), {status:500,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
       }
     }
     // E. NOWPayments: IPN Webhook
