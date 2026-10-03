@@ -39,14 +39,17 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({success:false,error:"Challenge wallet tidak valid atau sudah digunakan."},401);
     }
     if (Number(challenge.expires_at) < now) return json({success:false,error:"Challenge wallet sudah kedaluwarsa. Silakan ulangi."},401);
-    if (getAddress(String(challenge.wallet_address)) !== walletAddress || String(challenge.message) !== message) {
+    const challengeWallet = getAddress(String(challenge.wallet_address));
+    if (challengeWallet.toLowerCase() !== walletAddress.toLowerCase() || String(challenge.message) !== message) {
       return json({success:false,error:"Challenge wallet tidak cocok."},401);
     }
 
     let recovered: string;
     try { recovered = getAddress(verifyMessage(message, signature)); }
     catch { return json({success:false,error:"Signature wallet tidak valid."},401); }
-    if (recovered !== walletAddress) return json({success:false,error:"Signature wallet tidak cocok dengan alamat wallet."},401);
+    if (recovered.toLowerCase() !== walletAddress.toLowerCase()) {
+      return json({success:false,error:"Signature wallet tidak cocok dengan alamat wallet."},401);
+    }
 
     const marked = await env.DB.prepare(
       "UPDATE web3_auth_challenges SET used_at=? WHERE id=? AND used_at IS NULL"
