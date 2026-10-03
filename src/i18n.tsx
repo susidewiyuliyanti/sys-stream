@@ -309,6 +309,8 @@ const PAGE_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 };
 
+const ORIGINAL_TEXT_NODES = new WeakMap<Text, string>();
+
 /* Comprehensive fallback translations for visible page text that is not yet migrated
    to t(). The MutationObserver below applies these exact labels to dynamically rendered UI. */
 const COMMON_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
@@ -545,10 +547,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       // Preserve the original source label so changing language never translates
       // an already-translated value and switching languages works repeatedly.
-      const source = textNode.dataset?.i18nSource || raw;
-      if (textNode instanceof Text) {
-        try { (textNode as any).dataset.i18nSource = source; } catch {}
-      }
+      const source = ORIGINAL_TEXT_NODES.get(textNode) ?? raw;
+      if (!ORIGINAL_TEXT_NODES.has(textNode)) ORIGINAL_TEXT_NODES.set(textNode, raw);
       const translated = translateValue(source);
       if (translated !== raw) textNode.nodeValue = translated;
     });
