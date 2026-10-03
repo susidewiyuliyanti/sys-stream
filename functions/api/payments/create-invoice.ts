@@ -126,6 +126,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       }, 503);
     }
 
+    // Re-check the live NOWPayments minimum immediately before creating the payment.
+    const base = "https://api.nowpayments.io/v1";
+    const providerHeaders = { "x-api-key": apiKey, "Accept": "application/json" };
+    const minResponse = await fetch(
+      base + "/min-amount?currency_from=usd&currency_to=" + encodeURIComponent(payCurrency),
+      { headers: providerHeaders }
+    );
+    const minData = await minResponse.json().catch(() => ({}));
+    if (!minResponse.ok) {
+      console.error("NOWPayments minimum check failed", { status: minResponse.status, data: minData, payCurrency });
+      return json({ success: false, error: safeErrorMessage(minData, minResponse.status), provider_status: minResponse.status }, 502);
+    }
+    const providerMinUsd = Number(minData?.min_amount || 0);
+    if (Number.isFinite(providerMinUsd) && providerMinUsd > 0 && amountUsd < providerMinUsd) {
+      return json({ success: false, error: `Minimum deposit for ${payCurrency.toUpperCase()} is ${providerMinUsd.toFixed(2)} USD according to NOWPayments.`, min_amount_usd: providerMinUsd }, 400);
+    }
+
     await ensureTransactions(env);
 
     const orderId = `DEP-${String(auth.user.id)}-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
