@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
+import { useLanguage } from '../../i18n';
 import { sound } from '../../lib/sound';
 import { Users, Copy, Check, Gift, ArrowRight, Share2, DollarSign, Award, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ReferralPage() {
   const { user, claimReferralRewards, showToast } = useGame();
+  const { t } = useLanguage();
   const [copiedLink, setCopiedLink] = useState(false);
   const [pendingClaim, setPendingClaim] = useState({ coins: 0, diamonds: 0 });
   const [isClaimed, setIsClaimed] = useState(false);
@@ -25,12 +27,12 @@ export default function ReferralPage() {
     setCopiedLink(true);
     sound.playClick();
     setTimeout(() => setCopiedLink(false), 2000);
-    showToast('Copied Link', 'Referral link copied to clipboard!', 'info');
+    showToast(t('Copied Link'), t('Referral link copied to clipboard!'), 'info');
   };
 
   const handleClaim = () => {
     if (pendingClaim.coins === 0 && pendingClaim.diamonds === 0) {
-      showToast('No Pending Rewards', 'All referral commissions have already been transferred.', 'info');
+      showToast(t('No Pending Rewards'), t('All referral commissions have already been transferred.'), 'info');
       return;
     }
 
@@ -48,7 +50,7 @@ export default function ReferralPage() {
       <div className="text-center max-w-2xl mx-auto mb-8">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-3">
           <Gift className="w-3.5 h-3.5" />
-          <span>Affiliate Partner Program</span>
+          <span>{t('Affiliate Partner Program')}</span>
         </div>
         <h1 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
           Earn Passive Crypto & Gold Coins
@@ -62,7 +64,7 @@ export default function ReferralPage() {
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
         <div className="grid md:grid-cols-12 gap-6 items-center">
           <div className="md:col-span-7 space-y-4">
-            <h2 className="text-lg font-bold text-white">Your Personal Affiliate Link</h2>
+            <h2 className="text-lg font-bold text-white">{t('Your Personal Affiliate Link')}</h2>
             <p className="text-xs text-slate-400">
               Anyone registering with your link receives a free <strong className="text-amber-400">+500 Gold Coins</strong> starter bonus.
             </p>
@@ -83,7 +85,7 @@ export default function ReferralPage() {
 
             {/* Referral Code Quick Copy */}
             <div className="flex items-center gap-3 text-xs text-slate-400">
-              <span>User ID / Wallet:</span>
+              <span>{t('User ID / Wallet:')}</span>
               <span className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md truncate max-w-full">
                 {walletAddress || 'Wallet belum terhubung'}
               </span>
@@ -127,12 +129,12 @@ export default function ReferralPage() {
             </span>
             <span className="text-lg font-mono font-black text-white">5.0%</span>
           </div>
-          <h3 className="text-sm font-bold text-white">Direct Invitations</h3>
+          <h3 className="text-sm font-bold text-white">{t('Direct Invitations')}</h3>
           <p className="text-xs text-slate-400 mt-1">
             Players who register directly via your personal link or referral code.
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
-            <span className="text-slate-400">Active Referees:</span>
+            <span className="text-slate-400">{t('Active Referees:')}</span>
             <span className="font-mono text-white font-bold">14 Players</span>
           </div>
         </div>
@@ -144,13 +146,13 @@ export default function ReferralPage() {
             </span>
             <span className="text-lg font-mono font-black text-white">2.5%</span>
           </div>
-          <h3 className="text-sm font-bold text-white">Network Invites</h3>
+          <h3 className="text-sm font-bold text-white">{t('Network Invites')}</h3>
           <p className="text-xs text-slate-400 mt-1">
             Players invited by your Tier 1 direct referees.
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
-            <span className="text-slate-400">Active Referees:</span>
-            <span className="font-mono text-white font-bold">Data produksi</span>
+            <span className="text-slate-400">{t('Active Referees:')}</span>
+            <span className="font-mono text-white font-bold">{t('Data produksi')}</span>
           </div>
         </div>
 
@@ -161,20 +163,20 @@ export default function ReferralPage() {
             </span>
             <span className="text-lg font-mono font-black text-white">1.0%</span>
           </div>
-          <h3 className="text-sm font-bold text-white">Deep Ecosystem</h3>
+          <h3 className="text-sm font-bold text-white">{t('Deep Ecosystem')}</h3>
           <p className="text-xs text-slate-400 mt-1">
             Players invited down the tree by your Tier 2 network.
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
-            <span className="text-slate-400">Active Referees:</span>
-            <span className="font-mono text-white font-bold">Data produksi</span>
+            <span className="text-slate-400">{t('Active Referees:')}</span>
+            <span className="font-mono text-white font-bold">{t('Data produksi')}</span>
           </div>
         </div>
       </div>
 
       {/* Commission Estimator Calculator */}
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
-        <h3 className="text-base font-bold text-white mb-1">Affiliate Income Calculator</h3>
+        <h3 className="text-base font-bold text-white mb-1">{t('Affiliate Income Calculator')}</h3>
         <p className="text-xs text-slate-400 mb-6">
           Slide to project your estimated monthly passive revenue based on active friends.
         </p>
@@ -183,7 +185,7 @@ export default function ReferralPage() {
           <div className="space-y-5">
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
-                <span>Active Friends Invited:</span>
+                <span>{t('Active Friends Invited:')}</span>
                 <span className="font-mono font-bold text-amber-400">{calcFriends} Friends</span>
               </div>
               <input
@@ -198,7 +200,7 @@ export default function ReferralPage() {
 
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
-                <span>Average Weekly Wager per Friend:</span>
+                <span>{t('Average Weekly Wager per Friend:')}</span>
                 <span className="font-mono font-bold text-amber-400">{calcWagerPerFriend} Coins</span>
               </div>
               <input
@@ -214,7 +216,7 @@ export default function ReferralPage() {
           </div>
 
           <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center">
-            <div className="text-xs text-slate-400 uppercase font-semibold">Estimated Monthly Earnings</div>
+            <div className="text-xs text-slate-400 uppercase font-semibold">{t('Estimated Monthly Earnings')}</div>
             <div className="text-3xl sm:text-4xl font-mono font-black text-amber-400 mt-2">
               +{estMonthlyEarnings.toLocaleString()} Coins
             </div>
@@ -228,18 +230,18 @@ export default function ReferralPage() {
       {/* Recent Referral Activity Table */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="p-4 border-b border-slate-800 flex justify-between items-center">
-          <h3 className="text-sm font-bold text-white">Live Referral Feed</h3>
-          <span className="text-xs text-slate-400">Referral milik wallet ini</span>
+          <h3 className="text-sm font-bold text-white">{t('Live Referral Feed')}</h3>
+          <span className="text-xs text-slate-400">{t('Referral milik wallet ini')}</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
               <tr>
-                <th className="py-3 px-4">Referee Handle</th>
-                <th className="py-3 px-4">Date Joined</th>
-                <th className="py-3 px-4">Commission Tier</th>
-                <th className="py-3 px-4">Wager Volume</th>
-                <th className="py-3 px-4 text-right">Commission Earned</th>
+                <th className="py-3 px-4">{t('Referee Handle')}</th>
+                <th className="py-3 px-4">{t('Date Joined')}</th>
+                <th className="py-3 px-4">{t('Commission Tier')}</th>
+                <th className="py-3 px-4">{t('Wager Volume')}</th>
+                <th className="py-3 px-4 text-right">{t('Commission Earned')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono">
