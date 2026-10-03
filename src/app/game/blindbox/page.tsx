@@ -138,7 +138,7 @@ export default function BlindboxGamePage() {
     requireAuth(async () => {
       if (!isQualified) {
         showToast(
-          'Staking Required',
+          t('Staking Required'),
           'Anda harus mengunci minimal $4 equivalent untuk membuka Blind Box harian.',
           'error'
         );
@@ -147,8 +147,8 @@ export default function BlindboxGamePage() {
 
       if (remainingBoxes <= 0) {
         showToast(
-          'Daily Limit Reached',
-          `You have opened all ${dailyQuota} box(es) for today. Quota resets in ${timeToReset}!`,
+          t('Daily Limit Reached'),
+          `${t('You have opened all')} ${dailyQuota} ${t('box(es) for today. Quota resets in')} ${timeToReset}!`,
           'info'
         );
         return;
@@ -210,8 +210,8 @@ export default function BlindboxGamePage() {
       } catch (error) {
         setUnboxingState('IDLE');
         showToast(
-          'Blind Box Failed',
-          error instanceof Error ? error.message : 'Server gagal memproses Blind Box.',
+          t('Blind Box Failed'),
+          error instanceof Error ? error.message : t('Server gagal memproses Blind Box.'),
           'error'
         );
       }
@@ -222,7 +222,7 @@ export default function BlindboxGamePage() {
     if (!unboxedItem) return;
     sound.playClick();
     addToInventory(unboxedItem);
-    showToast(t('Vault Updated'), `${t('Added to your Inventory!')}`, 'success');
+    showToast(t('Vault Updated'), t('Added to your Inventory!'), 'success');
     resetBox();
   };
 
@@ -333,7 +333,7 @@ export default function BlindboxGamePage() {
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
-                  Durasi lock tersedia: <strong>30 hari</strong> · <strong>60 hari</strong> · <strong>90 hari</strong>.
+                  {t('Durasi lock tersedia:')} <strong>{t('30 hari')}</strong> · <strong>{t('60 hari')}</strong> · <strong>{t('90 hari')}</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
                   ⚠️ Lock hanya dapat diselesaikan setelah masa lock berakhir. Sistem tidak menyediakan early unlock melalui Blind Box.
