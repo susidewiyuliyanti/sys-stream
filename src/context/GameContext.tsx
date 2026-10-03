@@ -339,6 +339,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    // Clear the shared parent-domain session as well as local account state.
+    void fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+      cache: 'no-store',
+    }).catch(() => {});
+
     // Clear the complete account context. A different user must never inherit
     // the previous user's wallet, profile, balance, referrals, or local state.
     localStorage.removeItem('sys_stream_profile_cache');
