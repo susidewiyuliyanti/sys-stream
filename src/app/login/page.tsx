@@ -14,7 +14,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 
-import { BrowserProvider } from 'ethers';
+import { BrowserProvider, HDNodeWallet } from 'ethers';
 
 declare global {
   interface Window {
@@ -41,28 +41,72 @@ export default function LoginPage({ navigate }: Props) {
   const [verificationNotice, setVerificationNotice] = useState('');
   const [registerWallet, setRegisterWallet] = useState('');
   const [walletConnecting, setWalletConnecting] = useState(false);
+  const [generatedWallet, setGeneratedWallet] = useState<{ address: string; phrase: string } | null>(null);
+  const [walletBackupConfirmed, setWalletBackupConfirmed] = useState(false);
+  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ token: string; user: any } | null>(null);
   const referralParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') || '' : '';
   const returnParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('return') || '' : '';
   const postLoginPath = returnParam.startsWith('/') ? returnParam : '/dashboard';
 
-  const connectRegistrationWallet = async () => {
-    if (!window.ethereum || walletConnecting) {
-      window.alert(t('Install MetaMask atau wallet Web3 terlebih dahulu.'));
-      return;
-    }
-    setWalletConnecting(true);
+  const generateRegistrationWallet = async () => {
+    if (isSubmitting || !termsAccepted) return;
+    setIsSubmitting(true);
     try {
-      const accounts = (await window.ethereum.request({ method: 'eth_requestAccounts' })) as string[];
-      const wallet = String(accounts?.[0] || '').toLowerCase();
-      if (!wallet) throw new Error(t('Wallet address tidak ditemukan.'));
-      setRegisterWallet(wallet);
+      const newWallet = HDNodeWallet.createRandom();
+      const registrationPassword = crypto.randomUUID() + crypto.randomUUID();
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: '',
+          password: registrationPassword,
+          termsAccepted: true,
+          termsVersion: TERMS_VERSION,
+          walletAddress: newWallet.address,
+          ...(referralParam ? { referralCode: referralParam } : {}),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.token || !data?.user) {
+        throw new Error(data?.error || t('Gagal membuat wallet baru.'));
+      }
+      setGeneratedWallet({
+        address: newWallet.address,
+        phrase: newWallet.mnemonic?.phrase || '',
+      });
+      setWalletBackupConfirmed(false);
+      setPendingRegistrationAuth({ token: String(data.token), user: data.user });
+      setVerificationNotice(t('Wallet baru berhasil dibuat. Simpan recovery phrase sebelum melanjutkan.'));
     } catch (error) {
-      console.error('Registration wallet connection error:', error);
-      window.alert(error instanceof Error ? error.message : t('Gagal menghubungkan wallet.'));
+      console.error('New wallet registration error:', error);
+      window.alert(error instanceof Error ? error.message : t('Gagal membuat wallet baru.'));
     } finally {
-      setWalletConnecting(false);
+      setIsSubmitting(false);
     }
   };
+
+  const completeRegistration = () => {
+    if (!pendingRegistrationAuth || !walletBackupConfirmed) return;
+    localStorage.setItem('sys_stream_auth_token', pendingRegistrationAuth.token);
+    localStorage.setItem('sys_stream_auth_user', JSON.stringify(pendingRegistrationAuth.user));
+    localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+      id: pendingRegistrationAuth.user.id,
+      username: pendingRegistrationAuth.user.username || '',
+      avatar: pendingRegistrationAuth.user.avatarUrl || '',
+      referralCode: pendingRegistrationAuth.user.referralCode || '',
+      walletAddress: pendingRegistrationAuth.user.walletAddress || generatedWallet?.address || '',
+      registrationBonusIdr: Number(pendingRegistrationAuth.user.registrationBonusIdr || 0),
+      registrationBonusGranted: Boolean(pendingRegistrationAuth.user.registrationBonusGranted),
+    }));
+    localStorage.setItem('sys_is_logged_in', 'true');
+    if (postLoginPath === '/airdrop') {
+      window.location.replace('https://airdrop.sysstreamer.asia/');
+    } else {
+      window.location.replace('/#' + postLoginPath);
+    }
+  };
+
 
   
 const handleWalletAuth = async () => {
@@ -203,6 +247,184 @@ const handleSubmit = async (e: React.FormEvent) => {
       console.error(error);
       window.alert(error instanceof Error ? error.message : t('Autentikasi gagal.'));
     } finally { setIsSubmitting(false); }
+  };
+
+
+ return (
+    <div className="min-h-screen bg-[#060a14] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">
+      {/* Background Cyber Matrix Glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Cyberpunk Glass Card matching Screenshot 1 */}
+      <div className="relative w-full max-w-sm sm:max-w-md bg-[#080d1a]/90 backdrop-blur-2xl border-2 border-cyan-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.25)] text-white">
+        {/* Login / Register Pill Tabs */}
+        <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-2xl border border-cyan-500/30 mb-6">
+          <button
+            type="button"
+            onClick={() => { sound.playClick(); setAuthMode('login'); setTermsAccepted(false); }}
+            className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
+              authMode === 'login'
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
+            className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
+              authMode === 'register'
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            Register
+          </button>
+        </div>
+
+        {/* Heading & Subtitle */}
+        <div className="text-center mb-5">
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            {authMode === 'login' ? t('Welcome Back') : t('Create SYS Account')}
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">
+            {t('Sign in to continue streaming and gaming')}
+          </p>
+        </div>
+
+        {/* Wallet-native authentication */}
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          {authMode === 'login' ? (
+            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-4 text-center">
+              <Wallet className="w-8 h-8 mx-auto text-cyan-300 mb-2" />
+              <div className="text-sm font-black text-white">{t('Login dengan Wallet')}</div>
+              <p className="mt-1 text-[11px] leading-5 text-slate-400">
+                {t('Hubungkan MetaMask atau wallet EVM lain. Anda akan diminta menandatangani pesan untuk masuk.')}
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="rounded-2xl border border-purple-500/25 bg-purple-500/5 p-4 text-center">
+                <Wallet className="w-8 h-8 mx-auto text-purple-300 mb-2" />
+                <div className="text-sm font-black text-white">{t('Buat Wallet Baru')}</div>
+                <p className="mt-1 text-[11px] leading-5 text-slate-400">
+                  {t('SYS STREAM akan membuat wallet baru langsung di perangkat ini. Tidak perlu email, username, atau password.')}
+                </p>
+              </div>
+
+              <label className="flex items-start gap-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-3.5 cursor-pointer select-none">
+                <input type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-cyan-500 text-cyan-500" required />
+                <span className="text-[11px] leading-5 text-slate-400">
+                  {t('Saya menyetujui Terms & Conditions dan pembuatan wallet baru.')}
+                </span>
+              </label>
+
+              {generatedWallet && (
+                <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
+                  <div className="text-xs font-black uppercase tracking-wider text-amber-300">{t('Simpan Recovery Phrase')}</div>
+                  <p className="text-[10px] leading-4 text-amber-100/80">
+                    {t('Recovery phrase hanya dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.')}
+                  </p>
+                  <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                    <div className="text-[10px] text-slate-500 mb-1">Wallet Address</div>
+                    <div className="font-mono text-[10px] text-cyan-300 break-all">{generatedWallet.address}</div>
+                  </div>
+                  <div className="rounded-xl bg-slate-950 border border-amber-500/20 p-3">
+                    <div className="text-[10px] text-slate-500 mb-1">Recovery Phrase</div>
+                    <div className="font-mono text-xs leading-5 text-white break-words select-all">{generatedWallet.phrase}</div>
+                  </div>
+                  <label className="flex items-start gap-2 text-[10px] text-slate-300 cursor-pointer">
+                    <input type="checkbox" checked={walletBackupConfirmed} onChange={(e) => setWalletBackupConfirmed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded bg-slate-950 border-amber-500 text-amber-500" />
+                    <span>{t('Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.')}</span>
+                  </label>
+                </div>
+              )}
+              {verificationNotice && (
+                <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-3 text-[11px] leading-5 text-cyan-200">{verificationNotice}</div>
+              )}
+            </>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSubmitting || (authMode === 'register' && (!termsAccepted || Boolean(pendingRegistrationAuth && !walletBackupConfirmed)))}
+            className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all flex items-center justify-center gap-2"
+          >
+            {isSubmitting ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> :
+              authMode === 'login' ? t('LOGIN WITH WALLET') :
+              pendingRegistrationAuth ? t('SAYA SUDAH MENYIMPAN — MASUK') : t('GENERATE NEW WALLET')}
+          </button>
+        </form>
+        {authMode === 'register' && pendingRegistrationAuth && walletBackupConfirmed && (
+          <button type="button" onClick={completeRegistration} className="w-full mt-3 py-3 rounded-2xl border border-cyan-500/40 text-cyan-300 text-xs font-black">
+            {t('Lanjut ke Dashboard')}
+          </button>
+        )}
+
+        {/* Divider */}
+        <div className="relative my-5">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-800" />
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase font-bold text-slate-500">
+            <span className="bg-[#080d1a] px-3">{t('or Connect with Crypto Wallet')}</span>
+          </div>
+        </div>
+
+        {/* Production wallet authentication uses the server nonce/signature flow above. */}
+        <button
+          onClick={handleWalletAuth}
+          type="button"
+          className="w-full py-3 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-bold text-xs rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <Wallet className="w-4 h-4 text-cyan-400" />
+          <span>{t('Connect Wallet')}</span>
+        </button>
+
+        {/* Register Prompt */}
+        <div className="text-center mt-4 text-xs text-slate-400">
+          <span>Don't have an account? </span>
+          <button
+            type="button"
+            onClick={() => { sound.playClick(); setAuthMode('register'); setTermsAccepted(false); }}
+            className="text-purple-400 hover:text-purple-300 font-bold underline"
+          >
+            {t('Register Now')}
+          </button>
+        </div>
+
+        {/* Security Footer Badges */}
+        <div className="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-slate-900 text-[10px] text-slate-500">
+          <span className="flex items-center gap-1">
+            <Shield className="w-3.5 h-3.5 text-cyan-400" /> Secured with Web3
+          </span>
+          <span className="flex items-center gap-1">
+            <Fingerprint className="w-3.5 h-3.5 text-purple-400" /> Biometric Login Available
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    sound.playClick();
+    if (authMode === 'login') {
+      await handleWalletAuth();
+      return;
+    }
+    if (!generatedWallet) {
+      await generateRegistrationWallet();
+    }
   };
 
 
