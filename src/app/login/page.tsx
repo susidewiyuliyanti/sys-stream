@@ -336,8 +336,8 @@ export default function LoginPage({ navigate }: Props) {
         </div>
 
         <div className="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-slate-900 text-[10px] text-slate-500">
-          <span className="flex items-center gap-1"><Shield className="w-3.5 h-3.5 text-cyan-400" /> Secured with Web3</span>
-          <span className="flex items-center gap-1"><Fingerprint className="w-3.5 h-3.5 text-purple-400" /> Wallet Authentication</span>
+          <span className="flex items-center gap-1"><Shield className="w-3.5 h-3.5 text-cyan-400" /> {t('Secured with Web3')}</span>
+          <span className="flex items-center gap-1"><Fingerprint className="w-3.5 h-3.5 text-purple-400" /> {t('Wallet Authentication')}</span>
         </div>
       </div>
     </div>
