@@ -834,6 +834,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       qrCodeUrl: payAddress
         ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payAddress)}`
         : '',
+      invoiceUrl: String(remote.invoice_url || remote.payment_url || ''),
       expiresAt: Date.now() + 1800000,
     };
 
