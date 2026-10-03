@@ -21,6 +21,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [minAmountUsd] = useState<number>(5);
+  const [depositError, setDepositError] = useState<string>('');
 
 
   if (!isOpen) return null;
@@ -44,11 +45,14 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
     }
 
     setIsLoading(true);
+    setDepositError('');
     try {
       const inv = await createCryptoInvoice(finalAmount, selectedCurrency);
       setInvoice(inv);
     } catch (err: any) {
-      showToast(t('Error'), err.message || t('Failed to generate invoice'), 'error');
+      const message = String(err?.message || t('Failed to generate invoice'));
+      setDepositError(message);
+      showToast(t('Error'), message, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -149,6 +153,13 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 ))}
               </div>
             </div>
+
+            {depositError && (
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200 break-words">
+                <div className="font-semibold mb-1">{t('Payment creation failed')}</div>
+                <div className="font-mono text-xs leading-5">{depositError}</div>
+              </div>
+            )}
 
             <button
               onClick={handleGenerateInvoice}
