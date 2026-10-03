@@ -202,7 +202,7 @@ export default function DashboardPage({ navigate }: Props) {
             </div>
           </header>
 
-          <div className="grid sm:grid-cols-3 gap-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-cyan-400" /> {t('Available')}</div>
               <div className="text-xl font-black mt-2">{formatMoney(available)}</div>
@@ -210,6 +210,11 @@ export default function DashboardPage({ navigate }: Props) {
             <div className="rounded-2xl border border-amber-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><LockKeyhole className="w-4 h-4 text-amber-400" /> {t('Locked')}</div>
               <div className="text-xl font-black mt-2">{formatMoney(locked)}</div>
+            </div>
+            <div className="rounded-2xl border border-violet-500/20 bg-slate-900/80 p-4">
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-violet-400" /> SYS Coin</div>
+              <div className="text-xl font-black mt-2">{Number(user.sysBalance || 0).toLocaleString('en-US', { maximumFractionDigits: 8 })} SYS</div>
+              <div className="text-[10px] text-slate-500 mt-1">Reward dari Airdrop</div>
             </div>
             <div className="rounded-2xl border border-rose-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> {t('Live Now')}</div>
