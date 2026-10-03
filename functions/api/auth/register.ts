@@ -112,6 +112,27 @@ async function ensureRegistrationSchema(env: Env) {
     status TEXT NOT NULL DEFAULT 'ACTIVE', created_at INTEGER NOT NULL
   )`).run();
 
+  // Registration returns a ready-to-use authenticated session. Some production
+  // D1 databases were created before auth_sessions was introduced, so the
+  // registration endpoint must repair this dependency itself instead of
+  // creating the user first and failing only when the session is written.
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS auth_sessions (
+    token TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    expires_at INTEGER NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch())
+  )`).run();
+  for (const sql of [
+    "CREATE INDEX IF NOT EXISTS idx_auth_sessions_user ON auth_sessions(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_auth_sessions_expires ON auth_sessions(expires_at)"
+  ]) {
+    try {
+      await env.DB.prepare(sql).run();
+    } catch (error) {
+      console.error("registration auth session index skipped", { sql, error: String(error) });
+    }
+  }
+
   // Repair auxiliary production tables created by older versions.
   const repairTable = async (table: string, additions: Array<[string,string]>) => {
     const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all();
