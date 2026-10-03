@@ -15,7 +15,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
 
     const record = await env.DB.prepare(
       `SELECT id, user_id, expires_at, used_at
-       FROM email_verification_tokens
+       FROM email_verification_tokens_v2
        WHERE token_hash = ?
        LIMIT 1`
     ).bind(tokenHash).first<any>();
@@ -25,7 +25,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     }
 
     const consumed = await env.DB.prepare(
-      `UPDATE email_verification_tokens
+      `UPDATE email_verification_tokens_v2
        SET used_at = ?
        WHERE id = ? AND used_at IS NULL AND expires_at > ?`
     ).bind(now, String(record.id), now).run();
