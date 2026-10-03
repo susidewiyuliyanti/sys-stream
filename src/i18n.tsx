@@ -1059,6 +1059,17 @@ const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
+const DASHBOARD_FINAL_UI: Record<LanguageCode, Record<string,string>> = {
+ id:{'Upload / Create':'Upload / Buat','Claim Bonus':'Klaim Bonus','Buka media terlampir →':'Buka media terlampir →','Buka Live Room':'Buka Live Room','User ID:':'ID Pengguna:','Wallet belum terhubung':'Wallet belum terhubung'},
+ en:{'Upload / Create':'Upload / Create','Claim Bonus':'Claim Bonus','Buka media terlampir →':'Open attached media →','Buka Live Room':'Open Live Room','User ID:':'User ID:','Wallet belum terhubung':'Wallet not connected'},
+ es:{'Upload / Create':'Subir / Crear','Claim Bonus':'Reclamar bono','Buka media terlampir →':'Abrir medio adjunto →','Buka Live Room':'Abrir sala en vivo','User ID:':'ID de usuario:','Wallet belum terhubung':'Wallet no conectado'},
+ pt:{'Upload / Create':'Carregar / Criar','Claim Bonus':'Resgatar bônus','Buka media terlampir →':'Abrir mídia anexada →','Buka Live Room':'Abrir sala ao vivo','User ID:':'ID do usuário:','Wallet belum terhubung':'Carteira não conectada'},
+ zh:{'Upload / Create':'上传 / 创建','Claim Bonus':'领取奖励','Buka media terlampir →':'打开附件媒体 →','Buka Live Room':'打开直播间','User ID:':'用户 ID：','Wallet belum terhubung':'钱包未连接'},
+ ja:{'Upload / Create':'アップロード / 作成','Claim Bonus':'ボーナスを受け取る','Buka media terlampir →':'添付メディアを開く →','Buka Live Room':'ライブルームを開く','User ID:':'ユーザーID：','Wallet belum terhubung':'ウォレット未接続'},
+ ko:{'Upload / Create':'업로드 / 만들기','Claim Bonus':'보너스 받기','Buka media terlampir →':'첨부 미디어 열기 →','Buka Live Room':'라이브 룸 열기','User ID:':'사용자 ID:','Wallet belum terhubung':'지갑이 연결되지 않음'},
+ ar:{'Upload / Create':'رفع / إنشاء','Claim Bonus':'المطالبة بالمكافأة','Buka media terlampir →':'فتح الوسائط المرفقة →','Buka Live Room':'فتح الغرفة المباشرة','User ID:':'معرف المستخدم:','Wallet belum terhubung':'المحفظة غير متصلة'}
+};
+for(const lang of Object.keys(DASHBOARD_FINAL_UI) as LanguageCode[])Object.assign(translations[lang],DASHBOARD_FINAL_UI[lang]);
 const EXTRA_GAME_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Remove':'Hapus','Added to your Inventory!':'Ditambahkan ke Inventaris!'},
  en:{'Remove':'Remove','Added to your Inventory!':'Added to your Inventory!'},
