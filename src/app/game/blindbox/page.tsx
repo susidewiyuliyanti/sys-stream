@@ -383,9 +383,9 @@ export default function BlindboxGamePage() {
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { days: 30, yield: '10%' },
-                    { days: 60, yield: '15%' },
-                    { days: 90, yield: '20%' },
+                    { days: 30 },
+                    { days: 60 },
+                    { days: 90 },
                   ].map((tier) => (
                     <button
                       key={tier.days}
@@ -398,7 +398,7 @@ export default function BlindboxGamePage() {
                       }`}
                     >
                       <div className="text-xs font-bold">{tier.days}d</div>
-                      <div className="text-[9px] font-semibold opacity-85">{tier.yield} Est.</div>
+                      <div className="text-[9px] font-semibold opacity-85">Lock</div>
                     </button>
                   ))}
                 </div>
@@ -415,7 +415,7 @@ export default function BlindboxGamePage() {
           </div>
         </div>
       ) : (
-        /* ACTIVE STAKING DETAILS & EARLY UNLOCK CARD */
+        /* ACTIVE LOCK DETAILS */
         <div className="bg-slate-900/90 border border-emerald-500/30 rounded-3xl p-5 mb-8 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3.5">
