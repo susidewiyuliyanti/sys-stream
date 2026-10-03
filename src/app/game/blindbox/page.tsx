@@ -346,7 +346,7 @@ export default function BlindboxGamePage() {
                   Nominal Lock (IDR)
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
-                  {[4, 50, 100, 250].map((amt) => (
+                  {[50000, 500000, 1000000, 2500000].map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -357,7 +357,7 @@ export default function BlindboxGamePage() {
                           : 'bg-slate-900 border-slate-800 text-slate-300'
                       }`}
                     >
-                      ${amt}
+                      Rp {amt.toLocaleString('id-ID')}
                     </button>
                   ))}
                 </div>
@@ -425,7 +425,7 @@ export default function BlindboxGamePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-white">
-                    Total Locked: ${totalLocked.toFixed(2)} USDT ({dailyQuota} Boxes/Day Quota)
+                    Total Locked: Rp ${totalLocked.toLocaleString('id-ID')} ({dailyQuota} Box/Hari)
                   </h3>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-mono font-bold">
                     Lock Aktif
