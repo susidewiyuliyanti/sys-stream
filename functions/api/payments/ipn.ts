@@ -65,7 +65,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       // balance is canonical IDR. Never credit the crypto amount or raw USD
       // directly into an IDR balance.
       const usdAmount = Number(data.price_amount || tx.amount || 0);
-      const usdToIdr = Number(env.USD_IDR_RATE || 17937);
+      const usdToIdr = 17937;
       const creditedIdr = usdAmount > 0 && Number.isFinite(usdToIdr)
         ? Math.round(usdAmount * usdToIdr)
         : 0;
