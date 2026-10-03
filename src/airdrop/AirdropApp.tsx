@@ -622,7 +622,10 @@ export default function AirdropApp() {
       {tab==='tasks'?<section className="mt-6">
         <div className="mb-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            [['all',AIRDROP_UI[lang].all],['youtube',AIRDROP_UI[lang].youtube],['social',AIRDROP_UI[lang].social],['checkin',AIRDROP_UI[lang].checkin]
+            ['all',AIRDROP_UI[lang].all],
+            ['youtube',AIRDROP_UI[lang].youtube],
+            ['social',AIRDROP_UI[lang].social],
+            ['checkin',AIRDROP_UI[lang].checkin]
           ].map(([key,label])=><button key={key} onClick={()=>setTaskCategory(key as 'all'|'youtube'|'social'|'checkin')} className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-3 text-xs font-bold hover:border-amber-400/40">{label}</button>)}
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
