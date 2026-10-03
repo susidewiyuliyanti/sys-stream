@@ -1059,6 +1059,17 @@ const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
+const EXTRA_GAME_UI: Record<LanguageCode, Record<string,string>> = {
+ id:{'Remove':'Hapus','Added to your Inventory!':'Ditambahkan ke Inventaris!'},
+ en:{'Remove':'Remove','Added to your Inventory!':'Added to your Inventory!'},
+ es:{'Remove':'Eliminar','Added to your Inventory!':'¡Añadido a tu inventario!'},
+ pt:{'Remove':'Remover','Added to your Inventory!':'Adicionado ao seu inventário!'},
+ zh:{'Remove':'移除','Added to your Inventory!':'已添加到您的库存！'},
+ ja:{'Remove':'削除','Added to your Inventory!':'インベントリに追加しました！'},
+ ko:{'Remove':'삭제','Added to your Inventory!':'인벤토리에 추가되었습니다!'},
+ ar:{'Remove':'إزالة','Added to your Inventory!':'تمت الإضافة إلى مخزونك!'}
+};
+for(const lang of Object.keys(EXTRA_GAME_UI) as LanguageCode[])Object.assign(translations[lang],EXTRA_GAME_UI[lang]);
 const FINAL_HARDCODED_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Close':'Tutup','Lock Amount':'Jumlah Lock','Quota:':'Kuota:','Durasi Lock':'Durasi Lock','Lock Aktif':'Lock Aktif','Notifications':'Notifikasi','Edit avatar':'Edit avatar','Submit':'Kirim','Wallet':'Wallet','Minimum withdrawal is':'Minimum penarikan adalah'},
  en:{'Close':'Close','Lock Amount':'Lock Amount','Quota:':'Quota:','Durasi Lock':'Lock Duration','Lock Aktif':'Lock Active','Notifications':'Notifications','Edit avatar':'Edit avatar','Submit':'Submit','Wallet':'Wallet','Minimum withdrawal is':'Minimum withdrawal is'},
