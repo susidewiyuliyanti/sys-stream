@@ -870,6 +870,63 @@ for (const lang of Object.keys(DEPOSIT_UI_TRANSLATIONS) as LanguageCode[]) {
 }
 
 
+
+const FINAL_MISSING_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  id: {
+    'Login':'Masuk','Register':'Daftar','We sent a verification link to ':'Kami mengirim tautan verifikasi ke ','You must verify it before you can log in.':'Anda harus memverifikasi email sebelum login.','Terms & Conditions':'Syarat & Ketentuan',
+    'LOGIN / REGISTER':'MASUK / DAFTAR','Streamer Username Manager':'Pengelola Username Streamer','WIN':'MENANG','Close':'Tutup',
+    'Earn Passive Crypto & Gold Coins':'Dapatkan Crypto & Gold Coins','Anyone registering with your link receives a free ':'Setiap orang yang mendaftar melalui link Anda menerima ',' starter bonus.':' bonus awal gratis.','Unclaimed Commission Balance':'Saldo Komisi Belum Diklaim',
+    'Upload / Create':'Unggah / Buat','Live Room':'Live Room','Login Required':'Login Diperlukan','Loading...':'Memuat...'
+  },
+  en: {
+    'Login':'Login','Register':'Register','We sent a verification link to ':'We sent a verification link to ','You must verify it before you can log in.':'You must verify it before you can log in.','Terms & Conditions':'Terms & Conditions',
+    'LOGIN / REGISTER':'LOGIN / REGISTER','Streamer Username Manager':'Streamer Username Manager','WIN':'WIN','Close':'Close',
+    'Earn Passive Crypto & Gold Coins':'Earn Passive Crypto & Gold Coins','Anyone registering with your link receives a free ':'Anyone registering with your link receives a free ',' starter bonus.':' starter bonus.','Unclaimed Commission Balance':'Unclaimed Commission Balance',
+    'Upload / Create':'Upload / Create','Live Room':'Live Room','Login Required':'Login Required','Loading...':'Loading...'
+  },
+  es: {
+    'Login':'Iniciar sesión','Register':'Registrarse','We sent a verification link to ':'Enviamos un enlace de verificación a ','You must verify it before you can log in.':'Debes verificarlo antes de iniciar sesión.','Terms & Conditions':'Términos y condiciones',
+    'LOGIN / REGISTER':'INICIAR SESIÓN / REGISTRARSE','Streamer Username Manager':'Gestor de nombres de usuario del streamer','WIN':'GANAR','Close':'Cerrar',
+    'Earn Passive Crypto & Gold Coins':'Gana criptomonedas y monedas de oro','Anyone registering with your link receives a free ':'Quien se registre con tu enlace recibe ',' starter bonus.':' de bonificación inicial gratis.','Unclaimed Commission Balance':'Saldo de comisiones no reclamado',
+    'Upload / Create':'Subir / crear','Live Room':'Sala en vivo','Login Required':'Inicio de sesión requerido','Loading...':'Cargando...'
+  },
+  pt: {
+    'Login':'Entrar','Register':'Registrar','We sent a verification link to ':'Enviamos um link de verificação para ','You must verify it before you can log in.':'Você precisa verificar antes de entrar.','Terms & Conditions':'Termos e condições',
+    'LOGIN / REGISTER':'ENTRAR / REGISTRAR','Streamer Username Manager':'Gerenciador de nome do streamer','WIN':'VENCER','Close':'Fechar',
+    'Earn Passive Crypto & Gold Coins':'Ganhe cripto e moedas de ouro','Anyone registering with your link receives a free ':'Quem se registrar pelo seu link recebe ',' starter bonus.':' de bônus inicial grátis.','Unclaimed Commission Balance':'Saldo de comissão não resgatado',
+    'Upload / Create':'Enviar / criar','Live Room':'Sala ao vivo','Login Required':'Login necessário','Loading...':'Carregando...'
+  },
+  zh: {
+    'Login':'登录','Register':'注册','We sent a verification link to ':'我们已将验证链接发送至 ','You must verify it before you can log in.':'登录前必须完成验证。','Terms & Conditions':'条款与条件',
+    'LOGIN / REGISTER':'登录 / 注册','Streamer Username Manager':'主播用户名管理','WIN':'获胜','Close':'关闭',
+    'Earn Passive Crypto & Gold Coins':'赚取加密货币和金币','Anyone registering with your link receives a free ':'通过您的链接注册的用户可获得 ',' starter bonus.':' 新手奖励。','Unclaimed Commission Balance':'未领取的佣金余额',
+    'Upload / Create':'上传 / 创建','Live Room':'直播间','Login Required':'需要登录','Loading...':'加载中...'
+  },
+  ja: {
+    'Login':'ログイン','Register':'登録','We sent a verification link to ':'確認リンクを送信しました：','You must verify it before you can log in.':'ログインする前に確認が必要です。','Terms & Conditions':'利用規約',
+    'LOGIN / REGISTER':'ログイン / 登録','Streamer Username Manager':'ストリーマーユーザー名管理','WIN':'勝利','Close':'閉じる',
+    'Earn Passive Crypto & Gold Coins':'暗号資産とゴールドコインを獲得','Anyone registering with your link receives a free ':'あなたのリンクから登録した人には無料の ',' starter bonus.':' スターターボーナス。','Unclaimed Commission Balance':'未請求コミッション残高',
+    'Upload / Create':'アップロード / 作成','Live Room':'ライブルーム','Login Required':'ログインが必要です','Loading...':'読み込み中...'
+  },
+  ko: {
+    'Login':'로그인','Register':'가입','We sent a verification link to ':'인증 링크를 보냈습니다: ','You must verify it before you can log in.':'로그인하기 전에 이메일을 인증해야 합니다.','Terms & Conditions':'이용약관',
+    'LOGIN / REGISTER':'로그인 / 가입','Streamer Username Manager':'스트리머 사용자명 관리','WIN':'승리','Close':'닫기',
+    'Earn Passive Crypto & Gold Coins':'암호화폐 및 골드 코인 수익','Anyone registering with your link receives a free ':'회원가입한 사용자는 무료 ',' starter bonus.':' 시작 보너스를 받습니다.','Unclaimed Commission Balance':'미청구 커미션 잔액',
+    'Upload / Create':'업로드 / 만들기','Live Room':'라이브 룸','Login Required':'로그인 필요','Loading...':'로드 중...'
+  },
+  ar: {
+    'Login':'تسجيل الدخول','Register':'إنشاء حساب','We sent a verification link to ':'أرسلنا رابط التحقق إلى ','You must verify it before you can log in.':'يجب التحقق قبل تسجيل الدخول.','Terms & Conditions':'الشروط والأحكام',
+    'LOGIN / REGISTER':'تسجيل الدخول / التسجيل','Streamer Username Manager':'إدارة اسم مستخدم البث','WIN':'فوز','Close':'إغلاق',
+    'Earn Passive Crypto & Gold Coins':'اكسب العملات الرقمية والعملات الذهبية','Anyone registering with your link receives a free ':'يحصل كل من يسجل عبر رابطك على ',' starter bonus.':' كمكافأة بداية مجانية.','Unclaimed Commission Balance':'رصيد العمولة غير المطالب به',
+    'Upload / Create':'رفع / إنشاء','Live Room':'الغرفة المباشرة','Login Required':'تسجيل الدخول مطلوب','Loading...':'جارٍ التحميل...'
+  }
+};
+for (const lang of Object.keys(FINAL_MISSING_PAGE_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], FINAL_MISSING_PAGE_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...FINAL_MISSING_PAGE_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
