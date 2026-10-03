@@ -253,7 +253,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
     let cancelled = false;
+    // Promote the existing authenticated token to the shared parent-domain
+    // cookie so sysstreamer.asia and airdrop.sysstreamer.asia use one session.
+    void fetch('/api/auth/session', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { Authorization: `Bearer ${token}` },
+    }).catch(() => {});
+
     fetch('/api/auth/me', {
+      credentials: 'include',
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async response => {
