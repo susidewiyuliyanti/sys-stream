@@ -187,25 +187,32 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lockedBalance,
       }));
 
-      // Load active/history locks from the server. Browser-only lock state is never trusted.
+      // Production lock source of truth is /api/deposits.
+      // Do not call the legacy /api/locks endpoint: it belongs to the old lock schema.
       try {
-        const locksResponse = await fetch('/api/locks', {
+        const depositsResponse = await fetch('/api/deposits', {
+          credentials: 'include',
           headers: { Authorization: `Bearer ${token}` },
         });
-        const locksData = await locksResponse.json().catch(() => ({}));
-        if (locksResponse.ok && Array.isArray(locksData?.locks)) {
-          setLocks(locksData.locks.map((l: any) => ({
-            id: String(l.id),
-            userId: String(l.userId || remote.id),
-            amount: Number(l.amount || 0),
-            durationDays: Number(l.durationDays || 30) as 30 | 60 | 90,
-            multiplier: Number(l.multiplier || 1),
-            startDate: Number(l.startDate || 0),
-            endDate: Number(l.endDate || 0),
-            status: String(l.status || 'locked') as 'locked' | 'unlocked' | 'claimed',
-            dailyClaims: Number(l.dailyClaims || 0),
-            accumulatedYieldCoins: Number(l.accumulatedYieldCoins || 0),
-          })));
+        const depositsData = await depositsResponse.json().catch(() => ({}));
+        if (depositsResponse.ok && depositsData?.success && Array.isArray(depositsData?.deposits)) {
+          setLocks(depositsData.deposits.map((d: any) => {
+            const start = new Date(d.startDate || 0).getTime();
+            const end = new Date(d.endDate || 0).getTime();
+            const amount = Number(d.amount || 0);
+            return {
+              id: String(d.id),
+              userId: String(remote.id),
+              amount,
+              durationDays: Number(d.durationDays || 30) as 30 | 60 | 90,
+              multiplier: 1,
+              startDate: Number.isFinite(start) ? start : 0,
+              endDate: Number.isFinite(end) ? end : 0,
+              status: String(d.status || 'locked') === 'ACTIVE' ? 'locked' : 'unlocked',
+              dailyClaims: Number(d.totalClaimed || 0),
+              accumulatedYieldCoins: Number(d.totalClaimed || 0),
+            };
+          }));
         } else {
           setLocks([]);
         }
