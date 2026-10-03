@@ -33,7 +33,7 @@ const BOX_TIERS: BoxTier[] = [
     description: 'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
-    minLockedRequired: 72000,
+    minLockedRequired: 71748,
     lootPool: [
       { id: 'bb_1', name: 'Tactical Neon Visor', category: 'Skin', rarity: 'common', powerStat: 24, coinValue: 100, usdtReward: 0, iconName: 'Eye' },
       { id: 'bb_2', name: 'Nano-Blade Dagger', category: 'Weapon', rarity: 'common', powerStat: 30, coinValue: 120, usdtReward: 0, iconName: 'Scissors' },
@@ -92,7 +92,7 @@ export default function BlindboxGamePage() {
   const [wonIdr, setWonIdr] = useState<number>(0);
 
   // Staking lock modal/form
-  const [lockIdrAmount, setLockIdrAmount] = useState<number>(72000);
+  const [lockIdrAmount, setLockIdrAmount] = useState<number>(71748);
   const [lockDuration, setLockDuration] = useState<30 | 60 | 90>(30);
 
   // Time until midnight reset
@@ -121,7 +121,7 @@ export default function BlindboxGamePage() {
   const totalLocked = getTotalLockedUsdt();
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
-  const isQualified = totalLocked >= 72000;
+  const isQualified = totalLocked >= 71748;
 
   const activeLocks = locks.filter((l) => l.status === 'locked');
   const primaryLock: LockRecord | undefined = activeLocks[0];
@@ -291,7 +291,7 @@ export default function BlindboxGamePage() {
             <span>$4 equivalent+ Lock</span>
             <span className="text-emerald-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(72000)} ($4 USD equivalent). Maksimal 1 claim per hari.</div>
+          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(71748)} ($4 USD equivalent). Maksimal 1 claim per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -351,7 +351,7 @@ export default function BlindboxGamePage() {
                   Lock Amount
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
-                  {[72000, 720000, 1000000, 2720000].map((amt) => (
+                  {[71748, 720000, 1000000, 2720000].map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -368,14 +368,14 @@ export default function BlindboxGamePage() {
                 </div>
                 <input
                   type="number"
-                  min="72000"
-                  step="10000"
+                  min="71748"
+                  step="0.01"
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
-                  onChange={(e) => setLockIdrAmount(Math.max(72000, toIdr(Number(e.target.value) || 0)))}
+                  onChange={(e) => setLockIdrAmount(Math.max(71748, toIdr(Number(e.target.value) || 0)))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`Lock amount (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(72000)}, kelipatan sesuai aturan server.</div>
+                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(71748)}, dapat dimulai dari nominal setara $4 USD; server memvalidasi minimum.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
@@ -497,7 +497,7 @@ export default function BlindboxGamePage() {
                   <Box className="w-4 h-4 fill-current" />
                   <span>
                     {!isQualified
-                      ? `Lock minimum ${formatMoney(72000)} to activate`
+                      ? `Lock minimum ${formatMoney(71748)} to activate`
                       : remainingBoxes > 0
                       ? `Open Daily Box (${remainingBoxes} Available Today)`
                       : `Daily Limit Reached (Resets in ${timeToReset})`}
