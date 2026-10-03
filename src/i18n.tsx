@@ -2021,7 +2021,7 @@ for (const lang of Object.keys(UI_AUDIT_TRANSLATIONS) as LanguageCode[]) {
   PAGE_UI_TRANSLATIONS[lang] = { ...UI_AUDIT_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 }
 
-"const LIVE_ROOM_TRANSLATIONS": Record<LanguageCode, Record<string, string>> = {
+const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
     "Live Room": "Live Room",
     "Masuk untuk bergabung ke Live Room": "Masuk untuk bergabung ke Live Room",
@@ -2400,7 +2400,7 @@ for (const lang of Object.keys(UI_AUDIT_TRANSLATIONS) as LanguageCode[]) {
 }
 };
 
-"const LIVE_ROOM_COMMON_TRANSLATIONS": Record<LanguageCode, Record<string, string>> = {
+const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
     "LOGIN / REGISTER":"LOGIN / REGISTER","SYS STREAM Live":"SYS STREAM Live","LIVE":"LIVE",
     "Live":"Live","Chat":"Chat","Aksi live room gagal.":"Aksi live room gagal.","Status streaming gagal.":"Status streaming gagal."
