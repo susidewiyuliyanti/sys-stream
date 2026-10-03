@@ -3,7 +3,7 @@ import { requireAuth } from "../../_lib/auth";
 
 function normalizePayCurrency(currency: string) {
   const value = currency.trim().toLowerCase();
-  if (value === "usdt" || value === "usdttrc20" || value === "usdttrc20") return "usdttrc20";
+  if (value === "usdt" || value === "usdttrc20") return "usdttrc20";
   return value;
 }
 
@@ -61,7 +61,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   try {
     const body = await request.json() as { amountUsd?: number; currency?: string };
     const amountUsd = Number(body.amountUsd);
-    const payCurrency = normalizePayCurrency(String(body.currency || "USDT"));
+    const requestedCurrency = String(body.currency || "USDT").trim();
+    const payCurrency = normalizePayCurrency(requestedCurrency);
+    const supportedCurrencies = new Set(["usdttrc20", "btc", "eth", "sol", "trx"]);
+    if (!supportedCurrencies.has(payCurrency)) {
+      return json({ success: false, error: "Mata uang crypto yang dipilih belum didukung untuk deposit." }, 400);
+    }
 
     if (!Number.isFinite(amountUsd) || amountUsd < 5) {
       return json({ success: false, error: "Minimum deposit adalah 5 USD." }, 400);
@@ -80,6 +85,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const orderId = `DEP-${String(auth.user.id)}-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     const ipnUrl = "https://sysstreamer.asia/api/payments/ipn";
     const apiUrl = String((env as any).NOWPAYMENTS_API_URL || "https://api.nowpayments.io/v1/payment").trim();
+    if (!/^https:\/\/api\.nowpayments\.io\/v1\/payment(?:\?.*)?$/i.test(apiUrl)) {
+      console.error("Invalid NOWPayments API URL", { apiUrl });
+      return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
+    }
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
@@ -123,7 +132,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({
         success: false,
         error: safeErrorMessage(data, response.status),
-      }, 502);
+        provider_status: response.status,
+      }, response.status === 400 ? 400 : 502);
     }
 
     const paymentId = data?.payment_id;
@@ -162,6 +172,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         pay_address: String(payAddress),
         pay_amount: Number(data.pay_amount || 0),
         pay_currency: String(data.pay_currency || payCurrency).toUpperCase(),
+        invoice_url: String(data.invoice_url || data.payment_url || ""),
         amount_usd: amountUsd,
         payment_status: String(data.payment_status || "waiting"),
       },
