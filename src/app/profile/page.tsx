@@ -83,10 +83,10 @@ export default function ProfilePage() {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopiedReferral(true);
-      showToast(t('{t('Referral Link')}'), t('Referral link berhasil disalin.'), 'success');
+      showToast(t('Referral Link'), t('Referral link berhasil disalin.'), 'success');
       setTimeout(() => setCopiedReferral(false), 1800);
     } catch {
-      showToast('{t('Referral Link')}', referralLink, 'info');
+      showToast(t('Referral Link'), referralLink, 'info');
     }
   };
 
@@ -320,7 +320,7 @@ export default function ProfilePage() {
 
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-2xl border border-cyan-500/20 bg-slate-950 p-4">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available')} Balance</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available Balance')}</div>
             <div className="text-xl font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
           </div>
           <button onClick={() => set{t('Withdraw')}Open(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
@@ -392,7 +392,7 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-cyan-400 font-bold">
               <Lock className="w-4 h-4" />
-              <span>{t('{t('Locked')} Balance')}</span>
+              <span>{t('Locked Balance')}</span>
             </div>
             <button
               onClick={() =>
