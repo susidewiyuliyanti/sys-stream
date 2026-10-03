@@ -1,7 +1,16 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { createSession, verifyPassword } from "../../_lib/auth";
 
+async function ensureWalletColumn(env: Env) {
+  const columns = await env.DB.prepare("PRAGMA table_info(users)").all();
+  const names = new Set((columns.results || []).map((r:any) => String(r.name)));
+  if (!names.has("wallet_address")) {
+    try { await env.DB.prepare("ALTER TABLE users ADD COLUMN wallet_address TEXT").run(); } catch {}
+  }
+}
+
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
+  await ensureWalletColumn(env);
   try {
     const body = await readJson<{ identifier?: string; username?: string; email?: string; password?: string }>(request);
     const identifier = String(body.identifier ?? body.username ?? body.email ?? "").trim();
