@@ -18,6 +18,28 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
     return { error };
   }
 
+  private reloadWithFreshBundle = () => {
+    // A deployment can briefly leave an older HTML document pointing at chunks
+    // that no longer exist. A cache-busted reload fetches the newest index/bundles.
+    const url = new URL(window.location.href);
+    url.searchParams.set('__sysstream_reload', String(Date.now()));
+    window.location.replace(url.toString());
+  };
+
+  componentDidCatch(error: Error) {
+    const key = 'sysstream:bundle-recovery';
+    const alreadyRetried = sessionStorage.getItem(key) === '1';
+
+    if (!alreadyRetried) {
+      sessionStorage.setItem(key, '1');
+      window.setTimeout(() => this.reloadWithFreshBundle(), 50);
+    } else {
+      sessionStorage.removeItem(key);
+    }
+
+    console.error('[SYS STREAM] Application bundle failed to load:', error);
+  }
+
   render() {
     if (!this.state.error) return this.props.children;
 
@@ -31,7 +53,7 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
           </p>
           <button
             type="button"
-            onClick={() => window.location.reload()}
+            onClick={this.reloadWithFreshBundle}
             className="mt-5 rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950"
           >
             MUAT ULANG
