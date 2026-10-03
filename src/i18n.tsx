@@ -1890,6 +1890,130 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'URL media (opsional)':'رابط الوسائط (اختياري)','Memuat status Mining...':'جارٍ تحميل حالة التعدين…'
   }
 };
+const USER_PAGE_FINAL_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
+  "id": {
+    "Earns passive yield": "Menghasilkan imbal hasil pasif",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "Alamat wallet belum tersedia. Hubungkan wallet terlebih dahulu.",
+    "Copied!": "Tersalin!",
+    "Copy Link": "Salin Link",
+    "All Claimed!": "Semua sudah diklaim!",
+    "Claim Commission to Wallet": "Klaim komisi ke wallet",
+    "You have opened all": "Anda sudah membuka semua",
+    "box(es) for today. Quota resets in": "box hari ini. Kuota reset dalam",
+    "Blind Box Failed": "Blind Box gagal",
+    "Durasi lock tersedia:": "Durasi lock tersedia:",
+    "30 hari": "30 hari",
+    "60 hari": "60 hari",
+    "90 hari": "90 hari"
+  },
+  "en": {
+    "Earns passive yield": "Earns passive yield",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "Wallet address is not available. Connect your wallet first.",
+    "Copied!": "Copied!",
+    "Copy Link": "Copy Link",
+    "All Claimed!": "All Claimed!",
+    "Claim Commission to Wallet": "Claim Commission to Wallet",
+    "You have opened all": "You have opened all",
+    "box(es) for today. Quota resets in": "box(es) for today. Quota resets in",
+    "Blind Box Failed": "Blind Box Failed",
+    "Durasi lock tersedia:": "Available lock durations:",
+    "30 hari": "30 days",
+    "60 hari": "60 days",
+    "90 hari": "90 days"
+  },
+  "es": {
+    "Earns passive yield": "Genera rendimiento pasivo",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "La dirección de wallet no está disponible. Conecta tu wallet primero.",
+    "Copied!": "¡Copiado!",
+    "Copy Link": "Copiar enlace",
+    "All Claimed!": "¡Todo reclamado!",
+    "Claim Commission to Wallet": "Reclamar comisión a la wallet",
+    "You have opened all": "Has abierto todas",
+    "box(es) for today. Quota resets in": "caja(s) de hoy. La cuota se reinicia en",
+    "Blind Box Failed": "Falló Blind Box",
+    "Durasi lock tersedia:": "Duraciones de bloqueo disponibles:",
+    "30 hari": "30 días",
+    "60 hari": "60 días",
+    "90 hari": "90 días"
+  },
+  "pt": {
+    "Earns passive yield": "Gera rendimento passivo",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "O endereço da carteira não está disponível. Conecte sua carteira primeiro.",
+    "Copied!": "Copiado!",
+    "Copy Link": "Copiar link",
+    "All Claimed!": "Tudo reivindicado!",
+    "Claim Commission to Wallet": "Reivindicar comissão para a carteira",
+    "You have opened all": "Você abriu todas",
+    "box(es) for today. Quota resets in": "caixa(s) de hoje. A cota reinicia em",
+    "Blind Box Failed": "Falha no Blind Box",
+    "Durasi lock tersedia:": "Durações de bloqueio disponíveis:",
+    "30 hari": "30 dias",
+    "60 hari": "60 dias",
+    "90 hari": "90 dias"
+  },
+  "zh": {
+    "Earns passive yield": "产生被动收益",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "钱包地址不可用。请先连接钱包。",
+    "Copied!": "已复制！",
+    "Copy Link": "复制链接",
+    "All Claimed!": "全部已领取！",
+    "Claim Commission to Wallet": "领取佣金到钱包",
+    "You have opened all": "你已打开全部",
+    "box(es) for today. Quota resets in": "个今日盲盒，额度将在",
+    "Blind Box Failed": "盲盒失败",
+    "Durasi lock tersedia:": "可用锁定期限：",
+    "30 hari": "30天",
+    "60 hari": "60天",
+    "90 hari": "90天"
+  },
+  "ja": {
+    "Earns passive yield": "パッシブ利回りを獲得",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "ウォレットアドレスがありません。先にウォレットを接続してください。",
+    "Copied!": "コピーしました！",
+    "Copy Link": "リンクをコピー",
+    "All Claimed!": "すべて請求済み！",
+    "Claim Commission to Wallet": "ウォレットへコミッションを請求",
+    "You have opened all": "本日のすべての",
+    "box(es) for today. Quota resets in": "個のボックスを開封しました。リセットまで",
+    "Blind Box Failed": "Blind Boxに失敗しました",
+    "Durasi lock tersedia:": "利用可能なロック期間：",
+    "30 hari": "30日",
+    "60 hari": "60日",
+    "90 hari": "90日"
+  },
+  "ko": {
+    "Earns passive yield": "패시브 수익 발생",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "지갑 주소가 없습니다. 먼저 지갑을 연결하세요.",
+    "Copied!": "복사됨!",
+    "Copy Link": "링크 복사",
+    "All Claimed!": "모두 클레임 완료!",
+    "Claim Commission to Wallet": "지갑으로 커미션 받기",
+    "You have opened all": "오늘의 모든",
+    "box(es) for today. Quota resets in": "개 박스를 열었습니다. 재설정까지",
+    "Blind Box Failed": "Blind Box 실패",
+    "Durasi lock tersedia:": "사용 가능한 Lock 기간:",
+    "30 hari": "30일",
+    "60 hari": "60일",
+    "90 hari": "90일"
+  },
+  "ar": {
+    "Earns passive yield": "يحقق عائداً سلبياً",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "عنوان المحفظة غير متاح. يرجى ربط المحفظة أولاً.",
+    "Copied!": "تم النسخ!",
+    "Copy Link": "نسخ الرابط",
+    "All Claimed!": "تمت المطالبة بالجميع!",
+    "Claim Commission to Wallet": "المطالبة بالعمولة إلى المحفظة",
+    "You have opened all": "لقد فتحت جميع",
+    "box(es) for today. Quota resets in": "صندوق/صناديق اليوم. إعادة الحصة خلال",
+    "Blind Box Failed": "فشل الصندوق الأعمى",
+    "Durasi lock tersedia:": "مدد القفل المتاحة:",
+    "30 hari": "30 يوماً",
+    "60 hari": "60 يوماً",
+    "90 hari": "90 يوماً"
+  }
+};
+for (const lang of Object.keys(USER_PAGE_FINAL_TRANSLATIONS) as LanguageCode[]) Object.assign(UI_AUDIT_TRANSLATIONS[lang], USER_PAGE_FINAL_TRANSLATIONS[lang]);
+
 for (const lang of Object.keys(FINAL_AUDIT_TRANSLATIONS) as LanguageCode[]) Object.assign(UI_AUDIT_TRANSLATIONS[lang], FINAL_AUDIT_TRANSLATIONS[lang]);
 
 for (const lang of Object.keys(UI_AUDIT_TRANSLATIONS) as LanguageCode[]) {
