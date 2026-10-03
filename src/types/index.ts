@@ -82,6 +82,7 @@ export interface CryptoInvoice {
   coinsToCredit: number;
   status: 'waiting' | 'confirming' | 'finished' | 'failed';
   qrCodeUrl: string;
+  invoiceUrl?: string;
   expiresAt: number;
 }
 
