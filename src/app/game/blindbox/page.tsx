@@ -139,7 +139,7 @@ export default function BlindboxGamePage() {
       if (!isQualified) {
         showToast(
           t('Staking Required'),
-          'Anda harus mengunci minimal $4 equivalent untuk membuka Blind Box harian.',
+          t('Anda harus mengunci minimal $4 equivalent untuk membuka Blind Box harian.'),
           'error'
         );
         return;
@@ -496,9 +496,9 @@ export default function BlindboxGamePage() {
                   <Box className="w-4 h-4 fill-current" />
                   <span>
                     {!isQualified
-                      ? `Lock minimum ${formatMoney(71748)} to activate`
+                      ? `${t('Lock minimum')} ${formatMoney(71748)} ${t('to activate')}`
                       : remainingBoxes > 0
-                      ? `Open Daily Box (${remainingBoxes} Available Today)`
+                      ? `${t('Open Daily Box')} (${remainingBoxes} ${t('Available Today')})`
                       : `Daily Limit Reached (Resets in ${timeToReset})`}
                   </span>
                 </button>
@@ -515,7 +515,7 @@ export default function BlindboxGamePage() {
               >
                 <img
                   src="/src/assets/images/blindbox_mystery_chest_1790831279493.jpg"
-                  alt="Unboxing"
+                  alt={t('Unboxing')}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover rounded-xl"
                 />
