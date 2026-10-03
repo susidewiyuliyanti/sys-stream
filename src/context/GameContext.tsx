@@ -65,6 +65,7 @@ const DEFAULT_USER: UserProfile = {
   diamonds: 0,
   vipTier: 0,
   referralCode: '',
+  walletAddress: '',
   registrationBonusIdr: 0,
   registrationBonusGranted: false,
   totalWon: 0,
@@ -174,6 +175,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username: remote.username || remote.displayName || prev.username,
         avatar: remote.avatarUrl || prev.avatar || '',
         referralCode: remote.referralCode || prev.referralCode || '',
+      walletAddress: remote.walletAddress || prev.walletAddress || '',
+        walletAddress: remote.walletAddress || prev.walletAddress || '',
         registrationBonusIdr: Number(remote.registrationBonusIdr ?? prev.registrationBonusIdr ?? 0),
         registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
         coins: Math.round(balance * 100),
@@ -232,6 +235,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username: String(cached.username || prev.username || ''),
             avatar: String(cached.avatar || prev.avatar || ''),
             referralCode: String(cached.referralCode || prev.referralCode || ''),
+        walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
             lockedBalance: Number(cached.lockedBalance ?? prev.lockedBalance ?? 0),
             vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
           }));
@@ -312,6 +316,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       username: user.username,
       avatar: user.avatar,
       referralCode: user.referralCode,
+      walletAddress: user.walletAddress,
       vipTier: user.vipTier,
     }));
     localStorage.removeItem('sys_stream_auth_token');
