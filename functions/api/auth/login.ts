@@ -15,7 +15,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const body = await readJson<{ identifier?: string; username?: string; email?: string; password?: string }>(request);
     const identifier = String(body.identifier ?? body.username ?? body.email ?? "").trim();
     const password = String(body.password ?? "");
-    if (!identifier || password.length < 6) return json({success:false, error:"Username/email dan password minimal 6 karakter wajib diisi."},400);
+    if (!identifier || password.length < 6) return json({success:false, error:"Username atau wallet dan password minimal 6 karakter wajib diisi."},400);
 
     const user = await env.DB.prepare(
       `SELECT id, username, email, password_hash, display_name AS displayName, role,
@@ -25,22 +25,14 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
               wallet_address AS walletAddress,
               referral_code AS referralCode
        FROM users
-       WHERE lower(username)=lower(?) OR lower(email)=lower(?)
+       WHERE lower(username)=lower(?) OR lower(wallet_address)=lower(?) OR lower(email)=lower(?)
        LIMIT 1`
-    ).bind(identifier, identifier).first<any>();
+    ).bind(identifier, identifier, identifier).first<any>();
 
     if (!user || !user.password_hash || !(await verifyPassword(password, user.password_hash))) {
-      return json({success:false, error:"Username/email atau password salah."},401);
+      return json({success:false, error:"Username atau wallet atau password salah."},401);
     }
 
-    if (Number(user.emailVerified || 0) !== 1) {
-      return json({
-        success:false,
-        code:"EMAIL_NOT_VERIFIED",
-        error:"Email Anda belum diverifikasi. Silakan cek inbox atau kirim ulang email verifikasi.",
-        email:user.email
-      },403);
-    }
 
     const token = await createSession(env, String(user.id));
     return new Response(JSON.stringify({
