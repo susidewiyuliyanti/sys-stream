@@ -230,6 +230,8 @@ function typeLabel(type:TaskType,tx:Record<string,string>) {
 
 export default function AirdropApp() {
   const [selectedTask,setSelectedTask]=useState<Task|null>(null);
+  const [authChecked,setAuthChecked]=useState(false);
+  const [authenticated,setAuthenticated]=useState(false);
   const [menuOpen,setMenuOpen]=useState(false);
   const [tab,setTab]=useState<'tasks'|'submissions'>('tasks');
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
@@ -243,6 +245,24 @@ export default function AirdropApp() {
   const tx=COPY[lang];
 
   useEffect(()=>{ document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; },[lang]);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' })
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (!active) return;
+        setAuthenticated(Boolean(response.ok && data?.success && data?.user));
+        setAuthChecked(true);
+      })
+      .catch(() => {
+        if (!active) return;
+        setAuthenticated(false);
+        setAuthChecked(true);
+      });
+    return () => { active = false; };
+  }, []);
+
+
   useEffect(()=>{
     let active=true;
     const load=async()=>{
@@ -260,6 +280,21 @@ export default function AirdropApp() {
 
   const availableTasks=useMemo(()=>TASKS,[]);
   const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};};
+
+  if (!authChecked) {
+    return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center"><div className="text-sm text-slate-400">Memeriksa sesi login...</div></div>;
+  }
+
+  if (!authenticated) {
+    return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-7 text-center">
+        <div className="text-xs font-black tracking-[0.2em] text-amber-400">SYS STREAM AIRDROP</div>
+        <h1 className="mt-3 text-2xl font-black text-white">Sesi login diperlukan</h1>
+        <p className="mt-2 text-sm text-slate-400">Login di SYS STREAM berlaku juga untuk Airdrop. Anda tidak perlu membuat akun atau login kedua.</p>
+        <a href="https://sysstreamer.asia/#/login?return=/airdrop" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-amber-400 px-4 py-3 font-black text-slate-950">Login SYS STREAM</a>
+      </div>
+    </div>;
+  }
 
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
