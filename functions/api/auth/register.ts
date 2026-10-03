@@ -211,8 +211,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       return json({ success: false, error: "Email sudah terdaftar." }, 409);
     }
 
-    const id = crypto.randomUUID();
+    const idColumn = (columns.results || []).find((r:any) => String(r.name) === "id") as any;
+    const legacyIntegerId = !!idColumn && String(idColumn.type || "").toUpperCase().includes("INT") && Number(idColumn.pk) === 1;
+    let id = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
+
     const emailLocalPart = email.split("@")[0]
       .replace(/[^a-zA-Z0-9_]/g, "_")
       .replace(/^_+|_+$/g, "")
@@ -231,11 +234,42 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       crypto.randomUUID().slice(0, 6).toUpperCase();
     const acceptedAt = Math.floor(Date.now() / 1000);
 
-    // Create the account first. This is the critical transaction.
-    // Secondary records are written afterwards so a non-critical record
-    // cannot turn a successfully-created account into a generic 500.
-    await env.DB.prepare(
-      \`INSERT INTO users(
+    // Legacy production D1 can use INTEGER PRIMARY KEY for users.id.
+    // Let SQLite allocate that id instead of binding a UUID into it.
+    if (legacyIntegerId) {
+      await env.DB.prepare(`INSERT INTO users(`
+        username,email,password_hash,password,display_name,photo_url,role,
+        available_balance,balance,saldo,wallet_balance,total_locked,locked_saldo,
+        referral_code,referred_by,created_at,updated_at,
+        terms_version,terms_accepted_at,email_verified,email_verified_at,
+        registration_bonus_idr,registration_bonus_granted,has_referral_bonus,
+        cuid,referral_count,affiliate_earnings,affiliate_withdrawn,
+        is_subscribed,subscription_plan,is_lifetime,is_blacklisted,is_banned,
+        force_jackpot_next
+      )
+      VALUES(
+        ?,?,?,?,?,?,'USER',
+        0,0,0,0,0,0,
+        ?,?,?,?,
+        ?,?,0,NULL,
+        15000,1,0,
+        ?,0,0,0,
+        0,'free',0,0,0,
+        0
+      )`).bind(
+        username,email,passwordHash,passwordHash,displayName,"",
+        userReferralCode,incomingReferralCode || null,acceptedAt,acceptedAt,
+        TERMS_VERSION,acceptedAt,crypto.randomUUID(),
+      ).run();
+      const created = await env.DB.prepare(
+        "SELECT id FROM users WHERE lower(email)=lower(?) LIMIT 1"
+      ).bind(email).first<any>();
+      if (!created || created.id === undefined || created.id === null) {
+        throw new Error("LEGACY_USER_ID_NOT_FOUND_AFTER_INSERT");
+      }
+      id = String(created.id);
+    } else {
+      await env.DB.prepare(`INSERT INTO users(`
         id,username,email,password_hash,password,display_name,photo_url,role,
         available_balance,balance,saldo,wallet_balance,total_locked,locked_saldo,
         referral_code,referred_by,created_at,updated_at,
@@ -246,7 +280,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         force_jackpot_next
       )
       VALUES(
-        ?,?,?,?,?,?,?,'USER',
+        ?,?,?,?,?,?,'USER',
         0,0,0,0,0,0,
         ?,?,?,?,
         ?,?,0,NULL,
@@ -254,24 +288,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         ?,0,0,0,
         0,'free',0,0,0,
         0
-      )\`
-    ).bind(
-      id,
-      username,
-      email,
-      passwordHash,
-      passwordHash,
-      displayName,
-      "",
-      userReferralCode,
-      incomingReferralCode || null,
-      acceptedAt,
-      acceptedAt,
-      TERMS_VERSION,
-      acceptedAt,
-      id,
-    ).run();
-
+      )`).bind(
+        id,username,email,passwordHash,passwordHash,displayName,"",
+        userReferralCode,incomingReferralCode || null,acceptedAt,acceptedAt,
+        TERMS_VERSION,acceptedAt,id,
+      ).run();
+    }
     // Terms acceptance is required by the API contract. If the auxiliary
     // audit record fails, keep the account and report a trackable server error.
     try {
