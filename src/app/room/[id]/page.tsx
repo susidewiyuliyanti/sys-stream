@@ -157,8 +157,8 @@ export default function Room({
           <div className="flex items-center gap-3 min-w-0">
             <Radio className="w-5 h-5 text-pink-500 shrink-0" />
             <div className="min-w-0">
-              <div className="font-black truncate">{room?.title || "Live Room"}</div>
-              <div className="text-[11px] text-slate-500 truncate">Room: {effectiveRoomId}</div>
+              <div className="font-black truncate">{room?.title || t('Live Room')}</div>
+              <div className="text-[11px] text-slate-500 truncate">{t('Room')}: {effectiveRoomId}</div>
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs text-slate-300">
@@ -174,7 +174,7 @@ export default function Room({
             <section className="aspect-video rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden">
               <div className="text-center px-6">
                 <Radio className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
-                <h2 className="font-black text-lg">{room?.status === "LIVE" ? "{t('Live Room Aktif')}" : "{t('Live belum aktif')}"}</h2>
+                <h2 className="font-black text-lg">{room?.status === "LIVE" ? t('Live Room Aktif') : t('Live belum aktif')}</h2>
                 <p className="text-sm text-slate-500 mt-2">
                   Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.
                 </p>
@@ -258,7 +258,7 @@ export default function Room({
                     value={chatInput}
                     onChange={e => setChatInput(e.target.value)}
                     maxLength={1000}
-                    placeholder={`Tulis sebagai @${displayCurrentName}`}
+                    placeholder={`${t('Tulis sebagai')} @${displayCurrentName}`}
                     className="flex-1 min-w-0 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-xs outline-none focus:border-cyan-400"
                   />
                   <button disabled={sending || !chatInput.trim()} className="rounded-xl bg-cyan-500 text-slate-950 px-3 disabled:opacity-40">
