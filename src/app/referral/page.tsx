@@ -7,7 +7,6 @@ import confetti from 'canvas-confetti';
 export default function ReferralPage() {
   const { user, claimReferralRewards, showToast } = useGame();
   const [copiedLink, setCopiedLink] = useState(false);
-  const [copiedCode, setCopiedCode] = useState(false);
   const [pendingClaim, setPendingClaim] = useState({ coins: 380, diamonds: 12 });
   const [isClaimed, setIsClaimed] = useState(false);
 
@@ -29,14 +28,6 @@ export default function ReferralPage() {
     showToast('Copied Link', 'Referral link copied to clipboard!', 'info');
   };
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(user.referralCode);
-    setCopiedCode(true);
-    sound.playClick();
-    setTimeout(() => setCopiedCode(false), 2000);
-    showToast('Copied Code', `Referral code ${user.referralCode} copied!`, 'info');
-  };
-
   const handleClaim = () => {
     if (pendingClaim.coins === 0 && pendingClaim.diamonds === 0) {
       showToast('No Pending Rewards', 'All referral commissions have already been transferred.', 'info');
@@ -50,13 +41,6 @@ export default function ReferralPage() {
   };
 
   const estMonthlyEarnings = Math.floor(calcFriends * calcWagerPerFriend * 0.05);
-
-  const mockReferees = [
-    { id: '1', username: 'PixelKnight', date: '2026-09-30', tier: 1, volume: '4,500 Coins', commission: '+225 Coins' },
-    { id: '2', username: 'VortexHunter', date: '2026-09-29', tier: 1, volume: '2,100 Coins', commission: '+105 Coins' },
-    { id: '3', username: 'SolarFlare', date: '2026-09-28', tier: 2, volume: '1,800 Coins', commission: '+45 Coins' },
-    { id: '4', username: 'ZeroGravity', date: '2026-09-27', tier: 3, volume: '3,200 Coins', commission: '+32 Coins' },
-  ];
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -99,14 +83,10 @@ export default function ReferralPage() {
 
             {/* Referral Code Quick Copy */}
             <div className="flex items-center gap-3 text-xs text-slate-400">
-              <span>Referral ID:</span>
-              <button
-                onClick={copyCode}
-                className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md hover:border-amber-500/50 transition-colors flex items-center gap-1.5"
-              >
-                <span>{user.referralCode}</span>
-                {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              </button>
+              <span>Wallet ID:</span>
+              <span className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md truncate max-w-full">
+                {walletAddress || 'Wallet belum terhubung'}
+              </span>
             </div>
           </div>
 
@@ -170,7 +150,7 @@ export default function ReferralPage() {
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
             <span className="text-slate-400">Active Referees:</span>
-            <span className="font-mono text-white font-bold">32 Players</span>
+            <span className="font-mono text-white font-bold">Data produksi</span>
           </div>
         </div>
 
@@ -187,7 +167,7 @@ export default function ReferralPage() {
           </p>
           <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs">
             <span className="text-slate-400">Active Referees:</span>
-            <span className="font-mono text-white font-bold">58 Players</span>
+            <span className="font-mono text-white font-bold">Data produksi</span>
           </div>
         </div>
       </div>
@@ -249,7 +229,7 @@ export default function ReferralPage() {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="p-4 border-b border-slate-800 flex justify-between items-center">
           <h3 className="text-sm font-bold text-white">Live Referral Feed</h3>
-          <span className="text-xs text-slate-400">Total Referrals: 104</span>
+          <span className="text-xs text-slate-400">Referral milik wallet ini</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
@@ -263,27 +243,11 @@ export default function ReferralPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono">
-              {mockReferees.map(row => (
-                <tr key={row.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-3.5 px-4 font-sans font-semibold text-white">
-                    {row.username}
-                  </td>
-                  <td className="py-3.5 px-4 text-slate-400">
-                    {row.date}
-                  </td>
-                  <td className="py-3.5 px-4 font-sans">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-amber-400 text-[11px] font-semibold">
-                      Tier {row.tier}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-slate-300">
-                    {row.volume}
-                  </td>
-                  <td className="py-3.5 px-4 text-right font-bold text-emerald-400">
-                    {row.commission}
-                  </td>
-                </tr>
-              ))}
+              <tr>
+                <td colSpan={5} className="py-8 px-4 text-center text-slate-500">
+                  Belum ada data referral produksi untuk wallet ini.
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
