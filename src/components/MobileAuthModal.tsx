@@ -108,52 +108,64 @@ export const MobileAuthModal: React.FC = () => {
 
   const handleWalletAuth = async () => {
     if (isSubmitting) return;
-
     setIsSubmitting(true);
     setVerificationNotice('');
-
     try {
       const ethereum = (window as any).ethereum;
-      if (!ethereum) {
-        throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
-      }
+      if (!ethereum) throw new Error('EVM wallet tidak ditemukan. Install MetaMask atau wallet EVM yang kompatibel.');
 
       const accounts = (await ethereum.request({ method: 'eth_requestAccounts' })) as string[];
-      const wallet = String(accounts?.[0] || '').toLowerCase();
-      if (!wallet) throw new Error('Wallet address tidak ditemukan.');
+      const walletAddress = String(accounts?.[0] || '').trim();
+      if (!walletAddress) throw new Error('Wallet address tidak ditemukan.');
 
-      const nonceRes = await fetch('/api/auth/wallet/nonce', {
+      const challengeRes = await fetch('/api/auth/web3/challenge', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet }),
+        body: JSON.stringify({ walletAddress }),
       });
-      const nonceData = await nonceRes.json().catch(() => ({}));
-      if (!nonceRes.ok || !nonceData?.nonce) {
-        throw new Error(nonceData?.error || 'Gagal membuat nonce wallet.');
+      const challengeData = await challengeRes.json().catch(() => ({}));
+      if (!challengeRes.ok || !challengeData?.success || !challengeData?.challengeId || !challengeData?.message) {
+        throw new Error(challengeData?.error || 'Gagal membuat challenge wallet.');
       }
 
-      const message = 'SYS STREAMER LOGIN\\n\\nNonce:' + String(nonceData.nonce);
+      const challengeWallet = String(challengeData.walletAddress || walletAddress).trim();
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [message, wallet],
+        params: [String(challengeData.message), challengeWallet],
       });
 
-      const verifyRes = await fetch('/api/auth/wallet/verify', {
+      const loginRes = await fetch('/api/auth/web3/login', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet, signature, message }),
+        body: JSON.stringify({
+          challengeId: String(challengeData.challengeId),
+          walletAddress: challengeWallet,
+          message: String(challengeData.message),
+          signature: String(signature),
+        }),
       });
-      const verifyData = await verifyRes.json().catch(() => ({}));
-
-      if (!verifyRes.ok || !verifyData?.token || !verifyData?.user) {
-        throw new Error(verifyData?.error || 'Verifikasi tanda tangan wallet gagal.');
+      const loginData = await loginRes.json().catch(() => ({}));
+      if (!loginRes.ok || !loginData?.success || !loginData?.token || !loginData?.user) {
+        throw new Error(loginData?.error || 'Verifikasi tanda tangan wallet gagal.');
       }
 
-      localStorage.setItem('sys_stream_auth_token', String(verifyData.token));
-      localStorage.setItem('sys_stream_auth_user', JSON.stringify(verifyData.user));
-      login(verifyData.user?.username || `WEB3_${wallet.slice(2, 8).toUpperCase()}`);
+      const user = loginData.user;
+      localStorage.setItem('sys_stream_auth_token', String(loginData.token));
+      localStorage.setItem('sys_stream_auth_user', JSON.stringify(user));
+      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+        id: user.id,
+        username: user.username || user.displayName || '',
+        avatar: user.avatarUrl || '',
+        referralCode: user.referralCode || '',
+        walletAddress: user.walletAddress || challengeWallet,
+        registrationBonusIdr: Number(user.registrationBonusIdr || 0),
+        registrationBonusGranted: Boolean(user.registrationBonusGranted),
+      }));
+      localStorage.setItem('sys_is_logged_in', 'true');
+      login(user.walletAddress || challengeWallet);
+      setLoginModalOpen(false);
     } catch (error) {
       console.error('EVM wallet authentication failed', error);
       setVerificationNotice(error instanceof Error ? error.message : 'Login wallet gagal.');
@@ -161,7 +173,6 @@ export const MobileAuthModal: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
       {/* Translucent Cyberpunk Glass Card matching Screenshot 1 */}
