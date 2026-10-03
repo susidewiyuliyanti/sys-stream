@@ -32,7 +32,7 @@ export default function ProfilePage() {
   const {
     user,
     locks,
-    getTotal{t('Locked')}Usdt,
+    getTotalLockedUsdt,
     updateAvatar,
     updateUsername,
     updateProfile,
