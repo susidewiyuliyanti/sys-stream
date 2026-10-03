@@ -280,7 +280,7 @@ export default function ProfilePage() {
                     showToast('Wallet', t('Alamat wallet berhasil disalin.'), 'success');
                   }}
                   className="shrink-0 p-2 rounded-xl border border-slate-700 text-cyan-400 hover:border-cyan-400"
-                  title="Copy wallet address"
+                  title={t('Copy wallet address')}
                 >
                   <Copy className="w-4 h-4" />
                 </button>
@@ -313,7 +313,7 @@ export default function ProfilePage() {
               <div className="text-xs text-slate-400 mt-1">{t('Bonus tersedia dan belum diklaim.')}</div>
             </div>
             <button disabled={claimingBonus} onClick={() => void handleClaimBonus()} className="px-5 py-3 rounded-2xl bg-emerald-400 text-slate-950 font-black hover:bg-emerald-300 disabled:opacity-50">
-              {claimingBonus ? 'Processing...' : 'Claim Bonus'}
+              {claimingBonus ? t('Processing...') : t('Claim Bonus')}
             </button>
           </div>
         )}
@@ -414,7 +414,7 @@ export default function ProfilePage() {
               {totalLockedUsdt.toFixed(2)} USDT
             </div>
             <div className="text-xs text-slate-400 mt-1">
-              {t('Locked')} • Earns passive yield
+              {t('Locked')} • {t('Earns passive yield')}
             </div>
           </div>
 
