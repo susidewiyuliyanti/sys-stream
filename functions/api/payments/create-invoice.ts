@@ -268,7 +268,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // Validate the merchant/API configuration and the selected pair before POST /payment.
     // This prevents avoidable HTTP 400 responses caused by an unavailable currency,
     // a dynamic minimum, or an invalid NOWPayments account configuration.
-    const preflight = await preflightNowPayments(apiUrl.replace(/\\/payment(?:\\?.*)?$/i, ""), apiKey, payCurrency, amountUsd);
+    const preflight = await preflightNowPayments(apiUrl.replace(/\/payment(?:\?.*)?$/i, ""), apiKey, payCurrency, amountUsd);
     if (!preflight.ok) {
       console.error("NOWPayments preflight rejected payment", {
         stage: preflight.stage,
