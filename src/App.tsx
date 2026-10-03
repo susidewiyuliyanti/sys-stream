@@ -162,16 +162,30 @@ export default function App() {
         {/* Global Toast Alerts */}
         <ToastContainer />
 
-        {/* Minimal Legal Footer */}
-        <footer className="border-t border-slate-900 bg-slate-950 py-5 px-4 text-xs text-slate-500">
-          <div className="max-w-6xl mx-auto flex items-center justify-center gap-5">
-            <a href="#/terms" className="hover:text-cyan-400 transition-colors">
-              Terms &amp; Conditions
-            </a>
-            <span className="text-slate-700">•</span>
-            <a href="#/privacy" className="hover:text-cyan-400 transition-colors">
-              Privacy Policy
-            </a>
+        {/* About Us + Legal Footer */}
+        <footer className="border-t border-slate-900 bg-slate-950 py-8 px-4 text-xs text-slate-500">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 mb-7">
+              <div>
+                <div className="text-sm font-black text-slate-200 mb-2">About Us</div>
+                <p className="leading-5">SYS STREAM adalah platform live, social interaction, dan game/event yang menghubungkan streamer dengan komunitas secara real-time.</p>
+              </div>
+              <div>
+                <div className="text-sm font-black text-slate-200 mb-2">Official Streamer Partner</div>
+                <p className="leading-5">SYS STREAM bekerja sama dengan streamer terpilih. Official Streamer Partner menggunakan akun platform mereka untuk membuat dan mengelola room sesuai hak akses yang diberikan.</p>
+              </div>
+              <div>
+                <div className="text-sm font-black text-slate-200 mb-2">Untuk Streamer</div>
+                <p className="leading-5">Streamer yang ingin bekerja sama dengan SYS STREAM dapat menghubungi tim platform untuk proses seleksi dan kerja sama.</p>
+              </div>
+            </div>
+            <div className="border-t border-slate-900 pt-5 flex flex-wrap items-center justify-center gap-5">
+              <span>© {new Date().getFullYear()} SYS STREAM</span>
+              <span className="text-slate-700">•</span>
+              <a href="#/terms" className="hover:text-cyan-400 transition-colors">Terms &amp; Conditions</a>
+              <span className="text-slate-700">•</span>
+              <a href="#/privacy" className="hover:text-cyan-400 transition-colors">Privacy Policy</a>
+            </div>
           </div>
         </footer>
       </div>
