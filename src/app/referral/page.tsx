@@ -186,7 +186,7 @@ export default function ReferralPage() {
             <div>
               <div className="flex justify-between text-xs text-slate-300 mb-1.5">
                 <span>{t('Active Friends Invited:')}</span>
-                <span className="font-mono font-bold text-amber-400">{calcFriends} {t('Active Friends Invited:')}</span>
+                <span className="font-mono font-bold text-amber-400">{calcFriends}</span>
               </div>
               <input
                 type="range"
