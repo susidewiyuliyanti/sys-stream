@@ -1059,6 +1059,17 @@ const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
+const FINAL_HARDCODED_UI: Record<LanguageCode, Record<string,string>> = {
+ id:{'Close':'Tutup','Lock Amount':'Jumlah Lock','Quota:':'Kuota:','Durasi Lock':'Durasi Lock','Lock Aktif':'Lock Aktif','Notifications':'Notifikasi','Edit avatar':'Edit avatar','Submit':'Kirim','Wallet':'Wallet','Minimum withdrawal is':'Minimum penarikan adalah'},
+ en:{'Close':'Close','Lock Amount':'Lock Amount','Quota:':'Quota:','Durasi Lock':'Lock Duration','Lock Aktif':'Lock Active','Notifications':'Notifications','Edit avatar':'Edit avatar','Submit':'Submit','Wallet':'Wallet','Minimum withdrawal is':'Minimum withdrawal is'},
+ es:{'Close':'Cerrar','Lock Amount':'Monto de bloqueo','Quota:':'Cuota:','Durasi Lock':'Duración del bloqueo','Lock Aktif':'Bloqueo activo','Notifications':'Notificaciones','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Billetera','Minimum withdrawal is':'El retiro mínimo es'},
+ pt:{'Close':'Fechar','Lock Amount':'Valor do bloqueio','Quota:':'Cota:','Durasi Lock':'Duração do bloqueio','Lock Aktif':'Bloqueio ativo','Notifications':'Notificações','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Carteira','Minimum withdrawal is':'O saque mínimo é'},
+ zh:{'Close':'关闭','Lock Amount':'锁定金额','Quota:':'额度：','Durasi Lock':'锁定时长','Lock Aktif':'锁定已启用','Notifications':'通知','Edit avatar':'编辑头像','Submit':'提交','Wallet':'钱包','Minimum withdrawal is':'最低提现金额为'},
+ ja:{'Close':'閉じる','Lock Amount':'ロック額','Quota:':'上限：','Durasi Lock':'ロック期間','Lock Aktif':'ロック有効','Notifications':'通知','Edit avatar':'アバターを編集','Submit':'送信','Wallet':'ウォレット','Minimum withdrawal is':'最低出金額は'},
+ ko:{'Close':'닫기','Lock Amount':'잠금 금액','Quota:':'한도:','Durasi Lock':'잠금 기간','Lock Aktif':'잠금 활성','Notifications':'알림','Edit avatar':'아바타 편집','Submit':'제출','Wallet':'지갑','Minimum withdrawal is':'최소 출금액은'},
+ ar:{'Close':'إغلاق','Lock Amount':'مبلغ القفل','Quota:':'الحصة:','Durasi Lock':'مدة القفل','Lock Aktif':'القفل نشط','Notifications':'الإشعارات','Edit avatar':'تعديل الصورة','Submit':'إرسال','Wallet':'المحفظة','Minimum withdrawal is':'الحد الأدنى للسحب هو'}
+};
+for(const lang of Object.keys(FINAL_HARDCODED_UI) as LanguageCode[])Object.assign(translations[lang],FINAL_HARDCODED_UI[lang]);
 const AIRDROP_STATUS_LABELS: Record<LanguageCode, Record<string,string>> = {
  id:{'Task':'Tugas','Open Task':'Buka Tugas','Pending':'Menunggu','Approved':'Disetujui','Rejected':'Ditolak','Paid':'Dibayar'},
  en:{'Task':'Task','Open Task':'Open Task','Pending':'Pending','Approved':'Approved','Rejected':'Rejected','Paid':'Paid'},
