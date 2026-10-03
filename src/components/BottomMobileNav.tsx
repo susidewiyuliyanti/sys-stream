@@ -4,6 +4,7 @@ import { useLanguage } from '../i18n';
 import {
   Home,
   TrendingUp,
+  Pickaxe,
   Trophy,
   User,
   Radio,
@@ -19,7 +20,7 @@ export const BottomMobileNav: React.FC<BottomMobileNavProps> = ({ currentPath, n
   const { t } = useLanguage();
   const tabs = [
     { label: t('Home'), path: '/dashboard', icon: Home },
-    { label: t('Earn'), path: '/game/blindbox', icon: TrendingUp },
+    { label: t('Mining'), path: '/game/mining', icon: Pickaxe },
     { label: t('Board'), path: '/leaderboard', icon: Trophy },
     { label: t('Profile'), path: '/profile', icon: User },
   ];
