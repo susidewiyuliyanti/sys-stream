@@ -24,8 +24,6 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [estimatedCrypto, setEstimatedCrypto] = useState<number | null>(null);
   const [isCheckingRules, setIsCheckingRules] = useState<boolean>(false);
 
-  if (!isOpen) return null;
-
   useEffect(() => {
     if (!isOpen) return;
     let cancelled = false;
@@ -46,6 +44,8 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
       .finally(() => { if (!cancelled) setIsCheckingRules(false); });
     return () => { cancelled = true; };
   }, [isOpen, selectedCurrency, selectedUsd, customUsd]);
+
+  if (!isOpen) return null;
 
   const currencies = [
     { code: 'USDT', name: 'Tether (TRC20)', icon: '₮' },
