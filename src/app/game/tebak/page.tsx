@@ -82,7 +82,7 @@ export default function TebakGamePage() {
         if (allMatched) {
           sound.playJackpot();
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
-          showToast(t('Card Cracked!'), `${t('All concealed digits matched!')} ${t('Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.')}`, 'jackpot');
+          showToast(t('Card Cracked!'), `${t('All concealed digits matched!')} ${t('Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.')}`, 'success');
         } else {
           sound.playClick();
           showToast(t('Guess Missed'), `${matchedCount}/${concealedCount} ${t('Matched digits. Try another prediction!')}`, 'info');
@@ -97,9 +97,6 @@ export default function TebakGamePage() {
         addGameHistory({
           gameType: 'tebak',
           gameName: 'Crypto Card Number Guess',
-          betAmount: 0,
-          payoutAmount: 0,
-          multiplier: 0,
           betAmount: 0,
           payoutAmount: 0,
           multiplier: 0,
