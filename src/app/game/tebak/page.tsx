@@ -100,6 +100,9 @@ export default function TebakGamePage() {
           betAmount: 0,
           payoutAmount: 0,
           multiplier: 0,
+          betAmount: 0,
+          payoutAmount: 0,
+          multiplier: 0,
           isWin: allMatched,
           details: `${cryptoCard.serialNumber} (${matchedCount}/${concealedCount} digits matched)`,
         });
