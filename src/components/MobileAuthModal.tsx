@@ -294,12 +294,12 @@ export const MobileAuthModal: React.FC = () => {
           className="w-full py-3 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/50 hover:border-cyan-400 text-cyan-300 font-bold text-xs rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
         >
           <Wallet className="w-4 h-4 text-cyan-400" />
-          <span>Connect Wallet</span>
+          <span>{t('Login with Wallet')}</span>
         </button>
 
         {/* Register Prompt */}
         <div className="text-center mt-4 text-xs text-slate-400">
-          <span>Don't have an account? </span>
+          <span>{t("Don't have an account?")} </span>
           <button
             type="button"
             onClick={() => { sound.playClick(); setAuthMode('register'); }}
@@ -312,10 +312,10 @@ export const MobileAuthModal: React.FC = () => {
         {/* Security Footer Badges */}
         <div className="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-slate-900 text-[10px] text-slate-500">
           <span className="flex items-center gap-1">
-            <Shield className="w-3.5 h-3.5 text-cyan-400" /> Secured with Web3
+            <Shield className="w-3.5 h-3.5 text-cyan-400" /> {t('Secured with Web3')}
           </span>
           <span className="flex items-center gap-1">
-            <Fingerprint className="w-3.5 h-3.5 text-purple-400" /> Biometric Login Available
+            <Fingerprint className="w-3.5 h-3.5 text-purple-400" /> {t('Biometric Login Available')}
           </span>
         </div>
       </div>
