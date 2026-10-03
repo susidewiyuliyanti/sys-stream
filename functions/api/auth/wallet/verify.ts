@@ -1,5 +1,5 @@
 import { verifyMessage } from "ethers";
-import { createAuthCookie } from "../../../_lib/auth";
+import { createAuthCookie, createSession } from "../../../_lib/auth";
 
 export async function onRequestPost(context:any){
   try {
