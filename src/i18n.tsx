@@ -362,6 +362,123 @@ const COMMON_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'NOWPayments Crypto Deposit':'إيداع العملات المشفرة عبر NOWPayments','Instant deposit with zero platform fees':'إيداع فوري بدون رسوم منصة','Create NOWPayments Invoice':'إنشاء فاتورة NOWPayments','Available Balance':'الرصيد المتاح','Transaction History':'سجل المعاملات','Withdraw USDT':'سحب USDT','Submit Withdrawal':'إرسال طلب السحب','Wallet':'المحفظة','Referral Link':'رابط الإحالة','Event Participation Status':'حالة المشاركة في الفعالية','Refresh':'تحديث','Loading...':'جارٍ التحميل...','Processing...':'جارٍ المعالجة...','Edit':'تعديل','Logout':'تسجيل الخروج','Member':'عضو','USDT Account':'حساب USDT','Join Live Room':'الانضمام إلى الغرفة المباشرة','Chat':'الدردشة','Send':'إرسال','Type a message':'اكتب رسالة'
   },
 };
+
+// Global UI coverage for all application pages. These keys are also used by the
+// DOM fallback so pages that still contain legacy hardcoded labels follow the
+// selected language immediately.
+const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'SYS STREAM LOADING':'SYS STREAM MEMUAT','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Menginisialisasi sinkronisasi TikTok Live + koneksi Cloudflare D1',
+    'Live Room':'Live Room','Live Room Aktif':'Live Room Aktif','Live belum aktif':'Live belum aktif',
+    'Masuk untuk bergabung ke Live Room':'Masuk untuk bergabung ke Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Setiap akun memiliki profil dan identitasnya sendiri di dalam room.',
+    'Peserta Live':'Peserta Live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Hanya akun yang benar-benar bergabung yang ditampilkan.',
+    'Memuat peserta...':'Memuat peserta...','Belum ada peserta lain.':'Belum ada peserta lain.','Belum ada peserta.':'Belum ada peserta.',
+    'Profil akun Anda':'Profil akun Anda','Belum ada deskripsi room dari pemilik room.':'Belum ada deskripsi room dari pemilik room.',
+    'Hanya data live produksi yang ditampilkan.':'Hanya data live produksi yang ditampilkan.','Tidak ada video atau streamer contoh.':'Tidak ada video atau streamer contoh.',
+    'LOGIN / REGISTER':'MASUK / DAFTAR','CHAT':'CHAT','PESERTA':'PESERTA','Kirim':'Kirim','Tulis pesan':'Tulis pesan',
+    'Like gagal dikirim.':'Like gagal dikirim.','Gagal memuat live room.':'Gagal memuat live room.','Aksi live room gagal.':'Aksi live room gagal.',
+    'Minimum withdrawal is':'Minimum penarikan adalah','Masukkan alamat wallet tujuan.':'Masukkan alamat wallet tujuan.','Saldo tersedia tidak mencukupi.':'Saldo tersedia tidak mencukupi.',
+    'Penarikan gagal.':'Penarikan gagal.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Permintaan penarikan berhasil dibuat dan menunggu proses.',
+    'Halo,':'Halo,','Buka Live Room →':'Buka Live Room →','Bonus pendaftaran masih tersedia untuk diklaim.':'Bonus pendaftaran masih tersedia untuk diklaim.'
+  },
+  en: {
+    'SYS STREAM LOADING':'SYS STREAM LOADING','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Initializing TikTok Live Sync + Cloudflare D1 Connection',
+    'Live Room':'Live Room','Live Room Aktif':'Live Room Active','Live belum aktif':'Live is not active',
+    'Masuk untuk bergabung ke Live Room':'Login to join the Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Each account has its own profile and identity in the room.',
+    'Peserta Live':'Live Participants','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Only accounts that actually joined are shown.',
+    'Memuat peserta...':'Loading participants...','Belum ada peserta lain.':'No other participants yet.','Belum ada peserta.':'No participants yet.',
+    'Profil akun Anda':'Your account profile','Belum ada deskripsi room dari pemilik room.':'No room description from the room owner yet.',
+    'Hanya data live produksi yang ditampilkan.':'Only production live data is displayed.','Tidak ada video atau streamer contoh.':'No sample video or streamer is shown.',
+    'LOGIN / REGISTER':'LOGIN / REGISTER','CHAT':'CHAT','PESERTA':'PARTICIPANTS','Kirim':'Send','Tulis pesan':'Type a message',
+    'Like gagal dikirim.':'Like could not be sent.','Gagal memuat live room.':'Failed to load the live room.','Aksi live room gagal.':'Live room action failed.',
+    'Minimum withdrawal is':'Minimum withdrawal is','Masukkan alamat wallet tujuan.':'Enter the destination wallet address.','Saldo tersedia tidak mencukupi.':'Insufficient available balance.',
+    'Penarikan gagal.':'Withdrawal failed.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Withdrawal request created and awaiting processing.',
+    'Halo,':'Hello,','Buka Live Room →':'Open Live Room →','Bonus pendaftaran masih tersedia untuk diklaim.':'Registration bonus is still available to claim.'
+  },
+  es: {
+    'SYS STREAM LOADING':'CARGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronización de TikTok Live + conexión Cloudflare D1',
+    'Live Room':'Sala en vivo','Live Room Aktif':'Sala en vivo activa','Live belum aktif':'La sala en vivo no está activa',
+    'Masuk untuk bergabung ke Live Room':'Inicia sesión para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada cuenta tiene su propio perfil e identidad en la sala.',
+    'Peserta Live':'Participantes en vivo','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Solo se muestran las cuentas que realmente se unieron.',
+    'Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'Aún no hay otros participantes.','Belum ada peserta.':'No hay participantes.',
+    'Profil akun Anda':'Perfil de tu cuenta','Belum ada deskripsi room dari pemilik room.':'Aún no hay descripción del propietario.',
+    'Hanya data live produksi yang ditampilkan.':'Solo se muestran datos de producción.','Tidak ada video atau streamer contoh.':'No se muestra ningún video o streamer de ejemplo.',
+    'LOGIN / REGISTER':'INICIAR SESIÓN / REGISTRARSE','CHAT':'CHAT','PESERTA':'PARTICIPANTES','Kirim':'Enviar','Tulis pesan':'Escribe un mensaje',
+    'Like gagal dikirim.':'No se pudo enviar el Me gusta.','Gagal memuat live room.':'No se pudo cargar la sala en vivo.','Aksi live room gagal.':'La acción de la sala en vivo falló.',
+    'Masukkan alamat wallet tujuan.':'Introduce la dirección de la billetera.','Saldo tersedia tidak mencukupi.':'Saldo disponible insuficiente.','Penarikan gagal.':'Retiro fallido.',
+    'Halo,':'Hola,','Buka Live Room →':'Abrir sala en vivo →','Bonus pendaftaran masih tersedia untuk diklaim.':'El bono de registro todavía se puede reclamar.'
+  },
+  pt: {
+    'SYS STREAM LOADING':'CARREGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronização do TikTok Live + conexão Cloudflare D1',
+    'Live Room':'Sala ao vivo','Live Room Aktif':'Sala ao vivo ativa','Live belum aktif':'A sala ao vivo não está ativa',
+    'Masuk untuk bergabung ke Live Room':'Entre para participar da sala ao vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada conta tem seu próprio perfil e identidade na sala.',
+    'Peserta Live':'Participantes da live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Apenas contas que realmente entraram são exibidas.',
+    'Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda não há outros participantes.','Belum ada peserta.':'Ainda não há participantes.',
+    'Profil akun Anda':'Perfil da sua conta','Belum ada deskripsi room dari pemilik room.':'Ainda não há descrição do proprietário.',
+    'Hanya data live produksi yang ditampilkan.':'Apenas dados de produção são exibidos.','Tidak ada video atau streamer contoh.':'Nenhum vídeo ou streamer de exemplo é exibido.',
+    'LOGIN / REGISTER':'ENTRAR / REGISTRAR','CHAT':'CHAT','PESERTA':'PARTICIPANTES','Kirim':'Enviar','Tulis pesan':'Digite uma mensagem',
+    'Like gagal dikirim.':'Não foi possível enviar a curtida.','Gagal memuat live room.':'Falha ao carregar a sala ao vivo.','Aksi live room gagal.':'A ação da sala ao vivo falhou.',
+    'Masukkan alamat wallet tujuan.':'Informe o endereço da carteira.','Saldo tersedia tidak mencukupi.':'Saldo disponível insuficiente.','Penarikan gagal.':'Falha no saque.',
+    'Halo,':'Olá,','Buka Live Room →':'Abrir sala ao vivo →','Bonus pendaftaran masih tersedia untuk diklaim.':'O bônus de registro ainda pode ser resgatado.'
+  },
+  zh: {
+    'SYS STREAM LOADING':'SYS STREAM 加载中','Initializing TikTok Live Sync + Cloudflare D1 Connection':'正在初始化 TikTok Live 同步 + Cloudflare D1 连接',
+    'Live Room':'直播间','Live Room Aktif':'直播间已开启','Live belum aktif':'直播间尚未开启',
+    'Masuk untuk bergabung ke Live Room':'登录以加入直播间','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'每个账户在直播间都有独立的个人资料和身份。',
+    'Peserta Live':'直播参与者','Hanya akun yang benar-benar bergabung yang ditampilkan.':'仅显示实际加入的账户。',
+    'Memuat peserta...':'正在加载参与者…','Belum ada peserta lain.':'暂无其他参与者。','Belum ada peserta.':'暂无参与者。',
+    'Profil akun Anda':'您的账户资料','Belum ada deskripsi room dari pemilik room.':'暂无房主提供的房间描述。',
+    'Hanya data live produksi yang ditampilkan.':'仅显示生产环境直播数据。','Tidak ada video atau streamer contoh.':'不显示示例视频或主播。',
+    'LOGIN / REGISTER':'登录 / 注册','CHAT':'聊天','PESERTA':'参与者','Kirim':'发送','Tulis pesan':'输入消息',
+    'Like gagal dikirim.':'点赞发送失败。','Gagal memuat live room.':'加载直播间失败。','Aksi live room gagal.':'直播间操作失败。',
+    'Masukkan alamat wallet tujuan.':'请输入目标钱包地址。','Saldo tersedia tidak mencukupi.':'可用余额不足。','Penarikan gagal.':'提现失败。',
+    'Halo,':'你好，','Buka Live Room →':'打开直播间 →','Bonus pendaftaran masih tersedia untuk diklaim.':'注册奖励仍可领取。'
+  },
+  ja: {
+    'SYS STREAM LOADING':'SYS STREAM 読み込み中','Initializing TikTok Live Sync + Cloudflare D1 Connection':'TikTok Live同期 + Cloudflare D1接続を初期化しています',
+    'Live Room':'ライブ配信ルーム','Live Room Aktif':'ライブ配信ルームは有効です','Live belum aktif':'ライブ配信はまだ有効ではありません',
+    'Masuk untuk bergabung ke Live Room':'ログインしてライブ配信ルームに参加','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'各アカウントにはルーム内で固有のプロフィールとIDがあります。',
+    'Peserta Live':'ライブ参加者','Hanya akun yang benar-benar bergabung yang ditampilkan.':'実際に参加したアカウントのみ表示されます。',
+    'Memuat peserta...':'参加者を読み込み中…','Belum ada peserta lain.':'他の参加者はいません。','Belum ada peserta.':'参加者はいません。',
+    'Profil akun Anda':'あなたのアカウントプロフィール','Belum ada deskripsi room dari pemilik room.':'ルーム所有者の説明はまだありません。',
+    'Hanya data live produksi yang ditampilkan.':'本番のライブデータのみ表示されます。','Tidak ada video atau streamer contoh.':'サンプル動画や配信者は表示されません。',
+    'LOGIN / REGISTER':'ログイン / 登録','CHAT':'チャット','PESERTA':'参加者','Kirim':'送信','Tulis pesan':'メッセージを入力',
+    'Like gagal dikirim.':'いいねを送信できませんでした。','Gagal memuat live room.':'ライブ配信ルームの読み込みに失敗しました。','Aksi live room gagal.':'ライブ配信ルームの操作に失敗しました。',
+    'Masukkan alamat wallet tujuan.':'送金先ウォレットアドレスを入力してください。','Saldo tersedia tidak mencukupi.':'利用可能残高が不足しています。','Penarikan gagal.':'出金に失敗しました。',
+    'Halo,':'こんにちは、','Buka Live Room →':'ライブ配信ルームを開く →','Bonus pendaftaran masih tersedia untuk diklaim.':'登録ボーナスをまだ受け取れます。'
+  },
+  ko: {
+    'SYS STREAM LOADING':'SYS STREAM 로딩 중','Initializing TikTok Live Sync + Cloudflare D1 Connection':'TikTok Live 동기화 + Cloudflare D1 연결 초기화 중',
+    'Live Room':'라이브 룸','Live Room Aktif':'라이브 룸 활성','Live belum aktif':'라이브 룸이 아직 활성화되지 않았습니다',
+    'Masuk untuk bergabung ke Live Room':'로그인하여 라이브 룸에 참여하세요','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'각 계정은 룸에서 고유한 프로필과 신원을 가집니다.',
+    'Peserta Live':'라이브 참가자','Hanya akun yang benar-benar bergabung yang ditampilkan.':'실제로 참여한 계정만 표시됩니다.',
+    'Memuat peserta...':'참가자 불러오는 중…','Belum ada peserta lain.':'아직 다른 참가자가 없습니다.','Belum ada peserta.':'참가자가 없습니다.',
+    'Profil akun Anda':'내 계정 프로필','Belum ada deskripsi room dari pemilik room.':'룸 소유자의 설명이 아직 없습니다.',
+    'Hanya data live produksi yang ditampilkan.':'프로덕션 라이브 데이터만 표시됩니다.','Tidak ada video atau streamer contoh.':'샘플 영상이나 스트리머는 표시되지 않습니다.',
+    'LOGIN / REGISTER':'로그인 / 가입','CHAT':'채팅','PESERTA':'참가자','Kirim':'전송','Tulis pesan':'메시지 입력',
+    'Like gagal dikirim.':'좋아요를 보내지 못했습니다.','Gagal memuat live room.':'라이브 룸을 불러오지 못했습니다.','Aksi live room gagal.':'라이브 룸 작업에 실패했습니다.',
+    'Masukkan alamat wallet tujuan.':'목적지 지갑 주소를 입력하세요.','Saldo tersedia tidak mencukupi.':'사용 가능한 잔액이 부족합니다.','Penarikan gagal.':'출금에 실패했습니다.',
+    'Halo,':'안녕하세요,','Buka Live Room →':'라이브 룸 열기 →','Bonus pendaftaran masih tersedia untuk diklaim.':'가입 보너스를 아직 받을 수 있습니다.'
+  },
+  ar: {
+    'SYS STREAM LOADING':'جارٍ تحميل SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'جارٍ تهيئة مزامنة TikTok Live + اتصال Cloudflare D1',
+    'Live Room':'الغرفة المباشرة','Live Room Aktif':'الغرفة المباشرة نشطة','Live belum aktif':'الغرفة المباشرة غير نشطة',
+    'Masuk untuk bergabung ke Live Room':'سجّل الدخول للانضمام إلى الغرفة المباشرة','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'لكل حساب ملف وهوية خاصة به داخل الغرفة.',
+    'Peserta Live':'المشاركون في البث','Hanya akun yang benar-benar bergabung yang ditampilkan.':'تظهر فقط الحسابات التي انضمت فعليًا.',
+    'Memuat peserta...':'جارٍ تحميل المشاركين…','Belum ada peserta lain.':'لا يوجد مشاركون آخرون بعد.','Belum ada peserta.':'لا يوجد مشاركون.',
+    'Profil akun Anda':'ملف حسابك','Belum ada deskripsi room dari pemilik room.':'لا يوجد وصف من مالك الغرفة بعد.',
+    'Hanya data live produksi yang ditampilkan.':'تظهر فقط بيانات البث الإنتاجية.','Tidak ada video atau streamer contoh.':'لا يتم عرض فيديو أو مقدم بث تجريبي.',
+    'LOGIN / REGISTER':'تسجيل الدخول / إنشاء حساب','CHAT':'الدردشة','PESERTA':'المشاركون','Kirim':'إرسال','Tulis pesan':'اكتب رسالة',
+    'Like gagal dikirim.':'تعذر إرسال الإعجاب.','Gagal memuat live room.':'تعذر تحميل الغرفة المباشرة.','Aksi live room gagal.':'فشل إجراء الغرفة المباشرة.',
+    'Masukkan alamat wallet tujuan.':'أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.':'الرصيد المتاح غير كافٍ.','Penarikan gagal.':'فشل السحب.',
+    'Halo,':'مرحباً،','Buka Live Room →':'فتح الغرفة المباشرة →','Bonus pendaftaran masih tersedia untuk diklaim.':'لا تزال مكافأة التسجيل متاحة للاستلام.'
+  }
+};
+
+(Object.keys(GLOBAL_UI_TRANSLATIONS) as LanguageCode[]).forEach((lang) => {
+  PAGE_UI_TRANSLATIONS[lang] = { ...GLOBAL_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+});
+
 (Object.keys(COMMON_PAGE_TRANSLATIONS) as LanguageCode[]).forEach((lang) => {
   PAGE_UI_TRANSLATIONS[lang] = { ...COMMON_PAGE_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 });
