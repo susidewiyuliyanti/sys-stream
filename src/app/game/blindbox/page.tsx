@@ -446,7 +446,6 @@ export default function BlindboxGamePage() {
             <div className="text-xs text-slate-400 max-w-xs text-right">
               Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.
             </div>
-            </div>
           </div>
         </div>
       )}
