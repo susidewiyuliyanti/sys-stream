@@ -313,7 +313,7 @@ export default function SpinnerGamePage() {
                     <button
                       onClick={() => removeViewer(name)}
                       className="p-1 text-slate-500 hover:text-rose-400 rounded transition-colors"
-                      title="Remove"
+                      title={t('Remove')}
                     >
                       ✕
                     </button>
