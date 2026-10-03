@@ -33,7 +33,7 @@ const BOX_TIERS: BoxTier[] = [
     description: 'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
-    minLockedRequired: 50000,
+    minLockedRequired: 72000,
     lootPool: [
       { id: 'bb_1', name: 'Tactical Neon Visor', category: 'Skin', rarity: 'common', powerStat: 24, coinValue: 100, usdtReward: 0, iconName: 'Eye' },
       { id: 'bb_2', name: 'Nano-Blade Dagger', category: 'Weapon', rarity: 'common', powerStat: 30, coinValue: 120, usdtReward: 0, iconName: 'Scissors' },
@@ -47,7 +47,7 @@ const BOX_TIERS: BoxTier[] = [
     description: 'Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
     badge: 'Enhanced Lock Tier',
     accentColor: '#a855f7',
-    minLockedRequired: 500000,
+    minLockedRequired: 720000,
     lootPool: [
       { id: 'bb_5', name: 'Vortex Hoverbike', category: 'Vehicle', rarity: 'rare', powerStat: 65, coinValue: 400, usdtReward: 0, iconName: 'Car' },
       { id: 'bb_6', name: 'Plasma Katana Mk.IV', category: 'Weapon', rarity: 'epic', powerStat: 82, coinValue: 900, usdtReward: 0, iconName: 'Sword' },
@@ -92,7 +92,7 @@ export default function BlindboxGamePage() {
   const [wonIdr, setWonIdr] = useState<number>(0);
 
   // Staking lock modal/form
-  const [lockIdrAmount, setLockIdrAmount] = useState<number>(50000);
+  const [lockIdrAmount, setLockIdrAmount] = useState<number>(72000);
   const [lockDuration, setLockDuration] = useState<30 | 60 | 90>(30);
 
   // Time until midnight reset
@@ -121,7 +121,7 @@ export default function BlindboxGamePage() {
   const totalLocked = getTotalLockedUsdt();
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
-  const isQualified = totalLocked >= 50000;
+  const isQualified = totalLocked >= 72000;
 
   const activeLocks = locks.filter((l) => l.status === 'locked');
   const primaryLock: LockRecord | undefined = activeLocks[0];
@@ -139,7 +139,7 @@ export default function BlindboxGamePage() {
       if (!isQualified) {
         showToast(
           'Staking Required',
-          'Anda harus mengunci minimal Rp 50.000 untuk membuka Blind Box harian.',
+          'Anda harus mengunci minimal $4 equivalent untuk membuka Blind Box harian.',
           'error'
         );
         return;
@@ -278,7 +278,7 @@ export default function BlindboxGamePage() {
           ) : (
             <div className="px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-400 flex items-center gap-1.5 font-semibold">
               <Lock className="w-4 h-4" />
-              <span>Lock minimal Rp 50.000 untuk membuka Blind Box</span>
+              <span>Lock minimal $4 equivalent untuk membuka Blind Box</span>
             </div>
           )}
         </div>
@@ -288,10 +288,10 @@ export default function BlindboxGamePage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 text-xs">
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>Rp 50.000+ Lock</span>
+            <span>$4 equivalent+ Lock</span>
             <span className="text-emerald-400 font-mono">1 Box / Hari</span>
           </div>
-          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(50000)}. Maksimal 1 claim per hari.</div>
+          <div className="text-[11px] text-slate-400">Minimum lock {formatMoney(72000)} ($4 USD equivalent). Maksimal 1 claim per hari.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -351,7 +351,7 @@ export default function BlindboxGamePage() {
                   Lock Amount
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
-                  {[50000, 500000, 1000000, 2500000].map((amt) => (
+                  {[72000, 720000, 1000000, 2720000].map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -368,14 +368,14 @@ export default function BlindboxGamePage() {
                 </div>
                 <input
                   type="number"
-                  min="50000"
+                  min="72000"
                   step="10000"
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
-                  onChange={(e) => setLockIdrAmount(Math.max(50000, toIdr(Number(e.target.value) || 0)))}
+                  onChange={(e) => setLockIdrAmount(Math.max(72000, toIdr(Number(e.target.value) || 0)))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`Lock amount (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(50000)}, kelipatan sesuai aturan server.</div>
+                <div className="text-[10px] text-slate-500 mt-1">Nominal lock ditentukan sendiri oleh user. Minimum {formatMoney(72000)}, kelipatan sesuai aturan server.</div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>Quota: <strong className="text-emerald-400">1 Box/Day</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
@@ -497,7 +497,7 @@ export default function BlindboxGamePage() {
                   <Box className="w-4 h-4 fill-current" />
                   <span>
                     {!isQualified
-                      ? `Lock minimum ${formatMoney(50000)} to activate`
+                      ? `Lock minimum ${formatMoney(72000)} to activate`
                       : remainingBoxes > 0
                       ? `Open Daily Box (${remainingBoxes} Available Today)`
                       : `Daily Limit Reached (Resets in ${timeToReset})`}
