@@ -72,14 +72,14 @@ export default function ReferralPage() {
             {/* Share Link Input */}
             <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl p-2 pl-3">
               <span className="text-xs font-mono text-slate-300 truncate flex-1 select-all">
-                {referralLink || 'Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.'}
+                {referralLink || t('Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.')}
               </span>
               <button
                 onClick={copyLink}
                 className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
               >
                 {copiedLink ? <Check className="w-4 h-4 text-emerald-950" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+                <span>{copiedLink ? t('Copied!') : t('Copy Link')}</span>
               </button>
             </div>
 
@@ -87,7 +87,7 @@ export default function ReferralPage() {
             <div className="flex items-center gap-3 text-xs text-slate-400">
               <span>{t('User ID / Wallet:')}</span>
               <span className="font-mono font-bold text-amber-400 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-md truncate max-w-full">
-                {walletAddress || 'Wallet belum terhubung'}
+                {walletAddress || t('Wallet belum terhubung')}
               </span>
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function ReferralPage() {
               className="w-full py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 font-extrabold text-sm rounded-xl transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 fill-current" />
-              <span>{isClaimed ? 'All Claimed!' : 'Claim Commission to Wallet'}</span>
+              <span>{isClaimed ? t('All Claimed!') : t('Claim Commission to Wallet')}</span>
             </button>
           </div>
         </div>
