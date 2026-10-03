@@ -167,7 +167,7 @@ export default function MiningPage() {
               <span className="text-xs font-bold uppercase">Active Lock</span>
             </div>
             <div className="text-2xl font-black">Rp {lockAmountIdr.toLocaleString('id-ID')}</div>
-            <div className="mt-1 text-xs text-slate-500">≈ ${lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }){'}'}</div>
+            <div className="mt-1 text-xs text-slate-500">≈ {'$'}{lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
