@@ -11,36 +11,6 @@ function normalizePayCurrency(currency: string) {
   return value;
 }
 
-async function preflightNowPayments(base: string, apiKey: string, payCurrency: string, amountUsd: number) {
-  const headers = { "x-api-key": apiKey, "Accept": "application/json" };
-  const minResponse = await fetch(
-    `${base}/min-amount?currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`,
-    { headers }
-  );
-  const minData = await minResponse.json().catch(() => ({}));
-
-  if (!minResponse.ok) {
-    return {
-      ok: false,
-      status: minResponse.status,
-      error: safeErrorMessage(minData, minResponse.status),
-      stage: "minimum"
-    };
-  }
-
-  const minAmountUsd = Number(minData?.min_amount || 0);
-  if (minAmountUsd > 0 && amountUsd < minAmountUsd) {
-    return {
-      ok: false,
-      status: 400,
-      error: `Minimum NOWPayments untuk ${payCurrency.toUpperCase()} saat ini ${minAmountUsd.toFixed(2)} USD. Deposit ${amountUsd.toFixed(2)} USD terlalu kecil.`,
-      stage: "minimum",
-      minAmountUsd
-    };
-  }
-
-  return { ok: true, minAmountUsd };
-}
 async function ensureTransactions(env: Env) {
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -236,28 +206,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (!/^https:\/\/api\.nowpayments\.io\/v1\/payment(?:\?.*)?$/i.test(apiUrl)) {
       console.error("Invalid NOWPayments API URL", { apiUrl });
       return json({ success: false, error: "Konfigurasi endpoint NOWPayments tidak valid." }, 503);
-    }
-
-    // Check only the dynamic minimum before creating the payment.\n    const preflight = await preflightNowPayments(apiUrl.replace(/\/payment(?:\?.*)?$/i, ""), apiKey, payCurrency, amountUsd);
-    if (!preflight.ok) {
-      console.error("NOWPayments preflight rejected payment", {
-        stage: preflight.stage,
-        status: preflight.status,
-        error: preflight.error,
-        payCurrency,
-        amountUsd,
-        minAmountUsd: (preflight as any).minAmountUsd ?? null,
-      });
-
-      return json({
-        success: false,
-        error: `NOWPayments preflight gagal pada ${preflight.stage}: ${preflight.error}`,
-        provider_status: preflight.status,
-        provider_stage: preflight.stage,
-        pay_currency: payCurrency,
-        amount_usd: amountUsd,
-        min_amount_usd: (preflight as any).minAmountUsd ?? null,
-      }, Number(preflight.status) >= 400 && Number(preflight.status) < 500 ? Number(preflight.status) : 502);
     }
 
     // NOWPayments can calculate the crypto amount from price_amount + price_currency.
