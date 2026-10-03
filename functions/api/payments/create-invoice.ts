@@ -85,6 +85,13 @@ function safeErrorMessage(data: any, status: number) {
     return "NOWPayments sedang membatasi permintaan. Coba lagi beberapa saat.";
   }
 
+  if (data && typeof data === "object") {
+    try {
+      const serialized = JSON.stringify(data);
+      if (serialized && serialized !== "{}") return serialized.slice(0, 1000);
+    } catch {}
+  }
+
   return `NOWPayments gagal membuat payment (HTTP ${status}).`;
 }
 
