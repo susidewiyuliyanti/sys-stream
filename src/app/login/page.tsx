@@ -71,7 +71,7 @@ const handleWalletAuth = async () => {
       throw new Error(nonceData?.error || "Gagal membuat nonce wallet.");
     }
 
-    const message = "SYS STREAMER LOGIN\\n\\nNonce:" + String(nonceData.nonce);
+    const message = "SYS STREAMER LOGIN\n\nNonce:" + String(nonceData.nonce);
 
     const signature = await window.ethereum.request({
       method: "personal_sign",
