@@ -19,7 +19,7 @@ export const LOCALE_CONFIG: Record<LanguageCode, LocaleConfig> = {
 };
 
 export function getLocaleConfig(language: LanguageCode): LocaleConfig {
-  return LOCALE_CONFIG[language] ?? LOCALE_CONFIG.id;
+  return LOCALE_CONFIG[language] ?? LOCALE_CONFIG.en;
 }
 
 export function formatLocalizedCurrency(amount: number, language: LanguageCode, currency = getLocaleConfig(language).currency): string {
@@ -45,7 +45,14 @@ export function formatLocalizedNumber(amount: number, language: LanguageCode): s
 // The display value is localized for the user's selected language.
 // Rates below are a presentation reference, not a payment/settlement rate.
 export const REGISTRATION_BONUS_IDR = 15000;
-const REGISTRATION_BONUS_IDR_PER_UNIT: Record<LanguageCode, number> = {
+export function formatIdrAsSelectedCurrency(amountIdr: number, language: LanguageCode): string {
+  const currency = getLocaleConfig(language).currency;
+  const idrPerUnit = IDR_PER_CURRENCY_UNIT[language] ?? 1;
+  const amount = (Number.isFinite(amountIdr) ? amountIdr : 0) / idrPerUnit;
+  return formatLocalizedCurrency(amount, language, currency);
+}
+
+export const IDR_PER_CURRENCY_UNIT: Record<LanguageCode, number> = {
   id: 1,
   en: 17937,
   es: 20154.04,
@@ -69,7 +76,7 @@ const REGISTRATION_BONUS_CURRENCY: Record<LanguageCode, string> = {
 
 export function formatRegistrationBonus(language: LanguageCode): string {
   const currency = REGISTRATION_BONUS_CURRENCY[language];
-  const idrPerUnit = REGISTRATION_BONUS_IDR_PER_UNIT[language];
+  const idrPerUnit = IDR_PER_CURRENCY_UNIT[language];
   const amount = REGISTRATION_BONUS_IDR / idrPerUnit;
   const locale = language === 'id' ? 'id-ID'
     : language === 'en' ? 'en-US'
@@ -313,11 +320,11 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<LanguageCode>(() => {
     const saved = localStorage.getItem('sys_stream_language') as LanguageCode | null;
-    return saved && LANGUAGES.some(l => l.code === saved) ? saved : 'id';
+    return saved && LANGUAGES.some(l => l.code === saved) ? saved : 'en';
   });
 
   const setLanguage = (next: LanguageCode) => {
-    const safeLanguage = LANGUAGES.some(l => l.code === next) ? next : 'id';
+    const safeLanguage = LANGUAGES.some(l => l.code === next) ? next : 'en';
     setLanguageState(safeLanguage);
     localStorage.setItem('sys_stream_language', safeLanguage);
   };
