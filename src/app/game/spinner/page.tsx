@@ -253,7 +253,7 @@ export default function SpinnerGamePage() {
             <form onSubmit={handleAddViewer} className="flex gap-2">
               <input
                 type="text"
-                placeholder="{t('Enter viewer username (e.g. TikTok_User)')}"
+                placeholder={t('Enter viewer username (e.g. TikTok_User)')}
                 value={newViewerInput}
                 onChange={(e) => setNewViewerInput(e.target.value)}
                 className="flex-1 px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-400"
