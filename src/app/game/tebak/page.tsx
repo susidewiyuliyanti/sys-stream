@@ -28,7 +28,6 @@ export default function TebakGamePage() {
     won: boolean;
     revealedDigits: [number, number, number, number];
     matchedCount: number;
-    payout: number;
   } | null>(null);
 
   // Streamer Admin Panel Toggle
@@ -40,8 +39,6 @@ export default function TebakGamePage() {
   const [editNote, setEditNote] = useState(cryptoCard.streamerNote);
 
   const concealedCount = cryptoCard.concealed.filter(Boolean).length;
-  const winMultiplier = concealedCount === 1 ? 5.0 : concealedCount === 2 ? 15.0 : concealedCount === 3 ? 35.0 : 80.0;
-
   const handleDigitGuessChange = (index: number, val: string) => {
     if (val.length > 1) return;
     const num = val.replace(/[^0-9]/g, '');
@@ -82,8 +79,6 @@ export default function TebakGamePage() {
           }
         }
 
-        const payout = 0;
-
         if (allMatched) {
           sound.playJackpot();
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
@@ -97,7 +92,6 @@ export default function TebakGamePage() {
           won: allMatched,
           revealedDigits: cryptoCard.digits,
           matchedCount,
-          payout,
         });
 
         addGameHistory({
@@ -139,7 +133,7 @@ export default function TebakGamePage() {
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Predict the concealed cryptographic serial digits set by the streamer to unlock high multiplier payouts.
+            Penonton mencoba menebak angka tersembunyi yang dipilih streamer. Game ini dibuat untuk interaksi live tanpa taruhan atau pembayaran.
           </p>
         </div>
 
