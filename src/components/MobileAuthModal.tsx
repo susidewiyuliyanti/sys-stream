@@ -30,6 +30,7 @@ export const MobileAuthModal: React.FC = () => {
   const [verificationNotice, setVerificationNotice] = useState('');
   const [generatedWallet, setGeneratedWallet] = useState<{ address: string; phrase: string } | null>(null);
   const [walletBackupConfirmed, setWalletBackupConfirmed] = useState(false);
+  const [pendingRegistrationAuth, setPendingRegistrationAuth] = useState<{ token: string; user: any } | null>(null);
 
   if (!loginModalOpen) return null;
 
@@ -66,8 +67,10 @@ export const MobileAuthModal: React.FC = () => {
       if (authMode === 'register' && newWallet) {
         setGeneratedWallet({ address: newWallet.address, phrase: newWallet.mnemonic?.phrase || '' });
         setWalletBackupConfirmed(false);
+        setPendingRegistrationAuth({ token: String(data.token), user: data.user });
         setVerificationNotice('Akun berhasil dibuat tanpa email. Simpan recovery phrase sebelum melanjutkan.');
         setPasswordInput('');
+        return;
       }
       localStorage.setItem('sys_stream_auth_token', data.token);
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(data.user));
@@ -76,6 +79,13 @@ export const MobileAuthModal: React.FC = () => {
       console.error(error);
       window.alert(error instanceof Error ? error.message : 'Autentikasi gagal.');
     } finally { setIsSubmitting(false); }
+  };
+
+  const completeRegistration = () => {
+    if (!pendingRegistrationAuth || !walletBackupConfirmed) return;
+    localStorage.setItem('sys_stream_auth_token', pendingRegistrationAuth.token);
+    localStorage.setItem('sys_stream_auth_user', JSON.stringify(pendingRegistrationAuth.user));
+    login(pendingRegistrationAuth.user?.username || 'User');
   };
 
   const handleWalletAuth = async () => {
@@ -310,7 +320,17 @@ export const MobileAuthModal: React.FC = () => {
             </button>
           </div>
 
-          {/* Glowing Neon Login Button */}
+          {/* Glowing Neon Login / Register Button */}
+          {pendingRegistrationAuth && authMode === 'register' ? (
+            <button
+              type="button"
+              onClick={completeRegistration}
+              disabled={!walletBackupConfirmed}
+              className="w-full py-3.5 mt-2 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all"
+            >
+              {walletBackupConfirmed ? 'SAYA SUDAH MENYIMPAN — MASUK' : 'SIMPAN RECOVERY PHRASE TERLEBIH DAHULU'}
+            </button>
+          ) : (
           <button
             type="submit"
             disabled={Boolean(isSubmitting || (authMode === 'register' && (!termsAccepted || (generatedWallet && !walletBackupConfirmed))))}
@@ -322,6 +342,7 @@ export const MobileAuthModal: React.FC = () => {
               <span>{authMode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT'}</span>
             )}
           </button>
+          )}
         </form>
 
         {/* Divider */}
