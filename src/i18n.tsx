@@ -1047,6 +1047,18 @@ for (const lang of Object.keys(GAME_EXTRA_TRANSLATIONS) as LanguageCode[]) {
  PAGE_UI_TRANSLATIONS[lang] = { ...GAME_EXTRA_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 }
 
+const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
+ id:{'Vault Updated':'Vault diperbarui','Added to your Inventory!':'ditambahkan ke Inventori Anda!','Lock amount':'Jumlah lock','Quota:':'Kuota:','Lock':'Lock','Enter viewer username (e.g. TikTok_User)':'Masukkan username penonton (contoh: TikTok_User)','Close':'Tutup'},
+ en:{'Vault Updated':'Vault Updated','Added to your Inventory!':'added to your Inventory!','Lock amount':'Lock amount','Quota:':'Quota:','Lock':'Lock','Enter viewer username (e.g. TikTok_User)':'Enter viewer username (e.g. TikTok_User)','Close':'Close'},
+ es:{'Vault Updated':'Bóveda actualizada','Added to your Inventory!':'añadido a tu inventario','Lock amount':'Cantidad de bloqueo','Quota:':'Cuota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Introduce el nombre del espectador (ej.: TikTok_User)','Close':'Cerrar'},
+ pt:{'Vault Updated':'Cofre atualizado','Added to your Inventory!':'adicionado ao seu inventário','Lock amount':'Valor do bloqueio','Quota:':'Cota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Digite o nome do espectador (ex.: TikTok_User)','Close':'Fechar'},
+ zh:{'Vault Updated':'保险库已更新','Added to your Inventory!':'已添加到您的库存！','Lock amount':'锁定金额','Quota:':'配额：','Lock':'锁定','Enter viewer username (e.g. TikTok_User)':'输入观众用户名（例如：TikTok_User）','Close':'关闭'},
+ ja:{'Vault Updated':'Vaultを更新しました','Added to your Inventory!':'インベントリに追加しました！','Lock amount':'ロック金額','Quota:':'クォータ：','Lock':'ロック','Enter viewer username (e.g. TikTok_User)':'視聴者ユーザー名を入力（例：TikTok_User）','Close':'閉じる'},
+ ko:{'Vault Updated':'Vault 업데이트됨','Added to your Inventory!':'인벤토리에 추가되었습니다!','Lock amount':'잠금 금액','Quota:':'할당량:','Lock':'잠금','Enter viewer username (e.g. TikTok_User)':'시청자 사용자명을 입력하세요 (예: TikTok_User)','Close':'닫기'},
+ ar:{'Vault Updated':'تم تحديث الخزنة','Added to your Inventory!':'تمت الإضافة إلى مخزونك!','Lock amount':'مبلغ القفل','Quota:':'الحصة:','Lock':'قفل','Enter viewer username (e.g. TikTok_User)':'أدخل اسم مستخدم المشاهد (مثال: TikTok_User)','Close':'إغلاق'}
+};
+for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
