@@ -20,30 +20,8 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [invoice, setInvoice] = useState<CryptoInvoice | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
-  const [minAmountUsd, setMinAmountUsd] = useState<number>(5);
-  const [estimatedCrypto, setEstimatedCrypto] = useState<number | null>(null);
-  const [isCheckingRules, setIsCheckingRules] = useState<boolean>(false);
+  const [minAmountUsd] = useState<number>(5);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    let cancelled = false;
-    const amount = customUsd ? Number(customUsd) : selectedUsd;
-    const currency = selectedCurrency === 'USDT' ? 'usdttrc20' : selectedCurrency.toLowerCase();
-    setIsCheckingRules(true);
-    const timer = setTimeout(() => fetch(`/api/payments/create-invoice?currency=${encodeURIComponent(currency)}&amount=${encodeURIComponent(String(Number.isFinite(amount) ? amount : 0))}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('sys_stream_auth_token') || ''}` },
-    })
-      .then(async r => ({ ok: r.ok, data: await r.json().catch(() => ({})) }))
-      .then(({ ok, data }) => {
-        if (cancelled) return;
-        if (!ok || !data?.success) { setEstimatedCrypto(null); setMinAmountUsd(5); return; }
-        setMinAmountUsd(Math.max(5, Number(data.min_amount_usd || 0)));
-        setEstimatedCrypto(data.estimate == null ? null : Number(data.estimate));
-      })
-      .catch(() => { if (!cancelled) { setEstimatedCrypto(null); setMinAmountUsd(5); } })
-      .finally(() => { if (!cancelled) setIsCheckingRules(false); }));
-    return () => { cancelled = true; clearTimeout(timer); };
-  }, [isOpen, selectedCurrency, selectedUsd, customUsd]);
 
   if (!isOpen) return null;
 
@@ -138,7 +116,7 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
               </div>
               <div className="mt-1.5 text-xs text-slate-500 space-y-1">
                 <div>{t('Minimum deposit')}: <span className="text-slate-300">${minAmountUsd.toFixed(2)} USD</span></div>
-                <div>{isCheckingRules ? t('Checking current NOWPayments limits...') : estimatedCrypto != null ? t('Current estimate available') : t('Rate is checked again when the payment is created.')}</div>
+                <div>{t('Rate is checked live by NOWPayments when the payment is created.')}</div>
                 <div>{t('Deposit is credited to your real account balance after payment confirmation.')}</div>
               </div>
             </div>
@@ -174,14 +152,14 @@ export const CryptoDepositModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
             <button
               onClick={handleGenerateInvoice}
-              disabled={isLoading || isCheckingRules}
+              disabled={isLoading}
               className="w-full py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
             >
-              {isLoading || isCheckingRules ? (
+              {isLoading ? (
                 <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>{isCheckingRules ? t('Checking payment rules...') : t('Create NOWPayments Invoice')}</span>
+                  <span>{t('Create NOWPayments Invoice')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
