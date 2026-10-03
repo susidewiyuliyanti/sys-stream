@@ -303,7 +303,7 @@ export default function DashboardPage({ navigate }: Props) {
           <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5">
             <div className="flex items-center gap-2 mb-4">
               <Radio className="w-5 h-5 text-rose-400" />
-              <h2 className="text-xl font-black">{t('{t('Live Now')}')}</h2>
+              <h2 className="text-xl font-black">{t('Live Now')}</h2>
             </div>
             <div className="rounded-xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center">
               <Radio className="w-8 h-8 mx-auto text-slate-600" />
