@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { GameProvider } from './context/GameContext';
 import { Navbar } from './components/Navbar';
 import { ToastContainer } from './components/ToastContainer';
