@@ -50,13 +50,27 @@ async function ensureTransactions(env: Env) {
 }
 
 function safeErrorMessage(data: any, status: number) {
-  const message = data?.message || data?.error || data?.code;
-  if (typeof message === "string" && message.trim()) return message.trim();
-  if (Array.isArray(data?.errors) && data.errors.length) {
-    return data.errors.map((item: any) => typeof item === "string" ? item : item?.message || item?.error || JSON.stringify(item)).join("; ");
+  const candidates = [
+    data?.message,
+    data?.error,
+    data?.error?.message,
+    data?.error?.description,
+    data?.details,
+    data?.detail,
+    data?.code,
+  ];
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
   }
-  if (status === 401 || status === 403) return "NOWPayments menolak API key. Periksa NOWPAYMENTS_API_KEY di Cloudflare Secrets.";
-  if (status === 400) return "Parameter deposit ditolak oleh NOWPayments. Periksa mata uang pembayaran dan konfigurasi akun.";
+  if (Array.isArray(data?.errors) && data.errors.length) {
+    return data.errors.map((item: any) =>
+      typeof item === "string"
+        ? item
+        : item?.message || item?.error || item?.description || JSON.stringify(item)
+    ).join("; ");
+  }
+  if (status === 401 || status === 403) return "NOWPayments menolak API key. Periksa NOWPAYMENTS_API_KEY di Cloudflare Production Secrets.";
+  if (status === 400) return "Parameter deposit ditolak oleh NOWPayments. Periksa mata uang, minimum pembayaran, dan konfigurasi akun NOWPayments.";
   if (status === 429) return "NOWPayments sedang membatasi permintaan. Coba lagi beberapa saat.";
   return `NOWPayments gagal membuat payment (HTTP ${status}).`;
 }
@@ -197,6 +211,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         error: safeErrorMessage(data, response.status),
         provider_status: response.status,
         provider_code: data?.code || null,
+        provider_error: typeof data?.error === "string" ? data.error : null,
       }, response.status >= 400 && response.status < 500 ? response.status : 502);
     }
 
