@@ -260,7 +260,7 @@ export default function Room({
               {stream?.playbackUrl ? (
                 <iframe
                   src={stream.playbackUrl}
-                  title={room?.title || "SYS STREAM Live"}
+                  title={room?.title || t("SYS STREAM Live")}
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -287,7 +287,7 @@ export default function Room({
               <section className="mt-3 rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-xs uppercase tracking-wider text-rose-300 font-black">STREAMER CONTROL</div>
+                    <div className="text-xs uppercase tracking-wider text-rose-300 font-black">{t("STREAMER CONTROL")}</div>
                     <div className="text-sm font-bold mt-1">
                       {stream.status === "connected" || stream.status === "reconnected" ? t("Streaming sedang berjalan") : t("Kirim video dari OBS ke server")}
                     </div>
@@ -311,25 +311,25 @@ export default function Room({
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 mt-4">
                   <div className="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <div className="text-[10px] text-slate-500">RTMPS SERVER</div>
+                    <div className="text-[10px] text-slate-500">{t("RTMPS SERVER")}</div>
                     <div className="text-xs text-cyan-300 break-all mt-1 select-all">{stream.ingestUrl || "-"}</div>
                   </div>
                   <div className="rounded-xl bg-slate-950 border border-slate-800 p-3">
-                    <div className="text-[10px] text-slate-500">STREAM KEY</div>
+                    <div className="text-[10px] text-slate-500">{t("STREAM KEY")}</div>
                     <div className="text-xs text-amber-300 break-all mt-1 select-all">{stream.streamKey || "-"}</div>
                   </div>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-3">
-                  Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas.
+                  {t("Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas.")}
                 </p>
               </section>
             )}
             {room?.owner && (
               <section className="mt-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">AKTIFKAN STREAMING</div>
-                  <div className="text-sm font-bold mt-1">Buat Live Input Cloudflare untuk room ini.</div>
-                  <div className="text-[11px] text-slate-500 mt-1">Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.</div>
+                  <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">{t("AKTIFKAN STREAMING")}</div>
+                  <div className="text-sm font-bold mt-1">{t("Buat Live Input Cloudflare untuk room ini.")}</div>
+                  <div className="text-[11px] text-slate-500 mt-1">{t("Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.")}</div>
                 </div>
                 <button
                   disabled={streamBusy}
