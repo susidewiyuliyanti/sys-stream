@@ -309,7 +309,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </span>
               <input
                 type="text"
-                placeholder={t('Username or Email')}
+                placeholder={t('Username, Email or Wallet')}
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-cyan-500/30 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
