@@ -364,11 +364,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    // Clear the shared parent-domain session as well as local account state.
+    // Revoke the exact bearer session before clearing its local copy.
+    const token = localStorage.getItem('sys_stream_auth_token');
     void fetch('/api/auth/logout', {
       method: 'POST',
       credentials: 'include',
       cache: 'no-store',
+      headers: token ? { Authorization: 'Bearer ' + token } : {},
     }).catch(() => {});
 
     // Clear the complete account context. A different user must never inherit
