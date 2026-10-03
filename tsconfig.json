@@ -37,6 +37,7 @@
     "src/app/login/page.double-wallet-backup.tsx",
     "src/app/login/page.safe-backup.tsx",
     "src/app/login/page.wallet-backup.tsx",
-    "sys-stream"
+    "sys-stream",
+    "src/components/blindbox/BlindBoxDashboard.tsx"
   ]
 }
