@@ -136,7 +136,7 @@ export default function ProfilePage() {
     const amountDisplay = Number(withdrawAmount);
     const amount = Math.round(amountDisplay * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
     if (!Number.isFinite(amountDisplay) || amount < withdrawalMinIdr) {
-      showToast('{t('Withdraw')}al', `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
+      showToast(t('Withdrawal'), `Minimum withdrawal is ${formatMoney(withdrawalMinIdr)}.`, 'error');
       return;
     }
     if (!withdrawAddress.trim()) {
