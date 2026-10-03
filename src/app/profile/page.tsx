@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { CryptoDepositModal } from '../../components/CryptoDepositModal';
 import { sound } from '../../lib/sound';
-import { useLanguage, formatRegistrationBonus } from '../../i18n';
+import { useLanguage, formatRegistrationBonus, formatIdrAsSelectedCurrency, getLocaleConfig, IDR_PER_CURRENCY_UNIT } from '../../i18n';
 import {
   Settings,
   Bell,
@@ -61,6 +61,9 @@ export default function ProfilePage() {
 
   const totalLocked = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
   const availableBalance = Number(user.coins || 0) / 100;
+  const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
+  const withdrawalMinIdr = 100000;
+  const blindBoxMinIdr = 72000;
   const walletAddress = String(user.walletAddress || '').trim();
   const referralLink = walletAddress
     ? `https://sysstreamer.asia/login?ref=${encodeURIComponent(walletAddress)}`
@@ -130,9 +133,10 @@ export default function ProfilePage() {
   };
 
   const handleWithdraw = async () => {
-    const amount = Number(withdrawAmount);
-    if (!Number.isFinite(amount) || amount <= 0) {
-      showToast('Withdrawal', 'Masukkan nominal penarikan yang valid.', 'error');
+    const amountDisplay = Number(withdrawAmount);
+    const amount = Math.round(amountDisplay * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
+    if (!Number.isFinite(amountDisplay) || amount < withdrawalMinIdr) {
+      showToast('Withdrawal', 'Minimum withdrawal is {formatMoney(withdrawalMinIdr)}.', 'error');
       return;
     }
     if (!withdrawAddress.trim()) {
@@ -288,11 +292,11 @@ export default function ProfilePage() {
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-4">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Available</div>
-            <div className="text-lg font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
+            <div className="text-lg font-black text-cyan-300 mt-1">{formatMoney(availableBalance)}</div>
           </div>
           <div className="rounded-2xl border border-amber-500/20 bg-slate-900/70 p-4">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Locked</div>
-            <div className="text-lg font-black text-amber-300 mt-1">{totalLocked.toFixed(2)} USDT</div>
+            <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(totalLocked)}</div>
           </div>
           <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
@@ -322,7 +326,7 @@ export default function ProfilePage() {
           <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
             <div className="text-xl font-black text-amber-300 mt-1">Withdraw</div>
-            <div className="text-[10px] text-slate-500 mt-1">Ajukan penarikan USDT</div>
+            <div className="text-[10px] text-slate-500 mt-1">Minimum withdrawal {formatMoney(withdrawalMinIdr)}</div>
           </button>
         </div>
 
