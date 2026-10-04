@@ -1,6 +1,5 @@
 ﻿import type { PagesFunction } from "@cloudflare/workers-types";
 import { requireAdmin } from "../../../../_lib/admin";
-import { getDB } from "../../../../_lib/db";
 import {
   getProviderConfig,
   getEnvString,
@@ -125,7 +124,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     return html("Akses admin diperlukan.", 401);
   }
 
-  const db = getDB(context.env as any);
+  const db = context.env.DB;
 
   const row = await db
     .prepare(
