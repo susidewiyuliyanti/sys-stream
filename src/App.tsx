@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar';
 import { ToastContainer } from './components/ToastContainer';
 import { MobileAuthModal } from './components/MobileAuthModal';
 import { BottomMobileNav } from './components/BottomMobileNav';
-import { StreamerModule } from './components/streamer';
+import StreamerModule from './components/streamer/StreamerModule';
 
 // Page components
 import LoginPage from './app/login/page';
