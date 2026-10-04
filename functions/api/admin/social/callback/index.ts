@@ -1,13 +1,13 @@
 ﻿import type { PagesFunction } from "@cloudflare/workers-types";
-import { requireAdmin } from "../../../_lib/admin";
-import { getDB } from "../../../_lib/db";
+import { requireAdmin } from "../../../../_lib/admin";
+import { getDB } from "../../../../_lib/db";
 import {
   getProviderConfig,
   getEnvString,
   isProviderConfigured,
-} from "../../../_lib/social/providers";
-import { exchangeOAuthCode } from "../../../_lib/social/token";
-import { storeSocialToken } from "../../../_lib/social/vault";
+} from "../../../../_lib/social/providers";
+import { exchangeOAuthCode } from "../../../../_lib/social/token";
+import { storeSocialToken } from "../../../../_lib/social/vault";
 
 type Env = {
   DB: D1Database;
