@@ -36,7 +36,10 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   if(recipients.length>500)return json({success:false,error:"Maksimal 500 penerima per campaign."},400);
   const sender=await env.DB.prepare("SELECT email,display_name,active FROM email_senders WHERE email=? LIMIT 1").bind(fromEmail).first<any>();if(!sender||Number(sender.active)!==1)return json({success:false,error:"Sender tidak ditemukan atau sedang nonaktif."},400);
   const now=Math.floor(Date.now()/1000),id=crypto.randomUUID();await env.DB.prepare("INSERT INTO email_campaigns (id,name,subject,from_email,from_name,html_body,text_body,audience_type,status,total_recipients,created_by,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)").bind(id,name,subject,fromEmail,fromName,html,text||"",audienceType,"draft",recipients.length,auth.identity.id||auth.identity.email,now,now).run();
-  for(const r of recipients)await env.DB.prepare("INSERT INTO email_campaign_recipients (id,campaign_id,email,name,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?)").bind(crypto.randomUUID(),id,r.email,r.name,"pending",now,now).run();
+  for(let i=0;i<recipients.length;i+=100){
+   const statements=recipients.slice(i,i+100).map(r=>env.DB.prepare("INSERT INTO email_campaign_recipients (id,campaign_id,email,name,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?)").bind(crypto.randomUUID(),id,r.email,r.name,"pending",now,now));
+   await env.DB.batch(statements);
+  }
   return json({success:true,campaign:{id,name,totalRecipients:recipients.length,status:"draft"}},201);
  }
  const id=clean(body?.id,100);if(!id)return json({success:false,error:"Campaign ID wajib diisi."},400);const campaign=await env.DB.prepare("SELECT * FROM email_campaigns WHERE id=? LIMIT 1").bind(id).first<any>();if(!campaign)return json({success:false,error:"Campaign tidak ditemukan."},404);
@@ -49,7 +52,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   try{
    const response=await fetch("https://api.resend.com/emails/batch",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify(batch)});const data:any=await response.json().catch(()=>({}));if(!response.ok)throw new Error(String(data?.message||"Resend batch gagal."));
    const ids=Array.isArray(data?.data)?data.data.map((x:any)=>String(x?.id||"")):[],now=Math.floor(Date.now()/1000);
-   for(let j=0;j<chunk.length;j++){const r=chunk[j];await env.DB.prepare("UPDATE email_campaign_recipients SET status='sent',resend_id=?,sent_at=?,updated_at=? WHERE id=?").bind(ids[j]||"",now,now,String(r.id)).run();sent++;}
+   await env.DB.batch(chunk.map((r:any,j:number)=>env.DB.prepare("UPDATE email_campaign_recipients SET status='sent',resend_id=?,sent_at=?,updated_at=? WHERE id=?").bind(ids[j]||"",now,now,String(r.id))));
+   sent+=chunk.length;
   }catch(error){const msg=String(error instanceof Error?error.message:error).slice(0,1000),now=Math.floor(Date.now()/1000);for(const r of chunk){await env.DB.prepare("UPDATE email_campaign_recipients SET status='failed',error=?,updated_at=? WHERE id=?").bind(msg,now,String(r.id)).run();failed++;}}
  }
  const finalStatus=failed===0?"sent":sent>0?"partial":"failed",now=Math.floor(Date.now()/1000);await env.DB.prepare("UPDATE email_campaigns SET status=?,sent_count=?,failed_count=?,sent_at=?,updated_at=? WHERE id=?").bind(finalStatus,sent,failed,now,now,id).run();
