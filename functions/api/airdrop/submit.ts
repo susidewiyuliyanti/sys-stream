@@ -41,6 +41,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     const taskKey = String(body.taskKey || "").trim();
     const rawTaskId = String(body.taskId || "").trim();
     const link = String(body.link || "").trim();
+    const socialPlatform = String(body.socialPlatform || "").trim().toLowerCase();
+    const socialAccount = String(body.socialAccount || "").trim();
+    const followConfirmed = body.followConfirmed === true;
 
     if (!wallet || (!taskKey && !rawTaskId) || !link) {
       return response(context.request, { success: false, message: "Wallet, task, dan bukti wajib diisi" }, 400);
@@ -59,6 +62,19 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     if (!task) return response(context.request, { success: false, message: "Task tidak ditemukan atau belum diaktifkan" }, 404);
 
     const isCheckin = String(taskKey).toLowerCase() === "checkin" || /check.?in/i.test(String(task.title || ""));
+    const socialPlatforms = new Set(["tiktok","instagram","youtube","shorts","twitter","facebook","telegram","discord","social"]);
+    const normalizedCategory = String(task.category || taskKey || "").toLowerCase();
+    const requiresFollow = !isCheckin && (socialPlatforms.has(normalizedCategory) || socialPlatforms.has(String(taskKey).toLowerCase()));
+    if (requiresFollow) {
+      if (!socialPlatform || !socialAccount || !followConfirmed) {
+        return response(context.request, { success: false, message: "Hubungkan akun media sosial dan konfirmasi bahwa Anda sudah follow sebelum mengirim task." }, 400);
+      }
+      await db.prepare(`CREATE TABLE IF NOT EXISTS airdrop_social_accounts (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, account TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))`).run();
+      const connected = await db.prepare("SELECT account FROM airdrop_social_accounts WHERE wallet_address=? AND platform=?").bind(wallet, socialPlatform).first<{account:string}>();
+      if (!connected || String(connected.account || "").trim() !== socialAccount) {
+        return response(context.request, { success: false, message: "Akun media sosial belum terhubung untuk platform task ini." }, 400);
+      }
+    }
     if (isCheckin) {
       // Check-in is repeatable once per calendar day, unlike normal campaign tasks.
       const existingToday = await db.prepare(`
