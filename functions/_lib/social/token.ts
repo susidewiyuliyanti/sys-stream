@@ -1,7 +1,4 @@
-﻿import type {
-  OAuthProviderConfig,
-  OAuthTokenResponse,
-} from "./providers";
+﻿import type { OAuthProviderConfig, OAuthTokenResponse } from "./providers";
 
 export type TokenExchangeInput = {
   code: string;
@@ -11,6 +8,7 @@ export type TokenExchangeInput = {
 };
 
 export async function exchangeOAuthCode(
+  env: Record<string, unknown>,
   config: OAuthProviderConfig,
   input: TokenExchangeInput,
 ): Promise<OAuthTokenResponse> {
@@ -22,13 +20,12 @@ export async function exchangeOAuthCode(
     throw new Error("OAuth redirect URI kosong.");
   }
 
-  const tokenUrl = process.env[config.tokenUrlEnv];
+  const tokenUrlValue = env[config.tokenUrlEnv];
 
-  /*
-   * Cloudflare Workers/Pages tidak menggunakan process.env.
-   * Fungsi provider-specific exchange akan menerima token URL
-   * secara eksplisit pada tahap berikutnya.
-   */
+  const tokenUrl =
+    typeof tokenUrlValue === "string"
+      ? tokenUrlValue.trim()
+      : "";
 
   if (!tokenUrl) {
     throw new Error(
@@ -55,7 +52,7 @@ export async function exchangeOAuthCode(
 
   const text = await response.text();
 
-  let data: OAuthTokenResponse = {};
+  let data: OAuthTokenResponse;
 
   try {
     data = JSON.parse(text) as OAuthTokenResponse;
@@ -68,6 +65,12 @@ export async function exchangeOAuthCode(
   if (!response.ok) {
     throw new Error(
       `OAuth token exchange gagal (${response.status}).`,
+    );
+  }
+
+  if (!data.access_token) {
+    throw new Error(
+      "OAuth provider tidak mengembalikan access_token.",
     );
   }
 
