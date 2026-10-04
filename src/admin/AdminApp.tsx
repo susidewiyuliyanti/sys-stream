@@ -50,9 +50,43 @@ export default function AdminApp() {
     if(!authenticated)return;
     setLoading(true);setError('');
     try{
-      const [u,d,b,a,t,s]=await Promise.all([request('/users'),request('/deposits'),request('/bonuses'),request('/admins'),request('/airdrop-tasks'),request('/streamers')]);
-      setUsers(u.users||[]);setDeposits(d.deposits||[]);setGrants(b.grants||[]);setAdmins(a.admins||[]);setAirdropTasks(t.tasks||[]);setStreamers(s.streamers||[]);
-      setAdmin(a.currentAdmin||admin);
+      // Do not let one optional admin endpoint hide valid Users data.
+      // Each panel loads independently so a schema/API issue in deposits,
+      // bonuses, tasks, streamers, or named-admins cannot blank the Users tab.
+      const results=await Promise.allSettled([
+        request('/users'),
+        request('/deposits'),
+        request('/bonuses'),
+        request('/admins'),
+        request('/airdrop-tasks'),
+        request('/streamers')
+      ]);
+
+      const [u,d,b,a,t,s]=results;
+      const failures:string[]=[];
+
+      if(u.status==='fulfilled') setUsers(u.value.users||[]);
+      else failures.push('users');
+      if(d.status==='fulfilled') setDeposits(d.value.deposits||[]);
+      else failures.push('deposits');
+      if(b.status==='fulfilled') setGrants(b.value.grants||[]);
+      else failures.push('bonuses');
+      if(a.status==='fulfilled'){
+        setAdmins(a.value.admins||[]);
+        setAdmin(a.value.currentAdmin||admin);
+      }else failures.push('admins');
+      if(t.status==='fulfilled') setAirdropTasks(t.value.tasks||[]);
+      else failures.push('airdrop-tasks');
+      if(s.status==='fulfilled') setStreamers(s.value.streamers||[]);
+      else failures.push('streamers');
+
+      const unauthorized=results.some(r=>r.status==='rejected' && /session|unauthorized/i.test(String(r.reason?.message||r.reason||'')));
+      if(unauthorized){
+        setAuthenticated(false);
+        setError('Sesi admin berakhir. Silakan login kembali.');
+      }else if(failures.length){
+        setError('Sebagian data admin gagal dimuat: '+failures.join(', ')+'. Data Users tetap ditampilkan jika tersedia.');
+      }
     }catch(e:any){
       if(/session|unauthorized/i.test(e?.message||''))setAuthenticated(false);
       setError(e?.message||'Gagal memuat dashboard.');
