@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
 import { SysLogo } from '../components/SysLogo';
 import AIAgentPanel from './AIAgentPanel';
+import SocialMediaPanel from './SocialMediaPanel';
 import {
   Activity, Bot, CircleDollarSign, Gift, LayoutDashboard, LogOut, RefreshCw,
-  Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2
+  Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2, Link2
 } from 'lucide-react';
 
 const API = '/api/admin';
@@ -14,7 +15,7 @@ type AdminAccount = { id:string; email:string; displayName:string; role:string; 
 type JackpotGrant = { id:string; userId:string; username:string; email:string; amount:number; currency:string; note:string; adminName:string; createdAt:number };
 type AirdropTask = { id:number; title:string; description:string; category:string; rewardPoints:number; active:number; createdAt:string };
 type Streamer = { id:string; username:string; email:string; walletAddress:string; role:string; createdAt?:string };
-type Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins'|'ai-agent';
+type Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins'|'ai-agent'|'social';
 
 export default function AdminApp() {
   const [authenticated,setAuthenticated]=useState(false);
@@ -180,6 +181,7 @@ export default function AdminApp() {
               <NavButton active={tab==='jackpot'} onClick={()=>setTab('jackpot')} icon={<Gift/>} label="Jackpot Grants"/>
               <NavButton active={tab==='airdrop'} onClick={()=>setTab('airdrop')} icon={<ListChecks/>} label="User Tasks / Airdrop Task"/>
               <NavButton active={tab==='ai-agent'} onClick={()=>setTab('ai-agent')} icon={<Bot/>} label="AI Agent"/>
+              <NavButton active={tab==='social'} onClick={()=>setTab('social')} icon={<Link2/>} label="Social Media"/>
               {admin?.role==='OWNER'&&<NavButton active={tab==='admins'} onClick={()=>setTab('admins')} icon={<UserPlus/>} label="Admin Accounts"/>}
             </nav>
             <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
@@ -192,7 +194,7 @@ export default function AdminApp() {
             {error&&<div className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm p-4">{error}</div>}
             <div className="mb-6">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='streamers'?'Streamer Management':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':tab==='airdrop'?'User Tasks / Airdrop Task':tab==='ai-agent'?'AI Agent':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
+                <div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400"><Activity className="w-4 h-4"/> SYS STREAM ADMIN</div><h1 className="text-2xl lg:text-3xl font-black mt-2">{tab==='overview'?'Control Center':tab==='users'?'Users':tab==='streamers'?'Streamer Management':tab==='transactions'?'Transactions':tab==='jackpot'?'Jackpot Grants':tab==='airdrop'?'User Tasks / Airdrop Task':tab==='ai-agent'?'AI Agent':tab==='social'?'Social Media':'Admin Accounts'}</h1><p className="text-sm text-slate-500 mt-1">Production data only. Promotional grants are separately audited and do not alter random game results.</p></div>
                 {(tab==='users'||tab==='transactions')&&<div className="relative w-full md:w-80"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder={tab==='users'?'Search user, email...':'Search transaction...'} className="w-full rounded-xl bg-slate-900 border border-slate-800 pl-10 pr-4 py-2.5 text-sm outline-none focus:border-slate-600"/></div>}
               </div>
             </div>
@@ -204,6 +206,7 @@ export default function AdminApp() {
             {tab==='jackpot'&&<JackpotPanel users={users} grants={grants} onRefresh={()=>void loadDashboard()}/>}
             {tab==='airdrop'&&<AirdropTaskPanel tasks={airdropTasks} onRefresh={()=>void loadDashboard()}/>}
             {tab==='ai-agent'&&<AIAgentPanel/>}
+            {tab==='social'&&<SocialMediaPanel adminRole={admin?.role}/>} 
             {tab==='admins'&&admin?.role==='OWNER'&&<AdminsPanel admins={admins} onRefresh={()=>void loadDashboard()}/>}
           </main>
         </div>
