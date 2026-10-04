@@ -4,17 +4,45 @@ import { requireAdmin } from "../../_lib/admin";
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
   if (!auth.ok) return auth.response;
+
   try {
+    // Production D1 uses locked_saldo (legacy schema used total_locked).
+    // Keep the query aligned with the actual users table so one bad
+    // column cannot make the entire Users tab appear empty.
     const result = await context.env.DB.prepare(`
-      SELECT id, username, email, wallet_address AS walletAddress, COALESCE(available_balance,0) AS balance,
-             COALESCE(total_locked,0) AS lockedBalance, COALESCE(role,'user') AS role,
-             created_at AS createdAt
+      SELECT
+        CAST(id AS TEXT) AS id,
+        COALESCE(username,'') AS username,
+        COALESCE(email,'') AS email,
+        COALESCE(wallet_address,'') AS walletAddress,
+        COALESCE(available_balance,0) AS balance,
+        COALESCE(locked_saldo,0) AS lockedBalance,
+        COALESCE(role,'USER') AS role,
+        created_at AS createdAt
       FROM users
-      ORDER BY created_at DESC
+      ORDER BY created_at DESC, id DESC
       LIMIT 500
     `).all();
-    return json({success:true,users:result.results || []});
-  } catch {
-    return json({success:false,error:"Failed to load users."},500);
+
+    return json({
+      success: true,
+      users: (result.results || []).map((u:any) => ({
+        ...u,
+        id: String(u.id ?? ''),
+        username: String(u.username ?? ''),
+        email: String(u.email ?? ''),
+        walletAddress: String(u.walletAddress ?? ''),
+        balance: Number(u.balance ?? 0),
+        lockedBalance: Number(u.lockedBalance ?? 0),
+        role: String(u.role ?? 'USER'),
+        createdAt: u.createdAt ?? null
+      }))
+    });
+  } catch (error) {
+    return json({
+      success: false,
+      error: "Failed to load users.",
+      detail: String(error)
+    }, 500);
   }
 };
