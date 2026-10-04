@@ -10,9 +10,19 @@ function parseAddress(value: string) {
   return m ? {name:m[1].trim().replace(/^["']|["']$/g,""),email:m[2].trim().toLowerCase()} : {name:"",email:raw.toLowerCase()};
 }
 function htmlToText(html:string) {
-  return html.replace(/<style[\\s\\S]*?<\\/style>/gi," ").replace(/<script[\\s\\S]*?<\\/script>/gi," ")
-    .replace(/<br\\s*\\/?>/gi,"\\n").replace(/<\\/p\\s*>/gi,"\\n").replace(/<[^>]+>/g," ")
-    .replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/&lt;/gi,"<").replace(/&gt;/gi,">").trim();
+  return html
+    .replace(/<style[\\s\\S]*?<\\/style>/gi, " ")
+    .replace(/<script[\\s\\S]*?<\\/script>/gi, " ")
+    .replace(/<br\\s*\\/?\s*>/gi, "\\n")
+    .replace(/<\\/p\\s*>/gi, "\\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\\s+\\n/g, "\\n")
+    .replace(/\\n\\s+/g, "\\n")
+    .trim();
 }
 function headersObject(headers:any) {
   if(Array.isArray(headers)){const out:any={};for(const item of headers){const k=clean(item?.name||item?.key,200);if(k)out[k]=clean(item?.value,10000)}return out;}
