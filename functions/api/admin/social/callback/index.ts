@@ -156,6 +156,20 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     );
   }
 
+  const currentAdminId = String(admin.identity.id || "");
+  const currentAdminEmail = String(admin.identity.email || "").toLowerCase();
+  const stateOwner = String(row.created_by || "");
+  if (
+    stateOwner &&
+    stateOwner !== currentAdminId &&
+    stateOwner.toLowerCase() !== currentAdminEmail
+  ) {
+    return html(
+      "OAuth state bukan milik sesi admin ini.",
+      403,
+    );
+  }
+
   if (Date.now() > Number(row.expires_at)) {
     await db
       .prepare(
@@ -253,15 +267,42 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         expiresAt,
         connectedBy:
           row.created_by ||
-          admin.user?.email ||
-          admin.user?.id ||
+          admin.identity.email ||
+          admin.identity.id ||
           null,
       },
     );
 
+    const now = Math.floor(Date.now() / 1000);
+    await db
+      .prepare(
+        `INSERT INTO social_connections
+          (id, platform, account_id, account_name, status, scopes, connected_at, updated_at)
+         VALUES (?1, ?2, ?3, ?4, 'CONNECTED', ?5, ?6, ?6)
+         ON CONFLICT(id)
+         DO UPDATE SET
+           platform = excluded.platform,
+           account_id = excluded.account_id,
+           account_name = excluded.account_name,
+           status = excluded.status,
+           scopes = excluded.scopes,
+           connected_at = excluded.connected_at,
+           updated_at = excluded.updated_at`,
+      )
+      .bind(
+        platform,
+        platform,
+        null,
+        platform.toUpperCase(),
+        token.scope ?? null,
+        now,
+      )
+      .run();
+
     return html(
       `Akun ${platform.toUpperCase()} berhasil terhubung ke SYS STREAM.<br><br>
-       Token tersimpan secara terenkripsi. Anda dapat menutup halaman ini.`,
+       Token tersimpan secara terenkripsi.<br><br>
+       <a href="/admin?tab=social" style="color:#fbbf24">Kembali ke Admin Panel</a>`,
     );
   } catch (error) {
     const message =
