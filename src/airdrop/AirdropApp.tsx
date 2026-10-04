@@ -276,6 +276,12 @@ export default function AirdropApp() {
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
+  const [socialAccounts,setSocialAccounts]=useState<Record<string,string>>({});
+  const [socialPlatform,setSocialPlatform]=useState('');
+  const [socialAccount,setSocialAccount]=useState('');
+  const [socialSaving,setSocialSaving]=useState(false);
+  const [socialMessage,setSocialMessage]=useState('');
+  const [followConfirmed,setFollowConfirmed]=useState(false);
   const [lang,setLang]=useState<Lang>(() => {
     if(typeof window==='undefined') return 'id';
     const params = new URLSearchParams(window.location.search);
@@ -300,6 +306,8 @@ export default function AirdropApp() {
 
   useEffect(() => {
     let active = true;
+    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next);} } catch {} };
+    void loadSocialAccounts();
 
     const loadAuthenticatedWallet = async () => {
       try {
@@ -359,7 +367,9 @@ export default function AirdropApp() {
   }, []);
 
 
-  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); },[selectedTask]);
+  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setFollowConfirmed(false); setSocialPlatform(''); },[selectedTask]);
+
+  const saveSocialAccount=async()=>{ const platform=socialPlatform.trim().toLowerCase(),account=socialAccount.trim(); if(!platform||!account)return; setSocialSaving(true);setSocialMessage(''); try{const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,account})}); const data=await res.json().catch(()=>({})); if(!res.ok||!data.success)throw new Error(data.message||'Gagal memasangkan akun media sosial.'); setSocialAccounts(prev=>({...prev,[platform]:account}));setSocialAccount('');setSocialMessage(lang==='id'?'Akun berhasil dipasangkan.':'Social account connected.');}catch(e){setSocialMessage(e instanceof Error?e.message:'Gagal memasangkan akun.');}finally{setSocialSaving(false);} };
 
   useEffect(()=>{
     let active=true;
@@ -398,8 +408,12 @@ export default function AirdropApp() {
     loadSubmissions(); return()=>{active=false;};
   },[walletAddress]);
 
+  const requiredSocialPlatform=(task:Task|null)=>{ if(!task)return ''; if(task.type==='shorts'||task.type==='youtube')return 'youtube'; if(['tiktok','instagram','twitter','facebook','telegram','discord'].includes(task.type))return task.type; if(task.type==='social')return 'social'; return ''; };
+
   const submitTask=async()=>{
     const wallet=walletAddress.trim(); if(!selectedTask||!wallet)return;
+    const requiredPlatform=requiredSocialPlatform(selectedTask); const selectedSocialPlatform=requiredPlatform==='social'?(socialPlatform||Object.keys(socialAccounts)[0]||''):requiredPlatform;
+    if(requiredPlatform){ if(!selectedSocialPlatform||!socialAccounts[selectedSocialPlatform]){setSubmissionMessage(lang==='id'?'Pasangkan akun media sosial terlebih dahulu.':'Connect the required social account first.');return;} if(!followConfirmed){setSubmissionMessage(lang==='id'?'Anda wajib follow akun campaign sebelum mengikuti task.':'You must follow the campaign account before submitting this task.');return;} }
     if(selectedTask.type!=='checkin'&&!proofLink.trim()){setSubmissionMessage(tx.proofRequired||COPY.en.proofRequired||'Proof link is required.');return;}
     setSubmissionLoading(true);setSubmissionMessage('');
     try{
@@ -407,7 +421,7 @@ export default function AirdropApp() {
         method:'POST',
         credentials:'include',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN'})
+        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN',socialPlatform:selectedSocialPlatform,socialAccount:selectedSocialPlatform?socialAccounts[selectedSocialPlatform]:'',followConfirmed})
       });
       const data=await res.json().catch(()=>({}));
       if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');
@@ -505,6 +519,9 @@ export default function AirdropApp() {
           </div>
         </div>
       </section>
+
+
+      <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6"><div><div className="text-xs font-black tracking-wider text-amber-400">{lang==='id'?'HUBUNGKAN AKUN MEDIA SOSIAL':'CONNECT SOCIAL ACCOUNTS'}</div><h2 className="mt-1 text-xl font-black">{lang==='id'?'Pasangkan akun untuk mengikuti task':'Connect accounts to join tasks'}</h2><p className="mt-1 text-xs text-slate-500">{lang==='id'?'Task sosial mewajibkan akun terkait sudah follow akun campaign sebelum submission dikirim.':'Social tasks require the related account to follow the campaign before submission.'}</p></div><div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">{['tiktok','instagram','youtube','twitter','facebook','telegram','discord'].map(p=><div key={p} className="rounded-2xl border border-slate-800 bg-slate-950 p-4"><div className="flex items-center justify-between"><span className="font-bold capitalize">{p==='twitter'?'X / Twitter':p}</span><span className={socialAccounts[p]?'text-emerald-400 text-xs font-black':'text-slate-500 text-xs'}>{socialAccounts[p]?(lang==='id'?'TERHUBUNG':'CONNECTED'):(lang==='id'?'BELUM':'NOT CONNECTED')}</span></div><div className="mt-3 text-xs text-slate-400 truncate">{socialAccounts[p]||(lang==='id'?'Belum ada akun':'No account connected')}</div></div>)}</div><div className="mt-5 grid sm:grid-cols-[180px_1fr_auto] gap-3"><select value={socialPlatform} onChange={e=>setSocialPlatform(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"><option value="">{lang==='id'?'Pilih platform':'Select platform'}</option>{['tiktok','instagram','youtube','twitter','facebook','telegram','discord'].map(p=><option key={p} value={p}>{p==='twitter'?'X / Twitter':p[0].toUpperCase()+p.slice(1)}</option>)}</select><input value={socialAccount} onChange={e=>setSocialAccount(e.target.value)} placeholder={lang==='id'?'Username atau link profil':'Username or profile URL'} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"/><button disabled={!socialPlatform||!socialAccount.trim()||socialSaving} onClick={saveSocialAccount} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">{socialSaving?(lang==='id'?'Menyimpan...':'Saving...'):(lang==='id'?'Pasangkan':'Connect')}</button></div>{socialMessage&&<div className="mt-3 text-xs text-amber-300">{socialMessage}</div>}</section>
 
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex items-center justify-between gap-3">
@@ -650,7 +667,7 @@ export default function AirdropApp() {
           {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
           {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder={tx.proofPlaceholder || AIRDROP_UI[lang].proofPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
           {submissionMessage&&<div className="mt-3 text-xs text-amber-300">{submissionMessage}</div>}
-          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || AIRDROP_UI[lang].submitting):(tx.saveWallet || COPY.en.saveWallet)}</button>
+          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())||(!!requiredSocialPlatform(selectedTask)&&(!followConfirmed||!(requiredSocialPlatform(selectedTask)==='social'?(socialPlatform&&socialAccounts[socialPlatform]):socialAccounts[requiredSocialPlatform(selectedTask)])))} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || AIRDROP_UI[lang].submitting):(tx.saveWallet || COPY.en.saveWallet)}</button>
         </div>
       </div>
     </div>})()}
