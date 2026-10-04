@@ -116,6 +116,12 @@ export async function onRequestPost({
       .bind(platform)
       .run();
 
+    await env.DB.prepare(
+      `DELETE FROM social_oauth_tokens WHERE platform = ?`,
+    )
+      .bind(platform)
+      .run();
+
     return json({
       success: true,
       platform,
