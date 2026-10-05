@@ -2550,7 +2550,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const selected = translations[language][key] ?? PAGE_UI_TRANSLATIONS[language]?.[key];
       if (selected !== undefined) return selected;
       if (import.meta.env?.DEV) {
-        console.warn(\`[SYS STREAM i18n] Missing \${language} translation for: \${key}\`);
+        console.warn(`[SYS STREAM i18n] Missing ${language} translation for: ${key}`);
       }
       return translations.en[key] ?? PAGE_UI_TRANSLATIONS.en?.[key] ?? key;
     },
