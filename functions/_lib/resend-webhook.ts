@@ -17,12 +17,12 @@ export async function verifyResendWebhook(payload: string, headers: Headers, sec
   const secretValue = secret.startsWith("whsec_") ? secret.slice(6) : secret;
   let keyBytes: Uint8Array;
   try { keyBytes = base64ToBytes(secretValue); } catch { return false; }
-  const key = await crypto.subtle.importKey("raw", keyBytes, {name:"HMAC",hash:"SHA-256"}, false, ["verify"]);
+  const key = await crypto.subtle.importKey("raw", keyBytes as unknown as BufferSource, {name:"HMAC",hash:"SHA-256"}, false, ["verify"]);
   const signed = new TextEncoder().encode(svixId + "." + svixTimestamp + "." + payload);
   for (const item of svixSignature.split(" ").map(v=>v.trim()).filter(Boolean)) {
     const parts = item.split(",",2);
     if (parts[0] !== "v1" || !parts[1]) continue;
-    try { if (await crypto.subtle.verify("HMAC", key, base64ToBytes(parts[1]), signed)) return true; } catch {}
+    try { if (await crypto.subtle.verify("HMAC", key, base64ToBytes(parts[1]) as unknown as BufferSource, signed)) return true; } catch {}
   }
   return false;
 }
