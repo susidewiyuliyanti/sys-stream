@@ -27,7 +27,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   if (!auth.ok) return auth.response;
 
   try {
-    const body = await context.request.json<any>();
+    const body = await context.request.json() as Promise<any>;
     const userId = String(body?.userId || "").trim();
     const action = String(body?.action || "promote").toLowerCase();
 
