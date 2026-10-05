@@ -1,6 +1,7 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { hashPassword } from "../../_lib/auth";
 import { requireAdmin } from "../../_lib/admin";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -39,6 +40,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
        VALUES(?,?,?,?,?,1,?,?)`
     ).bind(id,email,displayName,passwordHash,role,now,now).run();
 
+    await notifyAdmins(context.env,{type:"admin.created",title:"New admin account",message:`Admin ${displayName} (${email}) was created by ${auth.identity.displayName || "Owner"}.`,severity:"success",entityType:"admin",entityId:id,adminUserId:auth.identity.id});
     return json({success:true,admin:{id,email,displayName,role,active:1,createdAt:now}},201);
   } catch (error) {
     console.error("create admin error", error);
