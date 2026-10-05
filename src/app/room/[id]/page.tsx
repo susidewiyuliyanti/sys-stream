@@ -182,7 +182,7 @@ export default function Room({
           <div className="text-xs uppercase tracking-wider text-cyan-400 font-black">{t("OFFICIAL STREAMER")}</div>
           <h1 className="text-2xl font-black mt-2">{t("Buat Live Room")}</h1>
           <p className="text-sm text-slate-400 mt-2">
-            {t("Room belum tersedia. Buat room ini untuk menjadi pemiliknya.")} <span className="text-cyan-300 font-bold">{effectiveRoomId}</span>
+            {t("LIVE_ROOM_NOT_AVAILABLE_CREATE")} <span className="text-cyan-300 font-bold">{effectiveRoomId}</span>
           </p>
           <input value={roomTitle} onChange={e=>setRoomTitle(e.target.value)} maxLength={120}
             placeholder={t("Judul Live Room")} required
