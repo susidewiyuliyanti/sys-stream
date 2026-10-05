@@ -3279,12 +3279,12 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "Terms & Conditions":"الشروط والأحكام"
   }
 };
-for (const lang of Object.keys(TRANSLATION_CORRECTIONS) as LanguageCode[]) {
-  Object.assign(translations[lang], TRANSLATION_CORRECTIONS[lang]);
-  Object.assign(PAGE_UI_TRANSLATIONS[lang], TRANSLATION_CORRECTIONS[lang]);
-}
-
 for (const lang of Object.keys(TRANSLATION_ONLY_USER_AUDIT) as LanguageCode[]) {
   Object.assign(translations[lang], TRANSLATION_ONLY_USER_AUDIT[lang]);
   Object.assign(PAGE_UI_TRANSLATIONS[lang], TRANSLATION_ONLY_USER_AUDIT[lang]);
+}
+
+for (const lang of Object.keys(TRANSLATION_CORRECTIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], TRANSLATION_CORRECTIONS[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], TRANSLATION_CORRECTIONS[lang]);
 }
