@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { useLanguage } from './i18n';
 import { GameProvider } from './context/GameContext';
 import { Navbar } from './components/Navbar';
 import { ToastContainer } from './components/ToastContainer';
@@ -21,12 +22,13 @@ import RoomPage from './app/room/[id]/page';
 import ReferralPage from './app/referral/page';
 
 function AirdropRedirect() {
+  const { t } = useLanguage();
   useEffect(() => {
     window.location.replace('https://airdrop.sysstreamer.asia');
   }, []);
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-      <div className="text-sm text-slate-400">Membuka SYS STREAM Airdrop...</div>
+      <div className="text-sm text-slate-400">{t('Membuka SYS STREAM Airdrop...')}</div>
     </div>
   );
 }
