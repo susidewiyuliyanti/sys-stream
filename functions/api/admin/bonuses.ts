@@ -1,5 +1,6 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -50,6 +51,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       ).bind(amount,userId),
     ]);
 
+    await notifyAdmins(context.env,{type:"jackpot.grant",title:"Jackpot grant created",message:`${auth.identity.displayName || "Admin"} granted ${amount} USDT to ${user.username || user.email || userId}.`,severity:"success",entityType:"jackpot_grant",entityId:grantId,adminUserId:auth.identity.id});
     return json({
       success:true,
       grant:{id:grantId,userId,username:user.username,email:user.email,amount,currency:"USDT",note,createdAt:now,adminName:auth.identity.displayName}
