@@ -1,5 +1,6 @@
 import { Env, json, readJson, withDb } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 interface DepositRequest {
   amount?: number;
@@ -319,6 +320,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         throw error;
       }
     });
+
+    await notifyAdmins(context.env,{type:"deposit.created",title:"New Blind Box lock",message:`User ${auth.user.walletAddress || auth.user.id} created a ${durationDays}-day lock worth ${amount}.`,severity:"info",entityType:"deposit",entityId:result.deposit?.id});
 
     return json({
       success: true,
