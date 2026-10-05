@@ -6,7 +6,7 @@ type CloudflareLiveInput = {
   status?: string;
   rtmps?: { url?: string; streamKey?: string };
   playback?: { hls?: string; dash?: string };
-  webRTCPlayback?: { url?: string };
+  webRTC?: { url?: string };\n  webRTCPlayback?: { url?: string };
 };
 
 async function ensureStreamTable(env: Env) {
@@ -19,7 +19,7 @@ async function ensureStreamTable(env: Env) {
     stream_key TEXT NOT NULL DEFAULT '',
     playback_url TEXT NOT NULL DEFAULT '',
     playback_hls TEXT NOT NULL DEFAULT '',
-    playback_webrtc TEXT NOT NULL DEFAULT '',
+    playback_webrtc TEXT NOT NULL DEFAULT '',\n    whip_url TEXT NOT NULL DEFAULT '',
     status TEXT NOT NULL DEFAULT 'created',
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
@@ -66,7 +66,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     if (!room) return json({ success:false, error:"Room belum tersedia." },404);
 
     const stream = await env.DB.prepare(
-      "SELECT provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,status,updated_at FROM live_streams WHERE room_id=? LIMIT 1"
+      "SELECT provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,whip_url,status,updated_at FROM live_streams WHERE room_id=? LIMIT 1"
     ).bind(roomId).first<any>();
     if (!stream) return json({ success:true, configured:false, stream:null });
 
@@ -89,7 +89,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
         inputUid:String(stream.input_uid||""),
         playbackUrl:String(stream.playback_url||""),
         playbackHls:String(stream.playback_hls||""),
-        playbackWebrtc:String(stream.playback_webrtc||""),
+        playbackWebrtc:String(stream.playback_webrtc||""),\n        whipUrl:owner ? String(stream.whip_url||"") : "",
         status,
         ingestUrl:owner ? String(stream.ingest_url||"") : "",
         streamKey:owner ? String(stream.stream_key||"") : "",
@@ -143,23 +143,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const ingestUrl=String(live?.rtmps?.url||"");
     const streamKey=String(live?.rtmps?.streamKey||"");
     const playbackHls=String(live?.playback?.hls||"");
-    const playbackWebrtc=String(live?.webRTCPlayback?.url||"");
+    const whipUrl=String(live?.webRTC?.url||"");\n    const playbackWebrtc=String(live?.webRTCPlayback?.url||"");
     const playbackUrl=playbackIframeFromHls(playbackHls,uid);
     if (!uid || !ingestUrl || !streamKey || !playbackUrl) {
       return json({success:false,error:"Cloudflare tidak mengembalikan kredensial streaming lengkap."},502);
     }
 
     await env.DB.prepare(
-      `INSERT INTO live_streams(id,room_id,provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,status,created_at,updated_at)
-       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`
+      `INSERT INTO live_streams(id,room_id,provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,whip_url,status,created_at,updated_at)
+       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(
       crypto.randomUUID(),roomId,"cloudflare_stream",uid,ingestUrl,streamKey,playbackUrl,playbackHls,playbackWebrtc,
-      String(live?.status||"created"),now,now
+      whipUrl,String(live?.status||"created"),now,now
     ).run();
 
     return json({
       success:true,
-      stream:{provider:"cloudflare_stream",inputUid:uid,ingestUrl,streamKey,playbackUrl,playbackHls,playbackWebrtc,status:String(live?.status||"created"),owner:true}
+      stream:{provider:"cloudflare_stream",inputUid:uid,ingestUrl,streamKey,playbackUrl,playbackHls,playbackWebrtc,whipUrl,status:String(live?.status||"created"),owner:true}
     });
   } catch (error) {
     console.error("live stream POST failed",error);
