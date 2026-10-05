@@ -28,7 +28,7 @@ async function getKey(secret: string): Promise<CryptoKey> {
 
   return crypto.subtle.importKey(
     "raw",
-    raw,
+    raw as unknown as BufferSource,
     "AES-GCM",
     false,
     ["encrypt", "decrypt"],
