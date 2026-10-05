@@ -2,6 +2,7 @@ import React, { lazy, Suspense, Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { LanguageProvider } from './i18n';
+import UserApp from './App.tsx';
 
 const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
@@ -14,8 +15,7 @@ function lazyWithBundleRecovery<T extends React.ComponentType<any>>(loader: () =
     try {
       return await loader();
     } catch (error) {
-      // Recover once from a stale HTML/chunk cache after a production deployment.
-      // The second attempt is guarded so a real application error does not loop.
+      // Recover once from a stale admin/airdrop chunk after a production deployment.
       if (!sessionStorage.getItem(RECOVERY_KEY)) {
         sessionStorage.setItem(RECOVERY_KEY, '1');
         const url = new URL(window.location.href);
@@ -27,7 +27,6 @@ function lazyWithBundleRecovery<T extends React.ComponentType<any>>(loader: () =
   });
 }
 
-const UserApp = lazyWithBundleRecovery(() => import('./App.tsx'));
 const AdminApp = lazyWithBundleRecovery(() => import('./admin/AdminApp.tsx'));
 const AirdropApp = lazyWithBundleRecovery(() => import('./airdrop/AirdropApp.tsx'));
 
@@ -38,17 +37,23 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
     return { error };
   }
 
-  private reloadWithFreshBundle = () => {
-    // A deployment can briefly leave an older HTML document pointing at chunks
-    // that no longer exist. A cache-busted reload fetches the newest index/bundles.
+  componentDidCatch(error: Error) {
+    console.error('[SYS STREAM] Application bundle failed to load:', error);
+  }
+
+  private reloadWithFreshBundle = async () => {
+    try {
+      sessionStorage.removeItem(RECOVERY_KEY);
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+      }
+    } catch {}
+
     const url = new URL(window.location.href);
     url.searchParams.set('__sysstream_reload', String(Date.now()));
     window.location.replace(url.toString());
   };
-
-  componentDidCatch(error: Error) {
-    console.error('[SYS STREAM] Application bundle failed to load:', error);
-  }
 
   render() {
     if (!this.state.error) return this.props.children;
@@ -63,7 +68,7 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
           </p>
           <button
             type="button"
-            onClick={this.reloadWithFreshBundle}
+            onClick={() => void this.reloadWithFreshBundle()}
             className="mt-5 rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950"
           >
             MUAT ULANG
