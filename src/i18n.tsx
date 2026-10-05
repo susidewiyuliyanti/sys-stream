@@ -3571,7 +3571,7 @@ for (const lang of Object.keys(translations) as LanguageCode[]) {
 
 /* Locked Live Room UI translations. Keys are stable so legacy source text is not shipped in the production bundle. */
 const LIVE_ROOM_NOT_AVAILABLE_CREATE: Record<LanguageCode, string> = {
-  id: "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru.",
+  id: "Room belum siap. Hanya Official Streamer yang dapat membuat room baru.",
   en: "The room is not available yet. Only an Official Streamer can create a new room.",
   es: "La sala aún no está disponible. Solo un streamer oficial puede crear una nueva sala.",
   pt: "A sala ainda não está disponível. Apenas um streamer oficial pode criar uma nova sala.",
