@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../../i18n";
 import { Camera, CameraOff, Mic, MicOff, Radio, Smartphone, Square } from "lucide-react";
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showToast }: Props) {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const mediaRef = useRef<MediaStream | null>(null);
@@ -46,7 +48,7 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
     setBusy(true);
     try {
       if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error("Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.");
+        throw new Error(t("Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS."));
       }
 
       const media = await navigator.mediaDevices.getUserMedia({
@@ -65,7 +67,7 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
 
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
-      if (!pc.localDescription?.sdp) throw new Error("SDP kamera tidak tersedia.");
+      if (!pc.localDescription?.sdp) throw new Error(t("SDP kamera tidak tersedia."));
 
       const response = await fetch(whipUrl, {
         method: "POST",
@@ -74,7 +76,7 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
       });
       if (!response.ok) {
         const detail = await response.text().catch(() => "");
-        throw new Error(detail || "Cloudflare menolak koneksi live dari browser.");
+        throw new Error(detail || t("Cloudflare menolak koneksi live dari browser."));
       }
 
       const answer = await response.text();
@@ -84,10 +86,10 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
       await pc.setRemoteDescription({ type: "answer", sdp: answer });
       setLive(true);
       onStarted?.();
-      showToast?.("Mobile Live", "Kamera dan mikrofon sudah LIVE.", "success");
+      showToast?.(t("Mobile Live"), t("Kamera dan mikrofon sudah LIVE."), "success");
     } catch (error: any) {
       await cleanup();
-      showToast?.("Mobile Live", error?.message || "Gagal memulai live dari HP.", "error");
+      showToast?.(t("Mobile Live"), t(error?.message || "Gagal memulai live dari HP."), "error");
     } finally {
       setBusy(false);
     }
@@ -98,7 +100,7 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
     setBusy(true);
     await cleanup();
     setBusy(false);
-    showToast?.("Mobile Live", "Live dari HP sudah dihentikan.", "info");
+    showToast?.(t("Mobile Live"), t("Live dari HP sudah dihentikan."), "info");
   };
 
   const toggleMute = () => {
@@ -122,13 +124,13 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
           <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-fuchsia-300 font-black">
             <Smartphone className="w-4 h-4" /> MOBILE LIVE
           </div>
-          <div className="text-sm font-bold mt-1">Live langsung dari kamera HP</div>
+          <div className="text-sm font-bold mt-1">{t("Live langsung dari kamera HP")}</div>
           <p className="text-[11px] text-slate-500 mt-1">
-            Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.
+            {t("Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.")}
           </p>
         </div>
         <span className={live ? "rounded-full bg-rose-500/20 text-rose-300 px-2 py-1 text-[10px] font-black" : "rounded-full bg-slate-900 text-slate-500 px-2 py-1 text-[10px] font-black"}>
-          {live ? "● LIVE" : "READY"}
+          {live ? "● LIVE" : t("READY")}
         </span>
       </div>
 
@@ -138,14 +140,14 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
           <div className="absolute inset-0 flex items-center justify-center text-center p-6">
             <Camera className="w-10 h-10 mx-auto text-fuchsia-400 mb-2" />
             <div>
-              <div className="text-sm font-black">Kamera siap digunakan</div>
-              <div className="text-[11px] text-slate-500 mt-1">Tekan tombol mulai untuk meminta izin kamera & mikrofon.</div>
+              <div className="text-sm font-black">{t("Kamera siap digunakan")}</div>
+              <div className="text-[11px] text-slate-500 mt-1">{t("Tekan tombol mulai untuk meminta izin kamera & mikrofon.")}</div>
             </div>
           </div>
         )}
         {busy && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-            <div className="text-xs font-black animate-pulse">MENGHUBUNGKAN KE CLOUDFARE...</div>
+            <div className="text-xs font-black animate-pulse">{t("MENGHUBUNGKAN KE CLOUDFARE...")}</div>
           </div>
         )}
       </div>
@@ -153,24 +155,24 @@ export default function MobileLiveStudio({ whipUrl, onStarted, onStopped, showTo
       <div className="grid grid-cols-3 gap-2 mt-3">
         <button disabled={!live || busy} onClick={toggleMute} className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-xs font-black disabled:opacity-40">
           {muted ? <MicOff className="w-4 h-4 mx-auto mb-1 text-rose-400" /> : <Mic className="w-4 h-4 mx-auto mb-1 text-emerald-400" />}
-          {muted ? "UNMUTE" : "MIC"}
+          {muted ? t("UNMUTE") : t("MIC")}
         </button>
         <button disabled={!live || busy} onClick={toggleCamera} className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-xs font-black disabled:opacity-40">
           {cameraOff ? <CameraOff className="w-4 h-4 mx-auto mb-1 text-rose-400" /> : <Camera className="w-4 h-4 mx-auto mb-1 text-emerald-400" />}
-          {cameraOff ? "CAM OFF" : "CAM"}
+          {cameraOff ? t("CAM OFF") : t("CAM")}
         </button>
         {!live ? (
           <button disabled={!whipUrl || busy} onClick={() => void start()} className="rounded-xl bg-fuchsia-400 px-3 py-2.5 text-xs font-black text-slate-950 disabled:opacity-40">
-            <Radio className="w-4 h-4 mx-auto mb-1" /> MULAI LIVE
+            <Radio className="w-4 h-4 mx-auto mb-1" /> {t("MULAI LIVE")}
           </button>
         ) : (
           <button disabled={busy} onClick={() => void stop()} className="rounded-xl bg-rose-500 px-3 py-2.5 text-xs font-black text-white disabled:opacity-40">
-            <Square className="w-4 h-4 mx-auto mb-1" /> STOP LIVE
+            <Square className="w-4 h-4 mx-auto mb-1" /> {t("STOP LIVE")}
           </button>
         )}
       </div>
       <div className="text-[10px] text-slate-600 mt-3">
-        WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.
+        {t("WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.")}
       </div>
     </section>
   );
