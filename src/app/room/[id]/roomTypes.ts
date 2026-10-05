@@ -28,6 +28,7 @@ export type RoomStream = {
   playbackUrl: string;
   playbackHls: string;
   playbackWebrtc: string;
+  whipUrl: string;
   status: string;
   ingestUrl: string;
   streamKey: string;
