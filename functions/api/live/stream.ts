@@ -6,7 +6,8 @@ type CloudflareLiveInput = {
   status?: string;
   rtmps?: { url?: string; streamKey?: string };
   playback?: { hls?: string; dash?: string };
-  webRTC?: { url?: string };\n  webRTCPlayback?: { url?: string };
+  webRTC?: { url?: string };
+  webRTCPlayback?: { url?: string };
 };
 
 async function ensureStreamTable(env: Env) {
