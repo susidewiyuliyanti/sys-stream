@@ -3550,6 +3550,14 @@ for (const lang of Object.keys(CORE_SCREENING_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(PAGE_UI_TRANSLATIONS[lang], CORE_SCREENING_TRANSLATIONS[lang]);
 }
 
+const PRODUCT_LABEL_TRANSLATIONS: Record<LanguageCode, string> = {
+  id: 'Penambangan SYS', en: 'SYS Mining', es: 'Minería SYS', pt: 'Mineração SYS', zh: 'SYS 挖矿', ja: 'SYS マイニング', ko: 'SYS 채굴', ar: 'تعدين SYS'
+};
+for (const lang of Object.keys(PRODUCT_LABEL_TRANSLATIONS) as LanguageCode[]) {
+  translations[lang]['SYS Mining'] = PRODUCT_LABEL_TRANSLATIONS[lang];
+  PAGE_UI_TRANSLATIONS[lang]['SYS Mining'] = PRODUCT_LABEL_TRANSLATIONS[lang];
+}
+
 /*
  * Final UI synchronization:
  * the page fallback dictionary is assembled in several stages. Merge the
