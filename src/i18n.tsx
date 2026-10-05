@@ -2450,14 +2450,14 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<LanguageCode>(() => {
+    /*
+     * Language is explicitly controlled by SYS STREAM.
+     * Never auto-switch from navigator.language: browser preferences can otherwise
+     * change the UI language and create mixed-language screens during screening.
+     * English is the fixed default until the user selects another supported language.
+     */
     const saved = localStorage.getItem('sys_stream_language_v2') as LanguageCode | null;
-    if (saved && LANGUAGES.some(l => l.code === saved)) return saved;
-    if (typeof navigator !== 'undefined') {
-      const browserLanguage = String(navigator.language || navigator.languages?.[0] || '').toLowerCase();
-      const detected = (browserLanguage.split('-')[0] || 'en') as LanguageCode;
-      if (LANGUAGES.some(l => l.code === detected)) return detected;
-    }
-    return 'en';
+    return saved && LANGUAGES.some(l => l.code === saved) ? saved : 'en';
   });
 
   const setLanguage = (next: LanguageCode) => {
@@ -2477,18 +2477,18 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const translatePageText = React.useCallback(() => {
     const dict = PAGE_UI_TRANSLATIONS[language] || {};
-    const reverse = Object.fromEntries(
-      Object.entries(PAGE_UI_TRANSLATIONS).flatMap(([lang, values]) =>
-        lang === language ? [] : Object.entries(values).map(([source, translated]) => [translated, source])
-      )
-    ) as Record<string, string>;
 
     const translateValue = (value: string) => {
       const trimmed = value.trim();
       if (!trimmed || trimmed.length > 240) return value;
+      /*
+       * Translate only from the original source text captured for this node.
+       * Do not reverse-map another language back into a source key: identical
+       * labels such as "Live", "Profile", or "Chat" can exist in multiple
+       * languages and reverse mapping causes cross-language contamination.
+       */
       const source = trimmed;
-      const original = reverse[source] || source;
-      const translated = dict[original];
+      const translated = dict[source] || translations[language][source];
       if (!translated) return value;
       const leading = value.slice(0, value.indexOf(trimmed));
       const trailing = value.slice(value.indexOf(trimmed) + trimmed.length);
@@ -2523,7 +2523,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const current = el.getAttribute(attr);
         if (!current) return;
         const key = el.getAttribute(`data-i18n-${attr}`) || current;
-        const translated = dict[key] || reverse[key] && dict[reverse[key]];
+        const translated = dict[key] || translations[language][key];
         if (translated) {
           el.setAttribute(`data-i18n-${attr}`, key);
           el.setAttribute(attr, translated);
@@ -2542,6 +2542,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const value = useMemo(() => ({
     language,
     setLanguage,
+    /*
+     * Selected language is authoritative. English is the only intentional
+     * fallback for missing keys; browser locale is never consulted.
+     */
     t: (key: string) => translations[language][key] ?? PAGE_UI_TRANSLATIONS[language]?.[key] ?? translations.en[key] ?? PAGE_UI_TRANSLATIONS.en?.[key] ?? key,
   }), [language]);
 
