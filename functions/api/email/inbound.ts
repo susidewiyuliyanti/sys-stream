@@ -70,7 +70,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}) {
   const now=Math.floor(Date.now()/1000);
   let threadId=crypto.randomUUID();
   const parentRef=inReplyTo||references.split(/\s+/).filter(Boolean).pop()||"";
-  if(parentRef){const parent=await env.DB.prepare("SELECT thread_id FROM email_inbox_messages WHERE message_id=? ORDER BY created_at DESC LIMIT 1").bind(parentRef).first<any>();if(parent?.thread_id)threadId=String(parent.thread_id);}
+  if(parentRef){const parent=await env.DB.prepare("SELECT thread_id FROM email_inbox_messages WHERE message_id=? ORDER BY created_at DESC LIMIT 1").bind(parentRef).first<any>();if(parent?.thread_id){const candidate=String(parent.thread_id);if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(candidate))threadId=candidate as typeof threadId;}}
   const id=crypto.randomUUID();
   const receivedAt=Math.floor(new Date(String(received.created_at||meta.created_at||Date.now())).getTime()/1000)||now;
   await env.DB.prepare("INSERT INTO email_inbox_messages (id,resend_email_id,message_id,thread_id,direction,mailbox,from_email,from_name,to_email,subject,text_body,html_body,headers_json,attachments_json,status,in_reply_to,references_header,received_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
