@@ -1197,8 +1197,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Halo,':'OlÃ¡,','Buka Live Room â†’':'Abrir sala ao vivo â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'O bÃ´nus de registro ainda pode ser resgatado.'
   },
   zh: {
-    'SYS STREAM LOADING':'SYS STREAM åŠ è½½ä¸­','Initializing TikTok Live Sync + Cloudflare D1 Connection':'æ­£åœ¨åˆå§‹åŒ– TikTok Live åŒæ­¥ + Cloudflare D1 è¿žæŽ¥',
-    'Live Room':'ç›´æ’­é—´','Live Room Aktif':'ç›´æ’­é—´å·²å¼€å¯','Live belum aktif':'ç›´æ’­é—´å°šæœªå¼€å¯',
+    'SYS STREAM LOADING':'SYS STREAM åŠ è½½ä¸­','Initializing TikTok Live Sync + Cloudflare D1 Connection':'æ­£åœ¨åˆå§‹åŒ– TikTok Live åŒæ­¥ + Cloudflare D1 è¿žæŽ¥',    'Live Room':'ç›´æ’­é—´','Live Room Aktif':'ç›´æ’­é—´å·²å¼€å¯','Live belum aktif':'ç›´æ’­é—´å°šæœªå¼€å¯',
     'Masuk untuk bergabung ke Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'æ¯ä¸ªè´¦æˆ·åœ¨ç›´æ’­é—´éƒ½æœ‰ç‹¬ç«‹çš„ä¸ªäººèµ„æ–™å’Œèº«ä»½ã€‚',
     'Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ä»…æ˜¾ç¤ºå®žé™…åŠ å…¥çš„è´¦æˆ·ã€‚',
     'Memuat peserta...':'æ­£åœ¨åŠ è½½å‚ä¸Žè€…â€¦','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚',
@@ -2397,8 +2396,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Aksi live room gagal.": "ÙØ´Ù„ Ø¥Ø¬Ø±Ø§Ø¡ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±.",
   "Pesan gagal dikirim.": "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø³Ø§Ù„Ø©.",
   "Like gagal dikirim.": "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¥Ø¹Ø¬Ø§Ø¨."
-}
-};
+}};
 
 const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
@@ -3571,21 +3569,18 @@ for (const lang of Object.keys(translations) as LanguageCode[]) {
   };
 }
 
-/* Exact Live Room permission toast used by the production room page. */
-const LIVE_ROOM_PERMISSION_TOAST: Record<LanguageCode, string> = {
+/* Locked Live Room UI translations. Keys are stable so legacy source text is not shipped in the production bundle. */
+const LIVE_ROOM_NOT_AVAILABLE_CREATE: Record<LanguageCode, string> = {
   id: "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru.",
-  en: "Room is not available yet. Only an Official Streamer can create a new room.",
-  es: "La sala aÃºn no estÃ¡ disponible. Solo un streamer oficial puede crear una nueva sala.",
-  pt: "A sala ainda nÃ£o estÃ¡ disponÃ­vel. Apenas um streamer oficial pode criar uma nova sala.",
-  zh: "ç›´æ’­é—´å°šæœªå¯ç”¨ã€‚åªæœ‰å®˜æ–¹ä¸»æ’­å¯ä»¥åˆ›å»ºæ–°çš„ç›´æ’­é—´ã€‚",
-  ja: "ãƒ«ãƒ¼ãƒ ã¯ã¾ã åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚æ–°ã—ã„ãƒ«ãƒ¼ãƒ ã‚’ä½œæˆã§ãã‚‹ã®ã¯å…¬å¼ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã®ã¿ã§ã™ã€‚",
-  ko: "ë£¸ì„ ì•„ì§ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ìƒˆ ë£¸ì€ ê³µì‹ ìŠ¤íŠ¸ë¦¬ë¨¸ë§Œ ë§Œë“¤ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.",
-  ar: "Ø§Ù„ØºØ±ÙØ© ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø¨Ø¹Ø¯. Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø¬Ø¯ÙŠØ¯Ø© Ø¥Ù„Ø§ Ø¨ÙˆØ§Ø³Ø·Ø© Ø³ØªØ±ÙŠÙ…Ø± Ø±Ø³Ù…ÙŠ.",
+  en: "The room is not available yet. Only an Official Streamer can create a new room.",
+  es: "La sala aún no está disponible. Solo un streamer oficial puede crear una nueva sala.",
+  pt: "A sala ainda não está disponível. Apenas um streamer oficial pode criar uma nova sala.",
+  zh: "直播间尚未可用。只有官方主播可以创建新的直播间。",
+  ja: "ルームはまだ利用できません。新しいルームを作成できるのは公式ストリーマーのみです。",
+  ko: "룸을 아직 사용할 수 없습니다. 새 룸은 공식 스트리머만 만들 수 있습니다.",
+  ar: "الغرفة غير متاحة بعد. لا يمكن إنشاء غرفة جديدة إلا بواسطة ستريمر رسمي.",
 };
-
-for (const lang of Object.keys(LIVE_ROOM_PERMISSION_TOAST) as LanguageCode[]) {
-  const source = "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru.";
-  translations[lang][source] = LIVE_ROOM_PERMISSION_TOAST[lang];
-  PAGE_UI_TRANSLATIONS[lang][source] = LIVE_ROOM_PERMISSION_TOAST[lang];
+for (const lang of Object.keys(LIVE_ROOM_NOT_AVAILABLE_CREATE) as LanguageCode[]) {
+  translations[lang]["LIVE_ROOM_NOT_AVAILABLE_CREATE"] = LIVE_ROOM_NOT_AVAILABLE_CREATE[lang];
+  PAGE_UI_TRANSLATIONS[lang]["LIVE_ROOM_NOT_AVAILABLE_CREATE"] = LIVE_ROOM_NOT_AVAILABLE_CREATE[lang];
 }
-
