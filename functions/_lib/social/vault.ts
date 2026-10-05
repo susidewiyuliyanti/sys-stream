@@ -1,5 +1,4 @@
-﻿import type { D1Database } from "@cloudflare/workers-types";
-import { encryptSocialToken } from "./crypto";
+﻿import { encryptSocialToken } from "./crypto";
 
 export type StoreSocialTokenInput = {
   platform: string;
