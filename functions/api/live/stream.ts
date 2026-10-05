@@ -20,7 +20,8 @@ async function ensureStreamTable(env: Env) {
     stream_key TEXT NOT NULL DEFAULT '',
     playback_url TEXT NOT NULL DEFAULT '',
     playback_hls TEXT NOT NULL DEFAULT '',
-    playback_webrtc TEXT NOT NULL DEFAULT '',\n    whip_url TEXT NOT NULL DEFAULT '',
+    playback_webrtc TEXT NOT NULL DEFAULT '',
+    whip_url TEXT NOT NULL DEFAULT '',
     status TEXT NOT NULL DEFAULT 'created',
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
@@ -91,7 +92,8 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
         inputUid:String(stream.input_uid||""),
         playbackUrl:String(stream.playback_url||""),
         playbackHls:String(stream.playback_hls||""),
-        playbackWebrtc:String(stream.playback_webrtc||""),\n        whipUrl:owner ? String(stream.whip_url||"") : "",
+        playbackWebrtc:String(stream.playback_webrtc||""),
+        whipUrl:owner ? String(stream.whip_url||"") : "",
         status,
         ingestUrl:owner ? String(stream.ingest_url||"") : "",
         streamKey:owner ? String(stream.stream_key||"") : "",
@@ -145,7 +147,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const ingestUrl=String(live?.rtmps?.url||"");
     const streamKey=String(live?.rtmps?.streamKey||"");
     const playbackHls=String(live?.playback?.hls||"");
-    const whipUrl=String(live?.webRTC?.url||"");\n    const playbackWebrtc=String(live?.webRTCPlayback?.url||"");
+    const whipUrl=String(live?.webRTC?.url||"");
+    const playbackWebrtc=String(live?.webRTCPlayback?.url||"");
     const playbackUrl=playbackIframeFromHls(playbackHls,uid);
     if (!uid || !ingestUrl || !streamKey || !playbackUrl) {
       return json({success:false,error:"Cloudflare tidak mengembalikan kredensial streaming lengkap."},502);
