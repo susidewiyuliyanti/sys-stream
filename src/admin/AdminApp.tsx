@@ -99,6 +99,12 @@ export default function AdminApp() {
   };
 
   useEffect(()=>{void checkSession();},[]);
+  useEffect(()=>{
+    const requestedTab=new URLSearchParams(window.location.search).get('tab') as Tab|null;
+    if(requestedTab && ['overview','users','streamers','transactions','jackpot','airdrop','admins','ai-agent','social','email','email-inbox','email-campaign'].includes(requestedTab)){
+      setTab(requestedTab);
+    }
+  },[]);
   useEffect(()=>{if(authenticated)void loadDashboard();},[authenticated]);
 
   const login=async(e:React.FormEvent<HTMLFormElement>)=>{
