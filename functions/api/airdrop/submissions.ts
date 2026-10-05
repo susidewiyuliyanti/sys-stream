@@ -1,5 +1,6 @@
 import { Env } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 function response(request: Request, body: unknown, status = 200) {
   const origin = request.headers.get("Origin") || "";
@@ -68,6 +69,8 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     if (!results[0]?.meta?.changes) {
       return response(context.request, { success: false, message: "Points sudah berubah atau tidak mencukupi. Silakan refresh.", availablePoints: available }, 409);
     }
+
+    await notifyAdmins(context.env,{type:"airdrop.converted",title:"Airdrop points converted",message:`Wallet ${wallet} converted ${requested} points into ${sysAmount} SYS.`,severity:"info",entityType:"airdrop_conversion",entityId:conversionId});
 
     return response(context.request, { success: true, message: "Points berhasil dikonversi menjadi SYS.", convertedPoints: requested, sysAmount, conversionRate: "1 SYS = 1000 points", remainingPoints: available - requested, sysBalanceAdded: sysAmount });
   } catch (error) {
