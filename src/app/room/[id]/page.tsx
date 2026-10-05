@@ -274,7 +274,7 @@ export default function Room({
                     </div>
                   </div>
                   <button
-                    disabled={streamBusy || !room.owner}
+                    disabled={streamBusy || !room?.owner}
                     onClick={() => {
                       setStreamBusy(true);
                       void fetch("/api/live/stream?roomId=" + encodeURIComponent(effectiveRoomId), {
