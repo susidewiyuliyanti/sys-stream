@@ -261,7 +261,7 @@ export default function DashboardPage({ navigate }: Props) {
                   <Pickaxe className="w-7 h-7 text-emerald-400" />
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-emerald-400 font-black">SYS Mining</div>
+                  <div className="text-xs uppercase tracking-wider text-emerald-400 font-black">{t('SYS Mining')}</div>
                   <h2 className="text-xl font-black mt-1">{t('Mining SYS dari Blind Box Lock')}</h2>
                   <p className="text-xs sm:text-sm text-slate-400 mt-1">{t('Lock aktif minimal $10 dapat mengaktifkan reward mining harian.')}</p>
                 </div>
