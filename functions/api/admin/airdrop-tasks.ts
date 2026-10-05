@@ -1,5 +1,6 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -24,6 +25,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const r=await context.env.DB.prepare(
       `INSERT INTO airdrop_tasks(title,description,category,reward_points,active) VALUES(?,?,?,?,?)`
     ).bind(title,description,category,rewardPoints,body.active===false?0:1).run();
+    await notifyAdmins(context.env,{type:"airdrop.task.created",title:"Airdrop task created",message:`Task "${title}" was created by ${auth.identity.displayName || "Admin"}.`,severity:"success",entityType:"airdrop_task",entityId:r.meta.last_row_id,adminUserId:auth.identity.id});
     return json({success:true,id:r.meta.last_row_id},201);
   } catch(error){ console.error("admin airdrop task create",error); return json({success:false,error:"Gagal membuat task."},500); }
 };
@@ -43,6 +45,7 @@ export const onRequestPatch: PagesFunction<Env> = async (context) => {
     await context.env.DB.prepare(
       `UPDATE airdrop_tasks SET title=?,description=?,category=?,reward_points=?,active=? WHERE id=?`
     ).bind(title,description,category,rewardPoints,body.active===false?0:1,id).run();
+    await notifyAdmins(context.env,{type:"airdrop.task.updated",title:"Airdrop task updated",message:`Task "${title}" was updated by ${auth.identity.displayName || "Admin"}.`,severity:"info",entityType:"airdrop_task",entityId:id,adminUserId:auth.identity.id});
     return json({success:true});
   } catch(error){ console.error("admin airdrop task update",error); return json({success:false,error:"Gagal memperbarui task."},500); }
 };
@@ -56,6 +59,7 @@ export const onRequestDelete: PagesFunction<Env> = async (context) => {
     const used=await context.env.DB.prepare("SELECT COUNT(*) AS count FROM airdrop_submissions WHERE task_id=?").bind(id).first<any>();
     if(Number(used?.count||0)>0) return json({success:false,error:"Task sudah memiliki submission. Nonaktifkan task agar riwayat produksi tetap aman."},409);
     await context.env.DB.prepare("DELETE FROM airdrop_tasks WHERE id=?").bind(id).run();
+    await notifyAdmins(context.env,{type:"airdrop.task.deleted",title:"Airdrop task deleted",message:`Airdrop task #${id} was deleted by ${auth.identity.displayName || "Admin"}.`,severity:"warning",entityType:"airdrop_task",entityId:id,adminUserId:auth.identity.id});
     return json({success:true});
   } catch(error){ console.error("admin airdrop task delete",error); return json({success:false,error:"Gagal menghapus task."},500); }
 };
