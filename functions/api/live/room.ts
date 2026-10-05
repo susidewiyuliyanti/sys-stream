@@ -23,6 +23,7 @@ async function ensureLiveSchema(env: Env) {
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
   )`).run();
+  await env.DB.prepare("ALTER TABLE live_streams ADD COLUMN whip_url TEXT NOT NULL DEFAULT ''").run().catch(() => {});
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_live_streams_room ON live_streams(room_id)").run();
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS live_rooms (
     id TEXT PRIMARY KEY,
@@ -112,7 +113,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     ).bind(roomId, now - 90).all<any>();
 
     const stream = await env.DB.prepare(
-      "SELECT provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,status,updated_at FROM live_streams WHERE room_id=? LIMIT 1"
+      "SELECT provider,input_uid,ingest_url,stream_key,playback_url,playback_hls,playback_webrtc,whip_url,status,updated_at FROM live_streams WHERE room_id=? LIMIT 1"
     ).bind(roomId).first<any>();
 
     const messages = await env.DB.prepare(
@@ -144,6 +145,7 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
         playbackUrl:String(stream.playback_url||""),
         playbackHls:String(stream.playback_hls||""),
         playbackWebrtc:String(stream.playback_webrtc||""),
+        whipUrl:String(room.owner_user_id)===String(auth.user.id) ? String(stream.whip_url||"") : "",
         status:String(stream.status||"created"),
         updatedAt:Number(stream.updated_at||0),
         // Stream credentials are returned only to the authenticated room owner.
