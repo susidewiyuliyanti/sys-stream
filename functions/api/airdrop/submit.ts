@@ -1,5 +1,6 @@
 import { Env } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 function response(request: Request, body: unknown, status = 200) {
   const origin = request.headers.get("Origin") || "";
@@ -92,7 +93,8 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       if (existing) return response(context.request, { success: false, message: "Task ini sudah pernah diajukan untuk wallet tersebut", status: existing.status }, 409);
     }
 
-    await db.prepare("INSERT INTO airdrop_submissions (wallet_address,email,task_id,evidence_link,status,reward_points) VALUES (?,?,?,?,?,?)").bind(wallet, wallet, task.id, link, "PENDING", Number(task.reward_points || 0)).run();
+    const inserted = await db.prepare("INSERT INTO airdrop_submissions (wallet_address,email,task_id,evidence_link,status,reward_points) VALUES (?,?,?,?,?,?)").bind(wallet, wallet, task.id, link, "PENDING", Number(task.reward_points || 0)).run();
+    await notifyAdmins(context.env,{type:"airdrop.submission",title:"New airdrop submission",message:`Wallet ${wallet} submitted "${task.title}" for review.`,severity:"warning",entityType:"airdrop_submission",entityId:inserted.meta?.last_row_id});
 
     return response(context.request, { success: true, message: "Submission berhasil dan menunggu review", status: "PENDING", taskId: task.id });
   } catch (error) {
