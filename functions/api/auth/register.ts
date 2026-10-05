@@ -1,6 +1,7 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { getAddress, isAddress } from "ethers";
 import { createSession } from "../../_lib/auth";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 const TERMS_VERSION = "2026-10-01";
 async function ensureRegistrationSchema(env: Env) {
@@ -509,6 +510,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     stage = "CREATE_SESSION";
     const token = await createSession(env, id);
+    await notifyAdmins(env,{type:"user.registered",title:"New user registered",message:`New wallet account ${walletAddress} registered as ${username}.`,severity:"success",entityType:"user",entityId:id});
     return json({
       success: true,
       token,
