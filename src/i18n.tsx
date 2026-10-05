@@ -2546,7 +2546,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
      * Selected language is authoritative. English is the only intentional
      * fallback for missing keys; browser locale is never consulted.
      */
-    t: (key: string) => translations[language][key] ?? PAGE_UI_TRANSLATIONS[language]?.[key] ?? translations.en[key] ?? PAGE_UI_TRANSLATIONS.en?.[key] ?? key,
+    t: (key: string) => {
+      const selected = translations[language][key] ?? PAGE_UI_TRANSLATIONS[language]?.[key];
+      if (selected !== undefined) return selected;
+      if (import.meta.env?.DEV) {
+        console.warn(\`[SYS STREAM i18n] Missing \${language} translation for: \${key}\`);
+      }
+      return translations.en[key] ?? PAGE_UI_TRANSLATIONS.en?.[key] ?? key;
+    },
   }), [language]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
