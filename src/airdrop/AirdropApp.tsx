@@ -227,7 +227,11 @@ const TASK_TEXT: Record<TaskKey,{title:string;desc:string;action:string}> = {
   deposit:{title:'depositTitle',desc:'depositDesc',action:'depositAction'},
   withdrawal:{title:'withdrawalTitle',desc:'withdrawalDesc',action:'withdrawalAction'},
   profile:{title:'profileTitle',desc:'profileDesc',action:'profileAction'},
-  mining:{title:'miningTitle',desc:'miningDesc',action:'miningAction'}
+  mining:{title:'miningTitle',desc:'miningDesc',action:'miningAction'},
+  twitter:{title:'socialTitle',desc:'socialDesc',action:'socialAction'},
+  facebook:{title:'socialTitle',desc:'socialDesc',action:'socialAction'},
+  telegram:{title:'socialTitle',desc:'socialDesc',action:'socialAction'},
+  discord:{title:'socialTitle',desc:'socialDesc',action:'socialAction'}
 };
 
 function typeIcon(type:TaskType) {
