@@ -1,0 +1,11 @@
+# Always revalidate the SPA entry document so a new Pages deployment cannot leave
+# the browser/custom-domain cache pointing at an obsolete Vite bundle.
+/
+  Cache-Control: no-store, max-age=0
+
+/index.html
+  Cache-Control: no-store, max-age=0
+
+# Vite fingerprints production assets, so they are safe to cache for a long time.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
