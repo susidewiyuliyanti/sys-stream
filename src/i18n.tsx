@@ -2437,6 +2437,7 @@ const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>
 for (const lang of Object.keys(LIVE_ROOM_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(LIVE_ROOM_TRANSLATIONS[lang], LIVE_ROOM_COMMON_TRANSLATIONS[lang]);
   Object.assign(translations[lang], LIVE_ROOM_TRANSLATIONS[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], LIVE_ROOM_TRANSLATIONS[lang]);
 }
 
 interface LanguageContextValue {
@@ -3287,4 +3288,35 @@ for (const lang of Object.keys(TRANSLATION_ONLY_USER_AUDIT) as LanguageCode[]) {
 for (const lang of Object.keys(TRANSLATION_CORRECTIONS) as LanguageCode[]) {
   Object.assign(translations[lang], TRANSLATION_CORRECTIONS[lang]);
   Object.assign(PAGE_UI_TRANSLATIONS[lang], TRANSLATION_CORRECTIONS[lang]);
+}
+
+/*
+ * Final UI synchronization:
+ * the page fallback dictionary is assembled in several stages. Merge the
+ * final typed translations last so an older legacy value cannot override the
+ * selected language on dynamically rendered pages.
+ */
+for (const lang of Object.keys(translations) as LanguageCode[]) {
+  PAGE_UI_TRANSLATIONS[lang] = {
+    ...PAGE_UI_TRANSLATIONS[lang],
+    ...translations[lang],
+  };
+}
+
+/* Exact Live Room permission toast used by the production room page. */
+const LIVE_ROOM_PERMISSION_TOAST: Record<LanguageCode, string> = {
+  id: "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru.",
+  en: "Room is not available yet. Only an Official Streamer can create a new room.",
+  es: "La sala aún no está disponible. Solo un streamer oficial puede crear una nueva sala.",
+  pt: "A sala ainda não está disponível. Apenas um streamer oficial pode criar uma nova sala.",
+  zh: "直播间尚未可用。只有官方主播可以创建新的直播间。",
+  ja: "ルームはまだ利用できません。新しいルームを作成できるのは公式ストリーマーのみです。",
+  ko: "룸을 아직 사용할 수 없습니다. 새 룸은 공식 스트리머만 만들 수 있습니다.",
+  ar: "الغرفة غير متاحة بعد. لا يمكن إنشاء غرفة جديدة إلا بواسطة ستريمر رسمي.",
+};
+
+for (const lang of Object.keys(LIVE_ROOM_PERMISSION_TOAST) as LanguageCode[]) {
+  const source = "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru.";
+  translations[lang][source] = LIVE_ROOM_PERMISSION_TOAST[lang];
+  PAGE_UI_TRANSLATIONS[lang][source] = LIVE_ROOM_PERMISSION_TOAST[lang];
 }
