@@ -324,7 +324,7 @@ export default function ProfilePage() {
             <div className="text-xl font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
           </div>
           <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">Wallet</div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Wallet')}</div>
             <div className="text-xl font-black text-amber-300 mt-1">{t('Withdraw')}</div>
             <div className="text-[10px] text-slate-500 mt-1">Minimum withdrawal {formatMoney(withdrawalMinIdr)}</div>
           </button>
@@ -343,7 +343,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex gap-2">
                 <input readOnly value={referralLink} className="min-w-0 flex-1 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[10px] text-slate-300 font-mono" />
-                <button onClick={copyReferralLink} disabled={!referralLink} className="px-3 rounded-xl bg-purple-600 text-white font-bold disabled:opacity-40" title="Copy referral link">
+                <button onClick={copyReferralLink} disabled={!referralLink} className="px-3 rounded-xl bg-purple-600 text-white font-bold disabled:opacity-40" title={t('Copy referral link')}>
                   {copiedReferral ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </button>
                 {referralLink && <a href={referralLink} target="_blank" rel="noreferrer" className="px-3 rounded-xl border border-slate-700 flex items-center justify-center text-cyan-400"><ExternalLink className="w-4 h-4" /></a>}
@@ -541,7 +541,7 @@ export default function ProfilePage() {
                 </label>
                 <label className="w-full min-h-32 rounded-2xl border-2 border-dashed border-slate-700 hover:border-cyan-400 bg-slate-950 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors overflow-hidden">
                   {newAvatarInput ? (
-                    <img src={newAvatarInput} alt="Profile preview" className="w-24 h-24 rounded-full object-cover border-2 border-cyan-400" />
+                    <img src={newAvatarInput} alt={t('Profile preview')} className="w-24 h-24 rounded-full object-cover border-2 border-cyan-400" />
                   ) : (
                     <Upload className="w-8 h-8 text-slate-500" />
                   )}
