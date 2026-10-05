@@ -6,6 +6,7 @@ import { useLanguage } from "../../../i18n";
 import { Heart, Send, Radio, Users, MessageCircle, User, LogIn } from "lucide-react";
 
 import type { Participant, RoomMessage, RoomState, RoomStream } from "./roomTypes";
+import MobileLiveStudio from "../../../components/streamer/MobileLiveStudio";
 
 export default function Room({
   roomId = "main",
@@ -290,6 +291,15 @@ export default function Room({
                 </p>
               </section>
             )}
+            {room?.owner && stream?.whipUrl && (
+              <MobileLiveStudio
+                whipUrl={stream.whipUrl}
+                showToast={showToast}
+                onStarted={() => void loadRoom(true)}
+                onStopped={() => void loadRoom(true)}
+              />
+            )}
+
             {room?.owner && (
               <section className="mt-3 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
