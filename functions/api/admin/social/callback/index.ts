@@ -1,5 +1,4 @@
-﻿import type { PagesFunction } from "@cloudflare/workers-types";
-import { requireAdmin } from "../../../../_lib/admin";
+﻿import { requireAdmin } from "../../../../_lib/admin";
 import {
   getProviderConfig,
   getEnvString,
@@ -86,7 +85,9 @@ h1{margin-top:0}
   );
 }
 
-export const onRequestGet: PagesFunction<Env> = async (context) => {
+type PagesContext = { request: Request; env: Env };
+
+export const onRequestGet = async (context: PagesContext) => {
   const url = new URL(context.request.url);
 
   const state = url.searchParams.get("state")?.trim() || "";
@@ -139,7 +140,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
        WHERE state = ?1`,
     )
     .bind(state)
-    .first<OAuthState>();
+    .first() as Promise<OAuthState | null>;
 
   if (!row) {
     return html(
