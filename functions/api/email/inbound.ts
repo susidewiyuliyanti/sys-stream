@@ -11,17 +11,17 @@ function parseAddress(value: string) {
 }
 function htmlToText(html:string) {
   return html
-    .replace(/<style[\\s\\S]*?<\\/style>/gi, " ")
-    .replace(/<script[\\s\\S]*?<\\/script>/gi, " ")
-    .replace(/<br\\s*\\/?\s*>/gi, "\\n")
-    .replace(/<\\/p\\s*>/gi, "\\n")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<br\s*\/?\s*>/gi, "\n")
+    .replace(/<\/p\s*>/gi, "\n")
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/gi, " ")
     .replace(/&amp;/gi, "&")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
-    .replace(/\\s+\\n/g, "\\n")
-    .replace(/\\n\\s+/g, "\\n")
+    .replace(/\s+\n/g, "\n")
+    .replace(/\n\s+/g, "\n")
     .trim();
 }
 function headersObject(headers:any) {
@@ -69,7 +69,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}) {
   const messageId=clean(received.message_id||meta.message_id||"",1000);
   const now=Math.floor(Date.now()/1000);
   let threadId=crypto.randomUUID();
-  const parentRef=inReplyTo||references.split(/\\s+/).filter(Boolean).pop()||"";
+  const parentRef=inReplyTo||references.split(/\s+/).filter(Boolean).pop()||"";
   if(parentRef){const parent=await env.DB.prepare("SELECT thread_id FROM email_inbox_messages WHERE message_id=? ORDER BY created_at DESC LIMIT 1").bind(parentRef).first<any>();if(parent?.thread_id)threadId=String(parent.thread_id);}
   const id=crypto.randomUUID();
   const receivedAt=Math.floor(new Date(String(received.created_at||meta.created_at||Date.now())).getTime()/1000)||now;
