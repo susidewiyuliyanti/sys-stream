@@ -7,7 +7,7 @@ import EmailInboxPanel from './EmailInboxPanel';
 import EmailCampaignPanel from './EmailCampaignPanel';
 import {
   Activity, Bot, CircleDollarSign, Gift, LayoutDashboard, LogOut, RefreshCw,
-  Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2, Link2, Mail, Inbox, Send as SendIcon
+  Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2, Link2, Mail, Inbox, Send as SendIcon, Bell, CheckCheck
 } from 'lucide-react';
 
 const API = '/api/admin';
@@ -167,6 +167,7 @@ export default function AdminApp() {
           <div className="flex items-center gap-3">
             <div className="hidden md:block text-right"><div className="text-xs font-bold">{admin?.displayName||'Owner'}</div><div className="text-[10px] text-amber-400">{admin?.role||'OWNER'}</div></div>
             <div className="hidden sm:flex items-center gap-2 text-xs text-emerald-400 px-3 py-2 rounded-lg bg-emerald-500/5 border border-emerald-500/10"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"/>Production</div>
+            <AdminNotificationBell/>
             <button onClick={()=>void loadDashboard()} className="p-2 rounded-lg border border-slate-800 hover:border-slate-600"><RefreshCw className={`w-4 h-4 ${loading?'animate-spin':''}`}/></button>
             <button onClick={()=>void logout()} className="p-2 rounded-lg border border-slate-800 hover:border-red-500/50 text-slate-400"><LogOut className="w-4 h-4"/></button>
           </div>
@@ -288,6 +289,66 @@ function AdminsPanel({admins,onRefresh}:{admins:AdminAccount[];onRefresh:()=>voi
  const [email,setEmail]=useState('');const [name,setName]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');
  const submit=async(e:React.FormEvent)=>{e.preventDefault();setBusy(true);setMessage('');try{const r=await fetch(API+'/admins',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,displayName:name,password,role:'ADMIN'})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal.');setMessage('Admin account berhasil dibuat.');setEmail('');setName('');setPassword('');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal membuat admin.')}finally{setBusy(false)}};
  return <div className="space-y-6"><Panel title="Add Admin Account" meta="Only OWNER can create additional admins"><form onSubmit={submit} className="grid md:grid-cols-3 gap-4"><input value={name} onChange={e=>setName(e.target.value)} placeholder="Display name" className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/><input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="admin@sysstreamer.asia" className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Min. 8 characters" className="rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/><div className="md:col-span-3 flex items-center gap-3"><button disabled={busy||!name||!email||password.length<8} className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold flex items-center gap-2"><UserPlus className="w-4 h-4"/>{busy?'Creating...':'Create Admin'}</button>{message&&<span className="text-xs text-slate-300">{message}</span>}</div></form></Panel><Panel title="Admin Accounts" meta={`${admins.length} accounts`}><div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">Name</th><th className="text-left py-3 pr-4">Email</th><th className="text-left py-3 pr-4">Role</th><th className="text-left py-3">Status</th></tr></thead><tbody className="divide-y divide-slate-800">{admins.map(a=><tr key={a.id}><td className="py-3 pr-4 font-semibold">{a.displayName}</td><td className="py-3 pr-4 text-slate-400">{a.email}</td><td className="py-3 pr-4">{a.role}</td><td className="py-3"><span className={a.active?'text-emerald-400':'text-red-400'}>{a.active?'Active':'Disabled'}</span></td></tr>)}</tbody></table>{!admins.length&&<EmptyState text="No named admin accounts yet. Owner bootstrap key remains available."/>}</div></Panel></div>;
+}
+
+function AdminNotificationBell(){
+ const [open,setOpen]=useState(false);
+ const [items,setItems]=useState<any[]>([]);
+ const [unread,setUnread]=useState(0);
+ const [loading,setLoading]=useState(false);
+
+ const load=async()=>{
+  try{
+   const r=await fetch('/api/admin/notifications?limit=50',{credentials:'same-origin',cache:'no-store'});
+   const d=await r.json().catch(()=>({}));
+   if(r.ok&&d.success){setItems(d.notifications||[]);setUnread(Number(d.unreadCount||0));}
+  }catch{}
+ };
+
+ useEffect(()=>{
+  void load();
+  const timer=window.setInterval(()=>void load(),15000);
+  return()=>window.clearInterval(timer);
+ },[]);
+
+ const markRead=async(id:string)=>{
+  try{await fetch('/api/admin/notifications',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',id})});}catch{}
+  await load();
+ };
+
+ const markAll=async()=>{
+  try{await fetch('/api/admin/notifications',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read_all'})});}catch{}
+  await load();
+ };
+
+ const severityClass=(severity:string)=>{
+  if(severity==='danger')return 'border-red-500/20 bg-red-500/5';
+  if(severity==='warning')return 'border-amber-500/20 bg-amber-500/5';
+  if(severity==='success')return 'border-emerald-500/20 bg-emerald-500/5';
+  return 'border-slate-700 bg-slate-950';
+ };
+
+ return <div className="relative">
+  <button onClick={()=>{setOpen(v=>!v);void load();}} className="relative p-2 rounded-lg border border-slate-800 hover:border-slate-600" aria-label="Admin notifications">
+   <Bell className="w-4 h-4"/>
+   {unread>0&&<span className="absolute -right-1 -top-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center">{unread>99?'99+':unread}</span>}
+  </button>
+  {open&&<div className="absolute right-0 top-12 z-50 w-[360px] max-w-[calc(100vw-2rem)] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+   <div className="px-4 py-3 border-b border-slate-800 flex items-center justify-between gap-3">
+    <div><div className="font-bold text-sm">Notifications</div><div className="text-[10px] text-slate-500">{unread} unread</div></div>
+    <button onClick={()=>void markAll()} className="text-[10px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1"><CheckCheck className="w-3.5 h-3.5"/> Mark all read</button>
+   </div>
+   <div className="max-h-[420px] overflow-y-auto p-2 space-y-2">
+    {items.length===0&&<div className="py-10 text-center text-xs text-slate-500">No notifications yet.</div>}
+    {items.map((n:any)=><button key={n.id} onClick={()=>void markRead(String(n.id))} className={`w-full text-left rounded-xl border p-3 transition ${severityClass(String(n.severity||'info'))} ${Number(n.isRead)===1?'opacity-60':'hover:border-slate-600'}`}>
+      <div className="flex items-start justify-between gap-3"><div className="font-semibold text-xs text-slate-100">{n.title}</div>{Number(n.isRead)!==1&&<span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0"/>}</div>
+      <div className="text-[11px] text-slate-400 mt-1 leading-5">{n.message}</div>
+      <div className="text-[9px] text-slate-600 mt-2">{n.createdAt?new Date(Number(n.createdAt)*1000).toLocaleString():'-'}</div>
+    </button>)}
+   </div>
+   <div className="px-4 py-2 border-t border-slate-800 text-[9px] text-slate-600">Auto-refresh setiap 15 detik • Customer Email Inbox dihitung sebagai unread alert.</div>
+  </div>}
+ </div>;
 }
 
 function Panel({title,meta,children}:{title:string;meta:string;children:React.ReactNode}){return <section className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden"><div className="p-5 border-b border-slate-800 flex items-center justify-between gap-4"><div><h2 className="font-bold">{title}</h2><div className="text-[11px] text-slate-500 mt-1">{meta}</div></div></div><div className="p-5">{children}</div></section>}
