@@ -47,6 +47,8 @@ export default function DashboardPage({ navigate }: Props) {
   const available = Number(user.coins || 0) / 100;
   const locked = Number(user.lockedBalance || 0);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
+  const isStreamer = ['streamer', 'admin', 'owner'].includes(String((user as any).role || '').toLowerCase());
+  const streamerRoomId = 'streamer-' + String(user.id || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
 
   const loadPosts = async () => {
     setIsLoadingPosts(true);
@@ -183,7 +185,7 @@ export default function DashboardPage({ navigate }: Props) {
 
             <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={() => navigate?.('/room/main')}
+                onClick={() => navigate?.(isStreamer ? '/room/' + streamerRoomId : '/room/main')}
                 className="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-4 py-2.5 text-sm font-black text-white hover:bg-rose-400 transition-colors"
               >
                 <Radio className="w-4 h-4" /> {t('Live Now')}
@@ -204,6 +206,20 @@ export default function DashboardPage({ navigate }: Props) {
             </div>
           </header>
 
+          {isStreamer && (
+            <section className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-5 sm:p-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.18em] text-cyan-400 font-black">{t("STREAMER STUDIO")}</div>
+                  <h2 className="text-xl font-black mt-1">{t("Pengaturan Streaming")}</h2>
+                  <p className="text-sm text-slate-400 mt-1">{t("Anda sudah menjadi Official Streamer. Buat atau buka room streaming Anda sendiri dan dapatkan RTMPS Server + Stream Key untuk OBS.")}</p>
+                </div>
+                <button onClick={() => navigate?.('/room/' + streamerRoomId)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 text-sm font-black text-slate-950 hover:bg-cyan-300 transition-colors shrink-0">
+                  <Radio className="w-4 h-4" /> {t("Buka Streaming Studio")}
+                </button>
+              </div>
+            </section>
+          )}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-cyan-400" /> {t('Available')}</div>
