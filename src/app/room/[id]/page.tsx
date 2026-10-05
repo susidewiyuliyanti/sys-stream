@@ -48,7 +48,15 @@ export default function Room({
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.success) {
-        setRoomMissing(response.status === 404);
+        const missing = response.status === 404;
+        setRoomMissing(missing);
+        // A missing room is an expected first-entry state for a streamer.
+        // The API now auto-creates the streamer's dedicated room, so do not
+        // show an error toast while the polling request is catching up.
+        if (missing) {
+          if (!silent) setLoading(false);
+          return;
+        }
         throw new Error(data?.error || "Live room tidak dapat dimuat.");
       }
       setRoomMissing(false);
