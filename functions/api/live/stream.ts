@@ -47,9 +47,26 @@ async function cloudflareRequest(env: Env, path: string, init: RequestInit = {})
       ...(init.headers || {}),
     },
   });
-  const data = await response.json().catch(() => ({} as any));
+  const raw = await response.text();
+  let data: any = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    throw new Error(`Cloudflare Stream HTTP ${response.status}: respons API bukan JSON.`);
+  }
   if (!response.ok || !data?.success) {
-    throw new Error(data?.errors?.[0]?.message || "Cloudflare Stream API gagal.");
+    const errors = Array.isArray(data?.errors) ? data.errors : [];
+    const details = errors
+      .map((item: any) => {
+        const code = item?.code ? `[${item.code}] ` : "";
+        const message = String(item?.message || "").trim();
+        return message ? code + message : "";
+      })
+      .filter(Boolean)
+      .join(" | ");
+    throw new Error(
+      `Cloudflare Stream HTTP ${response.status}: ${details || "API menolak request tanpa detail error."}`
+    );
   }
   return data.result as CloudflareLiveInput;
 }
@@ -150,8 +167,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const whipUrl=String(live?.webRTC?.url||"");
     const playbackWebrtc=String(live?.webRTCPlayback?.url||"");
     const playbackUrl=playbackIframeFromHls(playbackHls,uid);
-    if (!uid || !ingestUrl || !streamKey || !playbackUrl) {
-      return json({success:false,error:"Cloudflare tidak mengembalikan kredensial streaming lengkap."},502);
+    // Mobile WebRTC needs the WHIP URL; RTMPS/HLS are optional fallbacks.
+    if (!uid || (!whipUrl && !ingestUrl)) {
+      return json({
+        success:false,
+        error:"Cloudflare membuat Live Input tetapi kredensial ingest WebRTC/RTMPS tidak tersedia."
+      },502);
     }
 
     await env.DB.prepare(
