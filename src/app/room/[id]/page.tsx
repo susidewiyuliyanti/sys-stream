@@ -7,6 +7,7 @@ import { Heart, Send, Radio, Users, MessageCircle, User, LogIn } from "lucide-re
 
 import type { Participant, RoomMessage, RoomState, RoomStream } from "./roomTypes";
 import MobileLiveStudio from "../../../components/streamer/MobileLiveStudio";
+import WebRTCPlayback from "../../../components/streamer/WebRTCPlayback";
 
 export default function Room({
   roomId = "main",
@@ -224,7 +225,12 @@ export default function Room({
         <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-5 mt-4">
           <main className="min-w-0">
             <section className="aspect-video rounded-2xl border border-slate-800 bg-black overflow-hidden relative">
-              {stream?.playbackUrl ? (
+              {stream?.playbackWebrtc ? (
+                <WebRTCPlayback
+                  playbackUrl={stream.playbackWebrtc}
+                  title={room?.title || t("SYS STREAM Live")}
+                />
+              ) : stream?.playbackUrl ? (
                 <iframe
                   src={stream.playbackUrl}
                   title={room?.title || t("SYS STREAM Live")}
