@@ -24,6 +24,7 @@ async function ensureStreamTable(env: Env) {
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
   )`).run();
+  await env.DB.prepare("ALTER TABLE live_streams ADD COLUMN whip_url TEXT NOT NULL DEFAULT ''").run().catch(() => {});
 }
 
 function roomIdFrom(request: Request) {
