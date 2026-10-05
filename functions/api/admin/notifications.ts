@@ -53,11 +53,29 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     WHERE direction = 'inbound' AND status = 'unread'
   `).first<any>().catch(() => ({count:0}));
 
+  const emailCount = Number(unreadEmails?.count || 0);
+  const notifications = [...(rows.results || [])];
+  if (emailCount > 0) {
+    notifications.unshift({
+      id: "email-unread-summary",
+      type: "email.inbound",
+      title: "Customer Email Inbox",
+      message: emailCount + " unread customer email" + (emailCount === 1 ? "" : "s") + " waiting for review.",
+      severity: "warning",
+      entityType: "email_inbox",
+      entityId: null,
+      adminUserId: null,
+      isRead: 0,
+      readAt: null,
+      createdAt: Math.floor(Date.now() / 1000)
+    });
+  }
+
   return json({
     success: true,
-    notifications: rows.results || [],
-    unreadCount: Number(unread?.count || 0) + Number(unreadEmails?.count || 0),
-    unreadEmailCount: Number(unreadEmails?.count || 0)
+    notifications: notifications.slice(0, limit),
+    unreadCount: Number(unread?.count || 0) + emailCount,
+    unreadEmailCount: emailCount
   });
 };
 
