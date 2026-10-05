@@ -91,6 +91,10 @@ export const onRequestPatch: PagesFunction<Env> = async ({ request, env }) => {
   if (action === "read") {
     const id = String(body?.id || "").trim();
     if (!id) return json({success:false,error:"Notification ID wajib diisi."},400);
+    if (id === "email-unread-summary") {
+      await env.DB.prepare("UPDATE email_inbox_messages SET status='read',updated_at=? WHERE direction='inbound' AND status='unread'").bind(now).run().catch(()=>{});
+      return json({success:true});
+    }
     await env.DB.prepare(`
       UPDATE admin_notifications
       SET is_read=1, read_at=?
