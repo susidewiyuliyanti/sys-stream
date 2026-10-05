@@ -172,12 +172,17 @@ export async function onRequestPost({
     )
     .run();
 
-  const separator = provider.authorizationEndpoint.includes("?")
+  const authorizationEndpoint = provider.authorizationEndpoint;
+  if (!authorizationEndpoint) {
+    return json({ success: false, platform, status: "NOT_CONFIGURED", authorizationUrl: null, message: "OAuth authorization endpoint belum dikonfigurasi." }, 503);
+  }
+
+  const separator = authorizationEndpoint.includes("?")
     ? "&"
     : "?";
 
   const authorizationUrl =
-    `${provider.authorizationEndpoint}${separator}` +
+    `${authorizationEndpoint}${separator}` +
     `state=${encodeURIComponent(state)}`;
 
   return json({
