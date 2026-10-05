@@ -1,5 +1,6 @@
 import { Env, json } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -45,6 +46,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await context.env.DB.prepare("UPDATE users SET role = ? WHERE id = ?")
       .bind(nextRole,userId).run();
 
+    await notifyAdmins(context.env,{type:action==="promote"?"streamer.promoted":"streamer.removed",title:action==="promote"?"Streamer promoted":"Streamer status removed",message:`${user.username || user.email || userId} was ${action==="promote"?"promoted to Official Streamer":"removed from Official Streamer"} by ${auth.identity.displayName || "Admin"}.`,severity:"info",entityType:"user",entityId:userId,adminUserId:auth.identity.id});
     return json({
       success:true,
       streamer:{
