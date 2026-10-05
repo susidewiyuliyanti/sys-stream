@@ -138,7 +138,7 @@ export default function SocialMediaPanel({adminRole}:{adminRole?:string}){
             <div className="flex items-center gap-2 shrink-0">
               {connected ? <button onClick={()=>void disconnect(p.id)} disabled={busy===p.id||adminRole!=='OWNER'} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 disabled:opacity-40 text-xs font-bold">
                 <Unplug className="w-4 h-4"/>{busy===p.id?'Processing...':'Disconnect'}
-              </button> : <button onClick={()=>void connect(p.id)} disabled={busy===p.id||adminRole!=='OWNER'||!enabled||!configured} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 disabled:opacity-40 text-xs font-extrabold">
+              </button> : <button onClick={()=>void connect(p.id)} disabled={busy===p.id||adminRole!=='OWNER'} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 disabled:opacity-40 text-xs font-extrabold">
                 <Link2 className="w-4 h-4"/>{busy===p.id?'Preparing...':'Connect'}
               </button>}
               {configured&&<span title="Provider configured"><ExternalLink className="w-4 h-4 text-slate-700"/></span>}
