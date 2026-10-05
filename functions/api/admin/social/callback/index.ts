@@ -140,7 +140,7 @@ export const onRequestGet = async (context: PagesContext) => {
        WHERE state = ?1`,
     )
     .bind(state)
-    .first() as Promise<OAuthState | null>;
+    .first() as OAuthState | null;
 
   if (!row) {
     return html(
