@@ -1,0 +1,14 @@
+﻿{
+  "name": "sys-stream-email",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo email-worker-ready"
+  },
+  "dependencies": {
+    "postal-mime": "^2.5.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.147.0"
+  }
+}
