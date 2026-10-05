@@ -94,11 +94,36 @@ export async function onRequestGet({ request, env }: { request: Request; env: En
     await ensureLiveSchema(env);
     const roomId = roomIdFrom(request);
     const now = Math.floor(Date.now() / 1000);
-    const room = await getRoom(env, roomId);
-    if (!room) {
-      return json({success:false,error:"Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru."},404);
+    const userId = String(auth.user.id);
+    const role = String((auth.user as any).role || "user").toLowerCase();
+    const canCreateRoom = role === "streamer" || role === "admin" || role === "owner";
+    const expectedStreamerRoomId = "streamer-" + userId.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 80);
+    let room = await getRoom(env, roomId);
+
+    // The dedicated Official Streamer room is created automatically on first entry.
+    // This removes the first-time manual room-creation step for the streamer's own room.
+    if (!room && role === "streamer" && roomId === expectedStreamerRoomId) {
+      const title = String((auth.user as any).displayName || (auth.user as any).username || "Official Streamer").trim().slice(0, 120);
+      room = await ensureRoom(
+        env,
+        roomId,
+        userId,
+        now,
+        true,
+        title ? title + " • LIVE" : "Official Streamer • LIVE",
+        "Official SYS STREAM live room."
+      );
     }
-    await ensureRoom(env, roomId, String(auth.user.id), now);
+
+    if (!room) {
+      return json({
+        success:false,
+        error: canCreateRoom
+          ? "Room belum tersedia."
+          : "Room belum tersedia. Hanya Official Streamer yang dapat membuat room baru."
+      },404);
+    }
+    await ensureRoom(env, roomId, userId, now);
 
     const members = await env.DB.prepare(
       `SELECT m.user_id AS userId,
