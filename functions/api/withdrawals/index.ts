@@ -1,5 +1,6 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { notifyAdmins } from "../../_lib/admin-notifications";
 
 async function ensureWithdrawals(env: Env) {
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS withdrawals (
@@ -108,6 +109,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       WHERE provider_reference = ? AND user_id = ?
       ORDER BY id DESC LIMIT 1
     `).bind(reference, auth.user.id).first<any>();
+
+    await notifyAdmins(env,{type:"withdrawal.created",title:"New withdrawal request",message:`User ${auth.user.walletAddress || auth.user.id} requested ${amount} ${currency} via ${network}.`,severity:"warning",entityType:"withdrawal",entityId:withdrawal?.id});
 
     return json({
       success:true,
