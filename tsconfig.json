@@ -38,6 +38,7 @@
     "src/app/login/page.safe-backup.tsx",
     "src/app/login/page.wallet-backup.tsx",
     "sys-stream",
-    "src/components/blindbox/BlindBoxDashboard.tsx"
+    "src/components/blindbox/BlindBoxDashboard.tsx",
+    "email-worker"
   ]
 }
