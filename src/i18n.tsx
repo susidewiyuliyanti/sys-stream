@@ -4734,73 +4734,73 @@ const ALL_EXPLORER_AND_UI_TRANSLATIONS: Record<LanguageCode, Record<string, stri
 
 
 Object.assign(translations.id, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': 'Asisten akun read-only',
   'Ask about your balance, airdrop rewards, or recent transactions.': 'Tanyakan tentang saldo, reward airdrop, atau transaksi terbaru Anda.',
-  'Ask SYS STREAM AI...': 'Tanya SYS STREAM AI...',
+  'Ask Miss SYS...': 'Tanya Miss SYS...',
   'AI is temporarily unavailable.': 'AI sedang tidak tersedia sementara.',
   Close: 'Tutup',
   Send: 'Kirim',
 });
 Object.assign(translations.en, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': 'Read-only account assistant',
   'Ask about your balance, airdrop rewards, or recent transactions.': 'Ask about your balance, airdrop rewards, or recent transactions.',
-  'Ask SYS STREAM AI...': 'Ask SYS STREAM AI...',
+  'Ask Miss SYS...': 'Ask Miss SYS...',
   'AI is temporarily unavailable.': 'AI is temporarily unavailable.',
   Close: 'Close',
   Send: 'Send',
 });
 Object.assign(translations.es, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': 'Asistente de cuenta de solo lectura',
   'Ask about your balance, airdrop rewards, or recent transactions.': 'Pregunta sobre tu saldo, recompensas del airdrop o transacciones recientes.',
-  'Ask SYS STREAM AI...': 'Pregunta a SYS STREAM AI...',
+  'Ask Miss SYS...': 'Pregunta a Miss SYS...',
   'AI is temporarily unavailable.': 'La IA no está disponible temporalmente.',
   Close: 'Cerrar',
   Send: 'Enviar',
 });
 Object.assign(translations.pt, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': 'Assistente de conta somente leitura',
   'Ask about your balance, airdrop rewards, or recent transactions.': 'Pergunte sobre seu saldo, recompensas do airdrop ou transações recentes.',
-  'Ask SYS STREAM AI...': 'Pergunte ao SYS STREAM AI...',
+  'Ask Miss SYS...': 'Pergunte ao Miss SYS...',
   'AI is temporarily unavailable.': 'A IA está temporariamente indisponível.',
   Close: 'Fechar',
   Send: 'Enviar',
 });
 Object.assign(translations.zh, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': '只读账户助手',
   'Ask about your balance, airdrop rewards, or recent transactions.': '可以询问余额、空投奖励或最近的交易。',
-  'Ask SYS STREAM AI...': '询问 SYS STREAM AI...',
+  'Ask Miss SYS...': '询问 Miss SYS...',
   'AI is temporarily unavailable.': 'AI 暂时不可用。',
   Close: '关闭',
   Send: '发送',
 });
 Object.assign(translations.ja, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': '読み取り専用アカウントアシスタント',
   'Ask about your balance, airdrop rewards, or recent transactions.': '残高、エアドロップ報酬、最近の取引について質問できます。',
-  'Ask SYS STREAM AI...': 'SYS STREAM AI に質問…',
+  'Ask Miss SYS...': 'Miss SYS に質問…',
   'AI is temporarily unavailable.': 'AI は一時的に利用できません。',
   Close: '閉じる',
   Send: '送信',
 });
 Object.assign(translations.ko, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': '읽기 전용 계정 도우미',
   'Ask about your balance, airdrop rewards, or recent transactions.': '잔액, 에어드롭 보상 또는 최근 거래에 대해 질문하세요.',
-  'Ask SYS STREAM AI...': 'SYS STREAM AI에게 질문...',
+  'Ask Miss SYS...': 'Miss SYS에게 질문...',
   'AI is temporarily unavailable.': 'AI를 일시적으로 사용할 수 없습니다.',
   Close: '닫기',
   Send: '보내기',
 });
 Object.assign(translations.ar, {
-  'SYS STREAM AI': 'SYS STREAM AI',
+  'Miss SYS': 'Miss SYS',
   'Read-only account assistant': 'مساعد حساب للقراءة فقط',
   'Ask about your balance, airdrop rewards, or recent transactions.': 'اسأل عن رصيدك أو مكافآت الإيردروب أو معاملاتك الأخيرة.',
-  'Ask SYS STREAM AI...': 'اسأل SYS STREAM AI...',
+  'Ask Miss SYS...': 'اسأل Miss SYS...',
   'AI is temporarily unavailable.': 'الذكاء الاصطناعي غير متاح مؤقتًا.',
   Close: 'إغلاق',
   Send: 'إرسال',
