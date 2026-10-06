@@ -286,7 +286,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   try {
     const body = await request.json().catch(() => ({}));
     const message = String(body.message || "").trim();
-    language = normalizeLanguage(String(body.language || "en").trim());
+    const language = normalizeLanguage(String(body.language || "en").trim());
 
     if (!message) return corsJson(request, { success: false, error: "Message is required." }, 400);
     if (message.length > 2000) return corsJson(request, { success: false, error: "Message is too long." }, 400);
