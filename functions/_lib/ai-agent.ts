@@ -1,4 +1,4 @@
-﻿import { formatKnowledgeBase } from "./knowledge/sys-stream";
+import { formatKnowledgeBase } from "./knowledge/sys-stream";
 
 export type AgentTask =
   | "content"

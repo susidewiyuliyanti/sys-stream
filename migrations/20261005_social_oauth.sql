@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS social_oauth_states (
+CREATE TABLE IF NOT EXISTS social_oauth_states (
   state TEXT PRIMARY KEY,
   platform TEXT NOT NULL,
   created_by TEXT,

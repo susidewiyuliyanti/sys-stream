@@ -1,4 +1,4 @@
-﻿import { buildAgentPrompt } from "../functions/_lib/ai-agent";
+import { buildAgentPrompt } from "../functions/_lib/ai-agent";
 
 const prompt = buildAgentPrompt({
   task: "content",

@@ -1,4 +1,4 @@
-﻿export type KnowledgeItem = {
+export type KnowledgeItem = {
   id: string;
   category: string;
   title: string;

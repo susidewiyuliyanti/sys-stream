@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS social_oauth_tokens (
+CREATE TABLE IF NOT EXISTS social_oauth_tokens (
   platform TEXT PRIMARY KEY,
   access_token_enc TEXT NOT NULL,
   refresh_token_enc TEXT,

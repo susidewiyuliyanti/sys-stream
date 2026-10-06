@@ -249,13 +249,13 @@ export default function ProfilePage() {
                 onClick={() => setIsEditProfileModalOpen(true)}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-xs font-bold hover:border-cyan-500/40"
               >
-                <Edit2 className="w-3.5 h-3.5" /> Edit
+                <Edit2 className="w-3.5 h-3.5" /> {t('Edit')}
               </button>
               <button
                 onClick={logout}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-800 px-4 py-2.5 text-xs font-bold text-slate-500 hover:text-rose-400"
               >
-                <LogOut className="w-3.5 h-3.5" /> Logout
+                <LogOut className="w-3.5 h-3.5" /> {t('Logout')}
               </button>
             </div>
           </div>
@@ -482,7 +482,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="text-[11px] text-slate-400">
-                  Yield: <span className="text-slate-300 font-bold">{item.yieldRate}</span> • Started {item.startedDate}
+                  {t('Yield')}: <span className="text-slate-300 font-bold">{item.yieldRate}</span> • Started {item.startedDate}
                 </div>
               </div>
             ))}

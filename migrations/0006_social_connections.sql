@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS social_connections (
+CREATE TABLE IF NOT EXISTS social_connections (
   id TEXT PRIMARY KEY,
   platform TEXT NOT NULL,
   account_id TEXT,

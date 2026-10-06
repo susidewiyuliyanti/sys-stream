@@ -1,4 +1,4 @@
-﻿import type { SocialPlatform } from "../social";
+import type { SocialPlatform } from "../social";
 
 export type OAuthProviderConfig = {
   platform: SocialPlatform;
