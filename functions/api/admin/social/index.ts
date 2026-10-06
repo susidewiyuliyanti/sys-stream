@@ -188,8 +188,7 @@ export async function onRequestPost({
    * mengharuskan nilai yang sama persis dengan URI yang didaftarkan.
    */
   const requestUrl = new URL(request.url);
-  const redirectUri =
-    `${requestUrl.origin}/api/admin/social/callback?platform=${encodeURIComponent(platform)}`;
+  const redirectUri = `${requestUrl.origin}/api/admin/social/callback`;
 
   await env.DB.prepare(
     `INSERT INTO social_oauth_states
