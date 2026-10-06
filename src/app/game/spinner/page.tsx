@@ -124,7 +124,7 @@ export default function SpinnerGamePage() {
             <span>{t('Viewer Username Raffle Spinner')}</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!
+            {t('Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!')}
           </p>
         </div>
 
@@ -293,7 +293,7 @@ export default function SpinnerGamePage() {
                   onClick={clearViewers}
                   className="text-rose-400 hover:text-rose-300 text-[11px] font-bold flex items-center gap-1 cursor-pointer"
                 >
-                  <Trash2 className="w-3 h-3" /> Clear All
+                  <Trash2 className="w-3 h-3" /> {t('Clear All')}
                 </button>
               </div>
 
