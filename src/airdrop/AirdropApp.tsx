@@ -21,15 +21,15 @@ const CALENDAR_UI: Record<Lang, {sun:string;mon:string;tue:string;wed:string;thu
   ar:{sun:'الأحد',mon:'الإثنين',tue:'الثلاثاء',wed:'الأربعاء',thu:'الخميس',fri:'الجمعة',sat:'السبت',previous:'الشهر السابق',next:'الشهر التالي',checked:'تم تسجيل الحضور',today:'اليوم',notChecked:'لم يتم تسجيل الحضور'}
 };
 
-const AIRDROP_ERRORS: Record<Lang, {taskNotFound:string;checkinDone:string;loginRequired:string;submissionFailed:string}> = {
-  id:{taskNotFound:'Tugas tidak ditemukan atau belum diaktifkan.',checkinDone:'Check-in hari ini sudah dilakukan.',loginRequired:'Login diperlukan.',submissionFailed:'Pengiriman tugas gagal.'},
-  en:{taskNotFound:'Task not found or not yet activated.',checkinDone:'Today’s check-in has already been completed.',loginRequired:'Login required.',submissionFailed:'Task submission failed.'},
-  es:{taskNotFound:'La tarea no existe o aún no está activada.',checkinDone:'El check-in de hoy ya se completó.',loginRequired:'Se requiere iniciar sesión.',submissionFailed:'No se pudo enviar la tarea.'},
-  pt:{taskNotFound:'A tarefa não foi encontrada ou ainda não foi ativada.',checkinDone:'O check-in de hoje já foi concluído.',loginRequired:'É necessário iniciar sessão.',submissionFailed:'Falha ao enviar a tarefa.'},
-  zh:{taskNotFound:'未找到任务或任务尚未启用。',checkinDone:'今天已经完成签到。',loginRequired:'需要登录。',submissionFailed:'任务提交失败。'},
-  ja:{taskNotFound:'タスクが見つからないか、まだ有効化されていません。',checkinDone:'本日のチェックインはすでに完了しています。',loginRequired:'ログインが必要です。',submissionFailed:'タスクの送信に失敗しました。'},
-  ko:{taskNotFound:'작업을 찾을 수 없거나 아직 활성화되지 않았습니다.',checkinDone:'오늘 체크인은 이미 완료했습니다.',loginRequired:'로그인이 필요합니다.',submissionFailed:'작업 제출에 실패했습니다.'},
-  ar:{taskNotFound:'لم يتم العثور على المهمة أو لم يتم تفعيلها بعد.',checkinDone:'تم إكمال تسجيل حضور اليوم بالفعل.',loginRequired:'يلزم تسجيل الدخول.',submissionFailed:'فشل إرسال المهمة.'}
+const AIRDROP_ERRORS: Record<Lang, {taskNotFound:string;checkinDone:string;singleSubmit:string;loginRequired:string;submissionFailed:string}> = {
+  id:{taskNotFound:'Tugas tidak ditemukan atau belum diaktifkan.',checkinDone:'Check-in hari ini sudah dilakukan.',singleSubmit:'Tugas ini hanya dapat dikirim satu kali untuk setiap pengguna.',loginRequired:'Login diperlukan.',submissionFailed:'Pengiriman tugas gagal.'},
+  en:{taskNotFound:'Task not found or not yet activated.',checkinDone:'Today’s check-in has already been completed.',singleSubmit:'This task can only be submitted once per user.',loginRequired:'Login required.',submissionFailed:'Task submission failed.'},
+  es:{taskNotFound:'La tarea no existe o aún no está activada.',checkinDone:'El check-in de hoy ya se completó.',singleSubmit:'Esta tarea solo puede enviarse una vez por usuario.',loginRequired:'Se requiere iniciar sesión.',submissionFailed:'No se pudo enviar la tarea.'},
+  pt:{taskNotFound:'A tarefa não foi encontrada ou ainda não foi ativada.',checkinDone:'O check-in de hoje já foi concluído.',singleSubmit:'Esta tarefa só pode ser enviada uma vez por usuário.',loginRequired:'É necessário iniciar sessão.',submissionFailed:'Falha ao enviar a tarefa.'},
+  zh:{taskNotFound:'未找到任务或任务尚未启用。',checkinDone:'今天已经完成签到。',singleSubmit:'每位用户只能提交一次此任务。',loginRequired:'需要登录。',submissionFailed:'任务提交失败。'},
+  ja:{taskNotFound:'タスクが見つからないか、まだ有効化されていません。',checkinDone:'本日のチェックインはすでに完了しています。',singleSubmit:'このタスクはユーザーごとに1回のみ送信できます。',loginRequired:'ログインが必要です。',submissionFailed:'タスクの送信に失敗しました。'},
+  ko:{taskNotFound:'작업을 찾을 수 없거나 아직 활성화되지 않았습니다.',checkinDone:'오늘 체크인은 이미 완료했습니다.',singleSubmit:'이 작업은 사용자당 한 번만 제출할 수 있습니다.',loginRequired:'로그인이 필요합니다.',submissionFailed:'작업 제출에 실패했습니다.'},
+  ar:{taskNotFound:'لم يتم العثور على المهمة أو لم يتم تفعيلها بعد.',checkinDone:'تم إكمال تسجيل حضور اليوم بالفعل.',singleSubmit:'يمكن إرسال هذه المهمة مرة واحدة فقط لكل مستخدم.',loginRequired:'يلزم تسجيل الدخول.',submissionFailed:'فشل إرسال المهمة.'}
 };
 
 const TASKS: Task[] = [
@@ -461,6 +461,7 @@ export default function AirdropApp() {
       const raw=e instanceof Error?e.message:'';
       const errorText=raw.includes('Task tidak ditemukan')||raw.includes('not found')?AIRDROP_ERRORS[lang].taskNotFound:
         raw.includes('Check-in hari ini')||raw.includes('already')?AIRDROP_ERRORS[lang].checkinDone:
+        raw.includes('hanya dapat dikirim satu kali')||raw.includes('only be submitted once')||raw.includes('solo puede enviarse una vez')||raw.includes('só pode ser enviada uma vez')||raw.includes('只能提交一次')||raw.includes('1回のみ')||raw.includes('한 번만 제출')||raw.includes('مرة واحدة فقط')?AIRDROP_ERRORS[lang].singleSubmit:
         raw.includes('Login diperlukan')||raw.includes('Login required')?AIRDROP_ERRORS[lang].loginRequired:
         raw||AIRDROP_ERRORS[lang].submissionFailed;
       setSubmissionMessage(errorText);
