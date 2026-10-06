@@ -294,16 +294,44 @@ Object.assign(translations.pt, {
   'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.' 'Disponível com o bloqueio ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao seu saldo disponível.'
 });
 Object.assign(translations.zh, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.' '满足最低有效锁定条件即可使用。每日奖励由服务器处理并计入您的可用余额。'
+  "Wallet Identity": "钱包身份",
+  "CONNECTING WALLET...": "正在连接钱包…",
+  "Wallet Connected": "钱包已连接",
+  "Connect Wallet for Registration": "连接钱包进行注册",
+  "Register Now": "立即注册",
+  "Forgot Password?": "忘记密码？",
+  "Verify your email": "验证您的邮箱",
+  "or Connect with Crypto Wallet": "或连接加密钱包"
 });
 Object.assign(translations.ja, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.' '最低アクティブロックで利用できます。デイリー報酬はサーバーで処理され、利用可能残高に加算されます。'
+  "Wallet Identity": "ウォレットID",
+  "CONNECTING WALLET...": "ウォレット接続中…",
+  "Wallet Connected": "ウォレット接続済み",
+  "Connect Wallet for Registration": "登録用ウォレットを接続",
+  "Register Now": "今すぐ登録",
+  "Forgot Password?": "パスワードを忘れましたか？",
+  "Verify your email": "メールを確認",
+  "or Connect with Crypto Wallet": "または暗号資産ウォレットを接続"
 });
 Object.assign(translations.ko, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.' '최소 활성 락 조건에서 이용할 수 있습니다. 일일 보상은 서버에서 처리되어 사용 가능한 잔액에 추가됩니다.'
+  "Wallet Identity": "지갑 ID",
+  "CONNECTING WALLET...": "지갑 연결 중...",
+  "Wallet Connected": "지갑 연결됨",
+  "Connect Wallet for Registration": "가입용 지갑 연결",
+  "Register Now": "지금 가입",
+  "Forgot Password?": "비밀번호를 잊으셨나요?",
+  "Verify your email": "이메일 인증",
+  "or Connect with Crypto Wallet": "또는 암호화폐 지갑 연결"
 });
 Object.assign(translations.ar, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.' 'متاح عند استيفاء الحد الأدنى للقفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى رصيدك المتاح.'
+  "Wallet Identity": "هوية المحفظة",
+  "CONNECTING WALLET...": "جارٍ ربط المحفظة...",
+  "Wallet Connected": "تم ربط المحفظة",
+  "Connect Wallet for Registration": "ربط المحفظة للتسجيل",
+  "Register Now": "سجّل الآن",
+  "Forgot Password?": "هل نسيت كلمة المرور؟",
+  "Verify your email": "تحقق من بريدك الإلكتروني",
+  "or Connect with Crypto Wallet": "أو الاتصال بمحفظة العملات الرقمية"
 });
 
 /* BLIND_BOX_8_LANGUAGE_TRANSLATIONS */
