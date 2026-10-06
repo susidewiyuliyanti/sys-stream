@@ -85,6 +85,7 @@ export default function BlindboxGamePage() {
     claimBlindBox,
     showToast,
     requireAuth,
+    refreshFinancialState,
   } = useGame();
 
   const [selectedBox, setSelectedBox] = useState<BoxTier>(BOX_TIERS[0]);
@@ -95,6 +96,7 @@ export default function BlindboxGamePage() {
   // Staking lock modal/form
   const [lockIdrAmount, setLockIdrAmount] = useState<number>(71748);
   const [lockDuration, setLockDuration] = useState<30 | 60 | 90>(30);
+  const availableBalance = Number(user.availableBalance ?? 0);
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
@@ -130,9 +132,17 @@ export default function BlindboxGamePage() {
   const handleCreateStakingLock = (e: React.FormEvent) => {
     e.preventDefault();
     requireAuth(() => {
-      createLock(lockIdrAmount, lockDuration);
+      if (lockIdrAmount > availableBalance) {
+        showToast(t('Insufficient Balance'), t('Lock amount cannot exceed your Available Balance.'), 'error');
+        return;
+      }
+      void createLock(lockIdrAmount, lockDuration);
     });
   };
+
+  useEffect(() => {
+    if (user.id) void refreshFinancialState();
+  }, [user.id, refreshFinancialState]);
 
 
   const startDailyUnboxing = () => {
@@ -347,6 +357,11 @@ export default function BlindboxGamePage() {
               onSubmit={handleCreateStakingLock}
               className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 w-full lg:w-80 shrink-0"
             >
+              <div className="rounded-xl border border-cyan-500/25 bg-cyan-500/5 px-3 py-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available Balance')}</div>
+                <div className="text-xl font-black text-cyan-300 mt-1">{formatMoney(availableBalance)}</div>
+                <div className="text-[10px] text-slate-500 mt-1">{t('Available to lock from this account')}</div>
+              </div>
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
                   Lock Amount
@@ -370,6 +385,7 @@ export default function BlindboxGamePage() {
                 <input
                   type="number"
                   min="71748"
+                  max={Math.max(0, availableBalance / (IDR_PER_CURRENCY_UNIT[language] ?? 1))}
                   step="0.01"
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
                   onChange={(e) => setLockIdrAmount(Math.max(71748, toIdr(Number(e.target.value) || 0)))}
@@ -377,6 +393,9 @@ export default function BlindboxGamePage() {
                   placeholder={`${t('Lock amount')} (${currencyConfig.currency})`}
                 />
                 <div className="text-[10px] text-slate-500 mt-1">{t('Nominal Lock (IDR)')}. {t('Lock Amount (IDR)')}: {formatMoney(71748)}. $4 USD equivalent.</div>
+                <div className="text-[10px] mt-1 font-semibold text-slate-400">
+                  {lockIdrAmount > availableBalance ? t('Lock amount exceeds Available Balance.') : `${t('Remaining after lock')}: ${formatMoney(Math.max(0, availableBalance - lockIdrAmount))}`}
+                </div>
                 <div className="flex justify-between text-[11px] text-slate-400">
                   <span>{t('Quota:')} <strong className="text-emerald-400">{t('1 Box/Day')}</strong></span>
                   <span className="font-mono text-amber-400">{formatMoney(lockIdrAmount)}</span>
