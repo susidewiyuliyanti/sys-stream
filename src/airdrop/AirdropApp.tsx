@@ -521,7 +521,8 @@ export default function AirdropApp() {
     const catalog=TASKS.filter(t=>!configuredTypes.has(t.type));
     return [...configured,...catalog];
   },[dbTasks]);
-  const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];const fallbackTitle=typeLabel(task.type,tx);const fallbackDesc=lang==='id'?`Selesaikan tugas ${fallbackTitle} sesuai brief campaign dan kirim bukti yang valid.`:`Complete the ${fallbackTitle} task according to the campaign brief and submit valid proof.`;const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';if(task.title||task.desc)return {title:task.title||fallbackTitle,desc:task.desc||fallbackDesc,action:x?.action?tx[x.action]:fallbackAction};return x?{title:tx[x.title],desc:tx[x.desc],action:tx[x.action]}:{title:fallbackTitle,desc:fallbackDesc,action:fallbackAction};};
+  const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];const fallbackTitle=typeLabel(task.type,tx);const fallbackDesc=lang==='id'?`Selesaikan tugas ${fallbackTitle} sesuai brief campaign dan kirim bukti yang valid.`:`Complete the ${fallbackTitle} task according to the campaign brief and submit valid proof.`;const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
+    if(task.title||task.desc)return {title:task.title||fallbackTitle,desc:task.desc||fallbackDesc,action:x?.action?tx[x.action]:fallbackAction};return x?{title:tx[x.title],desc:tx[x.desc],action:tx[x.action]}:{title:fallbackTitle,desc:fallbackDesc,action:fallbackAction};};
 
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
@@ -592,7 +593,7 @@ export default function AirdropApp() {
         <div className="mt-5 grid md:grid-cols-3 gap-3">
           {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
-            <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.estimated} · {tx.proof}</div>
+            <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.type==='checkin'?({id:'30 detik',en:'30 seconds',es:'30 segundos',pt:'30 segundos',zh:'30 秒',ja:'30秒',ko:'30초',ar:'30 ثانية'} as Record<Lang,string>)[lang]:t.estimated} · {tx.proof}</div>
           </button>})}
         </div>
       </section>
