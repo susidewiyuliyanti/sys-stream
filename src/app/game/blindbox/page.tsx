@@ -336,7 +336,7 @@ export default function BlindboxGamePage() {
                   {t('Durasi lock tersedia:')} <strong>{t('30 hari')}</strong> · <strong>{t('60 hari')}</strong> · <strong>{t('90 hari')}</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
-                  ⚠️ Lock hanya dapat diselesaikan setelah masa lock berakhir. Sistem tidak menyediakan early unlock melalui Blind Box.
+                  {t('The lock can only be completed after the lock period ends. The system does not provide early unlock through Blind Box.')}
                 </p>
               </div>
             </div>
