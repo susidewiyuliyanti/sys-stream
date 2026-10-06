@@ -23,6 +23,8 @@ export interface AuthUser {
   email?: string;
   displayName?: string;
   role?: string;
+  /** Canonical available balance from users.available_balance. */
+  availableBalance?: number;
   balance?: number;
   lockedBalance?: number;
   emailVerified?: boolean;
@@ -213,7 +215,7 @@ export async function requireAuth(request: Request, env: Env) {
             COALESCE(u.registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(u.sys_balance,0) AS sysBalance,
             COALESCE(u.email_verified,0) AS emailVerified,
-            COALESCE(u.available_balance, u.balance, 0) AS balance,
+            COALESCE(u.available_balance, u.balance, 0) AS availableBalance,
             COALESCE(u.total_locked, u.locked_saldo, 0) AS lockedBalance
      FROM auth_sessions s
      JOIN users u ON u.id = s.user_id
@@ -229,7 +231,8 @@ export async function requireAuth(request: Request, env: Env) {
       ...row,
       id: String(row.id),
       emailVerified: true,
-      balance: Number(row.balance ?? 0),
+      availableBalance: Number(row.availableBalance ?? 0),
+      balance: Number(row.availableBalance ?? 0),
       lockedBalance: Number(row.lockedBalance ?? 0),
     },
     token,
@@ -248,7 +251,7 @@ export async function getUserById(env: Env, userId: string) {
             CASE WHEN COALESCE(available_balance,0) > 0
                  THEN COALESCE(available_balance,0)
                  ELSE COALESCE(balance,0)
-            END AS balance,
+            END AS availableBalance,
             CASE WHEN COALESCE(total_locked,0) > 0
                  THEN COALESCE(total_locked,0)
                  ELSE COALESCE(locked_saldo,0)
