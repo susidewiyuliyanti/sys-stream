@@ -69,7 +69,7 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
 
     // Every task stays locked until the user has connected a social account
     // and explicitly confirmed following SYSStreamer.
-    if (!isCheckin || true) {
+    {
       await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_gate (wallet_address TEXT PRIMARY KEY, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
       const gate = await db.prepare("SELECT confirmed FROM airdrop_follow_gate WHERE wallet_address=?").bind(wallet).first<{confirmed:number}>();
       if (Number(gate?.confirmed || 0) !== 1) {
