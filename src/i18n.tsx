@@ -104,12 +104,12 @@ export function formatRegistrationBonus(language: LanguageCode): string {
 export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: string }> = [
   { code: 'id', label: 'Indonesian', native: 'Bahasa Indonesia' },
   { code: 'en', label: 'English', native: 'English' },
-  { code: 'es', label: 'Spanish', native: 'EspaÃ±ol' },
-  { code: 'pt', label: 'Portuguese', native: 'PortuguÃªs' },
+  { code: 'es', label: 'Spanish', native: 'Español' },
+  { code: 'pt', label: 'Portuguese', native: 'Português' },
   { code: 'zh', label: 'Chinese', native: 'ä¸­æ–‡' },
   { code: 'ja', label: 'Japanese', native: 'æ—¥æœ¬èªž' },
   { code: 'ko', label: 'Korean', native: 'í•œêµ­ì–´' },
-  { code: 'ar', label: 'Arabic', native: 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©' },
+  { code: 'ar', label: 'Arabic', native: 'العربية' },
 ];
 
 const translations: Record<LanguageCode, Record<string, string>> = {
@@ -144,29 +144,29 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, community, and posts from SYS STREAM users.',},
   es: {
     'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Directos, comunidad y publicaciones de usuarios de SYS STREAM.',
-    Home:'Inicio', Earn:'Ganar', Board:'ClasificaciÃ³n', Profile:'Perfil', Language:'Idioma',
-    Login:'Iniciar sesiÃ³n', Register:'Registrarse', 'Welcome Back':'Bienvenido de nuevo',
+    Home:'Inicio', Earn:'Ganar', Board:'Clasificación', Profile:'Perfil', Language:'Idioma',
+    Login:'Iniciar sesión', Register:'Registrarse', 'Welcome Back':'Bienvenido de nuevo',
     'Create SYS Account':'Crear cuenta SYS', 'Username or Email':'Usuario o correo',
-    Email:'Correo electrÃ³nico', Password:'ContraseÃ±a', 'Remember me':'Recordarme',
+    Email:'Correo electrónico', Password:'Contraseña', 'Remember me':'Recordarme',
     'Edit Profile & Avatar':'Gestionar perfil y foto', 'Display Username':'Nombre de usuario',
     'Profile Photo':'Foto de perfil', 'Upload photo from device':'Subir foto del dispositivo',
     'Change photo from device':'Cambiar foto del dispositivo', Cancel:'Cancelar',
     'Save Changes':'Guardar cambios', 'Locked Balance':'Saldo bloqueado',
     'Total Earnings':'Ganancias totales', 'Deposit Crypto':'Depositar cripto',
-    'Lock History':'Historial de bloqueo', 'Log Out':'Cerrar sesiÃ³n', Notifications:'Notificaciones',
+    'Lock History':'Historial de bloqueo', 'Log Out':'Cerrar sesión', Notifications:'Notificaciones',
   },
   pt: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Lives, comunidade e publicaÃ§Ãµes dos usuÃ¡rios do SYS STREAM.',
-    Home:'InÃ­cio', Earn:'Ganhar', Board:'Ranking', Profile:'Perfil', Language:'Idioma',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Lives, comunidade e publicações dos usuários do SYS STREAM.',
+    Home:'Início', Earn:'Ganhar', Board:'Ranking', Profile:'Perfil', Language:'Idioma',
     Login:'Entrar', Register:'Registrar', 'Welcome Back':'Bem-vindo de volta',
-    'Create SYS Account':'Criar conta SYS', 'Username or Email':'UsuÃ¡rio ou e-mail',
+    'Create SYS Account':'Criar conta SYS', 'Username or Email':'Usuário ou e-mail',
     Email:'E-mail', Password:'Senha', 'Remember me':'Lembrar de mim',
-    'Edit Profile & Avatar':'Gerenciar perfil e foto', 'Display Username':'Nome de usuÃ¡rio',
+    'Edit Profile & Avatar':'Gerenciar perfil e foto', 'Display Username':'Nome de usuário',
     'Profile Photo':'Foto do perfil', 'Upload photo from device':'Enviar foto do dispositivo',
     'Change photo from device':'Alterar foto do dispositivo', Cancel:'Cancelar',
-    'Save Changes':'Salvar alteraÃ§Ãµes', 'Locked Balance':'Saldo bloqueado',
+    'Save Changes':'Salvar alterações', 'Locked Balance':'Saldo bloqueado',
     'Total Earnings':'Ganhos totais', 'Deposit Crypto':'Depositar cripto',
-    'Lock History':'HistÃ³rico de bloqueios', 'Log Out':'Sair', Notifications:'NotificaÃ§Ãµes',
+    'Lock History':'Histórico de bloqueios', 'Log Out':'Sair', Notifications:'Notificações',
   },
   zh: {
     'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM ç”¨æˆ·çš„ç›´æ’­ã€ç¤¾åŒºå’Œå¸–å­ã€‚',
@@ -204,16 +204,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Lock History':'ìž ê¸ˆ ê¸°ë¡', 'Log Out':'ë¡œê·¸ì•„ì›ƒ', Notifications:'ì•Œë¦¼',
   },
   ar: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± ÙˆØ§Ù„Ù…Ø¬ØªÙ…Ø¹ ÙˆØ§Ù„Ù…Ù†Ø´ÙˆØ±Ø§Øª Ù…Ù† Ù…Ø³ØªØ®Ø¯Ù…ÙŠ SYS STREAM.',
-    Home:'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©', Earn:'Ø§Ø±Ø¨Ø­', Board:'Ø§Ù„Ù…ØªØµØ¯Ø±ÙŠÙ†', Profile:'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ', Language:'Ø§Ù„Ù„ØºØ©',
-    Login:'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„', Register:'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨', 'Welcome Back':'Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ø¹ÙˆØ¯ØªÙƒ',
-    'Create SYS Account':'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ SYS', 'Username or Email':'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯',
-    Email:'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ', Password:'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±', 'Remember me':'ØªØ°ÙƒØ±Ù†ÙŠ',
-    'Edit Profile & Avatar':'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ù„Ù ÙˆØ§Ù„ØµÙˆØ±Ø©', 'Display Username':'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…',
-    'Profile Photo':'ØµÙˆØ±Ø© Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ', 'Upload photo from device':'Ø±ÙØ¹ ØµÙˆØ±Ø© Ù…Ù† Ø§Ù„Ø¬Ù‡Ø§Ø²',
-    'Change photo from device':'ØªØºÙŠÙŠØ± Ø§Ù„ØµÙˆØ±Ø© Ù…Ù† Ø§Ù„Ø¬Ù‡Ø§Ø²', Cancel:'Ø¥Ù„ØºØ§Ø¡', 'Save Changes':'Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª',
-    'Locked Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙ„', 'Total Earnings':'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø£Ø±Ø¨Ø§Ø­', 'Deposit Crypto':'Ø¥ÙŠØ¯Ø§Ø¹ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©',
-    'Lock History':'Ø³Ø¬Ù„ Ø§Ù„Ù‚ÙÙ„', 'Log Out':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬', Notifications:'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'البث المباشر والمجتمع والمنشورات من مستخدمي SYS STREAM.',
+    Home:'الرئيسية', Earn:'اربح', Board:'المتصدرين', Profile:'الملف الشخصي', Language:'اللغة',
+    Login:'تسجيل الدخول', Register:'إنشاء حساب', 'Welcome Back':'مرحباً بعودتك',
+    'Create SYS Account':'إنشاء حساب SYS', 'Username or Email':'اسم المستخدم أو البريد',
+    Email:'البريد الإلكتروني', Password:'كلمة المرور', 'Remember me':'تذكرني',
+    'Edit Profile & Avatar':'إدارة الملف والصورة', 'Display Username':'اسم المستخدم',
+    'Profile Photo':'صورة الملف الشخصي', 'Upload photo from device':'رفع صورة من الجهاز',
+    'Change photo from device':'تغيير الصورة من الجهاز', Cancel:'إلغاء', 'Save Changes':'حفظ التغييرات',
+    'Locked Balance':'الرصيد المقفل', 'Total Earnings':'إجمالي الأرباح', 'Deposit Crypto':'إيداع العملات الرقمية',
+    'Lock History':'سجل القفل', 'Log Out':'تسجيل الخروج', Notifications:'الإشعارات',
   },
 };
 Object.assign(translations.id, {
@@ -223,10 +223,10 @@ Object.assign(translations.en, {
   'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.'
 });
 Object.assign(translations.es, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponible con el bloqueo activo mÃ­nimo. Las recompensas diarias son procesadas por el servidor y aÃ±adidas a tu saldo disponible.'
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponible con el bloqueo activo mínimo. Las recompensas diarias son procesadas por el servidor y añadidas a tu saldo disponible.'
 });
 Object.assign(translations.pt, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'DisponÃ­vel com o bloqueio ativo mÃ­nimo. As recompensas diÃ¡rias sÃ£o processadas pelo servidor e adicionadas ao seu saldo disponÃ­vel.'
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponível com o bloqueio ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao seu saldo disponível.'
 });
 Object.assign(translations.zh, {
   'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'æ»¡è¶³æœ€ä½Žæœ‰æ•ˆé”å®šæ¡ä»¶å³å¯ä½¿ç”¨ã€‚æ¯æ—¥å¥–åŠ±ç”±æœåŠ¡å™¨å¤„ç†å¹¶è®¡å…¥æ‚¨çš„å¯ç”¨ä½™é¢ã€‚'
@@ -238,7 +238,7 @@ Object.assign(translations.ko, {
   'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'ìµœì†Œ í™œì„± ë½ ì¡°ê±´ì—ì„œ ì´ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì¼ì¼ ë³´ìƒì€ ì„œë²„ì—ì„œ ì²˜ë¦¬ë˜ì–´ ì‚¬ìš© ê°€ëŠ¥í•œ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤.'
 });
 Object.assign(translations.ar, {
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Ù…ØªØ§Ø­ Ø¹Ù†Ø¯ Ø§Ø³ØªÙŠÙØ§Ø¡ Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ù‚ÙÙ„ Ø§Ù„Ù†Ø´Ø·. ØªØªÙ… Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØ¥Ø¶Ø§ÙØªÙ‡Ø§ Ø¥Ù„Ù‰ Ø±ØµÙŠØ¯Ùƒ Ø§Ù„Ù…ØªØ§Ø­.'
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'متاح عند استيفاء الحد الأدنى للقفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى رصيدك المتاح.'
 });
 
 /* BLIND_BOX_8_LANGUAGE_TRANSLATIONS */
@@ -275,24 +275,24 @@ Object.assign(translations.es, {
   'Daily reward credited to balance': 'Recompensa diaria acreditada al saldo',
   'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo superior con coleccionables raros. Las recompensas financieras son determinadas por el servidor.',
   'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo alto con coleccionables raros. Las recompensas financieras son determinadas por el servidor.',
-  'Daily claim limit remains 1 box per day.': 'El lÃ­mite de reclamaciÃ³n diaria sigue siendo 1 caja por dÃ­a.',
-  'Server is determining your reward...': 'El servidor estÃ¡ determinando tu recompensa...',
+  'Daily claim limit remains 1 box per day.': 'El límite de reclamación diaria sigue siendo 1 caja por día.',
+  'Server is determining your reward...': 'El servidor está determinando tu recompensa...',
   'Daily Blind Box Reward': 'Recompensa diaria de Blind Box',
   'Lock Balance Now': 'Bloquear saldo ahora',
-  'Opening Mystery Vault!': 'Â¡Abriendo Mystery Vault!',
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponible con el bloqueo activo mÃ­nimo. Las recompensas diarias son procesadas por el servidor y aÃ±adidas a tu saldo disponible.',
+  'Opening Mystery Vault!': '¡Abriendo Mystery Vault!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponible con el bloqueo activo mínimo. Las recompensas diarias son procesadas por el servidor y añadidas a tu saldo disponible.',
 });
 
 Object.assign(translations.pt, {
-  'Daily reward credited to balance': 'Recompensa diÃ¡ria creditada ao saldo',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'NÃ­vel de bloqueio superior com colecionÃ¡veis raros. As recompensas financeiras sÃ£o determinadas pelo servidor.',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'NÃ­vel de bloqueio alto com colecionÃ¡veis raros. As recompensas financeiras sÃ£o determinadas pelo servidor.',
-  'Daily claim limit remains 1 box per day.': 'O limite de resgate diÃ¡rio continua sendo 1 caixa por dia.',
-  'Server is determining your reward...': 'O servidor estÃ¡ determinando sua recompensa...',
-  'Daily Blind Box Reward': 'Recompensa diÃ¡ria da Blind Box',
+  'Daily reward credited to balance': 'Recompensa diária creditada ao saldo',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nível de bloqueio superior com colecionáveis raros. As recompensas financeiras são determinadas pelo servidor.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nível de bloqueio alto com colecionáveis raros. As recompensas financeiras são determinadas pelo servidor.',
+  'Daily claim limit remains 1 box per day.': 'O limite de resgate diário continua sendo 1 caixa por dia.',
+  'Server is determining your reward...': 'O servidor está determinando sua recompensa...',
+  'Daily Blind Box Reward': 'Recompensa diária da Blind Box',
   'Lock Balance Now': 'Bloquear saldo agora',
   'Opening Mystery Vault!': 'Abrindo o Mystery Vault!',
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'DisponÃ­vel com o bloqueio ativo mÃ­nimo. As recompensas diÃ¡rias sÃ£o processadas pelo servidor e adicionadas ao seu saldo disponÃ­vel.',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponível com o bloqueio ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao seu saldo disponível.',
 });
 
 Object.assign(translations.zh, {
@@ -300,7 +300,7 @@ Object.assign(translations.zh, {
   'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'æ›´é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚',
   'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'é«˜çº§é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚',
   'Daily claim limit remains 1 box per day.': 'æ¯æ—¥é¢†å–é™åˆ¶ä»ä¸ºæ¯å¤© 1 ä¸ªç›²ç›’ã€‚',
-  'Server is determining your reward...': 'æœåŠ¡å™¨æ­£åœ¨ç¡®å®šæ‚¨çš„å¥–åŠ±â€¦â€¦',
+  'Server is determining your reward...': '服务器正在确定您的奖励……',
   'Daily Blind Box Reward': 'æ¯æ—¥ Blind Box å¥–åŠ±',
   'Lock Balance Now': 'ç«‹å³é”å®šä½™é¢',
   'Opening Mystery Vault!': 'æ­£åœ¨æ‰“å¼€ç¥žç§˜å®åº“ï¼',
@@ -312,7 +312,7 @@ Object.assign(translations.ja, {
   'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'ãƒ¬ã‚¢ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å«ã‚€ä¸Šä½ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã«ã‚ˆã£ã¦æ±ºå®šã•ã‚Œã¾ã™ã€‚',
   'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'ãƒ¬ã‚¢ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å«ã‚€é«˜ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã«ã‚ˆã£ã¦æ±ºå®šã•ã‚Œã¾ã™ã€‚',
   'Daily claim limit remains 1 box per day.': 'ãƒ‡ã‚¤ãƒªãƒ¼å—å–ä¸Šé™ã¯1æ—¥1ãƒœãƒƒã‚¯ã‚¹ã§ã™ã€‚',
-  'Server is determining your reward...': 'ã‚µãƒ¼ãƒãƒ¼ãŒå ±é…¬ã‚’æ±ºå®šã—ã¦ã„ã¾ã™â€¦â€¦',
+  'Server is determining your reward...': 'サーバーが報酬を決定しています……',
   'Daily Blind Box Reward': 'ãƒ‡ã‚¤ãƒªãƒ¼Blind Boxå ±é…¬',
   'Lock Balance Now': 'ä»Šã™ãæ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯',
   'Opening Mystery Vault!': 'ãƒŸã‚¹ãƒ†ãƒªãƒ¼ãƒœãƒ«ãƒˆã‚’é–‹ã„ã¦ã„ã¾ã™ï¼',
@@ -332,15 +332,15 @@ Object.assign(translations.ko, {
 });
 
 Object.assign(translations.ar, {
-  'Daily reward credited to balance': 'ØªÙ…Øª Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ø£Ø¹Ù„Ù‰ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù….',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ù…Ø±ØªÙØ¹ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù….',
-  'Daily claim limit remains 1 box per day.': 'ÙŠØ¸Ù„ Ø­Ø¯ Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© ØµÙ†Ø¯ÙˆÙ‚Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§ ÙÙŠ Ø§Ù„ÙŠÙˆÙ….',
-  'Server is determining your reward...': 'Ø§Ù„Ø®Ø§Ø¯Ù… ÙŠØ­Ø¯Ø¯ Ù…ÙƒØ§ÙØ£ØªÙƒ...',
-  'Daily Blind Box Reward': 'Ù…ÙƒØ§ÙØ£Ø© Blind Box Ø§Ù„ÙŠÙˆÙ…ÙŠØ©',
-  'Lock Balance Now': 'Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø¢Ù†',
-  'Opening Mystery Vault!': 'Ø¬Ø§Ø±Ù ÙØªØ­ Ø§Ù„Ø®Ø²Ù†Ø© Ø§Ù„ØºØ§Ù…Ø¶Ø©!',
-  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Ù…ØªØ§Ø­ Ù…Ø¹ Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù…Ù† Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù†Ø´Ø·. ØªØªÙ… Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØ¥Ø¶Ø§ÙØªÙ‡Ø§ Ø¥Ù„Ù‰ Ø±ØµÙŠØ¯Ùƒ Ø§Ù„Ù…ØªØ§Ø­.',
+  'Daily reward credited to balance': 'تمت إضافة المكافأة اليومية إلى الرصيد',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'مستوى قفل أعلى مع مقتنيات نادرة. يتم تحديد المكافآت المالية بواسطة الخادم.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'مستوى قفل مرتفع مع مقتنيات نادرة. يتم تحديد المكافآت المالية بواسطة الخادم.',
+  'Daily claim limit remains 1 box per day.': 'يظل حد المطالبة اليومية صندوقًا واحدًا في اليوم.',
+  'Server is determining your reward...': 'الخادم يحدد مكافأتك...',
+  'Daily Blind Box Reward': 'مكافأة Blind Box اليومية',
+  'Lock Balance Now': 'قفل الرصيد الآن',
+  'Opening Mystery Vault!': 'جارٍ فتح الخزنة الغامضة!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'متاح مع الحد الأدنى من القفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى رصيدك المتاح.',
 });
 
 
@@ -378,7 +378,7 @@ Object.assign(translations.en, {
 });
 Object.assign(translations.es, {
   'Wallet Identity':'Identidad de la wallet','CONNECTING WALLET...':'CONECTANDO WALLET...','Wallet Connected':'Wallet conectada',
-  'Connect Wallet for Registration':'Conectar wallet para registrarse','Register Now':'Registrarse ahora','Forgot Password?':'Â¿Olvidaste la contraseÃ±a?',
+  'Connect Wallet for Registration':'Conectar wallet para registrarse','Register Now':'Registrarse ahora','Forgot Password?':'¿Olvidaste la contraseña?',
   'Verify your email':'Verifica tu correo','or Connect with Crypto Wallet':'o conectar con una wallet'
 });
 Object.assign(translations.pt, {
@@ -387,12 +387,12 @@ Object.assign(translations.pt, {
   'Verify your email':'Verifique seu e-mail','or Connect with Crypto Wallet':'ou conectar com carteira cripto'
 });
 Object.assign(translations.zh, {
-  'Wallet Identity':'é’±åŒ…èº«ä»½','CONNECTING WALLET...':'æ­£åœ¨è¿žæŽ¥é’±åŒ…â€¦','Wallet Connected':'é’±åŒ…å·²è¿žæŽ¥',
+  'Wallet Identity':'é’±åŒ…èº«ä»½','CONNECTING WALLET...':'正在连接钱包…','Wallet Connected':'é’±åŒ…å·²è¿žæŽ¥',
   'Connect Wallet for Registration':'è¿žæŽ¥é’±åŒ…è¿›è¡Œæ³¨å†Œ','Register Now':'ç«‹å³æ³¨å†Œ','Forgot Password?':'å¿˜è®°å¯†ç ï¼Ÿ',
   'Verify your email':'éªŒè¯æ‚¨çš„é‚®ç®±','or Connect with Crypto Wallet':'æˆ–è¿žæŽ¥åŠ å¯†é’±åŒ…'
 });
 Object.assign(translations.ja, {
-  'Wallet Identity':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆID','CONNECTING WALLET...':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæŽ¥ç¶šä¸­â€¦','Wallet Connected':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæŽ¥ç¶šæ¸ˆã¿',
+  'Wallet Identity':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆID','CONNECTING WALLET...':'ウォレット接続中…','Wallet Connected':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæŽ¥ç¶šæ¸ˆã¿',
   'Connect Wallet for Registration':'ç™»éŒ²ç”¨ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Register Now':'ä»Šã™ãç™»éŒ²','Forgot Password?':'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚Œã¾ã—ãŸã‹ï¼Ÿ',
   'Verify your email':'ãƒ¡ãƒ¼ãƒ«ã‚’ç¢ºèª','or Connect with Crypto Wallet':'ã¾ãŸã¯æš—å·è³‡ç”£ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š'
 });
@@ -402,9 +402,9 @@ Object.assign(translations.ko, {
   'Verify your email':'ì´ë©”ì¼ ì¸ì¦','or Connect with Crypto Wallet':'ë˜ëŠ” ì•”í˜¸í™”í ì§€ê°‘ ì—°ê²°'
 });
 Object.assign(translations.ar, {
-  'Wallet Identity':'Ù‡ÙˆÙŠØ© Ø§Ù„Ù…Ø­ÙØ¸Ø©','CONNECTING WALLET...':'Ø¬Ø§Ø±Ù Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©...','Wallet Connected':'ØªÙ… Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©',
-  'Connect Wallet for Registration':'Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù„Ù„ØªØ³Ø¬ÙŠÙ„','Register Now':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¢Ù†','Forgot Password?':'Ù‡Ù„ Ù†Ø³ÙŠØª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±ØŸ',
-  'Verify your email':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ','or Connect with Crypto Wallet':'Ø£Ùˆ Ø±Ø¨Ø· Ù…Ø­ÙØ¸Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©'
+  'Wallet Identity':'هوية المحفظة','CONNECTING WALLET...':'جارٍ ربط المحفظة...','Wallet Connected':'تم ربط المحفظة',
+  'Connect Wallet for Registration':'ربط المحفظة للتسجيل','Register Now':'سجّل الآن','Forgot Password?':'هل نسيت كلمة المرور؟',
+  'Verify your email':'تحقق من بريدك الإلكتروني','or Connect with Crypto Wallet':'أو ربط محفظة العملات الرقمية'
 });
 
 
@@ -412,24 +412,24 @@ Object.assign(translations.ar, {
 const AUTH_EXTRA_UI: Record<LanguageCode, Record<string,string>> = {
  id:{"Don't have an account?":"Belum punya akun?","Secured with Web3":"Diamankan dengan Web3","Biometric Login Available":"Login biometrik tersedia","Register Now":"Generate Wallet"},
  en:{"Don't have an account?":"Don't have an account?","Secured with Web3":"Secured with Web3","Biometric Login Available":"Biometric Login Available","Register Now":"Generate Wallet"},
- es:{"Don't have an account?":"Â¿No tienes una cuenta?","Secured with Web3":"Protegido con Web3","Biometric Login Available":"Inicio de sesiÃ³n biomÃ©trico disponible","Register Now":"Generar wallet"},
- pt:{"Don't have an account?":"Ainda nÃ£o tem uma conta?","Secured with Web3":"Protegido com Web3","Biometric Login Available":"Login biomÃ©trico disponÃ­vel","Register Now":"Gerar carteira"},
+ es:{"Don't have an account?":"¿No tienes una cuenta?","Secured with Web3":"Protegido con Web3","Biometric Login Available":"Inicio de sesión biométrico disponible","Register Now":"Generar wallet"},
+ pt:{"Don't have an account?":"Ainda não tem uma conta?","Secured with Web3":"Protegido com Web3","Biometric Login Available":"Login biométrico disponível","Register Now":"Gerar carteira"},
  zh:{"Don't have an account?":"è¿˜æ²¡æœ‰è´¦æˆ·ï¼Ÿ","Secured with Web3":"Web3 å®‰å…¨ä¿æŠ¤","Biometric Login Available":"æ”¯æŒç”Ÿç‰©è¯†åˆ«ç™»å½•","Register Now":"ç”Ÿæˆé’±åŒ…"},
  ja:{"Don't have an account?":"ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ãŠæŒã¡ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã‹ï¼Ÿ","Secured with Web3":"Web3ã§ä¿è­·ã•ã‚Œã¦ã„ã¾ã™","Biometric Login Available":"ç”Ÿä½“èªè¨¼ãƒ­ã‚°ã‚¤ãƒ³å¯¾å¿œ","Register Now":"ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ç”Ÿæˆ"},
  ko:{"Don't have an account?":"ê³„ì •ì´ ì—†ìœ¼ì‹ ê°€ìš”?","Secured with Web3":"Web3ë¡œ ë³´í˜¸ë¨","Biometric Login Available":"ìƒì²´ ì¸ì¦ ë¡œê·¸ì¸ ì§€ì›","Register Now":"ì§€ê°‘ ìƒì„±"},
- ar:{"Don't have an account?":"Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ","Secured with Web3":"Ù…Ø¤Ù…Ù‘Ù† Ø¨ÙˆØ§Ø³Ø·Ø© Web3","Biometric Login Available":"ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø¨ÙŠÙˆÙ…ØªØ±ÙŠ Ù…ØªØ§Ø­","Register Now":"Ø¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø©"}
+ ar:{"Don't have an account?":"ليس لديك حساب؟","Secured with Web3":"مؤمّن بواسطة Web3","Biometric Login Available":"تسجيل الدخول البيومتري متاح","Register Now":"إنشاء محفظة"}
 };
 for (const lang of Object.keys(AUTH_EXTRA_UI) as LanguageCode[]) Object.assign(translations[lang], AUTH_EXTRA_UI[lang]);
 
 const WALLET_AUTH_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Generate Wallet':'Generate Wallet','Create SYS Account':'Buat Akun SYS','Welcome Back':'Selamat Datang Kembali','Login menggunakan wallet Anda.':'Login menggunakan wallet Anda.','Buat wallet baru langsung dari perangkat Anda.':'Buat wallet baru langsung dari perangkat Anda.','Login dengan Wallet':'Login dengan Wallet','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.','Buat Wallet Baru':'Buat Wallet Baru','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Saya menyetujui Terms & Conditions dan pembuatan wallet baru.','Simpan Recovery Phrase':'Simpan Recovery Phrase','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.','BUAT AKUN DENGAN WALLET INI':'BUAT AKUN DENGAN WALLET INI','GENERATE WALLET':'GENERATE WALLET','LOGIN WITH WALLET':'LOGIN DENGAN WALLET','Already have a wallet?':'Sudah punya wallet?','Login with Wallet':'Login dengan Wallet','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.','Registrasi gagal diproses di server.':'Registrasi gagal diproses di server.','Gagal membuat wallet baru.':'Gagal membuat wallet baru.','Recovery phrase gagal dibuat.':'Recovery phrase gagal dibuat.'},
  en:{'Generate Wallet':'Generate Wallet','Create SYS Account':'Create SYS Account','Welcome Back':'Welcome Back','Login menggunakan wallet Anda.':'Login using your wallet.','Buat wallet baru langsung dari perangkat Anda.':'Create a new wallet directly on your device.','Login dengan Wallet':'Login with Wallet','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Connect MetaMask or another EVM wallet, then sign the login message.','Buat Wallet Baru':'Create New Wallet','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'No email, username, or password required. Your wallet is created directly on your device.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'I agree to the Terms & Conditions and creation of a new wallet.','Simpan Recovery Phrase':'Save Recovery Phrase','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'The recovery phrase is created on your device. SYS STREAM never receives or stores it.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'I have saved the recovery phrase and understand that SYS STREAM cannot recover it.','BUAT AKUN DENGAN WALLET INI':'CREATE ACCOUNT WITH THIS WALLET','GENERATE WALLET':'GENERATE WALLET','LOGIN WITH WALLET':'LOGIN WITH WALLET','Already have a wallet?':'Already have a wallet?','Login with Wallet':'Login with Wallet','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Wallet created on this device. Save the recovery phrase before creating your account.','Registrasi gagal diproses di server.':'Registration could not be processed by the server.','Gagal membuat wallet baru.':'Failed to create a new wallet.','Recovery phrase gagal dibuat.':'Failed to create the recovery phrase.'},
- es:{'Generate Wallet':'Generar wallet','Create SYS Account':'Crear cuenta SYS','Welcome Back':'Bienvenido de nuevo','Login menggunakan wallet Anda.':'Inicia sesiÃ³n con tu wallet.','Buat wallet baru langsung dari perangkat Anda.':'Crea una nueva wallet directamente en tu dispositivo.','Login dengan Wallet':'Iniciar sesiÃ³n con wallet','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Conecta MetaMask u otra wallet EVM y firma el mensaje de inicio de sesiÃ³n.','Buat Wallet Baru':'Crear nueva wallet','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'No necesitas correo, usuario ni contraseÃ±a. La wallet se crea directamente en tu dispositivo.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Acepto los TÃ©rminos y condiciones y la creaciÃ³n de una nueva wallet.','Simpan Recovery Phrase':'Guardar frase de recuperaciÃ³n','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'La frase de recuperaciÃ³n se crea en tu dispositivo. SYS STREAM no la recibe ni la almacena.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'He guardado la frase de recuperaciÃ³n y entiendo que SYS STREAM no puede recuperarla.','BUAT AKUN DENGAN WALLET INI':'CREAR CUENTA CON ESTA WALLET','GENERATE WALLET':'GENERAR WALLET','LOGIN WITH WALLET':'INICIAR SESIÃ“N CON WALLET','Already have a wallet?':'Â¿Ya tienes una wallet?','Login with Wallet':'Iniciar sesiÃ³n con wallet','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Wallet creada en este dispositivo. Guarda la frase de recuperaciÃ³n antes de crear tu cuenta.','Registrasi gagal diproses di server.':'No se pudo procesar el registro en el servidor.','Gagal membuat wallet baru.':'No se pudo crear la nueva wallet.','Recovery phrase gagal dibuat.':'No se pudo crear la frase de recuperaciÃ³n.'},
- pt:{'Generate Wallet':'Gerar carteira','Create SYS Account':'Criar conta SYS','Welcome Back':'Bem-vindo de volta','Login menggunakan wallet Anda.':'Entre usando sua carteira.','Buat wallet baru langsung dari perangkat Anda.':'Crie uma nova carteira diretamente no seu dispositivo.','Login dengan Wallet':'Entrar com carteira','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Conecte a MetaMask ou outra carteira EVM e assine a mensagem de login.','Buat Wallet Baru':'Criar nova carteira','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'NÃ£o Ã© necessÃ¡rio e-mail, usuÃ¡rio ou senha. A carteira Ã© criada diretamente no seu dispositivo.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Aceito os Termos e CondiÃ§Ãµes e a criaÃ§Ã£o de uma nova carteira.','Simpan Recovery Phrase':'Salvar frase de recuperaÃ§Ã£o','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'A frase de recuperaÃ§Ã£o Ã© criada no seu dispositivo. A SYS STREAM nÃ£o a recebe nem armazena.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'Salvei a frase de recuperaÃ§Ã£o e entendo que a SYS STREAM nÃ£o pode recuperÃ¡-la.','BUAT AKUN DENGAN WALLET INI':'CRIAR CONTA COM ESTA CARTEIRA','GENERATE WALLET':'GERAR CARTEIRA','LOGIN WITH WALLET':'ENTRAR COM CARTEIRA','Already have a wallet?':'JÃ¡ tem uma carteira?','Login with Wallet':'Entrar com carteira','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Carteira criada neste dispositivo. Salve a frase de recuperaÃ§Ã£o antes de criar sua conta.','Registrasi gagal diproses di server.':'NÃ£o foi possÃ­vel processar o cadastro no servidor.','Gagal membuat wallet baru.':'Falha ao criar uma nova carteira.','Recovery phrase gagal dibuat.':'Falha ao criar a frase de recuperaÃ§Ã£o.'},
+ es:{'Generate Wallet':'Generar wallet','Create SYS Account':'Crear cuenta SYS','Welcome Back':'Bienvenido de nuevo','Login menggunakan wallet Anda.':'Inicia sesión con tu wallet.','Buat wallet baru langsung dari perangkat Anda.':'Crea una nueva wallet directamente en tu dispositivo.','Login dengan Wallet':'Iniciar sesión con wallet','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Conecta MetaMask u otra wallet EVM y firma el mensaje de inicio de sesión.','Buat Wallet Baru':'Crear nueva wallet','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'No necesitas correo, usuario ni contraseña. La wallet se crea directamente en tu dispositivo.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Acepto los Términos y condiciones y la creación de una nueva wallet.','Simpan Recovery Phrase':'Guardar frase de recuperación','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'La frase de recuperación se crea en tu dispositivo. SYS STREAM no la recibe ni la almacena.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'He guardado la frase de recuperación y entiendo que SYS STREAM no puede recuperarla.','BUAT AKUN DENGAN WALLET INI':'CREAR CUENTA CON ESTA WALLET','GENERATE WALLET':'GENERAR WALLET','LOGIN WITH WALLET':'INICIAR SESIÓN CON WALLET','Already have a wallet?':'¿Ya tienes una wallet?','Login with Wallet':'Iniciar sesión con wallet','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Wallet creada en este dispositivo. Guarda la frase de recuperación antes de crear tu cuenta.','Registrasi gagal diproses di server.':'No se pudo procesar el registro en el servidor.','Gagal membuat wallet baru.':'No se pudo crear la nueva wallet.','Recovery phrase gagal dibuat.':'No se pudo crear la frase de recuperación.'},
+ pt:{'Generate Wallet':'Gerar carteira','Create SYS Account':'Criar conta SYS','Welcome Back':'Bem-vindo de volta','Login menggunakan wallet Anda.':'Entre usando sua carteira.','Buat wallet baru langsung dari perangkat Anda.':'Crie uma nova carteira diretamente no seu dispositivo.','Login dengan Wallet':'Entrar com carteira','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Conecte a MetaMask ou outra carteira EVM e assine a mensagem de login.','Buat Wallet Baru':'Criar nova carteira','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'Não é necessário e-mail, usuário ou senha. A carteira é criada diretamente no seu dispositivo.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Aceito os Termos e Condições e a criação de uma nova carteira.','Simpan Recovery Phrase':'Salvar frase de recuperação','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'A frase de recuperação é criada no seu dispositivo. A SYS STREAM não a recebe nem armazena.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'Salvei a frase de recuperação e entendo que a SYS STREAM não pode recuperá-la.','BUAT AKUN DENGAN WALLET INI':'CRIAR CONTA COM ESTA CARTEIRA','GENERATE WALLET':'GERAR CARTEIRA','LOGIN WITH WALLET':'ENTRAR COM CARTEIRA','Already have a wallet?':'Já tem uma carteira?','Login with Wallet':'Entrar com carteira','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'Carteira criada neste dispositivo. Salve a frase de recuperação antes de criar sua conta.','Registrasi gagal diproses di server.':'Não foi possível processar o cadastro no servidor.','Gagal membuat wallet baru.':'Falha ao criar uma nova carteira.','Recovery phrase gagal dibuat.':'Falha ao criar a frase de recuperação.'},
  zh:{'Generate Wallet':'ç”Ÿæˆé’±åŒ…','Create SYS Account':'åˆ›å»º SYS è´¦æˆ·','Welcome Back':'æ¬¢è¿Žå›žæ¥','Login menggunakan wallet Anda.':'ä½¿ç”¨æ‚¨çš„é’±åŒ…ç™»å½•ã€‚','Buat wallet baru langsung dari perangkat Anda.':'ç›´æŽ¥åœ¨æ‚¨çš„è®¾å¤‡ä¸Šåˆ›å»ºæ–°é’±åŒ…ã€‚','Login dengan Wallet':'ä½¿ç”¨é’±åŒ…ç™»å½•','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'è¿žæŽ¥ MetaMask æˆ–å…¶ä»– EVM é’±åŒ…ï¼Œç„¶åŽç­¾ç½²ç™»å½•æ¶ˆæ¯ã€‚','Buat Wallet Baru':'åˆ›å»ºæ–°é’±åŒ…','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'æ— éœ€é‚®ç®±ã€ç”¨æˆ·åæˆ–å¯†ç ã€‚é’±åŒ…å°†åœ¨æ‚¨çš„è®¾å¤‡ä¸Šåˆ›å»ºã€‚','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'æˆ‘åŒæ„æ¡æ¬¾ä¸Žæ¡ä»¶ä»¥åŠåˆ›å»ºæ–°é’±åŒ…ã€‚','Simpan Recovery Phrase':'ä¿å­˜æ¢å¤çŸ­è¯­','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'æ¢å¤çŸ­è¯­åœ¨æ‚¨çš„è®¾å¤‡ä¸Šç”Ÿæˆã€‚SYS STREAM ä¸ä¼šæŽ¥æ”¶æˆ–å­˜å‚¨å®ƒã€‚','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'æˆ‘å·²ä¿å­˜æ¢å¤çŸ­è¯­ï¼Œå¹¶äº†è§£ SYS STREAM æ— æ³•æ¢å¤å®ƒã€‚','BUAT AKUN DENGAN WALLET INI':'ä½¿ç”¨æ­¤é’±åŒ…åˆ›å»ºè´¦æˆ·','GENERATE WALLET':'ç”Ÿæˆé’±åŒ…','LOGIN WITH WALLET':'ä½¿ç”¨é’±åŒ…ç™»å½•','Already have a wallet?':'å·²ç»æœ‰é’±åŒ…ï¼Ÿ','Login with Wallet':'ä½¿ç”¨é’±åŒ…ç™»å½•','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'é’±åŒ…å·²åœ¨æ­¤è®¾å¤‡ä¸Šåˆ›å»ºã€‚è¯·å…ˆä¿å­˜æ¢å¤çŸ­è¯­ã€‚','Registrasi gagal diproses di server.':'æœåŠ¡å™¨æ— æ³•å¤„ç†æ³¨å†Œã€‚','Gagal membuat wallet baru.':'åˆ›å»ºæ–°é’±åŒ…å¤±è´¥ã€‚','Recovery phrase gagal dibuat.':'åˆ›å»ºæ¢å¤çŸ­è¯­å¤±è´¥ã€‚'},
  ja:{'Generate Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ç”Ÿæˆ','Create SYS Account':'SYSã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ä½œæˆ','Welcome Back':'ãŠã‹ãˆã‚Šãªã•ã„','Login menggunakan wallet Anda.':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³ã—ã¾ã™ã€‚','Buat wallet baru langsung dari perangkat Anda.':'ç«¯æœ«ä¸Šã§æ–°ã—ã„ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚','Login dengan Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'MetaMaskãªã©ã®EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶šã—ã€ãƒ­ã‚°ã‚¤ãƒ³ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«ç½²åã—ã¦ãã ã•ã„ã€‚','Buat Wallet Baru':'æ–°ã—ã„ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä½œæˆ','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'ãƒ¡ãƒ¼ãƒ«ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã¯ä¸è¦ã§ã™ã€‚ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã¯ç«¯æœ«ä¸Šã§ä½œæˆã•ã‚Œã¾ã™ã€‚','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'åˆ©ç”¨è¦ç´„ã«åŒæ„ã—ã€æ–°ã—ã„ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚','Simpan Recovery Phrase':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’ä¿å­˜','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã¯ç«¯æœ«ä¸Šã§ä½œæˆã•ã‚Œã¾ã™ã€‚SYS STREAMã¯å—ã‘å–ã‚Šã‚‚ä¿å­˜ã‚‚ã—ã¾ã›ã‚“ã€‚','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’ä¿å­˜ã—ã€SYS STREAMã§ã¯å¾©å…ƒã§ããªã„ã“ã¨ã‚’ç†è§£ã—ã¾ã—ãŸã€‚','BUAT AKUN DENGAN WALLET INI':'ã“ã®ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã§ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ä½œæˆ','GENERATE WALLET':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ç”Ÿæˆ','LOGIN WITH WALLET':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³','Already have a wallet?':'ã™ã§ã«ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ãŠæŒã¡ã§ã™ã‹ï¼Ÿ','Login with Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã§ãƒ­ã‚°ã‚¤ãƒ³','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ã“ã®ç«¯æœ«ã§ä½œæˆã—ã¾ã—ãŸã€‚ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’ä¿å­˜ã—ã¦ãã ã•ã„ã€‚','Registrasi gagal diproses di server.':'ã‚µãƒ¼ãƒãƒ¼ã§ç™»éŒ²ã‚’å‡¦ç†ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Gagal membuat wallet baru.':'æ–°ã—ã„ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚','Recovery phrase gagal dibuat.':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚'},
  ko:{'Generate Wallet':'ì§€ê°‘ ìƒì„±','Create SYS Account':'SYS ê³„ì • ë§Œë“¤ê¸°','Welcome Back':'ë‹¤ì‹œ ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•©ë‹ˆë‹¤','Login menggunakan wallet Anda.':'ì§€ê°‘ìœ¼ë¡œ ë¡œê·¸ì¸í•˜ì„¸ìš”.','Buat wallet baru langsung dari perangkat Anda.':'ê¸°ê¸°ì—ì„œ ìƒˆ ì§€ê°‘ì„ ì§ì ‘ ìƒì„±í•©ë‹ˆë‹¤.','Login dengan Wallet':'ì§€ê°‘ìœ¼ë¡œ ë¡œê·¸ì¸','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'MetaMask ë˜ëŠ” ë‹¤ë¥¸ EVM ì§€ê°‘ì„ ì—°ê²°í•˜ê³  ë¡œê·¸ì¸ ë©”ì‹œì§€ì— ì„œëª…í•˜ì„¸ìš”.','Buat Wallet Baru':'ìƒˆ ì§€ê°‘ ë§Œë“¤ê¸°','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'ì´ë©”ì¼, ì‚¬ìš©ìž ì´ë¦„ ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í•„ìš”í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ì§€ê°‘ì€ ê¸°ê¸°ì—ì„œ ì§ì ‘ ìƒì„±ë©ë‹ˆë‹¤.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'ì´ìš©ì•½ê´€ì— ë™ì˜í•˜ê³  ìƒˆ ì§€ê°‘ì„ ìƒì„±í•©ë‹ˆë‹¤.','Simpan Recovery Phrase':'ë³µêµ¬ ë¬¸êµ¬ ì €ìž¥','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'ë³µêµ¬ ë¬¸êµ¬ëŠ” ê¸°ê¸°ì—ì„œ ìƒì„±ë©ë‹ˆë‹¤. SYS STREAMì€ ì´ë¥¼ ë°›ê±°ë‚˜ ì €ìž¥í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'ë³µêµ¬ ë¬¸êµ¬ë¥¼ ì €ìž¥í–ˆìœ¼ë©° SYS STREAMì—ì„œ ë³µêµ¬í•  ìˆ˜ ì—†ìŒì„ ì´í•´í•©ë‹ˆë‹¤.','BUAT AKUN DENGAN WALLET INI':'ì´ ì§€ê°‘ìœ¼ë¡œ ê³„ì • ë§Œë“¤ê¸°','GENERATE WALLET':'ì§€ê°‘ ìƒì„±','LOGIN WITH WALLET':'ì§€ê°‘ìœ¼ë¡œ ë¡œê·¸ì¸','Already have a wallet?':'ì´ë¯¸ ì§€ê°‘ì´ ìžˆë‚˜ìš”?','Login with Wallet':'ì§€ê°‘ìœ¼ë¡œ ë¡œê·¸ì¸','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'ì´ ê¸°ê¸°ì—ì„œ ì§€ê°‘ì´ ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤. ë³µêµ¬ ë¬¸êµ¬ë¥¼ ì €ìž¥í•˜ì„¸ìš”.','Registrasi gagal diproses di server.':'ì„œë²„ì—ì„œ ê°€ìž…ì„ ì²˜ë¦¬í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.','Gagal membuat wallet baru.':'ìƒˆ ì§€ê°‘ ìƒì„±ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.','Recovery phrase gagal dibuat.':'ë³µêµ¬ ë¬¸êµ¬ ìƒì„±ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.'},
- ar:{'Generate Wallet':'Ø¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø©','Create SYS Account':'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ SYS','Welcome Back':'Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ø¹ÙˆØ¯ØªÙƒ','Login menggunakan wallet Anda.':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…Ø­ÙØ¸ØªÙƒ.','Buat wallet baru langsung dari perangkat Anda.':'Ø£Ù†Ø´Ø¦ Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø© Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ù„Ù‰ Ø¬Ù‡Ø§Ø²Ùƒ.','Login dengan Wallet':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ù…Ø­ÙØ¸Ø©','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'Ø§Ø±Ø¨Ø· MetaMask Ø£Ùˆ Ù…Ø­ÙØ¸Ø© EVM Ø£Ø®Ø±Ù‰ Ø«Ù… ÙˆÙ‚Ù‘Ø¹ Ø±Ø³Ø§Ù„Ø© ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.','Buat Wallet Baru':'Ø¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'Ù„Ø§ ØªØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø¨Ø±ÙŠØ¯ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø§Ø³Ù… Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ±. Ø³ÙŠØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø¹Ù„Ù‰ Ø¬Ù‡Ø§Ø²Ùƒ.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'Ø£ÙˆØ§ÙÙ‚ Ø¹Ù„Ù‰ Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù… ÙˆØ¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©.','Simpan Recovery Phrase':'Ø§Ø­ÙØ¸ Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'ÙŠØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ø¹Ù„Ù‰ Ø¬Ù‡Ø§Ø²Ùƒ. Ù„Ø§ ØªØ³ØªÙ„Ù…Ù‡Ø§ SYS STREAM ÙˆÙ„Ø§ ØªØ®Ø²Ù†Ù‡Ø§.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'Ù„Ù‚Ø¯ Ø­ÙØ¸Øª Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ ÙˆØ£ÙÙ‡Ù… Ø£Ù† SYS STREAM Ù„Ø§ ÙŠØ³ØªØ·ÙŠØ¹ Ø§Ø³ØªØ¹Ø§Ø¯ØªÙ‡Ø§.','BUAT AKUN DENGAN WALLET INI':'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¨Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø­ÙØ¸Ø©','GENERATE WALLET':'Ø¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø©','LOGIN WITH WALLET':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ù…Ø­ÙØ¸Ø©','Already have a wallet?':'Ù„Ø¯ÙŠÙƒ Ù…Ø­ÙØ¸Ø© Ø¨Ø§Ù„ÙØ¹Ù„ØŸ','Login with Wallet':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ù…Ø­ÙØ¸Ø©','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø². Ø§Ø­ÙØ¸ Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ù‚Ø¨Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.','Registrasi gagal diproses di server.':'ØªØ¹Ø°Ø± Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….','Gagal membuat wallet baru.':'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©.','Recovery phrase gagal dibuat.':'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯.'}
+ ar:{'Generate Wallet':'إنشاء محفظة','Create SYS Account':'إنشاء حساب SYS','Welcome Back':'مرحباً بعودتك','Login menggunakan wallet Anda.':'سجّل الدخول باستخدام محفظتك.','Buat wallet baru langsung dari perangkat Anda.':'أنشئ محفظة جديدة مباشرة على جهازك.','Login dengan Wallet':'تسجيل الدخول بالمحفظة','Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.':'اربط MetaMask أو محفظة EVM أخرى ثم وقّع رسالة تسجيل الدخول.','Buat Wallet Baru':'إنشاء محفظة جديدة','Tidak perlu email, username, atau password. Wallet dibuat langsung di perangkat Anda.':'لا تحتاج إلى بريد إلكتروني أو اسم مستخدم أو كلمة مرور. سيتم إنشاء المحفظة على جهازك.','Saya menyetujui Terms & Conditions dan pembuatan wallet baru.':'أوافق على الشروط والأحكام وإنشاء محفظة جديدة.','Simpan Recovery Phrase':'احفظ عبارة الاسترداد','Recovery phrase dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan phrase ini.':'يتم إنشاء عبارة الاسترداد على جهازك. لا تستلمها SYS STREAM ولا تخزنها.','Saya sudah menyimpan recovery phrase dan memahami bahwa SYS STREAM tidak dapat memulihkannya.':'لقد حفظت عبارة الاسترداد وأفهم أن SYS STREAM لا يستطيع استعادتها.','BUAT AKUN DENGAN WALLET INI':'إنشاء حساب بهذه المحفظة','GENERATE WALLET':'إنشاء محفظة','LOGIN WITH WALLET':'تسجيل الدخول بالمحفظة','Already have a wallet?':'لديك محفظة بالفعل؟','Login with Wallet':'تسجيل الدخول بالمحفظة','Wallet berhasil dibuat di perangkat ini. Simpan recovery phrase sebelum membuat akun.':'تم إنشاء المحفظة على هذا الجهاز. احفظ عبارة الاسترداد قبل إنشاء الحساب.','Registrasi gagal diproses di server.':'تعذر معالجة التسجيل على الخادم.','Gagal membuat wallet baru.':'تعذر إنشاء محفظة جديدة.','Recovery phrase gagal dibuat.':'تعذر إنشاء عبارة الاسترداد.'}
 };
 for (const lang of Object.keys(WALLET_AUTH_UI) as LanguageCode[]) Object.assign(translations[lang], WALLET_AUTH_UI[lang]);
 
@@ -440,22 +440,22 @@ const CROSS_PAGE_UI: Record<LanguageCode, Record<string,string>> = {
  },
  en: {},
  es: {
-  'Profile':'Perfil','User ID = Wallet Address':'ID de usuario = direcciÃ³n de wallet','Member':'Miembro','USDT Account':'Cuenta USDT','EVM Wallet':'Wallet EVM','Available':'Disponible','Locked':'Bloqueado','Withdraw':'Retirar','Registration Bonus':'Bono de registro','Claim Bonus':'Reclamar bono','Available Balance':'Saldo disponible','Referral Link':'Enlace de referidos','Transaction History':'Historial de transacciones','Refresh':'Actualizar','Loading...':'Cargando...','Live Now':'En vivo','Upload / Create Post':'Subir / crear publicaciÃ³n','Community':'Comunidad','Terbitkan Postingan':'Publicar','Back':'Volver','Legal':'Legal','Version':'VersiÃ³n','Important:':'Importante:','Terms & Conditions':'TÃ©rminos y condiciones','Privacy Policy':'PolÃ­tica de privacidad'
+  'Profile':'Perfil','User ID = Wallet Address':'ID de usuario = dirección de wallet','Member':'Miembro','USDT Account':'Cuenta USDT','EVM Wallet':'Wallet EVM','Available':'Disponible','Locked':'Bloqueado','Withdraw':'Retirar','Registration Bonus':'Bono de registro','Claim Bonus':'Reclamar bono','Available Balance':'Saldo disponible','Referral Link':'Enlace de referidos','Transaction History':'Historial de transacciones','Refresh':'Actualizar','Loading...':'Cargando...','Live Now':'En vivo','Upload / Create Post':'Subir / crear publicación','Community':'Comunidad','Terbitkan Postingan':'Publicar','Back':'Volver','Legal':'Legal','Version':'Versión','Important:':'Importante:','Terms & Conditions':'Términos y condiciones','Privacy Policy':'Política de privacidad'
  },
  pt: {
-  'Profile':'Perfil','User ID = Wallet Address':'ID do usuÃ¡rio = endereÃ§o da carteira','Member':'Membro','USDT Account':'Conta USDT','EVM Wallet':'Carteira EVM','Available':'DisponÃ­vel','Locked':'Bloqueado','Withdraw':'Sacar','Registration Bonus':'BÃ´nus de registro','Claim Bonus':'Resgatar bÃ´nus','Available Balance':'Saldo disponÃ­vel','Referral Link':'Link de indicaÃ§Ã£o','Transaction History':'HistÃ³rico de transaÃ§Ãµes','Refresh':'Atualizar','Loading...':'Carregando...','Live Now':'Ao vivo','Upload / Create Post':'Enviar / criar publicaÃ§Ã£o','Community':'Comunidade','Terbitkan Postingan':'Publicar','Back':'Voltar','Legal':'Legal','Version':'VersÃ£o','Important:':'Importante:','Terms & Conditions':'Termos e condiÃ§Ãµes','Privacy Policy':'PolÃ­tica de privacidade'
+  'Profile':'Perfil','User ID = Wallet Address':'ID do usuário = endereço da carteira','Member':'Membro','USDT Account':'Conta USDT','EVM Wallet':'Carteira EVM','Available':'Disponível','Locked':'Bloqueado','Withdraw':'Sacar','Registration Bonus':'Bônus de registro','Claim Bonus':'Resgatar bônus','Available Balance':'Saldo disponível','Referral Link':'Link de indicação','Transaction History':'Histórico de transações','Refresh':'Atualizar','Loading...':'Carregando...','Live Now':'Ao vivo','Upload / Create Post':'Enviar / criar publicação','Community':'Comunidade','Terbitkan Postingan':'Publicar','Back':'Voltar','Legal':'Legal','Version':'Versão','Important:':'Importante:','Terms & Conditions':'Termos e condições','Privacy Policy':'Política de privacidade'
  },
  zh: {
-  'Profile':'ä¸ªäººèµ„æ–™','User ID = Wallet Address':'ç”¨æˆ·ID = é’±åŒ…åœ°å€','Member':'ä¼šå‘˜','USDT Account':'USDTè´¦æˆ·','EVM Wallet':'EVMé’±åŒ…','Available':'å¯ç”¨','Locked':'å·²é”å®š','Withdraw':'æçŽ°','Registration Bonus':'æ³¨å†Œå¥–åŠ±','Claim Bonus':'é¢†å–å¥–åŠ±','Available Balance':'å¯ç”¨ä½™é¢','Referral Link':'æŽ¨èé“¾æŽ¥','Transaction History':'äº¤æ˜“è®°å½•','Refresh':'åˆ·æ–°','Loading...':'åŠ è½½ä¸­â€¦','Live Now':'æ­£åœ¨ç›´æ’­','Upload / Create Post':'ä¸Šä¼  / åˆ›å»ºå¸–å­','Community':'ç¤¾åŒº','Terbitkan Postingan':'å‘å¸ƒ','Back':'è¿”å›ž','Legal':'æ³•å¾‹','Version':'ç‰ˆæœ¬','Important:':'é‡è¦ï¼š','Terms & Conditions':'æ¡æ¬¾ä¸Žæ¡ä»¶','Privacy Policy':'éšç§æ”¿ç­–'
+  'Profile':'ä¸ªäººèµ„æ–™','User ID = Wallet Address':'ç”¨æˆ·ID = é’±åŒ…åœ°å€','Member':'ä¼šå‘˜','USDT Account':'USDTè´¦æˆ·','EVM Wallet':'EVMé’±åŒ…','Available':'å¯ç”¨','Locked':'å·²é”å®š','Withdraw':'æçŽ°','Registration Bonus':'æ³¨å†Œå¥–åŠ±','Claim Bonus':'é¢†å–å¥–åŠ±','Available Balance':'å¯ç”¨ä½™é¢','Referral Link':'æŽ¨èé“¾æŽ¥','Transaction History':'äº¤æ˜“è®°å½•','Refresh':'åˆ·æ–°','Loading...':'加载中…','Live Now':'æ­£åœ¨ç›´æ’­','Upload / Create Post':'ä¸Šä¼  / åˆ›å»ºå¸–å­','Community':'ç¤¾åŒº','Terbitkan Postingan':'å‘å¸ƒ','Back':'è¿”å›ž','Legal':'æ³•å¾‹','Version':'ç‰ˆæœ¬','Important:':'é‡è¦ï¼š','Terms & Conditions':'æ¡æ¬¾ä¸Žæ¡ä»¶','Privacy Policy':'éšç§æ”¿ç­–'
  },
  ja: {
-  'Profile':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','User ID = Wallet Address':'ãƒ¦ãƒ¼ã‚¶ãƒ¼ID = ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Member':'ãƒ¡ãƒ³ãƒãƒ¼','USDT Account':'USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','EVM Wallet':'EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Available':'åˆ©ç”¨å¯èƒ½','Locked':'ãƒ­ãƒƒã‚¯æ¸ˆã¿','Withdraw':'å‡ºé‡‘','Registration Bonus':'ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹','Claim Bonus':'ãƒœãƒ¼ãƒŠã‚¹ã‚’å—ã‘å–ã‚‹','Available Balance':'åˆ©ç”¨å¯èƒ½æ®‹é«˜','Referral Link':'ç´¹ä»‹ãƒªãƒ³ã‚¯','Transaction History':'å–å¼•å±¥æ­´','Refresh':'æ›´æ–°','Loading...':'èª­ã¿è¾¼ã¿ä¸­â€¦','Live Now':'ãƒ©ã‚¤ãƒ–ä¸­','Upload / Create Post':'æŠ•ç¨¿ã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / ä½œæˆ','Community':'ã‚³ãƒŸãƒ¥ãƒ‹ãƒ†ã‚£','Terbitkan Postingan':'æŠ•ç¨¿ã™ã‚‹','Back':'æˆ»ã‚‹','Legal':'æ³•å‹™','Version':'ãƒãƒ¼ã‚¸ãƒ§ãƒ³','Important:':'é‡è¦ï¼š','Terms & Conditions':'åˆ©ç”¨è¦ç´„','Privacy Policy':'ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼'
+  'Profile':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','User ID = Wallet Address':'ãƒ¦ãƒ¼ã‚¶ãƒ¼ID = ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Member':'ãƒ¡ãƒ³ãƒãƒ¼','USDT Account':'USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','EVM Wallet':'EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Available':'åˆ©ç”¨å¯èƒ½','Locked':'ãƒ­ãƒƒã‚¯æ¸ˆã¿','Withdraw':'å‡ºé‡‘','Registration Bonus':'ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹','Claim Bonus':'ãƒœãƒ¼ãƒŠã‚¹ã‚’å—ã‘å–ã‚‹','Available Balance':'åˆ©ç”¨å¯èƒ½æ®‹é«˜','Referral Link':'ç´¹ä»‹ãƒªãƒ³ã‚¯','Transaction History':'å–å¼•å±¥æ­´','Refresh':'æ›´æ–°','Loading...':'読み込み中…','Live Now':'ãƒ©ã‚¤ãƒ–ä¸­','Upload / Create Post':'æŠ•ç¨¿ã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / ä½œæˆ','Community':'ã‚³ãƒŸãƒ¥ãƒ‹ãƒ†ã‚£','Terbitkan Postingan':'æŠ•ç¨¿ã™ã‚‹','Back':'æˆ»ã‚‹','Legal':'æ³•å‹™','Version':'ãƒãƒ¼ã‚¸ãƒ§ãƒ³','Important:':'é‡è¦ï¼š','Terms & Conditions':'åˆ©ç”¨è¦ç´„','Privacy Policy':'ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼'
  },
  ko: {
   'Profile':'í”„ë¡œí•„','User ID = Wallet Address':'ì‚¬ìš©ìž ID = ì§€ê°‘ ì£¼ì†Œ','Member':'íšŒì›','USDT Account':'USDT ê³„ì •','EVM Wallet':'EVM ì§€ê°‘','Available':'ì‚¬ìš© ê°€ëŠ¥','Locked':'ìž ê¹€','Withdraw':'ì¶œê¸ˆ','Registration Bonus':'ê°€ìž… ë³´ë„ˆìŠ¤','Claim Bonus':'ë³´ë„ˆìŠ¤ ë°›ê¸°','Available Balance':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡','Referral Link':'ì¶”ì²œ ë§í¬','Transaction History':'ê±°ëž˜ ë‚´ì—­','Refresh':'ìƒˆë¡œê³ ì¹¨','Loading...':'ë¡œë“œ ì¤‘...','Live Now':'ë¼ì´ë¸Œ','Upload / Create Post':'ê²Œì‹œë¬¼ ì—…ë¡œë“œ / ë§Œë“¤ê¸°','Community':'ì»¤ë®¤ë‹ˆí‹°','Terbitkan Postingan':'ê²Œì‹œ','Back':'ë’¤ë¡œ','Legal':'ë²•ë¥ ','Version':'ë²„ì „','Important:':'ì¤‘ìš”:','Terms & Conditions':'ì´ìš©ì•½ê´€','Privacy Policy':'ê°œì¸ì •ë³´ ì²˜ë¦¬ë°©ì¹¨'
  },
  ar: {
-  'Profile':'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ','User ID = Wallet Address':'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… = Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø©','Member':'Ø¹Ø¶Ùˆ','USDT Account':'Ø­Ø³Ø§Ø¨ USDT','EVM Wallet':'Ù…Ø­ÙØ¸Ø© EVM','Available':'Ù…ØªØ§Ø­','Locked':'Ù…Ù‚ÙÙ„','Withdraw':'Ø³Ø­Ø¨','Registration Bonus':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„','Claim Bonus':'Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©','Available Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­','Referral Link':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Transaction History':'Ø³Ø¬Ù„ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª','Refresh':'ØªØ­Ø¯ÙŠØ«','Loading...':'Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù…ÙŠÙ„...','Live Now':'Ù…Ø¨Ø§Ø´Ø± Ø§Ù„Ø¢Ù†','Upload / Create Post':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡ Ù…Ù†Ø´ÙˆØ±','Community':'Ø§Ù„Ù…Ø¬ØªÙ…Ø¹','Terbitkan Postingan':'Ù†Ø´Ø±','Back':'Ø±Ø¬ÙˆØ¹','Legal':'Ù‚Ø§Ù†ÙˆÙ†ÙŠ','Version':'Ø§Ù„Ø¥ØµØ¯Ø§Ø±','Important:':'Ù…Ù‡Ù…:','Terms & Conditions':'Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…','Privacy Policy':'Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©'
+  'Profile':'الملف الشخصي','User ID = Wallet Address':'معرّف المستخدم = عنوان المحفظة','Member':'عضو','USDT Account':'حساب USDT','EVM Wallet':'محفظة EVM','Available':'متاح','Locked':'مقفل','Withdraw':'سحب','Registration Bonus':'مكافأة التسجيل','Claim Bonus':'استلام المكافأة','Available Balance':'الرصيد المتاح','Referral Link':'رابط الإحالة','Transaction History':'سجل المعاملات','Refresh':'تحديث','Loading...':'جارٍ التحميل...','Live Now':'مباشر الآن','Upload / Create Post':'رفع / إنشاء منشور','Community':'المجتمع','Terbitkan Postingan':'نشر','Back':'رجوع','Legal':'قانوني','Version':'الإصدار','Important:':'Ù…Ù‡Ù…:','Terms & Conditions':'الشروط والأحكام','Privacy Policy':'سياسة الخصوصية'
  }
 };
 for (const lang of Object.keys(CROSS_PAGE_UI) as LanguageCode[]) {
@@ -473,15 +473,15 @@ Object.assign(translations.es, {
   Workspace:'Espacio de trabajo', Home:'Inicio', 'Live Now':'En vivo', Games:'Juegos', Airdrop:'Airdrop', Profile:'Perfil',
   'Upload / Create':'Subir / Crear', Available:'Disponible', Locked:'Bloqueado', 'Registration Bonus':'Bono de registro',
   'Claim Bonus':'Reclamar bono', 'Community Posts':'Publicaciones de la comunidad',
-  'Production data is used for all content and activity on this page.':'Esta pÃ¡gina utiliza datos de producciÃ³n para todo el contenido y la actividad.',
+  'Production data is used for all content and activity on this page.':'Esta página utiliza datos de producción para todo el contenido y la actividad.',
   'Every user can share posts and updates.':'Cada usuario puede compartir publicaciones y actualizaciones.',
 });
 Object.assign(translations.pt, {
-  Workspace:'Ãrea de trabalho', Home:'InÃ­cio', 'Live Now':'Ao vivo', Games:'Jogos', Airdrop:'Airdrop', Profile:'Perfil',
-  'Upload / Create':'Enviar / Criar', Available:'DisponÃ­vel', Locked:'Bloqueado', 'Registration Bonus':'BÃ´nus de registro',
-  'Claim Bonus':'Resgatar bÃ´nus', 'Community Posts':'PublicaÃ§Ãµes da comunidade',
-  'Production data is used for all content and activity on this page.':'Esta pÃ¡gina usa dados de produÃ§Ã£o para todo o conteÃºdo e atividade.',
-  'Every user can share posts and updates.':'Cada usuÃ¡rio pode compartilhar publicaÃ§Ãµes e atualizaÃ§Ãµes.',
+  Workspace:'Área de trabalho', Home:'Início', 'Live Now':'Ao vivo', Games:'Jogos', Airdrop:'Airdrop', Profile:'Perfil',
+  'Upload / Create':'Enviar / Criar', Available:'Disponível', Locked:'Bloqueado', 'Registration Bonus':'Bônus de registro',
+  'Claim Bonus':'Resgatar bônus', 'Community Posts':'Publicações da comunidade',
+  'Production data is used for all content and activity on this page.':'Esta página usa dados de produção para todo o conteúdo e atividade.',
+  'Every user can share posts and updates.':'Cada usuário pode compartilhar publicações e atualizações.',
 });
 Object.assign(translations.zh, {
   Workspace:'å·¥ä½œåŒº', Home:'é¦–é¡µ', 'Live Now':'æ­£åœ¨ç›´æ’­', Games:'æ¸¸æˆ', Airdrop:'ç©ºæŠ•', Profile:'ä¸ªäººèµ„æ–™',
@@ -505,11 +505,11 @@ Object.assign(translations.ko, {
   'Every user can share posts and updates.':'ëª¨ë“  ì‚¬ìš©ìžê°€ ê²Œì‹œë¬¼ê³¼ ì—…ë°ì´íŠ¸ë¥¼ ê³µìœ í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.',
 });
 Object.assign(translations.ar, {
-  Workspace:'Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„', Home:'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©', 'Live Now':'Ù…Ø¨Ø§Ø´Ø± Ø§Ù„Ø¢Ù†', Games:'Ø§Ù„Ø£Ù„Ø¹Ø§Ø¨', Airdrop:'Ø§Ù„Ø¥ÙŠØ±Ø¯Ø±ÙˆØ¨', Profile:'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ',
-  'Upload / Create':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡', Available:'Ù…ØªØ§Ø­', Locked:'Ù…Ù‚ÙÙ„', 'Registration Bonus':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„',
-  'Claim Bonus':'Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©', 'Community Posts':'Ù…Ù†Ø´ÙˆØ±Ø§Øª Ø§Ù„Ù…Ø¬ØªÙ…Ø¹',
-  'Production data is used for all content and activity on this page.':'ØªØ³ØªØ®Ø¯Ù… Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù„Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…Ø­ØªÙˆÙŠØ§Øª ÙˆØ§Ù„Ø£Ù†Ø´Ø·Ø©.',
-  'Every user can share posts and updates.':'ÙŠÙ…ÙƒÙ† Ù„ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø´Ø§Ø±ÙƒØ© Ø§Ù„Ù…Ù†Ø´ÙˆØ±Ø§Øª ÙˆØ§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª.',
+  Workspace:'مساحة العمل', Home:'الرئيسية', 'Live Now':'مباشر الآن', Games:'الألعاب', Airdrop:'الإيردروب', Profile:'الملف الشخصي',
+  'Upload / Create':'رفع / إنشاء', Available:'متاح', Locked:'مقفل', 'Registration Bonus':'مكافأة التسجيل',
+  'Claim Bonus':'استلام المكافأة', 'Community Posts':'منشورات المجتمع',
+  'Production data is used for all content and activity on this page.':'تستخدم هذه الصفحة بيانات الإنتاج لجميع المحتويات والأنشطة.',
+  'Every user can share posts and updates.':'يمكن لكل مستخدم مشاركة المنشورات والتحديثات.',
 });
 
 
@@ -521,37 +521,37 @@ const PAGE_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Live Room Aktif':'Live Room Active','Live belum aktif':'Live is not active','Peserta Live':'Live Participants','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Only accounts that actually joined are displayed.','Peserta':'Participants','CHAT':'CHAT','Memuat peserta...':'Loading participants...','Belum ada peserta lain.':'No other participants yet.','Belum ada peserta.':'No participants yet.','Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.':'No messages yet. Be the first user to contribute to this room.','Tulis sebagai':'Write as','Anda':'You','Profil akun Anda':'Your account profile',
     'Cyber Daily Mystery Box':'Cyber Daily Mystery Box','Apex High-Roller Crate':'Apex High-Roller Crate','Reward harian diproses server dan masuk ke saldo tersedia.':'Daily rewards are processed by the server and added to your available balance.','Nominal Lock (IDR)':'Lock Amount (IDR)','Lock Saldo Sekarang':'Lock Balance Now','Claim Blind Box Harian':'Claim Daily Blind Box','Lock Aktif':'Active Lock','Daily Active Reward':'Daily Active Reward','Enhanced Lock Tier':'Enhanced Lock Tier','Premium Lock Tier':'Premium Lock Tier','Reward harian masuk ke saldo':'Daily reward is added to balance','Memproses Reward Blind Box...':'Processing Blind Box Reward...','Reward Blind Box Harian':'Daily Blind Box Reward','Reward dikreditkan ke saldo tersedia':'Reward credited to available balance','Durasi Lock':'Lock Duration','30 HARI':'30 DAYS','60 HARI':'60 DAYS','90 HARI':'90 DAYS',
     'Viewer Username Raffle Spinner':'Spinner Undian Username Penonton','Live Participants Only':'Hanya Peserta Live','Spinning for Winner...':'Sedang memutar untuk menentukan pemenang...','Current Viewers on Wheel:':'Penonton saat ini di spinner:','Recent Raffle Winners':'Pemenang Undian Terbaru',
-    'Interaction Challenge â€” No Financial Stake':'Interaction Challenge â€” No Financial Stake','Mode Interaksi':'Interaction Mode','Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.':'This challenge does not use user balance. There is no deposit, lock, balance deduction, or financial payout.','Verify Challenge':'Verify Challenge','Verifying Cryptographic Seed...':'Verifying Cryptographic Seed...','Provably Fair Verification':'Provably Fair Verification'
+    'Interaction Challenge â€” No Financial Stake':'Interaction Challenge — No Financial Stake','Mode Interaksi':'Interaction Mode','Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.':'This challenge does not use user balance. There is no deposit, lock, balance deduction, or financial payout.','Verify Challenge':'Verify Challenge','Verifying Cryptographic Seed...':'Verifying Cryptographic Seed...','Provably Fair Verification':'Provably Fair Verification'
   },
   es: {
-    'Masuk untuk bergabung ke Live Room':'Inicia sesiÃ³n para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada cuenta tiene su propio perfil e identidad en la sala.','Live Room Aktif':'Sala en vivo activa','Live belum aktif':'La sala en vivo no estÃ¡ activa','Peserta Live':'Participantes en vivo','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Solo se muestran las cuentas que realmente se han unido.','Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'AÃºn no hay otros participantes.','Belum ada peserta.':'AÃºn no hay participantes.','CHAT':'CHAT','Peserta':'PARTICIPANTES','Profil akun Anda':'Perfil de tu cuenta',
-    'Nominal Lock (IDR)':'Importe del bloqueo (IDR)','Lock Saldo Sekarang':'Bloquear saldo ahora','Claim Blind Box Harian':'Reclamar Blind Box diario','Lock Aktif':'Bloqueo activo','Reward harian masuk ke saldo':'La recompensa diaria se aÃ±ade al saldo','Durasi Lock':'DuraciÃ³n del bloqueo','30 HARI':'30 DÃAS','60 HARI':'60 DÃAS','90 HARI':'90 DÃAS',
-    'Mode Interaksi':'Modo de interacciÃ³n','Verify Challenge':'Verificar desafÃ­o','Provably Fair Verification':'VerificaciÃ³n demostrablemente justa'
+    'Masuk untuk bergabung ke Live Room':'Inicia sesión para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada cuenta tiene su propio perfil e identidad en la sala.','Live Room Aktif':'Sala en vivo activa','Live belum aktif':'La sala en vivo no está activa','Peserta Live':'Participantes en vivo','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Solo se muestran las cuentas que realmente se han unido.','Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'Aún no hay otros participantes.','Belum ada peserta.':'Aún no hay participantes.','CHAT':'CHAT','Peserta':'PARTICIPANTES','Profil akun Anda':'Perfil de tu cuenta',
+    'Nominal Lock (IDR)':'Importe del bloqueo (IDR)','Lock Saldo Sekarang':'Bloquear saldo ahora','Claim Blind Box Harian':'Reclamar Blind Box diario','Lock Aktif':'Bloqueo activo','Reward harian masuk ke saldo':'La recompensa diaria se añade al saldo','Durasi Lock':'Duración del bloqueo','30 HARI':'30 DÍAS','60 HARI':'60 DÍAS','90 HARI':'90 DÍAS',
+    'Mode Interaksi':'Modo de interacción','Verify Challenge':'Verificar desafío','Provably Fair Verification':'Verificación demostrablemente justa'
   },
   pt: {
-    'Masuk untuk bergabung ke Live Room':'Entre para participar da Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada conta tem seu prÃ³prio perfil e identidade na sala.','Live Room Aktif':'Live Room ativa','Live belum aktif':'A Live Room nÃ£o estÃ¡ ativa','Peserta Live':'Participantes da live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Apenas contas que realmente entraram sÃ£o exibidas.','Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda nÃ£o hÃ¡ outros participantes.','Belum ada peserta.':'Ainda nÃ£o hÃ¡ participantes.','Peserta':'PARTICIPANTES','Profil akun Anda':'Perfil da sua conta',
-    'Nominal Lock (IDR)':'Valor do bloqueio (IDR)','Lock Saldo Sekarang':'Bloquear saldo agora','Claim Blind Box Harian':'Resgatar Blind Box diÃ¡rio','Lock Aktif':'Bloqueio ativo','Reward harian masuk ke saldo':'A recompensa diÃ¡ria Ã© adicionada ao saldo','Durasi Lock':'DuraÃ§Ã£o do bloqueio','30 HARI':'30 DIAS','60 HARI':'60 DIAS','90 HARI':'90 DIAS',
-    'Mode Interaksi':'Modo de interaÃ§Ã£o','Verify Challenge':'Verificar desafio','Provably Fair Verification':'VerificaÃ§Ã£o comprovadamente justa'
+    'Masuk untuk bergabung ke Live Room':'Entre para participar da Live Room','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada conta tem seu próprio perfil e identidade na sala.','Live Room Aktif':'Live Room ativa','Live belum aktif':'A Live Room não está ativa','Peserta Live':'Participantes da live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Apenas contas que realmente entraram são exibidas.','Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda não há outros participantes.','Belum ada peserta.':'Ainda não há participantes.','Peserta':'PARTICIPANTES','Profil akun Anda':'Perfil da sua conta',
+    'Nominal Lock (IDR)':'Valor do bloqueio (IDR)','Lock Saldo Sekarang':'Bloquear saldo agora','Claim Blind Box Harian':'Resgatar Blind Box diário','Lock Aktif':'Bloqueio ativo','Reward harian masuk ke saldo':'A recompensa diária é adicionada ao saldo','Durasi Lock':'Duração do bloqueio','30 HARI':'30 DIAS','60 HARI':'60 DIAS','90 HARI':'90 DIAS',
+    'Mode Interaksi':'Modo de interação','Verify Challenge':'Verificar desafio','Provably Fair Verification':'Verificação comprovadamente justa'
   },
   zh: {
-    'Masuk untuk bergabung ke Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'æ¯ä¸ªè´¦æˆ·åœ¨ç›´æ’­é—´éƒ½æœ‰ç‹¬ç«‹çš„ä¸ªäººèµ„æ–™å’Œèº«ä»½ã€‚','Live Room Aktif':'ç›´æ’­é—´å·²å¼€å¯','Live belum aktif':'ç›´æ’­å°šæœªå¼€å¯','Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ä»…æ˜¾ç¤ºå®žé™…åŠ å…¥çš„è´¦æˆ·ã€‚','Memuat peserta...':'æ­£åœ¨åŠ è½½å‚ä¸Žè€…â€¦','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚','Peserta':'å‚ä¸Žè€…','Profil akun Anda':'æ‚¨çš„è´¦æˆ·èµ„æ–™',
+    'Masuk untuk bergabung ke Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'æ¯ä¸ªè´¦æˆ·åœ¨ç›´æ’­é—´éƒ½æœ‰ç‹¬ç«‹çš„ä¸ªäººèµ„æ–™å’Œèº«ä»½ã€‚','Live Room Aktif':'ç›´æ’­é—´å·²å¼€å¯','Live belum aktif':'ç›´æ’­å°šæœªå¼€å¯','Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ä»…æ˜¾ç¤ºå®žé™…åŠ å…¥çš„è´¦æˆ·ã€‚','Memuat peserta...':'正在加载参与者…','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚','Peserta':'å‚ä¸Žè€…','Profil akun Anda':'æ‚¨çš„è´¦æˆ·èµ„æ–™',
     'Nominal Lock (IDR)':'é”å®šé‡‘é¢ï¼ˆIDRï¼‰','Lock Saldo Sekarang':'ç«‹å³é”å®šä½™é¢','Claim Blind Box Harian':'é¢†å–æ¯æ—¥ç›²ç›’','Lock Aktif':'é”å®šä¸­','Reward harian masuk ke saldo':'æ¯æ—¥å¥–åŠ±å°†åŠ å…¥ä½™é¢','Durasi Lock':'é”å®šæœŸé™','30 HARI':'30å¤©','60 HARI':'60å¤©','90 HARI':'90å¤©',
     'Mode Interaksi':'äº’åŠ¨æ¨¡å¼','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å…¬å¹³éªŒè¯'
   },
   ja: {
-    'Masuk untuk bergabung ke Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'å„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ã¯ãƒ«ãƒ¼ãƒ å†…ã§å›ºæœ‰ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã¨IDãŒã‚ã‚Šã¾ã™ã€‚','Live Room Aktif':'ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ãŒæœ‰åŠ¹ã§ã™','Live belum aktif':'ãƒ©ã‚¤ãƒ–ã¯ã¾ã é–‹å§‹ã•ã‚Œã¦ã„ã¾ã›ã‚“','Peserta Live':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'å®Ÿéš›ã«å‚åŠ ã—ãŸã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚','Memuat peserta...':'å‚åŠ è€…ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Peserta':'å‚åŠ è€…','Profil akun Anda':'ã‚ãªãŸã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«',
+    'Masuk untuk bergabung ke Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'å„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ã¯ãƒ«ãƒ¼ãƒ å†…ã§å›ºæœ‰ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã¨IDãŒã‚ã‚Šã¾ã™ã€‚','Live Room Aktif':'ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ãŒæœ‰åŠ¹ã§ã™','Live belum aktif':'ãƒ©ã‚¤ãƒ–ã¯ã¾ã é–‹å§‹ã•ã‚Œã¦ã„ã¾ã›ã‚“','Peserta Live':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'å®Ÿéš›ã«å‚åŠ ã—ãŸã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚','Memuat peserta...':'参加者を読み込み中…','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Peserta':'å‚åŠ è€…','Profil akun Anda':'ã‚ãªãŸã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«',
     'Nominal Lock (IDR)':'ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Lock Saldo Sekarang':'æ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯','Claim Blind Box Harian':'æ¯Žæ—¥ã®ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’å—ã‘å–ã‚‹','Lock Aktif':'ãƒ­ãƒƒã‚¯ä¸­','Reward harian masuk ke saldo':'æ¯Žæ—¥ã®å ±é…¬ã¯æ®‹é«˜ã«è¿½åŠ ã•ã‚Œã¾ã™','Durasi Lock':'ãƒ­ãƒƒã‚¯æœŸé–“','30 HARI':'30æ—¥','60 HARI':'60æ—¥','90 HARI':'90æ—¥',
     'Mode Interaksi':'ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰','Verify Challenge':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’ç¢ºèª','Provably Fair Verification':'å…¬å¹³æ€§ã®æ¤œè¨¼'
   },
   ko: {
-    'Masuk untuk bergabung ke Live Room':'ë¡œê·¸ì¸í•˜ì—¬ ë¼ì´ë¸Œ ë£¸ì— ì°¸ì—¬í•˜ì„¸ìš”','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'ê° ê³„ì •ì€ ë£¸ì—ì„œ ê³ ìœ í•œ í”„ë¡œí•„ê³¼ ì‹ ì›ì„ ê°€ì§‘ë‹ˆë‹¤.','Live Room Aktif':'ë¼ì´ë¸Œ ë£¸ í™œì„±','Live belum aktif':'ë¼ì´ë¸Œê°€ ì•„ì§ ì‹œìž‘ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤','Peserta Live':'ë¼ì´ë¸Œ ì°¸ê°€ìž','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ì‹¤ì œë¡œ ì°¸ì—¬í•œ ê³„ì •ë§Œ í‘œì‹œë©ë‹ˆë‹¤.','Memuat peserta...':'ì°¸ê°€ìž ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘â€¦','Belum ada peserta lain.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Belum ada peserta.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Peserta':'ì°¸ê°€ìž','Profil akun Anda':'ë‚´ ê³„ì • í”„ë¡œí•„',
+    'Masuk untuk bergabung ke Live Room':'ë¡œê·¸ì¸í•˜ì—¬ ë¼ì´ë¸Œ ë£¸ì— ì°¸ì—¬í•˜ì„¸ìš”','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'ê° ê³„ì •ì€ ë£¸ì—ì„œ ê³ ìœ í•œ í”„ë¡œí•„ê³¼ ì‹ ì›ì„ ê°€ì§‘ë‹ˆë‹¤.','Live Room Aktif':'ë¼ì´ë¸Œ ë£¸ í™œì„±','Live belum aktif':'ë¼ì´ë¸Œê°€ ì•„ì§ ì‹œìž‘ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤','Peserta Live':'ë¼ì´ë¸Œ ì°¸ê°€ìž','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ì‹¤ì œë¡œ ì°¸ì—¬í•œ ê³„ì •ë§Œ í‘œì‹œë©ë‹ˆë‹¤.','Memuat peserta...':'참가자 불러오는 중…','Belum ada peserta lain.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Belum ada peserta.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Peserta':'ì°¸ê°€ìž','Profil akun Anda':'ë‚´ ê³„ì • í”„ë¡œí•„',
     'Nominal Lock (IDR)':'ìž ê¸ˆ ê¸ˆì•¡(IDR)','Lock Saldo Sekarang':'ìž”ì•¡ ìž ê¸ˆ','Claim Blind Box Harian':'ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë°›ê¸°','Lock Aktif':'ìž ê¸ˆ í™œì„±','Reward harian masuk ke saldo':'ì¼ì¼ ë³´ìƒì´ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤','Durasi Lock':'ìž ê¸ˆ ê¸°ê°„','30 HARI':'30ì¼','60 HARI':'60ì¼','90 HARI':'90ì¼',
     'Mode Interaksi':'ìƒí˜¸ìž‘ìš© ëª¨ë“œ','Verify Challenge':'ì±Œë¦°ì§€ í™•ì¸','Provably Fair Verification':'ê³µì •ì„± ê²€ì¦'
   },
   ar: {
-    'Masuk untuk bergabung ke Live Room':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Ù„ÙƒÙ„ Ø­Ø³Ø§Ø¨ Ù…Ù„Ù ÙˆÙ‡ÙˆÙŠØ© Ø®Ø§ØµØ© Ø¨Ù‡ Ø¯Ø§Ø®Ù„ Ø§Ù„ØºØ±ÙØ©.','Live Room Aktif':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø© Ù†Ø´Ø·Ø©','Live belum aktif':'Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± ØºÙŠØ± Ù†Ø´Ø·','Peserta Live':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† ÙÙŠ Ø§Ù„Ø¨Ø«','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ØªØ¸Ù‡Ø± ÙÙ‚Ø· Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ØªÙŠ Ø§Ù†Ø¶Ù…Øª ÙØ¹Ù„ÙŠÙ‹Ø§.','Memuat peserta...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†â€¦','Belum ada peserta lain.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¢Ø®Ø±ÙˆÙ† Ø¨Ø¹Ø¯.','Belum ada peserta.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ†.','Peserta':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ†','Profil akun Anda':'Ù…Ù„Ù Ø­Ø³Ø§Ø¨Ùƒ',
-    'Nominal Lock (IDR)':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„ (IDR)','Lock Saldo Sekarang':'Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø¢Ù†','Claim Blind Box Harian':'Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ÙŠÙˆÙ…ÙŠ','Lock Aktif':'Ø§Ù„Ù‚ÙÙ„ Ù†Ø´Ø·','Reward harian masuk ke saldo':'ØªÙØ¶Ø§Ù Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯','Durasi Lock':'Ù…Ø¯Ø© Ø§Ù„Ù‚ÙÙ„','30 HARI':'30 ÙŠÙˆÙ…Ù‹Ø§','60 HARI':'60 ÙŠÙˆÙ…Ù‹Ø§','90 HARI':'90 ÙŠÙˆÙ…Ù‹Ø§',
-    'Mode Interaksi':'ÙˆØ¶Ø¹ Ø§Ù„ØªÙØ§Ø¹Ù„','Verify Challenge':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠ','Provably Fair Verification':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¹Ø¯Ø§Ù„Ø©'
+    'Masuk untuk bergabung ke Live Room':'سجّل الدخول للانضمام إلى الغرفة المباشرة','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'لكل حساب ملف وهوية خاصة به داخل الغرفة.','Live Room Aktif':'الغرفة المباشرة نشطة','Live belum aktif':'البث المباشر غير نشط','Peserta Live':'المشاركون في البث','Hanya akun yang benar-benar bergabung yang ditampilkan.':'تظهر فقط الحسابات التي انضمت فعليًا.','Memuat peserta...':'جارٍ تحميل المشاركين…','Belum ada peserta lain.':'لا يوجد مشاركون آخرون بعد.','Belum ada peserta.':'لا يوجد مشاركون.','Peserta':'المشاركون','Profil akun Anda':'ملف حسابك',
+    'Nominal Lock (IDR)':'مبلغ القفل (IDR)','Lock Saldo Sekarang':'قفل الرصيد الآن','Claim Blind Box Harian':'استلام الصندوق اليومي','Lock Aktif':'القفل نشط','Reward harian masuk ke saldo':'تُضاف المكافأة اليومية إلى الرصيد','Durasi Lock':'مدة القفل','30 HARI':'30 يومًا','60 HARI':'60 يومًا','90 HARI':'90 يومًا',
+    'Mode Interaksi':'وضع التفاعل','Verify Challenge':'تحقق من التحدي','Provably Fair Verification':'تحقق من العدالة'
   },
 };
 
@@ -577,17 +577,17 @@ const COMMON_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
   es: {
     'Viewer Username Raffle Spinner':'Ruleta de nombres de espectadores','Live Participants Only':'Solo participantes en vivo','Recent Raffle Winners':'Ganadores recientes',
-    'Digital Crypto Card Number Guess':'Adivina el nÃºmero de tarjeta cripto','Streamer Card Settings':'ConfiguraciÃ³n de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta','Card Title':'TÃ­tulo de tarjeta','Serial Number':'NÃºmero de serie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafÃ­o','Provably Fair Verification':'VerificaciÃ³n demostrablemente justa',
-    'Affiliate Partner Program':'Programa de socios afiliados','Your Personal Affiliate Link':'Tu enlace de afiliado personal','Direct Invitations':'Invitaciones directas','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Actividad de referidos en vivo','Referee Handle':'Usuario referido','Date Joined':'Fecha de registro','Commission Tier':'Nivel de comisiÃ³n','Wager Volume':'Volumen de actividad','Commission Earned':'ComisiÃ³n obtenida',
-    'NOWPayments Crypto Deposit':'DepÃ³sito cripto de NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¡neo sin comisiones de plataforma','Create NOWPayments Invoice':'Crear factura de NOWPayments',
-    'Available Balance':'Saldo disponible','Transaction History':'Historial de transacciones','Withdraw USDT':'Retirar USDT','Submit Withdrawal':'Enviar retiro','Wallet':'Billetera','Referral Link':'Enlace de referido','Event Participation Status':'Estado de participaciÃ³n','Refresh':'Actualizar','Loading...':'Cargando...','Processing...':'Procesando...','Edit':'Editar','Logout':'Cerrar sesiÃ³n','Member':'Miembro','USDT Account':'Cuenta USDT','Join Live Room':'Unirse a la sala en vivo','Chat':'Chat','Send':'Enviar','Type a message':'Escribe un mensaje'
+    'Digital Crypto Card Number Guess':'Adivina el número de tarjeta cripto','Streamer Card Settings':'Configuración de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta','Card Title':'Título de tarjeta','Serial Number':'Número de serie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafío','Provably Fair Verification':'Verificación demostrablemente justa',
+    'Affiliate Partner Program':'Programa de socios afiliados','Your Personal Affiliate Link':'Tu enlace de afiliado personal','Direct Invitations':'Invitaciones directas','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Actividad de referidos en vivo','Referee Handle':'Usuario referido','Date Joined':'Fecha de registro','Commission Tier':'Nivel de comisión','Wager Volume':'Volumen de actividad','Commission Earned':'Comisión obtenida',
+    'NOWPayments Crypto Deposit':'Depósito cripto de NOWPayments','Instant deposit with zero platform fees':'Depósito instantáneo sin comisiones de plataforma','Create NOWPayments Invoice':'Crear factura de NOWPayments',
+    'Available Balance':'Saldo disponible','Transaction History':'Historial de transacciones','Withdraw USDT':'Retirar USDT','Submit Withdrawal':'Enviar retiro','Wallet':'Billetera','Referral Link':'Enlace de referido','Event Participation Status':'Estado de participación','Refresh':'Actualizar','Loading...':'Cargando...','Processing...':'Procesando...','Edit':'Editar','Logout':'Cerrar sesión','Member':'Miembro','USDT Account':'Cuenta USDT','Join Live Room':'Unirse a la sala en vivo','Chat':'Chat','Send':'Enviar','Type a message':'Escribe un mensaje'
   },
   pt: {
     'Viewer Username Raffle Spinner':'Roleta de nomes dos espectadores','Live Participants Only':'Apenas participantes da live','Recent Raffle Winners':'Vencedores recentes',
-    'Digital Crypto Card Number Guess':'Adivinhe o nÃºmero do cartÃ£o cripto','Streamer Card Settings':'ConfiguraÃ§Ãµes do cartÃ£o do streamer','Streamer Card Configurator':'Configurador do cartÃ£o','Card Title':'TÃ­tulo do cartÃ£o','Serial Number':'NÃºmero de sÃ©rie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafio','Provably Fair Verification':'VerificaÃ§Ã£o comprovadamente justa',
-    'Affiliate Partner Program':'Programa de parceiros afiliados','Your Personal Affiliate Link':'Seu link de afiliado pessoal','Direct Invitations':'Convites diretos','Network Invites':'Convites da rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de ganhos de afiliados','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicaÃ§Ãµes ao vivo','Referee Handle':'UsuÃ¡rio indicado','Date Joined':'Data de entrada','Commission Tier':'NÃ­vel de comissÃ£o','Wager Volume':'Volume de atividade','Commission Earned':'ComissÃ£o recebida',
-    'NOWPayments Crypto Deposit':'DepÃ³sito cripto NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¢neo sem taxas da plataforma','Create NOWPayments Invoice':'Criar fatura NOWPayments',
-    'Available Balance':'Saldo disponÃ­vel','Transaction History':'HistÃ³rico de transaÃ§Ãµes','Withdraw USDT':'Sacar USDT','Submit Withdrawal':'Enviar saque','Wallet':'Carteira','Referral Link':'Link de indicaÃ§Ã£o','Event Participation Status':'Status de participaÃ§Ã£o','Refresh':'Atualizar','Loading...':'Carregando...','Processing...':'Processando...','Edit':'Editar','Logout':'Sair','Member':'Membro','USDT Account':'Conta USDT','Join Live Room':'Entrar na Live Room','Chat':'Chat','Send':'Enviar','Type a message':'Digite uma mensagem'
+    'Digital Crypto Card Number Guess':'Adivinhe o número do cartão cripto','Streamer Card Settings':'Configurações do cartão do streamer','Streamer Card Configurator':'Configurador do cartão','Card Title':'Título do cartão','Serial Number':'Número de série','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafio','Provably Fair Verification':'Verificação comprovadamente justa',
+    'Affiliate Partner Program':'Programa de parceiros afiliados','Your Personal Affiliate Link':'Seu link de afiliado pessoal','Direct Invitations':'Convites diretos','Network Invites':'Convites da rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de ganhos de afiliados','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicações ao vivo','Referee Handle':'Usuário indicado','Date Joined':'Data de entrada','Commission Tier':'Nível de comissão','Wager Volume':'Volume de atividade','Commission Earned':'Comissão recebida',
+    'NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantâneo sem taxas da plataforma','Create NOWPayments Invoice':'Criar fatura NOWPayments',
+    'Available Balance':'Saldo disponível','Transaction History':'Histórico de transações','Withdraw USDT':'Sacar USDT','Submit Withdrawal':'Enviar saque','Wallet':'Carteira','Referral Link':'Link de indicação','Event Participation Status':'Status de participação','Refresh':'Atualizar','Loading...':'Carregando...','Processing...':'Processando...','Edit':'Editar','Logout':'Sair','Member':'Membro','USDT Account':'Conta USDT','Join Live Room':'Entrar na Live Room','Chat':'Chat','Send':'Enviar','Type a message':'Digite uma mensagem'
   },
   zh: {
     'Viewer Username Raffle Spinner':'è§‚ä¼—ç”¨æˆ·åæŠ½å¥–è½¬ç›˜','Live Participants Only':'ä»…é™ç›´æ’­å‚ä¸Žè€…','Recent Raffle Winners':'æœ€è¿‘ä¸­å¥–è€…','Digital Crypto Card Number Guess':'æ•°å­—åŠ å¯†å¡å·ç ç«žçŒœ','Streamer Card Settings':'ä¸»æ’­å¡ç‰‡è®¾ç½®','Streamer Card Configurator':'ä¸»æ’­å¡ç‰‡é…ç½®å™¨','Card Title':'å¡ç‰‡æ ‡é¢˜','Serial Number':'åºåˆ—å·','Concealed':'éšè—','Revealed':'å·²æ­ç¤º','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å…¬å¹³æ€§éªŒè¯',
@@ -605,9 +605,9 @@ const COMMON_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'NOWPayments Crypto Deposit':'NOWPayments ì•”í˜¸í™”í ìž…ê¸ˆ','Instant deposit with zero platform fees':'í”Œëž«í¼ ìˆ˜ìˆ˜ë£Œ ì—†ëŠ” ì¦‰ì‹œ ìž…ê¸ˆ','Create NOWPayments Invoice':'NOWPayments ì¸ë³´ì´ìŠ¤ ìƒì„±','Available Balance':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡','Transaction History':'ê±°ëž˜ ë‚´ì—­','Withdraw USDT':'USDT ì¶œê¸ˆ','Submit Withdrawal':'ì¶œê¸ˆ ì‹ ì²­','Wallet':'ì§€ê°‘','Referral Link':'ì¶”ì²œ ë§í¬','Event Participation Status':'ì´ë²¤íŠ¸ ì°¸ì—¬ ìƒíƒœ','Refresh':'ìƒˆë¡œê³ ì¹¨','Loading...':'ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘...','Processing...':'ì²˜ë¦¬ ì¤‘...','Edit':'íŽ¸ì§‘','Logout':'ë¡œê·¸ì•„ì›ƒ','Member':'íšŒì›','USDT Account':'USDT ê³„ì •','Join Live Room':'ë¼ì´ë¸Œ ë£¸ ì°¸ì—¬','Chat':'ì±„íŒ…','Send':'ì „ì†¡','Type a message':'ë©”ì‹œì§€ ìž…ë ¥'
   },
   ar: {
-    'Viewer Username Raffle Spinner':'Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ø£Ø³Ù…Ø§Ø¡ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†','Live Participants Only':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† ÙÙŠ Ø§Ù„Ø¨Ø« ÙÙ‚Ø·','Recent Raffle Winners':'Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† ÙÙŠ Ø§Ù„Ø³Ø­Ø¨ Ø§Ù„Ø£Ø®ÙŠØ±','Digital Crypto Card Number Guess':'ØªØ®Ù…ÙŠÙ† Ø±Ù‚Ù… Ø§Ù„Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ø§Ù„Ù…Ø´ÙØ±Ø©','Streamer Card Settings':'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Streamer Card Configurator':'Ù…ÙÙƒÙˆÙ‘Ù† Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Card Title':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©','Serial Number':'Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ','Concealed':'Ù…Ø®ÙÙŠ','Revealed':'Ù…ÙƒØ´ÙˆÙ','Verify Challenge':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠ','Provably Fair Verification':'Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¹Ø¯Ø§Ù„Ø©',
-    'Affiliate Partner Program':'Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø´Ø±ÙƒØ§Ø¡ Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Your Personal Affiliate Link':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø© Ø§Ù„Ø´Ø®ØµÙŠ','Direct Invitations':'Ø§Ù„Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Network Invites':'Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ø´Ø¨ÙƒØ©','Deep Ecosystem':'Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø¨ÙŠØ¦ÙŠ Ø§Ù„Ù…ØªÙƒØ§Ù…Ù„','Affiliate Income Calculator':'Ø­Ø§Ø³Ø¨Ø© Ø¯Ø®Ù„ Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Estimated Monthly Earnings':'Ø§Ù„Ø£Ø±Ø¨Ø§Ø­ Ø§Ù„Ø´Ù‡Ø±ÙŠØ© Ø§Ù„Ù…Ù‚Ø¯Ø±Ø©','Live Referral Feed':'ØªØºØ°ÙŠØ© Ø§Ù„Ø¥Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Referee Handle':'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù…ÙØ­Ø§Ù„','Date Joined':'ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù…','Commission Tier':'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©','Wager Volume':'Ø­Ø¬Ù… Ø§Ù„Ù†Ø´Ø§Ø·','Commission Earned':'Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© Ø§Ù„Ù…ÙƒØªØ³Ø¨Ø©',
-    'NOWPayments Crypto Deposit':'Ø¥ÙŠØ¯Ø§Ø¹ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ù…Ø´ÙØ±Ø© Ø¹Ø¨Ø± NOWPayments','Instant deposit with zero platform fees':'Ø¥ÙŠØ¯Ø§Ø¹ ÙÙˆØ±ÙŠ Ø¨Ø¯ÙˆÙ† Ø±Ø³ÙˆÙ… Ù…Ù†ØµØ©','Create NOWPayments Invoice':'Ø¥Ù†Ø´Ø§Ø¡ ÙØ§ØªÙˆØ±Ø© NOWPayments','Available Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­','Transaction History':'Ø³Ø¬Ù„ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª','Withdraw USDT':'Ø³Ø­Ø¨ USDT','Submit Withdrawal':'Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨ Ø§Ù„Ø³Ø­Ø¨','Wallet':'Ø§Ù„Ù…Ø­ÙØ¸Ø©','Referral Link':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Event Participation Status':'Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø´Ø§Ø±ÙƒØ© ÙÙŠ Ø§Ù„ÙØ¹Ø§Ù„ÙŠØ©','Refresh':'ØªØ­Ø¯ÙŠØ«','Loading...':'Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù…ÙŠÙ„...','Processing...':'Ø¬Ø§Ø±Ù Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©...','Edit':'ØªØ¹Ø¯ÙŠÙ„','Logout':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬','Member':'Ø¹Ø¶Ùˆ','USDT Account':'Ø­Ø³Ø§Ø¨ USDT','Join Live Room':'Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Chat':'Ø§Ù„Ø¯Ø±Ø¯Ø´Ø©','Send':'Ø¥Ø±Ø³Ø§Ù„','Type a message':'Ø§ÙƒØªØ¨ Ø±Ø³Ø§Ù„Ø©'
+    'Viewer Username Raffle Spinner':'عجلة سحب أسماء المشاهدين','Live Participants Only':'المشاركون في البث فقط','Recent Raffle Winners':'الفائزون في السحب الأخير','Digital Crypto Card Number Guess':'تخمين رقم البطاقة الرقمية المشفرة','Streamer Card Settings':'إعدادات بطاقة البث','Streamer Card Configurator':'مُكوّن بطاقة البث','Card Title':'عنوان البطاقة','Serial Number':'الرقم التسلسلي','Concealed':'مخفي','Revealed':'مكشوف','Verify Challenge':'تحقق من التحدي','Provably Fair Verification':'التحقق من العدالة',
+    'Affiliate Partner Program':'برنامج شركاء الإحالة','Your Personal Affiliate Link':'رابط الإحالة الشخصي','Direct Invitations':'الدعوات المباشرة','Network Invites':'دعوات الشبكة','Deep Ecosystem':'النظام البيئي المتكامل','Affiliate Income Calculator':'حاسبة دخل الإحالة','Estimated Monthly Earnings':'الأرباح الشهرية المقدرة','Live Referral Feed':'تغذية الإحالات المباشرة','Referee Handle':'المستخدم المُحال','Date Joined':'تاريخ الانضمام','Commission Tier':'مستوى العمولة','Wager Volume':'حجم النشاط','Commission Earned':'العمولة المكتسبة',
+    'NOWPayments Crypto Deposit':'إيداع العملات المشفرة عبر NOWPayments','Instant deposit with zero platform fees':'إيداع فوري بدون رسوم منصة','Create NOWPayments Invoice':'إنشاء فاتورة NOWPayments','Available Balance':'الرصيد المتاح','Transaction History':'سجل المعاملات','Withdraw USDT':'سحب USDT','Submit Withdrawal':'إرسال طلب السحب','Wallet':'المحفظة','Referral Link':'رابط الإحالة','Event Participation Status':'حالة المشاركة في الفعالية','Refresh':'تحديث','Loading...':'جارٍ التحميل...','Processing...':'جارٍ المعالجة...','Edit':'تعديل','Logout':'تسجيل الخروج','Member':'عضو','USDT Account':'حساب USDT','Join Live Room':'الانضمام إلى الغرفة المباشرة','Chat':'الدردشة','Send':'إرسال','Type a message':'اكتب رسالة'
   },
 };
 
@@ -779,14 +779,14 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Checking admin session...": "Checking admin session..."
   },
   "es": {
-    "Terms & Conditions": "TÃ©rminos y condiciones",
-    "Don't have an account?": "Â¿No tienes una cuenta?",
+    "Terms & Conditions": "Términos y condiciones",
+    "Don't have an account?": "¿No tienes una cuenta?",
     "Secured with Web3": "Protegido con Web3",
-    "Biometric Login Available": "Inicio de sesiÃ³n biomÃ©trico disponible",
+    "Biometric Login Available": "Inicio de sesión biométrico disponible",
     "Edit": "Editar",
-    "Logout": "Cerrar sesiÃ³n",
+    "Logout": "Cerrar sesión",
     "Yield:": "Rendimiento:",
-    "Locked Balance Policy": "PolÃ­tica de saldo bloqueado",
+    "Locked Balance Policy": "Política de saldo bloqueado",
     "Locked USDT earns passive daily yield...": "El USDT bloqueado genera rendimiento pasivo diario...",
     "Earn Passive Crypto & Gold Coins": "Gana criptomonedas y monedas de oro de forma pasiva",
     "Invite fellow gamers to NEXUS...": "Invita a otros jugadores a NEXUS...",
@@ -798,98 +798,98 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Tier 3 (Extended)": "Nivel 3 (Extendido)",
     "14 Players": "14 jugadores",
     "Slide to project your estimated monthly passive revenue...": "Desliza para proyectar tus ingresos pasivos mensuales estimados...",
-    "Belum ada data referral produksi untuk wallet ini.": "No hay datos de referidos de producciÃ³n para esta wallet.",
-    "Reward harian masuk ke saldo": "La recompensa diaria se aÃ±ade al saldo",
-    "Buka Blind Box harian berdasarkan saldo...": "Abre las Blind Boxes diarias segÃºn tu saldo...",
+    "Belum ada data referral produksi untuk wallet ini.": "No hay datos de referidos de producción para esta wallet.",
+    "Reward harian masuk ke saldo": "La recompensa diaria se añade al saldo",
+    "Buka Blind Box harian berdasarkan saldo...": "Abre las Blind Boxes diarias según tu saldo...",
     "Daily Boxes": "Cajas diarias",
     "Durasi lock tersedia": "Duraciones de bloqueo disponibles",
     "Lock Amount": "Cantidad bloqueada",
-    "Durasi Lock": "DuraciÃ³n del bloqueo",
+    "Durasi Lock": "Duración del bloqueo",
     "Lock Aktif": "Bloqueo activo",
     "Daily Claim": "Reclamo diario",
     "Reward dikreditkan ke saldo tersedia": "La recompensa se acredita al saldo disponible",
-    "Power Stat": "EstadÃ­stica de poder",
+    "Power Stat": "Estadística de poder",
     "Select Mystery Crate Tier": "Selecciona el nivel de Mystery Crate",
-    "30 Days Term": "Plazo de 30 dÃ­as",
-    "60 Days Term": "Plazo de 60 dÃ­as",
-    "90 Days Term": "Plazo de 90 dÃ­as",
+    "30 Days Term": "Plazo de 30 días",
+    "60 Days Term": "Plazo de 60 días",
+    "90 Days Term": "Plazo de 90 días",
     "Streamer raffle wheel containing live viewer usernames...": "Ruleta del streamer con nombres de espectadores en vivo...",
     "WIN": "GANAR",
     "Streamer Username Manager": "Gestor de nombres de usuario del streamer",
-    "Add": "AÃ±adir",
+    "Add": "Añadir",
     "Clear All": "Borrar todo",
-    "Predict the concealed cryptographic serial digits...": "Predice los dÃ­gitos seriales criptogrÃ¡ficos ocultos...",
+    "Predict the concealed cryptographic serial digits...": "Predice los dígitos seriales criptográficos ocultos...",
     "Close": "Cerrar",
-    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "DÃ­gitos de tarjeta (exactamente 4) y control de ocultaciÃ³n",
+    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "Dígitos de tarjeta (exactamente 4) y control de ocultación",
     "Cancel": "Cancelar",
     "Save & Publish Card": "Guardar y publicar tarjeta",
-    "Serial No:": "N.Âº de serie:",
-    "Digital Crypto Verification Code (4 Digits)": "CÃ³digo de verificaciÃ³n cripto digital (4 dÃ­gitos)",
-    "The 4-digit code is tied to serial number...": "El cÃ³digo de 4 dÃ­gitos estÃ¡ vinculado al nÃºmero de serie...",
-    "LOGIN / REGISTER": "INICIAR SESIÃ“N / REGISTRARSE",
+    "Serial No:": "N.º de serie:",
+    "Digital Crypto Verification Code (4 Digits)": "Código de verificación cripto digital (4 dígitos)",
+    "The 4-digit code is tied to serial number...": "El código de 4 dígitos está vinculado al número de serie...",
+    "LOGIN / REGISTER": "INICIAR SESIÓN / REGISTRARSE",
     "CHAT": "CHAT",
     "PESERTA": "PARTICIPANTES",
-    "Sign in to continue streaming and gaming": "Inicia sesiÃ³n para continuar transmitiendo y jugando",
-    "Remember me": "RecuÃ©rdame",
-    "Forgot Password?": "Â¿Olvidaste la contraseÃ±a?",
+    "Sign in to continue streaming and gaming": "Inicia sesión para continuar transmitiendo y jugando",
+    "Remember me": "Recuérdame",
+    "Forgot Password?": "¿Olvidaste la contraseña?",
     "or Connect with Crypto Wallet": "o conectar con una wallet cripto",
     "Connect Wallet": "Conectar wallet",
     "Register Now": "Registrarse ahora",
     "ADMIN PANEL": "PANEL DE ADMIN",
     "Secure administrator access": "Acceso seguro de administrador",
     "Admin Email": "Correo del administrador",
-    "Password / Owner Key": "ContraseÃ±a / clave del propietario",
-    "Production": "ProducciÃ³n",
+    "Password / Owner Key": "Contraseña / clave del propietario",
+    "Production": "Producción",
     "Overview": "Resumen",
     "Users": "Usuarios",
     "Transactions": "Transacciones",
     "Jackpot Grants": "Premios jackpot",
     "Admin Accounts": "Cuentas de administrador",
     "Admin isolation": "Aislamiento del administrador",
-    "Production data only": "Solo datos de producciÃ³n",
+    "Production data only": "Solo datos de producción",
     "Select User": "Seleccionar usuario",
     "Choose user...": "Elegir usuario...",
     "Jackpot Value (USDT)": "Valor del jackpot (USDT)",
-    "Reason / Audit Note": "Motivo / nota de auditorÃ­a",
+    "Reason / Audit Note": "Motivo / nota de auditoría",
     "Task": "Tarea",
-    "Category": "CategorÃ­a",
+    "Category": "Categoría",
     "Reward": "Recompensa",
     "Status": "Estado",
-    "Action": "AcciÃ³n",
-    "Checking admin session...": "Comprobando sesiÃ³n de administrador..."
+    "Action": "Acción",
+    "Checking admin session...": "Comprobando sesión de administrador..."
   },
   "pt": {
-    "Terms & Conditions": "Termos e condiÃ§Ãµes",
-    "Don't have an account?": "NÃ£o tem uma conta?",
+    "Terms & Conditions": "Termos e condições",
+    "Don't have an account?": "Não tem uma conta?",
     "Secured with Web3": "Protegido com Web3",
-    "Biometric Login Available": "Login biomÃ©trico disponÃ­vel",
+    "Biometric Login Available": "Login biométrico disponível",
     "Edit": "Editar",
     "Logout": "Sair",
     "Yield:": "Rendimento:",
-    "Locked Balance Policy": "PolÃ­tica de saldo bloqueado",
-    "Locked USDT earns passive daily yield...": "USDT bloqueado gera rendimento passivo diÃ¡rio...",
+    "Locked Balance Policy": "Política de saldo bloqueado",
+    "Locked USDT earns passive daily yield...": "USDT bloqueado gera rendimento passivo diário...",
     "Earn Passive Crypto & Gold Coins": "Ganhe cripto e moedas de ouro passivamente",
     "Invite fellow gamers to NEXUS...": "Convide outros jogadores para o NEXUS...",
     "Anyone registering with your link receives...": "Quem se registrar com seu link recebe...",
     "+500 Gold Coins": "+500 moedas de ouro",
-    "Unclaimed Commission Balance": "Saldo de comissÃ£o nÃ£o resgatado",
-    "Tier 1 (Direct)": "NÃ­vel 1 (Direto)",
-    "Tier 2 (Sub-Affiliate)": "NÃ­vel 2 (Subafiliado)",
-    "Tier 3 (Extended)": "NÃ­vel 3 (Estendido)",
+    "Unclaimed Commission Balance": "Saldo de comissão não resgatado",
+    "Tier 1 (Direct)": "Nível 1 (Direto)",
+    "Tier 2 (Sub-Affiliate)": "Nível 2 (Subafiliado)",
+    "Tier 3 (Extended)": "Nível 3 (Estendido)",
     "14 Players": "14 jogadores",
     "Slide to project your estimated monthly passive revenue...": "Deslize para projetar sua receita passiva mensal estimada...",
-    "Belum ada data referral produksi untuk wallet ini.": "NÃ£o hÃ¡ dados de indicaÃ§Ã£o de produÃ§Ã£o para esta carteira.",
-    "Reward harian masuk ke saldo": "A recompensa diÃ¡ria Ã© adicionada ao saldo",
-    "Buka Blind Box harian berdasarkan saldo...": "Abra as Blind Boxes diÃ¡rias com base no seu saldo...",
-    "Daily Boxes": "Caixas diÃ¡rias",
-    "Durasi lock tersedia": "DuraÃ§Ãµes de bloqueio disponÃ­veis",
+    "Belum ada data referral produksi untuk wallet ini.": "Não há dados de indicação de produção para esta carteira.",
+    "Reward harian masuk ke saldo": "A recompensa diária é adicionada ao saldo",
+    "Buka Blind Box harian berdasarkan saldo...": "Abra as Blind Boxes diárias com base no seu saldo...",
+    "Daily Boxes": "Caixas diárias",
+    "Durasi lock tersedia": "Durações de bloqueio disponíveis",
     "Lock Amount": "Valor do bloqueio",
-    "Durasi Lock": "DuraÃ§Ã£o do bloqueio",
+    "Durasi Lock": "Duração do bloqueio",
     "Lock Aktif": "Bloqueio ativo",
-    "Daily Claim": "Resgate diÃ¡rio",
-    "Reward dikreditkan ke saldo tersedia": "A recompensa Ã© creditada no saldo disponÃ­vel",
+    "Daily Claim": "Resgate diário",
+    "Reward dikreditkan ke saldo tersedia": "A recompensa é creditada no saldo disponível",
     "Power Stat": "Status de poder",
-    "Select Mystery Crate Tier": "Selecione o nÃ­vel da Mystery Crate",
+    "Select Mystery Crate Tier": "Selecione o nível da Mystery Crate",
     "30 Days Term": "Prazo de 30 dias",
     "60 Days Term": "Prazo de 60 dias",
     "90 Days Term": "Prazo de 90 dias",
@@ -898,14 +898,14 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Streamer Username Manager": "Gerenciador de nomes do streamer",
     "Add": "Adicionar",
     "Clear All": "Limpar tudo",
-    "Predict the concealed cryptographic serial digits...": "Preveja os dÃ­gitos seriais criptogrÃ¡ficos ocultos...",
+    "Predict the concealed cryptographic serial digits...": "Preveja os dígitos seriais criptográficos ocultos...",
     "Close": "Fechar",
-    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "DÃ­gitos do cartÃ£o (exatamente 4) e controle de ocultaÃ§Ã£o",
+    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "Dígitos do cartão (exatamente 4) e controle de ocultação",
     "Cancel": "Cancelar",
-    "Save & Publish Card": "Salvar e publicar cartÃ£o",
-    "Serial No:": "NÂº de sÃ©rie:",
-    "Digital Crypto Verification Code (4 Digits)": "CÃ³digo de verificaÃ§Ã£o cripto digital (4 dÃ­gitos)",
-    "The 4-digit code is tied to serial number...": "O cÃ³digo de 4 dÃ­gitos estÃ¡ vinculado ao nÃºmero de sÃ©rie...",
+    "Save & Publish Card": "Salvar e publicar cartão",
+    "Serial No:": "Nº de série:",
+    "Digital Crypto Verification Code (4 Digits)": "Código de verificação cripto digital (4 dígitos)",
+    "The 4-digit code is tied to serial number...": "O código de 4 dígitos está vinculado ao número de série...",
     "LOGIN / REGISTER": "ENTRAR / REGISTRAR",
     "CHAT": "CHAT",
     "PESERTA": "PARTICIPANTES",
@@ -918,25 +918,25 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "ADMIN PANEL": "PAINEL ADMIN",
     "Secure administrator access": "Acesso seguro do administrador",
     "Admin Email": "E-mail do administrador",
-    "Password / Owner Key": "Senha / chave do proprietÃ¡rio",
-    "Production": "ProduÃ§Ã£o",
-    "Overview": "VisÃ£o geral",
-    "Users": "UsuÃ¡rios",
-    "Transactions": "TransaÃ§Ãµes",
-    "Jackpot Grants": "PrÃªmios jackpot",
+    "Password / Owner Key": "Senha / chave do proprietário",
+    "Production": "Produção",
+    "Overview": "Visão geral",
+    "Users": "Usuários",
+    "Transactions": "Transações",
+    "Jackpot Grants": "Prêmios jackpot",
     "Admin Accounts": "Contas de administrador",
     "Admin isolation": "Isolamento do administrador",
-    "Production data only": "Somente dados de produÃ§Ã£o",
-    "Select User": "Selecionar usuÃ¡rio",
-    "Choose user...": "Escolher usuÃ¡rio...",
+    "Production data only": "Somente dados de produção",
+    "Select User": "Selecionar usuário",
+    "Choose user...": "Escolher usuário...",
     "Jackpot Value (USDT)": "Valor do jackpot (USDT)",
     "Reason / Audit Note": "Motivo / nota de auditoria",
     "Task": "Tarefa",
     "Category": "Categoria",
     "Reward": "Recompensa",
     "Status": "Status",
-    "Action": "AÃ§Ã£o",
-    "Checking admin session...": "Verificando sessÃ£o do administrador..."
+    "Action": "Ação",
+    "Checking admin session...": "Verificando sessão do administrador..."
   },
   "zh": {
     "Terms & Conditions": "æ¡æ¬¾ä¸Žæ¡ä»¶",
@@ -1179,84 +1179,84 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Checking admin session...": "ê´€ë¦¬ìž ì„¸ì…˜ í™•ì¸ ì¤‘..."
   },
   "ar": {
-    "Terms & Conditions": "Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…",
-    "Don't have an account?": "Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ",
-    "Secured with Web3": "Ù…Ø­Ù…ÙŠ Ø¨ÙˆØ§Ø³Ø·Ø© Web3",
-    "Biometric Login Available": "ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ø¨ØµÙ…Ø© Ù…ØªØ§Ø­",
-    "Edit": "ØªØ¹Ø¯ÙŠÙ„",
-    "Logout": "ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬",
-    "Yield:": "Ø§Ù„Ø¹Ø§Ø¦Ø¯:",
-    "Locked Balance Policy": "Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙ„",
-    "Locked USDT earns passive daily yield...": "USDT Ø§Ù„Ù…Ù‚ÙÙ„ ÙŠØ­Ù‚Ù‚ Ø¹Ø§Ø¦Ø¯Ø§Ù‹ Ø³Ù„Ø¨ÙŠØ§Ù‹ ÙŠÙˆÙ…ÙŠØ§Ù‹...",
-    "Earn Passive Crypto & Gold Coins": "Ø§Ø±Ø¨Ø­ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© ÙˆØ§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø°Ù‡Ø¨ÙŠØ© Ø¨Ø´ÙƒÙ„ Ø³Ù„Ø¨ÙŠ",
-    "Invite fellow gamers to NEXUS...": "Ø§Ø¯Ø¹Ù Ù„Ø§Ø¹Ø¨ÙŠÙ† Ø¢Ø®Ø±ÙŠÙ† Ø¥Ù„Ù‰ NEXUS...",
-    "Anyone registering with your link receives...": "Ø£ÙŠ Ø´Ø®Øµ ÙŠØ³Ø¬Ù„ Ø¹Ø¨Ø± Ø±Ø§Ø¨Ø·Ùƒ ÙŠØ­ØµÙ„ Ø¹Ù„Ù‰...",
-    "+500 Gold Coins": "+500 Ø¹Ù…Ù„Ø© Ø°Ù‡Ø¨ÙŠØ©",
-    "Unclaimed Commission Balance": "Ø±ØµÙŠØ¯ Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© ØºÙŠØ± Ø§Ù„Ù…Ø·Ø§Ù„Ø¨ Ø¨Ù‡",
-    "Tier 1 (Direct)": "Ø§Ù„Ù…Ø³ØªÙˆÙ‰ 1 (Ù…Ø¨Ø§Ø´Ø±)",
-    "Tier 2 (Sub-Affiliate)": "Ø§Ù„Ù…Ø³ØªÙˆÙ‰ 2 (ÙØ±Ø¹ÙŠ)",
-    "Tier 3 (Extended)": "Ø§Ù„Ù…Ø³ØªÙˆÙ‰ 3 (Ù…Ù…ØªØ¯)",
-    "14 Players": "14 Ù„Ø§Ø¹Ø¨Ø§Ù‹",
-    "Slide to project your estimated monthly passive revenue...": "Ø§Ø³Ø­Ø¨ Ù„ØªÙ‚Ø¯ÙŠØ± Ø¥ÙŠØ±Ø§Ø¯Ø§ØªÙƒ Ø§Ù„Ø´Ù‡Ø±ÙŠØ© Ø§Ù„Ø³Ù„Ø¨ÙŠØ©...",
-    "Belum ada data referral produksi untuk wallet ini.": "Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª Ø¥Ø­Ø§Ù„Ø© Ø¥Ù†ØªØ§Ø¬ÙŠØ© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø­ÙØ¸Ø©.",
-    "Reward harian masuk ke saldo": "ØªÙØ¶Ø§Ù Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯",
-    "Buka Blind Box harian berdasarkan saldo...": "Ø§ÙØªØ­ Ø§Ù„ØµÙ†Ø§Ø¯ÙŠÙ‚ Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø­Ø³Ø¨ Ø±ØµÙŠØ¯Ùƒ...",
-    "Daily Boxes": "Ø§Ù„ØµÙ†Ø§Ø¯ÙŠÙ‚ Ø§Ù„ÙŠÙˆÙ…ÙŠØ©",
-    "Durasi lock tersedia": "Ù…Ø¯Ø¯ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù…ØªØ§Ø­Ø©",
-    "Lock Amount": "Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„",
-    "Durasi Lock": "Ù…Ø¯Ø© Ø§Ù„Ù‚ÙÙ„",
-    "Lock Aktif": "Ø§Ù„Ù‚ÙÙ„ Ù†Ø´Ø·",
-    "Daily Claim": "Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ©",
-    "Reward dikreditkan ke saldo tersedia": "ØªÙØ¶Ø§Ù Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­",
-    "Power Stat": "Ø¥Ø­ØµØ§Ø¦ÙŠØ© Ø§Ù„Ù‚ÙˆØ©",
-    "Select Mystery Crate Tier": "Ø§Ø®ØªØ± Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶",
-    "30 Days Term": "Ù…Ø¯Ø© 30 ÙŠÙˆÙ…Ø§Ù‹",
-    "60 Days Term": "Ù…Ø¯Ø© 60 ÙŠÙˆÙ…Ø§Ù‹",
-    "90 Days Term": "Ù…Ø¯Ø© 90 ÙŠÙˆÙ…Ø§Ù‹",
-    "Streamer raffle wheel containing live viewer usernames...": "Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ù„Ù„Ø³ØªØ±ÙŠÙ…Ø± ØªØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ Ø£Ø³Ù…Ø§Ø¡ Ù…Ø´Ø§Ù‡Ø¯ÙŠ Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±...",
-    "WIN": "ÙÙˆØ²",
-    "Streamer Username Manager": "Ù…Ø¯ÙŠØ± Ø£Ø³Ù…Ø§Ø¡ Ù…Ø³ØªØ®Ø¯Ù…ÙŠ Ø§Ù„Ø³ØªØ±ÙŠÙ…Ø±",
-    "Add": "Ø¥Ø¶Ø§ÙØ©",
-    "Clear All": "Ù…Ø³Ø­ Ø§Ù„ÙƒÙ„",
-    "Predict the concealed cryptographic serial digits...": "ØªÙˆÙ‚Ø¹ Ø£Ø±Ù‚Ø§Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ Ø§Ù„Ù…Ø´ÙØ±Ø© Ø§Ù„Ù…Ø®ÙÙŠØ©...",
-    "Close": "Ø¥ØºÙ„Ø§Ù‚",
-    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ø¨Ø·Ø§Ù‚Ø© (4 Ø£Ø±Ù‚Ø§Ù… Ø¨Ø§Ù„Ø¶Ø¨Ø·) ÙˆÙ…ÙØªØ§Ø­ Ø§Ù„Ø¥Ø®ÙØ§Ø¡",
-    "Cancel": "Ø¥Ù„ØºØ§Ø¡",
-    "Save & Publish Card": "Ø­ÙØ¸ ÙˆÙ†Ø´Ø± Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©",
-    "Serial No:": "Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„:",
-    "Digital Crypto Verification Code (4 Digits)": "Ø±Ù…Ø² Ø§Ù„ØªØ­Ù‚Ù‚ Ø§Ù„Ø±Ù‚Ù…ÙŠ Ø§Ù„Ù…Ø´ÙØ± (4 Ø£Ø±Ù‚Ø§Ù…)",
-    "The 4-digit code is tied to serial number...": "Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ù…ÙƒÙˆÙ† Ù…Ù† 4 Ø£Ø±Ù‚Ø§Ù… Ù…Ø±ØªØ¨Ø· Ø¨Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„...",
-    "LOGIN / REGISTER": "ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ / Ø§Ù„ØªØ³Ø¬ÙŠÙ„",
-    "CHAT": "Ø§Ù„Ø¯Ø±Ø¯Ø´Ø©",
-    "PESERTA": "Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ†",
-    "Sign in to continue streaming and gaming": "Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø¨Ø« ÙˆØ§Ù„Ø£Ù„Ø¹Ø§Ø¨",
-    "Remember me": "ØªØ°ÙƒØ±Ù†ÙŠ",
-    "Forgot Password?": "Ù‡Ù„ Ù†Ø³ÙŠØª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±ØŸ",
-    "or Connect with Crypto Wallet": "Ø£Ùˆ Ø±Ø¨Ø· Ù…Ø­ÙØ¸Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©",
-    "Connect Wallet": "Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Register Now": "Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¢Ù†",
-    "ADMIN PANEL": "Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©",
-    "Secure administrator access": "ÙˆØµÙˆÙ„ Ø¢Ù…Ù† Ù„Ù„Ù…Ø³Ø¤ÙˆÙ„",
-    "Admin Email": "Ø¨Ø±ÙŠØ¯ Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„",
-    "Password / Owner Key": "ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± / Ù…ÙØªØ§Ø­ Ø§Ù„Ù…Ø§Ù„Ùƒ",
-    "Production": "Ø§Ù„Ø¥Ù†ØªØ§Ø¬",
-    "Overview": "Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø©",
-    "Users": "Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ†",
-    "Transactions": "Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª",
-    "Jackpot Grants": "Ù…Ù†Ø­ Ø§Ù„Ø¬Ø§ÙƒØ¨ÙˆØª",
-    "Admin Accounts": "Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠÙ†",
-    "Admin isolation": "Ø¹Ø²Ù„ Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„",
-    "Production data only": "Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¥Ù†ØªØ§Ø¬ ÙÙ‚Ø·",
-    "Select User": "Ø§Ø®ØªØ± Ù…Ø³ØªØ®Ø¯Ù…Ø§Ù‹",
-    "Choose user...": "Ø§Ø®ØªØ± Ù…Ø³ØªØ®Ø¯Ù…Ø§Ù‹...",
-    "Jackpot Value (USDT)": "Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¬Ø§ÙƒØ¨ÙˆØª (USDT)",
-    "Reason / Audit Note": "Ø§Ù„Ø³Ø¨Ø¨ / Ù…Ù„Ø§Ø­Ø¸Ø© Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚",
-    "Task": "Ø§Ù„Ù…Ù‡Ù…Ø©",
-    "Category": "Ø§Ù„ÙØ¦Ø©",
-    "Reward": "Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©",
-    "Status": "Ø§Ù„Ø­Ø§Ù„Ø©",
-    "Action": "Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡",
-    "Checking admin session...": "Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø¬Ù„Ø³Ø© Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„..."
+    "Terms & Conditions": "الشروط والأحكام",
+    "Don't have an account?": "ليس لديك حساب؟",
+    "Secured with Web3": "محمي بواسطة Web3",
+    "Biometric Login Available": "تسجيل الدخول بالبصمة متاح",
+    "Edit": "تعديل",
+    "Logout": "تسجيل الخروج",
+    "Yield:": "العائد:",
+    "Locked Balance Policy": "سياسة الرصيد المقفل",
+    "Locked USDT earns passive daily yield...": "USDT المقفل يحقق عائداً سلبياً يومياً...",
+    "Earn Passive Crypto & Gold Coins": "اربح العملات الرقمية والعملات الذهبية بشكل سلبي",
+    "Invite fellow gamers to NEXUS...": "ادعُ لاعبين آخرين إلى NEXUS...",
+    "Anyone registering with your link receives...": "أي شخص يسجل عبر رابطك يحصل على...",
+    "+500 Gold Coins": "+500 عملة ذهبية",
+    "Unclaimed Commission Balance": "رصيد العمولة غير المطالب به",
+    "Tier 1 (Direct)": "المستوى 1 (مباشر)",
+    "Tier 2 (Sub-Affiliate)": "المستوى 2 (فرعي)",
+    "Tier 3 (Extended)": "المستوى 3 (ممتد)",
+    "14 Players": "14 لاعباً",
+    "Slide to project your estimated monthly passive revenue...": "اسحب لتقدير إيراداتك الشهرية السلبية...",
+    "Belum ada data referral produksi untuk wallet ini.": "لا توجد بيانات إحالة إنتاجية لهذه المحفظة.",
+    "Reward harian masuk ke saldo": "تُضاف المكافأة اليومية إلى الرصيد",
+    "Buka Blind Box harian berdasarkan saldo...": "افتح الصناديق اليومية حسب رصيدك...",
+    "Daily Boxes": "الصناديق اليومية",
+    "Durasi lock tersedia": "مدد القفل المتاحة",
+    "Lock Amount": "مبلغ القفل",
+    "Durasi Lock": "مدة القفل",
+    "Lock Aktif": "القفل نشط",
+    "Daily Claim": "المطالبة اليومية",
+    "Reward dikreditkan ke saldo tersedia": "تُضاف المكافأة إلى الرصيد المتاح",
+    "Power Stat": "إحصائية القوة",
+    "Select Mystery Crate Tier": "اختر مستوى الصندوق الغامض",
+    "30 Days Term": "مدة 30 يوماً",
+    "60 Days Term": "مدة 60 يوماً",
+    "90 Days Term": "مدة 90 يوماً",
+    "Streamer raffle wheel containing live viewer usernames...": "عجلة سحب للستريمر تحتوي على أسماء مشاهدي البث المباشر...",
+    "WIN": "فوز",
+    "Streamer Username Manager": "مدير أسماء مستخدمي الستريمر",
+    "Add": "إضافة",
+    "Clear All": "مسح الكل",
+    "Predict the concealed cryptographic serial digits...": "توقع أرقام التسلسل المشفرة المخفية...",
+    "Close": "إغلاق",
+    "Card Digits (Exactly 4 Digits) & Conceal Toggle": "أرقام البطاقة (4 أرقام بالضبط) ومفتاح الإخفاء",
+    "Cancel": "إلغاء",
+    "Save & Publish Card": "حفظ ونشر البطاقة",
+    "Serial No:": "رقم التسلسل:",
+    "Digital Crypto Verification Code (4 Digits)": "رمز التحقق الرقمي المشفر (4 أرقام)",
+    "The 4-digit code is tied to serial number...": "الرمز المكون من 4 أرقام مرتبط برقم التسلسل...",
+    "LOGIN / REGISTER": "تسجيل الدخول / التسجيل",
+    "CHAT": "الدردشة",
+    "PESERTA": "المشاركون",
+    "Sign in to continue streaming and gaming": "سجّل الدخول لمتابعة البث والألعاب",
+    "Remember me": "تذكرني",
+    "Forgot Password?": "هل نسيت كلمة المرور؟",
+    "or Connect with Crypto Wallet": "أو ربط محفظة العملات الرقمية",
+    "Connect Wallet": "ربط المحفظة",
+    "Register Now": "سجّل الآن",
+    "ADMIN PANEL": "لوحة الإدارة",
+    "Secure administrator access": "وصول آمن للمسؤول",
+    "Admin Email": "بريد المسؤول",
+    "Password / Owner Key": "كلمة المرور / مفتاح المالك",
+    "Production": "الإنتاج",
+    "Overview": "نظرة عامة",
+    "Users": "المستخدمون",
+    "Transactions": "المعاملات",
+    "Jackpot Grants": "منح الجاكبوت",
+    "Admin Accounts": "حسابات المسؤولين",
+    "Admin isolation": "عزل المسؤول",
+    "Production data only": "بيانات الإنتاج فقط",
+    "Select User": "اختر مستخدماً",
+    "Choose user...": "اختر مستخدماً...",
+    "Jackpot Value (USDT)": "قيمة الجاكبوت (USDT)",
+    "Reason / Audit Note": "السبب / ملاحظة التدقيق",
+    "Task": "المهمة",
+    "Category": "الفئة",
+    "Reward": "المكافأة",
+    "Status": "الحالة",
+    "Action": "الإجراء",
+    "Checking admin session...": "جارٍ التحقق من جلسة المسؤول..."
   }
 };
 (Object.keys(EXPANDED_LEGACY_TRANSLATIONS) as LanguageCode[]).forEach((lang) => {
@@ -1266,17 +1266,17 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
 const CORE_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
   id: {
     'Profile':'Profil','Kelola akun, wallet, dan aktivitas kamu.':'Kelola akun, wallet, dan aktivitas kamu.','User ID = Wallet Address':'ID Pengguna = Alamat Wallet','Available':'Tersedia','Locked':'Terkunci','Withdraw':'Penarikan','Ajukan penarikan':'Ajukan penarikan','Registration Bonus':'Bonus Pendaftaran','Bonus tersedia dan belum diklaim.':'Bonus tersedia dan belum diklaim.','Available Balance':'Saldo Tersedia','Bagikan link ini untuk mengundang user baru.':'Bagikan link ini untuk mengundang user baru.','Event Participation Status':'Status Partisipasi Event','Belum ada event yang diikuti.':'Belum ada event yang diikuti.','Deposit, withdrawal, lock, reward & bonus':'Deposit, penarikan, lock, reward & bonus','Belum ada transaksi.':'Belum ada transaksi.','Submit Withdrawal':'Ajukan Penarikan','Upload / Create Post':'Upload / Buat Post',
-    'TOP USERS RANKED':'PERINGKAT PENGGUNA TERATAS','TOTAL REFERRALS':'TOTAL REFERRAL','BONUS BALANCE':'SALDO BONUS','INVITE FRIENDS â€” EARN NOW':'UNDANG TEMAN â€” DAPATKAN REWARD','Privacy Policy':'Kebijakan Privasi','Last updated: October 1, 2026':'Terakhir diperbarui: 1 Oktober 2026','Terms & Conditions':'Syarat & Ketentuan','Please read these terms before creating your SYS STREAM account.':'Baca ketentuan ini sebelum membuat akun SYS STREAM.','Remember me':'Ingat saya','or Connect with Crypto Wallet':'atau Hubungkan dengan Crypto Wallet','Connect Wallet':'Hubungkan Wallet',"Don't have an account? ":'Belum punya akun? ','EVM Wallet Recovery Phrase':'Recovery Phrase EVM Wallet','Wallet Address':'Alamat Wallet','Recovery Phrase':'Recovery Phrase','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.'
+    'TOP USERS RANKED':'PERINGKAT PENGGUNA TERATAS','TOTAL REFERRALS':'TOTAL REFERRAL','BONUS BALANCE':'SALDO BONUS','INVITE FRIENDS â€” EARN NOW':'UNDANG TEMAN — DAPATKAN REWARD','Privacy Policy':'Kebijakan Privasi','Last updated: October 1, 2026':'Terakhir diperbarui: 1 Oktober 2026','Terms & Conditions':'Syarat & Ketentuan','Please read these terms before creating your SYS STREAM account.':'Baca ketentuan ini sebelum membuat akun SYS STREAM.','Remember me':'Ingat saya','or Connect with Crypto Wallet':'atau Hubungkan dengan Crypto Wallet','Connect Wallet':'Hubungkan Wallet',"Don't have an account? ":'Belum punya akun? ','EVM Wallet Recovery Phrase':'Recovery Phrase EVM Wallet','Wallet Address':'Alamat Wallet','Recovery Phrase':'Recovery Phrase','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.'
   },
   en: {
-    'Profile':'Profile','Kelola akun, wallet, dan aktivitas kamu.':'Manage your account, wallet, and activity.','User ID = Wallet Address':'User ID = Wallet Address','Available':'Available','Locked':'Locked','Withdraw':'Withdraw','Ajukan penarikan':'Request Withdrawal','Registration Bonus':'Registration Bonus','Bonus tersedia dan belum diklaim.':'Bonus is available and has not been claimed.','Available Balance':'Available Balance','Bagikan link ini untuk mengundang user baru.':'Share this link to invite new users.','Event Participation Status':'Event Participation Status','Belum ada event yang diikuti.':'No events joined yet.','Deposit, withdrawal, lock, reward & bonus':'Deposit, withdrawal, lock, reward & bonus','Belum ada transaksi.':'No transactions yet.','Submit Withdrawal':'Submit Withdrawal','Upload / Create Post':'Upload / Create Post','TOP USERS RANKED':'TOP USERS RANKED','TOTAL REFERRALS':'TOTAL REFERRALS','BONUS BALANCE':'BONUS BALANCE','INVITE FRIENDS â€” EARN NOW':'INVITE FRIENDS â€” EARN NOW','Privacy Policy':'Privacy Policy','Last updated: October 1, 2026':'Last updated: October 1, 2026','Terms & Conditions':'Terms & Conditions','Please read these terms before creating your SYS STREAM account.':'Please read these terms before creating your SYS STREAM account.','Remember me':'Remember me','or Connect with Crypto Wallet':'or Connect with Crypto Wallet','Connect Wallet':'Connect Wallet',"Don't have an account? ":"Don't have an account? ",'EVM Wallet Recovery Phrase':'EVM Wallet Recovery Phrase','Wallet Address':'Wallet Address','Recovery Phrase':'Recovery Phrase'
+    'Profile':'Profile','Kelola akun, wallet, dan aktivitas kamu.':'Manage your account, wallet, and activity.','User ID = Wallet Address':'User ID = Wallet Address','Available':'Available','Locked':'Locked','Withdraw':'Withdraw','Ajukan penarikan':'Request Withdrawal','Registration Bonus':'Registration Bonus','Bonus tersedia dan belum diklaim.':'Bonus is available and has not been claimed.','Available Balance':'Available Balance','Bagikan link ini untuk mengundang user baru.':'Share this link to invite new users.','Event Participation Status':'Event Participation Status','Belum ada event yang diikuti.':'No events joined yet.','Deposit, withdrawal, lock, reward & bonus':'Deposit, withdrawal, lock, reward & bonus','Belum ada transaksi.':'No transactions yet.','Submit Withdrawal':'Submit Withdrawal','Upload / Create Post':'Upload / Create Post','TOP USERS RANKED':'TOP USERS RANKED','TOTAL REFERRALS':'TOTAL REFERRALS','BONUS BALANCE':'BONUS BALANCE','INVITE FRIENDS â€” EARN NOW':'INVITE FRIENDS — EARN NOW','Privacy Policy':'Privacy Policy','Last updated: October 1, 2026':'Last updated: October 1, 2026','Terms & Conditions':'Terms & Conditions','Please read these terms before creating your SYS STREAM account.':'Please read these terms before creating your SYS STREAM account.','Remember me':'Remember me','or Connect with Crypto Wallet':'or Connect with Crypto Wallet','Connect Wallet':'Connect Wallet',"Don't have an account? ":"Don't have an account? ",'EVM Wallet Recovery Phrase':'EVM Wallet Recovery Phrase','Wallet Address':'Wallet Address','Recovery Phrase':'Recovery Phrase'
   },
-  es: {'Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Administra tu cuenta, billetera y actividad.','User ID = Wallet Address':'ID de usuario = direcciÃ³n de billetera','Available':'Disponible','Locked':'Bloqueado','Withdraw':'Retirar','Registration Bonus':'Bono de registro','Available Balance':'Saldo disponible','Event Participation Status':'Estado de participaciÃ³n en eventos','Transaction History':'Historial de transacciones','Privacy Policy':'PolÃ­tica de privacidad','Terms & Conditions':'TÃ©rminos y condiciones','Remember me':'RecuÃ©rdame','Connect Wallet':'Conectar billetera','Wallet Address':'DirecciÃ³n de billetera','Recovery Phrase':'Frase de recuperaciÃ³n'},
-  pt: {'Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gerencie sua conta, carteira e atividade.','User ID = Wallet Address':'ID do usuÃ¡rio = endereÃ§o da carteira','Available':'DisponÃ­vel','Locked':'Bloqueado','Withdraw':'Saque','Registration Bonus':'BÃ´nus de registro','Available Balance':'Saldo disponÃ­vel','Event Participation Status':'Status de participaÃ§Ã£o no evento','Transaction History':'HistÃ³rico de transaÃ§Ãµes','Privacy Policy':'PolÃ­tica de privacidade','Terms & Conditions':'Termos e condiÃ§Ãµes','Remember me':'Lembrar de mim','Connect Wallet':'Conectar carteira','Wallet Address':'EndereÃ§o da carteira','Recovery Phrase':'Frase de recuperaÃ§Ã£o'},
+  es: {'Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Administra tu cuenta, billetera y actividad.','User ID = Wallet Address':'ID de usuario = dirección de billetera','Available':'Disponible','Locked':'Bloqueado','Withdraw':'Retirar','Registration Bonus':'Bono de registro','Available Balance':'Saldo disponible','Event Participation Status':'Estado de participación en eventos','Transaction History':'Historial de transacciones','Privacy Policy':'Política de privacidad','Terms & Conditions':'Términos y condiciones','Remember me':'Recuérdame','Connect Wallet':'Conectar billetera','Wallet Address':'Dirección de billetera','Recovery Phrase':'Frase de recuperación'},
+  pt: {'Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gerencie sua conta, carteira e atividade.','User ID = Wallet Address':'ID do usuário = endereço da carteira','Available':'Disponível','Locked':'Bloqueado','Withdraw':'Saque','Registration Bonus':'Bônus de registro','Available Balance':'Saldo disponível','Event Participation Status':'Status de participação no evento','Transaction History':'Histórico de transações','Privacy Policy':'Política de privacidade','Terms & Conditions':'Termos e condições','Remember me':'Lembrar de mim','Connect Wallet':'Conectar carteira','Wallet Address':'Endereço da carteira','Recovery Phrase':'Frase de recuperação'},
   zh: {'Profile':'ä¸ªäººèµ„æ–™','Kelola akun, wallet, dan aktivitas kamu.':'ç®¡ç†æ‚¨çš„è´¦æˆ·ã€é’±åŒ…å’Œæ´»åŠ¨ã€‚','User ID = Wallet Address':'ç”¨æˆ· ID = é’±åŒ…åœ°å€','Available':'å¯ç”¨','Locked':'å·²é”å®š','Withdraw':'æçŽ°','Registration Bonus':'æ³¨å†Œå¥–åŠ±','Available Balance':'å¯ç”¨ä½™é¢','Event Participation Status':'æ´»åŠ¨å‚ä¸ŽçŠ¶æ€','Transaction History':'äº¤æ˜“è®°å½•','Privacy Policy':'éšç§æ”¿ç­–','Terms & Conditions':'æ¡æ¬¾ä¸Žæ¡ä»¶','Remember me':'è®°ä½æˆ‘','Connect Wallet':'è¿žæŽ¥é’±åŒ…','Wallet Address':'é’±åŒ…åœ°å€','Recovery Phrase':'åŠ©è®°è¯'},
   ja: {'Profile':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Kelola akun, wallet, dan aktivitas kamu.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã€ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ç®¡ç†ã—ã¾ã™ã€‚','User ID = Wallet Address':'ãƒ¦ãƒ¼ã‚¶ãƒ¼ID = ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Available':'åˆ©ç”¨å¯èƒ½','Locked':'ãƒ­ãƒƒã‚¯æ¸ˆã¿','Withdraw':'å‡ºé‡‘','Registration Bonus':'ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹','Available Balance':'åˆ©ç”¨å¯èƒ½æ®‹é«˜','Event Participation Status':'ã‚¤ãƒ™ãƒ³ãƒˆå‚åŠ çŠ¶æ³','Transaction History':'å–å¼•å±¥æ­´','Privacy Policy':'ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼','Terms & Conditions':'åˆ©ç”¨è¦ç´„','Remember me':'ãƒ­ã‚°ã‚¤ãƒ³çŠ¶æ…‹ã‚’ä¿æŒ','Connect Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Wallet Address':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Recovery Phrase':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚º'},
   ko: {'Profile':'í”„ë¡œí•„','Kelola akun, wallet, dan aktivitas kamu.':'ê³„ì •, ì§€ê°‘ ë° í™œë™ì„ ê´€ë¦¬í•˜ì„¸ìš”.','User ID = Wallet Address':'ì‚¬ìš©ìž ID = ì§€ê°‘ ì£¼ì†Œ','Available':'ì‚¬ìš© ê°€ëŠ¥','Locked':'ìž ê¹€','Withdraw':'ì¶œê¸ˆ','Registration Bonus':'ê°€ìž… ë³´ë„ˆìŠ¤','Available Balance':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡','Event Participation Status':'ì´ë²¤íŠ¸ ì°¸ì—¬ ìƒíƒœ','Transaction History':'ê±°ëž˜ ë‚´ì—­','Privacy Policy':'ê°œì¸ì •ë³´ ë³´í˜¸ì •ì±…','Terms & Conditions':'ì´ìš©ì•½ê´€','Remember me':'ë¡œê·¸ì¸ ìƒíƒœ ìœ ì§€','Connect Wallet':'ì§€ê°‘ ì—°ê²°','Wallet Address':'ì§€ê°‘ ì£¼ì†Œ','Recovery Phrase':'ë³µêµ¬ ë¬¸êµ¬'},
-  ar: {'Profile':'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ','Kelola akun, wallet, dan aktivitas kamu.':'Ø¥Ø¯Ø§Ø±Ø© Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙ…Ø­ÙØ¸ØªÙƒ ÙˆÙ†Ø´Ø§Ø·Ùƒ.','User ID = Wallet Address':'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… = Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø©','Available':'Ù…ØªØ§Ø­','Locked':'Ù…Ù‚ÙÙ„','Withdraw':'Ø³Ø­Ø¨','Registration Bonus':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„','Available Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­','Event Participation Status':'Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø´Ø§Ø±ÙƒØ© ÙÙŠ Ø§Ù„ÙØ¹Ø§Ù„ÙŠØ§Øª','Transaction History':'Ø³Ø¬Ù„ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª','Privacy Policy':'Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©','Terms & Conditions':'Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…','Remember me':'ØªØ°ÙƒØ±Ù†ÙŠ','Connect Wallet':'Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©','Wallet Address':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø©','Recovery Phrase':'Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯'}
+  ar: {'Profile':'الملف الشخصي','Kelola akun, wallet, dan aktivitas kamu.':'إدارة حسابك ومحفظتك ونشاطك.','User ID = Wallet Address':'معرّف المستخدم = عنوان المحفظة','Available':'متاح','Locked':'مقفل','Withdraw':'سحب','Registration Bonus':'مكافأة التسجيل','Available Balance':'الرصيد المتاح','Event Participation Status':'حالة المشاركة في الفعاليات','Transaction History':'سجل المعاملات','Privacy Policy':'سياسة الخصوصية','Terms & Conditions':'الشروط والأحكام','Remember me':'تذكرني','Connect Wallet':'ربط المحفظة','Wallet Address':'عنوان المحفظة','Recovery Phrase':'عبارة الاسترداد'}
 };
 (Object.keys(CORE_PAGE_TRANSLATIONS) as LanguageCode[]).forEach((lang) => {
   PAGE_UI_TRANSLATIONS[lang] = { ...CORE_PAGE_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
@@ -1312,36 +1312,36 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Halo,':'Hello,','Buka Live Room â†’':'Open Live Room â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'Registration bonus is still available to claim.'
   },
   es: {
-    'SYS STREAM LOADING':'CARGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronizaciÃ³n de TikTok Live + conexiÃ³n Cloudflare D1',
-    'Live Room':'Sala en vivo','Live Room Aktif':'Sala en vivo activa','Live belum aktif':'La sala en vivo no estÃ¡ activa',
-    'Masuk untuk bergabung ke Live Room':'Inicia sesiÃ³n para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada cuenta tiene su propio perfil e identidad en la sala.',
+    'SYS STREAM LOADING':'CARGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronización de TikTok Live + conexión Cloudflare D1',
+    'Live Room':'Sala en vivo','Live Room Aktif':'Sala en vivo activa','Live belum aktif':'La sala en vivo no está activa',
+    'Masuk untuk bergabung ke Live Room':'Inicia sesión para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada cuenta tiene su propio perfil e identidad en la sala.',
     'Peserta Live':'Participantes en vivo','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Solo se muestran las cuentas que realmente se unieron.',
-    'Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'AÃºn no hay otros participantes.','Belum ada peserta.':'No hay participantes.',
-    'Profil akun Anda':'Perfil de tu cuenta','Belum ada deskripsi room dari pemilik room.':'AÃºn no hay descripciÃ³n del propietario.',
-    'Hanya data live produksi yang ditampilkan.':'Solo se muestran datos de producciÃ³n.','Tidak ada video atau streamer contoh.':'No se muestra ningÃºn video o streamer de ejemplo.',
-    'LOGIN / REGISTER':'INICIAR SESIÃ“N / REGISTRARSE','CHAT':'CHAT','PESERTA':'PARTICIPANTES','Kirim':'Enviar','Tulis pesan':'Escribe un mensaje',
-    'Like gagal dikirim.':'No se pudo enviar el Me gusta.','Gagal memuat live room.':'No se pudo cargar la sala en vivo.','Aksi live room gagal.':'La acciÃ³n de la sala en vivo fallÃ³.',
-    'Masukkan alamat wallet tujuan.':'Introduce la direcciÃ³n de la billetera.','Saldo tersedia tidak mencukupi.':'Saldo disponible insuficiente.','Penarikan gagal.':'Retiro fallido.',
-    'Halo,':'Hola,','Buka Live Room â†’':'Abrir sala en vivo â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'El bono de registro todavÃ­a se puede reclamar.'
+    'Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'Aún no hay otros participantes.','Belum ada peserta.':'No hay participantes.',
+    'Profil akun Anda':'Perfil de tu cuenta','Belum ada deskripsi room dari pemilik room.':'Aún no hay descripción del propietario.',
+    'Hanya data live produksi yang ditampilkan.':'Solo se muestran datos de producción.','Tidak ada video atau streamer contoh.':'No se muestra ningún video o streamer de ejemplo.',
+    'LOGIN / REGISTER':'INICIAR SESIÓN / REGISTRARSE','CHAT':'CHAT','PESERTA':'PARTICIPANTES','Kirim':'Enviar','Tulis pesan':'Escribe un mensaje',
+    'Like gagal dikirim.':'No se pudo enviar el Me gusta.','Gagal memuat live room.':'No se pudo cargar la sala en vivo.','Aksi live room gagal.':'La acción de la sala en vivo falló.',
+    'Masukkan alamat wallet tujuan.':'Introduce la dirección de la billetera.','Saldo tersedia tidak mencukupi.':'Saldo disponible insuficiente.','Penarikan gagal.':'Retiro fallido.',
+    'Halo,':'Hola,','Buka Live Room â†’':'Abrir sala en vivo â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'El bono de registro todavía se puede reclamar.'
   },
   pt: {
-    'SYS STREAM LOADING':'CARREGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronizaÃ§Ã£o do TikTok Live + conexÃ£o Cloudflare D1',
-    'Live Room':'Sala ao vivo','Live Room Aktif':'Sala ao vivo ativa','Live belum aktif':'A sala ao vivo nÃ£o estÃ¡ ativa',
-    'Masuk untuk bergabung ke Live Room':'Entre para participar da sala ao vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada conta tem seu prÃ³prio perfil e identidade na sala.',
-    'Peserta Live':'Participantes da live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Apenas contas que realmente entraram sÃ£o exibidas.',
-    'Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda nÃ£o hÃ¡ outros participantes.','Belum ada peserta.':'Ainda nÃ£o hÃ¡ participantes.',
-    'Profil akun Anda':'Perfil da sua conta','Belum ada deskripsi room dari pemilik room.':'Ainda nÃ£o hÃ¡ descriÃ§Ã£o do proprietÃ¡rio.',
-    'Hanya data live produksi yang ditampilkan.':'Apenas dados de produÃ§Ã£o sÃ£o exibidos.','Tidak ada video atau streamer contoh.':'Nenhum vÃ­deo ou streamer de exemplo Ã© exibido.',
+    'SYS STREAM LOADING':'CARREGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando sincronização do TikTok Live + conexão Cloudflare D1',
+    'Live Room':'Sala ao vivo','Live Room Aktif':'Sala ao vivo ativa','Live belum aktif':'A sala ao vivo não está ativa',
+    'Masuk untuk bergabung ke Live Room':'Entre para participar da sala ao vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Cada conta tem seu próprio perfil e identidade na sala.',
+    'Peserta Live':'Participantes da live','Hanya akun yang benar-benar bergabung yang ditampilkan.':'Apenas contas que realmente entraram são exibidas.',
+    'Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda não há outros participantes.','Belum ada peserta.':'Ainda não há participantes.',
+    'Profil akun Anda':'Perfil da sua conta','Belum ada deskripsi room dari pemilik room.':'Ainda não há descrição do proprietário.',
+    'Hanya data live produksi yang ditampilkan.':'Apenas dados de produção são exibidos.','Tidak ada video atau streamer contoh.':'Nenhum vídeo ou streamer de exemplo é exibido.',
     'LOGIN / REGISTER':'ENTRAR / REGISTRAR','CHAT':'CHAT','PESERTA':'PARTICIPANTES','Kirim':'Enviar','Tulis pesan':'Digite uma mensagem',
-    'Like gagal dikirim.':'NÃ£o foi possÃ­vel enviar a curtida.','Gagal memuat live room.':'Falha ao carregar a sala ao vivo.','Aksi live room gagal.':'A aÃ§Ã£o da sala ao vivo falhou.',
-    'Masukkan alamat wallet tujuan.':'Informe o endereÃ§o da carteira.','Saldo tersedia tidak mencukupi.':'Saldo disponÃ­vel insuficiente.','Penarikan gagal.':'Falha no saque.',
-    'Halo,':'OlÃ¡,','Buka Live Room â†’':'Abrir sala ao vivo â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'O bÃ´nus de registro ainda pode ser resgatado.'
+    'Like gagal dikirim.':'Não foi possível enviar a curtida.','Gagal memuat live room.':'Falha ao carregar a sala ao vivo.','Aksi live room gagal.':'A ação da sala ao vivo falhou.',
+    'Masukkan alamat wallet tujuan.':'Informe o endereço da carteira.','Saldo tersedia tidak mencukupi.':'Saldo disponível insuficiente.','Penarikan gagal.':'Falha no saque.',
+    'Halo,':'Olá,','Buka Live Room â†’':'Abrir sala ao vivo â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'O bônus de registro ainda pode ser resgatado.'
   },
   zh: {
     'SYS STREAM LOADING':'SYS STREAM åŠ è½½ä¸­','Initializing TikTok Live Sync + Cloudflare D1 Connection':'æ­£åœ¨åˆå§‹åŒ– TikTok Live åŒæ­¥ + Cloudflare D1 è¿žæŽ¥',    'Live Room':'ç›´æ’­é—´','Live Room Aktif':'ç›´æ’­é—´å·²å¼€å¯','Live belum aktif':'ç›´æ’­é—´å°šæœªå¼€å¯',
     'Masuk untuk bergabung ke Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'æ¯ä¸ªè´¦æˆ·åœ¨ç›´æ’­é—´éƒ½æœ‰ç‹¬ç«‹çš„ä¸ªäººèµ„æ–™å’Œèº«ä»½ã€‚',
     'Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ä»…æ˜¾ç¤ºå®žé™…åŠ å…¥çš„è´¦æˆ·ã€‚',
-    'Memuat peserta...':'æ­£åœ¨åŠ è½½å‚ä¸Žè€…â€¦','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚',
+    'Memuat peserta...':'正在加载参与者…','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚',
     'Profil akun Anda':'æ‚¨çš„è´¦æˆ·èµ„æ–™','Belum ada deskripsi room dari pemilik room.':'æš‚æ— æˆ¿ä¸»æä¾›çš„æˆ¿é—´æè¿°ã€‚',
     'Hanya data live produksi yang ditampilkan.':'ä»…æ˜¾ç¤ºç”Ÿäº§çŽ¯å¢ƒç›´æ’­æ•°æ®ã€‚','Tidak ada video atau streamer contoh.':'ä¸æ˜¾ç¤ºç¤ºä¾‹è§†é¢‘æˆ–ä¸»æ’­ã€‚',
     'LOGIN / REGISTER':'ç™»å½• / æ³¨å†Œ','CHAT':'èŠå¤©','PESERTA':'å‚ä¸Žè€…','Kirim':'å‘é€','Tulis pesan':'è¾“å…¥æ¶ˆæ¯',
@@ -1354,7 +1354,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Live Room':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ','Live Room Aktif':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã¯æœ‰åŠ¹ã§ã™','Live belum aktif':'ãƒ©ã‚¤ãƒ–é…ä¿¡ã¯ã¾ã æœ‰åŠ¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“',
     'Masuk untuk bergabung ke Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'å„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ã¯ãƒ«ãƒ¼ãƒ å†…ã§å›ºæœ‰ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã¨IDãŒã‚ã‚Šã¾ã™ã€‚',
     'Peserta Live':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Hanya akun yang benar-benar bergabung yang ditampilkan.':'å®Ÿéš›ã«å‚åŠ ã—ãŸã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚',
-    'Memuat peserta...':'å‚åŠ è€…ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚',
+    'Memuat peserta...':'参加者を読み込み中…','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚',
     'Profil akun Anda':'ã‚ãªãŸã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Belum ada deskripsi room dari pemilik room.':'ãƒ«ãƒ¼ãƒ æ‰€æœ‰è€…ã®èª¬æ˜Žã¯ã¾ã ã‚ã‚Šã¾ã›ã‚“ã€‚',
     'Hanya data live produksi yang ditampilkan.':'æœ¬ç•ªã®ãƒ©ã‚¤ãƒ–ãƒ‡ãƒ¼ã‚¿ã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚','Tidak ada video atau streamer contoh.':'ã‚µãƒ³ãƒ—ãƒ«å‹•ç”»ã‚„é…ä¿¡è€…ã¯è¡¨ç¤ºã•ã‚Œã¾ã›ã‚“ã€‚',
     'LOGIN / REGISTER':'ãƒ­ã‚°ã‚¤ãƒ³ / ç™»éŒ²','CHAT':'ãƒãƒ£ãƒƒãƒˆ','PESERTA':'å‚åŠ è€…','Kirim':'é€ä¿¡','Tulis pesan':'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å…¥åŠ›',
@@ -1367,7 +1367,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Live Room':'ë¼ì´ë¸Œ ë£¸','Live Room Aktif':'ë¼ì´ë¸Œ ë£¸ í™œì„±','Live belum aktif':'ë¼ì´ë¸Œ ë£¸ì´ ì•„ì§ í™œì„±í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤',
     'Masuk untuk bergabung ke Live Room':'ë¡œê·¸ì¸í•˜ì—¬ ë¼ì´ë¸Œ ë£¸ì— ì°¸ì—¬í•˜ì„¸ìš”','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'ê° ê³„ì •ì€ ë£¸ì—ì„œ ê³ ìœ í•œ í”„ë¡œí•„ê³¼ ì‹ ì›ì„ ê°€ì§‘ë‹ˆë‹¤.',
     'Peserta Live':'ë¼ì´ë¸Œ ì°¸ê°€ìž','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ì‹¤ì œë¡œ ì°¸ì—¬í•œ ê³„ì •ë§Œ í‘œì‹œë©ë‹ˆë‹¤.',
-    'Memuat peserta...':'ì°¸ê°€ìž ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘â€¦','Belum ada peserta lain.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Belum ada peserta.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.',
+    'Memuat peserta...':'참가자 불러오는 중…','Belum ada peserta lain.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Belum ada peserta.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.',
     'Profil akun Anda':'ë‚´ ê³„ì • í”„ë¡œí•„','Belum ada deskripsi room dari pemilik room.':'ë£¸ ì†Œìœ ìžì˜ ì„¤ëª…ì´ ì•„ì§ ì—†ìŠµë‹ˆë‹¤.',
     'Hanya data live produksi yang ditampilkan.':'í”„ë¡œë•ì…˜ ë¼ì´ë¸Œ ë°ì´í„°ë§Œ í‘œì‹œë©ë‹ˆë‹¤.','Tidak ada video atau streamer contoh.':'ìƒ˜í”Œ ì˜ìƒì´ë‚˜ ìŠ¤íŠ¸ë¦¬ë¨¸ëŠ” í‘œì‹œë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.',
     'LOGIN / REGISTER':'ë¡œê·¸ì¸ / ê°€ìž…','CHAT':'ì±„íŒ…','PESERTA':'ì°¸ê°€ìž','Kirim':'ì „ì†¡','Tulis pesan':'ë©”ì‹œì§€ ìž…ë ¥',
@@ -1376,17 +1376,17 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Halo,':'ì•ˆë…•í•˜ì„¸ìš”,','Buka Live Room â†’':'ë¼ì´ë¸Œ ë£¸ ì—´ê¸° â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'ê°€ìž… ë³´ë„ˆìŠ¤ë¥¼ ì•„ì§ ë°›ì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.'
   },
   ar: {
-    'SYS STREAM LOADING':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'Ø¬Ø§Ø±Ù ØªÙ‡ÙŠØ¦Ø© Ù…Ø²Ø§Ù…Ù†Ø© TikTok Live + Ø§ØªØµØ§Ù„ Cloudflare D1',
-    'Live Room':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Live Room Aktif':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø© Ù†Ø´Ø·Ø©','Live belum aktif':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø© ØºÙŠØ± Ù†Ø´Ø·Ø©',
-    'Masuk untuk bergabung ke Live Room':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'Ù„ÙƒÙ„ Ø­Ø³Ø§Ø¨ Ù…Ù„Ù ÙˆÙ‡ÙˆÙŠØ© Ø®Ø§ØµØ© Ø¨Ù‡ Ø¯Ø§Ø®Ù„ Ø§Ù„ØºØ±ÙØ©.',
-    'Peserta Live':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† ÙÙŠ Ø§Ù„Ø¨Ø«','Hanya akun yang benar-benar bergabung yang ditampilkan.':'ØªØ¸Ù‡Ø± ÙÙ‚Ø· Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ØªÙŠ Ø§Ù†Ø¶Ù…Øª ÙØ¹Ù„ÙŠÙ‹Ø§.',
-    'Memuat peserta...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†â€¦','Belum ada peserta lain.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¢Ø®Ø±ÙˆÙ† Ø¨Ø¹Ø¯.','Belum ada peserta.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ†.',
-    'Profil akun Anda':'Ù…Ù„Ù Ø­Ø³Ø§Ø¨Ùƒ','Belum ada deskripsi room dari pemilik room.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ ÙˆØµÙ Ù…Ù† Ù…Ø§Ù„Ùƒ Ø§Ù„ØºØ±ÙØ© Ø¨Ø¹Ø¯.',
-    'Hanya data live produksi yang ditampilkan.':'ØªØ¸Ù‡Ø± ÙÙ‚Ø· Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¨Ø« Ø§Ù„Ø¥Ù†ØªØ§Ø¬ÙŠØ©.','Tidak ada video atau streamer contoh.':'Ù„Ø§ ÙŠØªÙ… Ø¹Ø±Ø¶ ÙÙŠØ¯ÙŠÙˆ Ø£Ùˆ Ù…Ù‚Ø¯Ù… Ø¨Ø« ØªØ¬Ø±ÙŠØ¨ÙŠ.',
-    'LOGIN / REGISTER':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ / Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨','CHAT':'Ø§Ù„Ø¯Ø±Ø¯Ø´Ø©','PESERTA':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ†','Kirim':'Ø¥Ø±Ø³Ø§Ù„','Tulis pesan':'Ø§ÙƒØªØ¨ Ø±Ø³Ø§Ù„Ø©',
-    'Like gagal dikirim.':'ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¥Ø¹Ø¬Ø§Ø¨.','Gagal memuat live room.':'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©.','Aksi live room gagal.':'ÙØ´Ù„ Ø¥Ø¬Ø±Ø§Ø¡ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©.',
-    'Masukkan alamat wallet tujuan.':'Ø£Ø¯Ø®Ù„ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ©.','Saldo tersedia tidak mencukupi.':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ ØºÙŠØ± ÙƒØ§ÙÙ.','Penarikan gagal.':'ÙØ´Ù„ Ø§Ù„Ø³Ø­Ø¨.',
-    'Halo,':'Ù…Ø±Ø­Ø¨Ø§Ù‹ØŒ','Buka Live Room â†’':'ÙØªØ­ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø© â†’','Bonus pendaftaran masih tersedia untuk diklaim.':'Ù„Ø§ ØªØ²Ø§Ù„ Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ù…ØªØ§Ø­Ø© Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù….'
+    'SYS STREAM LOADING':'جارٍ تحميل SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection':'جارٍ تهيئة مزامنة TikTok Live + اتصال Cloudflare D1',
+    'Live Room':'الغرفة المباشرة','Live Room Aktif':'الغرفة المباشرة نشطة','Live belum aktif':'الغرفة المباشرة غير نشطة',
+    'Masuk untuk bergabung ke Live Room':'سجّل الدخول للانضمام إلى الغرفة المباشرة','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.':'لكل حساب ملف وهوية خاصة به داخل الغرفة.',
+    'Peserta Live':'المشاركون في البث','Hanya akun yang benar-benar bergabung yang ditampilkan.':'تظهر فقط الحسابات التي انضمت فعليًا.',
+    'Memuat peserta...':'جارٍ تحميل المشاركين…','Belum ada peserta lain.':'لا يوجد مشاركون آخرون بعد.','Belum ada peserta.':'لا يوجد مشاركون.',
+    'Profil akun Anda':'ملف حسابك','Belum ada deskripsi room dari pemilik room.':'لا يوجد وصف من مالك الغرفة بعد.',
+    'Hanya data live produksi yang ditampilkan.':'تظهر فقط بيانات البث الإنتاجية.','Tidak ada video atau streamer contoh.':'لا يتم عرض فيديو أو مقدم بث تجريبي.',
+    'LOGIN / REGISTER':'تسجيل الدخول / إنشاء حساب','CHAT':'الدردشة','PESERTA':'المشاركون','Kirim':'إرسال','Tulis pesan':'اكتب رسالة',
+    'Like gagal dikirim.':'تعذر إرسال الإعجاب.','Gagal memuat live room.':'تعذر تحميل الغرفة المباشرة.','Aksi live room gagal.':'فشل إجراء الغرفة المباشرة.',
+    'Masukkan alamat wallet tujuan.':'أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.':'الرصيد المتاح غير كافٍ.','Penarikan gagal.':'فشل السحب.',
+    'Halo,':'مرحباً،','Buka Live Room â†’':'فتح الغرفة المباشرة →','Bonus pendaftaran masih tersedia untuk diklaim.':'لا تزال مكافأة التسجيل متاحة للاستلام.'
   }
 };
 
@@ -1400,21 +1400,21 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
 Object.assign(translations.id,{ 'Leaderboard & Referral':'Papan Peringkat & Referral','Leaderboard':'Papan Peringkat','Referral Event':'Event Referral','Production Leaderboard':'Papan Peringkat Produksi','No production ranking data is available yet. Dummy ranking data is intentionally disabled.':'Data peringkat produksi belum tersedia. Data peringkat dummy sengaja dinonaktifkan.','Referral participation is optional. Use your wallet identity as your referral identifier.':'Partisipasi referral bersifat opsional. Gunakan identitas wallet sebagai identitas referral.','Your Wallet / Referral ID':'Wallet / ID Referral Anda','Wallet not connected':'Wallet belum terhubung','Copy Referral ID':'Salin ID Referral','Live Referral Data':'Data Referral Live','Only verified production activity will be shown here.':'Hanya aktivitas produksi yang terverifikasi yang akan ditampilkan di sini.','Code Copied!':'Kode Disalin!','Referral code copied to clipboard.':'Kode referral berhasil disalin ke clipboard.','Referral':'Referral','No new notifications.':'Tidak ada notifikasi baru.'});
 Object.assign(translations.en,{ 'Leaderboard & Referral':'Leaderboard & Referral','Leaderboard':'Leaderboard','Referral Event':'Referral Event','Production Leaderboard':'Production Leaderboard','No production ranking data is available yet. Dummy ranking data is intentionally disabled.':'No production ranking data is available yet. Dummy ranking data is intentionally disabled.','Referral participation is optional. Use your wallet identity as your referral identifier.':'Referral participation is optional. Use your wallet identity as your referral identifier.','Your Wallet / Referral ID':'Your Wallet / Referral ID','Wallet not connected':'Wallet not connected','Copy Referral ID':'Copy Referral ID','Live Referral Data':'Live Referral Data','Only verified production activity will be shown here.':'Only verified production activity will be shown here.','Code Copied!':'Code Copied!','Referral code copied to clipboard.':'Referral code copied to clipboard.','Referral':'Referral','No new notifications.':'No new notifications.'});
-Object.assign(translations.es,{ 'Leaderboard & Referral':'ClasificaciÃ³n y referidos','Leaderboard':'ClasificaciÃ³n','Referral Event':'Evento de referidos','Production Leaderboard':'ClasificaciÃ³n de producciÃ³n','Wallet not connected':'Wallet no conectada','Copy Referral ID':'Copiar ID de referido','Live Referral Data':'Datos de referidos en vivo','Referral':'Referidos','No new notifications.':'No hay notificaciones nuevas.'});
-Object.assign(translations.pt,{ 'Leaderboard & Referral':'Ranking e indicaÃ§Ãµes','Leaderboard':'Ranking','Referral Event':'Evento de indicaÃ§Ãµes','Production Leaderboard':'Ranking de produÃ§Ã£o','Wallet not connected':'Carteira nÃ£o conectada','Copy Referral ID':'Copiar ID de indicaÃ§Ã£o','Live Referral Data':'Dados de indicaÃ§Ãµes ao vivo','Referral':'IndicaÃ§Ã£o','No new notifications.':'NÃ£o hÃ¡ novas notificaÃ§Ãµes.'});
+Object.assign(translations.es,{ 'Leaderboard & Referral':'Clasificación y referidos','Leaderboard':'Clasificación','Referral Event':'Evento de referidos','Production Leaderboard':'Clasificación de producción','Wallet not connected':'Wallet no conectada','Copy Referral ID':'Copiar ID de referido','Live Referral Data':'Datos de referidos en vivo','Referral':'Referidos','No new notifications.':'No hay notificaciones nuevas.'});
+Object.assign(translations.pt,{ 'Leaderboard & Referral':'Ranking e indicações','Leaderboard':'Ranking','Referral Event':'Evento de indicações','Production Leaderboard':'Ranking de produção','Wallet not connected':'Carteira não conectada','Copy Referral ID':'Copiar ID de indicação','Live Referral Data':'Dados de indicações ao vivo','Referral':'Indicação','No new notifications.':'Não há novas notificações.'});
 Object.assign(translations.zh,{ 'Leaderboard & Referral':'æŽ’è¡Œæ¦œä¸ŽæŽ¨è','Leaderboard':'æŽ’è¡Œæ¦œ','Referral Event':'æŽ¨èæ´»åŠ¨','Production Leaderboard':'ç”Ÿäº§æŽ’è¡Œæ¦œ','Wallet not connected':'é’±åŒ…æœªè¿žæŽ¥','Copy Referral ID':'å¤åˆ¶æŽ¨èID','Live Referral Data':'å®žæ—¶æŽ¨èæ•°æ®','Referral':'æŽ¨è','No new notifications.':'æ²¡æœ‰æ–°é€šçŸ¥ã€‚'});
 Object.assign(translations.ja,{ 'Leaderboard & Referral':'ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã¨ç´¹ä»‹','Leaderboard':'ãƒ©ãƒ³ã‚­ãƒ³ã‚°','Referral Event':'ç´¹ä»‹ã‚¤ãƒ™ãƒ³ãƒˆ','Production Leaderboard':'æœ¬ç•ªãƒ©ãƒ³ã‚­ãƒ³ã‚°','Wallet not connected':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Copy Referral ID':'ç´¹ä»‹IDã‚’ã‚³ãƒ”ãƒ¼','Live Referral Data':'ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ‡ãƒ¼ã‚¿','Referral':'ç´¹ä»‹','No new notifications.':'æ–°ã—ã„é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚'});
 Object.assign(translations.ko,{ 'Leaderboard & Referral':'ìˆœìœ„ ë° ì¶”ì²œ','Leaderboard':'ìˆœìœ„í‘œ','Referral Event':'ì¶”ì²œ ì´ë²¤íŠ¸','Production Leaderboard':'ìš´ì˜ ìˆœìœ„í‘œ','Wallet not connected':'ì§€ê°‘ì´ ì—°ê²°ë˜ì§€ ì•ŠìŒ','Copy Referral ID':'ì¶”ì²œ ID ë³µì‚¬','Live Referral Data':'ì‹¤ì‹œê°„ ì¶”ì²œ ë°ì´í„°','Referral':'ì¶”ì²œ','No new notifications.':'ìƒˆ ì•Œë¦¼ì´ ì—†ìŠµë‹ˆë‹¤.'});
-Object.assign(translations.ar,{ 'Leaderboard & Referral':'Ø§Ù„Ù…ØªØµØ¯Ø±ÙˆÙ† ÙˆØ§Ù„Ø¥Ø­Ø§Ù„Ø§Øª','Leaderboard':'Ø§Ù„Ù…ØªØµØ¯Ø±ÙˆÙ†','Referral Event':'Ø­Ø¯Ø« Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Production Leaderboard':'ØªØ±ØªÙŠØ¨ Ø§Ù„Ø¥Ù†ØªØ§Ø¬','Wallet not connected':'Ø§Ù„Ù…Ø­ÙØ¸Ø© ØºÙŠØ± Ù…ØªØµÙ„Ø©','Copy Referral ID':'Ù†Ø³Ø® Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Live Referral Data':'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¥Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Referral':'Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','No new notifications.':'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø¬Ø¯ÙŠØ¯Ø©.'});
+Object.assign(translations.ar,{ 'Leaderboard & Referral':'المتصدرون والإحالات','Leaderboard':'المتصدرون','Referral Event':'حدث الإحالة','Production Leaderboard':'ترتيب الإنتاج','Wallet not connected':'المحفظة غير متصلة','Copy Referral ID':'نسخ معرّف الإحالة','Live Referral Data':'بيانات الإحالة المباشرة','Referral':'الإحالة','No new notifications.':'لا توجد إشعارات جديدة.'});
 
 Object.assign(translations.id, {'Username, Email or Wallet':'Username, Email atau Wallet'});
 Object.assign(translations.en, {'Username, Email or Wallet':'Username, Email or Wallet'});
 Object.assign(translations.es, {'Username, Email or Wallet':'Usuario, correo o wallet'});
-Object.assign(translations.pt, {'Username, Email or Wallet':'UsuÃ¡rio, e-mail ou carteira'});
+Object.assign(translations.pt, {'Username, Email or Wallet':'Usuário, e-mail ou carteira'});
 Object.assign(translations.zh, {'Username, Email or Wallet':'ç”¨æˆ·åã€é‚®ç®±æˆ–é’±åŒ…'});
 Object.assign(translations.ja, {'Username, Email or Wallet':'ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€ãƒ¡ãƒ¼ãƒ«ã€ã¾ãŸã¯ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ'});
 Object.assign(translations.ko, {'Username, Email or Wallet':'ì‚¬ìš©ìž ì´ë¦„, ì´ë©”ì¼ ë˜ëŠ” ì§€ê°‘'});
-Object.assign(translations.ar, {'Username, Email or Wallet':'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø£Ùˆ Ø§Ù„Ù…Ø­ÙØ¸Ø©'});
+Object.assign(translations.ar, {'Username, Email or Wallet':'اسم المستخدم أو البريد أو المحفظة'});
 
 
 const ALL_PAGE_LABELS: Record<LanguageCode, Record<string,string>> = {
@@ -1423,10 +1423,10 @@ id:{
 },
 en:{},
 es:{
-'Back':'Volver','Back to account':'Volver a la cuenta','Legal':'Legal','Please read these terms before creating your SYS STREAM account.':'Lee estos tÃ©rminos antes de crear tu cuenta SYS STREAM.','Account & Security':'Cuenta y seguridad','Balance & Transactions':'Saldo y transacciones','Rules & Acceptance':'Reglas y aceptaciÃ³n','Acceptance of Terms':'AceptaciÃ³n de los tÃ©rminos','Eligibility & Account':'Elegibilidad y cuenta','Deposits & Digital Assets':'DepÃ³sitos y activos digitales','Available Balance & Locked Balance':'Saldo disponible y saldo bloqueado','Games, Rewards & Settlement':'Juegos, recompensas y liquidaciÃ³n','Prohibited Conduct':'Conducta prohibida','Account Review & Suspension':'RevisiÃ³n y suspensiÃ³n de cuenta','Service Availability':'Disponibilidad del servicio','Limitation of Liability':'LimitaciÃ³n de responsabilidad','Changes to These Terms':'Cambios en estos tÃ©rminos','Contact':'Contacto','Important:':'Importante:','Privacy Policy':'PolÃ­tica de privacidad','Scope':'Alcance','Information We Collect':'InformaciÃ³n que recopilamos','How We Use Information':'CÃ³mo usamos la informaciÃ³n','Blockchain and Payment Information':'InformaciÃ³n de blockchain y pagos','Sharing of Information':'Compartir informaciÃ³n','Data Security':'Seguridad de datos','Data Retention':'ConservaciÃ³n de datos','Your Choices and Rights':'Tus opciones y derechos','Cookies and Local Storage':'Cookies y almacenamiento local','Children':'Menores','Changes to This Policy':'Cambios en esta polÃ­tica','Last updated:':'Ãšltima actualizaciÃ³n:'
+'Back':'Volver','Back to account':'Volver a la cuenta','Legal':'Legal','Please read these terms before creating your SYS STREAM account.':'Lee estos términos antes de crear tu cuenta SYS STREAM.','Account & Security':'Cuenta y seguridad','Balance & Transactions':'Saldo y transacciones','Rules & Acceptance':'Reglas y aceptación','Acceptance of Terms':'Aceptación de los términos','Eligibility & Account':'Elegibilidad y cuenta','Deposits & Digital Assets':'Depósitos y activos digitales','Available Balance & Locked Balance':'Saldo disponible y saldo bloqueado','Games, Rewards & Settlement':'Juegos, recompensas y liquidación','Prohibited Conduct':'Conducta prohibida','Account Review & Suspension':'Revisión y suspensión de cuenta','Service Availability':'Disponibilidad del servicio','Limitation of Liability':'Limitación de responsabilidad','Changes to These Terms':'Cambios en estos términos','Contact':'Contacto','Important:':'Importante:','Privacy Policy':'Política de privacidad','Scope':'Alcance','Information We Collect':'Información que recopilamos','How We Use Information':'Cómo usamos la información','Blockchain and Payment Information':'Información de blockchain y pagos','Sharing of Information':'Compartir información','Data Security':'Seguridad de datos','Data Retention':'Conservación de datos','Your Choices and Rights':'Tus opciones y derechos','Cookies and Local Storage':'Cookies y almacenamiento local','Children':'Menores','Changes to This Policy':'Cambios en esta política','Last updated:':'Última actualización:'
 },
 pt:{
-'Back':'Voltar','Back to account':'Voltar para a conta','Legal':'JurÃ­dico','Please read these terms before creating your SYS STREAM account.':'Leia estes termos antes de criar sua conta SYS STREAM.','Account & Security':'Conta e seguranÃ§a','Balance & Transactions':'Saldo e transaÃ§Ãµes','Rules & Acceptance':'Regras e aceitaÃ§Ã£o','Acceptance of Terms':'AceitaÃ§Ã£o dos termos','Eligibility & Account':'Elegibilidade e conta','Deposits & Digital Assets':'DepÃ³sitos e ativos digitais','Available Balance & Locked Balance':'Saldo disponÃ­vel e saldo bloqueado','Games, Rewards & Settlement':'Jogos, recompensas e liquidaÃ§Ã£o','Prohibited Conduct':'Conduta proibida','Account Review & Suspension':'RevisÃ£o e suspensÃ£o da conta','Service Availability':'Disponibilidade do serviÃ§o','Limitation of Liability':'LimitaÃ§Ã£o de responsabilidade','Changes to These Terms':'AlteraÃ§Ãµes destes termos','Contact':'Contato','Important:':'Importante:','Privacy Policy':'PolÃ­tica de privacidade','Scope':'Escopo','Information We Collect':'InformaÃ§Ãµes coletadas','How We Use Information':'Como usamos as informaÃ§Ãµes','Blockchain and Payment Information':'InformaÃ§Ãµes de blockchain e pagamentos','Sharing of Information':'Compartilhamento de informaÃ§Ãµes','Data Security':'SeguranÃ§a de dados','Data Retention':'RetenÃ§Ã£o de dados','Your Choices and Rights':'Suas escolhas e direitos','Cookies and Local Storage':'Cookies e armazenamento local','Children':'CrianÃ§as','Changes to This Policy':'AlteraÃ§Ãµes desta polÃ­tica','Last updated:':'Ãšltima atualizaÃ§Ã£o:'
+'Back':'Voltar','Back to account':'Voltar para a conta','Legal':'Jurídico','Please read these terms before creating your SYS STREAM account.':'Leia estes termos antes de criar sua conta SYS STREAM.','Account & Security':'Conta e segurança','Balance & Transactions':'Saldo e transações','Rules & Acceptance':'Regras e aceitação','Acceptance of Terms':'Aceitação dos termos','Eligibility & Account':'Elegibilidade e conta','Deposits & Digital Assets':'Depósitos e ativos digitais','Available Balance & Locked Balance':'Saldo disponível e saldo bloqueado','Games, Rewards & Settlement':'Jogos, recompensas e liquidação','Prohibited Conduct':'Conduta proibida','Account Review & Suspension':'Revisão e suspensão da conta','Service Availability':'Disponibilidade do serviço','Limitation of Liability':'Limitação de responsabilidade','Changes to These Terms':'Alterações destes termos','Contact':'Contato','Important:':'Importante:','Privacy Policy':'Política de privacidade','Scope':'Escopo','Information We Collect':'Informações coletadas','How We Use Information':'Como usamos as informações','Blockchain and Payment Information':'Informações de blockchain e pagamentos','Sharing of Information':'Compartilhamento de informações','Data Security':'Segurança de dados','Data Retention':'Retenção de dados','Your Choices and Rights':'Suas escolhas e direitos','Cookies and Local Storage':'Cookies e armazenamento local','Children':'Crianças','Changes to This Policy':'Alterações desta política','Last updated:':'Última atualização:'
 },
 zh:{
 'Back':'è¿”å›ž','Back to account':'è¿”å›žè´¦æˆ·','Legal':'æ³•å¾‹','Please read these terms before creating your SYS STREAM account.':'åˆ›å»º SYS STREAM è´¦æˆ·å‰è¯·é˜…è¯»è¿™äº›æ¡æ¬¾ã€‚','Account & Security':'è´¦æˆ·ä¸Žå®‰å…¨','Balance & Transactions':'ä½™é¢ä¸Žäº¤æ˜“','Rules & Acceptance':'è§„åˆ™ä¸ŽæŽ¥å—','Acceptance of Terms':'æŽ¥å—æ¡æ¬¾','Eligibility & Account':'èµ„æ ¼ä¸Žè´¦æˆ·','Deposits & Digital Assets':'å……å€¼ä¸Žæ•°å­—èµ„äº§','Available Balance & Locked Balance':'å¯ç”¨ä½™é¢ä¸Žé”å®šä½™é¢','Games, Rewards & Settlement':'æ¸¸æˆã€å¥–åŠ±ä¸Žç»“ç®—','Prohibited Conduct':'ç¦æ­¢è¡Œä¸º','Account Review & Suspension':'è´¦æˆ·å®¡æ ¸ä¸Žæš‚åœ','Service Availability':'æœåŠ¡å¯ç”¨æ€§','Limitation of Liability':'è´£ä»»é™åˆ¶','Changes to These Terms':'æ¡æ¬¾å˜æ›´','Contact':'è”ç³»','Important:':'é‡è¦ï¼š','Privacy Policy':'éšç§æ”¿ç­–','Scope':'èŒƒå›´','Information We Collect':'æˆ‘ä»¬æ”¶é›†çš„ä¿¡æ¯','How We Use Information':'æˆ‘ä»¬å¦‚ä½•ä½¿ç”¨ä¿¡æ¯','Blockchain and Payment Information':'åŒºå—é“¾ä¸Žæ”¯ä»˜ä¿¡æ¯','Sharing of Information':'ä¿¡æ¯å…±äº«','Data Security':'æ•°æ®å®‰å…¨','Data Retention':'æ•°æ®ä¿ç•™','Your Choices and Rights':'æ‚¨çš„é€‰æ‹©ä¸Žæƒåˆ©','Cookies and Local Storage':'Cookie ä¸Žæœ¬åœ°å­˜å‚¨','Children':'å„¿ç«¥','Changes to This Policy':'æ”¿ç­–å˜æ›´','Last updated:':'æœ€åŽæ›´æ–°ï¼š'
@@ -1438,7 +1438,7 @@ ko:{
 'Back':'ë’¤ë¡œ','Back to account':'ê³„ì •ìœ¼ë¡œ ëŒì•„ê°€ê¸°','Legal':'ë²•ë¥ ','Please read these terms before creating your SYS STREAM account.':'SYS STREAM ê³„ì •ì„ ë§Œë“¤ê¸° ì „ì— ì´ ì•½ê´€ì„ ì½ì–´ ì£¼ì„¸ìš”.','Account & Security':'ê³„ì • ë° ë³´ì•ˆ','Balance & Transactions':'ìž”ì•¡ ë° ê±°ëž˜','Rules & Acceptance':'ê·œì¹™ ë° ë™ì˜','Acceptance of Terms':'ì•½ê´€ ë™ì˜','Eligibility & Account':'ì´ìš© ìžê²© ë° ê³„ì •','Deposits & Digital Assets':'ìž…ê¸ˆ ë° ë””ì§€í„¸ ìžì‚°','Available Balance & Locked Balance':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡ ë° ìž ê¸ˆ ìž”ì•¡','Games, Rewards & Settlement':'ê²Œìž„, ë³´ìƒ ë° ì •ì‚°','Prohibited Conduct':'ê¸ˆì§€ í–‰ìœ„','Account Review & Suspension':'ê³„ì • ê²€í†  ë° ì •ì§€','Service Availability':'ì„œë¹„ìŠ¤ ì´ìš© ê°€ëŠ¥ì„±','Limitation of Liability':'ì±…ìž„ ì œí•œ','Changes to These Terms':'ì•½ê´€ ë³€ê²½','Contact':'ë¬¸ì˜','Important:':'ì¤‘ìš”:','Privacy Policy':'ê°œì¸ì •ë³´ ì²˜ë¦¬ë°©ì¹¨','Scope':'ë²”ìœ„','Information We Collect':'ìˆ˜ì§‘í•˜ëŠ” ì •ë³´','How We Use Information':'ì •ë³´ ì´ìš© ë°©ë²•','Blockchain and Payment Information':'ë¸”ë¡ì²´ì¸ ë° ê²°ì œ ì •ë³´','Sharing of Information':'ì •ë³´ ê³µìœ ','Data Security':'ë°ì´í„° ë³´ì•ˆ','Data Retention':'ë°ì´í„° ë³´ê´€','Your Choices and Rights':'ì„ íƒ ë° ê¶Œë¦¬','Cookies and Local Storage':'ì¿ í‚¤ ë° ë¡œì»¬ ì €ìž¥ì†Œ','Children':'ì•„ë™','Changes to This Policy':'ì •ì±… ë³€ê²½','Last updated:':'ìµœì¢… ì—…ë°ì´íŠ¸:'
 },
 ar:{
-'Back':'Ø±Ø¬ÙˆØ¹','Back to account':'Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨','Legal':'Ù‚Ø§Ù†ÙˆÙ†ÙŠ','Please read these terms before creating your SYS STREAM account.':'ÙŠØ±Ø¬Ù‰ Ù‚Ø±Ø§Ø¡Ø© Ù‡Ø°Ù‡ Ø§Ù„Ø´Ø±ÙˆØ· Ù‚Ø¨Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ SYS STREAM.','Account & Security':'Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ§Ù„Ø£Ù…Ø§Ù†','Balance & Transactions':'Ø§Ù„Ø±ØµÙŠØ¯ ÙˆØ§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª','Rules & Acceptance':'Ø§Ù„Ù‚ÙˆØ§Ø¹Ø¯ ÙˆØ§Ù„Ù…ÙˆØ§ÙÙ‚Ø©','Acceptance of Terms':'Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø´Ø±ÙˆØ·','Eligibility & Account':'Ø§Ù„Ø£Ù‡Ù„ÙŠØ© ÙˆØ§Ù„Ø­Ø³Ø§Ø¨','Deposits & Digital Assets':'Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹Ø§Øª ÙˆØ§Ù„Ø£ØµÙˆÙ„ Ø§Ù„Ø±Ù‚Ù…ÙŠØ©','Available Balance & Locked Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ ÙˆØ§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙ„','Games, Rewards & Settlement':'Ø§Ù„Ø£Ù„Ø¹Ø§Ø¨ ÙˆØ§Ù„Ù…ÙƒØ§ÙØ¢Øª ÙˆØ§Ù„ØªØ³ÙˆÙŠØ©','Prohibited Conduct':'Ø§Ù„Ø³Ù„ÙˆÙƒ Ø§Ù„Ù…Ø­Ø¸ÙˆØ±','Account Review & Suspension':'Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØªØ¹Ù„ÙŠÙ‚Ù‡','Service Availability':'ØªÙˆÙØ± Ø§Ù„Ø®Ø¯Ù…Ø©','Limitation of Liability':'Ø­Ø¯ÙˆØ¯ Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©','Changes to These Terms':'ØªØºÙŠÙŠØ±Ø§Øª Ø§Ù„Ø´Ø±ÙˆØ·','Contact':'Ø§ØªØµÙ„ Ø¨Ù†Ø§','Important:':'Ù…Ù‡Ù…:','Privacy Policy':'Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©','Scope':'Ø§Ù„Ù†Ø·Ø§Ù‚','Information We Collect':'Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„ØªÙŠ Ù†Ø¬Ù…Ø¹Ù‡Ø§','How We Use Information':'ÙƒÙŠÙÙŠØ© Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª','Blockchain and Payment Information':'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¨Ù„ÙˆÙƒ ØªØ´ÙŠÙ† ÙˆØ§Ù„Ø¯ÙØ¹','Sharing of Information':'Ù…Ø´Ø§Ø±ÙƒØ© Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª','Data Security':'Ø£Ù…Ø§Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª','Data Retention':'Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª','Your Choices and Rights':'Ø®ÙŠØ§Ø±Ø§ØªÙƒ ÙˆØ­Ù‚ÙˆÙ‚Ùƒ','Cookies and Local Storage':'Ù…Ù„ÙØ§Øª ØªØ¹Ø±ÙŠÙ Ø§Ù„Ø§Ø±ØªØ¨Ø§Ø· ÙˆØ§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ','Children':'Ø§Ù„Ø£Ø·ÙØ§Ù„','Changes to This Policy':'ØªØºÙŠÙŠØ±Ø§Øª Ù‡Ø°Ù‡ Ø§Ù„Ø³ÙŠØ§Ø³Ø©','Last updated:':'Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ«:'
+'Back':'رجوع','Back to account':'العودة إلى الحساب','Legal':'قانوني','Please read these terms before creating your SYS STREAM account.':'يرجى قراءة هذه الشروط قبل إنشاء حساب SYS STREAM.','Account & Security':'الحساب والأمان','Balance & Transactions':'الرصيد والمعاملات','Rules & Acceptance':'القواعد والموافقة','Acceptance of Terms':'الموافقة على الشروط','Eligibility & Account':'الأهلية والحساب','Deposits & Digital Assets':'الإيداعات والأصول الرقمية','Available Balance & Locked Balance':'الرصيد المتاح والرصيد المقفل','Games, Rewards & Settlement':'الألعاب والمكافآت والتسوية','Prohibited Conduct':'السلوك المحظور','Account Review & Suspension':'مراجعة الحساب وتعليقه','Service Availability':'توفر الخدمة','Limitation of Liability':'حدود المسؤولية','Changes to These Terms':'تغييرات الشروط','Contact':'اتصل بنا','Important:':'Ù…Ù‡Ù…:','Privacy Policy':'سياسة الخصوصية','Scope':'النطاق','Information We Collect':'المعلومات التي نجمعها','How We Use Information':'كيفية استخدام المعلومات','Blockchain and Payment Information':'معلومات البلوك تشين والدفع','Sharing of Information':'مشاركة المعلومات','Data Security':'أمان البيانات','Data Retention':'الاحتفاظ بالبيانات','Your Choices and Rights':'خياراتك وحقوقك','Cookies and Local Storage':'ملفات تعريف الارتباط والتخزين المحلي','Children':'الأطفال','Changes to This Policy':'تغييرات هذه السياسة','Last updated:':'آخر تحديث:'
 }
 };
 for (const lang of Object.keys(ALL_PAGE_LABELS) as LanguageCode[]) {
@@ -1477,22 +1477,22 @@ for (const lang of Object.keys(FINAL_PAGE_LABELS) as LanguageCode[]) {
 
 const REMAINING_LOCALE_LABELS: Partial<Record<LanguageCode, Record<string,string>>> = {
 es:{
-'Affiliate Partner Program':'Programa de socios afiliados','Your Personal Affiliate Link':'Tu enlace personal de afiliado','Direct Invitations':'Invitaciones directas','Active Referees:':'Referidos activos:','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Active Friends Invited:':'Amigos activos invitados:','Average Weekly Wager per Friend:':'Apuesta semanal media por amigo:','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Feed de referidos en vivo','Referee Handle':'Nombre del referido','Date Joined':'Fecha de alta','Commission Tier':'Nivel de comisiÃ³n','Wager Volume':'Volumen de apuestas','Commission Earned':'ComisiÃ³n obtenida','Sign in to join the Live Room':'Inicia sesiÃ³n para unirte a la sala en vivo','Your account profile':'Tu perfil','Live Participants':'Participantes en vivo','Loading participants...':'Cargando participantes...','No other participants yet.':'AÃºn no hay otros participantes.','No participants yet.':'AÃºn no hay participantes.','Viewer Username Raffle Spinner':'Spinner de sorteo de nombres','Live Participants Only':'Solo participantes en vivo','Spinning for Winner...':'Girando para elegir al ganador...','Current Viewers on Wheel:':'Espectadores actuales:','Recent Raffle Winners':'Ganadores recientes','Digital Crypto Card Number Guess':'Adivina el nÃºmero de la tarjeta cripto','Streamer Card Settings':'ConfiguraciÃ³n de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta','Card Title':'TÃ­tulo de tarjeta','Serial Number':'NÃºmero de serie','Streamer Clue / Note for Viewers':'Pista del streamer para espectadores','Concealed':'Oculto','Revealed':'Revelado','Streamer Clue:':'Pista del streamer:','Interaction Mode':'Modo de interacciÃ³n','Mode Interaksi':'Modo de interacciÃ³n','Verifying Cryptographic Seed...':'Verificando semilla criptogrÃ¡fica...','Verify Challenge':'Verificar desafÃ­o','Provably Fair Verification':'VerificaciÃ³n demostrablemente justa','NOWPayments Crypto Deposit':'DepÃ³sito cripto de NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¡neo sin comisiones de plataforma','Create NOWPayments Invoice':'Crear factura NOWPayments','Order ID:':'ID de pedido:','Wallet Address':'DirecciÃ³n de wallet','Recovery Phrase':'Frase de recuperaciÃ³n','Remember me':'RecuÃ©rdame','Connect Wallet':'Conectar wallet','Secured with Web3':'Protegido con Web3','Biometric Login Available':'Inicio biomÃ©trico disponible'
+'Affiliate Partner Program':'Programa de socios afiliados','Your Personal Affiliate Link':'Tu enlace personal de afiliado','Direct Invitations':'Invitaciones directas','Active Referees:':'Referidos activos:','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Active Friends Invited:':'Amigos activos invitados:','Average Weekly Wager per Friend:':'Apuesta semanal media por amigo:','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Feed de referidos en vivo','Referee Handle':'Nombre del referido','Date Joined':'Fecha de alta','Commission Tier':'Nivel de comisión','Wager Volume':'Volumen de apuestas','Commission Earned':'Comisión obtenida','Sign in to join the Live Room':'Inicia sesión para unirte a la sala en vivo','Your account profile':'Tu perfil','Live Participants':'Participantes en vivo','Loading participants...':'Cargando participantes...','No other participants yet.':'Aún no hay otros participantes.','No participants yet.':'Aún no hay participantes.','Viewer Username Raffle Spinner':'Spinner de sorteo de nombres','Live Participants Only':'Solo participantes en vivo','Spinning for Winner...':'Girando para elegir al ganador...','Current Viewers on Wheel:':'Espectadores actuales:','Recent Raffle Winners':'Ganadores recientes','Digital Crypto Card Number Guess':'Adivina el número de la tarjeta cripto','Streamer Card Settings':'Configuración de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta','Card Title':'Título de tarjeta','Serial Number':'Número de serie','Streamer Clue / Note for Viewers':'Pista del streamer para espectadores','Concealed':'Oculto','Revealed':'Revelado','Streamer Clue:':'Pista del streamer:','Interaction Mode':'Modo de interacción','Mode Interaksi':'Modo de interacción','Verifying Cryptographic Seed...':'Verificando semilla criptográfica...','Verify Challenge':'Verificar desafío','Provably Fair Verification':'Verificación demostrablemente justa','NOWPayments Crypto Deposit':'Depósito cripto de NOWPayments','Instant deposit with zero platform fees':'Depósito instantáneo sin comisiones de plataforma','Create NOWPayments Invoice':'Crear factura NOWPayments','Order ID:':'ID de pedido:','Wallet Address':'Dirección de wallet','Recovery Phrase':'Frase de recuperación','Remember me':'Recuérdame','Connect Wallet':'Conectar wallet','Secured with Web3':'Protegido con Web3','Biometric Login Available':'Inicio biométrico disponible'
 },
 pt:{
-'Affiliate Partner Program':'Programa de parceiros afiliados','Your Personal Affiliate Link':'Seu link pessoal de afiliado','Direct Invitations':'Convites diretos','Active Referees:':'Indicados ativos:','Network Invites':'Convites da rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de renda de afiliados','Active Friends Invited:':'Amigos ativos convidados:','Average Weekly Wager per Friend:':'Aposta semanal mÃ©dia por amigo:','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicaÃ§Ãµes ao vivo','Referee Handle':'Nome do indicado','Date Joined':'Data de entrada','Commission Tier':'NÃ­vel de comissÃ£o','Wager Volume':'Volume de apostas','Commission Earned':'ComissÃ£o recebida','Sign in to join the Live Room':'Entre para participar da sala ao vivo','Your account profile':'Seu perfil','Live Participants':'Participantes ao vivo','Loading participants...':'Carregando participantes...','No other participants yet.':'Ainda nÃ£o hÃ¡ outros participantes.','No participants yet.':'Ainda nÃ£o hÃ¡ participantes.','Viewer Username Raffle Spinner':'Spinner de sorteio de nomes','Live Participants Only':'Apenas participantes ao vivo','Spinning for Winner...':'Girando para escolher o vencedor...','Current Viewers on Wheel:':'Espectadores atuais:','Recent Raffle Winners':'Vencedores recentes','Digital Crypto Card Number Guess':'Adivinhe o nÃºmero do cartÃ£o cripto','Streamer Card Settings':'ConfiguraÃ§Ãµes do cartÃ£o do streamer','Streamer Card Configurator':'Configurador do cartÃ£o','Card Title':'TÃ­tulo do cartÃ£o','Serial Number':'NÃºmero de sÃ©rie','Streamer Clue / Note for Viewers':'Dica do streamer para espectadores','Concealed':'Oculto','Revealed':'Revelado','Streamer Clue:':'Dica do streamer:','Mode Interaksi':'Modo de interaÃ§Ã£o','Verifying Cryptographic Seed...':'Verificando semente criptogrÃ¡fica...','Verify Challenge':'Verificar desafio','Provably Fair Verification':'VerificaÃ§Ã£o comprovadamente justa','NOWPayments Crypto Deposit':'DepÃ³sito cripto NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¢neo sem taxas da plataforma','Create NOWPayments Invoice':'Criar fatura NOWPayments','Order ID:':'ID do pedido:','Wallet Address':'EndereÃ§o da carteira','Recovery Phrase':'Frase de recuperaÃ§Ã£o','Remember me':'Lembrar de mim','Connect Wallet':'Conectar carteira','Secured with Web3':'Protegido com Web3','Biometric Login Available':'Login biomÃ©trico disponÃ­vel'
+'Affiliate Partner Program':'Programa de parceiros afiliados','Your Personal Affiliate Link':'Seu link pessoal de afiliado','Direct Invitations':'Convites diretos','Active Referees:':'Indicados ativos:','Network Invites':'Convites da rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de renda de afiliados','Active Friends Invited:':'Amigos ativos convidados:','Average Weekly Wager per Friend:':'Aposta semanal média por amigo:','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicações ao vivo','Referee Handle':'Nome do indicado','Date Joined':'Data de entrada','Commission Tier':'Nível de comissão','Wager Volume':'Volume de apostas','Commission Earned':'Comissão recebida','Sign in to join the Live Room':'Entre para participar da sala ao vivo','Your account profile':'Seu perfil','Live Participants':'Participantes ao vivo','Loading participants...':'Carregando participantes...','No other participants yet.':'Ainda não há outros participantes.','No participants yet.':'Ainda não há participantes.','Viewer Username Raffle Spinner':'Spinner de sorteio de nomes','Live Participants Only':'Apenas participantes ao vivo','Spinning for Winner...':'Girando para escolher o vencedor...','Current Viewers on Wheel:':'Espectadores atuais:','Recent Raffle Winners':'Vencedores recentes','Digital Crypto Card Number Guess':'Adivinhe o número do cartão cripto','Streamer Card Settings':'Configurações do cartão do streamer','Streamer Card Configurator':'Configurador do cartão','Card Title':'Título do cartão','Serial Number':'Número de série','Streamer Clue / Note for Viewers':'Dica do streamer para espectadores','Concealed':'Oculto','Revealed':'Revelado','Streamer Clue:':'Dica do streamer:','Mode Interaksi':'Modo de interação','Verifying Cryptographic Seed...':'Verificando semente criptográfica...','Verify Challenge':'Verificar desafio','Provably Fair Verification':'Verificação comprovadamente justa','NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantâneo sem taxas da plataforma','Create NOWPayments Invoice':'Criar fatura NOWPayments','Order ID:':'ID do pedido:','Wallet Address':'Endereço da carteira','Recovery Phrase':'Frase de recuperação','Remember me':'Lembrar de mim','Connect Wallet':'Conectar carteira','Secured with Web3':'Protegido com Web3','Biometric Login Available':'Login biométrico disponível'
 },
 zh:{
-'Affiliate Partner Program':'è”ç›Ÿåˆä½œä¼™ä¼´è®¡åˆ’','Your Personal Affiliate Link':'æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations':'ç›´æŽ¥é‚€è¯·','Active Referees:':'æ´»è·ƒæŽ¨èç”¨æˆ·ï¼š','Network Invites':'ç½‘ç»œé‚€è¯·','Deep Ecosystem':'æ·±åº¦ç”Ÿæ€','Affiliate Income Calculator':'è”ç›Ÿæ”¶ç›Šè®¡ç®—å™¨','Active Friends Invited:':'å·²é‚€è¯·æ´»è·ƒå¥½å‹ï¼š','Average Weekly Wager per Friend:':'æ¯ä½å¥½å‹å¹³å‡æ¯å‘¨æŠ•æ³¨ï¼š','Estimated Monthly Earnings':'é¢„è®¡æœˆæ”¶ç›Š','Live Referral Feed':'å®žæ—¶æŽ¨èåŠ¨æ€','Referee Handle':'è¢«æŽ¨èäºº','Date Joined':'åŠ å…¥æ—¥æœŸ','Commission Tier':'ä½£é‡‘ç­‰çº§','Wager Volume':'æŠ•æ³¨é‡','Commission Earned':'å·²èŽ·å¾—ä½£é‡‘','Sign in to join the Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Your account profile':'æ‚¨çš„è´¦æˆ·èµ„æ–™','Live Participants':'ç›´æ’­å‚ä¸Žè€…','Loading participants...':'æ­£åœ¨åŠ è½½å‚ä¸Žè€…â€¦','No other participants yet.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','No participants yet.':'æš‚æ— å‚ä¸Žè€…ã€‚','Viewer Username Raffle Spinner':'è§‚ä¼—ç”¨æˆ·åæŠ½å¥–è½¬ç›˜','Live Participants Only':'ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...':'æ­£åœ¨æŠ½å–èŽ·èƒœè€…â€¦','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess':'æ•°å­—åŠ å¯†å¡å·ç ç«žçŒœ','Streamer Card Settings':'ä¸»æ’­å¡ç‰‡è®¾ç½®','Streamer Card Configurator':'ä¸»æ’­å¡ç‰‡é…ç½®å™¨','Card Title':'å¡ç‰‡æ ‡é¢˜','Serial Number':'åºåˆ—å·','Streamer Clue / Note for Viewers':'ä¸»æ’­ç»™è§‚ä¼—çš„æç¤º','Concealed':'éšè—','Revealed':'å·²æ­ç¤º','Streamer Clue:':'ä¸»æ’­æç¤ºï¼š','Mode Interaksi':'äº’åŠ¨æ¨¡å¼','Verifying Cryptographic Seed...':'æ­£åœ¨éªŒè¯åŠ å¯†ç§å­â€¦','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å¯éªŒè¯å…¬å¹³æ€§éªŒè¯','NOWPayments Crypto Deposit':'NOWPayments åŠ å¯†è´§å¸å……å€¼','Instant deposit with zero platform fees':'å³æ—¶å……å€¼ï¼Œå¹³å°é›¶æ‰‹ç»­è´¹','Create NOWPayments Invoice':'åˆ›å»º NOWPayments å‘ç¥¨','Order ID:':'è®¢å•IDï¼š','Wallet Address':'é’±åŒ…åœ°å€','Recovery Phrase':'æ¢å¤çŸ­è¯­','Remember me':'è®°ä½æˆ‘','Connect Wallet':'è¿žæŽ¥é’±åŒ…','Secured with Web3':'ç”± Web3 ä¿æŠ¤','Biometric Login Available':'æ”¯æŒç”Ÿç‰©è¯†åˆ«ç™»å½•'
+'Affiliate Partner Program':'è”ç›Ÿåˆä½œä¼™ä¼´è®¡åˆ’','Your Personal Affiliate Link':'æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations':'ç›´æŽ¥é‚€è¯·','Active Referees:':'æ´»è·ƒæŽ¨èç”¨æˆ·ï¼š','Network Invites':'ç½‘ç»œé‚€è¯·','Deep Ecosystem':'æ·±åº¦ç”Ÿæ€','Affiliate Income Calculator':'è”ç›Ÿæ”¶ç›Šè®¡ç®—å™¨','Active Friends Invited:':'å·²é‚€è¯·æ´»è·ƒå¥½å‹ï¼š','Average Weekly Wager per Friend:':'æ¯ä½å¥½å‹å¹³å‡æ¯å‘¨æŠ•æ³¨ï¼š','Estimated Monthly Earnings':'é¢„è®¡æœˆæ”¶ç›Š','Live Referral Feed':'å®žæ—¶æŽ¨èåŠ¨æ€','Referee Handle':'è¢«æŽ¨èäºº','Date Joined':'åŠ å…¥æ—¥æœŸ','Commission Tier':'ä½£é‡‘ç­‰çº§','Wager Volume':'æŠ•æ³¨é‡','Commission Earned':'å·²èŽ·å¾—ä½£é‡‘','Sign in to join the Live Room':'ç™»å½•ä»¥åŠ å…¥ç›´æ’­é—´','Your account profile':'æ‚¨çš„è´¦æˆ·èµ„æ–™','Live Participants':'ç›´æ’­å‚ä¸Žè€…','Loading participants...':'正在加载参与者…','No other participants yet.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','No participants yet.':'æš‚æ— å‚ä¸Žè€…ã€‚','Viewer Username Raffle Spinner':'è§‚ä¼—ç”¨æˆ·åæŠ½å¥–è½¬ç›˜','Live Participants Only':'ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...':'正在抽取获胜者…','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess':'æ•°å­—åŠ å¯†å¡å·ç ç«žçŒœ','Streamer Card Settings':'ä¸»æ’­å¡ç‰‡è®¾ç½®','Streamer Card Configurator':'ä¸»æ’­å¡ç‰‡é…ç½®å™¨','Card Title':'å¡ç‰‡æ ‡é¢˜','Serial Number':'åºåˆ—å·','Streamer Clue / Note for Viewers':'ä¸»æ’­ç»™è§‚ä¼—çš„æç¤º','Concealed':'éšè—','Revealed':'å·²æ­ç¤º','Streamer Clue:':'ä¸»æ’­æç¤ºï¼š','Mode Interaksi':'äº’åŠ¨æ¨¡å¼','Verifying Cryptographic Seed...':'正在验证加密种子…','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å¯éªŒè¯å…¬å¹³æ€§éªŒè¯','NOWPayments Crypto Deposit':'NOWPayments åŠ å¯†è´§å¸å……å€¼','Instant deposit with zero platform fees':'å³æ—¶å……å€¼ï¼Œå¹³å°é›¶æ‰‹ç»­è´¹','Create NOWPayments Invoice':'åˆ›å»º NOWPayments å‘ç¥¨','Order ID:':'è®¢å•IDï¼š','Wallet Address':'é’±åŒ…åœ°å€','Recovery Phrase':'æ¢å¤çŸ­è¯­','Remember me':'è®°ä½æˆ‘','Connect Wallet':'è¿žæŽ¥é’±åŒ…','Secured with Web3':'ç”± Web3 ä¿æŠ¤','Biometric Login Available':'æ”¯æŒç”Ÿç‰©è¯†åˆ«ç™»å½•'
 },
 ja:{
-'Affiliate Partner Program':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link':'ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations':'ç›´æŽ¥æ‹›å¾…','Active Referees:':'ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ç´¹ä»‹è€…ï¼š','Network Invites':'ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem':'æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Active Friends Invited:':'æ‹›å¾…ã—ãŸã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå‹é”ï¼š','Average Weekly Wager per Friend:':'å‹é”1äººã‚ãŸã‚Šå¹³å‡é€±é–“ãƒ™ãƒƒãƒˆï¼š','Estimated Monthly Earnings':'æŽ¨å®šæœˆé–“åŽç›Š','Live Referral Feed':'ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle':'ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined':'å‚åŠ æ—¥','Commission Tier':'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume':'ãƒ™ãƒƒãƒˆç·é¡','Commission Earned':'ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Sign in to join the Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Your account profile':'ã‚ãªãŸã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Live Participants':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Loading participants...':'å‚åŠ è€…ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦','No other participants yet.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','No participants yet.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Viewer Username Raffle Spinner':'è¦–è´è€…ãƒ¦ãƒ¼ã‚¶ãƒ¼åæŠ½é¸ã‚¹ãƒ”ãƒŠãƒ¼','Live Participants Only':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...':'å½“é¸è€…ã‚’æŠ½é¸ä¸­â€¦','Current Viewers on Wheel:':'ç¾åœ¨ã®ã‚¹ãƒ”ãƒŠãƒ¼å‚åŠ è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®å½“é¸è€…','Digital Crypto Card Number Guess':'ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title':'ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number':'ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Streamer Clue / Note for Viewers':'è¦–è´è€…ã¸ã®ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆ','Concealed':'éžè¡¨ç¤º','Revealed':'å…¬é–‹','Streamer Clue:':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆï¼š','Mode Interaksi':'ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰','Verifying Cryptographic Seed...':'æš—å·ã‚·ãƒ¼ãƒ‰ã‚’æ¤œè¨¼ä¸­â€¦','Verify Challenge':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification':'æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','NOWPayments Crypto Deposit':'NOWPaymentsæš—å·è³‡ç”£å…¥é‡‘','Instant deposit with zero platform fees':'ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ æ‰‹æ•°æ–™ãªã—ã®å³æ™‚å…¥é‡‘','Create NOWPayments Invoice':'NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID:':'æ³¨æ–‡IDï¼š','Wallet Address':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Recovery Phrase':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚º','Remember me':'ãƒ­ã‚°ã‚¤ãƒ³çŠ¶æ…‹ã‚’ä¿æŒ','Connect Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Secured with Web3':'Web3ã§ä¿è­·','Biometric Login Available':'ç”Ÿä½“èªè¨¼ãƒ­ã‚°ã‚¤ãƒ³å¯¾å¿œ'
+'Affiliate Partner Program':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link':'ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations':'ç›´æŽ¥æ‹›å¾…','Active Referees:':'ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ç´¹ä»‹è€…ï¼š','Network Invites':'ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem':'æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Active Friends Invited:':'æ‹›å¾…ã—ãŸã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå‹é”ï¼š','Average Weekly Wager per Friend:':'å‹é”1äººã‚ãŸã‚Šå¹³å‡é€±é–“ãƒ™ãƒƒãƒˆï¼š','Estimated Monthly Earnings':'æŽ¨å®šæœˆé–“åŽç›Š','Live Referral Feed':'ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle':'ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined':'å‚åŠ æ—¥','Commission Tier':'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume':'ãƒ™ãƒƒãƒˆç·é¡','Commission Earned':'ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Sign in to join the Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Your account profile':'ã‚ãªãŸã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Live Participants':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Loading participants...':'参加者を読み込み中…','No other participants yet.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','No participants yet.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Viewer Username Raffle Spinner':'è¦–è´è€…ãƒ¦ãƒ¼ã‚¶ãƒ¼åæŠ½é¸ã‚¹ãƒ”ãƒŠãƒ¼','Live Participants Only':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...':'当選者を抽選中…','Current Viewers on Wheel:':'ç¾åœ¨ã®ã‚¹ãƒ”ãƒŠãƒ¼å‚åŠ è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®å½“é¸è€…','Digital Crypto Card Number Guess':'ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title':'ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number':'ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Streamer Clue / Note for Viewers':'è¦–è´è€…ã¸ã®ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆ','Concealed':'éžè¡¨ç¤º','Revealed':'å…¬é–‹','Streamer Clue:':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆï¼š','Mode Interaksi':'ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰','Verifying Cryptographic Seed...':'暗号シードを検証中…','Verify Challenge':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification':'æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','NOWPayments Crypto Deposit':'NOWPaymentsæš—å·è³‡ç”£å…¥é‡‘','Instant deposit with zero platform fees':'ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ æ‰‹æ•°æ–™ãªã—ã®å³æ™‚å…¥é‡‘','Create NOWPayments Invoice':'NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID:':'æ³¨æ–‡IDï¼š','Wallet Address':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Recovery Phrase':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚º','Remember me':'ãƒ­ã‚°ã‚¤ãƒ³çŠ¶æ…‹ã‚’ä¿æŒ','Connect Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Secured with Web3':'Web3ã§ä¿è­·','Biometric Login Available':'ç”Ÿä½“èªè¨¼ãƒ­ã‚°ã‚¤ãƒ³å¯¾å¿œ'
 },
 ko:{
 'Affiliate Partner Program':'ì œíœ´ íŒŒíŠ¸ë„ˆ í”„ë¡œê·¸ëž¨','Your Personal Affiliate Link':'ê°œì¸ ì œíœ´ ë§í¬','Direct Invitations':'ì§ì ‘ ì´ˆëŒ€','Active Referees:':'í™œì„± ì¶”ì²œì¸:','Network Invites':'ë„¤íŠ¸ì›Œí¬ ì´ˆëŒ€','Deep Ecosystem':'ì‹¬ì¸µ ìƒíƒœê³„','Affiliate Income Calculator':'ì œíœ´ ìˆ˜ìµ ê³„ì‚°ê¸°','Active Friends Invited:':'ì´ˆëŒ€í•œ í™œì„± ì¹œêµ¬:','Average Weekly Wager per Friend:':'ì¹œêµ¬ë‹¹ ì£¼ê°„ í‰ê·  ë² íŒ…:','Estimated Monthly Earnings':'ì˜ˆìƒ ì›” ìˆ˜ìµ','Live Referral Feed':'ì‹¤ì‹œê°„ ì¶”ì²œ í”¼ë“œ','Referee Handle':'ì¶”ì²œ ì‚¬ìš©ìž','Date Joined':'ê°€ìž…ì¼','Commission Tier':'ì»¤ë¯¸ì…˜ ë“±ê¸‰','Wager Volume':'ë² íŒ… ê·œëª¨','Commission Earned':'íšë“ ì»¤ë¯¸ì…˜','Sign in to join the Live Room':'ë¡œê·¸ì¸í•˜ì—¬ ë¼ì´ë¸Œë£¸ ì°¸ì—¬','Your account profile':'ë‚´ ê³„ì • í”„ë¡œí•„','Live Participants':'ë¼ì´ë¸Œ ì°¸ê°€ìž','Loading participants...':'ì°¸ê°€ìž ë¡œë“œ ì¤‘...','No other participants yet.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','No participants yet.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Viewer Username Raffle Spinner':'ì‹œì²­ìž ì‚¬ìš©ìžëª… ì¶”ì²¨ ìŠ¤í”¼ë„ˆ','Live Participants Only':'ë¼ì´ë¸Œ ì°¸ê°€ìžë§Œ','Spinning for Winner...':'ë‹¹ì²¨ìž ì¶”ì²¨ ì¤‘...','Current Viewers on Wheel:':'í˜„ìž¬ ìŠ¤í”¼ë„ˆ ì°¸ê°€ìž:','Recent Raffle Winners':'ìµœê·¼ ì¶”ì²¨ ë‹¹ì²¨ìž','Digital Crypto Card Number Guess':'ë””ì§€í„¸ í¬ë¦½í†  ì¹´ë“œ ë²ˆí˜¸ ë§žížˆê¸°','Streamer Card Settings':'ìŠ¤íŠ¸ë¦¬ë¨¸ ì¹´ë“œ ì„¤ì •','Streamer Card Configurator':'ìŠ¤íŠ¸ë¦¬ë¨¸ ì¹´ë“œ êµ¬ì„±ê¸°','Card Title':'ì¹´ë“œ ì œëª©','Serial Number':'ì¼ë ¨ë²ˆí˜¸','Streamer Clue / Note for Viewers':'ì‹œì²­ìžìš© ìŠ¤íŠ¸ë¦¬ë¨¸ ížŒíŠ¸','Concealed':'ìˆ¨ê¹€','Revealed':'ê³µê°œ','Streamer Clue:':'ìŠ¤íŠ¸ë¦¬ë¨¸ ížŒíŠ¸:','Mode Interaksi':'ìƒí˜¸ìž‘ìš© ëª¨ë“œ','Verifying Cryptographic Seed...':'ì•”í˜¸ ì‹œë“œ í™•ì¸ ì¤‘...','Verify Challenge':'ì±Œë¦°ì§€ í™•ì¸','Provably Fair Verification':'ê²€ì¦ ê°€ëŠ¥í•œ ê³µì •ì„±','NOWPayments Crypto Deposit':'NOWPayments ì•”í˜¸í™”í ìž…ê¸ˆ','Instant deposit with zero platform fees':'í”Œëž«í¼ ìˆ˜ìˆ˜ë£Œ ì—†ëŠ” ì¦‰ì‹œ ìž…ê¸ˆ','Create NOWPayments Invoice':'NOWPayments ì¸ë³´ì´ìŠ¤ ìƒì„±','Order ID:':'ì£¼ë¬¸ ID:','Wallet Address':'ì§€ê°‘ ì£¼ì†Œ','Recovery Phrase':'ë³µêµ¬ ë¬¸êµ¬','Remember me':'ë¡œê·¸ì¸ ê¸°ì–µí•˜ê¸°','Connect Wallet':'ì§€ê°‘ ì—°ê²°','Secured with Web3':'Web3ë¡œ ë³´í˜¸ë¨','Biometric Login Available':'ìƒì²´ ì¸ì¦ ë¡œê·¸ì¸ ì§€ì›'
 },
 ar:{
-'Affiliate Partner Program':'Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø¨Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©','Your Personal Affiliate Link':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø© Ø§Ù„Ø´Ø®ØµÙŠ','Direct Invitations':'Ø§Ù„Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Active Referees:':'Ø§Ù„Ø¥Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù†Ø´Ø·Ø©:','Network Invites':'Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ø´Ø¨ÙƒØ©','Deep Ecosystem':'Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø¨ÙŠØ¦ÙŠ Ø§Ù„Ù…ØªÙƒØ§Ù…Ù„','Affiliate Income Calculator':'Ø­Ø§Ø³Ø¨Ø© Ø¯Ø®Ù„ Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Active Friends Invited:':'Ø§Ù„Ø£ØµØ¯Ù‚Ø§Ø¡ Ø§Ù„Ù†Ø´Ø·ÙˆÙ† Ø§Ù„Ù…Ø¯Ø¹ÙˆÙˆÙ†:','Average Weekly Wager per Friend:':'Ù…ØªÙˆØ³Ø· Ø§Ù„Ø±Ù‡Ø§Ù† Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ÙŠ Ù„ÙƒÙ„ ØµØ¯ÙŠÙ‚:','Estimated Monthly Earnings':'Ø§Ù„Ø£Ø±Ø¨Ø§Ø­ Ø§Ù„Ø´Ù‡Ø±ÙŠØ© Ø§Ù„Ù…Ù‚Ø¯Ø±Ø©','Live Referral Feed':'ØªØºØ°ÙŠØ© Ø§Ù„Ø¥Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Referee Handle':'Ø§Ø³Ù… Ø§Ù„Ù…ÙØ­Ø§Ù„','Date Joined':'ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù…','Commission Tier':'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©','Wager Volume':'Ø­Ø¬Ù… Ø§Ù„Ø±Ù‡Ø§Ù†','Commission Earned':'Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© Ø§Ù„Ù…ÙƒØªØ³Ø¨Ø©','Sign in to join the Live Room':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Your account profile':'Ù…Ù„Ù Ø­Ø³Ø§Ø¨Ùƒ','Live Participants':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙˆÙ†','Loading participants...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†...','No other participants yet.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¢Ø®Ø±ÙˆÙ† Ø¨Ø¹Ø¯.','No participants yet.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¨Ø¹Ø¯.','Viewer Username Raffle Spinner':'Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ø£Ø³Ù…Ø§Ø¡ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†','Live Participants Only':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙˆÙ† ÙÙ‚Ø·','Spinning for Winner...':'Ø¬Ø§Ø±Ù Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²...','Current Viewers on Wheel:':'Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† Ø§Ù„Ø­Ø§Ù„ÙŠÙˆÙ† Ø¹Ù„Ù‰ Ø§Ù„Ø¹Ø¬Ù„Ø©:','Recent Raffle Winners':'Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† Ø§Ù„Ø£Ø®ÙŠØ±ÙˆÙ†','Digital Crypto Card Number Guess':'ØªØ®Ù…ÙŠÙ† Ø±Ù‚Ù… Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©','Streamer Card Settings':'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Streamer Card Configurator':'Ù…ÙƒÙˆÙ‘Ù† Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Card Title':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©','Serial Number':'Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ','Streamer Clue / Note for Viewers':'ØªÙ„Ù…ÙŠØ­ Ø§Ù„Ø¨Ø« Ù„Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†','Concealed':'Ù…Ø®ÙÙŠ','Revealed':'Ù…ÙƒØ´ÙˆÙ','Streamer Clue:':'ØªÙ„Ù…ÙŠØ­ Ø§Ù„Ø¨Ø«:','Mode Interaksi':'ÙˆØ¶Ø¹ Ø§Ù„ØªÙØ§Ø¹Ù„','Verifying Cryptographic Seed...':'Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¨Ø°Ø±Ø© Ø§Ù„Ù…Ø´ÙØ±Ø©...','Verify Challenge':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠ','Provably Fair Verification':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø¥Ø«Ø¨Ø§Øª','NOWPayments Crypto Deposit':'Ø¥ÙŠØ¯Ø§Ø¹ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ø¹Ø¨Ø± NOWPayments','Instant deposit with zero platform fees':'Ø¥ÙŠØ¯Ø§Ø¹ ÙÙˆØ±ÙŠ Ø¨Ø¯ÙˆÙ† Ø±Ø³ÙˆÙ… Ù…Ù†ØµØ©','Create NOWPayments Invoice':'Ø¥Ù†Ø´Ø§Ø¡ ÙØ§ØªÙˆØ±Ø© NOWPayments','Order ID:':'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ø·Ù„Ø¨:','Wallet Address':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø©','Recovery Phrase':'Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯','Remember me':'ØªØ°ÙƒØ±Ù†ÙŠ','Connect Wallet':'Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©','Secured with Web3':'Ù…Ø­Ù…ÙŠ Ø¨ÙˆØ§Ø³Ø·Ø© Web3','Biometric Login Available':'ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„ Ø¨ÙŠÙˆÙ…ØªØ±ÙŠ Ù…ØªØ§Ø­'
+'Affiliate Partner Program':'برنامج الشركاء بالعمولة','Your Personal Affiliate Link':'رابط الإحالة الشخصي','Direct Invitations':'الدعوات المباشرة','Active Referees:':'الإحالات النشطة:','Network Invites':'دعوات الشبكة','Deep Ecosystem':'النظام البيئي المتكامل','Affiliate Income Calculator':'حاسبة دخل الإحالة','Active Friends Invited:':'الأصدقاء النشطون المدعوون:','Average Weekly Wager per Friend:':'متوسط الرهان الأسبوعي لكل صديق:','Estimated Monthly Earnings':'الأرباح الشهرية المقدرة','Live Referral Feed':'تغذية الإحالات المباشرة','Referee Handle':'اسم المُحال','Date Joined':'تاريخ الانضمام','Commission Tier':'مستوى العمولة','Wager Volume':'حجم الرهان','Commission Earned':'العمولة المكتسبة','Sign in to join the Live Room':'سجّل الدخول للانضمام إلى الغرفة المباشرة','Your account profile':'ملف حسابك','Live Participants':'المشاركون المباشرون','Loading participants...':'جارٍ تحميل المشاركين...','No other participants yet.':'لا يوجد مشاركون آخرون بعد.','No participants yet.':'لا يوجد مشاركون بعد.','Viewer Username Raffle Spinner':'عجلة سحب أسماء المشاهدين','Live Participants Only':'المشاركون المباشرون فقط','Spinning for Winner...':'جارٍ اختيار الفائز...','Current Viewers on Wheel:':'المشاهدون الحاليون على العجلة:','Recent Raffle Winners':'الفائزون الأخيرون','Digital Crypto Card Number Guess':'تخمين رقم بطاقة العملات الرقمية','Streamer Card Settings':'إعدادات بطاقة البث','Streamer Card Configurator':'مكوّن بطاقة البث','Card Title':'عنوان البطاقة','Serial Number':'الرقم التسلسلي','Streamer Clue / Note for Viewers':'تلميح البث للمشاهدين','Concealed':'مخفي','Revealed':'مكشوف','Streamer Clue:':'تلميح البث:','Mode Interaksi':'وضع التفاعل','Verifying Cryptographic Seed...':'جارٍ التحقق من البذرة المشفرة...','Verify Challenge':'تحقق من التحدي','Provably Fair Verification':'تحقق من العدالة القابلة للإثبات','NOWPayments Crypto Deposit':'إيداع العملات الرقمية عبر NOWPayments','Instant deposit with zero platform fees':'إيداع فوري بدون رسوم منصة','Create NOWPayments Invoice':'إنشاء فاتورة NOWPayments','Order ID:':'معرّف الطلب:','Wallet Address':'عنوان المحفظة','Recovery Phrase':'عبارة الاسترداد','Remember me':'تذكرني','Connect Wallet':'ربط المحفظة','Secured with Web3':'محمي بواسطة Web3','Biometric Login Available':'تسجيل دخول بيومتري متاح'
 }
 };
 for (const lang of Object.keys(REMAINING_LOCALE_LABELS) as LanguageCode[]) {
@@ -1502,12 +1502,12 @@ for (const lang of Object.keys(REMAINING_LOCALE_LABELS) as LanguageCode[]) {
 const PROFILE_ACTION_TRANSLATIONS: Record<LanguageCode,Record<string,string>>={
 id:{'Referral link berhasil disalin.':'Referral link berhasil disalin.','Withdrawal':'Penarikan','Minimum withdrawal is':'Penarikan minimum adalah','Masukkan alamat wallet tujuan.':'Masukkan alamat wallet tujuan.','Saldo tersedia tidak mencukupi.':'Saldo tersedia tidak mencukupi.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Permintaan penarikan berhasil dibuat dan menunggu proses.','Penarikan gagal.':'Penarikan gagal.'},
 en:{'Referral link berhasil disalin.':'Referral link copied successfully.','Withdrawal':'Withdrawal','Minimum withdrawal is':'Minimum withdrawal is','Masukkan alamat wallet tujuan.':'Enter the destination wallet address.','Saldo tersedia tidak mencukupi.':'Available balance is insufficient.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Withdrawal request created and awaiting processing.','Penarikan gagal.':'Withdrawal failed.'},
-es:{'Referral link berhasil disalin.':'Enlace de referidos copiado.','Withdrawal':'Retiro','Minimum withdrawal is':'El retiro mÃ­nimo es','Masukkan alamat wallet tujuan.':'Introduce la direcciÃ³n de la wallet de destino.','Saldo tersedia tidak mencukupi.':'El saldo disponible es insuficiente.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Solicitud de retiro creada y pendiente de procesamiento.','Penarikan gagal.':'El retiro fallÃ³.'},
-pt:{'Referral link berhasil disalin.':'Link de indicaÃ§Ã£o copiado.','Withdrawal':'Saque','Minimum withdrawal is':'O saque mÃ­nimo Ã©','Masukkan alamat wallet tujuan.':'Informe o endereÃ§o da carteira de destino.','Saldo tersedia tidak mencukupi.':'O saldo disponÃ­vel Ã© insuficiente.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'SolicitaÃ§Ã£o de saque criada e aguardando processamento.','Penarikan gagal.':'O saque falhou.'},
+es:{'Referral link berhasil disalin.':'Enlace de referidos copiado.','Withdrawal':'Retiro','Minimum withdrawal is':'El retiro mínimo es','Masukkan alamat wallet tujuan.':'Introduce la dirección de la wallet de destino.','Saldo tersedia tidak mencukupi.':'El saldo disponible es insuficiente.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Solicitud de retiro creada y pendiente de procesamiento.','Penarikan gagal.':'El retiro falló.'},
+pt:{'Referral link berhasil disalin.':'Link de indicação copiado.','Withdrawal':'Saque','Minimum withdrawal is':'O saque mínimo é','Masukkan alamat wallet tujuan.':'Informe o endereço da carteira de destino.','Saldo tersedia tidak mencukupi.':'O saldo disponível é insuficiente.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'Solicitação de saque criada e aguardando processamento.','Penarikan gagal.':'O saque falhou.'},
 zh:{'Referral link berhasil disalin.':'æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ã€‚','Withdrawal':'æçŽ°','Minimum withdrawal is':'æœ€ä½ŽæçŽ°é‡‘é¢ä¸º','Masukkan alamat wallet tujuan.':'è¯·è¾“å…¥ç›®æ ‡é’±åŒ…åœ°å€ã€‚','Saldo tersedia tidak mencukupi.':'å¯ç”¨ä½™é¢ä¸è¶³ã€‚','Permintaan penarikan berhasil dibuat dan menunggu proses.':'æçŽ°è¯·æ±‚å·²åˆ›å»ºï¼Œç­‰å¾…å¤„ç†ã€‚','Penarikan gagal.':'æçŽ°å¤±è´¥ã€‚'},
 ja:{'Referral link berhasil disalin.':'ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸã€‚','Withdrawal':'å‡ºé‡‘','Minimum withdrawal is':'æœ€ä½Žå‡ºé‡‘é¡ã¯','Masukkan alamat wallet tujuan.':'é€é‡‘å…ˆã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚','Saldo tersedia tidak mencukupi.':'åˆ©ç”¨å¯èƒ½æ®‹é«˜ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚','Permintaan penarikan berhasil dibuat dan menunggu proses.':'å‡ºé‡‘ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ä½œæˆã—ã¾ã—ãŸã€‚å‡¦ç†å¾…ã¡ã§ã™ã€‚','Penarikan gagal.':'å‡ºé‡‘ã«å¤±æ•—ã—ã¾ã—ãŸã€‚'},
 ko:{'Referral link berhasil disalin.':'ì¶”ì²œ ë§í¬ê°€ ë³µì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤.','Withdrawal':'ì¶œê¸ˆ','Minimum withdrawal is':'ìµœì†Œ ì¶œê¸ˆì•¡ì€','Masukkan alamat wallet tujuan.':'ëŒ€ìƒ ì§€ê°‘ ì£¼ì†Œë¥¼ ìž…ë ¥í•˜ì„¸ìš”.','Saldo tersedia tidak mencukupi.':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'ì¶œê¸ˆ ìš”ì²­ì´ ìƒì„±ë˜ì—ˆìœ¼ë©° ì²˜ë¦¬ ëŒ€ê¸° ì¤‘ìž…ë‹ˆë‹¤.','Penarikan gagal.':'ì¶œê¸ˆì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.'},
-ar:{'Referral link berhasil disalin.':'ØªÙ… Ù†Ø³Ø® Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©.','Withdrawal':'Ø§Ù„Ø³Ø­Ø¨','Minimum withdrawal is':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨ Ù‡Ùˆ','Masukkan alamat wallet tujuan.':'Ø£Ø¯Ø®Ù„ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ©.','Saldo tersedia tidak mencukupi.':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ ØºÙŠØ± ÙƒØ§ÙÙ.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø·Ù„Ø¨ Ø§Ù„Ø³Ø­Ø¨ ÙˆÙ‡Ùˆ Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©.','Penarikan gagal.':'ÙØ´Ù„ Ø§Ù„Ø³Ø­Ø¨.'}
+ar:{'Referral link berhasil disalin.':'تم نسخ رابط الإحالة.','Withdrawal':'السحب','Minimum withdrawal is':'الحد الأدنى للسحب هو','Masukkan alamat wallet tujuan.':'أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.':'الرصيد المتاح غير كافٍ.','Permintaan penarikan berhasil dibuat dan menunggu proses.':'تم إنشاء طلب السحب وهو قيد المعالجة.','Penarikan gagal.':'فشل السحب.'}
 };
 for(const lang of Object.keys(PROFILE_ACTION_TRANSLATIONS) as LanguageCode[]){Object.assign(translations[lang],PROFILE_ACTION_TRANSLATIONS[lang]);PAGE_UI_TRANSLATIONS[lang]={...PROFILE_ACTION_TRANSLATIONS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
@@ -1517,22 +1517,22 @@ const EXHAUSTIVE_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
   },
   en: {},
   es: {
-    'Live Room':'Sala en vivo','Gagal memuat live room.':'No se pudo cargar la sala en vivo.','Pesan gagal dikirim.':'No se pudo enviar el mensaje.','Like gagal dikirim.':'No se pudo enviar el Me gusta.','Masuk untuk bergabung ke Live Room':'Inicia sesiÃ³n para unirte a la sala en vivo','Peserta Live':'Participantes en vivo','Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'AÃºn no hay otros participantes.','Belum ada peserta.':'AÃºn no hay participantes.','Need More Viewers':'Faltan espectadores','Add at least 2 viewer usernames to spin the raffle wheel.':'AÃ±ade al menos 2 nombres de espectadores para girar la rueda.','Winner Picked!':'Â¡Ganador seleccionado!','Congratulations':'Â¡Felicidades','Selected as Lucky Viewer!':'Â¡Seleccionado como espectador afortunado!','Enter viewer username (e.g. TikTok_User)':'Introduce el usuario del espectador (p. ej., TikTok_User)','Spinning for Winner...':'Seleccionando ganador...','Current Viewers on Wheel:':'Espectadores actuales en la rueda:','Recent Raffle Winners':'Ganadores recientes','Digital Crypto Card Number Guess':'Adivina el nÃºmero de la tarjeta cripto','Streamer Card Settings':'ConfiguraciÃ³n de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta del streamer','Card Title':'TÃ­tulo de tarjeta','Serial Number':'NÃºmero de serie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafÃ­o','Provably Fair Verification':'VerificaciÃ³n de equidad demostrable','Affiliate Partner Program':'Programa de afiliados','Your Personal Affiliate Link':'Tu enlace personal de afiliado','Direct Invitations':'Invitaciones directas','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Actividad de referidos en vivo','Referee Handle':'Usuario referido','Date Joined':'Fecha de registro','Commission Tier':'Nivel de comisiÃ³n','Wager Volume':'Volumen de apuestas','Commission Earned':'ComisiÃ³n obtenida','Copied Link':'Enlace copiado','Referral link copied to clipboard!':'Â¡Enlace de referidos copiado!','No Pending Rewards':'Sin recompensas pendientes','All referral commissions have already been transferred.':'Todas las comisiones de referidos ya fueron transferidas.','Minimum Deposit':'DepÃ³sito mÃ­nimo','Minimum deposit is $5.00 USD':'El depÃ³sito mÃ­nimo es de 5,00 USD','Failed to generate invoice':'No se pudo generar la factura','Create NOWPayments Invoice':'Crear factura de NOWPayments','Order ID: ':'ID del pedido: '
+    'Live Room':'Sala en vivo','Gagal memuat live room.':'No se pudo cargar la sala en vivo.','Pesan gagal dikirim.':'No se pudo enviar el mensaje.','Like gagal dikirim.':'No se pudo enviar el Me gusta.','Masuk untuk bergabung ke Live Room':'Inicia sesión para unirte a la sala en vivo','Peserta Live':'Participantes en vivo','Memuat peserta...':'Cargando participantes...','Belum ada peserta lain.':'Aún no hay otros participantes.','Belum ada peserta.':'Aún no hay participantes.','Need More Viewers':'Faltan espectadores','Add at least 2 viewer usernames to spin the raffle wheel.':'Añade al menos 2 nombres de espectadores para girar la rueda.','Winner Picked!':'¡Ganador seleccionado!','Congratulations':'¡Felicidades','Selected as Lucky Viewer!':'¡Seleccionado como espectador afortunado!','Enter viewer username (e.g. TikTok_User)':'Introduce el usuario del espectador (p. ej., TikTok_User)','Spinning for Winner...':'Seleccionando ganador...','Current Viewers on Wheel:':'Espectadores actuales en la rueda:','Recent Raffle Winners':'Ganadores recientes','Digital Crypto Card Number Guess':'Adivina el número de la tarjeta cripto','Streamer Card Settings':'Configuración de tarjeta del streamer','Streamer Card Configurator':'Configurador de tarjeta del streamer','Card Title':'Título de tarjeta','Serial Number':'Número de serie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafío','Provably Fair Verification':'Verificación de equidad demostrable','Affiliate Partner Program':'Programa de afiliados','Your Personal Affiliate Link':'Tu enlace personal de afiliado','Direct Invitations':'Invitaciones directas','Network Invites':'Invitaciones de red','Deep Ecosystem':'Ecosistema profundo','Affiliate Income Calculator':'Calculadora de ingresos de afiliados','Estimated Monthly Earnings':'Ingresos mensuales estimados','Live Referral Feed':'Actividad de referidos en vivo','Referee Handle':'Usuario referido','Date Joined':'Fecha de registro','Commission Tier':'Nivel de comisión','Wager Volume':'Volumen de apuestas','Commission Earned':'Comisión obtenida','Copied Link':'Enlace copiado','Referral link copied to clipboard!':'¡Enlace de referidos copiado!','No Pending Rewards':'Sin recompensas pendientes','All referral commissions have already been transferred.':'Todas las comisiones de referidos ya fueron transferidas.','Minimum Deposit':'Depósito mínimo','Minimum deposit is $5.00 USD':'El depósito mínimo es de 5,00 USD','Failed to generate invoice':'No se pudo generar la factura','Create NOWPayments Invoice':'Crear factura de NOWPayments','Order ID: ':'ID del pedido: '
   },
   pt: {
-    'Live Room':'Sala ao vivo','Gagal memuat live room.':'NÃ£o foi possÃ­vel carregar a sala ao vivo.','Pesan gagal dikirim.':'NÃ£o foi possÃ­vel enviar a mensagem.','Like gagal dikirim.':'NÃ£o foi possÃ­vel enviar a curtida.','Masuk untuk bergabung ke Live Room':'Entre para participar da sala ao vivo','Peserta Live':'Participantes ao vivo','Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda nÃ£o hÃ¡ outros participantes.','Belum ada peserta.':'Ainda nÃ£o hÃ¡ participantes.','Need More Viewers':'Mais espectadores necessÃ¡rios','Add at least 2 viewer usernames to spin the raffle wheel.':'Adicione pelo menos 2 nomes de espectadores para girar a roda.','Winner Picked!':'Vencedor escolhido!','Congratulations':'ParabÃ©ns','Selected as Lucky Viewer!':'Selecionado como espectador sortudo!','Enter viewer username (e.g. TikTok_User)':'Digite o usuÃ¡rio do espectador (ex.: TikTok_User)','Spinning for Winner...':'Sorteando vencedor...','Current Viewers on Wheel:':'Espectadores atuais na roda:','Recent Raffle Winners':'Vencedores recentes','Digital Crypto Card Number Guess':'Adivinhe o nÃºmero do cartÃ£o cripto','Streamer Card Settings':'ConfiguraÃ§Ãµes do cartÃ£o do streamer','Streamer Card Configurator':'Configurador do cartÃ£o do streamer','Card Title':'TÃ­tulo do cartÃ£o','Serial Number':'NÃºmero de sÃ©rie','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafio','Provably Fair Verification':'VerificaÃ§Ã£o de justiÃ§a comprovÃ¡vel','Affiliate Partner Program':'Programa de afiliados','Your Personal Affiliate Link':'Seu link pessoal de afiliado','Direct Invitations':'Convites diretos','Network Invites':'Convites de rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de ganhos de afiliados','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicaÃ§Ãµes ao vivo','Referee Handle':'UsuÃ¡rio indicado','Date Joined':'Data de entrada','Commission Tier':'NÃ­vel de comissÃ£o','Wager Volume':'Volume de apostas','Commission Earned':'ComissÃ£o recebida','Copied Link':'Link copiado','Referral link copied to clipboard!':'Link de indicaÃ§Ã£o copiado!','No Pending Rewards':'Sem recompensas pendentes','All referral commissions have already been transferred.':'Todas as comissÃµes de indicaÃ§Ã£o jÃ¡ foram transferidas.','Minimum Deposit':'DepÃ³sito mÃ­nimo','Minimum deposit is $5.00 USD':'O depÃ³sito mÃ­nimo Ã© US$ 5,00','Failed to generate invoice':'Falha ao gerar a fatura','Create NOWPayments Invoice':'Criar fatura NOWPayments','Order ID: ':'ID do pedido: '
+    'Live Room':'Sala ao vivo','Gagal memuat live room.':'Não foi possível carregar a sala ao vivo.','Pesan gagal dikirim.':'Não foi possível enviar a mensagem.','Like gagal dikirim.':'Não foi possível enviar a curtida.','Masuk untuk bergabung ke Live Room':'Entre para participar da sala ao vivo','Peserta Live':'Participantes ao vivo','Memuat peserta...':'Carregando participantes...','Belum ada peserta lain.':'Ainda não há outros participantes.','Belum ada peserta.':'Ainda não há participantes.','Need More Viewers':'Mais espectadores necessários','Add at least 2 viewer usernames to spin the raffle wheel.':'Adicione pelo menos 2 nomes de espectadores para girar a roda.','Winner Picked!':'Vencedor escolhido!','Congratulations':'Parabéns','Selected as Lucky Viewer!':'Selecionado como espectador sortudo!','Enter viewer username (e.g. TikTok_User)':'Digite o usuário do espectador (ex.: TikTok_User)','Spinning for Winner...':'Sorteando vencedor...','Current Viewers on Wheel:':'Espectadores atuais na roda:','Recent Raffle Winners':'Vencedores recentes','Digital Crypto Card Number Guess':'Adivinhe o número do cartão cripto','Streamer Card Settings':'Configurações do cartão do streamer','Streamer Card Configurator':'Configurador do cartão do streamer','Card Title':'Título do cartão','Serial Number':'Número de série','Concealed':'Oculto','Revealed':'Revelado','Verify Challenge':'Verificar desafio','Provably Fair Verification':'Verificação de justiça comprovável','Affiliate Partner Program':'Programa de afiliados','Your Personal Affiliate Link':'Seu link pessoal de afiliado','Direct Invitations':'Convites diretos','Network Invites':'Convites de rede','Deep Ecosystem':'Ecossistema profundo','Affiliate Income Calculator':'Calculadora de ganhos de afiliados','Estimated Monthly Earnings':'Ganhos mensais estimados','Live Referral Feed':'Feed de indicações ao vivo','Referee Handle':'Usuário indicado','Date Joined':'Data de entrada','Commission Tier':'Nível de comissão','Wager Volume':'Volume de apostas','Commission Earned':'Comissão recebida','Copied Link':'Link copiado','Referral link copied to clipboard!':'Link de indicação copiado!','No Pending Rewards':'Sem recompensas pendentes','All referral commissions have already been transferred.':'Todas as comissões de indicação já foram transferidas.','Minimum Deposit':'Depósito mínimo','Minimum deposit is $5.00 USD':'O depósito mínimo é US$ 5,00','Failed to generate invoice':'Falha ao gerar a fatura','Create NOWPayments Invoice':'Criar fatura NOWPayments','Order ID: ':'ID do pedido: '
   },
   zh: {
-    'Live Room':'ç›´æ’­é—´','Gagal memuat live room.':'æ— æ³•åŠ è½½ç›´æ’­é—´ã€‚','Pesan gagal dikirim.':'æ¶ˆæ¯å‘é€å¤±è´¥ã€‚','Like gagal dikirim.':'ç‚¹èµžå‘é€å¤±è´¥ã€‚','Masuk untuk bergabung ke Live Room':'ç™»å½•åŽåŠ å…¥ç›´æ’­é—´','Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Memuat peserta...':'æ­£åœ¨åŠ è½½å‚ä¸Žè€…â€¦','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚','Need More Viewers':'éœ€è¦æ›´å¤šè§‚ä¼—','Add at least 2 viewer usernames to spin the raffle wheel.':'è‡³å°‘æ·»åŠ 2ä¸ªè§‚ä¼—ç”¨æˆ·åæ‰èƒ½å¼€å§‹æŠ½å¥–ã€‚','Winner Picked!':'å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations':'æ­å–œ','Selected as Lucky Viewer!':'è¢«é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Enter viewer username (e.g. TikTok_User)':'è¾“å…¥è§‚ä¼—ç”¨æˆ·åï¼ˆä¾‹å¦‚ TikTok_Userï¼‰','Spinning for Winner...':'æ­£åœ¨æŠ½å–èŽ·èƒœè€…â€¦','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess':'æ•°å­—åŠ å¯†å¡å·ç ç«žçŒœ','Streamer Card Settings':'ä¸»æ’­å¡ç‰‡è®¾ç½®','Streamer Card Configurator':'ä¸»æ’­å¡ç‰‡é…ç½®å™¨','Card Title':'å¡ç‰‡æ ‡é¢˜','Serial Number':'åºåˆ—å·','Concealed':'éšè—','Revealed':'å·²æ­ç¤º','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å¯éªŒè¯å…¬å¹³æ€§','Affiliate Partner Program':'è”ç›Ÿåˆä½œä¼™ä¼´è®¡åˆ’','Your Personal Affiliate Link':'æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations':'ç›´æŽ¥é‚€è¯·','Network Invites':'ç½‘ç»œé‚€è¯·','Deep Ecosystem':'æ·±åº¦ç”Ÿæ€','Affiliate Income Calculator':'è”ç›Ÿæ”¶ç›Šè®¡ç®—å™¨','Estimated Monthly Earnings':'é¢„è®¡æœˆæ”¶ç›Š','Live Referral Feed':'å®žæ—¶æŽ¨èåŠ¨æ€','Referee Handle':'è¢«æŽ¨èäºº','Date Joined':'åŠ å…¥æ—¥æœŸ','Commission Tier':'ä½£é‡‘ç­‰çº§','Wager Volume':'æŠ•æ³¨é‡','Commission Earned':'å·²èŽ·å¾—ä½£é‡‘','Copied Link':'é“¾æŽ¥å·²å¤åˆ¶','Referral link copied to clipboard!':'æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ï¼','No Pending Rewards':'æ²¡æœ‰å¾…å¤„ç†å¥–åŠ±','All referral commissions have already been transferred.':'æ‰€æœ‰æŽ¨èä½£é‡‘å‡å·²è½¬ç§»ã€‚','Minimum Deposit':'æœ€ä½Žå……å€¼','Minimum deposit is $5.00 USD':'æœ€ä½Žå……å€¼é‡‘é¢ä¸º5.00ç¾Žå…ƒ','Failed to generate invoice':'ç”Ÿæˆå‘ç¥¨å¤±è´¥','Create NOWPayments Invoice':'åˆ›å»º NOWPayments å‘ç¥¨','Order ID: ':'è®¢å•IDï¼š'
+    'Live Room':'ç›´æ’­é—´','Gagal memuat live room.':'æ— æ³•åŠ è½½ç›´æ’­é—´ã€‚','Pesan gagal dikirim.':'æ¶ˆæ¯å‘é€å¤±è´¥ã€‚','Like gagal dikirim.':'ç‚¹èµžå‘é€å¤±è´¥ã€‚','Masuk untuk bergabung ke Live Room':'ç™»å½•åŽåŠ å…¥ç›´æ’­é—´','Peserta Live':'ç›´æ’­å‚ä¸Žè€…','Memuat peserta...':'正在加载参与者…','Belum ada peserta lain.':'æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.':'æš‚æ— å‚ä¸Žè€…ã€‚','Need More Viewers':'éœ€è¦æ›´å¤šè§‚ä¼—','Add at least 2 viewer usernames to spin the raffle wheel.':'è‡³å°‘æ·»åŠ 2ä¸ªè§‚ä¼—ç”¨æˆ·åæ‰èƒ½å¼€å§‹æŠ½å¥–ã€‚','Winner Picked!':'å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations':'æ­å–œ','Selected as Lucky Viewer!':'è¢«é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Enter viewer username (e.g. TikTok_User)':'è¾“å…¥è§‚ä¼—ç”¨æˆ·åï¼ˆä¾‹å¦‚ TikTok_Userï¼‰','Spinning for Winner...':'正在抽取获胜者…','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess':'æ•°å­—åŠ å¯†å¡å·ç ç«žçŒœ','Streamer Card Settings':'ä¸»æ’­å¡ç‰‡è®¾ç½®','Streamer Card Configurator':'ä¸»æ’­å¡ç‰‡é…ç½®å™¨','Card Title':'å¡ç‰‡æ ‡é¢˜','Serial Number':'åºåˆ—å·','Concealed':'éšè—','Revealed':'å·²æ­ç¤º','Verify Challenge':'éªŒè¯æŒ‘æˆ˜','Provably Fair Verification':'å¯éªŒè¯å…¬å¹³æ€§','Affiliate Partner Program':'è”ç›Ÿåˆä½œä¼™ä¼´è®¡åˆ’','Your Personal Affiliate Link':'æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations':'ç›´æŽ¥é‚€è¯·','Network Invites':'ç½‘ç»œé‚€è¯·','Deep Ecosystem':'æ·±åº¦ç”Ÿæ€','Affiliate Income Calculator':'è”ç›Ÿæ”¶ç›Šè®¡ç®—å™¨','Estimated Monthly Earnings':'é¢„è®¡æœˆæ”¶ç›Š','Live Referral Feed':'å®žæ—¶æŽ¨èåŠ¨æ€','Referee Handle':'è¢«æŽ¨èäºº','Date Joined':'åŠ å…¥æ—¥æœŸ','Commission Tier':'ä½£é‡‘ç­‰çº§','Wager Volume':'æŠ•æ³¨é‡','Commission Earned':'å·²èŽ·å¾—ä½£é‡‘','Copied Link':'é“¾æŽ¥å·²å¤åˆ¶','Referral link copied to clipboard!':'æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ï¼','No Pending Rewards':'æ²¡æœ‰å¾…å¤„ç†å¥–åŠ±','All referral commissions have already been transferred.':'æ‰€æœ‰æŽ¨èä½£é‡‘å‡å·²è½¬ç§»ã€‚','Minimum Deposit':'æœ€ä½Žå……å€¼','Minimum deposit is $5.00 USD':'æœ€ä½Žå……å€¼é‡‘é¢ä¸º5.00ç¾Žå…ƒ','Failed to generate invoice':'ç”Ÿæˆå‘ç¥¨å¤±è´¥','Create NOWPayments Invoice':'åˆ›å»º NOWPayments å‘ç¥¨','Order ID: ':'è®¢å•IDï¼š'
   },
   ja: {
-    'Live Room':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ','Gagal memuat live room.':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚','Pesan gagal dikirim.':'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Like gagal dikirim.':'ã„ã„ã­ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Masuk untuk bergabung ke Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Peserta Live':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Memuat peserta...':'å‚åŠ è€…ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Need More Viewers':'è¦–è´è€…ãŒè¶³ã‚Šã¾ã›ã‚“','Add at least 2 viewer usernames to spin the raffle wheel.':'æŠ½é¸ã‚’å›žã™ã«ã¯2äººä»¥ä¸Šã®è¦–è´è€…åã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Winner Picked!':'å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations':'ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™','Selected as Lucky Viewer!':'ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Enter viewer username (e.g. TikTok_User)':'è¦–è´è€…åã‚’å…¥åŠ›ï¼ˆä¾‹ï¼šTikTok_Userï¼‰','Spinning for Winner...':'å½“é¸è€…ã‚’æŠ½é¸ä¸­â€¦','Current Viewers on Wheel:':'ç¾åœ¨ã®å‚åŠ è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®å½“é¸è€…','Digital Crypto Card Number Guess':'ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title':'ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number':'ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Concealed':'éžè¡¨ç¤º','Revealed':'å…¬é–‹','Verify Challenge':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification':'æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','Affiliate Partner Program':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link':'ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations':'ç›´æŽ¥æ‹›å¾…','Network Invites':'ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem':'æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Estimated Monthly Earnings':'æŽ¨å®šæœˆé–“åŽç›Š','Live Referral Feed':'ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle':'ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined':'å‚åŠ æ—¥','Commission Tier':'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume':'ãƒ™ãƒƒãƒˆç·é¡','Commission Earned':'ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Copied Link':'ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸ','Referral link copied to clipboard!':'ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸï¼','No Pending Rewards':'ä¿ç•™ä¸­ã®å ±é…¬ã¯ã‚ã‚Šã¾ã›ã‚“','All referral commissions have already been transferred.':'ç´¹ä»‹ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ã¯ã™ã¹ã¦ç§»è¡Œæ¸ˆã¿ã§ã™ã€‚','Minimum Deposit':'æœ€ä½Žå…¥é‡‘é¡','Minimum deposit is $5.00 USD':'æœ€ä½Žå…¥é‡‘é¡ã¯5.00ç±³ãƒ‰ãƒ«ã§ã™','Failed to generate invoice':'è«‹æ±‚æ›¸ã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ','Create NOWPayments Invoice':'NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID: ':'æ³¨æ–‡IDï¼š'
+    'Live Room':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ','Gagal memuat live room.':'ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚','Pesan gagal dikirim.':'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Like gagal dikirim.':'ã„ã„ã­ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Masuk untuk bergabung ke Live Room':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Peserta Live':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Memuat peserta...':'参加者を読み込み中…','Belum ada peserta lain.':'ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.':'å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Need More Viewers':'è¦–è´è€…ãŒè¶³ã‚Šã¾ã›ã‚“','Add at least 2 viewer usernames to spin the raffle wheel.':'æŠ½é¸ã‚’å›žã™ã«ã¯2äººä»¥ä¸Šã®è¦–è´è€…åã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Winner Picked!':'å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations':'ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™','Selected as Lucky Viewer!':'ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Enter viewer username (e.g. TikTok_User)':'è¦–è´è€…åã‚’å…¥åŠ›ï¼ˆä¾‹ï¼šTikTok_Userï¼‰','Spinning for Winner...':'当選者を抽選中…','Current Viewers on Wheel:':'ç¾åœ¨ã®å‚åŠ è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®å½“é¸è€…','Digital Crypto Card Number Guess':'ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title':'ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number':'ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Concealed':'éžè¡¨ç¤º','Revealed':'å…¬é–‹','Verify Challenge':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification':'æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','Affiliate Partner Program':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link':'ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations':'ç›´æŽ¥æ‹›å¾…','Network Invites':'ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem':'æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator':'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Estimated Monthly Earnings':'æŽ¨å®šæœˆé–“åŽç›Š','Live Referral Feed':'ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle':'ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined':'å‚åŠ æ—¥','Commission Tier':'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume':'ãƒ™ãƒƒãƒˆç·é¡','Commission Earned':'ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Copied Link':'ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸ','Referral link copied to clipboard!':'ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸï¼','No Pending Rewards':'ä¿ç•™ä¸­ã®å ±é…¬ã¯ã‚ã‚Šã¾ã›ã‚“','All referral commissions have already been transferred.':'ç´¹ä»‹ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ã¯ã™ã¹ã¦ç§»è¡Œæ¸ˆã¿ã§ã™ã€‚','Minimum Deposit':'æœ€ä½Žå…¥é‡‘é¡','Minimum deposit is $5.00 USD':'æœ€ä½Žå…¥é‡‘é¡ã¯5.00ç±³ãƒ‰ãƒ«ã§ã™','Failed to generate invoice':'è«‹æ±‚æ›¸ã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ','Create NOWPayments Invoice':'NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID: ':'æ³¨æ–‡IDï¼š'
   },
   ko: {
     'Live Room':'ë¼ì´ë¸Œ ë£¸','Gagal memuat live room.':'ë¼ì´ë¸Œ ë£¸ì„ ë¶ˆëŸ¬ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.','Pesan gagal dikirim.':'ë©”ì‹œì§€ë¥¼ ë³´ë‚´ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.','Like gagal dikirim.':'ì¢‹ì•„ìš”ë¥¼ ë³´ë‚´ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.','Masuk untuk bergabung ke Live Room':'ë¡œê·¸ì¸í•˜ì—¬ ë¼ì´ë¸Œ ë£¸ì— ì°¸ì—¬','Peserta Live':'ë¼ì´ë¸Œ ì°¸ê°€ìž','Memuat peserta...':'ì°¸ê°€ìž ë¡œë“œ ì¤‘...','Belum ada peserta lain.':'ì•„ì§ ë‹¤ë¥¸ ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Belum ada peserta.':'ì°¸ê°€ìžê°€ ì—†ìŠµë‹ˆë‹¤.','Need More Viewers':'ì‹œì²­ìžê°€ ë” í•„ìš”í•©ë‹ˆë‹¤','Add at least 2 viewer usernames to spin the raffle wheel.':'ì¶”ì²¨ì„ ëŒë¦¬ë ¤ë©´ ì‹œì²­ìž ì´ë¦„ì„ 2ëª… ì´ìƒ ì¶”ê°€í•˜ì„¸ìš”.','Winner Picked!':'ë‹¹ì²¨ìž ì„ ì •!','Congratulations':'ì¶•í•˜í•©ë‹ˆë‹¤','Selected as Lucky Viewer!':'í–‰ìš´ì˜ ì‹œì²­ìžë¡œ ì„ ì •ë˜ì—ˆìŠµë‹ˆë‹¤!','Enter viewer username (e.g. TikTok_User)':'ì‹œì²­ìž ì‚¬ìš©ìžëª… ìž…ë ¥(ì˜ˆ: TikTok_User)','Spinning for Winner...':'ë‹¹ì²¨ìž ì¶”ì²¨ ì¤‘...','Current Viewers on Wheel:':'í˜„ìž¬ ìŠ¤í”¼ë„ˆ ì°¸ê°€ìž:','Recent Raffle Winners':'ìµœê·¼ ì¶”ì²¨ ë‹¹ì²¨ìž','Digital Crypto Card Number Guess':'ë””ì§€í„¸ í¬ë¦½í†  ì¹´ë“œ ë²ˆí˜¸ ë§žížˆê¸°','Streamer Card Settings':'ìŠ¤íŠ¸ë¦¬ë¨¸ ì¹´ë“œ ì„¤ì •','Streamer Card Configurator':'ìŠ¤íŠ¸ë¦¬ë¨¸ ì¹´ë“œ êµ¬ì„±ê¸°','Card Title':'ì¹´ë“œ ì œëª©','Serial Number':'ì¼ë ¨ë²ˆí˜¸','Concealed':'ìˆ¨ê¹€','Revealed':'ê³µê°œ','Verify Challenge':'ì±Œë¦°ì§€ í™•ì¸','Provably Fair Verification':'ê²€ì¦ ê°€ëŠ¥í•œ ê³µì •ì„±','Affiliate Partner Program':'ì œíœ´ íŒŒíŠ¸ë„ˆ í”„ë¡œê·¸ëž¨','Your Personal Affiliate Link':'ê°œì¸ ì œíœ´ ë§í¬','Direct Invitations':'ì§ì ‘ ì´ˆëŒ€','Network Invites':'ë„¤íŠ¸ì›Œí¬ ì´ˆëŒ€','Deep Ecosystem':'ì‹¬ì¸µ ìƒíƒœê³„','Affiliate Income Calculator':'ì œíœ´ ìˆ˜ìµ ê³„ì‚°ê¸°','Estimated Monthly Earnings':'ì˜ˆìƒ ì›” ìˆ˜ìµ','Live Referral Feed':'ì‹¤ì‹œê°„ ì¶”ì²œ í”¼ë“œ','Referee Handle':'ì¶”ì²œ ì‚¬ìš©ìž','Date Joined':'ê°€ìž…ì¼','Commission Tier':'ì»¤ë¯¸ì…˜ ë“±ê¸‰','Wager Volume':'ë² íŒ… ê·œëª¨','Commission Earned':'íšë“ ì»¤ë¯¸ì…˜','Copied Link':'ë§í¬ ë³µì‚¬ë¨','Referral link copied to clipboard!':'ì¶”ì²œ ë§í¬ê°€ ë³µì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤!','No Pending Rewards':'ëŒ€ê¸° ì¤‘ì¸ ë³´ìƒì´ ì—†ìŠµë‹ˆë‹¤','All referral commissions have already been transferred.':'ëª¨ë“  ì¶”ì²œ ì»¤ë¯¸ì…˜ì´ ì´ë¯¸ ì´ì „ë˜ì—ˆìŠµë‹ˆë‹¤.','Minimum Deposit':'ìµœì†Œ ìž…ê¸ˆ','Minimum deposit is $5.00 USD':'ìµœì†Œ ìž…ê¸ˆì•¡ì€ 5.00 USDìž…ë‹ˆë‹¤','Failed to generate invoice':'ì¸ë³´ì´ìŠ¤ ìƒì„± ì‹¤íŒ¨','Create NOWPayments Invoice':'NOWPayments ì¸ë³´ì´ìŠ¤ ìƒì„±','Order ID: ':'ì£¼ë¬¸ ID: '
   },
   ar: {
-    'Live Room':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Gagal memuat live room.':'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©.','Pesan gagal dikirim.':'ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø³Ø§Ù„Ø©.','Like gagal dikirim.':'ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¥Ø¹Ø¬Ø§Ø¨.','Masuk untuk bergabung ke Live Room':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Peserta Live':'Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙˆÙ†','Memuat peserta...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†...','Belum ada peserta lain.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¢Ø®Ø±ÙˆÙ† Ø¨Ø¹Ø¯.','Belum ada peserta.':'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¨Ø¹Ø¯.','Need More Viewers':'Ù†Ø­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†','Add at least 2 viewer usernames to spin the raffle wheel.':'Ø£Ø¶Ù Ø§Ø³Ù…ÙŽÙŠ Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ† Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„ØªØ¯ÙˆÙŠØ± Ø¹Ø¬Ù„Ø© Ø§Ù„Ø³Ø­Ø¨.','Winner Picked!':'ØªÙ… Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²!','Congratulations':'ØªÙ‡Ø§Ù†ÙŠÙ†Ø§','Selected as Lucky Viewer!':'ØªÙ… Ø§Ø®ØªÙŠØ§Ø±Ùƒ ÙƒÙ…Ø´Ø§Ù‡Ø¯ Ù…Ø­Ø¸ÙˆØ¸!','Enter viewer username (e.g. TikTok_User)':'Ø£Ø¯Ø®Ù„ Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù„Ù„Ù…Ø´Ø§Ù‡Ø¯ (Ù…Ø«Ø§Ù„: TikTok_User)','Spinning for Winner...':'Ø¬Ø§Ø±Ù Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²...','Current Viewers on Wheel:':'Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† Ø§Ù„Ø­Ø§Ù„ÙŠÙˆÙ† Ø¹Ù„Ù‰ Ø§Ù„Ø¹Ø¬Ù„Ø©:','Recent Raffle Winners':'Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† Ø§Ù„Ø£Ø®ÙŠØ±ÙˆÙ†','Digital Crypto Card Number Guess':'ØªØ®Ù…ÙŠÙ† Ø±Ù‚Ù… Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©','Streamer Card Settings':'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Streamer Card Configurator':'Ù…ÙƒÙˆÙ‘Ù† Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¨Ø«','Card Title':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©','Serial Number':'Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ','Concealed':'Ù…Ø®ÙÙŠ','Revealed':'Ù…ÙƒØ´ÙˆÙ','Verify Challenge':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠ','Provably Fair Verification':'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø¥Ø«Ø¨Ø§Øª','Affiliate Partner Program':'Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø¨Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©','Your Personal Affiliate Link':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø© Ø§Ù„Ø´Ø®ØµÙŠ','Direct Invitations':'Ø§Ù„Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Network Invites':'Ø¯Ø¹ÙˆØ§Øª Ø§Ù„Ø´Ø¨ÙƒØ©','Deep Ecosystem':'Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø¨ÙŠØ¦ÙŠ Ø§Ù„Ù…ØªÙƒØ§Ù…Ù„','Affiliate Income Calculator':'Ø­Ø§Ø³Ø¨Ø© Ø¯Ø®Ù„ Ø§Ù„Ø¥Ø­Ø§Ù„Ø©','Estimated Monthly Earnings':'Ø§Ù„Ø£Ø±Ø¨Ø§Ø­ Ø§Ù„Ø´Ù‡Ø±ÙŠØ© Ø§Ù„Ù…Ù‚Ø¯Ø±Ø©','Live Referral Feed':'ØªØºØ°ÙŠØ© Ø§Ù„Ø¥Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Referee Handle':'Ø§Ø³Ù… Ø§Ù„Ù…ÙØ­Ø§Ù„','Date Joined':'ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù…','Commission Tier':'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©','Wager Volume':'Ø­Ø¬Ù… Ø§Ù„Ø±Ù‡Ø§Ù†','Commission Earned':'Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© Ø§Ù„Ù…ÙƒØªØ³Ø¨Ø©','Copied Link':'ØªÙ… Ù†Ø³Ø® Ø§Ù„Ø±Ø§Ø¨Ø·','Referral link copied to clipboard!':'ØªÙ… Ù†Ø³Ø® Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©!','No Pending Rewards':'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…ÙƒØ§ÙØ¢Øª Ù…Ø¹Ù„Ù‚Ø©','All referral commissions have already been transferred.':'ØªÙ… ØªØ­ÙˆÙŠÙ„ Ø¬Ù…ÙŠØ¹ Ø¹Ù…ÙˆÙ„Ø§Øª Ø§Ù„Ø¥Ø­Ø§Ù„Ø© Ø¨Ø§Ù„ÙØ¹Ù„.','Minimum Deposit':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹','Minimum deposit is $5.00 USD':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ù‡Ùˆ 5.00 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ','Failed to generate invoice':'ÙØ´Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©','Create NOWPayments Invoice':'Ø¥Ù†Ø´Ø§Ø¡ ÙØ§ØªÙˆØ±Ø© NOWPayments','Order ID: ':'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ø·Ù„Ø¨: '
+    'Live Room':'الغرفة المباشرة','Gagal memuat live room.':'تعذر تحميل الغرفة المباشرة.','Pesan gagal dikirim.':'تعذر إرسال الرسالة.','Like gagal dikirim.':'تعذر إرسال الإعجاب.','Masuk untuk bergabung ke Live Room':'سجّل الدخول للانضمام إلى الغرفة المباشرة','Peserta Live':'المشاركون المباشرون','Memuat peserta...':'جارٍ تحميل المشاركين...','Belum ada peserta lain.':'لا يوجد مشاركون آخرون بعد.','Belum ada peserta.':'لا يوجد مشاركون بعد.','Need More Viewers':'نحتاج إلى مزيد من المشاهدين','Add at least 2 viewer usernames to spin the raffle wheel.':'أضف اسمَي مشاهدين على الأقل لتدوير عجلة السحب.','Winner Picked!':'تم اختيار الفائز!','Congratulations':'تهانينا','Selected as Lucky Viewer!':'تم اختيارك كمشاهد محظوظ!','Enter viewer username (e.g. TikTok_User)':'أدخل اسم المستخدم للمشاهد (مثال: TikTok_User)','Spinning for Winner...':'جارٍ اختيار الفائز...','Current Viewers on Wheel:':'المشاهدون الحاليون على العجلة:','Recent Raffle Winners':'الفائزون الأخيرون','Digital Crypto Card Number Guess':'تخمين رقم بطاقة العملات الرقمية','Streamer Card Settings':'إعدادات بطاقة البث','Streamer Card Configurator':'مكوّن بطاقة البث','Card Title':'عنوان البطاقة','Serial Number':'الرقم التسلسلي','Concealed':'مخفي','Revealed':'مكشوف','Verify Challenge':'تحقق من التحدي','Provably Fair Verification':'تحقق من العدالة القابلة للإثبات','Affiliate Partner Program':'برنامج الشركاء بالعمولة','Your Personal Affiliate Link':'رابط الإحالة الشخصي','Direct Invitations':'الدعوات المباشرة','Network Invites':'دعوات الشبكة','Deep Ecosystem':'النظام البيئي المتكامل','Affiliate Income Calculator':'حاسبة دخل الإحالة','Estimated Monthly Earnings':'الأرباح الشهرية المقدرة','Live Referral Feed':'تغذية الإحالات المباشرة','Referee Handle':'اسم المُحال','Date Joined':'تاريخ الانضمام','Commission Tier':'مستوى العمولة','Wager Volume':'حجم الرهان','Commission Earned':'العمولة المكتسبة','Copied Link':'تم نسخ الرابط','Referral link copied to clipboard!':'تم نسخ رابط الإحالة!','No Pending Rewards':'لا توجد مكافآت معلقة','All referral commissions have already been transferred.':'تم تحويل جميع عمولات الإحالة بالفعل.','Minimum Deposit':'الحد الأدنى للإيداع','Minimum deposit is $5.00 USD':'الحد الأدنى للإيداع هو 5.00 دولار أمريكي','Failed to generate invoice':'فشل إنشاء الفاتورة','Create NOWPayments Invoice':'إنشاء فاتورة NOWPayments','Order ID: ':'معرّف الطلب: '
   }
 };
 for (const lang of Object.keys(EXHAUSTIVE_UI_TRANSLATIONS) as LanguageCode[]) {
@@ -1565,10 +1565,10 @@ const DASHBOARD_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Refresh balance':'Refresh balance','Refresh posts':'Refresh posts','Claim Bonus':'Claim Bonus'
   },
   es: {
-    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuario puede compartir publicaciones y actualizaciones.','Belum ada postingan':'AÃºn no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.':'SÃ© el primero en compartir algo.','Buat Postingan':'Crear publicaciÃ³n','Belum ada data live aktif':'No hay datos de transmisiones activas','Room live akan tampil di sini setelah tersedia dari backend produksi.':'Las salas en vivo aparecerÃ¡n cuando estÃ©n disponibles desde el backend de producciÃ³n.','Live':'En vivo','Buka Live Room â†’':'Abrir sala en vivo â†’','Tebak Nomor':'Adivina el nÃºmero','Ikuti permainan live.':'Participa en el juego en vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar al evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post':'Subir / crear publicaciÃ³n','Tulis sesuatu untuk dibagikan ke komunitas...':'Escribe algo para compartir con la comunidad...','URL media (opsional)':'URL multimedia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Actualizar saldo','Refresh posts':'Actualizar publicaciones','Claim Bonus':'Reclamar bono'
+    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuario puede compartir publicaciones y actualizaciones.','Belum ada postingan':'Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.':'Sé el primero en compartir algo.','Buat Postingan':'Crear publicación','Belum ada data live aktif':'No hay datos de transmisiones activas','Room live akan tampil di sini setelah tersedia dari backend produksi.':'Las salas en vivo aparecerán cuando estén disponibles desde el backend de producción.','Live':'En vivo','Buka Live Room â†’':'Abrir sala en vivo â†’','Tebak Nomor':'Adivina el número','Ikuti permainan live.':'Participa en el juego en vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar al evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post':'Subir / crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...':'Escribe algo para compartir con la comunidad...','URL media (opsional)':'URL multimedia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Actualizar saldo','Refresh posts':'Actualizar publicaciones','Claim Bonus':'Reclamar bono'
   },
   pt: {
-    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuÃ¡rio pode compartilhar publicaÃ§Ãµes e atualizaÃ§Ãµes.','Belum ada postingan':'Ainda nÃ£o hÃ¡ publicaÃ§Ãµes','Jadilah pengguna pertama yang membagikan sesuatu.':'Seja o primeiro a compartilhar algo.','Buat Postingan':'Criar publicaÃ§Ã£o','Belum ada data live aktif':'NÃ£o hÃ¡ dados de live ativos','Room live akan tampil di sini setelah tersedia dari backend produksi.':'As salas ao vivo aparecerÃ£o quando estiverem disponÃ­veis no backend de produÃ§Ã£o.','Live':'Ao vivo','Buka Live Room â†’':'Abrir sala ao vivo â†’','Tebak Nomor':'Adivinhe o nÃºmero','Ikuti permainan live.':'Participe do jogo ao vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar no evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box usando o saldo da conta.','Upload / Create Post':'Enviar / criar publicaÃ§Ã£o','Tulis sesuatu untuk dibagikan ke komunitas...':'Escreva algo para compartilhar com a comunidade...','URL media (opsional)':'URL de mÃ­dia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Atualizar saldo','Refresh posts':'Atualizar publicaÃ§Ãµes','Claim Bonus':'Resgatar bÃ´nus'
+    'Setiap user dapat membagikan tulisan dan postingan.':'Cada usuário pode compartilhar publicações e atualizações.','Belum ada postingan':'Ainda não há publicações','Jadilah pengguna pertama yang membagikan sesuatu.':'Seja o primeiro a compartilhar algo.','Buat Postingan':'Criar publicação','Belum ada data live aktif':'Não há dados de live ativos','Room live akan tampil di sini setelah tersedia dari backend produksi.':'As salas ao vivo aparecerão quando estiverem disponíveis no backend de produção.','Live':'Ao vivo','Buka Live Room â†’':'Abrir sala ao vivo â†’','Tebak Nomor':'Adivinhe o número','Ikuti permainan live.':'Participe do jogo ao vivo.','Spinner':'Spinner','Masuk ke event spinner.':'Entrar no evento spinner.','Blind Box':'Blind Box','Buka Blind Box dengan saldo akun.':'Abrir Blind Box usando o saldo da conta.','Upload / Create Post':'Enviar / criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...':'Escreva algo para compartilhar com a comunidade...','URL media (opsional)':'URL de mídia (opcional)','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Refresh balance':'Atualizar saldo','Refresh posts':'Atualizar publicações','Claim Bonus':'Resgatar bônus'
   },
   zh: {
     'Setiap user dapat membagikan tulisan dan postingan.':'æ¯ä½ç”¨æˆ·éƒ½å¯ä»¥åˆ†äº«å¸–å­å’ŒåŠ¨æ€ã€‚','Belum ada postingan':'æš‚æ— å¸–å­','Jadilah pengguna pertama yang membagikan sesuatu.':'æˆä¸ºç¬¬ä¸€ä¸ªåˆ†äº«å†…å®¹çš„ç”¨æˆ·ã€‚','Buat Postingan':'åˆ›å»ºå¸–å­','Belum ada data live aktif':'æš‚æ— æ´»è·ƒç›´æ’­æ•°æ®','Room live akan tampil di sini setelah tersedia dari backend produksi.':'ç”Ÿäº§åŽç«¯æä¾›æ•°æ®åŽï¼Œç›´æ’­é—´ä¼šæ˜¾ç¤ºåœ¨è¿™é‡Œã€‚','Live':'ç›´æ’­','Buka Live Room â†’':'æ‰“å¼€ç›´æ’­é—´ â†’','Tebak Nomor':'çŒœæ•°å­—','Ikuti permainan live.':'å‚ä¸Žç›´æ’­æ¸¸æˆã€‚','Spinner':'è½¬ç›˜','Masuk ke event spinner.':'è¿›å…¥è½¬ç›˜æ´»åŠ¨ã€‚','Blind Box':'ç›²ç›’','Buka Blind Box dengan saldo akun.':'ä½¿ç”¨è´¦æˆ·ä½™é¢æ‰“å¼€ç›²ç›’ã€‚','Upload / Create Post':'ä¸Šä¼  / åˆ›å»ºå¸–å­','Tulis sesuatu untuk dibagikan ke komunitas...':'å†™ä¸‹è¦ä¸Žç¤¾åŒºåˆ†äº«çš„å†…å®¹...','URL media (opsional)':'åª’ä½“é“¾æŽ¥ï¼ˆå¯é€‰ï¼‰','Menerbitkan...':'å‘å¸ƒä¸­...','Terbitkan Postingan':'å‘å¸ƒå¸–å­','Refresh balance':'åˆ·æ–°ä½™é¢','Refresh posts':'åˆ·æ–°å¸–å­','Claim Bonus':'é¢†å–å¥–åŠ±'
@@ -1580,7 +1580,7 @@ const DASHBOARD_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Setiap user dapat membagikan tulisan dan postingan.':'ëª¨ë“  ì‚¬ìš©ìžëŠ” ê²Œì‹œë¬¼ê³¼ ì—…ë°ì´íŠ¸ë¥¼ ê³µìœ í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.','Belum ada postingan':'ê²Œì‹œë¬¼ì´ ì—†ìŠµë‹ˆë‹¤','Jadilah pengguna pertama yang membagikan sesuatu.':'ê°€ìž¥ ë¨¼ì € ì½˜í…ì¸ ë¥¼ ê³µìœ í•´ ë³´ì„¸ìš”.','Buat Postingan':'ê²Œì‹œë¬¼ ë§Œë“¤ê¸°','Belum ada data live aktif':'í™œì„± ë¼ì´ë¸Œ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤','Room live akan tampil di sini setelah tersedia dari backend produksi.':'í”„ë¡œë•ì…˜ ë°±ì—”ë“œì—ì„œ ì œê³µë˜ë©´ ë¼ì´ë¸Œ ë£¸ì´ ì—¬ê¸°ì— í‘œì‹œë©ë‹ˆë‹¤.','Live':'ë¼ì´ë¸Œ','Buka Live Room â†’':'ë¼ì´ë¸Œ ë£¸ ì—´ê¸° â†’','Tebak Nomor':'ìˆ«ìž ë§žížˆê¸°','Ikuti permainan live.':'ë¼ì´ë¸Œ ê²Œìž„ì— ì°¸ì—¬í•˜ì„¸ìš”.','Spinner':'ìŠ¤í”¼ë„ˆ','Masuk ke event spinner.':'ìŠ¤í”¼ë„ˆ ì´ë²¤íŠ¸ ìž…ìž¥','Blind Box':'ë¸”ë¼ì¸ë“œ ë°•ìŠ¤','Buka Blind Box dengan saldo akun.':'ê³„ì • ìž”ì•¡ìœ¼ë¡œ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ì—´ê¸°','Upload / Create Post':'ì—…ë¡œë“œ / ê²Œì‹œë¬¼ ë§Œë“¤ê¸°','Tulis sesuatu untuk dibagikan ke komunitas...':'ì»¤ë®¤ë‹ˆí‹°ì— ê³µìœ í•  ë‚´ìš©ì„ ìž‘ì„±í•˜ì„¸ìš”...','URL media (opsional)':'ë¯¸ë””ì–´ URL(ì„ íƒ ì‚¬í•­)','Menerbitkan...':'ê²Œì‹œ ì¤‘...','Terbitkan Postingan':'ê²Œì‹œë¬¼ ê²Œì‹œ','Refresh balance':'ìž”ì•¡ ìƒˆë¡œê³ ì¹¨','Refresh posts':'ê²Œì‹œë¬¼ ìƒˆë¡œê³ ì¹¨','Claim Bonus':'ë³´ë„ˆìŠ¤ ë°›ê¸°'
   },
   ar: {
-    'Setiap user dapat membagikan tulisan dan postingan.':'ÙŠÙ…ÙƒÙ† Ù„ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø´Ø§Ø±ÙƒØ© Ø§Ù„Ù…Ù†Ø´ÙˆØ±Ø§Øª ÙˆØ§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª.','Belum ada postingan':'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù†Ø´ÙˆØ±Ø§Øª Ø¨Ø¹Ø¯','Jadilah pengguna pertama yang membagikan sesuatu.':'ÙƒÙ† Ø£ÙˆÙ„ Ù…Ø³ØªØ®Ø¯Ù… ÙŠØ´Ø§Ø±Ùƒ Ø´ÙŠØ¦Ù‹Ø§.','Buat Postingan':'Ø¥Ù†Ø´Ø§Ø¡ Ù…Ù†Ø´ÙˆØ±','Belum ada data live aktif':'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø« Ù…Ø¨Ø§Ø´Ø± Ù†Ø´Ø·Ø©','Room live akan tampil di sini setelah tersedia dari backend produksi.':'Ø³ØªØ¸Ù‡Ø± ØºØ±Ù Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù‡Ù†Ø§ Ø¹Ù†Ø¯ ØªÙˆÙØ±Ù‡Ø§ Ù…Ù† Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø®Ù„ÙÙŠØ© Ù„Ù„Ø¥Ù†ØªØ§Ø¬.','Live':'Ù…Ø¨Ø§Ø´Ø±','Buka Live Room â†’':'ÙØªØ­ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± â†’','Tebak Nomor':'Ø®Ù…Ù† Ø§Ù„Ø±Ù‚Ù…','Ikuti permainan live.':'Ø´Ø§Ø±Ùƒ ÙÙŠ Ø§Ù„Ù„Ø¹Ø¨Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©.','Spinner':'Ø§Ù„Ø¹Ø¬Ù„Ø©','Masuk ke event spinner.':'Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ ÙØ¹Ø§Ù„ÙŠØ© Ø§Ù„Ø¹Ø¬Ù„Ø©.','Blind Box':'Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶','Buka Blind Box dengan saldo akun.':'Ø§ÙØªØ­ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø±ØµÙŠØ¯ Ø­Ø³Ø§Ø¨Ùƒ.','Upload / Create Post':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡ Ù…Ù†Ø´ÙˆØ±','Tulis sesuatu untuk dibagikan ke komunitas...':'Ø§ÙƒØªØ¨ Ø´ÙŠØ¦Ù‹Ø§ Ù„Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø§Ù„Ù…Ø¬ØªÙ…Ø¹...','URL media (opsional)':'Ø±Ø§Ø¨Ø· Ø§Ù„ÙˆØ³Ø§Ø¦Ø· (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)','Menerbitkan...':'Ø¬Ø§Ø±Ù Ø§Ù„Ù†Ø´Ø±...','Terbitkan Postingan':'Ù†Ø´Ø± Ø§Ù„Ù…Ù†Ø´ÙˆØ±','Refresh balance':'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø±ØµÙŠØ¯','Refresh posts':'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù†Ø´ÙˆØ±Ø§Øª','Claim Bonus':'Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©'
+    'Setiap user dapat membagikan tulisan dan postingan.':'يمكن لكل مستخدم مشاركة المنشورات والتحديثات.','Belum ada postingan':'لا توجد منشورات بعد','Jadilah pengguna pertama yang membagikan sesuatu.':'كن أول مستخدم يشارك شيئًا.','Buat Postingan':'إنشاء منشور','Belum ada data live aktif':'لا توجد بيانات بث مباشر نشطة','Room live akan tampil di sini setelah tersedia dari backend produksi.':'ستظهر غرف البث المباشر هنا عند توفرها من الواجهة الخلفية للإنتاج.','Live':'مباشر','Buka Live Room â†’':'فتح غرفة البث المباشر →','Tebak Nomor':'خمن الرقم','Ikuti permainan live.':'شارك في اللعبة المباشرة.','Spinner':'العجلة','Masuk ke event spinner.':'الدخول إلى فعالية العجلة.','Blind Box':'الصندوق الغامض','Buka Blind Box dengan saldo akun.':'افتح الصندوق الغامض باستخدام رصيد حسابك.','Upload / Create Post':'رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...':'اكتب شيئًا لمشاركته مع المجتمع...','URL media (opsional)':'رابط الوسائط (اختياري)','Menerbitkan...':'جارٍ النشر...','Terbitkan Postingan':'نشر المنشور','Refresh balance':'تحديث الرصيد','Refresh posts':'تحديث المنشورات','Claim Bonus':'استلام المكافأة'
   }
 };
 for (const lang of Object.keys(DASHBOARD_TRANSLATIONS) as LanguageCode[]) {
@@ -1589,8 +1589,8 @@ for (const lang of Object.keys(DASHBOARD_TRANSLATIONS) as LanguageCode[]) {
 }
 
 const AUDIT_UI_TRANSLATIONS: Partial<Record<LanguageCode, Record<string,string>>> = {
-  id: {'Profile':'Profil','Kelola akun, wallet, dan aktivitas kamu.':'Kelola akun, wallet, dan aktivitas kamu.','User ID = Wallet Address':'User ID = Alamat Wallet','Member':'Anggota','USDT Account':'Akun USDT','EVM Wallet':'Wallet EVM','Wallet belum terhubung':'Wallet belum terhubung','Alamat wallet berhasil disalin.':'Alamat wallet berhasil disalin.','Available':'Tersedia','Locked':'Terkunci','Withdraw':'Tarik Dana','Ajukan penarikan':'Ajukan penarikan','Registration Bonus':'Bonus Registrasi','Bonus tersedia dan belum diklaim.':'Bonus tersedia dan belum diklaim.','Available Balance':'Saldo Tersedia','Locked Balance':'Saldo Terkunci','Referral Link':'Link Referral','Bagikan link ini untuk mengundang user baru.':'Bagikan link ini untuk mengundang user baru.','Event Participation Status':'Status Partisipasi Event','Belum ada event yang diikuti.':'Belum ada event yang diikuti.','Transaction History':'Riwayat Transaksi','Deposit, withdrawal, lock, reward & bonus':'Deposit, penarikan, lock, reward & bonus','Refresh':'Muat Ulang','Loading...':'Memuat...','Belum ada transaksi.':'Belum ada transaksi.','Withdraw USDT':'Tarik USDT','Submit Withdrawal':'Ajukan Penarikan','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ foto tetap tersimpan di perangkat Anda','Daily Mystery Blind Box':'Blind Box Misteri Harian','Lock minimal $4 equivalent untuk membuka Blind Box':'Lock minimal setara $4 untuk membuka Blind Box','Lock aktif':'Lock aktif','Aturan claim tetap 1 kali per hari.':'Klaim tetap 1 kali per hari.','LOCK SALDO DIBUTUHKAN':'LOCK SALDO DIBUTUHKAN','1 Box/Day':'1 Box/Hari','Lock Saldo Sekarang':'Lock Saldo Sekarang','Server sedang menentukan reward...':'Server sedang menentukan reward...','Reward Blind Box Harian':'Reward Blind Box Harian','Keep in Vault':'Simpan di Vault','Done':'Selesai','Active Selection':'Pilihan Aktif','Jadwal Durasi Lock':'Jadwal Durasi Lock','Reward harian sesuai pengaturan server':'Reward harian sesuai pengaturan server','Verifying Email':'Memverifikasi Email','Email Verified':'Email Terverifikasi','Verification Failed':'Verifikasi Gagal','SYS STREAM LOADING':'SYS STREAM MEMUAT...','Live Room Aktif':'Live Room Aktif','Live belum aktif':'Live belum aktif'},
-  en: {'Profile':'Profile','Kelola akun, wallet, dan aktivitas kamu.':'Manage your account, wallet, and activity.','User ID = Wallet Address':'User ID = Wallet Address','Member':'Member','USDT Account':'USDT Account','EVM Wallet':'EVM Wallet','Wallet belum terhubung':'Wallet not connected','Alamat wallet berhasil disalin.':'Wallet address copied successfully.','Available':'Available','Locked':'Locked','Withdraw':'Withdraw','Ajukan penarikan':'Request withdrawal','Registration Bonus':'Registration Bonus','Bonus tersedia dan belum diklaim.':'Bonus is available and has not been claimed.','Available Balance':'Available Balance','Locked Balance':'Locked Balance','Referral Link':'Referral Link','Bagikan link ini untuk mengundang user baru.':'Share this link to invite a new user.','Event Participation Status':'Event Participation Status','Belum ada event yang diikuti.':'No events joined yet.','Transaction History':'Transaction History','Deposit, withdrawal, lock, reward & bonus':'Deposits, withdrawals, locks, rewards & bonuses','Refresh':'Refresh','Loading...':'Loading...','Belum ada transaksi.':'No transactions yet.','Withdraw USDT':'Withdraw USDT','Submit Withdrawal':'Submit Withdrawal','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ photo stays on your device','Daily Mystery Blind Box':'Daily Mystery Blind Box','Lock minimal $4 equivalent untuk membuka Blind Box':'Lock at least the $4 equivalent to open Blind Box','Lock aktif':'Lock active','Aturan claim tetap 1 kali per hari.':'Claim remains limited to once per day.','LOCK SALDO DIBUTUHKAN':'BALANCE LOCK REQUIRED','1 Box/Day':'1 Box/Day','Lock Saldo Sekarang':'Lock Balance Now','Server sedang menentukan reward...':'Server is determining the reward...','Reward Blind Box Harian':'Daily Blind Box Reward','Keep in Vault':'Keep in Vault','Done':'Done','Active Selection':'Active Selection','Jadwal Durasi Lock':'Lock Duration Schedule','Reward harian sesuai pengaturan server':'Daily reward according to server settings','Verifying Email':'Verifying Email','Email Verified':'Email Verified','Verification Failed':'Verification Failed','SYS STREAM LOADING':'SYS STREAM LOADING','Live Room Aktif':'Live Room Active','Live belum aktif':'Live is not active'}
+  id: {'Profile':'Profil','Kelola akun, wallet, dan aktivitas kamu.':'Kelola akun, wallet, dan aktivitas kamu.','User ID = Wallet Address':'User ID = Alamat Wallet','Member':'Anggota','USDT Account':'Akun USDT','EVM Wallet':'Wallet EVM','Wallet belum terhubung':'Wallet belum terhubung','Alamat wallet berhasil disalin.':'Alamat wallet berhasil disalin.','Available':'Tersedia','Locked':'Terkunci','Withdraw':'Tarik Dana','Ajukan penarikan':'Ajukan penarikan','Registration Bonus':'Bonus Registrasi','Bonus tersedia dan belum diklaim.':'Bonus tersedia dan belum diklaim.','Available Balance':'Saldo Tersedia','Locked Balance':'Saldo Terkunci','Referral Link':'Link Referral','Bagikan link ini untuk mengundang user baru.':'Bagikan link ini untuk mengundang user baru.','Event Participation Status':'Status Partisipasi Event','Belum ada event yang diikuti.':'Belum ada event yang diikuti.','Transaction History':'Riwayat Transaksi','Deposit, withdrawal, lock, reward & bonus':'Deposit, penarikan, lock, reward & bonus','Refresh':'Muat Ulang','Loading...':'Memuat...','Belum ada transaksi.':'Belum ada transaksi.','Withdraw USDT':'Tarik USDT','Submit Withdrawal':'Ajukan Penarikan','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • foto tetap tersimpan di perangkat Anda','Daily Mystery Blind Box':'Blind Box Misteri Harian','Lock minimal $4 equivalent untuk membuka Blind Box':'Lock minimal setara $4 untuk membuka Blind Box','Lock aktif':'Lock aktif','Aturan claim tetap 1 kali per hari.':'Klaim tetap 1 kali per hari.','LOCK SALDO DIBUTUHKAN':'LOCK SALDO DIBUTUHKAN','1 Box/Day':'1 Box/Hari','Lock Saldo Sekarang':'Lock Saldo Sekarang','Server sedang menentukan reward...':'Server sedang menentukan reward...','Reward Blind Box Harian':'Reward Blind Box Harian','Keep in Vault':'Simpan di Vault','Done':'Selesai','Active Selection':'Pilihan Aktif','Jadwal Durasi Lock':'Jadwal Durasi Lock','Reward harian sesuai pengaturan server':'Reward harian sesuai pengaturan server','Verifying Email':'Memverifikasi Email','Email Verified':'Email Terverifikasi','Verification Failed':'Verifikasi Gagal','SYS STREAM LOADING':'SYS STREAM MEMUAT...','Live Room Aktif':'Live Room Aktif','Live belum aktif':'Live belum aktif'},
+  en: {'Profile':'Profile','Kelola akun, wallet, dan aktivitas kamu.':'Manage your account, wallet, and activity.','User ID = Wallet Address':'User ID = Wallet Address','Member':'Member','USDT Account':'USDT Account','EVM Wallet':'EVM Wallet','Wallet belum terhubung':'Wallet not connected','Alamat wallet berhasil disalin.':'Wallet address copied successfully.','Available':'Available','Locked':'Locked','Withdraw':'Withdraw','Ajukan penarikan':'Request withdrawal','Registration Bonus':'Registration Bonus','Bonus tersedia dan belum diklaim.':'Bonus is available and has not been claimed.','Available Balance':'Available Balance','Locked Balance':'Locked Balance','Referral Link':'Referral Link','Bagikan link ini untuk mengundang user baru.':'Share this link to invite a new user.','Event Participation Status':'Event Participation Status','Belum ada event yang diikuti.':'No events joined yet.','Transaction History':'Transaction History','Deposit, withdrawal, lock, reward & bonus':'Deposits, withdrawals, locks, rewards & bonuses','Refresh':'Refresh','Loading...':'Loading...','Belum ada transaksi.':'No transactions yet.','Withdraw USDT':'Withdraw USDT','Submit Withdrawal':'Submit Withdrawal','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • photo stays on your device','Daily Mystery Blind Box':'Daily Mystery Blind Box','Lock minimal $4 equivalent untuk membuka Blind Box':'Lock at least the $4 equivalent to open Blind Box','Lock aktif':'Lock active','Aturan claim tetap 1 kali per hari.':'Claim remains limited to once per day.','LOCK SALDO DIBUTUHKAN':'BALANCE LOCK REQUIRED','1 Box/Day':'1 Box/Day','Lock Saldo Sekarang':'Lock Balance Now','Server sedang menentukan reward...':'Server is determining the reward...','Reward Blind Box Harian':'Daily Blind Box Reward','Keep in Vault':'Keep in Vault','Done':'Done','Active Selection':'Active Selection','Jadwal Durasi Lock':'Lock Duration Schedule','Reward harian sesuai pengaturan server':'Daily reward according to server settings','Verifying Email':'Verifying Email','Email Verified':'Email Verified','Verification Failed':'Verification Failed','SYS STREAM LOADING':'SYS STREAM LOADING','Live Room Aktif':'Live Room Active','Live belum aktif':'Live is not active'}
 };
 for (const lang of Object.keys(AUDIT_UI_TRANSLATIONS) as LanguageCode[]) { Object.assign(translations[lang], AUDIT_UI_TRANSLATIONS[lang]); PAGE_UI_TRANSLATIONS[lang] = { ...AUDIT_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] }; }
 
@@ -1617,24 +1617,24 @@ const DEPOSIT_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Change Currency / Amount':'Change Currency / Amount','Done':'Done'
   },
   es: {
-    'NOWPayments Crypto Deposit':'DepÃ³sito cripto NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¡neo sin comisiones de plataforma',
-    'Deposit Amount (USD)':'Importe del depÃ³sito (USD)','Or enter custom USD amount':'O introduce un importe USD personalizado',
-    'Minimum deposit':'DepÃ³sito mÃ­nimo','Rate is checked live by NOWPayments when the payment is created.':'NOWPayments comprueba el tipo de cambio en tiempo real al crear el pago.',
-    'Deposit is credited to your real account balance after payment confirmation.':'El depÃ³sito se acredita en tu saldo real tras confirmar el pago.',
-    'Select Cryptocurrency':'Selecciona criptomoneda','Minimum Deposit':'DepÃ³sito mÃ­nimo','Minimum deposit is':'El depÃ³sito mÃ­nimo es',
-    'Error':'Error','Failed to generate invoice':'No se pudo crear la factura','Order ID: ':'ID de pedido: ','Awaiting Deposit':'Esperando depÃ³sito',
-    'Deposit QR Code':'CÃ³digo QR del depÃ³sito','Send exactly to deposit address:':'EnvÃ­a exactamente a la direcciÃ³n de depÃ³sito:','Open NOWPayments Payment Page':'Abrir pÃ¡gina de pago de NOWPayments',
+    'NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantáneo sin comisiones de plataforma',
+    'Deposit Amount (USD)':'Importe del depósito (USD)','Or enter custom USD amount':'O introduce un importe USD personalizado',
+    'Minimum deposit':'Depósito mínimo','Rate is checked live by NOWPayments when the payment is created.':'NOWPayments comprueba el tipo de cambio en tiempo real al crear el pago.',
+    'Deposit is credited to your real account balance after payment confirmation.':'El depósito se acredita en tu saldo real tras confirmar el pago.',
+    'Select Cryptocurrency':'Selecciona criptomoneda','Minimum Deposit':'Depósito mínimo','Minimum deposit is':'El depósito mínimo es',
+    'Error':'Error','Failed to generate invoice':'No se pudo crear la factura','Order ID: ':'ID de pedido: ','Awaiting Deposit':'Esperando depósito',
+    'Deposit QR Code':'Código QR del depósito','Send exactly to deposit address:':'Envía exactamente a la dirección de depósito:','Open NOWPayments Payment Page':'Abrir página de pago de NOWPayments',
     'Change Currency / Amount':'Cambiar moneda / importe','Done':'Listo'
   },
   pt: {
-    'NOWPayments Crypto Deposit':'DepÃ³sito cripto NOWPayments','Instant deposit with zero platform fees':'DepÃ³sito instantÃ¢neo sem taxas da plataforma',
-    'Deposit Amount (USD)':'Valor do depÃ³sito (USD)','Or enter custom USD amount':'Ou informe um valor USD personalizado',
-    'Minimum deposit':'DepÃ³sito mÃ­nimo','Rate is checked live by NOWPayments when the payment is created.':'A cotaÃ§Ã£o Ã© verificada em tempo real pela NOWPayments ao criar o pagamento.',
-    'Deposit is credited to your real account balance after payment confirmation.':'O depÃ³sito Ã© creditado no saldo real apÃ³s a confirmaÃ§Ã£o do pagamento.',
-    'Select Cryptocurrency':'Selecionar criptomoeda','Minimum Deposit':'DepÃ³sito mÃ­nimo','Minimum deposit is':'O depÃ³sito mÃ­nimo Ã©',
-    'Error':'Erro','Failed to generate invoice':'Falha ao criar a fatura','Order ID: ':'ID do pedido: ','Awaiting Deposit':'Aguardando depÃ³sito',
-    'Deposit QR Code':'QR Code do depÃ³sito','Send exactly to deposit address:':'Envie exatamente para o endereÃ§o de depÃ³sito:','Open NOWPayments Payment Page':'Abrir pÃ¡gina de pagamento NOWPayments',
-    'Change Currency / Amount':'Alterar moeda / valor','Done':'ConcluÃ­do'
+    'NOWPayments Crypto Deposit':'Depósito cripto NOWPayments','Instant deposit with zero platform fees':'Depósito instantâneo sem taxas da plataforma',
+    'Deposit Amount (USD)':'Valor do depósito (USD)','Or enter custom USD amount':'Ou informe um valor USD personalizado',
+    'Minimum deposit':'Depósito mínimo','Rate is checked live by NOWPayments when the payment is created.':'A cotação é verificada em tempo real pela NOWPayments ao criar o pagamento.',
+    'Deposit is credited to your real account balance after payment confirmation.':'O depósito é creditado no saldo real após a confirmação do pagamento.',
+    'Select Cryptocurrency':'Selecionar criptomoeda','Minimum Deposit':'Depósito mínimo','Minimum deposit is':'O depósito mínimo é',
+    'Error':'Erro','Failed to generate invoice':'Falha ao criar a fatura','Order ID: ':'ID do pedido: ','Awaiting Deposit':'Aguardando depósito',
+    'Deposit QR Code':'QR Code do depósito','Send exactly to deposit address:':'Envie exatamente para o endereço de depósito:','Open NOWPayments Payment Page':'Abrir página de pagamento NOWPayments',
+    'Change Currency / Amount':'Alterar moeda / valor','Done':'Concluído'
   },
   zh: {
     'NOWPayments Crypto Deposit':'NOWPayments åŠ å¯†è´§å¸å……å€¼','Instant deposit with zero platform fees':'å³æ—¶å……å€¼ï¼Œå¹³å°é›¶æ‰‹ç»­è´¹',
@@ -1667,14 +1667,14 @@ const DEPOSIT_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Change Currency / Amount':'í†µí™” / ê¸ˆì•¡ ë³€ê²½','Done':'ì™„ë£Œ'
   },
   ar: {
-    'NOWPayments Crypto Deposit':'Ø¥ÙŠØ¯Ø§Ø¹ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ø¹Ø¨Ø± NOWPayments','Instant deposit with zero platform fees':'Ø¥ÙŠØ¯Ø§Ø¹ ÙÙˆØ±ÙŠ Ø¨Ø¯ÙˆÙ† Ø±Ø³ÙˆÙ… Ù…Ù†ØµØ©',
-    'Deposit Amount (USD)':'Ù…Ø¨Ù„Øº Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹ (USD)','Or enter custom USD amount':'Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ù…Ø¨Ù„Øº USD Ù…Ø®ØµØµÙ‹Ø§',
-    'Minimum deposit':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹','Rate is checked live by NOWPayments when the payment is created.':'ÙŠØªÙ… Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø³Ø¹Ø± Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ø¨Ø± NOWPayments Ø¹Ù†Ø¯ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø¯ÙØ¹.',
-    'Deposit is credited to your real account balance after payment confirmation.':'ÙŠÙØ¶Ø§Ù Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ø¥Ù„Ù‰ Ø±ØµÙŠØ¯ Ø­Ø³Ø§Ø¨Ùƒ Ø§Ù„Ø­Ù‚ÙŠÙ‚ÙŠ Ø¨Ø¹Ø¯ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¯ÙØ¹.',
-    'Select Cryptocurrency':'Ø§Ø®ØªØ± Ø§Ù„Ø¹Ù…Ù„Ø© Ø§Ù„Ø±Ù‚Ù…ÙŠØ©','Minimum Deposit':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹','Minimum deposit is':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ù‡Ùˆ',
-    'Error':'Ø®Ø·Ø£','Failed to generate invoice':'ÙØ´Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©','Order ID: ':'Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ø·Ù„Ø¨: ','Awaiting Deposit':'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹',
-    'Deposit QR Code':'Ø±Ù…Ø² QR Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹','Send exactly to deposit address:':'Ø£Ø±Ø³Ù„ Ø§Ù„Ù…Ø¨Ù„Øº Ø¥Ù„Ù‰ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ø¨Ø§Ù„Ø¶Ø¨Ø·:','Open NOWPayments Payment Page':'ÙØªØ­ ØµÙØ­Ø© Ø¯ÙØ¹ NOWPayments',
-    'Change Currency / Amount':'ØªØºÙŠÙŠØ± Ø§Ù„Ø¹Ù…Ù„Ø© / Ø§Ù„Ù…Ø¨Ù„Øº','Done':'ØªÙ…'
+    'NOWPayments Crypto Deposit':'إيداع العملات الرقمية عبر NOWPayments','Instant deposit with zero platform fees':'إيداع فوري بدون رسوم منصة',
+    'Deposit Amount (USD)':'مبلغ الإيداع (USD)','Or enter custom USD amount':'أو أدخل مبلغ USD مخصصًا',
+    'Minimum deposit':'الحد الأدنى للإيداع','Rate is checked live by NOWPayments when the payment is created.':'يتم التحقق من السعر مباشرة عبر NOWPayments عند إنشاء الدفع.',
+    'Deposit is credited to your real account balance after payment confirmation.':'يُضاف الإيداع إلى رصيد حسابك الحقيقي بعد تأكيد الدفع.',
+    'Select Cryptocurrency':'اختر العملة الرقمية','Minimum Deposit':'الحد الأدنى للإيداع','Minimum deposit is':'الحد الأدنى للإيداع هو',
+    'Error':'خطأ','Failed to generate invoice':'فشل إنشاء الفاتورة','Order ID: ':'معرّف الطلب: ','Awaiting Deposit':'بانتظار الإيداع',
+    'Deposit QR Code':'رمز QR للإيداع','Send exactly to deposit address:':'أرسل المبلغ إلى عنوان الإيداع بالضبط:','Open NOWPayments Payment Page':'فتح صفحة دفع NOWPayments',
+    'Change Currency / Amount':'تغيير العملة / المبلغ','Done':'تم'
   }
 };
 for (const lang of Object.keys(DEPOSIT_UI_TRANSLATIONS) as LanguageCode[]) {
@@ -1698,16 +1698,16 @@ const FINAL_MISSING_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string
     'Upload / Create':'Upload / Create','Live Room':'Live Room','Login Required':'Login Required','Loading...':'Loading...'
   },
   es: {
-    'Login':'Iniciar sesiÃ³n','Register':'Registrarse','We sent a verification link to ':'Enviamos un enlace de verificaciÃ³n a ','You must verify it before you can log in.':'Debes verificarlo antes de iniciar sesiÃ³n.','Terms & Conditions':'TÃ©rminos y condiciones',
-    'LOGIN / REGISTER':'INICIAR SESIÃ“N / REGISTRARSE','Streamer Username Manager':'Gestor de nombres de usuario del streamer','WIN':'GANAR','Close':'Cerrar',
-    'Earn Passive Crypto & Gold Coins':'Gana criptomonedas y monedas de oro','Anyone registering with your link receives a free ':'Quien se registre con tu enlace recibe ',' starter bonus.':' de bonificaciÃ³n inicial gratis.','Unclaimed Commission Balance':'Saldo de comisiones no reclamado',
-    'Upload / Create':'Subir / crear','Live Room':'Sala en vivo','Login Required':'Inicio de sesiÃ³n requerido','Loading...':'Cargando...'
+    'Login':'Iniciar sesión','Register':'Registrarse','We sent a verification link to ':'Enviamos un enlace de verificación a ','You must verify it before you can log in.':'Debes verificarlo antes de iniciar sesión.','Terms & Conditions':'Términos y condiciones',
+    'LOGIN / REGISTER':'INICIAR SESIÓN / REGISTRARSE','Streamer Username Manager':'Gestor de nombres de usuario del streamer','WIN':'GANAR','Close':'Cerrar',
+    'Earn Passive Crypto & Gold Coins':'Gana criptomonedas y monedas de oro','Anyone registering with your link receives a free ':'Quien se registre con tu enlace recibe ',' starter bonus.':' de bonificación inicial gratis.','Unclaimed Commission Balance':'Saldo de comisiones no reclamado',
+    'Upload / Create':'Subir / crear','Live Room':'Sala en vivo','Login Required':'Inicio de sesión requerido','Loading...':'Cargando...'
   },
   pt: {
-    'Login':'Entrar','Register':'Registrar','We sent a verification link to ':'Enviamos um link de verificaÃ§Ã£o para ','You must verify it before you can log in.':'VocÃª precisa verificar antes de entrar.','Terms & Conditions':'Termos e condiÃ§Ãµes',
+    'Login':'Entrar','Register':'Registrar','We sent a verification link to ':'Enviamos um link de verificação para ','You must verify it before you can log in.':'Você precisa verificar antes de entrar.','Terms & Conditions':'Termos e condições',
     'LOGIN / REGISTER':'ENTRAR / REGISTRAR','Streamer Username Manager':'Gerenciador de nome do streamer','WIN':'VENCER','Close':'Fechar',
-    'Earn Passive Crypto & Gold Coins':'Ganhe cripto e moedas de ouro','Anyone registering with your link receives a free ':'Quem se registrar pelo seu link recebe ',' starter bonus.':' de bÃ´nus inicial grÃ¡tis.','Unclaimed Commission Balance':'Saldo de comissÃ£o nÃ£o resgatado',
-    'Upload / Create':'Enviar / criar','Live Room':'Sala ao vivo','Login Required':'Login necessÃ¡rio','Loading...':'Carregando...'
+    'Earn Passive Crypto & Gold Coins':'Ganhe cripto e moedas de ouro','Anyone registering with your link receives a free ':'Quem se registrar pelo seu link recebe ',' starter bonus.':' de bônus inicial grátis.','Unclaimed Commission Balance':'Saldo de comissão não resgatado',
+    'Upload / Create':'Enviar / criar','Live Room':'Sala ao vivo','Login Required':'Login necessário','Loading...':'Carregando...'
   },
   zh: {
     'Login':'ç™»å½•','Register':'æ³¨å†Œ','We sent a verification link to ':'æˆ‘ä»¬å·²å°†éªŒè¯é“¾æŽ¥å‘é€è‡³ ','You must verify it before you can log in.':'ç™»å½•å‰å¿…é¡»å®ŒæˆéªŒè¯ã€‚','Terms & Conditions':'æ¡æ¬¾ä¸Žæ¡ä»¶',
@@ -1728,10 +1728,10 @@ const FINAL_MISSING_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string
     'Upload / Create':'ì—…ë¡œë“œ / ë§Œë“¤ê¸°','Live Room':'ë¼ì´ë¸Œ ë£¸','Login Required':'ë¡œê·¸ì¸ í•„ìš”','Loading...':'ë¡œë“œ ì¤‘...'
   },
   ar: {
-    'Login':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„','Register':'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨','We sent a verification link to ':'Ø£Ø±Ø³Ù„Ù†Ø§ Ø±Ø§Ø¨Ø· Ø§Ù„ØªØ­Ù‚Ù‚ Ø¥Ù„Ù‰ ','You must verify it before you can log in.':'ÙŠØ¬Ø¨ Ø§Ù„ØªØ­Ù‚Ù‚ Ù‚Ø¨Ù„ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.','Terms & Conditions':'Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…',
-    'LOGIN / REGISTER':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ / Ø§Ù„ØªØ³Ø¬ÙŠÙ„','Streamer Username Manager':'Ø¥Ø¯Ø§Ø±Ø© Ø§Ø³Ù… Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø¨Ø«','WIN':'ÙÙˆØ²','Close':'Ø¥ØºÙ„Ø§Ù‚',
-    'Earn Passive Crypto & Gold Coins':'Ø§ÙƒØ³Ø¨ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© ÙˆØ§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø°Ù‡Ø¨ÙŠØ©','Anyone registering with your link receives a free ':'ÙŠØ­ØµÙ„ ÙƒÙ„ Ù…Ù† ÙŠØ³Ø¬Ù„ Ø¹Ø¨Ø± Ø±Ø§Ø¨Ø·Ùƒ Ø¹Ù„Ù‰ ',' starter bonus.':' ÙƒÙ…ÙƒØ§ÙØ£Ø© Ø¨Ø¯Ø§ÙŠØ© Ù…Ø¬Ø§Ù†ÙŠØ©.','Unclaimed Commission Balance':'Ø±ØµÙŠØ¯ Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© ØºÙŠØ± Ø§Ù„Ù…Ø·Ø§Ù„Ø¨ Ø¨Ù‡',
-    'Upload / Create':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡','Live Room':'Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Login Required':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨','Loading...':'Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù…ÙŠÙ„...'
+    'Login':'تسجيل الدخول','Register':'إنشاء حساب','We sent a verification link to ':'أرسلنا رابط التحقق إلى ','You must verify it before you can log in.':'يجب التحقق قبل تسجيل الدخول.','Terms & Conditions':'الشروط والأحكام',
+    'LOGIN / REGISTER':'تسجيل الدخول / التسجيل','Streamer Username Manager':'إدارة اسم مستخدم البث','WIN':'فوز','Close':'إغلاق',
+    'Earn Passive Crypto & Gold Coins':'اكسب العملات الرقمية والعملات الذهبية','Anyone registering with your link receives a free ':'يحصل كل من يسجل عبر رابطك على ',' starter bonus.':' كمكافأة بداية مجانية.','Unclaimed Commission Balance':'رصيد العمولة غير المطالب به',
+    'Upload / Create':'رفع / إنشاء','Live Room':'الغرفة المباشرة','Login Required':'تسجيل الدخول مطلوب','Loading...':'جارٍ التحميل...'
   }
 };
 for (const lang of Object.keys(FINAL_MISSING_PAGE_TRANSLATIONS) as LanguageCode[]) {
@@ -1769,22 +1769,22 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Proof link is required.':'Proof link is required.','Submission failed':'Submission failed','Login to continue':'Login to continue'
   },
   es: {
-    'Sign in to continue streaming and gaming':'Inicia sesiÃ³n para continuar con el streaming y los juegos','Username or Email':'Usuario o correo electrÃ³nico','Connect Wallet':'Conectar wallet','Forgot Password?':'Â¿Olvidaste la contraseÃ±a?',
-    "Don't have an account?":"Â¿No tienes una cuenta?",'Register Now':'Registrarse ahora','Secured with Web3':'Protegido con Web3','Biometric Login Available':'Inicio de sesiÃ³n biomÃ©trico disponible',
-    'CREATE ACCOUNT':'CREAR CUENTA','LOGIN':'INICIAR SESIÃ“N','or Connect with Crypto Wallet':'o conectar con una wallet','EVM Wallet Recovery Phrase':'Frase de recuperaciÃ³n de la wallet EVM',
-    'Wallet Address':'DirecciÃ³n de wallet','Recovery Phrase':'Frase de recuperaciÃ³n','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Debes leer y aceptar los TÃ©rminos y condiciones antes de crear una cuenta.',
-    'I have read and agree to the':'He leÃ­do y acepto los','Terms & Conditions':'TÃ©rminos y condiciones','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'La wallet se crea en tu dispositivo. SYS STREAM no recibe ni almacena esta frase de recuperaciÃ³n.',
-    'Simpan offline sebelum menutup halaman.':'GuÃ¡rdala sin conexiÃ³n antes de cerrar la pÃ¡gina.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'He guardado la frase de recuperaciÃ³n en un lugar seguro y entiendo que SYS STREAM no puede recuperarla.',
-    'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Open Task':'Abrir tarea','Task':'Tarea','Save Wallet':'Guardar wallet','Proof link is required.':'El enlace de prueba es obligatorio.','Submission failed':'Error al enviar','Login to continue':'Inicia sesiÃ³n para continuar'
+    'Sign in to continue streaming and gaming':'Inicia sesión para continuar con el streaming y los juegos','Username or Email':'Usuario o correo electrónico','Connect Wallet':'Conectar wallet','Forgot Password?':'¿Olvidaste la contraseña?',
+    "Don't have an account?":"¿No tienes una cuenta?",'Register Now':'Registrarse ahora','Secured with Web3':'Protegido con Web3','Biometric Login Available':'Inicio de sesión biométrico disponible',
+    'CREATE ACCOUNT':'CREAR CUENTA','LOGIN':'INICIAR SESIÓN','or Connect with Crypto Wallet':'o conectar con una wallet','EVM Wallet Recovery Phrase':'Frase de recuperación de la wallet EVM',
+    'Wallet Address':'Dirección de wallet','Recovery Phrase':'Frase de recuperación','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Debes leer y aceptar los Términos y condiciones antes de crear una cuenta.',
+    'I have read and agree to the':'He leído y acepto los','Terms & Conditions':'Términos y condiciones','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'La wallet se crea en tu dispositivo. SYS STREAM no recibe ni almacena esta frase de recuperación.',
+    'Simpan offline sebelum menutup halaman.':'Guárdala sin conexión antes de cerrar la página.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'He guardado la frase de recuperación en un lugar seguro y entiendo que SYS STREAM no puede recuperarla.',
+    'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Open Task':'Abrir tarea','Task':'Tarea','Save Wallet':'Guardar wallet','Proof link is required.':'El enlace de prueba es obligatorio.','Submission failed':'Error al enviar','Login to continue':'Inicia sesión para continuar'
   },
   pt: {
-    'Sign in to continue streaming and gaming':'Entre para continuar no streaming e nos jogos','Username or Email':'UsuÃ¡rio ou e-mail','Connect Wallet':'Conectar carteira','Forgot Password?':'Esqueceu a senha?',
-    "Don't have an account?":"NÃ£o tem uma conta?",'Register Now':'Registrar agora','Secured with Web3':'Protegido com Web3','Biometric Login Available':'Login biomÃ©trico disponÃ­vel',
-    'CREATE ACCOUNT':'CRIAR CONTA','LOGIN':'ENTRAR','or Connect with Crypto Wallet':'ou conectar carteira cripto','EVM Wallet Recovery Phrase':'Frase de recuperaÃ§Ã£o da carteira EVM',
-    'Wallet Address':'EndereÃ§o da carteira','Recovery Phrase':'Frase de recuperaÃ§Ã£o','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'VocÃª deve ler e aceitar os Termos e condiÃ§Ãµes antes de criar uma conta.',
-    'I have read and agree to the':'Li e concordo com os','Terms & Conditions':'Termos e condiÃ§Ãµes','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'A carteira Ã© criada no seu dispositivo. A SYS STREAM nÃ£o recebe nem armazena esta frase de recuperaÃ§Ã£o.',
-    'Simpan offline sebelum menutup halaman.':'Guarde-a offline antes de fechar a pÃ¡gina.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Guardei a frase de recuperaÃ§Ã£o em local seguro e entendo que a SYS STREAM nÃ£o pode recuperÃ¡-la.',
-    'Loading active tasks...':'Carregando tarefas ativas...','Submitting...':'Enviando...','Open Task':'Abrir tarefa','Task':'Tarefa','Save Wallet':'Salvar carteira','Proof link is required.':'O link de prova Ã© obrigatÃ³rio.','Submission failed':'Falha no envio','Login to continue':'Entre para continuar'
+    'Sign in to continue streaming and gaming':'Entre para continuar no streaming e nos jogos','Username or Email':'Usuário ou e-mail','Connect Wallet':'Conectar carteira','Forgot Password?':'Esqueceu a senha?',
+    "Don't have an account?":"Não tem uma conta?",'Register Now':'Registrar agora','Secured with Web3':'Protegido com Web3','Biometric Login Available':'Login biométrico disponível',
+    'CREATE ACCOUNT':'CRIAR CONTA','LOGIN':'ENTRAR','or Connect with Crypto Wallet':'ou conectar carteira cripto','EVM Wallet Recovery Phrase':'Frase de recuperação da carteira EVM',
+    'Wallet Address':'Endereço da carteira','Recovery Phrase':'Frase de recuperação','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'Você deve ler e aceitar os Termos e condições antes de criar uma conta.',
+    'I have read and agree to the':'Li e concordo com os','Terms & Conditions':'Termos e condições','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'A carteira é criada no seu dispositivo. A SYS STREAM não recebe nem armazena esta frase de recuperação.',
+    'Simpan offline sebelum menutup halaman.':'Guarde-a offline antes de fechar a página.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Guardei a frase de recuperação em local seguro e entendo que a SYS STREAM não pode recuperá-la.',
+    'Loading active tasks...':'Carregando tarefas ativas...','Submitting...':'Enviando...','Open Task':'Abrir tarefa','Task':'Tarefa','Save Wallet':'Salvar carteira','Proof link is required.':'O link de prova é obrigatório.','Submission failed':'Falha no envio','Login to continue':'Entre para continuar'
   },
   zh: {
     'Sign in to continue streaming and gaming':'ç™»å½•åŽç»§ç»­ç›´æ’­å’Œæ¸¸æˆ','Username or Email':'ç”¨æˆ·åæˆ–é‚®ç®±','Connect Wallet':'è¿žæŽ¥é’±åŒ…','Forgot Password?':'å¿˜è®°å¯†ç ï¼Ÿ',
@@ -1793,7 +1793,7 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Wallet Address':'é’±åŒ…åœ°å€','Recovery Phrase':'æ¢å¤çŸ­è¯­','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'åˆ›å»ºè´¦æˆ·å‰å¿…é¡»é˜…è¯»å¹¶åŒæ„æ¡æ¬¾ä¸Žæ¡ä»¶ã€‚',
     'I have read and agree to the':'æˆ‘å·²é˜…è¯»å¹¶åŒæ„','Terms & Conditions':'æ¡æ¬¾ä¸Žæ¡ä»¶','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'é’±åŒ…åœ¨æ‚¨çš„è®¾å¤‡ä¸Šåˆ›å»ºã€‚SYS STREAM ä¸ä¼šæŽ¥æ”¶æˆ–å­˜å‚¨æ­¤æ¢å¤çŸ­è¯­ã€‚',
     'Simpan offline sebelum menutup halaman.':'è¯·åœ¨å…³é—­é¡µé¢å‰ç¦»çº¿ä¿å­˜ã€‚','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'æˆ‘å·²å°†æ¢å¤çŸ­è¯­ä¿å­˜åœ¨å®‰å…¨ä½ç½®ï¼Œå¹¶äº†è§£ SYS STREAM æ— æ³•æ¢å¤è¯¥çŸ­è¯­ã€‚',
-    'Loading active tasks...':'æ­£åœ¨åŠ è½½æ´»åŠ¨ä»»åŠ¡â€¦','Submitting...':'æ­£åœ¨æäº¤â€¦','Open Task':'æ‰“å¼€ä»»åŠ¡','Task':'ä»»åŠ¡','Save Wallet':'ä¿å­˜é’±åŒ…','Proof link is required.':'å¿…é¡»æä¾›è¯æ˜Žé“¾æŽ¥ã€‚','Submission failed':'æäº¤å¤±è´¥','Login to continue':'ç™»å½•åŽç»§ç»­'
+    'Loading active tasks...':'正在加载活动任务…','Submitting...':'正在提交…','Open Task':'æ‰“å¼€ä»»åŠ¡','Task':'ä»»åŠ¡','Save Wallet':'ä¿å­˜é’±åŒ…','Proof link is required.':'å¿…é¡»æä¾›è¯æ˜Žé“¾æŽ¥ã€‚','Submission failed':'æäº¤å¤±è´¥','Login to continue':'ç™»å½•åŽç»§ç»­'
   },
   ja: {
     'Sign in to continue streaming and gaming':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦é…ä¿¡ã¨ã‚²ãƒ¼ãƒ ã‚’ç¶šã‘ã‚‹','Username or Email':'ãƒ¦ãƒ¼ã‚¶ãƒ¼åã¾ãŸã¯ãƒ¡ãƒ¼ãƒ«','Connect Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Forgot Password?':'ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚Œã¾ã—ãŸã‹ï¼Ÿ',
@@ -1802,7 +1802,7 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Wallet Address':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Recovery Phrase':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚º','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆå‰ã«åˆ©ç”¨è¦ç´„ã‚’èª­ã¿ã€åŒæ„ã—ã¦ãã ã•ã„ã€‚',
     'I have read and agree to the':'ä»¥ä¸‹ã‚’èª­ã¿ã€åŒæ„ã—ã¾ã™ï¼š','Terms & Conditions':'åˆ©ç”¨è¦ç´„','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã¯ç«¯æœ«ä¸Šã§ä½œæˆã•ã‚Œã¾ã™ã€‚SYS STREAMã¯ã“ã®ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’å—ä¿¡ãƒ»ä¿å­˜ã—ã¾ã›ã‚“ã€‚',
     'Simpan offline sebelum menutup halaman.':'ãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹å‰ã«ã‚ªãƒ•ãƒ©ã‚¤ãƒ³ã§ä¿å­˜ã—ã¦ãã ã•ã„ã€‚','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’å®‰å…¨ãªå ´æ‰€ã«ä¿å­˜ã—ã€SYS STREAMã§ã¯å¾©å…ƒã§ããªã„ã“ã¨ã‚’ç†è§£ã—ã¾ã—ãŸã€‚',
-    'Loading active tasks...':'ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¿ã‚¹ã‚¯ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦','Submitting...':'é€ä¿¡ä¸­â€¦','Open Task':'ã‚¿ã‚¹ã‚¯ã‚’é–‹ã','Task':'ã‚¿ã‚¹ã‚¯','Save Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä¿å­˜','Proof link is required.':'è¨¼æ‹ ãƒªãƒ³ã‚¯ãŒå¿…è¦ã§ã™ã€‚','Submission failed':'é€ä¿¡ã«å¤±æ•—ã—ã¾ã—ãŸ','Login to continue':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ç¶šè¡Œ'
+    'Loading active tasks...':'アクティブなタスクを読み込み中…','Submitting...':'送信中…','Open Task':'ã‚¿ã‚¹ã‚¯ã‚’é–‹ã','Task':'ã‚¿ã‚¹ã‚¯','Save Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä¿å­˜','Proof link is required.':'è¨¼æ‹ ãƒªãƒ³ã‚¯ãŒå¿…è¦ã§ã™ã€‚','Submission failed':'é€ä¿¡ã«å¤±æ•—ã—ã¾ã—ãŸ','Login to continue':'ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ç¶šè¡Œ'
   },
   ko: {
     'Sign in to continue streaming and gaming':'ë¡œê·¸ì¸í•˜ì—¬ ìŠ¤íŠ¸ë¦¬ë°ê³¼ ê²Œìž„ì„ ê³„ì†í•˜ì„¸ìš”','Username or Email':'ì‚¬ìš©ìž ì´ë¦„ ë˜ëŠ” ì´ë©”ì¼','Connect Wallet':'ì§€ê°‘ ì—°ê²°','Forgot Password?':'ë¹„ë°€ë²ˆí˜¸ë¥¼ ìžŠìœ¼ì…¨ë‚˜ìš”?',
@@ -1814,13 +1814,13 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Loading active tasks...':'í™œì„± ìž‘ì—…ì„ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘...','Submitting...':'ì œì¶œ ì¤‘...','Open Task':'ìž‘ì—… ì—´ê¸°','Task':'ìž‘ì—…','Save Wallet':'ì§€ê°‘ ì €ìž¥','Proof link is required.':'ì¦ë¹™ ë§í¬ê°€ í•„ìš”í•©ë‹ˆë‹¤.','Submission failed':'ì œì¶œ ì‹¤íŒ¨','Login to continue':'ë¡œê·¸ì¸í•˜ì—¬ ê³„ì†'
   },
   ar: {
-    'Sign in to continue streaming and gaming':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø¨Ø« ÙˆØ§Ù„Ø£Ù„Ø¹Ø§Ø¨','Username or Email':'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ','Connect Wallet':'Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©','Forgot Password?':'Ù‡Ù„ Ù†Ø³ÙŠØª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±ØŸ',
-    "Don't have an account?":"Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ",'Register Now':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¢Ù†','Secured with Web3':'Ù…Ø­Ù…ÙŠ Ø¨ÙˆØ§Ø³Ø·Ø© Web3','Biometric Login Available':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø¨ÙŠÙˆÙ…ØªØ±ÙŠ Ù…ØªØ§Ø­',
-    'CREATE ACCOUNT':'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨','LOGIN':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„','or Connect with Crypto Wallet':'Ø£Ùˆ Ø±Ø¨Ø· Ù…Ø­ÙØ¸Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©','EVM Wallet Recovery Phrase':'Ø¹Ø¨Ø§Ø±Ø© Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ù…Ø­ÙØ¸Ø© EVM',
-    'Wallet Address':'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø©','Recovery Phrase':'Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'ÙŠØ¬Ø¨ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù… ÙˆØ§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø¹Ù„ÙŠÙ‡Ø§ Ù‚Ø¨Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.',
-    'I have read and agree to the':'Ù„Ù‚Ø¯ Ù‚Ø±Ø£Øª ÙˆØ£ÙˆØ§ÙÙ‚ Ø¹Ù„Ù‰','Terms & Conditions':'Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'ÙŠØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø¹Ù„Ù‰ Ø¬Ù‡Ø§Ø²Ùƒ. Ù„Ø§ ØªØ³ØªÙ‚Ø¨Ù„ SYS STREAM Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ù‡Ø°Ù‡ ÙˆÙ„Ø§ ØªØ®Ø²Ù†Ù‡Ø§.',
-    'Simpan offline sebelum menutup halaman.':'Ø§Ø­ÙØ¸Ù‡Ø§ Ø¯ÙˆÙ† Ø§ØªØµØ§Ù„ Ù‚Ø¨Ù„ Ø¥ØºÙ„Ø§Ù‚ Ø§Ù„ØµÙØ­Ø©.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'Ù„Ù‚Ø¯ Ø­ÙØ¸Øª Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ ÙÙŠ Ù…ÙƒØ§Ù† Ø¢Ù…Ù† ÙˆØ£ÙÙ‡Ù… Ø£Ù† SYS STREAM Ù„Ø§ ÙŠÙ…ÙƒÙ†Ù‡ Ø§Ø³ØªØ¹Ø§Ø¯ØªÙ‡Ø§.',
-    'Loading active tasks...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ù‡Ø§Ù… Ø§Ù„Ù†Ø´Ø·Ø©...','Submitting...':'Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...','Open Task':'ÙØªØ­ Ø§Ù„Ù…Ù‡Ù…Ø©','Task':'Ù…Ù‡Ù…Ø©','Save Wallet':'Ø­ÙØ¸ Ø§Ù„Ù…Ø­ÙØ¸Ø©','Proof link is required.':'Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø«Ø¨Ø§Øª Ù…Ø·Ù„ÙˆØ¨.','Submission failed':'ÙØ´Ù„ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„','Login to continue':'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ù…ØªØ§Ø¨Ø¹Ø©'
+    'Sign in to continue streaming and gaming':'سجّل الدخول لمتابعة البث والألعاب','Username or Email':'اسم المستخدم أو البريد الإلكتروني','Connect Wallet':'ربط المحفظة','Forgot Password?':'هل نسيت كلمة المرور؟',
+    "Don't have an account?":"ليس لديك حساب؟",'Register Now':'سجّل الآن','Secured with Web3':'محمي بواسطة Web3','Biometric Login Available':'تسجيل الدخول البيومتري متاح',
+    'CREATE ACCOUNT':'إنشاء حساب','LOGIN':'تسجيل الدخول','or Connect with Crypto Wallet':'أو ربط محفظة العملات الرقمية','EVM Wallet Recovery Phrase':'عبارة استرداد محفظة EVM',
+    'Wallet Address':'عنوان المحفظة','Recovery Phrase':'عبارة الاسترداد','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.':'يجب قراءة الشروط والأحكام والموافقة عليها قبل إنشاء الحساب.',
+    'I have read and agree to the':'لقد قرأت وأوافق على','Terms & Conditions':'الشروط والأحكام','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.':'يتم إنشاء المحفظة على جهازك. لا تستقبل SYS STREAM عبارة الاسترداد هذه ولا تخزنها.',
+    'Simpan offline sebelum menutup halaman.':'احفظها دون اتصال قبل إغلاق الصفحة.','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.':'لقد حفظت عبارة الاسترداد في مكان آمن وأفهم أن SYS STREAM لا يمكنه استعادتها.',
+    'Loading active tasks...':'جارٍ تحميل المهام النشطة...','Submitting...':'جارٍ الإرسال...','Open Task':'فتح المهمة','Task':'مهمة','Save Wallet':'حفظ المحفظة','Proof link is required.':'رابط الإثبات مطلوب.','Submission failed':'فشل الإرسال','Login to continue':'سجّل الدخول للمتابعة'
   }
 };
 
@@ -1833,12 +1833,12 @@ for (const lang of Object.keys(ADDITIONAL_UI_TRANSLATIONS) as LanguageCode[]) {
 const AUTH_EXTRA_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
  id:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Menginisialisasi Sinkronisasi TikTok Live + Koneksi Cloudflare D1','RESEND VERIFICATION EMAIL':'KIRIM ULANG EMAIL VERIFIKASI','SENDING...':'MENGIRIM...','We sent a verification link to':'Kami mengirim tautan verifikasi ke','You must verify it before you can log in.':'Anda harus memverifikasi email sebelum dapat masuk.','and understand that my acceptance will be recorded with the current Terms version.':'dan memahami bahwa persetujuan saya dicatat dengan versi Syarat & Ketentuan saat ini.'},
  en:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Initializing TikTok Live Sync + Cloudflare D1 Connection','RESEND VERIFICATION EMAIL':'RESEND VERIFICATION EMAIL','SENDING...':'SENDING...','We sent a verification link to':'We sent a verification link to','You must verify it before you can log in.':'You must verify it before you can log in.','and understand that my acceptance will be recorded with the current Terms version.':'and understand that my acceptance will be recorded with the current Terms version.'},
- es:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando la sincronizaciÃ³n de TikTok Live + conexiÃ³n de Cloudflare D1','RESEND VERIFICATION EMAIL':'REENVIAR EMAIL DE VERIFICACIÃ“N','SENDING...':'ENVIANDO...','We sent a verification link to':'Enviamos un enlace de verificaciÃ³n a','You must verify it before de iniciar sesiÃ³n.':'Debes verificarlo antes de iniciar sesiÃ³n.','You must verify it before you can log in.':'Debes verificarlo antes de iniciar sesiÃ³n.','and understand that my acceptance will be recorded with the current Terms version.':'y entiendo que mi aceptaciÃ³n se registrarÃ¡ con la versiÃ³n actual de los TÃ©rminos.'},
- pt:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando a sincronizaÃ§Ã£o do TikTok Live + conexÃ£o do Cloudflare D1','RESEND VERIFICATION EMAIL':'REENVIAR E-MAIL DE VERIFICAÃ‡ÃƒO','SENDING...':'ENVIANDO...','We sent a verification link to':'Enviamos um link de verificaÃ§Ã£o para','You must verify it before you can log in.':'VocÃª precisa verificÃ¡-lo antes de entrar.','and understand that my acceptance will be recorded with the current Terms version.':'e entendo que minha aceitaÃ§Ã£o serÃ¡ registrada com a versÃ£o atual dos Termos.'},
+ es:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando la sincronización de TikTok Live + conexión de Cloudflare D1','RESEND VERIFICATION EMAIL':'REENVIAR EMAIL DE VERIFICACIÓN','SENDING...':'ENVIANDO...','We sent a verification link to':'Enviamos un enlace de verificación a','You must verify it before de iniciar sesiÃ³n.':'Debes verificarlo antes de iniciar sesión.','You must verify it before you can log in.':'Debes verificarlo antes de iniciar sesión.','and understand that my acceptance will be recorded with the current Terms version.':'y entiendo que mi aceptación se registrará con la versión actual de los Términos.'},
+ pt:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Inicializando a sincronização do TikTok Live + conexão do Cloudflare D1','RESEND VERIFICATION EMAIL':'REENVIAR E-MAIL DE VERIFICAÇÃO','SENDING...':'ENVIANDO...','We sent a verification link to':'Enviamos um link de verificação para','You must verify it before you can log in.':'Você precisa verificá-lo antes de entrar.','and understand that my acceptance will be recorded with the current Terms version.':'e entendo que minha aceitação será registrada com a versão atual dos Termos.'},
  zh:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'æ­£åœ¨åˆå§‹åŒ– TikTok Live åŒæ­¥ + Cloudflare D1 è¿žæŽ¥','RESEND VERIFICATION EMAIL':'é‡æ–°å‘é€éªŒè¯é‚®ä»¶','SENDING...':'å‘é€ä¸­...','We sent a verification link to':'æˆ‘ä»¬å·²å‘é€éªŒè¯é“¾æŽ¥è‡³','You must verify it before you can log in.':'ç™»å½•å‰å¿…é¡»å®ŒæˆéªŒè¯ã€‚','and understand that my acceptance will be recorded with the current Terms version.':'å¹¶äº†è§£æˆ‘çš„åŒæ„å°†è®°å½•åœ¨å½“å‰æ¡æ¬¾ç‰ˆæœ¬ä¸­ã€‚'},
  ja:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'TikTok LiveåŒæœŸ + Cloudflare D1æŽ¥ç¶šã‚’åˆæœŸåŒ–ã—ã¦ã„ã¾ã™','RESEND VERIFICATION EMAIL':'ç¢ºèªãƒ¡ãƒ¼ãƒ«ã‚’å†é€ä¿¡','SENDING...':'é€ä¿¡ä¸­...','We sent a verification link to':'ç¢ºèªãƒªãƒ³ã‚¯ã‚’é€ä¿¡ã—ã¾ã—ãŸï¼š','You must verify it before you can log in.':'ãƒ­ã‚°ã‚¤ãƒ³ã™ã‚‹å‰ã«ç¢ºèªã—ã¦ãã ã•ã„ã€‚','and understand that my acceptance will be recorded with the current Terms version.':'åŒæ„å†…å®¹ãŒç¾åœ¨ã®åˆ©ç”¨è¦ç´„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã«è¨˜éŒ²ã•ã‚Œã‚‹ã“ã¨ã‚’ç†è§£ã—ã¾ã™ã€‚'},
  ko:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'TikTok Live ë™ê¸°í™” + Cloudflare D1 ì—°ê²° ì´ˆê¸°í™” ì¤‘','RESEND VERIFICATION EMAIL':'ì¸ì¦ ì´ë©”ì¼ ë‹¤ì‹œ ë³´ë‚´ê¸°','SENDING...':'ì „ì†¡ ì¤‘...','We sent a verification link to':'ì¸ì¦ ë§í¬ë¥¼ ë‹¤ìŒ ì£¼ì†Œë¡œ ë³´ëƒˆìŠµë‹ˆë‹¤:','You must verify it before you can log in.':'ë¡œê·¸ì¸í•˜ê¸° ì „ì— ì´ë©”ì¼ì„ ì¸ì¦í•´ì•¼ í•©ë‹ˆë‹¤.','and understand that my acceptance will be recorded with the current Terms version.':'ë™ì˜ ë‚´ìš©ì´ í˜„ìž¬ ì´ìš©ì•½ê´€ ë²„ì „ì— ê¸°ë¡ë¨ì„ ì´í•´í•©ë‹ˆë‹¤.'},
- ar:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'Ø¬Ø§Ø±Ù ØªÙ‡ÙŠØ¦Ø© Ù…Ø²Ø§Ù…Ù†Ø© TikTok Live + Ø§ØªØµØ§Ù„ Cloudflare D1','RESEND VERIFICATION EMAIL':'Ø¥Ø¹Ø§Ø¯Ø© Ø¥Ø±Ø³Ø§Ù„ Ø¨Ø±ÙŠØ¯ Ø§Ù„ØªØ­Ù‚Ù‚','SENDING...':'Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...','We sent a verification link to':'Ø£Ø±Ø³Ù„Ù†Ø§ Ø±Ø§Ø¨Ø· Ø§Ù„ØªØ­Ù‚Ù‚ Ø¥Ù„Ù‰','You must verify it before you can log in.':'ÙŠØ¬Ø¨ Ø§Ù„ØªØ­Ù‚Ù‚ Ù‚Ø¨Ù„ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.','and understand that my acceptance will be recorded with the current Terms version.':'ÙˆØ£ÙÙ‡Ù… Ø£Ù† Ù…ÙˆØ§ÙÙ‚ØªÙŠ Ø³ØªÙØ³Ø¬Ù„ Ù…Ø¹ Ø¥ØµØ¯Ø§Ø± Ø§Ù„Ø´Ø±ÙˆØ· Ø§Ù„Ø­Ø§Ù„ÙŠ.'}
+ ar:{'Initializing TikTok Live Sync + Cloudflare D1 Connection':'جارٍ تهيئة مزامنة TikTok Live + اتصال Cloudflare D1','RESEND VERIFICATION EMAIL':'إعادة إرسال بريد التحقق','SENDING...':'جارٍ الإرسال...','We sent a verification link to':'أرسلنا رابط التحقق إلى','You must verify it before you can log in.':'يجب التحقق قبل تسجيل الدخول.','and understand that my acceptance will be recorded with the current Terms version.':'وأفهم أن موافقتي ستُسجل مع إصدار الشروط الحالي.'}
 };
 for (const lang of Object.keys(AUTH_EXTRA_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(translations[lang], AUTH_EXTRA_TRANSLATIONS[lang]);
@@ -1848,12 +1848,12 @@ for (const lang of Object.keys(AUTH_EXTRA_TRANSLATIONS) as LanguageCode[]) {
 const GAME_EXTRA_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
  id:{'USDT wallet address':'Alamat wallet USDT','Photo too large':'Foto terlalu besar','Maximum profile photo size is 5 MB.':'Ukuran foto profil maksimal 5 MB.','Incomplete Prediction':'Prediksi belum lengkap','Please enter a digit for Slot':'Masukkan angka untuk Slot','Card Cracked!':'Kartu berhasil dipecahkan!','All concealed digits matched!':'Semua angka tersembunyi cocok!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.','Guess Missed':'Tebakan tidak cocok','Matched digits. Try another prediction!':'Angka cocok. Coba prediksi lain!'},
  en:{'USDT wallet address':'USDT wallet address','Photo too large':'Photo too large','Maximum profile photo size is 5 MB.':'Maximum profile photo size is 5 MB.','Incomplete Prediction':'Incomplete Prediction','Please enter a digit for Slot':'Please enter a digit for Slot','Card Cracked!':'Card Cracked!','All concealed digits matched!':'All concealed digits matched!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Challenge successful. No balance was deducted or paid.','Guess Missed':'Guess Missed','Matched digits. Try another prediction!':'Matched digits. Try another prediction!'},
- es:{'USDT wallet address':'DirecciÃ³n de wallet USDT','Photo too large':'Foto demasiado grande','Maximum profile photo size is 5 MB.':'El tamaÃ±o mÃ¡ximo de la foto es de 5 MB.','Incomplete Prediction':'PredicciÃ³n incompleta','Please enter a digit for Slot':'Introduce un dÃ­gito para el espacio','Card Cracked!':'Â¡Tarjeta descifrada!','All concealed digits matched!':'Â¡Todos los dÃ­gitos ocultos coinciden!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'DesafÃ­o completado. No se descontÃ³ ni pagÃ³ saldo.','Guess Missed':'Adivinanza fallida','Matched digits. Try another prediction!':'DÃ­gitos coincidentes. Â¡Prueba otra predicciÃ³n!'},
- pt:{'USDT wallet address':'EndereÃ§o da carteira USDT','Photo too large':'Foto muito grande','Maximum profile photo size is 5 MB.':'O tamanho mÃ¡ximo da foto Ã© 5 MB.','Incomplete Prediction':'PrevisÃ£o incompleta','Please enter a digit for Slot':'Digite um dÃ­gito para o slot','Card Cracked!':'CartÃ£o decifrado!','All concealed digits matched!':'Todos os dÃ­gitos ocultos coincidem!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Desafio concluÃ­do. Nenhum saldo foi descontado ou pago.','Guess Missed':'Palpite nÃ£o corresponde','Matched digits. Try another prediction!':'DÃ­gitos correspondentes. Tente outra previsÃ£o!'},
+ es:{'USDT wallet address':'Dirección de wallet USDT','Photo too large':'Foto demasiado grande','Maximum profile photo size is 5 MB.':'El tamaño máximo de la foto es de 5 MB.','Incomplete Prediction':'Predicción incompleta','Please enter a digit for Slot':'Introduce un dígito para el espacio','Card Cracked!':'¡Tarjeta descifrada!','All concealed digits matched!':'¡Todos los dígitos ocultos coinciden!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Desafío completado. No se descontó ni pagó saldo.','Guess Missed':'Adivinanza fallida','Matched digits. Try another prediction!':'Dígitos coincidentes. ¡Prueba otra predicción!'},
+ pt:{'USDT wallet address':'Endereço da carteira USDT','Photo too large':'Foto muito grande','Maximum profile photo size is 5 MB.':'O tamanho máximo da foto é 5 MB.','Incomplete Prediction':'Previsão incompleta','Please enter a digit for Slot':'Digite um dígito para o slot','Card Cracked!':'Cartão decifrado!','All concealed digits matched!':'Todos os dígitos ocultos coincidem!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Desafio concluído. Nenhum saldo foi descontado ou pago.','Guess Missed':'Palpite não corresponde','Matched digits. Try another prediction!':'Dígitos correspondentes. Tente outra previsão!'},
  zh:{'USDT wallet address':'USDT é’±åŒ…åœ°å€','Photo too large':'ç…§ç‰‡è¿‡å¤§','Maximum profile photo size is 5 MB.':'å¤´åƒç…§ç‰‡æœ€å¤§ä¸º 5 MBã€‚','Incomplete Prediction':'é¢„æµ‹ä¸å®Œæ•´','Please enter a digit for Slot':'è¯·ä¸ºæ§½ä½è¾“å…¥ä¸€ä¸ªæ•°å­—','Card Cracked!':'å¡ç‰‡ç ´è§£æˆåŠŸï¼','All concealed digits matched!':'æ‰€æœ‰éšè—æ•°å­—éƒ½åŒ¹é…ï¼','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'æŒ‘æˆ˜æˆåŠŸã€‚æœªæ‰£é™¤æˆ–æ”¯ä»˜ä½™é¢ã€‚','Guess Missed':'çŒœæµ‹æœªå‘½ä¸­','Matched digits. Try another prediction!':'åŒ¹é…äº†æ•°å­—ã€‚è¯·å°è¯•å…¶ä»–é¢„æµ‹ï¼'},
  ja:{'USDT wallet address':'USDTã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Photo too large':'å†™çœŸãŒå¤§ãã™ãŽã¾ã™','Maximum profile photo size is 5 MB.':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«å†™çœŸã¯æœ€å¤§5MBã§ã™ã€‚','Incomplete Prediction':'äºˆæ¸¬ãŒæœªå®Œæˆã§ã™','Please enter a digit for Slot':'ã‚¹ãƒ­ãƒƒãƒˆã«æ•°å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„','Card Cracked!':'ã‚«ãƒ¼ãƒ‰è§£é™¤æˆåŠŸï¼','All concealed digits matched!':'ã™ã¹ã¦ã®éš ã—æ•°å­—ãŒä¸€è‡´ã—ã¾ã—ãŸï¼','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'ãƒãƒ£ãƒ¬ãƒ³ã‚¸æˆåŠŸã€‚æ®‹é«˜ã®å¼•ãè½ã¨ã—ã‚„æ”¯æ‰•ã„ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Guess Missed':'äºˆæ¸¬ä¸ä¸€è‡´','Matched digits. Try another prediction!':'ä¸€è‡´ã—ãŸæ•°å­—ãŒã‚ã‚Šã¾ã™ã€‚åˆ¥ã®äºˆæ¸¬ã‚’è©¦ã—ã¦ãã ã•ã„ï¼'},
  ko:{'USDT wallet address':'USDT ì§€ê°‘ ì£¼ì†Œ','Photo too large':'ì‚¬ì§„ì´ ë„ˆë¬´ í½ë‹ˆë‹¤','Maximum profile photo size is 5 MB.':'í”„ë¡œí•„ ì‚¬ì§„ì€ ìµœëŒ€ 5MBìž…ë‹ˆë‹¤.','Incomplete Prediction':'ì˜ˆì¸¡ì´ ì™„ë£Œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤','Please enter a digit for Slot':'ìŠ¬ë¡¯ì— ìˆ«ìžë¥¼ ìž…ë ¥í•˜ì„¸ìš”','Card Cracked!':'ì¹´ë“œ í•´ë… ì„±ê³µ!','All concealed digits matched!':'ìˆ¨ê²¨ì§„ ìˆ«ìžê°€ ëª¨ë‘ ì¼ì¹˜í–ˆìŠµë‹ˆë‹¤!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'ì±Œë¦°ì§€ ì„±ê³µ. ìž”ì•¡ì´ ì°¨ê°ë˜ê±°ë‚˜ ì§€ê¸‰ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.','Guess Missed':'ì˜ˆì¸¡ ì‹¤íŒ¨','Matched digits. Try another prediction!':'ì¼ì¹˜í•˜ëŠ” ìˆ«ìžê°€ ìžˆìŠµë‹ˆë‹¤. ë‹¤ë¥¸ ì˜ˆì¸¡ì„ ì‹œë„í•˜ì„¸ìš”!'},
- ar:{'USDT wallet address':'Ø¹Ù†ÙˆØ§Ù† Ù…Ø­ÙØ¸Ø© USDT','Photo too large':'Ø§Ù„ØµÙˆØ±Ø© ÙƒØ¨ÙŠØ±Ø© Ø¬Ø¯Ù‹Ø§','Maximum profile photo size is 5 MB.':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ Ù„ØµÙˆØ±Ø© Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ 5 Ù…ÙŠØ¬Ø§Ø¨Ø§ÙŠØª.','Incomplete Prediction':'Ø§Ù„ØªÙˆÙ‚Ø¹ ØºÙŠØ± Ù…ÙƒØªÙ…Ù„','Please enter a digit for Slot':'Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù…Ù‹Ø§ Ù„Ù„Ø®Ø§Ù†Ø©','Card Cracked!':'ØªÙ… Ø­Ù„ Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©!','All concealed digits matched!':'ØªØ·Ø§Ø¨Ù‚Øª Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ù…Ø®ÙÙŠØ©!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Ù†Ø¬Ø­ Ø§Ù„ØªØ­Ø¯ÙŠ. Ù„Ù… ÙŠØªÙ… Ø®ØµÙ… Ø£Ùˆ Ø¯ÙØ¹ Ø£ÙŠ Ø±ØµÙŠØ¯.','Guess Missed':'Ø§Ù„ØªØ®Ù…ÙŠÙ† ØºÙŠØ± Ù…Ø·Ø§Ø¨Ù‚','Matched digits. Try another prediction!':'Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ù…ØªØ·Ø§Ø¨Ù‚Ø©. Ø¬Ø±Ù‘Ø¨ ØªÙˆÙ‚Ø¹Ù‹Ø§ Ø¢Ø®Ø±!'}
+ ar:{'USDT wallet address':'عنوان محفظة USDT','Photo too large':'الصورة كبيرة جدًا','Maximum profile photo size is 5 MB.':'الحد الأقصى لصورة الملف الشخصي 5 ميجابايت.','Incomplete Prediction':'التوقع غير مكتمل','Please enter a digit for Slot':'أدخل رقمًا للخانة','Card Cracked!':'تم حل البطاقة!','All concealed digits matched!':'تطابقت جميع الأرقام المخفية!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'نجح التحدي. لم يتم خصم أو دفع أي رصيد.','Guess Missed':'التخمين غير مطابق','Matched digits. Try another prediction!':'الأرقام المتطابقة. جرّب توقعًا آخر!'}
 };
 for (const lang of Object.keys(GAME_EXTRA_TRANSLATIONS) as LanguageCode[]) {
  Object.assign(translations[lang], GAME_EXTRA_TRANSLATIONS[lang]);
@@ -1863,12 +1863,12 @@ for (const lang of Object.keys(GAME_EXTRA_TRANSLATIONS) as LanguageCode[]) {
 const FINAL_GAME_LABELS: Record<LanguageCode, Record<string,string>> = {
  id:{'Vault Updated':'Vault diperbarui','Added to your Inventory!':'ditambahkan ke Inventori Anda!','Lock amount':'Jumlah lock','Quota:':'Kuota:','Lock':'Lock','Enter viewer username (e.g. TikTok_User)':'Masukkan username penonton (contoh: TikTok_User)','Close':'Tutup'},
  en:{'Vault Updated':'Vault Updated','Added to your Inventory!':'added to your Inventory!','Lock amount':'Lock amount','Quota:':'Quota:','Lock':'Lock','Enter viewer username (e.g. TikTok_User)':'Enter viewer username (e.g. TikTok_User)','Close':'Close'},
- es:{'Vault Updated':'BÃ³veda actualizada','Added to your Inventory!':'aÃ±adido a tu inventario','Lock amount':'Cantidad de bloqueo','Quota:':'Cuota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Introduce el nombre del espectador (ej.: TikTok_User)','Close':'Cerrar'},
- pt:{'Vault Updated':'Cofre atualizado','Added to your Inventory!':'adicionado ao seu inventÃ¡rio','Lock amount':'Valor do bloqueio','Quota:':'Cota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Digite o nome do espectador (ex.: TikTok_User)','Close':'Fechar'},
+ es:{'Vault Updated':'Bóveda actualizada','Added to your Inventory!':'añadido a tu inventario','Lock amount':'Cantidad de bloqueo','Quota:':'Cuota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Introduce el nombre del espectador (ej.: TikTok_User)','Close':'Cerrar'},
+ pt:{'Vault Updated':'Cofre atualizado','Added to your Inventory!':'adicionado ao seu inventário','Lock amount':'Valor do bloqueio','Quota:':'Cota:','Lock':'Bloquear','Enter viewer username (e.g. TikTok_User)':'Digite o nome do espectador (ex.: TikTok_User)','Close':'Fechar'},
  zh:{'Vault Updated':'ä¿é™©åº“å·²æ›´æ–°','Added to your Inventory!':'å·²æ·»åŠ åˆ°æ‚¨çš„åº“å­˜ï¼','Lock amount':'é”å®šé‡‘é¢','Quota:':'é…é¢ï¼š','Lock':'é”å®š','Enter viewer username (e.g. TikTok_User)':'è¾“å…¥è§‚ä¼—ç”¨æˆ·åï¼ˆä¾‹å¦‚ï¼šTikTok_Userï¼‰','Close':'å…³é—­'},
  ja:{'Vault Updated':'Vaultã‚’æ›´æ–°ã—ã¾ã—ãŸ','Added to your Inventory!':'ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã«è¿½åŠ ã—ã¾ã—ãŸï¼','Lock amount':'ãƒ­ãƒƒã‚¯é‡‘é¡','Quota:':'ã‚¯ã‚©ãƒ¼ã‚¿ï¼š','Lock':'ãƒ­ãƒƒã‚¯','Enter viewer username (e.g. TikTok_User)':'è¦–è´è€…ãƒ¦ãƒ¼ã‚¶ãƒ¼åã‚’å…¥åŠ›ï¼ˆä¾‹ï¼šTikTok_Userï¼‰','Close':'é–‰ã˜ã‚‹'},
  ko:{'Vault Updated':'Vault ì—…ë°ì´íŠ¸ë¨','Added to your Inventory!':'ì¸ë²¤í† ë¦¬ì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤!','Lock amount':'ìž ê¸ˆ ê¸ˆì•¡','Quota:':'í• ë‹¹ëŸ‰:','Lock':'ìž ê¸ˆ','Enter viewer username (e.g. TikTok_User)':'ì‹œì²­ìž ì‚¬ìš©ìžëª…ì„ ìž…ë ¥í•˜ì„¸ìš” (ì˜ˆ: TikTok_User)','Close':'ë‹«ê¸°'},
- ar:{'Vault Updated':'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø®Ø²Ù†Ø©','Added to your Inventory!':'ØªÙ…Øª Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ø¥Ù„Ù‰ Ù…Ø®Ø²ÙˆÙ†Ùƒ!','Lock amount':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„','Quota:':'Ø§Ù„Ø­ØµØ©:','Lock':'Ù‚ÙÙ„','Enter viewer username (e.g. TikTok_User)':'Ø£Ø¯Ø®Ù„ Ø§Ø³Ù… Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ (Ù…Ø«Ø§Ù„: TikTok_User)','Close':'Ø¥ØºÙ„Ø§Ù‚'}
+ ar:{'Vault Updated':'تم تحديث الخزنة','Added to your Inventory!':'تمت الإضافة إلى مخزونك!','Lock amount':'مبلغ القفل','Quota:':'الحصة:','Lock':'قفل','Enter viewer username (e.g. TikTok_User)':'أدخل اسم مستخدم المشاهد (مثال: TikTok_User)','Close':'إغلاق'}
 };
 for(const lang of Object.keys(FINAL_GAME_LABELS) as LanguageCode[]){Object.assign(translations[lang],FINAL_GAME_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...FINAL_GAME_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
@@ -1876,33 +1876,33 @@ const DASHBOARD_FINAL_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Upload / Create':'Upload / Buat','Claim Bonus':'Klaim Bonus','Buka media terlampir â†’':'Buka media terlampir â†’','Buka Live Room':'Buka Live Room','User ID:':'ID Pengguna:','Wallet belum terhubung':'Wallet belum terhubung'},
  en:{'Upload / Create':'Upload / Create','Claim Bonus':'Claim Bonus','Buka media terlampir â†’':'Open attached media â†’','Buka Live Room':'Open Live Room','User ID:':'User ID:','Wallet belum terhubung':'Wallet not connected'},
  es:{'Upload / Create':'Subir / Crear','Claim Bonus':'Reclamar bono','Buka media terlampir â†’':'Abrir medio adjunto â†’','Buka Live Room':'Abrir sala en vivo','User ID:':'ID de usuario:','Wallet belum terhubung':'Wallet no conectado'},
- pt:{'Upload / Create':'Carregar / Criar','Claim Bonus':'Resgatar bÃ´nus','Buka media terlampir â†’':'Abrir mÃ­dia anexada â†’','Buka Live Room':'Abrir sala ao vivo','User ID:':'ID do usuÃ¡rio:','Wallet belum terhubung':'Carteira nÃ£o conectada'},
+ pt:{'Upload / Create':'Carregar / Criar','Claim Bonus':'Resgatar bônus','Buka media terlampir â†’':'Abrir mídia anexada →','Buka Live Room':'Abrir sala ao vivo','User ID:':'ID do usuário:','Wallet belum terhubung':'Carteira não conectada'},
  zh:{'Upload / Create':'ä¸Šä¼  / åˆ›å»º','Claim Bonus':'é¢†å–å¥–åŠ±','Buka media terlampir â†’':'æ‰“å¼€é™„ä»¶åª’ä½“ â†’','Buka Live Room':'æ‰“å¼€ç›´æ’­é—´','User ID:':'ç”¨æˆ· IDï¼š','Wallet belum terhubung':'é’±åŒ…æœªè¿žæŽ¥'},
  ja:{'Upload / Create':'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / ä½œæˆ','Claim Bonus':'ãƒœãƒ¼ãƒŠã‚¹ã‚’å—ã‘å–ã‚‹','Buka media terlampir â†’':'æ·»ä»˜ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’é–‹ã â†’','Buka Live Room':'ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã‚’é–‹ã','User ID:':'ãƒ¦ãƒ¼ã‚¶ãƒ¼IDï¼š','Wallet belum terhubung':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š'},
  ko:{'Upload / Create':'ì—…ë¡œë“œ / ë§Œë“¤ê¸°','Claim Bonus':'ë³´ë„ˆìŠ¤ ë°›ê¸°','Buka media terlampir â†’':'ì²¨ë¶€ ë¯¸ë””ì–´ ì—´ê¸° â†’','Buka Live Room':'ë¼ì´ë¸Œ ë£¸ ì—´ê¸°','User ID:':'ì‚¬ìš©ìž ID:','Wallet belum terhubung':'ì§€ê°‘ì´ ì—°ê²°ë˜ì§€ ì•ŠìŒ'},
- ar:{'Upload / Create':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡','Claim Bonus':'Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¨Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©','Buka media terlampir â†’':'ÙØªØ­ Ø§Ù„ÙˆØ³Ø§Ø¦Ø· Ø§Ù„Ù…Ø±ÙÙ‚Ø© â†’','Buka Live Room':'ÙØªØ­ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','User ID:':'Ù…Ø¹Ø±Ù Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…:','Wallet belum terhubung':'Ø§Ù„Ù…Ø­ÙØ¸Ø© ØºÙŠØ± Ù…ØªØµÙ„Ø©'}
+ ar:{'Upload / Create':'رفع / إنشاء','Claim Bonus':'المطالبة بالمكافأة','Buka media terlampir â†’':'فتح الوسائط المرفقة →','Buka Live Room':'فتح الغرفة المباشرة','User ID:':'معرف المستخدم:','Wallet belum terhubung':'المحفظة غير متصلة'}
 };
 for(const lang of Object.keys(DASHBOARD_FINAL_UI) as LanguageCode[])Object.assign(translations[lang],DASHBOARD_FINAL_UI[lang]);
 const EXTRA_GAME_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Remove':'Hapus','Added to your Inventory!':'Ditambahkan ke Inventaris!'},
  en:{'Remove':'Remove','Added to your Inventory!':'Added to your Inventory!'},
- es:{'Remove':'Eliminar','Added to your Inventory!':'Â¡AÃ±adido a tu inventario!'},
- pt:{'Remove':'Remover','Added to your Inventory!':'Adicionado ao seu inventÃ¡rio!'},
+ es:{'Remove':'Eliminar','Added to your Inventory!':'¡Añadido a tu inventario!'},
+ pt:{'Remove':'Remover','Added to your Inventory!':'Adicionado ao seu inventário!'},
  zh:{'Remove':'ç§»é™¤','Added to your Inventory!':'å·²æ·»åŠ åˆ°æ‚¨çš„åº“å­˜ï¼'},
  ja:{'Remove':'å‰Šé™¤','Added to your Inventory!':'ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã«è¿½åŠ ã—ã¾ã—ãŸï¼'},
  ko:{'Remove':'ì‚­ì œ','Added to your Inventory!':'ì¸ë²¤í† ë¦¬ì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤!'},
- ar:{'Remove':'Ø¥Ø²Ø§Ù„Ø©','Added to your Inventory!':'ØªÙ…Øª Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ø¥Ù„Ù‰ Ù…Ø®Ø²ÙˆÙ†Ùƒ!'}
+ ar:{'Remove':'إزالة','Added to your Inventory!':'تمت الإضافة إلى مخزونك!'}
 };
 for(const lang of Object.keys(EXTRA_GAME_UI) as LanguageCode[])Object.assign(translations[lang],EXTRA_GAME_UI[lang]);
 const FINAL_HARDCODED_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Close':'Tutup','Lock Amount':'Jumlah Lock','Quota:':'Kuota:','Durasi Lock':'Durasi Lock','Lock Aktif':'Lock Aktif','Notifications':'Notifikasi','Edit avatar':'Edit avatar','Submit':'Kirim','Wallet':'Wallet','Minimum withdrawal is':'Minimum penarikan adalah'},
  en:{'Close':'Close','Lock Amount':'Lock Amount','Quota:':'Quota:','Durasi Lock':'Lock Duration','Lock Aktif':'Lock Active','Notifications':'Notifications','Edit avatar':'Edit avatar','Submit':'Submit','Wallet':'Wallet','Minimum withdrawal is':'Minimum withdrawal is'},
- es:{'Close':'Cerrar','Lock Amount':'Monto de bloqueo','Quota:':'Cuota:','Durasi Lock':'DuraciÃ³n del bloqueo','Lock Aktif':'Bloqueo activo','Notifications':'Notificaciones','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Billetera','Minimum withdrawal is':'El retiro mÃ­nimo es'},
- pt:{'Close':'Fechar','Lock Amount':'Valor do bloqueio','Quota:':'Cota:','Durasi Lock':'DuraÃ§Ã£o do bloqueio','Lock Aktif':'Bloqueio ativo','Notifications':'NotificaÃ§Ãµes','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Carteira','Minimum withdrawal is':'O saque mÃ­nimo Ã©'},
+ es:{'Close':'Cerrar','Lock Amount':'Monto de bloqueo','Quota:':'Cuota:','Durasi Lock':'Duración del bloqueo','Lock Aktif':'Bloqueo activo','Notifications':'Notificaciones','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Billetera','Minimum withdrawal is':'El retiro mínimo es'},
+ pt:{'Close':'Fechar','Lock Amount':'Valor do bloqueio','Quota:':'Cota:','Durasi Lock':'Duração do bloqueio','Lock Aktif':'Bloqueio ativo','Notifications':'Notificações','Edit avatar':'Editar avatar','Submit':'Enviar','Wallet':'Carteira','Minimum withdrawal is':'O saque mínimo é'},
  zh:{'Close':'å…³é—­','Lock Amount':'é”å®šé‡‘é¢','Quota:':'é¢åº¦ï¼š','Durasi Lock':'é”å®šæ—¶é•¿','Lock Aktif':'é”å®šå·²å¯ç”¨','Notifications':'é€šçŸ¥','Edit avatar':'ç¼–è¾‘å¤´åƒ','Submit':'æäº¤','Wallet':'é’±åŒ…','Minimum withdrawal is':'æœ€ä½ŽæçŽ°é‡‘é¢ä¸º'},
  ja:{'Close':'é–‰ã˜ã‚‹','Lock Amount':'ãƒ­ãƒƒã‚¯é¡','Quota:':'ä¸Šé™ï¼š','Durasi Lock':'ãƒ­ãƒƒã‚¯æœŸé–“','Lock Aktif':'ãƒ­ãƒƒã‚¯æœ‰åŠ¹','Notifications':'é€šçŸ¥','Edit avatar':'ã‚¢ãƒã‚¿ãƒ¼ã‚’ç·¨é›†','Submit':'é€ä¿¡','Wallet':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Minimum withdrawal is':'æœ€ä½Žå‡ºé‡‘é¡ã¯'},
  ko:{'Close':'ë‹«ê¸°','Lock Amount':'ìž ê¸ˆ ê¸ˆì•¡','Quota:':'í•œë„:','Durasi Lock':'ìž ê¸ˆ ê¸°ê°„','Lock Aktif':'ìž ê¸ˆ í™œì„±','Notifications':'ì•Œë¦¼','Edit avatar':'ì•„ë°”íƒ€ íŽ¸ì§‘','Submit':'ì œì¶œ','Wallet':'ì§€ê°‘','Minimum withdrawal is':'ìµœì†Œ ì¶œê¸ˆì•¡ì€'},
- ar:{'Close':'Ø¥ØºÙ„Ø§Ù‚','Lock Amount':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„','Quota:':'Ø§Ù„Ø­ØµØ©:','Durasi Lock':'Ù…Ø¯Ø© Ø§Ù„Ù‚ÙÙ„','Lock Aktif':'Ø§Ù„Ù‚ÙÙ„ Ù†Ø´Ø·','Notifications':'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª','Edit avatar':'ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„ØµÙˆØ±Ø©','Submit':'Ø¥Ø±Ø³Ø§Ù„','Wallet':'Ø§Ù„Ù…Ø­ÙØ¸Ø©','Minimum withdrawal is':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨ Ù‡Ùˆ'}
+ ar:{'Close':'إغلاق','Lock Amount':'مبلغ القفل','Quota:':'الحصة:','Durasi Lock':'مدة القفل','Lock Aktif':'القفل نشط','Notifications':'الإشعارات','Edit avatar':'تعديل الصورة','Submit':'إرسال','Wallet':'المحفظة','Minimum withdrawal is':'الحد الأدنى للسحب هو'}
 };
 for(const lang of Object.keys(FINAL_HARDCODED_UI) as LanguageCode[])Object.assign(translations[lang],FINAL_HARDCODED_UI[lang]);
 const AIRDROP_STATUS_LABELS: Record<LanguageCode, Record<string,string>> = {
@@ -1913,18 +1913,18 @@ const AIRDROP_STATUS_LABELS: Record<LanguageCode, Record<string,string>> = {
  zh:{'Task':'ä»»åŠ¡','Open Task':'æ‰“å¼€ä»»åŠ¡','Pending':'å¾…å®¡æ ¸','Approved':'å·²é€šè¿‡','Rejected':'å·²æ‹’ç»','Paid':'å·²æ”¯ä»˜'},
  ja:{'Task':'ã‚¿ã‚¹ã‚¯','Open Task':'ã‚¿ã‚¹ã‚¯ã‚’é–‹ã','Pending':'å¯©æŸ»å¾…ã¡','Approved':'æ‰¿èªæ¸ˆã¿','Rejected':'å´ä¸‹','Paid':'æ”¯æ‰•ã„æ¸ˆã¿'},
  ko:{'Task':'ìž‘ì—…','Open Task':'ìž‘ì—… ì—´ê¸°','Pending':'ëŒ€ê¸° ì¤‘','Approved':'ìŠ¹ì¸ë¨','Rejected':'ê±°ë¶€ë¨','Paid':'ì§€ê¸‰ë¨'},
- ar:{'Task':'Ù…Ù‡Ù…Ø©','Open Task':'ÙØªØ­ Ø§Ù„Ù…Ù‡Ù…Ø©','Pending':'Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©','Approved':'ØªÙ…Øª Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø©','Rejected':'Ù…Ø±ÙÙˆØ¶','Paid':'ØªÙ… Ø§Ù„Ø¯ÙØ¹'}
+ ar:{'Task':'مهمة','Open Task':'فتح المهمة','Pending':'قيد المراجعة','Approved':'تمت الموافقة','Rejected':'مرفوض','Paid':'تم الدفع'}
 };
 for(const lang of Object.keys(AIRDROP_STATUS_LABELS) as LanguageCode[])Object.assign(translations[lang],AIRDROP_STATUS_LABELS[lang]);
 const AIRDROP_FINAL_LABELS: Record<LanguageCode, Record<string,string>> = {
  id:{'Loading active tasks...':'Memuat tugas aktif...','Submitting...':'Mengirim...','Menu':'Menu','Close':'Tutup','https://...':'https://...'},
  en:{'Loading active tasks...':'Loading active tasks...','Submitting...':'Submitting...','Menu':'Menu','Close':'Close','https://...':'https://...'},
- es:{'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Menu':'MenÃº','Close':'Cerrar','https://...':'https://...'},
+ es:{'Loading active tasks...':'Cargando tareas activas...','Submitting...':'Enviando...','Menu':'Menú','Close':'Cerrar','https://...':'https://...'},
  pt:{'Loading active tasks...':'Carregando tarefas ativas...','Submitting...':'Enviando...','Menu':'Menu','Close':'Fechar','https://...':'https://...'},
  zh:{'Loading active tasks...':'æ­£åœ¨åŠ è½½æ´»åŠ¨ä»»åŠ¡...','Submitting...':'æäº¤ä¸­...','Menu':'èœå•','Close':'å…³é—­','https://...':'https://...'},
  ja:{'Loading active tasks...':'ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¿ã‚¹ã‚¯ã‚’èª­ã¿è¾¼ã‚“ã§ã„ã¾ã™...','Submitting...':'é€ä¿¡ä¸­...','Menu':'ãƒ¡ãƒ‹ãƒ¥ãƒ¼','Close':'é–‰ã˜ã‚‹','https://...':'https://...'},
  ko:{'Loading active tasks...':'í™œì„± ìž‘ì—…ì„ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘...','Submitting...':'ì œì¶œ ì¤‘...','Menu':'ë©”ë‰´','Close':'ë‹«ê¸°','https://...':'https://...'},
- ar:{'Loading active tasks...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ù‡Ø§Ù… Ø§Ù„Ù†Ø´Ø·Ø©...','Submitting...':'Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...','Menu':'Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©','Close':'Ø¥ØºÙ„Ø§Ù‚','https://...':'https://...'}
+ ar:{'Loading active tasks...':'جارٍ تحميل المهام النشطة...','Submitting...':'جارٍ الإرسال...','Menu':'القائمة','Close':'إغلاق','https://...':'https://...'}
 };
 for(const lang of Object.keys(AIRDROP_FINAL_LABELS) as LanguageCode[]){Object.assign(translations[lang],AIRDROP_FINAL_LABELS[lang]);PAGE_UI_TRANSLATIONS[lang]={...AIRDROP_FINAL_LABELS[lang],...PAGE_UI_TRANSLATIONS[lang]};}
 
@@ -1946,22 +1946,22 @@ const UI_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Need More Viewers':'Need More Viewers','Add at least 2 viewer usernames to spin the raffle wheel.':'Add at least 2 viewer usernames to spin the raffle wheel.','Winner Picked!':'Winner Picked!','Congratulations':'Congratulations','Selected as Lucky Viewer!':'Selected as Lucky Viewer!','Tambahkan peserta yang benar-benar masuk dari live room.':'Add participants who actually joined the live room.','Spinning for Winner...':'Spinning for Winner...','Remove':'Remove','Incomplete Prediction':'Incomplete Prediction','Please enter a digit for Slot':'Please enter a digit for Slot','Card Cracked!':'Card Cracked!','All concealed digits matched!':'All concealed digits matched!','Guess Missed':'Guess Missed','Matched digits. Try another prediction!':'Matched digits. Try another prediction!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.':'Challenge completed. No balance was deducted or paid.','Server gagal memproses Blind Box.':'The server failed to process the Blind Box.','Vault Updated':'Vault Updated','Added to your Inventory!':'Added to your Inventory!','Daily Limit Reached':'Daily Limit Reached','Staking Required':'Staking Required'
   },
   es: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.':'Escribe algo o aÃ±ade contenido multimedia primero.','Posting gagal dibuat.':'No se pudo crear la publicaciÃ³n.','Koneksi gagal. Silakan coba lagi.':'Error de conexiÃ³n. IntÃ©ntalo de nuevo.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'Todo el contenido y la actividad de esta pÃ¡gina usan datos de producciÃ³n.','Wallet belum terhubung':'Wallet no conectada','Refresh balance':'Actualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.':'Tu bono de registro sigue disponible para reclamar.','Buka Live Room â†’':'Abrir Live Room â†’','Setiap user dapat membagikan tulisan dan postingan.':'Cada usuario puede compartir publicaciones.','Memuat postingan...':'Cargando publicaciones...','Belum ada postingan':'AÃºn no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.':'SÃ© el primero en compartir algo.','Buka Live Room':'Abrir Live Room','Ikuti permainan live.':'Participa en el juego en vivo.','Masuk ke event spinner.':'Entrar al evento de spinner.','Buka Blind Box dengan saldo akun.':'Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post':'Subir / Crear publicaciÃ³n','Tulis sesuatu untuk dibagikan ke komunitas...':'Escribe algo para compartir con la comunidad...','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Referral link berhasil disalin.':'Enlace de referidos copiado.','Masukkan alamat wallet tujuan.':'Introduce la wallet de destino.','Saldo tersedia tidak mencukupi.':'El saldo disponible es insuficiente.','Belum ada event yang diikuti.':'AÃºn no hay eventos.','Need More Viewers':'Se necesitan mÃ¡s espectadores','Winner Picked!':'Â¡Ganador seleccionado!','Congratulations':'Â¡Felicidades!','Selected as Lucky Viewer!':'Â¡Seleccionado como espectador afortunado!','Incomplete Prediction':'PredicciÃ³n incompleta','Please enter a digit for Slot':'Introduce un dÃ­gito para la ranura','Card Cracked!':'Â¡Tarjeta descifrada!','Guess Missed':'PredicciÃ³n incorrecta','Matched digits. Try another prediction!':'DÃ­gitos coincidentes. Prueba otra predicciÃ³n.','Daily Limit Reached':'LÃ­mite diario alcanzado','Staking Required':'Se requiere bloqueo'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.':'Escribe algo o añade contenido multimedia primero.','Posting gagal dibuat.':'No se pudo crear la publicación.','Koneksi gagal. Silakan coba lagi.':'Error de conexión. Inténtalo de nuevo.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'Todo el contenido y la actividad de esta página usan datos de producción.','Wallet belum terhubung':'Wallet no conectada','Refresh balance':'Actualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.':'Tu bono de registro sigue disponible para reclamar.','Buka Live Room â†’':'Abrir Live Room â†’','Setiap user dapat membagikan tulisan dan postingan.':'Cada usuario puede compartir publicaciones.','Memuat postingan...':'Cargando publicaciones...','Belum ada postingan':'Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.':'Sé el primero en compartir algo.','Buka Live Room':'Abrir Live Room','Ikuti permainan live.':'Participa en el juego en vivo.','Masuk ke event spinner.':'Entrar al evento de spinner.','Buka Blind Box dengan saldo akun.':'Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post':'Subir / Crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...':'Escribe algo para compartir con la comunidad...','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Referral link berhasil disalin.':'Enlace de referidos copiado.','Masukkan alamat wallet tujuan.':'Introduce la wallet de destino.','Saldo tersedia tidak mencukupi.':'El saldo disponible es insuficiente.','Belum ada event yang diikuti.':'Aún no hay eventos.','Need More Viewers':'Se necesitan más espectadores','Winner Picked!':'¡Ganador seleccionado!','Congratulations':'¡Felicidades!','Selected as Lucky Viewer!':'¡Seleccionado como espectador afortunado!','Incomplete Prediction':'Predicción incompleta','Please enter a digit for Slot':'Introduce un dígito para la ranura','Card Cracked!':'¡Tarjeta descifrada!','Guess Missed':'Predicción incorrecta','Matched digits. Try another prediction!':'Dígitos coincidentes. Prueba otra predicción.','Daily Limit Reached':'Límite diario alcanzado','Staking Required':'Se requiere bloqueo'
   },
   pt: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.':'Escreva algo ou adicione mÃ­dia primeiro.','Posting gagal dibuat.':'Falha ao criar a publicaÃ§Ã£o.','Koneksi gagal. Silakan coba lagi.':'Falha de conexÃ£o. Tente novamente.','Konten dan aktivitas di halaman ini menggunakan data de produÃ§Ã£o.':'Todo o conteÃºdo e atividade desta pÃ¡gina usam dados de produÃ§Ã£o.','Wallet belum terhubung':'Carteira nÃ£o conectada','Refresh balance':'Atualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.':'Seu bÃ´nus de registro ainda estÃ¡ disponÃ­vel.','Buka Live Room':'Abrir Live Room','Ikuti permainan live.':'Participar do jogo ao vivo.','Masuk ke event spinner.':'Entrar no evento de spinner.','Buka Blind Box dengan saldo akun.':'Abrir Blind Box com o saldo da conta.','Upload / Create Post':'Enviar / Criar publicaÃ§Ã£o','Tulis sesuatu untuk dibagikan ke komunitas...':'Escreva algo para compartilhar com a comunidade...','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Referral link berhasil disalin.':'Link de indicaÃ§Ã£o copiado.','Masukkan alamat wallet tujuan.':'Informe a carteira de destino.','Saldo tersedia tidak mencukupi.':'O saldo disponÃ­vel Ã© insuficiente.','Belum ada event yang diikuti.':'Nenhum evento participado ainda.','Need More Viewers':'Mais espectadores necessÃ¡rios','Winner Picked!':'Vencedor escolhido!','Congratulations':'ParabÃ©ns!','Selected as Lucky Viewer!':'Selecionado como espectador sortudo!','Incomplete Prediction':'PrevisÃ£o incompleta','Please enter a digit for Slot':'Digite um dÃ­gito para o slot','Card Cracked!':'CartÃ£o desbloqueado!','Guess Missed':'Palpite incorreto','Daily Limit Reached':'Limite diÃ¡rio atingido','Staking Required':'Bloqueio necessÃ¡rio'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.':'Escreva algo ou adicione mídia primeiro.','Posting gagal dibuat.':'Falha ao criar a publicação.','Koneksi gagal. Silakan coba lagi.':'Falha de conexão. Tente novamente.','Konten dan aktivitas di halaman ini menggunakan data de produÃ§Ã£o.':'Todo o conteúdo e atividade desta página usam dados de produção.','Wallet belum terhubung':'Carteira não conectada','Refresh balance':'Atualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.':'Seu bônus de registro ainda está disponível.','Buka Live Room':'Abrir Live Room','Ikuti permainan live.':'Participar do jogo ao vivo.','Masuk ke event spinner.':'Entrar no evento de spinner.','Buka Blind Box dengan saldo akun.':'Abrir Blind Box com o saldo da conta.','Upload / Create Post':'Enviar / Criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...':'Escreva algo para compartilhar com a comunidade...','Menerbitkan...':'Publicando...','Terbitkan Postingan':'Publicar','Referral link berhasil disalin.':'Link de indicação copiado.','Masukkan alamat wallet tujuan.':'Informe a carteira de destino.','Saldo tersedia tidak mencukupi.':'O saldo disponível é insuficiente.','Belum ada event yang diikuti.':'Nenhum evento participado ainda.','Need More Viewers':'Mais espectadores necessários','Winner Picked!':'Vencedor escolhido!','Congratulations':'Parabéns!','Selected as Lucky Viewer!':'Selecionado como espectador sortudo!','Incomplete Prediction':'Previsão incompleta','Please enter a digit for Slot':'Digite um dígito para o slot','Card Cracked!':'Cartão desbloqueado!','Guess Missed':'Palpite incorreto','Daily Limit Reached':'Limite diário atingido','Staking Required':'Bloqueio necessário'
   },
   zh: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.':'è¯·å…ˆè¾“å…¥å†…å®¹æˆ–æ·»åŠ åª’ä½“ã€‚','Posting gagal dibuat.':'å‘å¸ƒå¤±è´¥ã€‚','Koneksi gagal. Silakan coba lagi.':'è¿žæŽ¥å¤±è´¥ï¼Œè¯·é‡è¯•ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.':'æ­¤é¡µé¢çš„æ‰€æœ‰å†…å®¹å’Œæ´»åŠ¨å‡ä½¿ç”¨ç”Ÿäº§æ•°æ®ã€‚','Wallet belum terhubung':'é’±åŒ…æœªè¿žæŽ¥','Refresh balance':'åˆ·æ–°ä½™é¢','Bonus pendaftaran masih tersedia untuk diklaim.':'æ‚¨çš„æ³¨å†Œå¥–åŠ±ä»å¯é¢†å–ã€‚','Buka Live Room':'æ‰“å¼€ç›´æ’­é—´','Ikuti permainan live.':'å‚åŠ ç›´æ’­æ¸¸æˆã€‚','Masuk ke event spinner.':'è¿›å…¥è½¬ç›˜æ´»åŠ¨ã€‚','Buka Blind Box dengan saldo akun.':'ä½¿ç”¨è´¦æˆ·ä½™é¢æ‰“å¼€ç›²ç›’ã€‚','Upload / Create Post':'ä¸Šä¼  / åˆ›å»ºå¸–å­','Tulis sesuatu untuk dibagikan ke komunitas...':'å†™ç‚¹å†…å®¹åˆ†äº«ç»™ç¤¾åŒºâ€¦','Menerbitkan...':'å‘å¸ƒä¸­â€¦','Terbitkan Postingan':'å‘å¸ƒå¸–å­','Referral link berhasil disalin.':'æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ã€‚','Masukkan alamat wallet tujuan.':'è¯·è¾“å…¥ç›®æ ‡é’±åŒ…åœ°å€ã€‚','Saldo tersedia tidak mencukupi.':'å¯ç”¨ä½™é¢ä¸è¶³ã€‚','Belum ada event yang diikuti.':'æš‚æ— å‚åŠ çš„æ´»åŠ¨ã€‚','Need More Viewers':'éœ€è¦æ›´å¤šè§‚ä¼—','Winner Picked!':'å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations':'æ­å–œï¼','Selected as Lucky Viewer!':'å·²é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Incomplete Prediction':'é¢„æµ‹ä¸å®Œæ•´','Please enter a digit for Slot':'è¯·è¾“å…¥è¯¥ä½ç½®çš„æ•°å­—','Card Cracked!':'å¡ç‰‡å·²ç ´è§£ï¼','Guess Missed':'çŒœæµ‹é”™è¯¯','Daily Limit Reached':'å·²è¾¾åˆ°æ¯æ—¥é™åˆ¶','Staking Required':'éœ€è¦é”å®šä½™é¢'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.':'è¯·å…ˆè¾“å…¥å†…å®¹æˆ–æ·»åŠ åª’ä½“ã€‚','Posting gagal dibuat.':'å‘å¸ƒå¤±è´¥ã€‚','Koneksi gagal. Silakan coba lagi.':'è¿žæŽ¥å¤±è´¥ï¼Œè¯·é‡è¯•ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.':'æ­¤é¡µé¢çš„æ‰€æœ‰å†…å®¹å’Œæ´»åŠ¨å‡ä½¿ç”¨ç”Ÿäº§æ•°æ®ã€‚','Wallet belum terhubung':'é’±åŒ…æœªè¿žæŽ¥','Refresh balance':'åˆ·æ–°ä½™é¢','Bonus pendaftaran masih tersedia untuk diklaim.':'æ‚¨çš„æ³¨å†Œå¥–åŠ±ä»å¯é¢†å–ã€‚','Buka Live Room':'æ‰“å¼€ç›´æ’­é—´','Ikuti permainan live.':'å‚åŠ ç›´æ’­æ¸¸æˆã€‚','Masuk ke event spinner.':'è¿›å…¥è½¬ç›˜æ´»åŠ¨ã€‚','Buka Blind Box dengan saldo akun.':'ä½¿ç”¨è´¦æˆ·ä½™é¢æ‰“å¼€ç›²ç›’ã€‚','Upload / Create Post':'ä¸Šä¼  / åˆ›å»ºå¸–å­','Tulis sesuatu untuk dibagikan ke komunitas...':'写点内容分享给社区…','Menerbitkan...':'发布中…','Terbitkan Postingan':'å‘å¸ƒå¸–å­','Referral link berhasil disalin.':'æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ã€‚','Masukkan alamat wallet tujuan.':'è¯·è¾“å…¥ç›®æ ‡é’±åŒ…åœ°å€ã€‚','Saldo tersedia tidak mencukupi.':'å¯ç”¨ä½™é¢ä¸è¶³ã€‚','Belum ada event yang diikuti.':'æš‚æ— å‚åŠ çš„æ´»åŠ¨ã€‚','Need More Viewers':'éœ€è¦æ›´å¤šè§‚ä¼—','Winner Picked!':'å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations':'æ­å–œï¼','Selected as Lucky Viewer!':'å·²é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Incomplete Prediction':'é¢„æµ‹ä¸å®Œæ•´','Please enter a digit for Slot':'è¯·è¾“å…¥è¯¥ä½ç½®çš„æ•°å­—','Card Cracked!':'å¡ç‰‡å·²ç ´è§£ï¼','Guess Missed':'çŒœæµ‹é”™è¯¯','Daily Limit Reached':'å·²è¾¾åˆ°æ¯æ—¥é™åˆ¶','Staking Required':'éœ€è¦é”å®šä½™é¢'
   },
   ja: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.':'ã¾ãšå†…å®¹ã‚’å…¥åŠ›ã™ã‚‹ã‹ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Posting gagal dibuat.':'æŠ•ç¨¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚','Koneksi gagal. Silakan coba lagi.':'æŽ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚ã‚‚ã†ä¸€åº¦ãŠè©¦ã—ãã ã•ã„ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.':'ã“ã®ãƒšãƒ¼ã‚¸ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã¯æœ¬ç•ªãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚','Wallet belum terhubung':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Refresh balance':'æ®‹é«˜ã‚’æ›´æ–°','Bonus pendaftaran masih tersedia untuk diklaim.':'ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹ã‚’ã¾ã å—ã‘å–ã‚Œã¾ã™ã€‚','Buka Live Room':'ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã‚’é–‹ã','Ikuti permainan live.':'ãƒ©ã‚¤ãƒ–ã‚²ãƒ¼ãƒ ã«å‚åŠ ','Masuk ke event spinner.':'ã‚¹ãƒ”ãƒŠãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã«å…¥ã‚‹','Buka Blind Box dengan saldo akun.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆæ®‹é«˜ã§Blind Boxã‚’é–‹ã','Upload / Create Post':'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / æŠ•ç¨¿ä½œæˆ','Tulis sesuatu untuk dibagikan ke komunitas...':'ã‚³ãƒŸãƒ¥ãƒ‹ãƒ†ã‚£ã«å…±æœ‰ã™ã‚‹å†…å®¹ã‚’å…¥åŠ›â€¦','Menerbitkan...':'å…¬é–‹ä¸­â€¦','Terbitkan Postingan':'æŠ•ç¨¿ã™ã‚‹','Referral link berhasil disalin.':'ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸã€‚','Masukkan alamat wallet tujuan.':'é€é‡‘å…ˆã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚','Saldo tersedia tidak mencukupi.':'åˆ©ç”¨å¯èƒ½æ®‹é«˜ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚','Belum ada event yang diikuti.':'å‚åŠ ã—ãŸã‚¤ãƒ™ãƒ³ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Need More Viewers':'ã•ã‚‰ã«è¦–è´è€…ãŒå¿…è¦ã§ã™','Winner Picked!':'å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations':'ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™ï¼','Selected as Lucky Viewer!':'ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Incomplete Prediction':'äºˆæ¸¬ãŒæœªå…¥åŠ›ã§ã™','Please enter a digit for Slot':'ã‚¹ãƒ­ãƒƒãƒˆã®æ•°å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„','Card Cracked!':'ã‚«ãƒ¼ãƒ‰ãŒè§£èª­ã•ã‚Œã¾ã—ãŸï¼','Guess Missed':'äºˆæ¸¬ãŒå¤–ã‚Œã¾ã—ãŸ','Daily Limit Reached':'1æ—¥ã®ä¸Šé™ã«é”ã—ã¾ã—ãŸ','Staking Required':'ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.':'ã¾ãšå†…å®¹ã‚’å…¥åŠ›ã™ã‚‹ã‹ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Posting gagal dibuat.':'æŠ•ç¨¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚','Koneksi gagal. Silakan coba lagi.':'æŽ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚ã‚‚ã†ä¸€åº¦ãŠè©¦ã—ãã ã•ã„ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.':'ã“ã®ãƒšãƒ¼ã‚¸ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã¯æœ¬ç•ªãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚','Wallet belum terhubung':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Refresh balance':'æ®‹é«˜ã‚’æ›´æ–°','Bonus pendaftaran masih tersedia untuk diklaim.':'ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹ã‚’ã¾ã å—ã‘å–ã‚Œã¾ã™ã€‚','Buka Live Room':'ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã‚’é–‹ã','Ikuti permainan live.':'ãƒ©ã‚¤ãƒ–ã‚²ãƒ¼ãƒ ã«å‚åŠ ','Masuk ke event spinner.':'ã‚¹ãƒ”ãƒŠãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã«å…¥ã‚‹','Buka Blind Box dengan saldo akun.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆæ®‹é«˜ã§Blind Boxã‚’é–‹ã','Upload / Create Post':'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / æŠ•ç¨¿ä½œæˆ','Tulis sesuatu untuk dibagikan ke komunitas...':'コミュニティに共有する内容を入力…','Menerbitkan...':'公開中…','Terbitkan Postingan':'æŠ•ç¨¿ã™ã‚‹','Referral link berhasil disalin.':'ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸã€‚','Masukkan alamat wallet tujuan.':'é€é‡‘å…ˆã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚','Saldo tersedia tidak mencukupi.':'åˆ©ç”¨å¯èƒ½æ®‹é«˜ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚','Belum ada event yang diikuti.':'å‚åŠ ã—ãŸã‚¤ãƒ™ãƒ³ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Need More Viewers':'ã•ã‚‰ã«è¦–è´è€…ãŒå¿…è¦ã§ã™','Winner Picked!':'å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations':'ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™ï¼','Selected as Lucky Viewer!':'ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Incomplete Prediction':'äºˆæ¸¬ãŒæœªå…¥åŠ›ã§ã™','Please enter a digit for Slot':'ã‚¹ãƒ­ãƒƒãƒˆã®æ•°å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„','Card Cracked!':'ã‚«ãƒ¼ãƒ‰ãŒè§£èª­ã•ã‚Œã¾ã—ãŸï¼','Guess Missed':'äºˆæ¸¬ãŒå¤–ã‚Œã¾ã—ãŸ','Daily Limit Reached':'1æ—¥ã®ä¸Šé™ã«é”ã—ã¾ã—ãŸ','Staking Required':'ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™'
   },
   ko: {
     'Tulis sesuatu atau masukkan media terlebih dahulu.':'ë‚´ìš©ì„ ìž…ë ¥í•˜ê±°ë‚˜ ë¯¸ë””ì–´ë¥¼ ì¶”ê°€í•˜ì„¸ìš”.','Posting gagal dibuat.':'ê²Œì‹œë¬¼ ìƒì„±ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.','Koneksi gagal. Silakan coba lagi.':'ì—°ê²°ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì„¸ìš”.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'ì´ íŽ˜ì´ì§€ì˜ ëª¨ë“  ì½˜í…ì¸ ì™€ í™œë™ì€ ìš´ì˜ ë°ì´í„°ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.','Wallet belum terhubung':'ì§€ê°‘ì´ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤','Refresh balance':'ìž”ì•¡ ìƒˆë¡œê³ ì¹¨','Bonus pendaftaran masih tersedia untuk diklaim.':'ê°€ìž… ë³´ë„ˆìŠ¤ë¥¼ ì•„ì§ ë°›ì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.','Buka Live Room':'ë¼ì´ë¸Œ ë£¸ ì—´ê¸°','Ikuti permainan live.':'ë¼ì´ë¸Œ ê²Œìž„ ì°¸ì—¬','Masuk ke event spinner.':'ìŠ¤í”¼ë„ˆ ì´ë²¤íŠ¸ ìž…ìž¥','Buka Blind Box dengan saldo akun.':'ê³„ì • ìž”ì•¡ìœ¼ë¡œ Blind Box ì—´ê¸°','Upload / Create Post':'ì—…ë¡œë“œ / ê²Œì‹œë¬¼ ë§Œë“¤ê¸°','Tulis sesuatu untuk dibagikan ke komunitas...':'ì»¤ë®¤ë‹ˆí‹°ì— ê³µìœ í•  ë‚´ìš©ì„ ìž…ë ¥í•˜ì„¸ìš”...','Menerbitkan...':'ê²Œì‹œ ì¤‘...','Terbitkan Postingan':'ê²Œì‹œí•˜ê¸°','Referral link berhasil disalin.':'ì¶”ì²œ ë§í¬ê°€ ë³µì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤.','Masukkan alamat wallet tujuan.':'ëŒ€ìƒ ì§€ê°‘ ì£¼ì†Œë¥¼ ìž…ë ¥í•˜ì„¸ìš”.','Saldo tersedia tidak mencukupi.':'ì‚¬ìš© ê°€ëŠ¥ ìž”ì•¡ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.','Belum ada event yang diikuti.':'ì°¸ì—¬í•œ ì´ë²¤íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.','Need More Viewers':'ë” ë§Žì€ ì‹œì²­ìžê°€ í•„ìš”í•©ë‹ˆë‹¤','Winner Picked!':'ë‹¹ì²¨ìžê°€ ì„ íƒë˜ì—ˆìŠµë‹ˆë‹¤!','Congratulations':'ì¶•í•˜í•©ë‹ˆë‹¤!','Selected as Lucky Viewer!':'í–‰ìš´ì˜ ì‹œì²­ìžë¡œ ì„ ì •ë˜ì—ˆìŠµë‹ˆë‹¤!','Incomplete Prediction':'ì˜ˆì¸¡ì´ ì™„ì „í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤','Please enter a digit for Slot':'ìŠ¬ë¡¯ì˜ ìˆ«ìžë¥¼ ìž…ë ¥í•˜ì„¸ìš”','Card Cracked!':'ì¹´ë“œê°€ í•´ë…ë˜ì—ˆìŠµë‹ˆë‹¤!','Guess Missed':'ì˜ˆì¸¡ ì‹¤íŒ¨','Daily Limit Reached':'ì¼ì¼ í•œë„ì— ë„ë‹¬í–ˆìŠµë‹ˆë‹¤','Staking Required':'Lockì´ í•„ìš”í•©ë‹ˆë‹¤'
   },
   ar: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.':'Ø§ÙƒØªØ¨ Ø´ÙŠØ¦Ø§Ù‹ Ø£Ùˆ Ø£Ø¶Ù ÙˆØ³Ø§Ø¦Ø· Ø£ÙˆÙ„Ø§Ù‹.','Posting gagal dibuat.':'ÙØ´Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ù†Ø´ÙˆØ±.','Koneksi gagal. Silakan coba lagi.':'ÙØ´Ù„ Ø§Ù„Ø§ØªØµØ§Ù„. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'ØªØ³ØªØ®Ø¯Ù… Ø¬Ù…ÙŠØ¹ Ù…Ø­ØªÙˆÙŠØ§Øª ÙˆØ£Ù†Ø´Ø·Ø© Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¥Ù†ØªØ§Ø¬.','Wallet belum terhubung':'Ø§Ù„Ù…Ø­ÙØ¸Ø© ØºÙŠØ± Ù…ØªØµÙ„Ø©','Refresh balance':'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø±ØµÙŠØ¯','Bonus pendaftaran masih tersedia untuk diklaim.':'Ù„Ø§ ØªØ²Ø§Ù„ Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ù…ØªØ§Ø­Ø© Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù….','Buka Live Room':'ÙØªØ­ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Ikuti permainan live.':'Ø§Ù†Ø¶Ù… Ø¥Ù„Ù‰ Ø§Ù„Ù„Ø¹Ø¨Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©','Masuk ke event spinner.':'Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ ÙØ¹Ø§Ù„ÙŠØ© Ø§Ù„Ø¹Ø¬Ù„Ø©','Buka Blind Box dengan saldo akun.':'ÙØªØ­ Blind Box Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨','Upload / Create Post':'Ø±ÙØ¹ / Ø¥Ù†Ø´Ø§Ø¡ Ù…Ù†Ø´ÙˆØ±','Tulis sesuatu untuk dibagikan ke komunitas...':'Ø§ÙƒØªØ¨ Ø´ÙŠØ¦Ø§Ù‹ Ù„Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø§Ù„Ù…Ø¬ØªÙ…Ø¹...','Menerbitkan...':'Ø¬Ø§Ø±Ù Ø§Ù„Ù†Ø´Ø±...','Terbitkan Postingan':'Ù†Ø´Ø± Ø§Ù„Ù…Ù†Ø´ÙˆØ±','Referral link berhasil disalin.':'ØªÙ… Ù†Ø³Ø® Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©.','Masukkan alamat wallet tujuan.':'Ø£Ø¯Ø®Ù„ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ©.','Saldo tersedia tidak mencukupi.':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­ ØºÙŠØ± ÙƒØ§ÙÙ.','Belum ada event yang diikuti.':'Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ¹Ø§Ù„ÙŠØ§Øª Ù…Ù†Ø¶Ù… Ø¥Ù„ÙŠÙ‡Ø§.','Need More Viewers':'Ù†Ø­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†','Winner Picked!':'ØªÙ… Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²!','Congratulations':'ØªÙ‡Ø§Ù†ÙŠÙ†Ø§!','Selected as Lucky Viewer!':'ØªÙ… Ø§Ø®ØªÙŠØ§Ø±Ùƒ ÙƒÙ…Ø´Ø§Ù‡Ø¯ Ù…Ø­Ø¸ÙˆØ¸!','Incomplete Prediction':'Ø§Ù„ØªÙˆÙ‚Ø¹ ØºÙŠØ± Ù…ÙƒØªÙ…Ù„','Please enter a digit for Slot':'Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù…Ø§Ù‹ Ù„Ù„Ø®Ø§Ù†Ø©','Card Cracked!':'ØªÙ… ÙÙƒ Ø§Ù„Ø¨Ø·Ø§Ù‚Ø©!','Guess Missed':'Ù„Ù… ØªÙ†Ø¬Ø­ Ø§Ù„ØªØ®Ù…ÙŠÙ†Ø§Øª','Daily Limit Reached':'ØªÙ… Ø¨Ù„ÙˆØº Ø§Ù„Ø­Ø¯ Ø§Ù„ÙŠÙˆÙ…ÙŠ','Staking Required':'ÙŠÙ„Ø²Ù… Ø§Ù„Ù‚ÙÙ„'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.':'اكتب شيئاً أو أضف وسائط أولاً.','Posting gagal dibuat.':'فشل إنشاء المنشور.','Koneksi gagal. Silakan coba lagi.':'فشل الاتصال. حاول مرة أخرى.','Konten dan aktivitas di halaman ini menggunakan data produksi.':'تستخدم جميع محتويات وأنشطة هذه الصفحة بيانات الإنتاج.','Wallet belum terhubung':'المحفظة غير متصلة','Refresh balance':'تحديث الرصيد','Bonus pendaftaran masih tersedia untuk diklaim.':'لا تزال مكافأة التسجيل متاحة للاستلام.','Buka Live Room':'فتح الغرفة المباشرة','Ikuti permainan live.':'انضم إلى اللعبة المباشرة','Masuk ke event spinner.':'الدخول إلى فعالية العجلة','Buka Blind Box dengan saldo akun.':'فتح Blind Box باستخدام رصيد الحساب','Upload / Create Post':'رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...':'اكتب شيئاً لمشاركته مع المجتمع...','Menerbitkan...':'جارٍ النشر...','Terbitkan Postingan':'نشر المنشور','Referral link berhasil disalin.':'تم نسخ رابط الإحالة.','Masukkan alamat wallet tujuan.':'أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.':'الرصيد المتاح غير كافٍ.','Belum ada event yang diikuti.':'لا توجد فعاليات منضم إليها.','Need More Viewers':'نحتاج إلى مزيد من المشاهدين','Winner Picked!':'تم اختيار الفائز!','Congratulations':'تهانينا!','Selected as Lucky Viewer!':'تم اختيارك كمشاهد محظوظ!','Incomplete Prediction':'التوقع غير مكتمل','Please enter a digit for Slot':'أدخل رقماً للخانة','Card Cracked!':'تم فك البطاقة!','Guess Missed':'لم تنجح التخمينات','Daily Limit Reached':'تم بلوغ الحد اليومي','Staking Required':'يلزم القفل'
   }
 };
 const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
@@ -1982,20 +1982,20 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'URL media (opsional)':'Media URL (optional)','Memuat status Mining...':'Loading Mining status...'
   },
   es: {
-    'Reward dari Airdrop':'Recompensa de Airdrop','SYS Mining':'MinerÃ­a SYS','Mining SYS dari Blind Box Lock':'Minar SYS con Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Un bloqueo activo de al menos $10 activa las recompensas diarias de minerÃ­a.',
-    'DAILY CHECK-IN':'CHECK-IN DIARIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diario recurrente. Las recompensas se otorgan en puntos y pueden convertirse a SYS segÃºn las reglas del programa.',
-    'Tanggal':'Fecha','Status':'Estado','Points':'Puntos','Aksi':'AcciÃ³n','TODAY':'HOY','Belum check-in':'Sin check-in','Check-in':'Registrar check-in',
+    'Reward dari Airdrop':'Recompensa de Airdrop','SYS Mining':'Minería SYS','Mining SYS dari Blind Box Lock':'Minar SYS con Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Un bloqueo activo de al menos $10 activa las recompensas diarias de minería.',
+    'DAILY CHECK-IN':'CHECK-IN DIARIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diario recurrente. Las recompensas se otorgan en puntos y pueden convertirse a SYS según las reglas del programa.',
+    'Tanggal':'Fecha','Status':'Estado','Points':'Puntos','Aksi':'Acción','TODAY':'HOY','Belum check-in':'Sin check-in','Check-in':'Registrar check-in',
     'AIRDROP POINTS':'PUNTOS AIRDROP','Points â†’ SYS':'Puntos â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Los puntos provienen solo de tareas procesadas por el servidor. Las conversiones se registran en el libro mayor.',
-    'Available':'Disponible','Pending':'Pendiente','Converted':'Convertido','Jumlah points':'Cantidad de puntos','Conversion gagal':'ConversiÃ³n fallida','Rate saat ini: 1 SYS = 1.000 points.':'Tasa actual: 1 SYS = 1.000 puntos.',
-    'URL media (opsional)':'URL multimedia (opcional)','Memuat status Mining...':'Cargando estado de minerÃ­a...'
+    'Available':'Disponible','Pending':'Pendiente','Converted':'Convertido','Jumlah points':'Cantidad de puntos','Conversion gagal':'Conversión fallida','Rate saat ini: 1 SYS = 1.000 points.':'Tasa actual: 1 SYS = 1.000 puntos.',
+    'URL media (opsional)':'URL multimedia (opcional)','Memuat status Mining...':'Cargando estado de minería...'
   },
   pt: {
-    'Reward dari Airdrop':'Recompensa do Airdrop','SYS Mining':'MineraÃ§Ã£o SYS','Mining SYS dari Blind Box Lock':'Minerar SYS com Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Um lock ativo de pelo menos $10 ativa recompensas diÃ¡rias de mineraÃ§Ã£o.',
-    'DAILY CHECK-IN':'CHECK-IN DIÃRIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diÃ¡rio recorrente. As recompensas sÃ£o dadas em pontos e podem ser convertidas em SYS conforme as regras do programa.',
-    'Tanggal':'Data','Status':'Status','Points':'Pontos','Aksi':'AÃ§Ã£o','TODAY':'HOJE','Belum check-in':'Sem check-in','Check-in':'Fazer check-in',
-    'AIRDROP POINTS':'PONTOS AIRDROP','Points â†’ SYS':'Pontos â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Os pontos vÃªm apenas de tarefas processadas pelo servidor. As conversÃµes sÃ£o registradas no livro razÃ£o.',
-    'Available':'DisponÃ­vel','Pending':'Pendente','Converted':'Convertido','Jumlah points':'Quantidade de pontos','Conversion gagal':'Falha na conversÃ£o','Rate saat ini: 1 SYS = 1.000 points.':'Taxa atual: 1 SYS = 1.000 pontos.',
-    'URL media (opsional)':'URL de mÃ­dia (opcional)','Memuat status Mining...':'Carregando status da mineraÃ§Ã£o...'
+    'Reward dari Airdrop':'Recompensa do Airdrop','SYS Mining':'Mineração SYS','Mining SYS dari Blind Box Lock':'Minerar SYS com Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'Um lock ativo de pelo menos $10 ativa recompensas diárias de mineração.',
+    'DAILY CHECK-IN':'CHECK-IN DIÁRIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'Check-in diário recorrente. As recompensas são dadas em pontos e podem ser convertidas em SYS conforme as regras do programa.',
+    'Tanggal':'Data','Status':'Status','Points':'Pontos','Aksi':'Ação','TODAY':'HOJE','Belum check-in':'Sem check-in','Check-in':'Fazer check-in',
+    'AIRDROP POINTS':'PONTOS AIRDROP','Points â†’ SYS':'Pontos â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'Os pontos vêm apenas de tarefas processadas pelo servidor. As conversões são registradas no livro razão.',
+    'Available':'Disponível','Pending':'Pendente','Converted':'Convertido','Jumlah points':'Quantidade de pontos','Conversion gagal':'Falha na conversão','Rate saat ini: 1 SYS = 1.000 points.':'Taxa atual: 1 SYS = 1.000 pontos.',
+    'URL media (opsional)':'URL de mídia (opcional)','Memuat status Mining...':'Carregando status da mineração...'
   },
   zh: {
     'Reward dari Airdrop':'ç©ºæŠ•å¥–åŠ±','SYS Mining':'SYS æŒ–çŸ¿','Mining SYS dari Blind Box Lock':'é€šè¿‡ Blind Box Lock æŒ–çŸ¿ SYS','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'è‡³å°‘ $10 çš„æœ‰æ•ˆé”å®šå¯å¼€å¯æ¯æ—¥æŒ–çŸ¿å¥–åŠ±ã€‚',
@@ -2003,7 +2003,7 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Tanggal':'æ—¥æœŸ','Status':'çŠ¶æ€','Points':'ç§¯åˆ†','Aksi':'æ“ä½œ','TODAY':'ä»Šå¤©','Belum check-in':'å°šæœªç­¾åˆ°','Check-in':'ç­¾åˆ°',
     'AIRDROP POINTS':'ç©ºæŠ•ç§¯åˆ†','Points â†’ SYS':'ç§¯åˆ† â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'ç§¯åˆ†ä»…æ¥è‡ªæœåŠ¡å™¨å¤„ç†çš„ä»»åŠ¡ï¼Œè½¬æ¢è®°å½•åœ¨è´¦æœ¬ä¸­ã€‚',
     'Available':'å¯ç”¨','Pending':'å¾…å¤„ç†','Converted':'å·²è½¬æ¢','Jumlah points':'ç§¯åˆ†æ•°é‡','Conversion gagal':'è½¬æ¢å¤±è´¥','Rate saat ini: 1 SYS = 1.000 points.':'å½“å‰æ±‡çŽ‡ï¼š1 SYS = 1,000 ç§¯åˆ†ã€‚',
-    'URL media (opsional)':'åª’ä½“ URLï¼ˆå¯é€‰ï¼‰','Memuat status Mining...':'æ­£åœ¨åŠ è½½æŒ–çŸ¿çŠ¶æ€â€¦'
+    'URL media (opsional)':'åª’ä½“ URLï¼ˆå¯é€‰ï¼‰','Memuat status Mining...':'正在加载挖矿状态…'
   },
   ja: {
     'Reward dari Airdrop':'ã‚¨ã‚¢ãƒ‰ãƒ­ãƒƒãƒ—å ±é…¬','SYS Mining':'SYSãƒžã‚¤ãƒ‹ãƒ³ã‚°','Mining SYS dari Blind Box Lock':'Blind Box Lockã§SYSã‚’ãƒžã‚¤ãƒ‹ãƒ³ã‚°','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'10ãƒ‰ãƒ«ä»¥ä¸Šã®æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯ã§æ¯Žæ—¥ã®ãƒžã‚¤ãƒ‹ãƒ³ã‚°å ±é…¬ãŒæœ‰åŠ¹ã«ãªã‚Šã¾ã™ã€‚',
@@ -2011,7 +2011,7 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Tanggal':'æ—¥ä»˜','Status':'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹','Points':'ãƒã‚¤ãƒ³ãƒˆ','Aksi':'æ“ä½œ','TODAY':'ä»Šæ—¥','Belum check-in':'æœªãƒã‚§ãƒƒã‚¯ã‚¤ãƒ³','Check-in':'ãƒã‚§ãƒƒã‚¯ã‚¤ãƒ³',
     'AIRDROP POINTS':'ã‚¨ã‚¢ãƒ‰ãƒ­ãƒƒãƒ—ãƒã‚¤ãƒ³ãƒˆ','Points â†’ SYS':'ãƒã‚¤ãƒ³ãƒˆ â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'ãƒã‚¤ãƒ³ãƒˆã¯ã‚µãƒ¼ãƒãƒ¼ã§å‡¦ç†ã•ã‚ŒãŸã‚¿ã‚¹ã‚¯ã‹ã‚‰ã®ã¿ä»˜ä¸Žã•ã‚Œã€å¤‰æ›ã¯å°å¸³ã«è¨˜éŒ²ã•ã‚Œã¾ã™ã€‚',
     'Available':'åˆ©ç”¨å¯èƒ½','Pending':'ä¿ç•™ä¸­','Converted':'å¤‰æ›æ¸ˆã¿','Jumlah points':'ãƒã‚¤ãƒ³ãƒˆæ•°','Conversion gagal':'å¤‰æ›ã«å¤±æ•—ã—ã¾ã—ãŸ','Rate saat ini: 1 SYS = 1.000 points.':'ç¾åœ¨ã®ãƒ¬ãƒ¼ãƒˆï¼š1 SYS = 1,000ãƒã‚¤ãƒ³ãƒˆã€‚',
-    'URL media (opsional)':'ãƒ¡ãƒ‡ã‚£ã‚¢URLï¼ˆä»»æ„ï¼‰','Memuat status Mining...':'ãƒžã‚¤ãƒ‹ãƒ³ã‚°çŠ¶æ…‹ã‚’èª­ã¿è¾¼ã¿ä¸­â€¦'
+    'URL media (opsional)':'ãƒ¡ãƒ‡ã‚£ã‚¢URLï¼ˆä»»æ„ï¼‰','Memuat status Mining...':'マイニング状態を読み込み中…'
   },
   ko: {
     'Reward dari Airdrop':'ì—ì–´ë“œë¡­ ë³´ìƒ','SYS Mining':'SYS ì±„êµ´','Mining SYS dari Blind Box Lock':'Blind Box Lockìœ¼ë¡œ SYS ì±„êµ´','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'ìµœì†Œ $10ì˜ í™œì„± Lockìœ¼ë¡œ ì¼ì¼ ì±„êµ´ ë³´ìƒì´ í™œì„±í™”ë©ë‹ˆë‹¤.',
@@ -2022,12 +2022,12 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'URL media (opsional)':'ë¯¸ë””ì–´ URL(ì„ íƒ ì‚¬í•­)','Memuat status Mining...':'ì±„êµ´ ìƒíƒœë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘...'
   },
   ar: {
-    'Reward dari Airdrop':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„Ø¥ÙŠØ±Ø¯Ø±ÙˆØ¨','SYS Mining':'ØªØ¹Ø¯ÙŠÙ† SYS','Mining SYS dari Blind Box Lock':'ØªØ¹Ø¯ÙŠÙ† SYS Ø¹Ø¨Ø± Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'ÙŠØ¤Ø¯ÙŠ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù†Ø´Ø· Ø¨Ù‚ÙŠÙ…Ø© 10 Ø¯ÙˆÙ„Ø§Ø±Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ø¥Ù„Ù‰ ØªÙØ¹ÙŠÙ„ Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„ØªØ¹Ø¯ÙŠÙ† Ø§Ù„ÙŠÙˆÙ…ÙŠØ©.',
-    'DAILY CHECK-IN':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„ÙŠÙˆÙ…ÙŠ','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± ÙŠÙˆÙ…ÙŠ Ù…ØªÙƒØ±Ø±. ØªÙÙ…Ù†Ø­ Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø¨Ø§Ù„Ù†Ù‚Ø§Ø· ÙˆÙŠÙ…ÙƒÙ† ØªØ­ÙˆÙŠÙ„Ù‡Ø§ Ø¥Ù„Ù‰ SYS ÙˆÙÙ‚ Ù‚ÙˆØ§Ø¹Ø¯ Ø§Ù„Ø¨Ø±Ù†Ø§Ù…Ø¬.',
-    'Tanggal':'Ø§Ù„ØªØ§Ø±ÙŠØ®','Status':'Ø§Ù„Ø­Ø§Ù„Ø©','Points':'Ø§Ù„Ù†Ù‚Ø§Ø·','Aksi':'Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡','TODAY':'Ø§Ù„ÙŠÙˆÙ…','Belum check-in':'Ù„Ù… ÙŠØªÙ… Ø§Ù„ØªØ³Ø¬ÙŠÙ„','Check-in':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ±',
-    'AIRDROP POINTS':'Ù†Ù‚Ø§Ø· Ø§Ù„Ø¥ÙŠØ±Ø¯Ø±ÙˆØ¨','Points â†’ SYS':'Ø§Ù„Ù†Ù‚Ø§Ø· â†’ SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'ØªØ£ØªÙŠ Ø§Ù„Ù†Ù‚Ø§Ø· ÙÙ‚Ø· Ù…Ù† Ø§Ù„Ù…Ù‡Ø§Ù… Ø§Ù„ØªÙŠ ÙŠØ¹Ø§Ù„Ø¬Ù‡Ø§ Ø§Ù„Ø®Ø§Ø¯Ù…ØŒ ÙˆØªÙØ³Ø¬Ù„ Ø§Ù„ØªØ­ÙˆÙŠÙ„Ø§Øª ÙÙŠ Ø¯ÙØªØ± Ø§Ù„Ø£Ø³ØªØ§Ø°.',
-    'Available':'Ù…ØªØ§Ø­','Pending':'Ù…Ø¹Ù„Ù‚','Converted':'ØªÙ… Ø§Ù„ØªØ­ÙˆÙŠÙ„','Jumlah points':'Ø¹Ø¯Ø¯ Ø§Ù„Ù†Ù‚Ø§Ø·','Conversion gagal':'ÙØ´Ù„ Ø§Ù„ØªØ­ÙˆÙŠÙ„','Rate saat ini: 1 SYS = 1.000 points.':'Ø§Ù„Ù…Ø¹Ø¯Ù„ Ø§Ù„Ø­Ø§Ù„ÙŠ: 1 SYS = 1,000 Ù†Ù‚Ø·Ø©.',
-    'URL media (opsional)':'Ø±Ø§Ø¨Ø· Ø§Ù„ÙˆØ³Ø§Ø¦Ø· (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)','Memuat status Mining...':'Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø­Ø§Ù„Ø© Ø§Ù„ØªØ¹Ø¯ÙŠÙ†â€¦'
+    'Reward dari Airdrop':'مكافأة الإيردروب','SYS Mining':'تعدين SYS','Mining SYS dari Blind Box Lock':'تعدين SYS عبر Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.':'يؤدي القفل النشط بقيمة 10 دولارات على الأقل إلى تفعيل مكافآت التعدين اليومية.',
+    'DAILY CHECK-IN':'تسجيل الحضور اليومي','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.':'تسجيل حضور يومي متكرر. تُمنح المكافآت بالنقاط ويمكن تحويلها إلى SYS وفق قواعد البرنامج.',
+    'Tanggal':'التاريخ','Status':'الحالة','Points':'النقاط','Aksi':'الإجراء','TODAY':'اليوم','Belum check-in':'لم يتم التسجيل','Check-in':'تسجيل الحضور',
+    'AIRDROP POINTS':'نقاط الإيردروب','Points â†’ SYS':'النقاط → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.':'تأتي النقاط فقط من المهام التي يعالجها الخادم، وتُسجل التحويلات في دفتر الأستاذ.',
+    'Available':'متاح','Pending':'معلق','Converted':'تم التحويل','Jumlah points':'عدد النقاط','Conversion gagal':'فشل التحويل','Rate saat ini: 1 SYS = 1.000 points.':'المعدل الحالي: 1 SYS = 1,000 نقطة.',
+    'URL media (opsional)':'رابط الوسائط (اختياري)','Memuat status Mining...':'جارٍ تحميل حالة التعدين…'
   }
 };
 const USER_PAGE_FINAL_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
@@ -2063,30 +2063,30 @@ const USER_PAGE_FINAL_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
   },
   "es": {
     "Earns passive yield": "Genera rendimiento pasivo",
-    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "La direcciÃ³n de wallet no estÃ¡ disponible. Conecta tu wallet primero.",
-    "Copied!": "Â¡Copiado!",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "La dirección de wallet no está disponible. Conecta tu wallet primero.",
+    "Copied!": "¡Copiado!",
     "Copy Link": "Copiar enlace",
-    "All Claimed!": "Â¡Todo reclamado!",
-    "Claim Commission to Wallet": "Reclamar comisiÃ³n a la wallet",
+    "All Claimed!": "¡Todo reclamado!",
+    "Claim Commission to Wallet": "Reclamar comisión a la wallet",
     "You have opened all": "Has abierto todas",
     "box(es) for today. Quota resets in": "caja(s) de hoy. La cuota se reinicia en",
-    "Blind Box Failed": "FallÃ³ Blind Box",
+    "Blind Box Failed": "Falló Blind Box",
     "Durasi lock tersedia:": "Duraciones de bloqueo disponibles:",
-    "30 hari": "30 dÃ­as",
-    "60 hari": "60 dÃ­as",
-    "90 hari": "90 dÃ­as"
+    "30 hari": "30 días",
+    "60 hari": "60 días",
+    "90 hari": "90 días"
   },
   "pt": {
     "Earns passive yield": "Gera rendimento passivo",
-    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "O endereÃ§o da carteira nÃ£o estÃ¡ disponÃ­vel. Conecte sua carteira primeiro.",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "O endereço da carteira não está disponível. Conecte sua carteira primeiro.",
     "Copied!": "Copiado!",
     "Copy Link": "Copiar link",
     "All Claimed!": "Tudo reivindicado!",
-    "Claim Commission to Wallet": "Reivindicar comissÃ£o para a carteira",
-    "You have opened all": "VocÃª abriu todas",
+    "Claim Commission to Wallet": "Reivindicar comissão para a carteira",
+    "You have opened all": "Você abriu todas",
     "box(es) for today. Quota resets in": "caixa(s) de hoje. A cota reinicia em",
     "Blind Box Failed": "Falha no Blind Box",
-    "Durasi lock tersedia:": "DuraÃ§Ãµes de bloqueio disponÃ­veis:",
+    "Durasi lock tersedia:": "Durações de bloqueio disponíveis:",
     "30 hari": "30 dias",
     "60 hari": "60 dias",
     "90 hari": "90 dias"
@@ -2137,19 +2137,19 @@ const USER_PAGE_FINAL_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "90 hari": "90ì¼"
   },
   "ar": {
-    "Earns passive yield": "ÙŠØ­Ù‚Ù‚ Ø¹Ø§Ø¦Ø¯Ø§Ù‹ Ø³Ù„Ø¨ÙŠØ§Ù‹",
-    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø­ÙØ¸Ø© ØºÙŠØ± Ù…ØªØ§Ø­. ÙŠØ±Ø¬Ù‰ Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø© Ø£ÙˆÙ„Ø§Ù‹.",
-    "Copied!": "ØªÙ… Ø§Ù„Ù†Ø³Ø®!",
-    "Copy Link": "Ù†Ø³Ø® Ø§Ù„Ø±Ø§Ø¨Ø·",
-    "All Claimed!": "ØªÙ…Øª Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¨Ø§Ù„Ø¬Ù…ÙŠØ¹!",
-    "Claim Commission to Wallet": "Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¨Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "You have opened all": "Ù„Ù‚Ø¯ ÙØªØ­Øª Ø¬Ù…ÙŠØ¹",
-    "box(es) for today. Quota resets in": "ØµÙ†Ø¯ÙˆÙ‚/ØµÙ†Ø§Ø¯ÙŠÙ‚ Ø§Ù„ÙŠÙˆÙ…. Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø­ØµØ© Ø®Ù„Ø§Ù„",
-    "Blind Box Failed": "ÙØ´Ù„ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„Ø£Ø¹Ù…Ù‰",
-    "Durasi lock tersedia:": "Ù…Ø¯Ø¯ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù…ØªØ§Ø­Ø©:",
-    "30 hari": "30 ÙŠÙˆÙ…Ø§Ù‹",
-    "60 hari": "60 ÙŠÙˆÙ…Ø§Ù‹",
-    "90 hari": "90 ÙŠÙˆÙ…Ø§Ù‹"
+    "Earns passive yield": "يحقق عائداً سلبياً",
+    "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu.": "عنوان المحفظة غير متاح. يرجى ربط المحفظة أولاً.",
+    "Copied!": "تم النسخ!",
+    "Copy Link": "نسخ الرابط",
+    "All Claimed!": "تمت المطالبة بالجميع!",
+    "Claim Commission to Wallet": "المطالبة بالعمولة إلى المحفظة",
+    "You have opened all": "لقد فتحت جميع",
+    "box(es) for today. Quota resets in": "صندوق/صناديق اليوم. إعادة الحصة خلال",
+    "Blind Box Failed": "فشل الصندوق الأعمى",
+    "Durasi lock tersedia:": "مدد القفل المتاحة:",
+    "30 hari": "30 يوماً",
+    "60 hari": "60 يوماً",
+    "90 hari": "90 يوماً"
   }
 };
 for (const lang of Object.keys(USER_PAGE_FINAL_TRANSLATIONS) as LanguageCode[]) Object.assign(UI_AUDIT_TRANSLATIONS[lang], USER_PAGE_FINAL_TRANSLATIONS[lang]);
@@ -2269,92 +2269,92 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     "Like gagal dikirim.": "Failed to send like."
   },
   es: {
-  "Masuk untuk bergabung ke Live Room": "Inicia sesiÃ³n para unirte a la sala en vivo",
+  "Masuk untuk bergabung ke Live Room": "Inicia sesión para unirte a la sala en vivo",
   "Setiap akun memiliki profil dan identitasnya sendiri di dalam room.": "Cada cuenta tiene su propio perfil e identidad en la sala.",
   "Room berhasil dibuat.": "Sala creada correctamente.",
   "Gagal membuat room.": "No se pudo crear la sala.",
   "Buat Live Room": "Crear sala en vivo",
-  "Room ini belum dibuat oleh Official Streamer.": "Esta sala aÃºn no ha sido creada por un streamer oficial.",
+  "Room ini belum dibuat oleh Official Streamer.": "Esta sala aún no ha sido creada por un streamer oficial.",
   "Room belum tersedia": "Sala no disponible",
-  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "Esta sala aÃºn no estÃ¡ disponible. CrÃ©ala para convertirte en su propietario.",
-  "Judul Live Room": "TÃ­tulo de la sala en vivo",
-  "Deskripsi room (opsional)": "DescripciÃ³n de la sala (opcional)",
+  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "Esta sala aún no está disponible. Créala para convertirte en su propietario.",
+  "Judul Live Room": "Título de la sala en vivo",
+  "Deskripsi room (opsional)": "Descripción de la sala (opcional)",
   "MEMBUAT ROOM...": "CREANDO SALA...",
   "BUAT ROOM": "CREAR SALA",
-  "Streaming belum aktif": "La transmisiÃ³n no estÃ¡ activa",
-  "Belum ada video live produksi pada room ini.": "AÃºn no hay video en vivo de producciÃ³n en esta sala.",
+  "Streaming belum aktif": "La transmisión no está activa",
+  "Belum ada video live produksi pada room ini.": "Aún no hay video en vivo de producción en esta sala.",
   "STREAMER CONTROL": "CONTROL DEL STREAMER",
-  "Streaming sedang berjalan": "La transmisiÃ³n estÃ¡ activa",
+  "Streaming sedang berjalan": "La transmisión está activa",
   "Kirim video dari OBS ke server": "Enviar video desde OBS al servidor",
   "CHECK...": "COMPROBANDO...",
   "CHECK STATUS": "COMPROBAR ESTADO",
-  "Status streaming gagal.": "No se pudo comprobar el estado de la transmisiÃ³n.",
+  "Status streaming gagal.": "No se pudo comprobar el estado de la transmisión.",
   "Gunakan OBS: Settings â†’ Stream â†’ Service Custom â†’ masukkan RTMPS Server dan Stream Key di atas.": "En OBS: Settings â†’ Stream â†’ Service Custom â†’ introduce el servidor RTMPS y la clave de stream anteriores.",
-  "AKTIFKAN STREAMING": "ACTIVAR TRANSMISIÃ“N",
+  "AKTIFKAN STREAMING": "ACTIVAR TRANSMISIÓN",
   "Buat Live Input Cloudflare untuk room ini.": "Crear una entrada Live de Cloudflare para esta sala.",
-  "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.": "DespuÃ©s de crearla, usa el servidor RTMPS y la clave de stream en OBS.",
+  "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.": "Después de crearla, usa el servidor RTMPS y la clave de stream en OBS.",
   "KHUSUS PEMILIK ROOM": "SOLO PROPIETARIO DE LA SALA",
   "MEMBUAT...": "CREANDO...",
   "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.": "Entrada Live creada. Usa las credenciales de OBS debajo del video.",
   "Gagal membuat Live Input.": "No se pudo crear la entrada Live.",
   "Gagal terhubung ke streaming server.": "No se pudo conectar al servidor de streaming.",
   "Profil akun Anda": "Tu perfil de cuenta",
-  "Belum ada deskripsi room dari pemilik room.": "El propietario aÃºn no ha aÃ±adido una descripciÃ³n.",
+  "Belum ada deskripsi room dari pemilik room.": "El propietario aún no ha añadido una descripción.",
   "Peserta Live": "Participantes en vivo",
   "Hanya akun yang benar-benar bergabung yang ditampilkan.": "Solo se muestran las cuentas que realmente se han unido.",
   "Memuat peserta...": "Cargando participantes...",
-  "Belum ada peserta lain.": "AÃºn no hay otros participantes.",
+  "Belum ada peserta lain.": "Aún no hay otros participantes.",
   "PESERTA": "PARTICIPANTES",
-  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "AÃºn no hay mensajes. SÃ© el primer usuario en participar en esta sala.",
+  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "Aún no hay mensajes. Sé el primer usuario en participar en esta sala.",
   "Tulis sebagai": "Escribir como",
-  "Belum ada peserta.": "AÃºn no hay participantes.",
-  "Anda": "TÃº",
-  "Aksi live room gagal.": "La acciÃ³n de la sala en vivo fallÃ³.",
+  "Belum ada peserta.": "Aún no hay participantes.",
+  "Anda": "Tú",
+  "Aksi live room gagal.": "La acción de la sala en vivo falló.",
   "Pesan gagal dikirim.": "No se pudo enviar el mensaje.",
   "Like gagal dikirim.": "No se pudo enviar el Me gusta."
 },
   pt: {
   "Masuk untuk bergabung ke Live Room": "Entre para participar da sala ao vivo",
-  "Setiap akun memiliki profil dan identitasnya sendiri di dalam room.": "Cada conta tem seu prÃ³prio perfil e identidade na sala.",
+  "Setiap akun memiliki profil dan identitasnya sendiri di dalam room.": "Cada conta tem seu próprio perfil e identidade na sala.",
   "Room berhasil dibuat.": "Sala criada com sucesso.",
   "Gagal membuat room.": "Falha ao criar a sala.",
   "Buat Live Room": "Criar sala ao vivo",
-  "Room ini belum dibuat oleh Official Streamer.": "Esta sala ainda nÃ£o foi criada por um streamer oficial.",
-  "Room belum tersedia": "Sala indisponÃ­vel",
-  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "Esta sala ainda nÃ£o estÃ¡ disponÃ­vel. Crie-a para se tornar o proprietÃ¡rio.",
-  "Judul Live Room": "TÃ­tulo da sala ao vivo",
-  "Deskripsi room (opsional)": "DescriÃ§Ã£o da sala (opcional)",
+  "Room ini belum dibuat oleh Official Streamer.": "Esta sala ainda não foi criada por um streamer oficial.",
+  "Room belum tersedia": "Sala indisponível",
+  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "Esta sala ainda não está disponível. Crie-a para se tornar o proprietário.",
+  "Judul Live Room": "Título da sala ao vivo",
+  "Deskripsi room (opsional)": "Descrição da sala (opcional)",
   "MEMBUAT ROOM...": "CRIANDO SALA...",
   "BUAT ROOM": "CRIAR SALA",
-  "Streaming belum aktif": "A transmissÃ£o nÃ£o estÃ¡ ativa",
-  "Belum ada video live produksi pada room ini.": "Ainda nÃ£o hÃ¡ vÃ­deo ao vivo de produÃ§Ã£o nesta sala.",
+  "Streaming belum aktif": "A transmissão não está ativa",
+  "Belum ada video live produksi pada room ini.": "Ainda não há vídeo ao vivo de produção nesta sala.",
   "STREAMER CONTROL": "CONTROLE DO STREAMER",
-  "Streaming sedang berjalan": "A transmissÃ£o estÃ¡ em andamento",
-  "Kirim video dari OBS ke server": "Enviar vÃ­deo do OBS para o servidor",
+  "Streaming sedang berjalan": "A transmissão está em andamento",
+  "Kirim video dari OBS ke server": "Enviar vídeo do OBS para o servidor",
   "CHECK...": "VERIFICANDO...",
   "CHECK STATUS": "VERIFICAR STATUS",
-  "Status streaming gagal.": "Falha ao verificar o status da transmissÃ£o.",
+  "Status streaming gagal.": "Falha ao verificar o status da transmissão.",
   "Gunakan OBS: Settings â†’ Stream â†’ Service Custom â†’ masukkan RTMPS Server dan Stream Key di atas.": "No OBS: Settings â†’ Stream â†’ Service Custom â†’ insira o servidor RTMPS e a chave de stream acima.",
   "AKTIFKAN STREAMING": "ATIVAR TRANSMISSÃƒO",
   "Buat Live Input Cloudflare untuk room ini.": "Criar uma entrada Live da Cloudflare para esta sala.",
   "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.": "Depois de criada, use o servidor RTMPS e a chave de stream no OBS.",
-  "KHUSUS PEMILIK ROOM": "APENAS PROPRIETÃRIO DA SALA",
+  "KHUSUS PEMILIK ROOM": "APENAS PROPRIETÁRIO DA SALA",
   "MEMBUAT...": "CRIANDO...",
-  "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.": "Entrada Live criada. Use as credenciais do OBS abaixo do vÃ­deo.",
+  "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.": "Entrada Live criada. Use as credenciais do OBS abaixo do vídeo.",
   "Gagal membuat Live Input.": "Falha ao criar a entrada Live.",
   "Gagal terhubung ke streaming server.": "Falha ao conectar ao servidor de streaming.",
   "Profil akun Anda": "Perfil da sua conta",
-  "Belum ada deskripsi room dari pemilik room.": "O proprietÃ¡rio ainda nÃ£o adicionou uma descriÃ§Ã£o.",
+  "Belum ada deskripsi room dari pemilik room.": "O proprietário ainda não adicionou uma descrição.",
   "Peserta Live": "Participantes ao vivo",
-  "Hanya akun yang benar-benar bergabung yang ditampilkan.": "Somente contas que realmente entraram sÃ£o exibidas.",
+  "Hanya akun yang benar-benar bergabung yang ditampilkan.": "Somente contas que realmente entraram são exibidas.",
   "Memuat peserta...": "Carregando participantes...",
-  "Belum ada peserta lain.": "Ainda nÃ£o hÃ¡ outros participantes.",
+  "Belum ada peserta lain.": "Ainda não há outros participantes.",
   "PESERTA": "PARTICIPANTES",
-  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "Ainda nÃ£o hÃ¡ mensagens. Seja o primeiro a participar desta sala.",
+  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "Ainda não há mensagens. Seja o primeiro a participar desta sala.",
   "Tulis sebagai": "Escrever como",
-  "Belum ada peserta.": "Ainda nÃ£o hÃ¡ participantes.",
-  "Anda": "VocÃª",
-  "Aksi live room gagal.": "A aÃ§Ã£o da sala ao vivo falhou.",
+  "Belum ada peserta.": "Ainda não há participantes.",
+  "Anda": "Você",
+  "Aksi live room gagal.": "A ação da sala ao vivo falhou.",
   "Pesan gagal dikirim.": "Falha ao enviar a mensagem.",
   "Like gagal dikirim.": "Falha ao enviar a curtida."
 },
@@ -2494,49 +2494,49 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Like gagal dikirim.": "ì¢‹ì•„ìš” ì „ì†¡ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤."
 },
   ar: {
-  "Masuk untuk bergabung ke Live Room": "Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±",
-  "Setiap akun memiliki profil dan identitasnya sendiri di dalam room.": "Ù„ÙƒÙ„ Ø­Ø³Ø§Ø¨ Ù…Ù„Ù Ø´Ø®ØµÙŠ ÙˆÙ‡ÙˆÙŠØ© Ø®Ø§ØµØ© Ø¨Ù‡ Ø¯Ø§Ø®Ù„ Ø§Ù„ØºØ±ÙØ©.",
-  "Room berhasil dibuat.": "ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØºØ±ÙØ© Ø¨Ù†Ø¬Ø§Ø­.",
-  "Gagal membuat room.": "ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØºØ±ÙØ©.",
-  "Buat Live Room": "Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø¨Ø« Ù…Ø¨Ø§Ø´Ø±",
-  "Room ini belum dibuat oleh Official Streamer.": "Ù„Ù… ÙŠÙ†Ø´Ø¦ Ø§Ù„Ø¨Ø« Ø§Ù„Ø±Ø³Ù…ÙŠ Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ© Ø¨Ø¹Ø¯.",
-  "Room belum tersedia": "Ø§Ù„ØºØ±ÙØ© ØºÙŠØ± Ù…ØªØ§Ø­Ø©",
-  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ© ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø¨Ø¹Ø¯. Ø£Ù†Ø´Ø¦Ù‡Ø§ Ù„ØªØµØ¨Ø­ Ù…Ø§Ù„ÙƒÙ‡Ø§.",
-  "Judul Live Room": "Ø¹Ù†ÙˆØ§Ù† ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±",
-  "Deskripsi room (opsional)": "ÙˆØµÙ Ø§Ù„ØºØ±ÙØ© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)",
-  "MEMBUAT ROOM...": "Ø¬Ø§Ø±Ù Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØºØ±ÙØ©...",
-  "BUAT ROOM": "Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØºØ±ÙØ©",
-  "Streaming belum aktif": "Ø§Ù„Ø¨Ø« ØºÙŠØ± Ù†Ø´Ø·",
-  "Belum ada video live produksi pada room ini.": "Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¨Ø« Ù…Ø¨Ø§Ø´Ø± Ø¥Ù†ØªØ§Ø¬ÙŠ ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ© Ø¨Ø¹Ø¯.",
-  "STREAMER CONTROL": "ØªØ­ÙƒÙ… Ø§Ù„Ø¨Ø«",
-  "Streaming sedang berjalan": "Ø§Ù„Ø¨Ø« Ù‚ÙŠØ¯ Ø§Ù„ØªØ´ØºÙŠÙ„",
-  "Kirim video dari OBS ke server": "Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ù…Ù† OBS Ø¥Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù…",
-  "CHECK...": "Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù‚Ù‚...",
-  "CHECK STATUS": "Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø­Ø§Ù„Ø©",
-  "Status streaming gagal.": "ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø§Ù„Ø© Ø§Ù„Ø¨Ø«.",
-  "Gunakan OBS: Settings â†’ Stream â†’ Service Custom â†’ masukkan RTMPS Server dan Stream Key di atas.": "ÙÙŠ OBS Ø§Ø®ØªØ± Settings â†’ Stream â†’ Service Custom ÙˆØ£Ø¯Ø®Ù„ Ø®Ø§Ø¯Ù… RTMPS ÙˆÙ…ÙØªØ§Ø­ Ø§Ù„Ø¨Ø« Ø£Ø¹Ù„Ø§Ù‡.",
-  "AKTIFKAN STREAMING": "ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø¨Ø«",
-  "Buat Live Input Cloudflare untuk room ini.": "Ø¥Ù†Ø´Ø§Ø¡ Live Input Ù…Ù† Cloudflare Ù„Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ©.",
-  "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.": "Ø¨Ø¹Ø¯ Ø¥Ù†Ø´Ø§Ø¦Ù‡ØŒ Ø§Ø³ØªØ®Ø¯Ù… Ø®Ø§Ø¯Ù… RTMPS ÙˆÙ…ÙØªØ§Ø­ Ø§Ù„Ø¨Ø« ÙÙŠ OBS.",
-  "KHUSUS PEMILIK ROOM": "Ù„ÙÙ…Ø§Ù„Ùƒ Ø§Ù„ØºØ±ÙØ© ÙÙ‚Ø·",
-  "MEMBUAT...": "Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡...",
-  "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.": "ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Live Input. Ø§Ø³ØªØ®Ø¯Ù… Ø¨ÙŠØ§Ù†Ø§Øª OBS Ø£Ø³ÙÙ„ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.",
-  "Gagal membuat Live Input.": "ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Live Input.",
-  "Gagal terhubung ke streaming server.": "ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø®Ø§Ø¯Ù… Ø§Ù„Ø¨Ø«.",
-  "Profil akun Anda": "Ù…Ù„Ù Ø­Ø³Ø§Ø¨Ùƒ",
-  "Belum ada deskripsi room dari pemilik room.": "Ù„Ù… ÙŠØ¶Ù Ø§Ù„Ù…Ø§Ù„Ùƒ ÙˆØµÙØ§Ù‹ Ù„Ù„ØºØ±ÙØ© Ø¨Ø¹Ø¯.",
-  "Peserta Live": "Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† ÙÙŠ Ø§Ù„Ø¨Ø«",
-  "Hanya akun yang benar-benar bergabung yang ditampilkan.": "ØªØ¸Ù‡Ø± ÙÙ‚Ø· Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„ØªÙŠ Ø§Ù†Ø¶Ù…Øª ÙØ¹Ù„ÙŠØ§Ù‹.",
-  "Memuat peserta...": "Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†...",
-  "Belum ada peserta lain.": "Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø¢Ø®Ø±ÙˆÙ† Ø¨Ø¹Ø¯.",
-  "PESERTA": "Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ†",
-  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "Ù„Ø§ ØªÙˆØ¬Ø¯ Ø±Ø³Ø§Ø¦Ù„ Ø¨Ø¹Ø¯. ÙƒÙ† Ø£ÙˆÙ„ Ù…Ø³ØªØ®Ø¯Ù… ÙŠØ´Ø§Ø±Ùƒ ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ©.",
-  "Tulis sebagai": "Ø§ÙƒØªØ¨ Ø¨Ø§Ø³Ù…",
-  "Belum ada peserta.": "Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø´Ø§Ø±ÙƒÙˆÙ†.",
-  "Anda": "Ø£Ù†Øª",
-  "Aksi live room gagal.": "ÙØ´Ù„ Ø¥Ø¬Ø±Ø§Ø¡ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±.",
-  "Pesan gagal dikirim.": "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø³Ø§Ù„Ø©.",
-  "Like gagal dikirim.": "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¥Ø¹Ø¬Ø§Ø¨."
+  "Masuk untuk bergabung ke Live Room": "سجّل الدخول للانضمام إلى غرفة البث المباشر",
+  "Setiap akun memiliki profil dan identitasnya sendiri di dalam room.": "لكل حساب ملف شخصي وهوية خاصة به داخل الغرفة.",
+  "Room berhasil dibuat.": "تم إنشاء الغرفة بنجاح.",
+  "Gagal membuat room.": "تعذر إنشاء الغرفة.",
+  "Buat Live Room": "إنشاء غرفة بث مباشر",
+  "Room ini belum dibuat oleh Official Streamer.": "لم ينشئ البث الرسمي هذه الغرفة بعد.",
+  "Room belum tersedia": "الغرفة غير متاحة",
+  "Room belum tersedia. Buat room ini untuk menjadi pemiliknya.": "هذه الغرفة غير متاحة بعد. أنشئها لتصبح مالكها.",
+  "Judul Live Room": "عنوان غرفة البث المباشر",
+  "Deskripsi room (opsional)": "وصف الغرفة (اختياري)",
+  "MEMBUAT ROOM...": "جارٍ إنشاء الغرفة...",
+  "BUAT ROOM": "إنشاء الغرفة",
+  "Streaming belum aktif": "البث غير نشط",
+  "Belum ada video live produksi pada room ini.": "لا يوجد بث مباشر إنتاجي في هذه الغرفة بعد.",
+  "STREAMER CONTROL": "تحكم البث",
+  "Streaming sedang berjalan": "البث قيد التشغيل",
+  "Kirim video dari OBS ke server": "إرسال الفيديو من OBS إلى الخادم",
+  "CHECK...": "جارٍ التحقق...",
+  "CHECK STATUS": "التحقق من الحالة",
+  "Status streaming gagal.": "تعذر التحقق من حالة البث.",
+  "Gunakan OBS: Settings â†’ Stream â†’ Service Custom â†’ masukkan RTMPS Server dan Stream Key di atas.": "في OBS اختر Settings → Stream → Service Custom وأدخل خادم RTMPS ومفتاح البث أعلاه.",
+  "AKTIFKAN STREAMING": "تفعيل البث",
+  "Buat Live Input Cloudflare untuk room ini.": "إنشاء Live Input من Cloudflare لهذه الغرفة.",
+  "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS.": "بعد إنشائه، استخدم خادم RTMPS ومفتاح البث في OBS.",
+  "KHUSUS PEMILIK ROOM": "لِمالك الغرفة فقط",
+  "MEMBUAT...": "جارٍ الإنشاء...",
+  "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video.": "تم إنشاء Live Input. استخدم بيانات OBS أسفل الفيديو.",
+  "Gagal membuat Live Input.": "تعذر إنشاء Live Input.",
+  "Gagal terhubung ke streaming server.": "تعذر الاتصال بخادم البث.",
+  "Profil akun Anda": "ملف حسابك",
+  "Belum ada deskripsi room dari pemilik room.": "لم يضف المالك وصفاً للغرفة بعد.",
+  "Peserta Live": "المشاركون في البث",
+  "Hanya akun yang benar-benar bergabung yang ditampilkan.": "تظهر فقط الحسابات التي انضمت فعلياً.",
+  "Memuat peserta...": "جارٍ تحميل المشاركين...",
+  "Belum ada peserta lain.": "لا يوجد مشاركون آخرون بعد.",
+  "PESERTA": "المشاركون",
+  "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.": "لا توجد رسائل بعد. كن أول مستخدم يشارك في هذه الغرفة.",
+  "Tulis sebagai": "اكتب باسم",
+  "Belum ada peserta.": "لا يوجد مشاركون.",
+  "Anda": "أنت",
+  "Aksi live room gagal.": "فشل إجراء غرفة البث المباشر.",
+  "Pesan gagal dikirim.": "تعذر إرسال الرسالة.",
+  "Like gagal dikirim.": "تعذر إرسال الإعجاب."
 }};
 
 const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
@@ -2549,12 +2549,12 @@ const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>
     "Live":"Live","Chat":"Chat","Aksi live room gagal.":"Live room action failed.","Status streaming gagal.":"Failed to check streaming status."
   },
   es: {
-    "LOGIN / REGISTER":"INICIAR SESIÃ“N / REGISTRARSE","SYS STREAM Live":"SYS STREAM Live","LIVE":"EN VIVO",
-    "Live":"En vivo","Chat":"Chat","Aksi live room gagal.":"La acciÃ³n de la sala en vivo fallÃ³.","Status streaming gagal.":"No se pudo comprobar el estado de la transmisiÃ³n."
+    "LOGIN / REGISTER":"INICIAR SESIÓN / REGISTRARSE","SYS STREAM Live":"SYS STREAM Live","LIVE":"EN VIVO",
+    "Live":"En vivo","Chat":"Chat","Aksi live room gagal.":"La acción de la sala en vivo falló.","Status streaming gagal.":"No se pudo comprobar el estado de la transmisión."
   },
   pt: {
     "LOGIN / REGISTER":"ENTRAR / REGISTRAR","SYS STREAM Live":"SYS STREAM Live","LIVE":"AO VIVO",
-    "Live":"Ao vivo","Chat":"Chat","Aksi live room gagal.":"A aÃ§Ã£o da sala ao vivo falhou.","Status streaming gagal.":"Falha ao verificar o status da transmissÃ£o."
+    "Live":"Ao vivo","Chat":"Chat","Aksi live room gagal.":"A ação da sala ao vivo falhou.","Status streaming gagal.":"Falha ao verificar o status da transmissão."
   },
   zh: {
     "LOGIN / REGISTER":"ç™»å½• / æ³¨å†Œ","SYS STREAM Live":"SYS STREAM Live","LIVE":"ç›´æ’­",
@@ -2569,8 +2569,8 @@ const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>
     "Live":"ë¼ì´ë¸Œ","Chat":"ì±„íŒ…","Aksi live room gagal.":"ë¼ì´ë¸Œ ë£¸ ìž‘ì—…ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.","Status streaming gagal.":"ìŠ¤íŠ¸ë¦¬ë° ìƒíƒœ í™•ì¸ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤."
   },
   ar: {
-    "LOGIN / REGISTER":"ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ / Ø§Ù„ØªØ³Ø¬ÙŠÙ„","SYS STREAM Live":"SYS STREAM Live","LIVE":"Ù…Ø¨Ø§Ø´Ø±",
-    "Live":"Ù…Ø¨Ø§Ø´Ø±","Chat":"Ø¯Ø±Ø¯Ø´Ø©","Aksi live room gagal.":"ÙØ´Ù„ Ø¥Ø¬Ø±Ø§Ø¡ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±.","Status streaming gagal.":"ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø§Ù„Ø© Ø§Ù„Ø¨Ø«."
+    "LOGIN / REGISTER":"تسجيل الدخول / التسجيل","SYS STREAM Live":"SYS STREAM Live","LIVE":"مباشر",
+    "Live":"مباشر","Chat":"دردشة","Aksi live room gagal.":"فشل إجراء غرفة البث المباشر.","Status streaming gagal.":"تعذر التحقق من حالة البث."
   }
 };
 for (const lang of Object.keys(LIVE_ROOM_TRANSLATIONS) as LanguageCode[]) {
@@ -2608,30 +2608,30 @@ const TEBak_GAME_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.'
   },
   es: {
-    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Los espectadores intentan adivinar el nÃºmero oculto elegido por el streamer. Este juego estÃ¡ diseÃ±ado para la interacciÃ³n en vivo sin apuestas ni pagos.',
-    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'DÃ­gitos de la tarjeta (exactamente 4) y control de ocultaciÃ³n',
-    'Serial No:':'N.Âº de serie:',
-    'Digital Crypto Verification Code (4 Digits)':'CÃ³digo de verificaciÃ³n criptogrÃ¡fico digital (4 dÃ­gitos)',
-    'Digit #':'DÃ­gito n.Âº ',
-    'Challenge Successful! Verified code:':'Â¡DesafÃ­o completado! CÃ³digo verificado:',
-    'All concealed digits matched!':'Â¡Todos los dÃ­gitos ocultos coinciden!',
-    'Prediction Missed. Secret Digits:':'PredicciÃ³n fallida. DÃ­gitos secretos:',
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Los espectadores intentan adivinar el número oculto elegido por el streamer. Este juego está diseñado para la interacción en vivo sin apuestas ni pagos.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Dígitos de la tarjeta (exactamente 4) y control de ocultación',
+    'Serial No:':'N.º de serie:',
+    'Digital Crypto Verification Code (4 Digits)':'Código de verificación criptográfico digital (4 dígitos)',
+    'Digit #':'Dígito n.º ',
+    'Challenge Successful! Verified code:':'¡Desafío completado! Código verificado:',
+    'All concealed digits matched!':'¡Todos los dígitos ocultos coinciden!',
+    'Prediction Missed. Secret Digits:':'Predicción fallida. Dígitos secretos:',
     'Matched':'Coinciden',
-    'The 4-digit code is tied to serial number':'El cÃ³digo de 4 dÃ­gitos estÃ¡ vinculado al nÃºmero de serie',
-    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'El streamer establece los dÃ­gitos visibles y ocultos en tiempo real. Los espectadores intentan adivinar los dÃ­gitos ocultos. No hay apuestas ni premios econÃ³micos en este juego.'
+    'The 4-digit code is tied to serial number':'El código de 4 dígitos está vinculado al número de serie',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'El streamer establece los dígitos visibles y ocultos en tiempo real. Los espectadores intentan adivinar los dígitos ocultos. No hay apuestas ni premios económicos en este juego.'
   },
   pt: {
-    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Os espectadores tentam adivinhar o nÃºmero oculto escolhido pelo streamer. Este jogo foi criado para interaÃ§Ã£o ao vivo sem apostas ou pagamentos.',
-    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'DÃ­gitos do cartÃ£o (exatamente 4) e controle de ocultaÃ§Ã£o',
-    'Serial No:':'NÂº de sÃ©rie:',
-    'Digital Crypto Verification Code (4 Digits)':'CÃ³digo de verificaÃ§Ã£o criptogrÃ¡fica digital (4 dÃ­gitos)',
-    'Digit #':'DÃ­gito nÂº ',
-    'Challenge Successful! Verified code:':'Desafio concluÃ­do! CÃ³digo verificado:',
-    'All concealed digits matched!':'Todos os dÃ­gitos ocultos coincidem!',
-    'Prediction Missed. Secret Digits:':'PrevisÃ£o incorreta. DÃ­gitos secretos:',
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Os espectadores tentam adivinhar o número oculto escolhido pelo streamer. Este jogo foi criado para interação ao vivo sem apostas ou pagamentos.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Dígitos do cartão (exatamente 4) e controle de ocultação',
+    'Serial No:':'Nº de série:',
+    'Digital Crypto Verification Code (4 Digits)':'Código de verificação criptográfica digital (4 dígitos)',
+    'Digit #':'Dígito nº ',
+    'Challenge Successful! Verified code:':'Desafio concluído! Código verificado:',
+    'All concealed digits matched!':'Todos os dígitos ocultos coincidem!',
+    'Prediction Missed. Secret Digits:':'Previsão incorreta. Dígitos secretos:',
     'Matched':'Correspondentes',
-    'The 4-digit code is tied to serial number':'O cÃ³digo de 4 dÃ­gitos estÃ¡ vinculado ao nÃºmero de sÃ©rie',
-    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'O streamer define os dÃ­gitos visÃ­veis e ocultos em tempo real. Os espectadores tentam adivinhar os dÃ­gitos ocultos. NÃ£o hÃ¡ apostas nem prÃªmios financeiros neste jogo.'
+    'The 4-digit code is tied to serial number':'O código de 4 dígitos está vinculado ao número de série',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'O streamer define os dígitos visíveis e ocultos em tempo real. Os espectadores tentam adivinhar os dígitos ocultos. Não há apostas nem prêmios financeiros neste jogo.'
   },
   zh: {
     'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'è§‚ä¼—å°è¯•çŒœæµ‹ä¸»æ’­é€‰æ‹©çš„éšè—æ•°å­—ã€‚æœ¬æ¸¸æˆä»…ç”¨äºŽç›´æ’­äº’åŠ¨ï¼Œä¸æ¶‰åŠæŠ•æ³¨æˆ–ä»˜æ¬¾ã€‚',
@@ -2673,17 +2673,17 @@ const TEBak_GAME_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'ìŠ¤íŠ¸ë¦¬ë¨¸ê°€ í‘œì‹œ ë° ìˆ¨ê¹€ ìˆ«ìžë¥¼ ì‹¤ì‹œê°„ìœ¼ë¡œ ì„¤ì •í•©ë‹ˆë‹¤. ì‹œì²­ìžëŠ” ìˆ¨ê²¨ì§„ ìˆ«ìžë¥¼ ë§žíž™ë‹ˆë‹¤. ì´ ê²Œìž„ì—ëŠ” ë² íŒ…ì´ë‚˜ ê¸ˆì „ì  ë³´ìƒì´ ì—†ìŠµë‹ˆë‹¤.'
   },
   ar: {
-    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'ÙŠØ­Ø§ÙˆÙ„ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† ØªØ®Ù…ÙŠÙ† Ø§Ù„Ø±Ù‚Ù… Ø§Ù„Ù…Ø®ÙÙŠ Ø§Ù„Ø°ÙŠ ÙŠØ®ØªØ§Ø±Ù‡ Ù…Ù‚Ø¯Ù… Ø§Ù„Ø¨Ø«. ØµÙÙ…Ù…Øª Ù‡Ø°Ù‡ Ø§Ù„Ù„Ø¹Ø¨Ø© Ù„Ù„ØªÙØ§Ø¹Ù„ Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ø¯ÙˆÙ† Ù…Ø±Ø§Ù‡Ù†Ø§Øª Ø£Ùˆ Ù…Ø¯ÙÙˆØ¹Ø§Øª.',
-    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ø¨Ø·Ø§Ù‚Ø© (4 Ø£Ø±Ù‚Ø§Ù… Ø¨Ø§Ù„Ø¶Ø¨Ø·) ÙˆØ¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ø¥Ø®ÙØ§Ø¡',
-    'Serial No:':'Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ:',
-    'Digital Crypto Verification Code (4 Digits)':'Ø±Ù…Ø² Ø§Ù„ØªØ­Ù‚Ù‚ Ø§Ù„Ø±Ù‚Ù…ÙŠ Ø§Ù„Ù…Ø´ÙØ± (4 Ø£Ø±Ù‚Ø§Ù…)',
-    'Digit #':'Ø§Ù„Ø±Ù‚Ù… #',
-    'Challenge Successful! Verified code:':'Ù†Ø¬Ø­ Ø§Ù„ØªØ­Ø¯ÙŠ! Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ù…ØªØ­Ù‚Ù‚ Ù…Ù†Ù‡:',
-    'All concealed digits matched!':'ØªØ·Ø§Ø¨Ù‚Øª Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ù…Ø®ÙÙŠØ©!',
-    'Prediction Missed. Secret Digits:':'ÙØ´Ù„ Ø§Ù„ØªØ®Ù…ÙŠÙ†. Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ø³Ø±ÙŠØ©:',
-    'Matched':'Ø§Ù„Ù…ØªØ·Ø§Ø¨Ù‚',
-    'The 4-digit code is tied to serial number':'ÙŠØ±ØªØ¨Ø· Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ù…ÙƒÙˆÙ† Ù…Ù† 4 Ø£Ø±Ù‚Ø§Ù… Ø¨Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ',
-    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'ÙŠØ­Ø¯Ø¯ Ù…Ù‚Ø¯Ù… Ø§Ù„Ø¨Ø« Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ø¸Ø§Ù‡Ø±Ø© ÙˆØ§Ù„Ù…Ø®ÙÙŠØ© ÙÙŠ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„ÙØ¹Ù„ÙŠ. ÙŠØ­Ø§ÙˆÙ„ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† ØªØ®Ù…ÙŠÙ† Ø§Ù„Ø£Ø±Ù‚Ø§Ù… Ø§Ù„Ù…Ø®ÙÙŠØ©. Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø±Ø§Ù‡Ù†Ø§Øª Ø£Ùˆ Ø¬ÙˆØ§Ø¦Ø² Ù…Ø§Ù„ÙŠØ© ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ù„Ø¹Ø¨Ø©.'
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'يحاول المشاهدون تخمين الرقم المخفي الذي يختاره مقدم البث. صُممت هذه اللعبة للتفاعل المباشر دون مراهنات أو مدفوعات.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'أرقام البطاقة (4 أرقام بالضبط) وإعداد الإخفاء',
+    'Serial No:':'الرقم التسلسلي:',
+    'Digital Crypto Verification Code (4 Digits)':'رمز التحقق الرقمي المشفر (4 أرقام)',
+    'Digit #':'الرقم #',
+    'Challenge Successful! Verified code:':'نجح التحدي! الرمز المتحقق منه:',
+    'All concealed digits matched!':'تطابقت جميع الأرقام المخفية!',
+    'Prediction Missed. Secret Digits:':'فشل التخمين. الأرقام السرية:',
+    'Matched':'المتطابق',
+    'The 4-digit code is tied to serial number':'يرتبط الرمز المكون من 4 أرقام بالرقم التسلسلي',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'يحدد مقدم البث الأرقام الظاهرة والمخفية في الوقت الفعلي. يحاول المشاهدون تخمين الأرقام المخفية. لا توجد مراهنات أو جوائز مالية في هذه اللعبة.'
   }
 };
 
@@ -2695,52 +2695,52 @@ for (const lang of Object.keys(TEBak_GAME_TRANSLATIONS) as LanguageCode[]) {
 
 const TEBak_FREE_PLAY_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
-    'Streamer & Viewer Interaction â€” Free to Play':'Interaksi Streamer & Penonton â€” Gratis untuk Dimainkan',
+    'Streamer & Viewer Interaction â€” Free to Play':'Interaksi Streamer & Penonton — Gratis untuk Dimainkan',
     'Mode Interaksi':'Mode Interaksi',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.',
     'Guess the 2 middle hidden digits! High payout on exact match.':'Tebak 2 digit tersembunyi di tengah! Hadiah tinggi untuk tebakan yang tepat.'
   },
   en: {
-    'Streamer & Viewer Interaction â€” Free to Play':'Streamer & Viewer Interaction â€” Free to Play',
+    'Streamer & Viewer Interaction â€” Free to Play':'Streamer & Viewer Interaction — Free to Play',
     'Mode Interaksi':'Interaction Mode',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'This game is exclusively for streamer and viewer interaction. No coins, balance, deposits, locks, bets, or payments are required to play.',
     'Guess the 2 middle hidden digits! High payout on exact match.':'Guess the 2 middle hidden digits! High payout on exact match.'
   },
   es: {
-    'Streamer & Viewer Interaction â€” Free to Play':'InteracciÃ³n entre Streamer y Espectadores â€” Gratis',
-    'Mode Interaksi':'Modo de interacciÃ³n',
-    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este juego es exclusivamente para la interacciÃ³n entre el streamer y los espectadores. No requiere monedas, saldo, depÃ³sitos, bloqueos, apuestas ni pagos para jugar.',
-    'Guess the 2 middle hidden digits! High payout on exact match.':'Â¡Adivina los 2 dÃ­gitos ocultos del medio! Gran premio por acertar exactamente.'
+    'Streamer & Viewer Interaction â€” Free to Play':'Interacción entre Streamer y Espectadores — Gratis',
+    'Mode Interaksi':'Modo de interacción',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este juego es exclusivamente para la interacción entre el streamer y los espectadores. No requiere monedas, saldo, depósitos, bloqueos, apuestas ni pagos para jugar.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'¡Adivina los 2 dígitos ocultos del medio! Gran premio por acertar exactamente.'
   },
   pt: {
-    'Streamer & Viewer Interaction â€” Free to Play':'InteraÃ§Ã£o entre Streamer e Espectadores â€” GrÃ¡tis',
-    'Mode Interaksi':'Modo de interaÃ§Ã£o',
-    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este jogo Ã© exclusivamente para interaÃ§Ã£o entre streamer e espectadores. NÃ£o requer moedas, saldo, depÃ³sitos, bloqueios, apostas ou pagamentos para jogar.',
-    'Guess the 2 middle hidden digits! High payout on exact match.':'Adivinhe os 2 dÃ­gitos ocultos do meio! Grande prÃªmio ao acertar exatamente.'
+    'Streamer & Viewer Interaction â€” Free to Play':'Interação entre Streamer e Espectadores — Grátis',
+    'Mode Interaksi':'Modo de interação',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este jogo é exclusivamente para interação entre streamer e espectadores. Não requer moedas, saldo, depósitos, bloqueios, apostas ou pagamentos para jogar.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'Adivinhe os 2 dígitos ocultos do meio! Grande prêmio ao acertar exatamente.'
   },
   zh: {
-    'Streamer & Viewer Interaction â€” Free to Play':'ä¸»æ’­ä¸Žè§‚ä¼—äº’åŠ¨ â€” å…è´¹å‚ä¸Ž',
+    'Streamer & Viewer Interaction â€” Free to Play':'主播与观众互动 — 免费参与',
     'Mode Interaksi':'äº’åŠ¨æ¨¡å¼',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'æœ¬æ¸¸æˆä»…ç”¨äºŽä¸»æ’­ä¸Žè§‚ä¼—äº’åŠ¨ã€‚å‚ä¸Žæ¸¸æˆæ— éœ€é‡‘å¸ã€ä½™é¢ã€å……å€¼ã€é”å®šã€æŠ•æ³¨æˆ–ä»˜æ¬¾ã€‚',
     'Guess the 2 middle hidden digits! High payout on exact match.':'çŒœå‡ºä¸­é—´éšè—çš„2ä½æ•°å­—ï¼å®Œå…¨åŒ¹é…å¯èŽ·å¾—é«˜é¢å¥–åŠ±ã€‚'
   },
   ja: {
-    'Streamer & Viewer Interaction â€” Free to Play':'ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã¨è¦–è´è€…ã®äº¤æµ â€” ç„¡æ–™ãƒ—ãƒ¬ã‚¤',
+    'Streamer & Viewer Interaction â€” Free to Play':'ストリーマーと視聴者の交流 — 無料プレイ',
     'Mode Interaksi':'ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'ã“ã®ã‚²ãƒ¼ãƒ ã¯ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã¨è¦–è´è€…ã®äº¤æµå°‚ç”¨ã§ã™ã€‚ãƒ—ãƒ¬ã‚¤ã«ã‚³ã‚¤ãƒ³ã€æ®‹é«˜ã€å…¥é‡‘ã€ãƒ­ãƒƒã‚¯ã€è³­ã‘ã€æ”¯æ‰•ã„ã¯å¿…è¦ã‚ã‚Šã¾ã›ã‚“ã€‚',
     'Guess the 2 middle hidden digits! High payout on exact match.':'ä¸­å¤®ã®éš ã•ã‚ŒãŸ2æ¡ã‚’å½“ã¦ã‚ˆã†ï¼å®Œå…¨ä¸€è‡´ã§é«˜ã„å ±é…¬ã‚’ç²å¾—ã§ãã¾ã™ã€‚'
   },
   ko: {
-    'Streamer & Viewer Interaction â€” Free to Play':'ìŠ¤íŠ¸ë¦¬ë¨¸ & ì‹œì²­ìž ìƒí˜¸ìž‘ìš© â€” ë¬´ë£Œ í”Œë ˆì´',
+    'Streamer & Viewer Interaction â€” Free to Play':'스트리머 & 시청자 상호작용 — 무료 플레이',
     'Mode Interaksi':'ìƒí˜¸ìž‘ìš© ëª¨ë“œ',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'ì´ ê²Œìž„ì€ ìŠ¤íŠ¸ë¦¬ë¨¸ì™€ ì‹œì²­ìžì˜ ìƒí˜¸ìž‘ìš©ì„ ìœ„í•œ ê²Œìž„ìž…ë‹ˆë‹¤. í”Œë ˆì´ì— ì½”ì¸, ìž”ì•¡, ìž…ê¸ˆ, ë½, ë² íŒ… ë˜ëŠ” ê²°ì œê°€ í•„ìš”í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.',
     'Guess the 2 middle hidden digits! High payout on exact match.':'ê°€ìš´ë° ìˆ¨ê²¨ì§„ 2ìžë¦¬ë¥¼ ë§ží˜€ë³´ì„¸ìš”! ì •í™•ížˆ ë§žížˆë©´ ë†’ì€ ë³´ìƒì„ ë°›ì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.'
   },
   ar: {
-    'Streamer & Viewer Interaction â€” Free to Play':'ØªÙØ§Ø¹Ù„ Ù…Ù‚Ø¯Ù… Ø§Ù„Ø¨Ø« ÙˆØ§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ† â€” Ù„Ø¹Ø¨ Ù…Ø¬Ø§Ù†ÙŠ',
-    'Mode Interaksi':'ÙˆØ¶Ø¹ Ø§Ù„ØªÙØ§Ø¹Ù„',
-    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Ù‡Ø°Ù‡ Ø§Ù„Ù„Ø¹Ø¨Ø© Ù…Ø®ØµØµØ© Ù„ØªÙØ§Ø¹Ù„ Ù…Ù‚Ø¯Ù… Ø§Ù„Ø¨Ø« Ù…Ø¹ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†. Ù„Ø§ ØªØªØ·Ù„Ø¨ Ø¹Ù…Ù„Ø§Øª Ø£Ùˆ Ø±ØµÙŠØ¯Ù‹Ø§ Ø£Ùˆ Ø¥ÙŠØ¯Ø§Ø¹Ù‹Ø§ Ø£Ùˆ Ù‚ÙÙ„Ù‹Ø§ Ø£Ùˆ Ù…Ø±Ø§Ù‡Ù†Ø§Øª Ø£Ùˆ Ù…Ø¯ÙÙˆØ¹Ø§Øª Ù„Ù„Ø¹Ø¨.',
-    'Guess the 2 middle hidden digits! High payout on exact match.':'Ø®Ù…Ù† Ø§Ù„Ø±Ù‚Ù…ÙŠÙ† Ø§Ù„Ù…Ø®ÙÙŠÙŠÙ† ÙÙŠ Ø§Ù„Ù…Ù†ØªØµÙ! Ù…ÙƒØ§ÙØ£Ø© Ø¹Ø§Ù„ÙŠØ© Ø¹Ù†Ø¯ Ø§Ù„ØªØ·Ø§Ø¨Ù‚ Ø§Ù„ØªØ§Ù….'
+    'Streamer & Viewer Interaction â€” Free to Play':'تفاعل مقدم البث والمشاهدين — لعب مجاني',
+    'Mode Interaksi':'وضع التفاعل',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'هذه اللعبة مخصصة لتفاعل مقدم البث مع المشاهدين. لا تتطلب عملات أو رصيدًا أو إيداعًا أو قفلًا أو مراهنات أو مدفوعات للعب.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'خمن الرقمين المخفيين في المنتصف! مكافأة عالية عند التطابق التام.'
   }
 };
 
@@ -2911,7 +2911,7 @@ Object.assign(translations.id, {
   'Room':'Room',
   'Selected Winner':'Pemenang Terpilih',
   'Spin Raffle Wheel':'Putar Roda Raffle',
-  'Streamer & Viewer Interaction â€” Free to Play':'Interaksi Streamer & Penonton â€” Gratis untuk Bermain',
+  'Streamer & Viewer Interaction â€” Free to Play':'Interaksi Streamer & Penonton — Gratis untuk Bermain',
   'Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.':'Tidak ada video atau streamer contoh. Tampilan ini hanya menampilkan data live yang benar-benar berasal dari room produksi.',
   'UNLOCKED':'TERBUKA',
   'Unboxing':'Buka Kotak',
@@ -3019,28 +3019,28 @@ const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> 
   },
   es: {
     "SYS STREAM LOADING":"Cargando SYS STREAM",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando la sincronizaciÃ³n de TikTok Live + conexiÃ³n Cloudflare D1",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando la sincronización de TikTok Live + conexión Cloudflare D1",
     "Mining SYS dari Blind Box Lock":"Minar SYS con Blind Box Lock",
-    "Verify your email":"Verifica tu correo electrÃ³nico",
-    "Privacy Policy":"PolÃ­tica de privacidad",
+    "Verify your email":"Verifica tu correo electrónico",
+    "Privacy Policy":"Política de privacidad",
     "Membuka SYS STREAM Airdrop...":"Abriendo el Airdrop de SYS STREAM...",
-    "Aplikasi gagal dimuat":"No se pudo cargar la aplicaciÃ³n",
+    "Aplikasi gagal dimuat":"No se pudo cargar la aplicación",
     "Loading...":"Cargando...",
-    "Mining":"MinerÃ­a",
+    "Mining":"Minería",
     "Wallet":"Wallet",
-    "Menu":"MenÃº",
-    "Masuk Akun SYS Utama":"Iniciar sesiÃ³n en la cuenta principal de SYS",
-    "Menu Blind Box 3D":"MenÃº Blind Box 3D",
-    "Pengaturan Akun & Dompet Game":"ConfiguraciÃ³n de cuenta y wallet del juego",
-    "Keluar Akun":"Cerrar sesiÃ³n",
-    "Masuk untuk Mulai Main Blind Box":"Inicia sesiÃ³n para jugar a Blind Box",
-    "Anda Sudah Mengklaim Blind Box Hari Ini!":"Â¡Ya has reclamado el Blind Box de hoy!",
-    "Status Deposit Aktif":"Estado del depÃ³sito activo",
+    "Menu":"Menú",
+    "Masuk Akun SYS Utama":"Iniciar sesión en la cuenta principal de SYS",
+    "Menu Blind Box 3D":"Menú Blind Box 3D",
+    "Pengaturan Akun & Dompet Game":"Configuración de cuenta y wallet del juego",
+    "Keluar Akun":"Cerrar sesión",
+    "Masuk untuk Mulai Main Blind Box":"Inicia sesión para jugar a Blind Box",
+    "Anda Sudah Mengklaim Blind Box Hari Ini!":"¡Ya has reclamado el Blind Box de hoy!",
+    "Status Deposit Aktif":"Estado del depósito activo",
     "Buka Kunci":"Desbloquear",
     "Masa Kunci Berjalan":"Periodo de bloqueo en curso",
     "Opsi Buka Kunci Saldo:":"Opciones para desbloquear el saldo:",
-    "Min. 50 Ribu":"MÃ­n. 50 mil",
-    "Nominal minimal deposit adalah Rp 50.000!":"El depÃ³sito mÃ­nimo es de Rp 50.000.",
+    "Min. 50 Ribu":"Mín. 50 mil",
+    "Nominal minimal deposit adalah Rp 50.000!":"El depósito mínimo es de Rp 50.000.",
     "Processing...":"Procesando...",
     "Claim Bonus":"Reclamar bono",
     "Locked Balance":"Saldo bloqueado",
@@ -3051,42 +3051,42 @@ const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> 
     "Live Participants Only":"Solo participantes en vivo",
     "Spinning for Winner...":"Girando para elegir al ganador...",
     "Recent Raffle Winners":"Ganadores recientes",
-    "Digital Crypto Card Number Guess":"Adivina el nÃºmero de tarjeta cripto",
-    "Max 4":"MÃ¡x. 4",
+    "Digital Crypto Card Number Guess":"Adivina el número de tarjeta cripto",
+    "Max 4":"Máx. 4",
     "Concealed":"Oculto",
-    "Streamer Card Settings":"ConfiguraciÃ³n de tarjeta del streamer",
+    "Streamer Card Settings":"Configuración de tarjeta del streamer",
     "Hidden":"Oculto",
     "Visible":"Visible",
-    "Serial Number":"NÃºmero de serie",
+    "Serial Number":"Número de serie",
     "Withdrawal":"Retiro",
-    "Minimum withdrawal is":"El retiro mÃ­nimo es"
+    "Minimum withdrawal is":"El retiro mínimo es"
   },
   pt: {
     "SYS STREAM LOADING":"Carregando SYS STREAM",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando a sincronizaÃ§Ã£o do TikTok Live + conexÃ£o Cloudflare D1",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando a sincronização do TikTok Live + conexão Cloudflare D1",
     "Mining SYS dari Blind Box Lock":"Minerar SYS com Blind Box Lock",
     "Verify your email":"Verifique seu e-mail",
-    "Privacy Policy":"PolÃ­tica de Privacidade",
+    "Privacy Policy":"Política de Privacidade",
     "Membuka SYS STREAM Airdrop...":"Abrindo o Airdrop SYS STREAM...",
     "Aplikasi gagal dimuat":"Falha ao carregar o aplicativo",
     "Loading...":"Carregando...",
-    "Mining":"MineraÃ§Ã£o",
+    "Mining":"Mineração",
     "Wallet":"Carteira",
     "Menu":"Menu",
     "Masuk Akun SYS Utama":"Entrar na conta principal SYS",
     "Menu Blind Box 3D":"Menu Blind Box 3D",
-    "Pengaturan Akun & Dompet Game":"ConfiguraÃ§Ãµes da conta e carteira do jogo",
+    "Pengaturan Akun & Dompet Game":"Configurações da conta e carteira do jogo",
     "Keluar Akun":"Sair",
-    "Masuk untuk Mulai Main Blind Box":"Entre para comeÃ§ar a jogar Blind Box",
-    "Anda Sudah Mengklaim Blind Box Hari Ini!":"VocÃª jÃ¡ resgatou o Blind Box de hoje!",
-    "Status Deposit Aktif":"Status do depÃ³sito ativo",
+    "Masuk untuk Mulai Main Blind Box":"Entre para começar a jogar Blind Box",
+    "Anda Sudah Mengklaim Blind Box Hari Ini!":"Você já resgatou o Blind Box de hoje!",
+    "Status Deposit Aktif":"Status do depósito ativo",
     "Buka Kunci":"Desbloquear",
-    "Masa Kunci Berjalan":"PerÃ­odo de bloqueio em andamento",
-    "Opsi Buka Kunci Saldo:":"OpÃ§Ãµes para desbloquear o saldo:",
-    "Min. 50 Ribu":"MÃ­n. 50 mil",
-    "Nominal minimal deposit adalah Rp 50.000!":"O depÃ³sito mÃ­nimo Ã© de Rp 50.000!",
+    "Masa Kunci Berjalan":"Período de bloqueio em andamento",
+    "Opsi Buka Kunci Saldo:":"Opções para desbloquear o saldo:",
+    "Min. 50 Ribu":"Mín. 50 mil",
+    "Nominal minimal deposit adalah Rp 50.000!":"O depósito mínimo é de Rp 50.000!",
     "Processing...":"Processando...",
-    "Claim Bonus":"Resgatar bÃ´nus",
+    "Claim Bonus":"Resgatar bônus",
     "Locked Balance":"Saldo bloqueado",
     "Remove":"Remover",
     "Selected Winner":"Vencedor selecionado",
@@ -3095,15 +3095,15 @@ const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> 
     "Live Participants Only":"Somente participantes ao vivo",
     "Spinning for Winner...":"Girando para escolher o vencedor...",
     "Recent Raffle Winners":"Vencedores recentes",
-    "Digital Crypto Card Number Guess":"Adivinhe o nÃºmero do cartÃ£o cripto",
-    "Max 4":"MÃ¡x. 4",
+    "Digital Crypto Card Number Guess":"Adivinhe o número do cartão cripto",
+    "Max 4":"Máx. 4",
     "Concealed":"Oculto",
-    "Streamer Card Settings":"ConfiguraÃ§Ãµes do cartÃ£o do streamer",
+    "Streamer Card Settings":"Configurações do cartão do streamer",
     "Hidden":"Oculto",
-    "Visible":"VisÃ­vel",
-    "Serial Number":"NÃºmero de sÃ©rie",
+    "Visible":"Visível",
+    "Serial Number":"Número de série",
     "Withdrawal":"Saque",
-    "Minimum withdrawal is":"O saque mÃ­nimo Ã©"
+    "Minimum withdrawal is":"O saque mínimo é"
   },
   zh: {
     "SYS STREAM LOADING":"æ­£åœ¨åŠ è½½ SYS STREAM",
@@ -3238,48 +3238,48 @@ const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> 
     "Minimum withdrawal is":"ìµœì†Œ ì¶œê¸ˆì•¡ì€"
   },
   ar: {
-    "SYS STREAM LOADING":"Ø¬Ø§Ø±Ù ØªØ­Ù…ÙŠÙ„ SYS STREAM",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Ø¬Ø§Ø±Ù ØªÙ‡ÙŠØ¦Ø© Ù…Ø²Ø§Ù…Ù†Ø© TikTok Live ÙˆØ§ØªØµØ§Ù„ Cloudflare D1",
-    "Mining SYS dari Blind Box Lock":"ØªØ¹Ø¯ÙŠÙ† SYS Ø¹Ø¨Ø± Blind Box Lock",
-    "Verify your email":"ØªØ­Ù‚Ù‚ Ù…Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ",
-    "Privacy Policy":"Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©",
-    "Membuka SYS STREAM Airdrop...":"Ø¬Ø§Ø±Ù ÙØªØ­ Ø¥ÙŠØ±Ø¯Ø±ÙˆØ¨ SYS STREAM...",
-    "Aplikasi gagal dimuat":"ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚",
-    "Loading...":"Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù…ÙŠÙ„...",
-    "Mining":"Ø§Ù„ØªØ¹Ø¯ÙŠÙ†",
-    "Wallet":"Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Menu":"Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©",
-    "Masuk Akun SYS Utama":"ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ Ø­Ø³Ø§Ø¨ SYS Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ",
-    "Menu Blind Box 3D":"Ù‚Ø§Ø¦Ù…Ø© Blind Box 3D",
-    "Pengaturan Akun & Dompet Game":"Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø­Ø³Ø§Ø¨ Ø§Ù„Ù„Ø¹Ø¨Ø© ÙˆØ§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Keluar Akun":"ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬",
-    "Masuk untuk Mulai Main Blind Box":"Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ø¨Ø¯Ø¡ Ù„Ø¹Ø¨ Blind Box",
-    "Anda Sudah Mengklaim Blind Box Hari Ini!":"Ù„Ù‚Ø¯ Ø§Ø³ØªÙ„Ù…Øª Blind Box Ø§Ù„ÙŠÙˆÙ… Ø¨Ø§Ù„ÙØ¹Ù„!",
-    "Status Deposit Aktif":"Ø­Ø§Ù„Ø© Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ø§Ù„Ù†Ø´Ø·",
-    "Buka Kunci":"ÙØªØ­ Ø§Ù„Ù‚ÙÙ„",
-    "Masa Kunci Berjalan":"ÙØªØ±Ø© Ø§Ù„Ù‚ÙÙ„ Ø¬Ø§Ø±ÙŠØ©",
-    "Opsi Buka Kunci Saldo:":"Ø®ÙŠØ§Ø±Ø§Øª ÙØªØ­ Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯:",
-    "Min. 50 Ribu":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ 50 Ø£Ù„Ù",
-    "Nominal minimal deposit adalah Rp 50.000!":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø¥ÙŠØ¯Ø§Ø¹ Ù‡Ùˆ Rp 50,000!",
-    "Processing...":"Ø¬Ø§Ø±Ù Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©...",
-    "Claim Bonus":"Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©",
-    "Locked Balance":"Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙ„",
-    "Remove":"Ø¥Ø²Ø§Ù„Ø©",
-    "Selected Winner":"Ø§Ù„ÙØ§Ø¦Ø² Ø§Ù„Ù…Ø®ØªØ§Ø±",
-    "Spin Raffle Wheel":"ØªØ¯ÙˆÙŠØ± Ø¹Ø¬Ù„Ø© Ø§Ù„Ø³Ø­Ø¨",
-    "Viewer Username Raffle Spinner":"Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ø£Ø³Ù…Ø§Ø¡ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†",
-    "Live Participants Only":"Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙˆÙ† ÙÙ‚Ø·",
-    "Spinning for Winner...":"Ø¬Ø§Ø±Ù ØªØ¯ÙˆÙŠØ± Ø§Ù„Ø¹Ø¬Ù„Ø© Ù„Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²...",
-    "Recent Raffle Winners":"Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† Ø§Ù„Ø£Ø®ÙŠØ±ÙˆÙ† ÙÙŠ Ø§Ù„Ø³Ø­Ø¨",
-    "Digital Crypto Card Number Guess":"ØªØ®Ù…ÙŠÙ† Ø±Ù‚Ù… Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©",
-    "Max 4":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ 4",
-    "Concealed":"Ù…Ø®ÙÙŠ",
-    "Streamer Card Settings":"Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø³ØªØ±ÙŠÙ…Ø±",
-    "Hidden":"Ù…Ø®ÙÙŠ",
-    "Visible":"Ø¸Ø§Ù‡Ø±",
-    "Serial Number":"Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ",
-    "Withdrawal":"Ø§Ù„Ø³Ø­Ø¨",
-    "Minimum withdrawal is":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨ Ù‡Ùˆ"
+    "SYS STREAM LOADING":"جارٍ تحميل SYS STREAM",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"جارٍ تهيئة مزامنة TikTok Live واتصال Cloudflare D1",
+    "Mining SYS dari Blind Box Lock":"تعدين SYS عبر Blind Box Lock",
+    "Verify your email":"تحقق من بريدك الإلكتروني",
+    "Privacy Policy":"سياسة الخصوصية",
+    "Membuka SYS STREAM Airdrop...":"جارٍ فتح إيردروب SYS STREAM...",
+    "Aplikasi gagal dimuat":"تعذر تحميل التطبيق",
+    "Loading...":"جارٍ التحميل...",
+    "Mining":"التعدين",
+    "Wallet":"المحفظة",
+    "Menu":"القائمة",
+    "Masuk Akun SYS Utama":"تسجيل الدخول إلى حساب SYS الرئيسي",
+    "Menu Blind Box 3D":"قائمة Blind Box 3D",
+    "Pengaturan Akun & Dompet Game":"إعدادات حساب اللعبة والمحفظة",
+    "Keluar Akun":"تسجيل الخروج",
+    "Masuk untuk Mulai Main Blind Box":"سجّل الدخول لبدء لعب Blind Box",
+    "Anda Sudah Mengklaim Blind Box Hari Ini!":"لقد استلمت Blind Box اليوم بالفعل!",
+    "Status Deposit Aktif":"حالة الإيداع النشط",
+    "Buka Kunci":"فتح القفل",
+    "Masa Kunci Berjalan":"فترة القفل جارية",
+    "Opsi Buka Kunci Saldo:":"خيارات فتح قفل الرصيد:",
+    "Min. 50 Ribu":"الحد الأدنى 50 ألف",
+    "Nominal minimal deposit adalah Rp 50.000!":"الحد الأدنى للإيداع هو Rp 50,000!",
+    "Processing...":"جارٍ المعالجة...",
+    "Claim Bonus":"استلام المكافأة",
+    "Locked Balance":"الرصيد المقفل",
+    "Remove":"إزالة",
+    "Selected Winner":"الفائز المختار",
+    "Spin Raffle Wheel":"تدوير عجلة السحب",
+    "Viewer Username Raffle Spinner":"عجلة سحب أسماء المشاهدين",
+    "Live Participants Only":"المشاركون المباشرون فقط",
+    "Spinning for Winner...":"جارٍ تدوير العجلة لاختيار الفائز...",
+    "Recent Raffle Winners":"الفائزون الأخيرون في السحب",
+    "Digital Crypto Card Number Guess":"تخمين رقم بطاقة العملات الرقمية",
+    "Max 4":"الحد الأقصى 4",
+    "Concealed":"مخفي",
+    "Streamer Card Settings":"إعدادات بطاقة الستريمر",
+    "Hidden":"مخفي",
+    "Visible":"ظاهر",
+    "Serial Number":"الرقم التسلسلي",
+    "Withdrawal":"السحب",
+    "Minimum withdrawal is":"الحد الأدنى للسحب هو"
   }
 };
 
@@ -3337,9 +3337,9 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
   en: {},
   es: {
     "Mining SYS dari Blind Box Lock":"Minar SYS con Blind Box Lock",
-    "Mining":"MinerÃ­a",
+    "Mining":"Minería",
     "Wallet":"Billetera",
-    "Menu":"MenÃº",
+    "Menu":"Menú",
     "Processing...":"Procesando...",
     "Claim Bonus":"Reclamar bono",
     "Locked Balance":"Saldo bloqueado",
@@ -3350,42 +3350,42 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "Live Participants Only":"Solo participantes en directo",
     "Spinning for Winner...":"Girando para elegir al ganador...",
     "Recent Raffle Winners":"Ganadores recientes del sorteo",
-    "Digital Crypto Card Number Guess":"Adivina el nÃºmero de tarjeta criptogrÃ¡fica",
-    "Max 4":"MÃ¡x. 4",
+    "Digital Crypto Card Number Guess":"Adivina el número de tarjeta criptográfica",
+    "Max 4":"Máx. 4",
     "Concealed":"Oculto",
-    "Streamer Card Settings":"ConfiguraciÃ³n de tarjeta del streamer",
+    "Streamer Card Settings":"Configuración de tarjeta del streamer",
     "Hidden":"Oculto",
     "Visible":"Visible",
-    "Serial Number":"NÃºmero de serie",
+    "Serial Number":"Número de serie",
     "Withdrawal":"Retiro",
-    "Minimum withdrawal is":"El retiro mÃ­nimo es",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando la sincronizaciÃ³n de TikTok Live + conexiÃ³n de Cloudflare D1",
-    "Verify your email":"Verifica tu correo electrÃ³nico",
-    "Privacy Policy":"PolÃ­tica de privacidad",
+    "Minimum withdrawal is":"El retiro mínimo es",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando la sincronización de TikTok Live + conexión de Cloudflare D1",
+    "Verify your email":"Verifica tu correo electrónico",
+    "Privacy Policy":"Política de privacidad",
     "Loading...":"Cargando...",
-    "Aplikasi gagal dimuat":"No se pudo cargar la aplicaciÃ³n",
+    "Aplikasi gagal dimuat":"No se pudo cargar la aplicación",
     "Wallet Identity":"Identidad de la billetera",
     "Wallet Connected":"Billetera conectada",
     "Connect Wallet":"Conectar billetera",
     "Register Now":"Registrarse ahora",
     "Remember me":"Recordarme",
-    "Forgot Password?":"Â¿Olvidaste la contraseÃ±a?",
-    "Sign in to continue streaming and gaming":"Inicia sesiÃ³n para continuar con el streaming y los juegos",
-    "LOGIN / REGISTER":"INICIAR SESIÃ“N / REGISTRARSE",
+    "Forgot Password?":"¿Olvidaste la contraseña?",
+    "Sign in to continue streaming and gaming":"Inicia sesión para continuar con el streaming y los juegos",
+    "LOGIN / REGISTER":"INICIAR SESIÓN / REGISTRARSE",
     "CHAT":"CHAT",
     "PESERTA":"PARTICIPANTES",
     "WIN":"GANAR",
     "Reward":"Recompensa",
     "Status":"Estado",
-    "Terms & Conditions":"TÃ©rminos y condiciones"
+    "Terms & Conditions":"Términos y condiciones"
   },
   pt: {
     "Mining SYS dari Blind Box Lock":"Minerar SYS com Blind Box Lock",
-    "Mining":"MineraÃ§Ã£o",
+    "Mining":"Mineração",
     "Wallet":"Carteira",
     "Menu":"Menu",
     "Processing...":"Processando...",
-    "Claim Bonus":"Resgatar bÃ´nus",
+    "Claim Bonus":"Resgatar bônus",
     "Locked Balance":"Saldo bloqueado",
     "Remove":"Remover",
     "Selected Winner":"Vencedor selecionado",
@@ -3394,18 +3394,18 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "Live Participants Only":"Somente participantes ao vivo",
     "Spinning for Winner...":"Girando para escolher o vencedor...",
     "Recent Raffle Winners":"Vencedores recentes do sorteio",
-    "Digital Crypto Card Number Guess":"Adivinhe o nÃºmero do cartÃ£o criptogrÃ¡fico",
-    "Max 4":"MÃ¡x. 4",
+    "Digital Crypto Card Number Guess":"Adivinhe o número do cartão criptográfico",
+    "Max 4":"Máx. 4",
     "Concealed":"Oculto",
-    "Streamer Card Settings":"ConfiguraÃ§Ãµes do cartÃ£o do streamer",
+    "Streamer Card Settings":"Configurações do cartão do streamer",
     "Hidden":"Oculto",
-    "Visible":"VisÃ­vel",
-    "Serial Number":"NÃºmero de sÃ©rie",
+    "Visible":"Visível",
+    "Serial Number":"Número de série",
     "Withdrawal":"Saque",
-    "Minimum withdrawal is":"O saque mÃ­nimo Ã©",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando a sincronizaÃ§Ã£o do TikTok Live + conexÃ£o do Cloudflare D1",
+    "Minimum withdrawal is":"O saque mínimo é",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Inicializando a sincronização do TikTok Live + conexão do Cloudflare D1",
     "Verify your email":"Verifique seu e-mail",
-    "Privacy Policy":"PolÃ­tica de Privacidade",
+    "Privacy Policy":"Política de Privacidade",
     "Loading...":"Carregando...",
     "Aplikasi gagal dimuat":"Falha ao carregar o aplicativo",
     "Wallet Identity":"Identidade da carteira",
@@ -3421,7 +3421,7 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "WIN":"VENCER",
     "Reward":"Recompensa",
     "Status":"Status",
-    "Terms & Conditions":"Termos e condiÃ§Ãµes"
+    "Terms & Conditions":"Termos e condições"
   },
   zh: {
     "Mining SYS dari Blind Box Lock":"é€šè¿‡ Blind Box Lock æŒ–æŽ˜ SYS",
@@ -3556,48 +3556,48 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "Terms & Conditions":"ì´ìš©ì•½ê´€"
   },
   ar: {
-    "Mining SYS dari Blind Box Lock":"ØªØ¹Ø¯ÙŠÙ† SYS Ø¹Ø¨Ø± Blind Box Lock",
-    "Mining":"Ø§Ù„ØªØ¹Ø¯ÙŠÙ†",
-    "Wallet":"Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Menu":"Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©",
-    "Processing...":"Ø¬Ø§Ø±Ù Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©...",
-    "Claim Bonus":"Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©",
-    "Locked Balance":"Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙ„",
-    "Remove":"Ø¥Ø²Ø§Ù„Ø©",
-    "Selected Winner":"Ø§Ù„ÙØ§Ø¦Ø² Ø§Ù„Ù…Ø®ØªØ§Ø±",
-    "Spin Raffle Wheel":"ØªØ¯ÙˆÙŠØ± Ø¹Ø¬Ù„Ø© Ø§Ù„Ø³Ø­Ø¨",
-    "Viewer Username Raffle Spinner":"Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ø£Ø³Ù…Ø§Ø¡ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ†",
-    "Live Participants Only":"Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙˆÙ† ÙÙ‚Ø·",
-    "Spinning for Winner...":"Ø¬Ø§Ø±Ù Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²...",
-    "Recent Raffle Winners":"Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† Ø§Ù„Ø£Ø®ÙŠØ±ÙˆÙ† ÙÙŠ Ø§Ù„Ø³Ø­Ø¨",
-    "Digital Crypto Card Number Guess":"ØªØ®Ù…ÙŠÙ† Ø±Ù‚Ù… Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ©",
-    "Max 4":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ 4 Ø£Ø±Ù‚Ø§Ù…",
-    "Concealed":"Ù…Ø®ÙÙŠ",
-    "Streamer Card Settings":"Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ø³ØªØ±ÙŠÙ…Ø±",
-    "Hidden":"Ù…Ø®ÙÙŠ",
-    "Visible":"Ø¸Ø§Ù‡Ø±",
-    "Serial Number":"Ø§Ù„Ø±Ù‚Ù… Ø§Ù„ØªØ³Ù„Ø³Ù„ÙŠ",
-    "Withdrawal":"Ø§Ù„Ø³Ø­Ø¨",
-    "Minimum withdrawal is":"Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨ Ù‡Ùˆ",
-    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"Ø¬Ø§Ø±Ù ØªÙ‡ÙŠØ¦Ø© Ù…Ø²Ø§Ù…Ù†Ø© TikTok Live ÙˆØ§ØªØµØ§Ù„ Cloudflare D1",
-    "Verify your email":"ØªØ­Ù‚Ù‚ Ù…Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ",
-    "Privacy Policy":"Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©",
-    "Loading...":"Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù…ÙŠÙ„...",
-    "Aplikasi gagal dimuat":"ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚",
-    "Wallet Identity":"Ù‡ÙˆÙŠØ© Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Wallet Connected":"ØªÙ… Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Connect Wallet":"Ø±Ø¨Ø· Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Register Now":"Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¢Ù†",
-    "Remember me":"ØªØ°ÙƒØ±Ù†ÙŠ",
-    "Forgot Password?":"Ù‡Ù„ Ù†Ø³ÙŠØª ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±ØŸ",
-    "Sign in to continue streaming and gaming":"Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø¨Ø« ÙˆØ§Ù„Ø£Ù„Ø¹Ø§Ø¨",
-    "LOGIN / REGISTER":"ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ / Ø§Ù„ØªØ³Ø¬ÙŠÙ„",
-    "CHAT":"Ø§Ù„Ø¯Ø±Ø¯Ø´Ø©",
-    "PESERTA":"Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙˆÙ†",
-    "WIN":"ÙÙˆØ²",
-    "Reward":"Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©",
-    "Status":"Ø§Ù„Ø­Ø§Ù„Ø©",
-    "Terms & Conditions":"Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…"
+    "Mining SYS dari Blind Box Lock":"تعدين SYS عبر Blind Box Lock",
+    "Mining":"التعدين",
+    "Wallet":"المحفظة",
+    "Menu":"القائمة",
+    "Processing...":"جارٍ المعالجة...",
+    "Claim Bonus":"استلام المكافأة",
+    "Locked Balance":"الرصيد المقفل",
+    "Remove":"إزالة",
+    "Selected Winner":"الفائز المختار",
+    "Spin Raffle Wheel":"تدوير عجلة السحب",
+    "Viewer Username Raffle Spinner":"عجلة سحب أسماء المشاهدين",
+    "Live Participants Only":"المشاركون المباشرون فقط",
+    "Spinning for Winner...":"جارٍ اختيار الفائز...",
+    "Recent Raffle Winners":"الفائزون الأخيرون في السحب",
+    "Digital Crypto Card Number Guess":"تخمين رقم بطاقة العملات الرقمية",
+    "Max 4":"الحد الأقصى 4 أرقام",
+    "Concealed":"مخفي",
+    "Streamer Card Settings":"إعدادات بطاقة الستريمر",
+    "Hidden":"مخفي",
+    "Visible":"ظاهر",
+    "Serial Number":"الرقم التسلسلي",
+    "Withdrawal":"السحب",
+    "Minimum withdrawal is":"الحد الأدنى للسحب هو",
+    "Initializing TikTok Live Sync + Cloudflare D1 Connection":"جارٍ تهيئة مزامنة TikTok Live واتصال Cloudflare D1",
+    "Verify your email":"تحقق من بريدك الإلكتروني",
+    "Privacy Policy":"سياسة الخصوصية",
+    "Loading...":"جارٍ التحميل...",
+    "Aplikasi gagal dimuat":"تعذر تحميل التطبيق",
+    "Wallet Identity":"هوية المحفظة",
+    "Wallet Connected":"تم ربط المحفظة",
+    "Connect Wallet":"ربط المحفظة",
+    "Register Now":"سجّل الآن",
+    "Remember me":"تذكرني",
+    "Forgot Password?":"هل نسيت كلمة المرور؟",
+    "Sign in to continue streaming and gaming":"سجّل الدخول لمتابعة البث والألعاب",
+    "LOGIN / REGISTER":"تسجيل الدخول / التسجيل",
+    "CHAT":"الدردشة",
+    "PESERTA":"المشاركون",
+    "WIN":"فوز",
+    "Reward":"المكافأة",
+    "Status":"الحالة",
+    "Terms & Conditions":"الشروط والأحكام"
   }
 };
 for (const lang of Object.keys(TRANSLATION_ONLY_USER_AUDIT) as LanguageCode[]) {
@@ -3638,7 +3638,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "MULAI LIVE",
     "STOP LIVE": "HENTIKAN LIVE",
     "READY": "SIAP",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ latensi sangat rendah â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • latensi sangat rendah • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.",
     "Terms & Conditions": "Syarat & Ketentuan",
     "Privacy Policy": "Kebijakan Privasi"
   },
@@ -3668,59 +3668,59 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "START LIVE",
     "STOP LIVE": "STOP LIVE",
     "READY": "READY",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ ultra-low latency â€¢ camera and microphone activate only after you press START LIVE.",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • ultra-low latency • camera and microphone activate only after you press START LIVE.",
     "Terms & Conditions": "Terms & Conditions",
     "Privacy Policy": "Privacy Policy"
   },
   "es": {
     "Membuka SYS STREAM Airdrop...": "Abriendo SYS STREAM Airdrop...",
     "Mining SYS dari Blind Box Lock": "Minar SYS desde Blind Box Lock",
-    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "Un bloqueo activo de al menos $10 activa la recompensa diaria de minerÃ­a.",
+    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "Un bloqueo activo de al menos $10 activa la recompensa diaria de minería.",
     "Wallet": "Billetera",
     "Copy referral link": "Copiar enlace de referido",
     "Profile preview": "Vista previa del perfil",
-    "Mobile Live": "Live mÃ³vil",
-    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "Este navegador no admite cÃ¡mara/micrÃ³fono en directo. Usa la versiÃ³n mÃ¡s reciente de Chrome/Safari mediante HTTPS.",
-    "SDP kamera tidak tersedia.": "El SDP de la cÃ¡mara no estÃ¡ disponible.",
-    "Cloudflare menolak koneksi live dari browser.": "Cloudflare rechazÃ³ la conexiÃ³n en directo del navegador.",
-    "Kamera dan mikrofon sudah LIVE.": "La cÃ¡mara y el micrÃ³fono estÃ¡n EN DIRECTO.",
-    "Gagal memulai live dari HP.": "No se pudo iniciar el live mÃ³vil.",
-    "Live dari HP sudah dihentikan.": "El live mÃ³vil se ha detenido.",
-    "Live langsung dari kamera HP": "Transmitir en directo desde la cÃ¡mara del mÃ³vil",
-    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "No necesitas OBS. Permite la cÃ¡mara y el micrÃ³fono y pulsa INICIAR LIVE.",
-    "Kamera siap digunakan": "CÃ¡mara lista",
-    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "Pulsa iniciar para solicitar permiso de cÃ¡mara y micrÃ³fono.",
+    "Mobile Live": "Live móvil",
+    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "Este navegador no admite cámara/micrófono en directo. Usa la versión más reciente de Chrome/Safari mediante HTTPS.",
+    "SDP kamera tidak tersedia.": "El SDP de la cámara no está disponible.",
+    "Cloudflare menolak koneksi live dari browser.": "Cloudflare rechazó la conexión en directo del navegador.",
+    "Kamera dan mikrofon sudah LIVE.": "La cámara y el micrófono están EN DIRECTO.",
+    "Gagal memulai live dari HP.": "No se pudo iniciar el live móvil.",
+    "Live dari HP sudah dihentikan.": "El live móvil se ha detenido.",
+    "Live langsung dari kamera HP": "Transmitir en directo desde la cámara del móvil",
+    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "No necesitas OBS. Permite la cámara y el micrófono y pulsa INICIAR LIVE.",
+    "Kamera siap digunakan": "Cámara lista",
+    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "Pulsa iniciar para solicitar permiso de cámara y micrófono.",
     "MENGHUBUNGKAN KE CLOUDFARE...": "CONECTANDO A CLOUDFLARE...",
     "UNMUTE": "ACTIVAR SONIDO",
     "MIC": "MIC",
-    "CAM OFF": "CÃMARA APAGADA",
-    "CAM": "CÃMARA",
+    "CAM OFF": "CÁMARA APAGADA",
+    "CAM": "CÁMARA",
     "MULAI LIVE": "INICIAR LIVE",
     "STOP LIVE": "DETENER LIVE",
     "READY": "LISTO",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ latencia ultrabaja â€¢ la cÃ¡mara y el micrÃ³fono solo se activan al pulsar INICIAR LIVE.",
-    "Terms & Conditions": "TÃ©rminos y condiciones",
-    "Privacy Policy": "PolÃ­tica de privacidad"
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • latencia ultrabaja • la cámara y el micrófono solo se activan al pulsar INICIAR LIVE.",
+    "Terms & Conditions": "Términos y condiciones",
+    "Privacy Policy": "Política de privacidad"
   },
   "pt": {
     "Membuka SYS STREAM Airdrop...": "Abrindo o Airdrop da SYS STREAM...",
     "Mining SYS dari Blind Box Lock": "Minerar SYS a partir do Blind Box Lock",
-    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "Um bloqueio ativo de pelo menos $10 ativa a recompensa diÃ¡ria de mineraÃ§Ã£o.",
+    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "Um bloqueio ativo de pelo menos $10 ativa a recompensa diária de mineração.",
     "Wallet": "Carteira",
-    "Copy referral link": "Copiar link de indicaÃ§Ã£o",
-    "Profile preview": "PrÃ©-visualizaÃ§Ã£o do perfil",
-    "Mobile Live": "Live mÃ³vel",
-    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "Este navegador nÃ£o suporta cÃ¢mera/microfone ao vivo. Use a versÃ£o mais recente do Chrome/Safari via HTTPS.",
-    "SDP kamera tidak tersedia.": "O SDP da cÃ¢mera nÃ£o estÃ¡ disponÃ­vel.",
-    "Cloudflare menolak koneksi live dari browser.": "O Cloudflare rejeitou a conexÃ£o ao vivo do navegador.",
-    "Kamera dan mikrofon sudah LIVE.": "A cÃ¢mera e o microfone estÃ£o AO VIVO.",
-    "Gagal memulai live dari HP.": "Falha ao iniciar a live mÃ³vel.",
-    "Live dari HP sudah dihentikan.": "A live mÃ³vel foi interrompida.",
-    "Live langsung dari kamera HP": "FaÃ§a live diretamente pela cÃ¢mera do celular",
-    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "NÃ£o Ã© necessÃ¡rio usar OBS. Permita cÃ¢mera e microfone e toque em INICIAR LIVE.",
-    "Kamera siap digunakan": "CÃ¢mera pronta",
-    "Tekan tombol mulai untuk meminta izin kamera & microfon.": "Pressione iniciar para solicitar acesso Ã  cÃ¢mera e ao microfone.",
-    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "Pressione iniciar para solicitar acesso Ã  cÃ¢mera e ao microfone.",
+    "Copy referral link": "Copiar link de indicação",
+    "Profile preview": "Pré-visualização do perfil",
+    "Mobile Live": "Live móvel",
+    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "Este navegador não suporta câmera/microfone ao vivo. Use a versão mais recente do Chrome/Safari via HTTPS.",
+    "SDP kamera tidak tersedia.": "O SDP da câmera não está disponível.",
+    "Cloudflare menolak koneksi live dari browser.": "O Cloudflare rejeitou a conexão ao vivo do navegador.",
+    "Kamera dan mikrofon sudah LIVE.": "A câmera e o microfone estão AO VIVO.",
+    "Gagal memulai live dari HP.": "Falha ao iniciar a live móvel.",
+    "Live dari HP sudah dihentikan.": "A live móvel foi interrompida.",
+    "Live langsung dari kamera HP": "Faça live diretamente pela câmera do celular",
+    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "Não é necessário usar OBS. Permita câmera e microfone e toque em INICIAR LIVE.",
+    "Kamera siap digunakan": "Câmera pronta",
+    "Tekan tombol mulai untuk meminta izin kamera & microfon.": "Pressione iniciar para solicitar acesso à câmera e ao microfone.",
+    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "Pressione iniciar para solicitar acesso à câmera e ao microfone.",
     "MENGHUBUNGKAN KE CLOUDFARE...": "CONECTANDO AO CLOUDFLARE...",
     "UNMUTE": "ATIVAR SOM",
     "MIC": "MIC",
@@ -3729,12 +3729,12 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "INICIAR LIVE",
     "STOP LIVE": "PARAR LIVE",
     "READY": "PRONTO",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ latÃªncia ultrabaixa â€¢ cÃ¢mera e microfone sÃ³ ficam ativos apÃ³s INICIAR LIVE.",
-    "Terms & Conditions": "Termos e condiÃ§Ãµes",
-    "Privacy Policy": "PolÃ­tica de Privacidade"
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • latência ultrabaixa • câmera e microfone só ficam ativos após INICIAR LIVE.",
+    "Terms & Conditions": "Termos e condições",
+    "Privacy Policy": "Política de Privacidade"
   },
   "zh": {
-    "Membuka SYS STREAM Airdrop...": "æ­£åœ¨æ‰“å¼€ SYS STREAM ç©ºæŠ•é¡µé¢â€¦",
+    "Membuka SYS STREAM Airdrop...": "正在打开 SYS STREAM 空投页面…",
     "Mining SYS dari Blind Box Lock": "é€šè¿‡ Blind Box Lock æŒ–æŽ˜ SYS",
     "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "è‡³å°‘ $10 çš„æœ‰æ•ˆé”ä»“å¯å¯ç”¨æ¯æ—¥æŒ–çŸ¿å¥–åŠ±ã€‚",
     "Wallet": "é’±åŒ…",
@@ -3751,7 +3751,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "æ— éœ€ OBSã€‚å…è®¸æ‘„åƒå¤´å’Œéº¦å…‹é£Žæƒé™ï¼Œç„¶åŽç‚¹å‡»å¼€å§‹ç›´æ’­ã€‚",
     "Kamera siap digunakan": "æ‘„åƒå¤´å·²å‡†å¤‡å°±ç»ª",
     "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "ç‚¹å‡»å¼€å§‹ä»¥è¯·æ±‚æ‘„åƒå¤´å’Œéº¦å…‹é£Žæƒé™ã€‚",
-    "MENGHUBUNGKAN KE CLOUDFARE...": "æ­£åœ¨è¿žæŽ¥ CLOUDFLAREâ€¦",
+    "MENGHUBUNGKAN KE CLOUDFARE...": "正在连接 CLOUDFLARE…",
     "UNMUTE": "å–æ¶ˆé™éŸ³",
     "MIC": "éº¦å…‹é£Ž",
     "CAM OFF": "å…³é—­æ‘„åƒå¤´",
@@ -3759,12 +3759,12 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "å¼€å§‹ç›´æ’­",
     "STOP LIVE": "åœæ­¢ç›´æ’­",
     "READY": "å°±ç»ª",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ è¶…ä½Žå»¶è¿Ÿ â€¢ åªæœ‰ç‚¹å‡»å¼€å§‹ç›´æ’­åŽæ‘„åƒå¤´å’Œéº¦å…‹é£Žæ‰ä¼šå¯ç”¨ã€‚",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • 超低延迟 • 只有点击开始直播后摄像头和麦克风才会启用。",
     "Terms & Conditions": "æ¡æ¬¾ä¸Žæ¡ä»¶",
     "Privacy Policy": "éšç§æ”¿ç­–"
   },
   "ja": {
-    "Membuka SYS STREAM Airdrop...": "SYS STREAM Airdropã‚’é–‹ã„ã¦ã„ã¾ã™â€¦",
+    "Membuka SYS STREAM Airdrop...": "SYS STREAM Airdropを開いています…",
     "Mining SYS dari Blind Box Lock": "Blind Box Lockã‹ã‚‰SYSã‚’ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
     "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "10ãƒ‰ãƒ«ä»¥ä¸Šã®æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯ã§æ¯Žæ—¥ã®ãƒžã‚¤ãƒ‹ãƒ³ã‚°å ±é…¬ãŒæœ‰åŠ¹ã«ãªã‚Šã¾ã™ã€‚",
     "Wallet": "ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ",
@@ -3781,7 +3781,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "OBSã¯ä¸è¦ã§ã™ã€‚ã‚«ãƒ¡ãƒ©ã¨ãƒžã‚¤ã‚¯ã‚’è¨±å¯ã—ã¦ã€Œãƒ©ã‚¤ãƒ–é–‹å§‹ã€ã‚’æŠ¼ã—ã¦ãã ã•ã„ã€‚",
     "Kamera siap digunakan": "ã‚«ãƒ¡ãƒ©ã®æº–å‚™å®Œäº†",
     "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "é–‹å§‹ã‚’æŠ¼ã—ã¦ã‚«ãƒ¡ãƒ©ã¨ãƒžã‚¤ã‚¯ã®è¨±å¯ã‚’æ±‚ã‚ã¾ã™ã€‚",
-    "MENGHUBUNGKAN KE CLOUDFARE...": "CLOUDFLAREã«æŽ¥ç¶šä¸­â€¦",
+    "MENGHUBUNGKAN KE CLOUDFARE...": "CLOUDFLAREに接続中…",
     "UNMUTE": "ãƒŸãƒ¥ãƒ¼ãƒˆè§£é™¤",
     "MIC": "ãƒžã‚¤ã‚¯",
     "CAM OFF": "ã‚«ãƒ¡ãƒ©OFF",
@@ -3789,7 +3789,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "ãƒ©ã‚¤ãƒ–é–‹å§‹",
     "STOP LIVE": "ãƒ©ã‚¤ãƒ–åœæ­¢",
     "READY": "æº–å‚™å®Œäº†",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ è¶…ä½Žé…å»¶ â€¢ ã€Œãƒ©ã‚¤ãƒ–é–‹å§‹ã€ã‚’æŠ¼ã—ãŸå¾Œã®ã¿ã‚«ãƒ¡ãƒ©ã¨ãƒžã‚¤ã‚¯ãŒæœ‰åŠ¹ã«ãªã‚Šã¾ã™ã€‚",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • 超低遅延 • 「ライブ開始」を押した後のみカメラとマイクが有効になります。",
     "Terms & Conditions": "åˆ©ç”¨è¦ç´„",
     "Privacy Policy": "ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼"
   },
@@ -3819,39 +3819,39 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE": "ë¼ì´ë¸Œ ì‹œìž‘",
     "STOP LIVE": "ë¼ì´ë¸Œ ì¤‘ì§€",
     "READY": "ì¤€ë¹„",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ ì´ˆì €ì§€ì—° â€¢ ë¼ì´ë¸Œ ì‹œìž‘ì„ ëˆ„ë¥¸ í›„ì—ë§Œ ì¹´ë©”ë¼ì™€ ë§ˆì´í¬ê°€ í™œì„±í™”ë©ë‹ˆë‹¤.",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • 초저지연 • 라이브 시작을 누른 후에만 카메라와 마이크가 활성화됩니다.",
     "Terms & Conditions": "ì´ìš©ì•½ê´€",
     "Privacy Policy": "ê°œì¸ì •ë³´ ì²˜ë¦¬ë°©ì¹¨"
   },
   "ar": {
-    "Membuka SYS STREAM Airdrop...": "Ø¬Ø§Ø±Ù ÙØªØ­ SYS STREAM Airdrop...",
-    "Mining SYS dari Blind Box Lock": "ØªØ¹Ø¯ÙŠÙ† SYS Ø¹Ø¨Ø± Blind Box Lock",
-    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "ÙŠØ¤Ø¯ÙŠ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù†Ø´Ø· Ø¨Ù‚ÙŠÙ…Ø© 10 Ø¯ÙˆÙ„Ø§Ø±Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ø¥Ù„Ù‰ ØªÙØ¹ÙŠÙ„ Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØªØ¹Ø¯ÙŠÙ† Ø§Ù„ÙŠÙˆÙ…ÙŠØ©.",
-    "Wallet": "Ø§Ù„Ù…Ø­ÙØ¸Ø©",
-    "Copy referral link": "Ù†Ø³Ø® Ø±Ø§Ø¨Ø· Ø§Ù„Ø¥Ø­Ø§Ù„Ø©",
-    "Profile preview": "Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ",
-    "Mobile Live": "Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ø¹Ø¨Ø± Ø§Ù„Ù‡Ø§ØªÙ",
-    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­ Ù„Ø§ ÙŠØ¯Ø¹Ù… Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§/Ø§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ† Ù„Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±. Ø§Ø³ØªØ®Ø¯Ù… Ø£Ø­Ø¯Ø« Chrome/Safari Ø¹Ø¨Ø± HTTPS.",
-    "SDP kamera tidak tersedia.": "Ø¨ÙŠØ§Ù†Ø§Øª SDP Ù„Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ØºÙŠØ± Ù…ØªØ§Ø­Ø©.",
-    "Cloudflare menolak koneksi live dari browser.": "Ø±ÙØ¶ Cloudflare Ø§ØªØµØ§Ù„ Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù…Ù† Ø§Ù„Ù…ØªØµÙØ­.",
-    "Kamera dan mikrofon sudah LIVE.": "Ø£ØµØ¨Ø­Øª Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ÙˆØ§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ† ÙÙŠ ÙˆØ¶Ø¹ Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø±.",
-    "Gagal memulai live dari HP.": "ØªØ¹Ø°Ø± Ø¨Ø¯Ø¡ Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù…Ù† Ø§Ù„Ù‡Ø§ØªÙ.",
-    "Live dari HP sudah dihentikan.": "ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù…Ù† Ø§Ù„Ù‡Ø§ØªÙ.",
-    "Live langsung dari kamera HP": "Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ù† ÙƒØ§Ù…ÙŠØ±Ø§ Ø§Ù„Ù‡Ø§ØªÙ",
-    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "Ù„Ø§ ØªØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ OBS. Ø§Ø³Ù…Ø­ Ø¨Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ÙˆØ§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ† Ø«Ù… Ø§Ø¶ØºØ· Ø¨Ø¯Ø¡ Ø§Ù„Ø¨Ø«.",
-    "Kamera siap digunakan": "Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ Ø¬Ø§Ù‡Ø²Ø©",
-    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "Ø§Ø¶ØºØ· Ø¨Ø¯Ø¡ Ù„Ø·Ù„Ø¨ Ø¥Ø°Ù† Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ÙˆØ§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ†.",
-    "MENGHUBUNGKAN KE CLOUDFARE...": "Ø¬Ø§Ø±Ù Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ù€ CLOUDFLARE...",
-    "UNMUTE": "Ø¥Ù„ØºØ§Ø¡ ÙƒØªÙ… Ø§Ù„ØµÙˆØª",
-    "MIC": "Ø§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ†",
-    "CAM OFF": "Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§",
-    "CAM": "Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§",
-    "MULAI LIVE": "Ø¨Ø¯Ø¡ Ø§Ù„Ø¨Ø«",
-    "STOP LIVE": "Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„Ø¨Ø«",
-    "READY": "Ø¬Ø§Ù‡Ø²",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP â€¢ Ø²Ù…Ù† Ø§Ù†ØªÙ‚Ø§Ù„ Ù…Ù†Ø®ÙØ¶ Ø¬Ø¯Ù‹Ø§ â€¢ Ù„Ø§ ÙŠØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ÙˆØ§Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ† Ø¥Ù„Ø§ Ø¨Ø¹Ø¯ Ø§Ù„Ø¶ØºØ· Ø¹Ù„Ù‰ Ø¨Ø¯Ø¡ Ø§Ù„Ø¨Ø«.",
-    "Terms & Conditions": "Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ø£Ø­ÙƒØ§Ù…",
-    "Privacy Policy": "Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©"
+    "Membuka SYS STREAM Airdrop...": "جارٍ فتح SYS STREAM Airdrop...",
+    "Mining SYS dari Blind Box Lock": "تعدين SYS عبر Blind Box Lock",
+    "Lock aktif minimal $10 dapat mengaktifkan reward mining harian.": "يؤدي القفل النشط بقيمة 10 دولارات على الأقل إلى تفعيل مكافأة التعدين اليومية.",
+    "Wallet": "المحفظة",
+    "Copy referral link": "نسخ رابط الإحالة",
+    "Profile preview": "معاينة الملف الشخصي",
+    "Mobile Live": "البث المباشر عبر الهاتف",
+    "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS.": "هذا المتصفح لا يدعم الكاميرا/الميكروفون للبث المباشر. استخدم أحدث Chrome/Safari عبر HTTPS.",
+    "SDP kamera tidak tersedia.": "بيانات SDP للكاميرا غير متاحة.",
+    "Cloudflare menolak koneksi live dari browser.": "رفض Cloudflare اتصال البث المباشر من المتصفح.",
+    "Kamera dan mikrofon sudah LIVE.": "أصبحت الكاميرا والميكروفون في وضع البث المباشر.",
+    "Gagal memulai live dari HP.": "تعذر بدء البث المباشر من الهاتف.",
+    "Live dari HP sudah dihentikan.": "تم إيقاف البث المباشر من الهاتف.",
+    "Live langsung dari kamera HP": "البث المباشر مباشرة من كاميرا الهاتف",
+    "Tidak perlu OBS. Izinkan kamera dan mikrofon, lalu tekan MULAI LIVE.": "لا تحتاج إلى OBS. اسمح بالكاميرا والميكروفون ثم اضغط بدء البث.",
+    "Kamera siap digunakan": "الكاميرا جاهزة",
+    "Tekan tombol mulai untuk meminta izin kamera & mikrofon.": "اضغط بدء لطلب إذن الكاميرا والميكروفون.",
+    "MENGHUBUNGKAN KE CLOUDFARE...": "جارٍ الاتصال بـ CLOUDFLARE...",
+    "UNMUTE": "إلغاء كتم الصوت",
+    "MIC": "الميكروفون",
+    "CAM OFF": "إيقاف الكاميرا",
+    "CAM": "الكاميرا",
+    "MULAI LIVE": "بدء البث",
+    "STOP LIVE": "إيقاف البث",
+    "READY": "جاهز",
+    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.": "WebRTC/WHIP • زمن انتقال منخفض جدًا • لا يتم تفعيل الكاميرا والميكروفون إلا بعد الضغط على بدء البث.",
+    "Terms & Conditions": "الشروط والأحكام",
+    "Privacy Policy": "سياسة الخصوصية"
   }
 };
 for (const lang of Object.keys(CORE_SCREENING_TRANSLATIONS) as LanguageCode[]) {
@@ -3860,7 +3860,7 @@ for (const lang of Object.keys(CORE_SCREENING_TRANSLATIONS) as LanguageCode[]) {
 }
 
 const PRODUCT_LABEL_TRANSLATIONS: Record<LanguageCode, string> = {
-  id: 'Penambangan SYS', en: 'SYS Mining', es: 'MinerÃ­a SYS', pt: 'MineraÃ§Ã£o SYS', zh: 'SYS æŒ–çŸ¿', ja: 'SYS ãƒžã‚¤ãƒ‹ãƒ³ã‚°', ko: 'SYS ì±„êµ´', ar: 'ØªØ¹Ø¯ÙŠÙ† SYS'
+  id: 'Penambangan SYS', en: 'SYS Mining', es: 'Minería SYS', pt: 'Mineração SYS', zh: 'SYS æŒ–çŸ¿', ja: 'SYS ãƒžã‚¤ãƒ‹ãƒ³ã‚°', ko: 'SYS ì±„êµ´', ar: 'تعدين SYS'
 };
 for (const lang of Object.keys(PRODUCT_LABEL_TRANSLATIONS) as LanguageCode[]) {
   translations[lang]['SYS Mining'] = PRODUCT_LABEL_TRANSLATIONS[lang];
@@ -3884,12 +3884,12 @@ for (const lang of Object.keys(translations) as LanguageCode[]) {
 const LIVE_ROOM_NOT_AVAILABLE_CREATE: Record<LanguageCode, string> = {
   id: "Room belum siap. Hanya Official Streamer yang dapat membuat room baru.",
   en: "The room is not available yet. Only an Official Streamer can create a new room.",
-  es: "La sala aÃºn no estÃ¡ disponible. Solo un streamer oficial puede crear una nueva sala.",
-  pt: "A sala ainda nÃ£o estÃ¡ disponÃ­vel. Apenas um streamer oficial pode criar uma nova sala.",
+  es: "La sala aún no está disponible. Solo un streamer oficial puede crear una nueva sala.",
+  pt: "A sala ainda não está disponível. Apenas um streamer oficial pode criar uma nova sala.",
   zh: "ç›´æ’­é—´å°šæœªå¯ç”¨ã€‚åªæœ‰å®˜æ–¹ä¸»æ’­å¯ä»¥åˆ›å»ºæ–°çš„ç›´æ’­é—´ã€‚",
   ja: "ãƒ«ãƒ¼ãƒ ã¯ã¾ã åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚æ–°ã—ã„ãƒ«ãƒ¼ãƒ ã‚’ä½œæˆã§ãã‚‹ã®ã¯å…¬å¼ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã®ã¿ã§ã™ã€‚",
   ko: "ë£¸ì„ ì•„ì§ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ìƒˆ ë£¸ì€ ê³µì‹ ìŠ¤íŠ¸ë¦¬ë¨¸ë§Œ ë§Œë“¤ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.",
-  ar: "Ø§Ù„ØºØ±ÙØ© ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø¨Ø¹Ø¯. Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø¬Ø¯ÙŠØ¯Ø© Ø¥Ù„Ø§ Ø¨ÙˆØ§Ø³Ø·Ø© Ø³ØªØ±ÙŠÙ…Ø± Ø±Ø³Ù…ÙŠ.",
+  ar: "الغرفة غير متاحة بعد. لا يمكن إنشاء غرفة جديدة إلا بواسطة ستريمر رسمي.",
 };
 for (const lang of Object.keys(LIVE_ROOM_NOT_AVAILABLE_CREATE) as LanguageCode[]) {
   translations[lang]["LIVE_ROOM_NOT_AVAILABLE_CREATE"] = LIVE_ROOM_NOT_AVAILABLE_CREATE[lang];
@@ -3906,10 +3906,10 @@ const DASHBOARD_UI_LOCK: Record<LanguageCode, Record<string, string>> = {
     'SYS STREAM':'SYS STREAM','Streaming Settings':'Streaming Settings','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.','Open Streaming Studio':'Open Streaming Studio','SYS Coin':'SYS Coin','Airdrop Reward':'Airdrop Reward','Create Post':'Create Post','Open attached media â†’':'Open attached media â†’','user':'user'
   },
   es: {
-    'SYS STREAM':'SYS STREAM','Streaming Settings':'ConfiguraciÃ³n de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Eres un streamer oficial. Crea o abre tu propia sala de streaming y obtÃ©n el servidor RTMPS y la Stream Key para OBS.','Open Streaming Studio':'Abrir estudio de streaming','SYS Coin':'Moneda SYS','Airdrop Reward':'Recompensa del airdrop','Create Post':'Crear publicaciÃ³n','Open attached media â†’':'Abrir contenido multimedia adjunto â†’','user':'usuario'
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Configuración de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Eres un streamer oficial. Crea o abre tu propia sala de streaming y obtén el servidor RTMPS y la Stream Key para OBS.','Open Streaming Studio':'Abrir estudio de streaming','SYS Coin':'Moneda SYS','Airdrop Reward':'Recompensa del airdrop','Create Post':'Crear publicación','Open attached media â†’':'Abrir contenido multimedia adjunto â†’','user':'usuario'
   },
   pt: {
-    'SYS STREAM':'SYS STREAM','Streaming Settings':'ConfiguraÃ§Ã£o de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'VocÃª Ã© um Official Streamer. Crie ou abra sua prÃ³pria sala de streaming e obtenha o servidor RTMPS e a Stream Key para OBS.','Open Streaming Studio':'Abrir estÃºdio de streaming','SYS Coin':'Moeda SYS','Airdrop Reward':'Recompensa do Airdrop','Create Post':'Criar publicaÃ§Ã£o','Open attached media â†’':'Abrir mÃ­dia anexada â†’','user':'usuÃ¡rio'
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Configuração de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Você é um Official Streamer. Crie ou abra sua própria sala de streaming e obtenha o servidor RTMPS e a Stream Key para OBS.','Open Streaming Studio':'Abrir estúdio de streaming','SYS Coin':'Moeda SYS','Airdrop Reward':'Recompensa do Airdrop','Create Post':'Criar publicação','Open attached media â†’':'Abrir mídia anexada →','user':'usuário'
   },
   zh: {
     'SYS STREAM':'SYS STREAM','Streaming Settings':'ç›´æ’­è®¾ç½®','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'æ‚¨æ˜¯å®˜æ–¹ä¸»æ’­ã€‚åˆ›å»ºæˆ–æ‰“å¼€è‡ªå·±çš„ç›´æ’­é—´ï¼Œå¹¶èŽ·å–ç”¨äºŽ OBS çš„ RTMPS æœåŠ¡å™¨å’Œ Stream Keyã€‚','Open Streaming Studio':'æ‰“å¼€ç›´æ’­å·¥ä½œå®¤','SYS Coin':'SYS å¸','Airdrop Reward':'ç©ºæŠ•å¥–åŠ±','Create Post':'åˆ›å»ºå¸–å­','Open attached media â†’':'æ‰“å¼€é™„ä»¶åª’ä½“ â†’','user':'ç”¨æˆ·'
@@ -3921,7 +3921,7 @@ const DASHBOARD_UI_LOCK: Record<LanguageCode, Record<string, string>> = {
     'SYS STREAM':'SYS STREAM','Streaming Settings':'ìŠ¤íŠ¸ë¦¬ë° ì„¤ì •','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'ê³µì‹ ìŠ¤íŠ¸ë¦¬ë¨¸ìž…ë‹ˆë‹¤. ìžì‹ ì˜ ìŠ¤íŠ¸ë¦¬ë° ë£¸ì„ ë§Œë“¤ê±°ë‚˜ ì—´ê³  OBSìš© RTMPS ì„œë²„ì™€ Stream Keyë¥¼ ë°›ì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.','Open Streaming Studio':'ìŠ¤íŠ¸ë¦¬ë° ìŠ¤íŠœë””ì˜¤ ì—´ê¸°','SYS Coin':'SYS ì½”ì¸','Airdrop Reward':'ì—ì–´ë“œë¡­ ë³´ìƒ','Create Post':'ê²Œì‹œë¬¼ ìž‘ì„±','Open attached media â†’':'ì²¨ë¶€ ë¯¸ë””ì–´ ì—´ê¸° â†’','user':'ì‚¬ìš©ìž'
   },
   ar: {
-    'SYS STREAM':'SYS STREAM','Streaming Settings':'Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø¨Ø«','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Ø£Ù†Øª Ù…Ù†Ø´Ø¦ Ø¨Ø« Ø±Ø³Ù…ÙŠ. Ø£Ù†Ø´Ø¦ ØºØ±ÙØ© Ø§Ù„Ø¨Ø« Ø§Ù„Ø®Ø§ØµØ© Ø¨Ùƒ Ø£Ùˆ Ø§ÙØªØ­Ù‡Ø§ ÙˆØ§Ø­ØµÙ„ Ø¹Ù„Ù‰ Ø®Ø§Ø¯Ù… RTMPS ÙˆStream Key Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ù…Ø§ Ù…Ø¹ OBS.','Open Streaming Studio':'ÙØªØ­ Ø§Ø³ØªÙˆØ¯ÙŠÙˆ Ø§Ù„Ø¨Ø«','SYS Coin':'Ø¹Ù…Ù„Ø© SYS','Airdrop Reward':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„Ø¥ÙŠØ±Ø¯Ø±ÙˆØ¨','Create Post':'Ø¥Ù†Ø´Ø§Ø¡ Ù…Ù†Ø´ÙˆØ±','Open attached media â†’':'ÙØªØ­ Ø§Ù„ÙˆØ³Ø§Ø¦Ø· Ø§Ù„Ù…Ø±ÙÙ‚Ø© â†','user':'Ù…Ø³ØªØ®Ø¯Ù…'
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'إعدادات البث','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'أنت منشئ بث رسمي. أنشئ غرفة البث الخاصة بك أو افتحها واحصل على خادم RTMPS وStream Key لاستخدامهما مع OBS.','Open Streaming Studio':'فتح استوديو البث','SYS Coin':'عملة SYS','Airdrop Reward':'مكافأة الإيردروب','Create Post':'إنشاء منشور','Open attached media â†’':'فتح الوسائط المرفقة ←','user':'مستخدم'
   }
 };
 for (const lang of Object.keys(DASHBOARD_UI_LOCK) as LanguageCode[]) {
@@ -4004,7 +4004,7 @@ const GAMES_PROFILE_TRANSLATION_SCREENING: Record<LanguageCode, Record<string, s
     'Earns passive yield':'Menghasilkan imbal hasil pasif',
     'Change photo from device':'Ganti foto dari perangkat',
     'Upload photo from device':'Unggah foto dari perangkat',
-    'JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ foto tetap tersimpan di perangkat Anda',
+    'JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • foto tetap tersimpan di perangkat Anda',
     'No unread notifications at this time.':'Tidak ada notifikasi yang belum dibaca saat ini.',
     'Guest':'Tamu',
     'Profile':'Profil',
@@ -4088,37 +4088,37 @@ const GAMES_PROFILE_TRANSLATION_SCREENING: Record<LanguageCode, Record<string, s
     'Earns passive yield':'Earns passive yield',
     'Change photo from device':'Change photo from device',
     'Upload photo from device':'Upload photo from device',
-    'JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ photo stays in your device storage',
+    'JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • photo stays in your device storage',
     'No unread notifications at this time.':'No unread notifications at this time.',
     'Guest':'Guest',
     'Profile':'Profile',
     'Kelola akun, wallet, dan aktivitas kamu.':'Manage your account, wallet, and activity.'
   },
   es: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'Disponible con el bloqueo activo mÃ­nimo. Las recompensas diarias son procesadas por el servidor y se aÃ±aden al saldo disponible.',
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'Disponible con el bloqueo activo mínimo. Las recompensas diarias son procesadas por el servidor y se añaden al saldo disponible.',
     'Daily Active Reward':'Recompensa diaria activa',
     'Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Nivel de bloqueo superior con coleccionables raros. Las recompensas financieras las determina el servidor.',
     'Enhanced Lock Tier':'Nivel de bloqueo avanzado',
     'Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Nivel de bloqueo alto con coleccionables raros. Las recompensas financieras las determina el servidor.',
     'Premium Lock Tier':'Nivel de bloqueo premium',
-    'Reward harian masuk ke saldo':'Las recompensas diarias se aÃ±aden al saldo',
-    'Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'Abre la Blind Box diaria segÃºn tu saldo bloqueado. Las reclamaciones diarias siguen las reglas del servidor y se reinician a las 00:00 WIB.',
-    'Available':'Disponible','Quota resets in':'La cuota se reinicia en','Lock minimal $4 equivalent untuk membuka Blind Box':'Bloquea al menos el equivalente a $4 para abrir la Blind Box','Daily Boxes':'Cajas diarias','Lock Amount (IDR)':'Importe bloqueado (IDR)','Claim Daily Blind Box':'Reclamar Blind Box diaria','Lock aktif':'Bloqueo activo','Aturan claim tetap 1 kali per hari.':'El lÃ­mite de reclamaciÃ³n sigue siendo una vez al dÃ­a.','LOCK SALDO DIBUTUHKAN':'SE REQUIERE BLOQUEO DE SALDO','Lock saldo untuk mendapatkan hak claim Blind Box harian':'Bloquea tu saldo para obtener el derecho a reclamar la Blind Box diaria','Durasi lock tersedia:':'Duraciones de bloqueo disponibles:','30 hari':'30 dÃ­as','60 hari':'60 dÃ­as','90 hari':'90 dÃ­as','Lock amount':'Importe del bloqueo','Nominal Lock (IDR)':'Importe bloqueado (IDR)','Quota:':'Cuota:','1 Box/Day':'1 caja/dÃ­a','Lock Saldo Sekarang':'Bloquear saldo ahora','Total Locked':'Total bloqueado','Daily Claim:':'ReclamaciÃ³n diaria:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'Las reclamaciones se realizan mediante el botÃ³n Blind Box. El bloqueo finaliza automÃ¡ticamente cuando termina su duraciÃ³n.','Lock minimum':'Bloqueo mÃ­nimo','to activate':'para activar','Open Daily Box':'Abrir caja diaria','Available Today':'Disponible hoy','Unboxing':'Abrir caja','Server sedang menentukan reward...':'El servidor estÃ¡ determinando la recompensa...','Reward Blind Box Harian':'Recompensa de Blind Box diaria','Keep in Vault':'Guardar en la bÃ³veda','Done':'Listo','Left':'Restantes','Jadwal Durasi Lock':'Calendario de duraciÃ³n del bloqueo','30 Days Term':'Plazo de 30 dÃ­as','60 Days Term':'Plazo de 60 dÃ­as','90 Days Term':'Plazo de 90 dÃ­as','Reward harian sesuai pengaturan server':'Recompensa diaria segÃºn la configuraciÃ³n del servidor','Viewers on Wheel':'Espectadores en la rueda','Clear All':'Borrar todo','Selected Winner':'Ganador seleccionado','Live Participants Only':'Solo participantes del directo','Spinning for Winner...':'Girando para elegir al ganador...','Spin Raffle Wheel':'Girar la rueda del sorteo','Current Viewers on Wheel:':'Espectadores actuales en la rueda:','Recent Raffle Winners':'Ganadores recientes del sorteo','Edit':'Editar','Logout':'Cerrar sesiÃ³n','USDT Account':'Cuenta USDT','Member':'Miembro','EVM Wallet':'Billetera EVM','Wallet belum terhubung':'Billetera no conectada','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'DirecciÃ³n de la billetera de la cuenta. La frase de recuperaciÃ³n no se almacena en el servidor.','WALLET REQUIRED':'BILLETERA OBLIGATORIA','Minimum withdrawal':'Retiro mÃ­nimo','Minimum withdrawal is':'El retiro mÃ­nimo es','Started':'Iniciado','Deposit, withdrawal, lock, reward & bonus':'DepÃ³sito, retiro, bloqueo, recompensa y bono','Locked Balance':'Saldo bloqueado','Earns passive yield':'Genera rendimiento pasivo','Change photo from device':'Cambiar foto desde el dispositivo','Upload photo from device':'Subir foto desde el dispositivo','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ la foto permanece en el almacenamiento del dispositivo','No unread notifications at this time.':'No hay notificaciones sin leer en este momento.','Guest':'Invitado','Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gestiona tu cuenta, billetera y actividad.'
+    'Reward harian masuk ke saldo':'Las recompensas diarias se añaden al saldo',
+    'Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'Abre la Blind Box diaria según tu saldo bloqueado. Las reclamaciones diarias siguen las reglas del servidor y se reinician a las 00:00 WIB.',
+    'Available':'Disponible','Quota resets in':'La cuota se reinicia en','Lock minimal $4 equivalent untuk membuka Blind Box':'Bloquea al menos el equivalente a $4 para abrir la Blind Box','Daily Boxes':'Cajas diarias','Lock Amount (IDR)':'Importe bloqueado (IDR)','Claim Daily Blind Box':'Reclamar Blind Box diaria','Lock aktif':'Bloqueo activo','Aturan claim tetap 1 kali per hari.':'El límite de reclamación sigue siendo una vez al día.','LOCK SALDO DIBUTUHKAN':'SE REQUIERE BLOQUEO DE SALDO','Lock saldo untuk mendapatkan hak claim Blind Box harian':'Bloquea tu saldo para obtener el derecho a reclamar la Blind Box diaria','Durasi lock tersedia:':'Duraciones de bloqueo disponibles:','30 hari':'30 días','60 hari':'60 días','90 hari':'90 días','Lock amount':'Importe del bloqueo','Nominal Lock (IDR)':'Importe bloqueado (IDR)','Quota:':'Cuota:','1 Box/Day':'1 caja/día','Lock Saldo Sekarang':'Bloquear saldo ahora','Total Locked':'Total bloqueado','Daily Claim:':'Reclamación diaria:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'Las reclamaciones se realizan mediante el botón Blind Box. El bloqueo finaliza automáticamente cuando termina su duración.','Lock minimum':'Bloqueo mínimo','to activate':'para activar','Open Daily Box':'Abrir caja diaria','Available Today':'Disponible hoy','Unboxing':'Abrir caja','Server sedang menentukan reward...':'El servidor está determinando la recompensa...','Reward Blind Box Harian':'Recompensa de Blind Box diaria','Keep in Vault':'Guardar en la bóveda','Done':'Listo','Left':'Restantes','Jadwal Durasi Lock':'Calendario de duración del bloqueo','30 Days Term':'Plazo de 30 días','60 Days Term':'Plazo de 60 días','90 Days Term':'Plazo de 90 días','Reward harian sesuai pengaturan server':'Recompensa diaria según la configuración del servidor','Viewers on Wheel':'Espectadores en la rueda','Clear All':'Borrar todo','Selected Winner':'Ganador seleccionado','Live Participants Only':'Solo participantes del directo','Spinning for Winner...':'Girando para elegir al ganador...','Spin Raffle Wheel':'Girar la rueda del sorteo','Current Viewers on Wheel:':'Espectadores actuales en la rueda:','Recent Raffle Winners':'Ganadores recientes del sorteo','Edit':'Editar','Logout':'Cerrar sesión','USDT Account':'Cuenta USDT','Member':'Miembro','EVM Wallet':'Billetera EVM','Wallet belum terhubung':'Billetera no conectada','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'Dirección de la billetera de la cuenta. La frase de recuperación no se almacena en el servidor.','WALLET REQUIRED':'BILLETERA OBLIGATORIA','Minimum withdrawal':'Retiro mínimo','Minimum withdrawal is':'El retiro mínimo es','Started':'Iniciado','Deposit, withdrawal, lock, reward & bonus':'Depósito, retiro, bloqueo, recompensa y bono','Locked Balance':'Saldo bloqueado','Earns passive yield':'Genera rendimiento pasivo','Change photo from device':'Cambiar foto desde el dispositivo','Upload photo from device':'Subir foto desde el dispositivo','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • la foto permanece en el almacenamiento del dispositivo','No unread notifications at this time.':'No hay notificaciones sin leer en este momento.','Guest':'Invitado','Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gestiona tu cuenta, billetera y actividad.'
   },
   pt: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'DisponÃ­vel com o lock ativo mÃ­nimo. As recompensas diÃ¡rias sÃ£o processadas pelo servidor e adicionadas ao saldo disponÃ­vel.','Daily Active Reward':'Recompensa diÃ¡ria ativa','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'NÃ­vel de lock superior com itens raros. As recompensas financeiras sÃ£o determinadas pelo servidor.','Enhanced Lock Tier':'NÃ­vel de lock avanÃ§ado','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'NÃ­vel de lock alto com itens raros. As recompensas financeiras sÃ£o determinadas pelo servidor.','Premium Lock Tier':'NÃ­vel de lock premium','Reward harian masuk ke saldo':'As recompensas diÃ¡rias sÃ£o adicionadas ao saldo','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'Abra a Blind Box diÃ¡ria com base no seu saldo bloqueado. Os resgates seguem as regras do servidor e sÃ£o redefinidos Ã s 00:00 WIB.','Available':'DisponÃ­vel','Quota resets in':'A cota serÃ¡ redefinida em','Lock minimal $4 equivalent untuk membuka Blind Box':'FaÃ§a lock de pelo menos o equivalente a $4 para abrir a Blind Box','Daily Boxes':'Caixas diÃ¡rias','Lock Amount (IDR)':'Valor do lock (IDR)','Claim Daily Blind Box':'Resgatar Blind Box diÃ¡ria','Lock aktif':'Lock ativo','Aturan claim tetap 1 kali per hari.':'O limite de resgate continua sendo uma vez por dia.','LOCK SALDO DIBUTUHKAN':'LOCK DE SALDO NECESSÃRIO','Lock saldo untuk mendapatkan hak claim Blind Box harian':'FaÃ§a lock do saldo para obter o direito de resgatar a Blind Box diÃ¡ria','Durasi lock tersedia:':'DuraÃ§Ãµes de lock disponÃ­veis:','30 hari':'30 dias','60 hari':'60 dias','90 hari':'90 dias','Lock amount':'Valor do lock','Nominal Lock (IDR)':'Valor do lock (IDR)','Quota:':'Cota:','1 Box/Day':'1 caixa/dia','Lock Saldo Sekarang':'Fazer lock do saldo agora','Total Locked':'Total bloqueado','Daily Claim:':'Resgate diÃ¡rio:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'Os resgates sÃ£o feitos pelo botÃ£o Blind Box abaixo. O lock termina automaticamente quando a duraÃ§Ã£o acabar.','Lock minimum':'Lock mÃ­nimo','to activate':'para ativar','Open Daily Box':'Abrir caixa diÃ¡ria','Available Today':'DisponÃ­vel hoje','Unboxing':'Abrindo caixa','Server sedang menentukan reward...':'O servidor estÃ¡ determinando a recompensa...','Reward Blind Box Harian':'Recompensa da Blind Box diÃ¡ria','Keep in Vault':'Guardar no cofre','Done':'ConcluÃ­do','Left':'Restantes','Jadwal Durasi Lock':'Cronograma de duraÃ§Ã£o do lock','30 Days Term':'Prazo de 30 dias','60 Days Term':'Prazo de 60 dias','90 Days Term':'Prazo de 90 dias','Reward harian sesuai pengaturan server':'Recompensa diÃ¡ria conforme as configuraÃ§Ãµes do servidor','Viewers on Wheel':'Espectadores na roda','Clear All':'Limpar tudo','Selected Winner':'Vencedor selecionado','Live Participants Only':'Somente participantes da live','Spinning for Winner...':'Girando para escolher o vencedor...','Spin Raffle Wheel':'Girar a roda do sorteio','Current Viewers on Wheel:':'Espectadores atuais na roda:','Recent Raffle Winners':'Vencedores recentes do sorteio','Edit':'Editar','Logout':'Sair','USDT Account':'Conta USDT','Member':'Membro','EVM Wallet':'Carteira EVM','Wallet belum terhubung':'Carteira nÃ£o conectada','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'EndereÃ§o da carteira da conta. A frase de recuperaÃ§Ã£o nÃ£o Ã© armazenada no servidor.','WALLET REQUIRED':'CARTEIRA OBRIGATÃ“RIA','Minimum withdrawal':'Saque mÃ­nimo','Minimum withdrawal is':'O saque mÃ­nimo Ã©','Started':'Iniciado','Deposit, withdrawal, lock, reward & bonus':'DepÃ³sito, saque, lock, recompensa e bÃ´nus','Locked Balance':'Saldo bloqueado','Earns passive yield':'Gera rendimento passivo','Change photo from device':'Alterar foto do dispositivo','Upload photo from device':'Enviar foto do dispositivo','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ a foto permanece no armazenamento do dispositivo','No unread notifications at this time.':'NÃ£o hÃ¡ notificaÃ§Ãµes nÃ£o lidas no momento.','Guest':'Convidado','Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gerencie sua conta, carteira e atividade.'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'Disponível com o lock ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao saldo disponível.','Daily Active Reward':'Recompensa diária ativa','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Nível de lock superior com itens raros. As recompensas financeiras são determinadas pelo servidor.','Enhanced Lock Tier':'Nível de lock avançado','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Nível de lock alto com itens raros. As recompensas financeiras são determinadas pelo servidor.','Premium Lock Tier':'Nível de lock premium','Reward harian masuk ke saldo':'As recompensas diárias são adicionadas ao saldo','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'Abra a Blind Box diária com base no seu saldo bloqueado. Os resgates seguem as regras do servidor e são redefinidos às 00:00 WIB.','Available':'Disponível','Quota resets in':'A cota será redefinida em','Lock minimal $4 equivalent untuk membuka Blind Box':'Faça lock de pelo menos o equivalente a $4 para abrir a Blind Box','Daily Boxes':'Caixas diárias','Lock Amount (IDR)':'Valor do lock (IDR)','Claim Daily Blind Box':'Resgatar Blind Box diária','Lock aktif':'Lock ativo','Aturan claim tetap 1 kali per hari.':'O limite de resgate continua sendo uma vez por dia.','LOCK SALDO DIBUTUHKAN':'LOCK DE SALDO NECESSÁRIO','Lock saldo untuk mendapatkan hak claim Blind Box harian':'Faça lock do saldo para obter o direito de resgatar a Blind Box diária','Durasi lock tersedia:':'Durações de lock disponíveis:','30 hari':'30 dias','60 hari':'60 dias','90 hari':'90 dias','Lock amount':'Valor do lock','Nominal Lock (IDR)':'Valor do lock (IDR)','Quota:':'Cota:','1 Box/Day':'1 caixa/dia','Lock Saldo Sekarang':'Fazer lock do saldo agora','Total Locked':'Total bloqueado','Daily Claim:':'Resgate diário:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'Os resgates são feitos pelo botão Blind Box abaixo. O lock termina automaticamente quando a duração acabar.','Lock minimum':'Lock mínimo','to activate':'para ativar','Open Daily Box':'Abrir caixa diária','Available Today':'Disponível hoje','Unboxing':'Abrindo caixa','Server sedang menentukan reward...':'O servidor está determinando a recompensa...','Reward Blind Box Harian':'Recompensa da Blind Box diária','Keep in Vault':'Guardar no cofre','Done':'Concluído','Left':'Restantes','Jadwal Durasi Lock':'Cronograma de duração do lock','30 Days Term':'Prazo de 30 dias','60 Days Term':'Prazo de 60 dias','90 Days Term':'Prazo de 90 dias','Reward harian sesuai pengaturan server':'Recompensa diária conforme as configurações do servidor','Viewers on Wheel':'Espectadores na roda','Clear All':'Limpar tudo','Selected Winner':'Vencedor selecionado','Live Participants Only':'Somente participantes da live','Spinning for Winner...':'Girando para escolher o vencedor...','Spin Raffle Wheel':'Girar a roda do sorteio','Current Viewers on Wheel:':'Espectadores atuais na roda:','Recent Raffle Winners':'Vencedores recentes do sorteio','Edit':'Editar','Logout':'Sair','USDT Account':'Conta USDT','Member':'Membro','EVM Wallet':'Carteira EVM','Wallet belum terhubung':'Carteira não conectada','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'Endereço da carteira da conta. A frase de recuperação não é armazenada no servidor.','WALLET REQUIRED':'CARTEIRA OBRIGATÓRIA','Minimum withdrawal':'Saque mínimo','Minimum withdrawal is':'O saque mínimo é','Started':'Iniciado','Deposit, withdrawal, lock, reward & bonus':'Depósito, saque, lock, recompensa e bônus','Locked Balance':'Saldo bloqueado','Earns passive yield':'Gera rendimento passivo','Change photo from device':'Alterar foto do dispositivo','Upload photo from device':'Enviar foto do dispositivo','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • a foto permanece no armazenamento do dispositivo','No unread notifications at this time.':'Não há notificações não lidas no momento.','Guest':'Convidado','Profile':'Perfil','Kelola akun, wallet, dan aktivitas kamu.':'Gerencie sua conta, carteira e atividade.'
   },
   zh: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'æ»¡è¶³æœ€ä½Žæœ‰æ•ˆé”å®šå³å¯ä½¿ç”¨ã€‚æ¯æ—¥å¥–åŠ±ç”±æœåŠ¡å™¨å¤„ç†å¹¶åŠ å…¥å¯ç”¨ä½™é¢ã€‚','Daily Active Reward':'æ¯æ—¥æ´»è·ƒå¥–åŠ±','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'æ›´é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Enhanced Lock Tier':'é«˜çº§é”å®šç­‰çº§','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Premium Lock Tier':'é«˜çº§é”å®šç­‰çº§','Reward harian masuk ke saldo':'æ¯æ—¥å¥–åŠ±åŠ å…¥ä½™é¢','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'æ ¹æ®é”å®šä½™é¢å¼€å¯æ¯æ—¥ç›²ç›’ã€‚æ¯æ—¥é¢†å–éµå¾ªæœåŠ¡å™¨è§„åˆ™ï¼Œå¹¶æŒ‰ WIB é‡ç½®ã€‚','Available':'å¯ç”¨','Quota resets in':'é…é¢é‡ç½®å€’è®¡æ—¶','Lock minimal $4 equivalent untuk membuka Blind Box':'é”å®šè‡³å°‘ç­‰å€¼ $4 æ‰èƒ½å¼€å¯ç›²ç›’','Daily Boxes':'æ¯æ—¥ç›²ç›’','Lock Amount (IDR)':'é”å®šé‡‘é¢ï¼ˆIDRï¼‰','Claim Daily Blind Box':'é¢†å–æ¯æ—¥ç›²ç›’','Lock aktif':'æœ‰æ•ˆé”å®š','Aturan claim tetap 1 kali per hari.':'é¢†å–é™åˆ¶ä»ä¸ºæ¯å¤©ä¸€æ¬¡ã€‚','LOCK SALDO DIBUTUHKAN':'éœ€è¦é”å®šä½™é¢','Lock saldo untuk mendapatkan hak claim Blind Box harian':'é”å®šä½™é¢ä»¥èŽ·å¾—é¢†å–æ¯æ—¥ç›²ç›’çš„èµ„æ ¼','Durasi lock tersedia:':'å¯ç”¨é”å®šæœŸé™ï¼š','30 hari':'30å¤©','60 hari':'60å¤©','90 hari':'90å¤©','Lock amount':'é”å®šé‡‘é¢','Nominal Lock (IDR)':'é”å®šé‡‘é¢ï¼ˆIDRï¼‰','Quota:':'é…é¢ï¼š','1 Box/Day':'æ¯å¤©1ç›’','Lock Saldo Sekarang':'ç«‹å³é”å®šä½™é¢','Total Locked':'æ€»é”å®š','Daily Claim:':'æ¯æ—¥é¢†å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'é€šè¿‡ä¸‹æ–¹ç›²ç›’æŒ‰é’®é¢†å–ã€‚é”å®šæœŸé™ç»“æŸåŽå°†è‡ªåŠ¨å®Œæˆã€‚','Lock minimum':'æœ€ä½Žé”å®š','to activate':'ä»¥æ¿€æ´»','Open Daily Box':'å¼€å¯æ¯æ—¥ç›²ç›’','Available Today':'ä»Šæ—¥å¯ç”¨','Unboxing':'å¼€ç›’ä¸­','Server sedang menentukan reward...':'æœåŠ¡å™¨æ­£åœ¨ç¡®å®šå¥–åŠ±â€¦â€¦','Reward Blind Box Harian':'æ¯æ—¥ç›²ç›’å¥–åŠ±','Keep in Vault':'å­˜å…¥ä¿é™©åº“','Done':'å®Œæˆ','Left':'å‰©ä½™','Jadwal Durasi Lock':'é”å®šæœŸé™å®‰æŽ’','30 Days Term':'30å¤©æœŸé™','60 Days Term':'60å¤©æœŸé™','90 Days Term':'90å¤©æœŸé™','Reward harian sesuai pengaturan server':'æ¯æ—¥å¥–åŠ±ä»¥æœåŠ¡å™¨è®¾ç½®ä¸ºå‡†','Viewers on Wheel':'è½¬ç›˜ä¸Šçš„è§‚ä¼—','Clear All':'å…¨éƒ¨æ¸…é™¤','Selected Winner':'é€‰ä¸­çš„èŽ·èƒœè€…','Live Participants Only':'ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...':'æ­£åœ¨è½¬åŠ¨é€‰æ‹©èŽ·èƒœè€…â€¦â€¦','Spin Raffle Wheel':'æ—‹è½¬æŠ½å¥–è½¬ç›˜','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘çš„æŠ½å¥–èŽ·èƒœè€…','Edit':'ç¼–è¾‘','Logout':'é€€å‡ºç™»å½•','USDT Account':'USDT è´¦æˆ·','Member':'ä¼šå‘˜','EVM Wallet':'EVM é’±åŒ…','Wallet belum terhubung':'é’±åŒ…æœªè¿žæŽ¥','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'è´¦æˆ·é’±åŒ…åœ°å€ã€‚æ¢å¤çŸ­è¯­ä¸ä¼šå­˜å‚¨åœ¨æœåŠ¡å™¨ä¸Šã€‚','WALLET REQUIRED':'éœ€è¦é’±åŒ…','Minimum withdrawal':'æœ€ä½ŽæçŽ°','Minimum withdrawal is':'æœ€ä½ŽæçŽ°é‡‘é¢ä¸º','Started':'å¼€å§‹äºŽ','Deposit, withdrawal, lock, reward & bonus':'å……å€¼ã€æçŽ°ã€é”å®šã€å¥–åŠ±å’Œå¥–é‡‘','Locked Balance':'é”å®šä½™é¢','Earns passive yield':'èŽ·å¾—è¢«åŠ¨æ”¶ç›Š','Change photo from device':'ä»Žè®¾å¤‡æ›´æ¢ç…§ç‰‡','Upload photo from device':'ä»Žè®¾å¤‡ä¸Šä¼ ç…§ç‰‡','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPGã€PNGã€WEBP â€¢ ç…§ç‰‡ä¿å­˜åœ¨æ‚¨çš„è®¾å¤‡å­˜å‚¨ä¸­','No unread notifications at this time.':'ç›®å‰æ²¡æœ‰æœªè¯»é€šçŸ¥ã€‚','Guest':'è®¿å®¢','Profile':'ä¸ªäººèµ„æ–™','Kelola akun, wallet, dan aktivitas kamu.':'ç®¡ç†æ‚¨çš„è´¦æˆ·ã€é’±åŒ…å’Œæ´»åŠ¨ã€‚'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'æ»¡è¶³æœ€ä½Žæœ‰æ•ˆé”å®šå³å¯ä½¿ç”¨ã€‚æ¯æ—¥å¥–åŠ±ç”±æœåŠ¡å™¨å¤„ç†å¹¶åŠ å…¥å¯ç”¨ä½™é¢ã€‚','Daily Active Reward':'æ¯æ—¥æ´»è·ƒå¥–åŠ±','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'æ›´é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Enhanced Lock Tier':'é«˜çº§é”å®šç­‰çº§','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Premium Lock Tier':'é«˜çº§é”å®šç­‰çº§','Reward harian masuk ke saldo':'æ¯æ—¥å¥–åŠ±åŠ å…¥ä½™é¢','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'æ ¹æ®é”å®šä½™é¢å¼€å¯æ¯æ—¥ç›²ç›’ã€‚æ¯æ—¥é¢†å–éµå¾ªæœåŠ¡å™¨è§„åˆ™ï¼Œå¹¶æŒ‰ WIB é‡ç½®ã€‚','Available':'å¯ç”¨','Quota resets in':'é…é¢é‡ç½®å€’è®¡æ—¶','Lock minimal $4 equivalent untuk membuka Blind Box':'é”å®šè‡³å°‘ç­‰å€¼ $4 æ‰èƒ½å¼€å¯ç›²ç›’','Daily Boxes':'æ¯æ—¥ç›²ç›’','Lock Amount (IDR)':'é”å®šé‡‘é¢ï¼ˆIDRï¼‰','Claim Daily Blind Box':'é¢†å–æ¯æ—¥ç›²ç›’','Lock aktif':'æœ‰æ•ˆé”å®š','Aturan claim tetap 1 kali per hari.':'é¢†å–é™åˆ¶ä»ä¸ºæ¯å¤©ä¸€æ¬¡ã€‚','LOCK SALDO DIBUTUHKAN':'éœ€è¦é”å®šä½™é¢','Lock saldo untuk mendapatkan hak claim Blind Box harian':'é”å®šä½™é¢ä»¥èŽ·å¾—é¢†å–æ¯æ—¥ç›²ç›’çš„èµ„æ ¼','Durasi lock tersedia:':'å¯ç”¨é”å®šæœŸé™ï¼š','30 hari':'30å¤©','60 hari':'60å¤©','90 hari':'90å¤©','Lock amount':'é”å®šé‡‘é¢','Nominal Lock (IDR)':'é”å®šé‡‘é¢ï¼ˆIDRï¼‰','Quota:':'é…é¢ï¼š','1 Box/Day':'æ¯å¤©1ç›’','Lock Saldo Sekarang':'ç«‹å³é”å®šä½™é¢','Total Locked':'æ€»é”å®š','Daily Claim:':'æ¯æ—¥é¢†å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'é€šè¿‡ä¸‹æ–¹ç›²ç›’æŒ‰é’®é¢†å–ã€‚é”å®šæœŸé™ç»“æŸåŽå°†è‡ªåŠ¨å®Œæˆã€‚','Lock minimum':'æœ€ä½Žé”å®š','to activate':'ä»¥æ¿€æ´»','Open Daily Box':'å¼€å¯æ¯æ—¥ç›²ç›’','Available Today':'ä»Šæ—¥å¯ç”¨','Unboxing':'å¼€ç›’ä¸­','Server sedang menentukan reward...':'服务器正在确定奖励……','Reward Blind Box Harian':'æ¯æ—¥ç›²ç›’å¥–åŠ±','Keep in Vault':'å­˜å…¥ä¿é™©åº“','Done':'å®Œæˆ','Left':'å‰©ä½™','Jadwal Durasi Lock':'é”å®šæœŸé™å®‰æŽ’','30 Days Term':'30å¤©æœŸé™','60 Days Term':'60å¤©æœŸé™','90 Days Term':'90å¤©æœŸé™','Reward harian sesuai pengaturan server':'æ¯æ—¥å¥–åŠ±ä»¥æœåŠ¡å™¨è®¾ç½®ä¸ºå‡†','Viewers on Wheel':'è½¬ç›˜ä¸Šçš„è§‚ä¼—','Clear All':'å…¨éƒ¨æ¸…é™¤','Selected Winner':'é€‰ä¸­çš„èŽ·èƒœè€…','Live Participants Only':'ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...':'正在转动选择获胜者……','Spin Raffle Wheel':'æ—‹è½¬æŠ½å¥–è½¬ç›˜','Current Viewers on Wheel:':'å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners':'æœ€è¿‘çš„æŠ½å¥–èŽ·èƒœè€…','Edit':'ç¼–è¾‘','Logout':'é€€å‡ºç™»å½•','USDT Account':'USDT è´¦æˆ·','Member':'ä¼šå‘˜','EVM Wallet':'EVM é’±åŒ…','Wallet belum terhubung':'é’±åŒ…æœªè¿žæŽ¥','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'è´¦æˆ·é’±åŒ…åœ°å€ã€‚æ¢å¤çŸ­è¯­ä¸ä¼šå­˜å‚¨åœ¨æœåŠ¡å™¨ä¸Šã€‚','WALLET REQUIRED':'éœ€è¦é’±åŒ…','Minimum withdrawal':'æœ€ä½ŽæçŽ°','Minimum withdrawal is':'æœ€ä½ŽæçŽ°é‡‘é¢ä¸º','Started':'å¼€å§‹äºŽ','Deposit, withdrawal, lock, reward & bonus':'å……å€¼ã€æçŽ°ã€é”å®šã€å¥–åŠ±å’Œå¥–é‡‘','Locked Balance':'é”å®šä½™é¢','Earns passive yield':'èŽ·å¾—è¢«åŠ¨æ”¶ç›Š','Change photo from device':'ä»Žè®¾å¤‡æ›´æ¢ç…§ç‰‡','Upload photo from device':'ä»Žè®¾å¤‡ä¸Šä¼ ç…§ç‰‡','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG、PNG、WEBP • 照片保存在您的设备存储中','No unread notifications at this time.':'ç›®å‰æ²¡æœ‰æœªè¯»é€šçŸ¥ã€‚','Guest':'è®¿å®¢','Profile':'ä¸ªäººèµ„æ–™','Kelola akun, wallet, dan aktivitas kamu.':'ç®¡ç†æ‚¨çš„è´¦æˆ·ã€é’±åŒ…å’Œæ´»åŠ¨ã€‚'
   },
   ja: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'æœ€ä½Žé™ã®æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯ã§åˆ©ç”¨ã§ãã¾ã™ã€‚æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã§å‡¦ç†ã•ã‚Œã€åˆ©ç”¨å¯èƒ½æ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™ã€‚','Daily Active Reward':'ãƒ‡ã‚¤ãƒªãƒ¼ã‚¢ã‚¯ãƒ†ã‚£ãƒ–å ±é…¬','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®ä¸Šä½ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Enhanced Lock Tier':'å¼·åŒ–ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®é«˜ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Premium Lock Tier':'ãƒ—ãƒ¬ãƒŸã‚¢ãƒ ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Reward harian masuk ke saldo':'æ¯Žæ—¥ã®å ±é…¬ãŒæ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'ãƒ­ãƒƒã‚¯ä¸­ã®æ®‹é«˜ã«å¿œã˜ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã¾ã™ã€‚æ¯Žæ—¥ã®å—ã‘å–ã‚Šã¯ã‚µãƒ¼ãƒãƒ¼è¦å‰‡ã«å¾“ã„ã€WIBã§ãƒªã‚»ãƒƒãƒˆã•ã‚Œã¾ã™ã€‚','Available':'åˆ©ç”¨å¯èƒ½','Quota resets in':'ã‚¯ã‚©ãƒ¼ã‚¿ãƒªã‚»ãƒƒãƒˆã¾ã§','Lock minimal $4 equivalent untuk membuka Blind Box':'ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã«ã¯å°‘ãªãã¨ã‚‚$4ç›¸å½“ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãã ã•ã„','Daily Boxes':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹','Lock Amount (IDR)':'ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Claim Daily Blind Box':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’å—ã‘å–ã‚‹','Lock aktif':'æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯','Aturan claim tetap 1 kali per hari.':'å—ã‘å–ã‚Šã¯1æ—¥1å›žã¾ã§ã§ã™ã€‚','LOCK SALDO DIBUTUHKAN':'æ®‹é«˜ã®ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™','Lock saldo untuk mendapatkan hak claim Blind Box harian':'æ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã®å—ã‘å–ã‚Šæ¨©ã‚’å–å¾—ã—ã¾ã™','Durasi lock tersedia:':'åˆ©ç”¨å¯èƒ½ãªãƒ­ãƒƒã‚¯æœŸé–“ï¼š','30 hari':'30æ—¥','60 hari':'60æ—¥','90 hari':'90æ—¥','Lock amount':'ãƒ­ãƒƒã‚¯é‡‘é¡','Nominal Lock (IDR)':'ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Quota:':'ã‚¯ã‚©ãƒ¼ã‚¿ï¼š','1 Box/Day':'1ç®±/æ—¥','Lock Saldo Sekarang':'ä»Šã™ãæ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯','Total Locked':'ãƒ­ãƒƒã‚¯åˆè¨ˆ','Daily Claim:':'ãƒ‡ã‚¤ãƒªãƒ¼å—å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'ä¸‹ã®ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ãƒœã‚¿ãƒ³ã‹ã‚‰å—ã‘å–ã‚Œã¾ã™ã€‚æœŸé–“çµ‚äº†å¾Œã€ãƒ­ãƒƒã‚¯ã¯è‡ªå‹•çš„ã«å®Œäº†ã—ã¾ã™ã€‚','Lock minimum':'æœ€ä½Žãƒ­ãƒƒã‚¯','to activate':'æœ‰åŠ¹åŒ–ã™ã‚‹ã«ã¯','Open Daily Box':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ã','Available Today':'æœ¬æ—¥åˆ©ç”¨å¯èƒ½','Unboxing':'é–‹å°ä¸­','Server sedang menentukan reward...':'ã‚µãƒ¼ãƒãƒ¼ãŒå ±é…¬ã‚’æ±ºå®šã—ã¦ã„ã¾ã™â€¦','Reward Blind Box Harian':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹å ±é…¬','Keep in Vault':'ä¿ç®¡åº«ã«ä¿å­˜','Done':'å®Œäº†','Left':'æ®‹ã‚Š','Jadwal Durasi Lock':'ãƒ­ãƒƒã‚¯æœŸé–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«','30 Days Term':'30æ—¥é–“','60 Days Term':'60æ—¥é–“','90 Days Term':'90æ—¥é–“','Reward harian sesuai pengaturan server':'æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼è¨­å®šã«å¾“ã„ã¾ã™','Viewers on Wheel':'ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…','Clear All':'ã™ã¹ã¦ã‚¯ãƒªã‚¢','Selected Winner':'é¸ã°ã‚ŒãŸå‹è€…','Live Participants Only':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...':'å‹è€…ã‚’é¸å‡ºä¸­â€¦','Spin Raffle Wheel':'æŠ½é¸ãƒ›ã‚¤ãƒ¼ãƒ«ã‚’å›žã™','Current Viewers on Wheel:':'ç¾åœ¨ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®æŠ½é¸å½“é¸è€…','Edit':'ç·¨é›†','Logout':'ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ','USDT Account':'USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','Member':'ãƒ¡ãƒ³ãƒãƒ¼','EVM Wallet':'EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Wallet belum terhubung':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã¯ã‚µãƒ¼ãƒãƒ¼ã«ä¿å­˜ã•ã‚Œã¾ã›ã‚“ã€‚','WALLET REQUIRED':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆãŒå¿…è¦ã§ã™','Minimum withdrawal':'æœ€ä½Žå‡ºé‡‘é¡','Minimum withdrawal is':'æœ€ä½Žå‡ºé‡‘é¡ã¯','Started':'é–‹å§‹','Deposit, withdrawal, lock, reward & bonus':'å…¥é‡‘ã€å‡ºé‡‘ã€ãƒ­ãƒƒã‚¯ã€å ±é…¬ã€ãƒœãƒ¼ãƒŠã‚¹','Locked Balance':'ãƒ­ãƒƒã‚¯æ®‹é«˜','Earns passive yield':'ãƒ‘ãƒƒã‚·ãƒ–åˆ©å›žã‚Šã‚’ç²å¾—','Change photo from device':'ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’å¤‰æ›´','Upload photo from device':'ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPGã€PNGã€WEBP â€¢ å†™çœŸã¯ç«¯æœ«ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã«ä¿å­˜ã•ã‚Œã¾ã™','No unread notifications at this time.':'ç¾åœ¨ã€æœªèª­é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Guest':'ã‚²ã‚¹ãƒˆ','Profile':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Kelola akun, wallet, dan aktivitas kamu.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã€ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ç®¡ç†ã—ã¾ã™ã€‚'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'æœ€ä½Žé™ã®æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯ã§åˆ©ç”¨ã§ãã¾ã™ã€‚æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã§å‡¦ç†ã•ã‚Œã€åˆ©ç”¨å¯èƒ½æ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™ã€‚','Daily Active Reward':'ãƒ‡ã‚¤ãƒªãƒ¼ã‚¢ã‚¯ãƒ†ã‚£ãƒ–å ±é…¬','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®ä¸Šä½ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Enhanced Lock Tier':'å¼·åŒ–ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®é«˜ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Premium Lock Tier':'ãƒ—ãƒ¬ãƒŸã‚¢ãƒ ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Reward harian masuk ke saldo':'æ¯Žæ—¥ã®å ±é…¬ãŒæ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'ãƒ­ãƒƒã‚¯ä¸­ã®æ®‹é«˜ã«å¿œã˜ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã¾ã™ã€‚æ¯Žæ—¥ã®å—ã‘å–ã‚Šã¯ã‚µãƒ¼ãƒãƒ¼è¦å‰‡ã«å¾“ã„ã€WIBã§ãƒªã‚»ãƒƒãƒˆã•ã‚Œã¾ã™ã€‚','Available':'åˆ©ç”¨å¯èƒ½','Quota resets in':'ã‚¯ã‚©ãƒ¼ã‚¿ãƒªã‚»ãƒƒãƒˆã¾ã§','Lock minimal $4 equivalent untuk membuka Blind Box':'ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã«ã¯å°‘ãªãã¨ã‚‚$4ç›¸å½“ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãã ã•ã„','Daily Boxes':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹','Lock Amount (IDR)':'ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Claim Daily Blind Box':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’å—ã‘å–ã‚‹','Lock aktif':'æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯','Aturan claim tetap 1 kali per hari.':'å—ã‘å–ã‚Šã¯1æ—¥1å›žã¾ã§ã§ã™ã€‚','LOCK SALDO DIBUTUHKAN':'æ®‹é«˜ã®ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™','Lock saldo untuk mendapatkan hak claim Blind Box harian':'æ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã®å—ã‘å–ã‚Šæ¨©ã‚’å–å¾—ã—ã¾ã™','Durasi lock tersedia:':'åˆ©ç”¨å¯èƒ½ãªãƒ­ãƒƒã‚¯æœŸé–“ï¼š','30 hari':'30æ—¥','60 hari':'60æ—¥','90 hari':'90æ—¥','Lock amount':'ãƒ­ãƒƒã‚¯é‡‘é¡','Nominal Lock (IDR)':'ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Quota:':'ã‚¯ã‚©ãƒ¼ã‚¿ï¼š','1 Box/Day':'1ç®±/æ—¥','Lock Saldo Sekarang':'ä»Šã™ãæ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯','Total Locked':'ãƒ­ãƒƒã‚¯åˆè¨ˆ','Daily Claim:':'ãƒ‡ã‚¤ãƒªãƒ¼å—å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'ä¸‹ã®ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ãƒœã‚¿ãƒ³ã‹ã‚‰å—ã‘å–ã‚Œã¾ã™ã€‚æœŸé–“çµ‚äº†å¾Œã€ãƒ­ãƒƒã‚¯ã¯è‡ªå‹•çš„ã«å®Œäº†ã—ã¾ã™ã€‚','Lock minimum':'æœ€ä½Žãƒ­ãƒƒã‚¯','to activate':'æœ‰åŠ¹åŒ–ã™ã‚‹ã«ã¯','Open Daily Box':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ã','Available Today':'æœ¬æ—¥åˆ©ç”¨å¯èƒ½','Unboxing':'é–‹å°ä¸­','Server sedang menentukan reward...':'サーバーが報酬を決定しています…','Reward Blind Box Harian':'ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹å ±é…¬','Keep in Vault':'ä¿ç®¡åº«ã«ä¿å­˜','Done':'å®Œäº†','Left':'æ®‹ã‚Š','Jadwal Durasi Lock':'ãƒ­ãƒƒã‚¯æœŸé–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«','30 Days Term':'30æ—¥é–“','60 Days Term':'60æ—¥é–“','90 Days Term':'90æ—¥é–“','Reward harian sesuai pengaturan server':'æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼è¨­å®šã«å¾“ã„ã¾ã™','Viewers on Wheel':'ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…','Clear All':'ã™ã¹ã¦ã‚¯ãƒªã‚¢','Selected Winner':'é¸ã°ã‚ŒãŸå‹è€…','Live Participants Only':'ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...':'勝者を選出中…','Spin Raffle Wheel':'æŠ½é¸ãƒ›ã‚¤ãƒ¼ãƒ«ã‚’å›žã™','Current Viewers on Wheel:':'ç¾åœ¨ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…ï¼š','Recent Raffle Winners':'æœ€è¿‘ã®æŠ½é¸å½“é¸è€…','Edit':'ç·¨é›†','Logout':'ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ','USDT Account':'USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','Member':'ãƒ¡ãƒ³ãƒãƒ¼','EVM Wallet':'EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Wallet belum terhubung':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã¯ã‚µãƒ¼ãƒãƒ¼ã«ä¿å­˜ã•ã‚Œã¾ã›ã‚“ã€‚','WALLET REQUIRED':'ã‚¦ã‚©ãƒ¬ãƒƒãƒˆãŒå¿…è¦ã§ã™','Minimum withdrawal':'æœ€ä½Žå‡ºé‡‘é¡','Minimum withdrawal is':'æœ€ä½Žå‡ºé‡‘é¡ã¯','Started':'é–‹å§‹','Deposit, withdrawal, lock, reward & bonus':'å…¥é‡‘ã€å‡ºé‡‘ã€ãƒ­ãƒƒã‚¯ã€å ±é…¬ã€ãƒœãƒ¼ãƒŠã‚¹','Locked Balance':'ãƒ­ãƒƒã‚¯æ®‹é«˜','Earns passive yield':'ãƒ‘ãƒƒã‚·ãƒ–åˆ©å›žã‚Šã‚’ç²å¾—','Change photo from device':'ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’å¤‰æ›´','Upload photo from device':'ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG、PNG、WEBP • 写真は端末ストレージに保存されます','No unread notifications at this time.':'ç¾åœ¨ã€æœªèª­é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Guest':'ã‚²ã‚¹ãƒˆ','Profile':'ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Kelola akun, wallet, dan aktivitas kamu.':'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã€ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ç®¡ç†ã—ã¾ã™ã€‚'
   },
   ko: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'ìµœì†Œ í™œì„± ë½ì—ì„œ ì´ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì¼ì¼ ë³´ìƒì€ ì„œë²„ì—ì„œ ì²˜ë¦¬ë˜ì–´ ì‚¬ìš© ê°€ëŠ¥í•œ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤.','Daily Active Reward':'ì¼ì¼ í™œì„± ë³´ìƒ','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Enhanced Lock Tier':'ê°•í™” ë½ ë“±ê¸‰','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Premium Lock Tier':'í”„ë¦¬ë¯¸ì—„ ë½ ë“±ê¸‰','Reward harian masuk ke saldo':'ì¼ì¼ ë³´ìƒì´ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'ìž ê¸´ ìž”ì•¡ì„ ê¸°ì¤€ìœ¼ë¡œ ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ë¥¼ ì—½ë‹ˆë‹¤. ì¼ì¼ ìˆ˜ë ¹ì€ ì„œë²„ ê·œì¹™ì„ ë”°ë¥´ë©° WIB ê¸°ì¤€ìœ¼ë¡œ ì´ˆê¸°í™”ë©ë‹ˆë‹¤.','Available':'ì‚¬ìš© ê°€ëŠ¥','Quota resets in':'í• ë‹¹ëŸ‰ ì´ˆê¸°í™”ê¹Œì§€','Lock minimal $4 equivalent untuk membuka Blind Box':'ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ë¥¼ ì—´ë ¤ë©´ ìµœì†Œ $4 ìƒë‹¹ì„ ë½í•˜ì„¸ìš”','Daily Boxes':'ì¼ì¼ ë°•ìŠ¤','Lock Amount (IDR)':'ë½ ê¸ˆì•¡ (IDR)','Claim Daily Blind Box':'ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ìˆ˜ë ¹','Lock aktif':'í™œì„± ë½','Aturan claim tetap 1 kali per hari.':'ìˆ˜ë ¹ì€ í•˜ë£¨ í•œ ë²ˆìœ¼ë¡œ ìœ ì§€ë©ë‹ˆë‹¤.','LOCK SALDO DIBUTUHKAN':'ìž”ì•¡ ë½ í•„ìš”','Lock saldo untuk mendapatkan hak claim Blind Box harian':'ìž”ì•¡ì„ ë½í•˜ì—¬ ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ìˆ˜ë ¹ ê¶Œí•œì„ ì–»ìœ¼ì„¸ìš”','Durasi lock tersedia:':'ì‚¬ìš© ê°€ëŠ¥í•œ ë½ ê¸°ê°„:','30 hari':'30ì¼','60 hari':'60ì¼','90 hari':'90ì¼','Lock amount':'ë½ ê¸ˆì•¡','Nominal Lock (IDR)':'ë½ ê¸ˆì•¡ (IDR)','Quota:':'í• ë‹¹ëŸ‰:','1 Box/Day':'í•˜ë£¨ 1ë°•ìŠ¤','Lock Saldo Sekarang':'ì§€ê¸ˆ ìž”ì•¡ ë½','Total Locked':'ì´ ë½ ê¸ˆì•¡','Daily Claim:':'ì¼ì¼ ìˆ˜ë ¹:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'ì•„ëž˜ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë²„íŠ¼ìœ¼ë¡œ ìˆ˜ë ¹í•©ë‹ˆë‹¤. ê¸°ê°„ì´ ëë‚˜ë©´ ë½ì´ ìžë™ìœ¼ë¡œ ì¢…ë£Œë©ë‹ˆë‹¤.','Lock minimum':'ìµœì†Œ ë½','to activate':'í™œì„±í™”í•˜ë ¤ë©´','Open Daily Box':'ì¼ì¼ ë°•ìŠ¤ ì—´ê¸°','Available Today':'ì˜¤ëŠ˜ ì‚¬ìš© ê°€ëŠ¥','Unboxing':'ë°•ìŠ¤ ê°œë´‰ ì¤‘','Server sedang menentukan reward...':'ì„œë²„ê°€ ë³´ìƒì„ ê²°ì •í•˜ëŠ” ì¤‘ìž…ë‹ˆë‹¤â€¦','Reward Blind Box Harian':'ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë³´ìƒ','Keep in Vault':'ë³´ê´€í•¨ì— ë³´ê´€','Done':'ì™„ë£Œ','Left':'ë‚¨ìŒ','Jadwal Durasi Lock':'ë½ ê¸°ê°„ ì¼ì •','30 Days Term':'30ì¼ ê¸°ê°„','60 Days Term':'60ì¼ ê¸°ê°„','90 Days Term':'90ì¼ ê¸°ê°„','Reward harian sesuai pengaturan server':'ì¼ì¼ ë³´ìƒì€ ì„œë²„ ì„¤ì •ì— ë”°ë¦…ë‹ˆë‹¤','Viewers on Wheel':'íœ ì˜ ì‹œì²­ìž','Clear All':'ëª¨ë‘ ì§€ìš°ê¸°','Selected Winner':'ì„ íƒëœ ë‹¹ì²¨ìž','Live Participants Only':'ë¼ì´ë¸Œ ì°¸ê°€ìžë§Œ','Spinning for Winner...':'ë‹¹ì²¨ìžë¥¼ ì„ íƒí•˜ëŠ” ì¤‘â€¦','Spin Raffle Wheel':'ì¶”ì²¨ íœ  ëŒë¦¬ê¸°','Current Viewers on Wheel:':'í˜„ìž¬ íœ ì˜ ì‹œì²­ìž:','Recent Raffle Winners':'ìµœê·¼ ì¶”ì²¨ ë‹¹ì²¨ìž','Edit':'íŽ¸ì§‘','Logout':'ë¡œê·¸ì•„ì›ƒ','USDT Account':'USDT ê³„ì •','Member':'íšŒì›','EVM Wallet':'EVM ì§€ê°‘','Wallet belum terhubung':'ì§€ê°‘ì´ ì—°ê²°ë˜ì§€ ì•ŠìŒ','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'ê³„ì • ì§€ê°‘ ì£¼ì†Œìž…ë‹ˆë‹¤. ë³µêµ¬ ë¬¸êµ¬ëŠ” ì„œë²„ì— ì €ìž¥ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.','WALLET REQUIRED':'ì§€ê°‘ í•„ìš”','Minimum withdrawal':'ìµœì†Œ ì¶œê¸ˆ','Minimum withdrawal is':'ìµœì†Œ ì¶œê¸ˆì•¡ì€','Started':'ì‹œìž‘ë¨','Deposit, withdrawal, lock, reward & bonus':'ìž…ê¸ˆ, ì¶œê¸ˆ, ë½, ë³´ìƒ ë° ë³´ë„ˆìŠ¤','Locked Balance':'ìž ê¸´ ìž”ì•¡','Earns passive yield':'íŒ¨ì‹œë¸Œ ìˆ˜ìµì„ ì–»ìŠµë‹ˆë‹¤','Change photo from device':'ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ë³€ê²½','Upload photo from device':'ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ì—…ë¡œë“œ','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP â€¢ ì‚¬ì§„ì€ ê¸°ê¸° ì €ìž¥ì†Œì— ìœ ì§€ë©ë‹ˆë‹¤','No unread notifications at this time.':'í˜„ìž¬ ì½ì§€ ì•Šì€ ì•Œë¦¼ì´ ì—†ìŠµë‹ˆë‹¤.','Guest':'ê²ŒìŠ¤íŠ¸','Profile':'í”„ë¡œí•„','Kelola akun, wallet, dan aktivitas kamu.':'ê³„ì •, ì§€ê°‘ ë° í™œë™ì„ ê´€ë¦¬í•©ë‹ˆë‹¤.'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'ìµœì†Œ í™œì„± ë½ì—ì„œ ì´ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì¼ì¼ ë³´ìƒì€ ì„œë²„ì—ì„œ ì²˜ë¦¬ë˜ì–´ ì‚¬ìš© ê°€ëŠ¥í•œ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤.','Daily Active Reward':'ì¼ì¼ í™œì„± ë³´ìƒ','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Enhanced Lock Tier':'ê°•í™” ë½ ë“±ê¸‰','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Premium Lock Tier':'í”„ë¦¬ë¯¸ì—„ ë½ ë“±ê¸‰','Reward harian masuk ke saldo':'ì¼ì¼ ë³´ìƒì´ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'ìž ê¸´ ìž”ì•¡ì„ ê¸°ì¤€ìœ¼ë¡œ ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ë¥¼ ì—½ë‹ˆë‹¤. ì¼ì¼ ìˆ˜ë ¹ì€ ì„œë²„ ê·œì¹™ì„ ë”°ë¥´ë©° WIB ê¸°ì¤€ìœ¼ë¡œ ì´ˆê¸°í™”ë©ë‹ˆë‹¤.','Available':'ì‚¬ìš© ê°€ëŠ¥','Quota resets in':'í• ë‹¹ëŸ‰ ì´ˆê¸°í™”ê¹Œì§€','Lock minimal $4 equivalent untuk membuka Blind Box':'ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ë¥¼ ì—´ë ¤ë©´ ìµœì†Œ $4 ìƒë‹¹ì„ ë½í•˜ì„¸ìš”','Daily Boxes':'ì¼ì¼ ë°•ìŠ¤','Lock Amount (IDR)':'ë½ ê¸ˆì•¡ (IDR)','Claim Daily Blind Box':'ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ìˆ˜ë ¹','Lock aktif':'í™œì„± ë½','Aturan claim tetap 1 kali per hari.':'ìˆ˜ë ¹ì€ í•˜ë£¨ í•œ ë²ˆìœ¼ë¡œ ìœ ì§€ë©ë‹ˆë‹¤.','LOCK SALDO DIBUTUHKAN':'ìž”ì•¡ ë½ í•„ìš”','Lock saldo untuk mendapatkan hak claim Blind Box harian':'ìž”ì•¡ì„ ë½í•˜ì—¬ ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ìˆ˜ë ¹ ê¶Œí•œì„ ì–»ìœ¼ì„¸ìš”','Durasi lock tersedia:':'ì‚¬ìš© ê°€ëŠ¥í•œ ë½ ê¸°ê°„:','30 hari':'30ì¼','60 hari':'60ì¼','90 hari':'90ì¼','Lock amount':'ë½ ê¸ˆì•¡','Nominal Lock (IDR)':'ë½ ê¸ˆì•¡ (IDR)','Quota:':'í• ë‹¹ëŸ‰:','1 Box/Day':'í•˜ë£¨ 1ë°•ìŠ¤','Lock Saldo Sekarang':'ì§€ê¸ˆ ìž”ì•¡ ë½','Total Locked':'ì´ ë½ ê¸ˆì•¡','Daily Claim:':'ì¼ì¼ ìˆ˜ë ¹:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'ì•„ëž˜ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë²„íŠ¼ìœ¼ë¡œ ìˆ˜ë ¹í•©ë‹ˆë‹¤. ê¸°ê°„ì´ ëë‚˜ë©´ ë½ì´ ìžë™ìœ¼ë¡œ ì¢…ë£Œë©ë‹ˆë‹¤.','Lock minimum':'ìµœì†Œ ë½','to activate':'í™œì„±í™”í•˜ë ¤ë©´','Open Daily Box':'ì¼ì¼ ë°•ìŠ¤ ì—´ê¸°','Available Today':'ì˜¤ëŠ˜ ì‚¬ìš© ê°€ëŠ¥','Unboxing':'ë°•ìŠ¤ ê°œë´‰ ì¤‘','Server sedang menentukan reward...':'서버가 보상을 결정하는 중입니다…','Reward Blind Box Harian':'ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë³´ìƒ','Keep in Vault':'ë³´ê´€í•¨ì— ë³´ê´€','Done':'ì™„ë£Œ','Left':'ë‚¨ìŒ','Jadwal Durasi Lock':'ë½ ê¸°ê°„ ì¼ì •','30 Days Term':'30ì¼ ê¸°ê°„','60 Days Term':'60ì¼ ê¸°ê°„','90 Days Term':'90ì¼ ê¸°ê°„','Reward harian sesuai pengaturan server':'ì¼ì¼ ë³´ìƒì€ ì„œë²„ ì„¤ì •ì— ë”°ë¦…ë‹ˆë‹¤','Viewers on Wheel':'íœ ì˜ ì‹œì²­ìž','Clear All':'ëª¨ë‘ ì§€ìš°ê¸°','Selected Winner':'ì„ íƒëœ ë‹¹ì²¨ìž','Live Participants Only':'ë¼ì´ë¸Œ ì°¸ê°€ìžë§Œ','Spinning for Winner...':'당첨자를 선택하는 중…','Spin Raffle Wheel':'ì¶”ì²¨ íœ  ëŒë¦¬ê¸°','Current Viewers on Wheel:':'í˜„ìž¬ íœ ì˜ ì‹œì²­ìž:','Recent Raffle Winners':'ìµœê·¼ ì¶”ì²¨ ë‹¹ì²¨ìž','Edit':'íŽ¸ì§‘','Logout':'ë¡œê·¸ì•„ì›ƒ','USDT Account':'USDT ê³„ì •','Member':'íšŒì›','EVM Wallet':'EVM ì§€ê°‘','Wallet belum terhubung':'ì§€ê°‘ì´ ì—°ê²°ë˜ì§€ ì•ŠìŒ','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'ê³„ì • ì§€ê°‘ ì£¼ì†Œìž…ë‹ˆë‹¤. ë³µêµ¬ ë¬¸êµ¬ëŠ” ì„œë²„ì— ì €ìž¥ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.','WALLET REQUIRED':'ì§€ê°‘ í•„ìš”','Minimum withdrawal':'ìµœì†Œ ì¶œê¸ˆ','Minimum withdrawal is':'ìµœì†Œ ì¶œê¸ˆì•¡ì€','Started':'ì‹œìž‘ë¨','Deposit, withdrawal, lock, reward & bonus':'ìž…ê¸ˆ, ì¶œê¸ˆ, ë½, ë³´ìƒ ë° ë³´ë„ˆìŠ¤','Locked Balance':'ìž ê¸´ ìž”ì•¡','Earns passive yield':'íŒ¨ì‹œë¸Œ ìˆ˜ìµì„ ì–»ìŠµë‹ˆë‹¤','Change photo from device':'ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ë³€ê²½','Upload photo from device':'ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ì—…ë¡œë“œ','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG, PNG, WEBP • 사진은 기기 저장소에 유지됩니다','No unread notifications at this time.':'í˜„ìž¬ ì½ì§€ ì•Šì€ ì•Œë¦¼ì´ ì—†ìŠµë‹ˆë‹¤.','Guest':'ê²ŒìŠ¤íŠ¸','Profile':'í”„ë¡œí•„','Kelola akun, wallet, dan aktivitas kamu.':'ê³„ì •, ì§€ê°‘ ë° í™œë™ì„ ê´€ë¦¬í•©ë‹ˆë‹¤.'
   },
   ar: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'Ù…ØªØ§Ø­ Ù…Ø¹ Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù…Ù† Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù†Ø´Ø·. ØªØªÙ… Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØ¥Ø¶Ø§ÙØªÙ‡Ø§ Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…ØªØ§Ø­.','Daily Active Reward':'Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø§Ù„Ù†Ø´Ø·Ø©','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ø£Ø¹Ù„Ù‰ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØ­Ø¯Ø¯ Ø§Ù„Ø®Ø§Ø¯Ù… Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ©.','Enhanced Lock Tier':'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ù…ØªÙ‚Ø¯Ù…','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ù…Ø±ØªÙØ¹ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØ­Ø¯Ø¯ Ø§Ù„Ø®Ø§Ø¯Ù… Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ©.','Premium Lock Tier':'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù…Ù…ÙŠØ²','Reward harian masuk ke saldo':'ØªÙØ¶Ø§Ù Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'Ø§ÙØªØ­ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø§Ù„ÙŠÙˆÙ…ÙŠ Ø¨Ù†Ø§Ø¡Ù‹ Ø¹Ù„Ù‰ Ø±ØµÙŠØ¯Ùƒ Ø§Ù„Ù…Ù‚ÙÙˆÙ„. ØªØªØ¨Ø¹ Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø§Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ù‚ÙˆØ§Ø¹Ø¯ Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆÙŠØªÙ… Ø¥Ø¹Ø§Ø¯Ø© Ø¶Ø¨Ø·Ù‡Ø§ Ø­Ø³Ø¨ ØªÙˆÙ‚ÙŠØª WIB.','Available':'Ù…ØªØ§Ø­','Quota resets in':'Ø¥Ø¹Ø§Ø¯Ø© Ø¶Ø¨Ø· Ø§Ù„Ø­ØµØ© Ø®Ù„Ø§Ù„','Lock minimal $4 equivalent untuk membuka Blind Box':'Ø§Ù‚ÙÙ„ Ù…Ø§ Ù„Ø§ ÙŠÙ‚Ù„ Ø¹Ù† Ù…Ø§ ÙŠØ¹Ø§Ø¯Ù„ 4 Ø¯ÙˆÙ„Ø§Ø±Ø§Øª Ù„ÙØªØ­ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶','Daily Boxes':'Ø§Ù„ØµÙ†Ø§Ø¯ÙŠÙ‚ Ø§Ù„ÙŠÙˆÙ…ÙŠØ©','Lock Amount (IDR)':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„ (IDR)','Claim Daily Blind Box':'Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¨Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø§Ù„ÙŠÙˆÙ…ÙŠ','Lock aktif':'Ù‚ÙÙ„ Ù†Ø´Ø·','Aturan claim tetap 1 kali per hari.':'ÙŠØ¨Ù‚Ù‰ Ø­Ø¯ Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ù…Ø±Ø© ÙˆØ§Ø­Ø¯Ø© ÙŠÙˆÙ…ÙŠÙ‹Ø§.','LOCK SALDO DIBUTUHKAN':'Ù…Ø·Ù„ÙˆØ¨ Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯','Lock saldo untuk mendapatkan hak claim Blind Box harian':'Ø§Ù‚ÙÙ„ Ø±ØµÙŠØ¯Ùƒ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ø­Ù‚ Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¨Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø§Ù„ÙŠÙˆÙ…ÙŠ','Durasi lock tersedia:':'Ù…Ø¯Ø¯ Ø§Ù„Ù‚ÙÙ„ Ø§Ù„Ù…ØªØ§Ø­Ø©:','30 hari':'30 ÙŠÙˆÙ…Ù‹Ø§','60 hari':'60 ÙŠÙˆÙ…Ù‹Ø§','90 hari':'90 ÙŠÙˆÙ…Ù‹Ø§','Lock amount':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„','Nominal Lock (IDR)':'Ù…Ø¨Ù„Øº Ø§Ù„Ù‚ÙÙ„ (IDR)','Quota:':'Ø§Ù„Ø­ØµØ©:','1 Box/Day':'ØµÙ†Ø¯ÙˆÙ‚ ÙˆØ§Ø­Ø¯/ÙŠÙˆÙ…','Lock Saldo Sekarang':'Ø§Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø¢Ù†','Total Locked':'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ù‚ÙÙˆÙ„','Daily Claim:':'Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ©:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'ØªØªÙ… Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø¹Ø¨Ø± Ø²Ø± Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø£Ø¯Ù†Ø§Ù‡. ÙŠÙ†ØªÙ‡ÙŠ Ø§Ù„Ù‚ÙÙ„ ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ Ø¹Ù†Ø¯ Ø§Ù†ØªÙ‡Ø§Ø¡ Ù…Ø¯ØªÙ‡.','Lock minimum':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ù‚ÙÙ„','to activate':'Ù„Ù„ØªÙØ¹ÙŠÙ„','Open Daily Box':'ÙØªØ­ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ÙŠÙˆÙ…ÙŠ','Available Today':'Ù…ØªØ§Ø­ Ø§Ù„ÙŠÙˆÙ…','Unboxing':'ÙØªØ­ Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚','Server sedang menentukan reward...':'Ø§Ù„Ø®Ø§Ø¯Ù… ÙŠØ­Ø¯Ø¯ Ø§Ù„Ù…ÙƒØ§ÙØ£Ø©â€¦','Reward Blind Box Harian':'Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„ØºØ§Ù…Ø¶ Ø§Ù„ÙŠÙˆÙ…ÙŠØ©','Keep in Vault':'Ø­ÙØ¸ ÙÙŠ Ø§Ù„Ø®Ø²Ù†Ø©','Done':'ØªÙ…','Left':'Ù…ØªØ¨Ù‚Ù','Jadwal Durasi Lock':'Ø¬Ø¯ÙˆÙ„ Ù…Ø¯Ø© Ø§Ù„Ù‚ÙÙ„','30 Days Term':'Ù…Ø¯Ø© 30 ÙŠÙˆÙ…Ù‹Ø§','60 Days Term':'Ù…Ø¯Ø© 60 ÙŠÙˆÙ…Ù‹Ø§','90 Days Term':'Ù…Ø¯Ø© 90 ÙŠÙˆÙ…Ù‹Ø§','Reward harian sesuai pengaturan server':'Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© ÙˆÙÙ‚ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø®Ø§Ø¯Ù…','Viewers on Wheel':'Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† Ø¹Ù„Ù‰ Ø§Ù„Ø¹Ø¬Ù„Ø©','Clear All':'Ù…Ø³Ø­ Ø§Ù„ÙƒÙ„','Selected Winner':'Ø§Ù„ÙØ§Ø¦Ø² Ø§Ù„Ù…Ø®ØªØ§Ø±','Live Participants Only':'Ù…Ø´Ø§Ø±ÙƒÙˆ Ø§Ù„Ø¨Ø« Ø§Ù„Ù…Ø¨Ø§Ø´Ø± ÙÙ‚Ø·','Spinning for Winner...':'Ø¬Ø§Ø±Ù ØªØ¯ÙˆÙŠØ± Ø§Ù„Ø¹Ø¬Ù„Ø© Ù„Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„ÙØ§Ø¦Ø²â€¦','Spin Raffle Wheel':'ØªØ¯ÙˆÙŠØ± Ø¹Ø¬Ù„Ø© Ø§Ù„Ø³Ø­Ø¨','Current Viewers on Wheel:':'Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ† Ø§Ù„Ø­Ø§Ù„ÙŠÙˆÙ† Ø¹Ù„Ù‰ Ø§Ù„Ø¹Ø¬Ù„Ø©:','Recent Raffle Winners':'Ø§Ù„ÙØ§Ø¦Ø²ÙˆÙ† Ø§Ù„Ø£Ø®ÙŠØ±ÙˆÙ† ÙÙŠ Ø§Ù„Ø³Ø­Ø¨','Edit':'ØªØ¹Ø¯ÙŠÙ„','Logout':'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬','USDT Account':'Ø­Ø³Ø§Ø¨ USDT','Member':'Ø¹Ø¶Ùˆ','EVM Wallet':'Ù…Ø­ÙØ¸Ø© EVM','Wallet belum terhubung':'Ø§Ù„Ù…Ø­ÙØ¸Ø© ØºÙŠØ± Ù…ØªØµÙ„Ø©','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'Ø¹Ù†ÙˆØ§Ù† Ù…Ø­ÙØ¸Ø© Ø§Ù„Ø­Ø³Ø§Ø¨. Ù„Ø§ ÙŠØªÙ… ØªØ®Ø²ÙŠÙ† Ø¹Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….','WALLET REQUIRED':'Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù…Ø·Ù„ÙˆØ¨Ø©','Minimum withdrawal':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨','Minimum withdrawal is':'Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø­Ø¨ Ù‡Ùˆ','Started':'Ø¨Ø¯Ø£','Deposit, withdrawal, lock, reward & bonus':'Ø§Ù„Ø¥ÙŠØ¯Ø§Ø¹ ÙˆØ§Ù„Ø³Ø­Ø¨ ÙˆØ§Ù„Ù‚ÙÙ„ ÙˆØ§Ù„Ù…ÙƒØ§ÙØ¢Øª ÙˆØ§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„Ø¥Ø¶Ø§ÙÙŠØ©','Locked Balance':'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ù‚ÙÙˆÙ„','Earns passive yield':'ÙŠØ­Ù‚Ù‚ Ø¹Ø§Ø¦Ø¯Ù‹Ø§ Ø³Ù„Ø¨ÙŠÙ‹Ø§','Change photo from device':'ØªØºÙŠÙŠØ± Ø§Ù„ØµÙˆØ±Ø© Ù…Ù† Ø§Ù„Ø¬Ù‡Ø§Ø²','Upload photo from device':'Ø±ÙØ¹ ØµÙˆØ±Ø© Ù…Ù† Ø§Ù„Ø¬Ù‡Ø§Ø²','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG ÙˆPNG ÙˆWEBP â€¢ ØªØ¨Ù‚Ù‰ Ø§Ù„ØµÙˆØ±Ø© ÙÙŠ Ù…Ø³Ø§Ø­Ø© ØªØ®Ø²ÙŠÙ† Ø¬Ù‡Ø§Ø²Ùƒ','No unread notifications at this time.':'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª ØºÙŠØ± Ù…Ù‚Ø±ÙˆØ¡Ø© Ø­Ø§Ù„ÙŠÙ‹Ø§.','Guest':'Ø²Ø§Ø¦Ø±','Profile':'Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ','Kelola akun, wallet, dan aktivitas kamu.':'Ø¥Ø¯Ø§Ø±Ø© Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙ…Ø­ÙØ¸ØªÙƒ ÙˆÙ†Ø´Ø§Ø·Ùƒ.'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.':'متاح مع الحد الأدنى من القفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى الرصيد المتاح.','Daily Active Reward':'المكافأة اليومية النشطة','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'مستوى قفل أعلى مع مقتنيات نادرة. يحدد الخادم المكافآت المالية.','Enhanced Lock Tier':'مستوى قفل متقدم','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.':'مستوى قفل مرتفع مع مقتنيات نادرة. يحدد الخادم المكافآت المالية.','Premium Lock Tier':'مستوى القفل المميز','Reward harian masuk ke saldo':'تُضاف المكافآت اليومية إلى الرصيد','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.':'افتح الصندوق الغامض اليومي بناءً على رصيدك المقفول. تتبع المطالبات اليومية قواعد الخادم ويتم إعادة ضبطها حسب توقيت WIB.','Available':'متاح','Quota resets in':'إعادة ضبط الحصة خلال','Lock minimal $4 equivalent untuk membuka Blind Box':'اقفل ما لا يقل عن ما يعادل 4 دولارات لفتح الصندوق الغامض','Daily Boxes':'الصناديق اليومية','Lock Amount (IDR)':'مبلغ القفل (IDR)','Claim Daily Blind Box':'المطالبة بالصندوق الغامض اليومي','Lock aktif':'قفل نشط','Aturan claim tetap 1 kali per hari.':'يبقى حد المطالبة مرة واحدة يوميًا.','LOCK SALDO DIBUTUHKAN':'مطلوب قفل الرصيد','Lock saldo untuk mendapatkan hak claim Blind Box harian':'اقفل رصيدك للحصول على حق المطالبة بالصندوق الغامض اليومي','Durasi lock tersedia:':'مدد القفل المتاحة:','30 hari':'30 يومًا','60 hari':'60 يومًا','90 hari':'90 يومًا','Lock amount':'مبلغ القفل','Nominal Lock (IDR)':'مبلغ القفل (IDR)','Quota:':'الحصة:','1 Box/Day':'صندوق واحد/يوم','Lock Saldo Sekarang':'اقفل الرصيد الآن','Total Locked':'إجمالي المقفول','Daily Claim:':'المطالبة اليومية:','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.':'تتم المطالبة عبر زر الصندوق الغامض أدناه. ينتهي القفل تلقائيًا عند انتهاء مدته.','Lock minimum':'الحد الأدنى للقفل','to activate':'للتفعيل','Open Daily Box':'فتح الصندوق اليومي','Available Today':'متاح اليوم','Unboxing':'فتح الصندوق','Server sedang menentukan reward...':'الخادم يحدد المكافأة…','Reward Blind Box Harian':'مكافأة الصندوق الغامض اليومية','Keep in Vault':'حفظ في الخزنة','Done':'تم','Left':'متبقٍ','Jadwal Durasi Lock':'جدول مدة القفل','30 Days Term':'مدة 30 يومًا','60 Days Term':'مدة 60 يومًا','90 Days Term':'مدة 90 يومًا','Reward harian sesuai pengaturan server':'المكافأة اليومية وفق إعدادات الخادم','Viewers on Wheel':'المشاهدون على العجلة','Clear All':'مسح الكل','Selected Winner':'الفائز المختار','Live Participants Only':'مشاركو البث المباشر فقط','Spinning for Winner...':'جارٍ تدوير العجلة لاختيار الفائز…','Spin Raffle Wheel':'تدوير عجلة السحب','Current Viewers on Wheel:':'المشاهدون الحاليون على العجلة:','Recent Raffle Winners':'الفائزون الأخيرون في السحب','Edit':'تعديل','Logout':'تسجيل الخروج','USDT Account':'حساب USDT','Member':'عضو','EVM Wallet':'محفظة EVM','Wallet belum terhubung':'المحفظة غير متصلة','Alamat wallet akun. Recovery phrase tidak disimpan di server.':'عنوان محفظة الحساب. لا يتم تخزين عبارة الاسترداد على الخادم.','WALLET REQUIRED':'المحفظة مطلوبة','Minimum withdrawal':'الحد الأدنى للسحب','Minimum withdrawal is':'الحد الأدنى للسحب هو','Started':'بدأ','Deposit, withdrawal, lock, reward & bonus':'الإيداع والسحب والقفل والمكافآت والمكافأة الإضافية','Locked Balance':'الرصيد المقفول','Earns passive yield':'يحقق عائدًا سلبيًا','Change photo from device':'تغيير الصورة من الجهاز','Upload photo from device':'رفع صورة من الجهاز','JPG, PNG, WEBP â€¢ photo stays from your device storage':'JPG وPNG وWEBP • تبقى الصورة في مساحة تخزين جهازك','No unread notifications at this time.':'لا توجد إشعارات غير مقروءة حاليًا.','Guest':'زائر','Profile':'الملف الشخصي','Kelola akun, wallet, dan aktivitas kamu.':'إدارة حسابك ومحفظتك ونشاطك.'
   }
 };
 
@@ -4139,7 +4139,7 @@ const SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS: Record<LanguageCode, Record<strin
   },
   es: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
-      "Ruleta del streamer con los nombres de los espectadores en directo. Â¡GÃ­rala para elegir al azar al ganador del sorteo!"
+      "Ruleta del streamer con los nombres de los espectadores en directo. ¡Gírala para elegir al azar al ganador del sorteo!"
   },
   pt: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
@@ -4147,19 +4147,19 @@ const SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS: Record<LanguageCode, Record<strin
   },
   zh: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
-      "ä¸»æ’­æŠ½å¥–è½¬ç›˜åŒ…å«æ­£åœ¨ç›´æ’­çš„è§‚ä¼—ç”¨æˆ·åã€‚è½¬åŠ¨è½¬ç›˜å³å¯éšæœºé€‰å‡ºæŠ½å¥–èŽ·èƒœè€…ï¼"
+      "主播抽奖转盘包含正在直播的观众用户名。转动转盘即可随机选出抽奖获胜者！"
   },
   ja: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
-      "é…ä¿¡ä¸­ã®è¦–è´è€…ãƒ¦ãƒ¼ã‚¶ãƒ¼åãŒå…¥ã£ãŸã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼æŠ½é¸ãƒ›ã‚¤ãƒ¼ãƒ«ã§ã™ã€‚å›žã—ã¦ãƒ©ãƒ³ãƒ€ãƒ ã«ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆä¼ç”»ã®å½“é¸è€…ã‚’é¸ã³ã¾ã—ã‚‡ã†ï¼"
+      "ライブ視聴者のユーザー名が入ったストリーマー抽選ホイールです。回してランダムにプレゼント企画の当選者を選びましょう！"
   },
   ko: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
-      "ë¼ì´ë¸Œ ì‹œì²­ìž ì‚¬ìš©ìž ì´ë¦„ì´ í¬í•¨ëœ ìŠ¤íŠ¸ë¦¬ë¨¸ ì¶”ì²¨ íœ ìž…ë‹ˆë‹¤. ëŒë ¤ì„œ ë¬´ìž‘ìœ„ë¡œ ê²½í’ˆ ì¶”ì²¨ ë‹¹ì²¨ìžë¥¼ ì„ íƒí•˜ì„¸ìš”!"
+      "라이브 시청자 사용자 이름이 포함된 스트리머 추첨 휠입니다. 돌려서 무작위로 경품 추첨 당첨자를 선택하세요!"
   },
   ar: {
     "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
-      "Ø¹Ø¬Ù„Ø© Ø³Ø­Ø¨ Ù„Ù„Ø³ØªØ±ÙŠÙ…Ø± ØªØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ Ø£Ø³Ù…Ø§Ø¡ Ù…Ø³ØªØ®Ø¯Ù…ÙŠ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ† Ø§Ù„Ù…Ø¨Ø§Ø´Ø±ÙŠÙ†. Ø£Ø¯Ø± Ø§Ù„Ø¹Ø¬Ù„Ø© Ù„Ø§Ø®ØªÙŠØ§Ø± ÙØ§Ø¦Ø² Ø¹Ø´ÙˆØ§Ø¦ÙŠ Ø¨Ø§Ù„Ù‡Ø¯ÙŠØ©!"
+      "عجلة سحب للستريمر تحتوي على أسماء مستخدمي المشاهدين المباشرين. أدر العجلة لاختيار فائز عشوائي بالهدية!"
   }
 };
 

@@ -19,7 +19,8 @@ import confetti from 'canvas-confetti';
 interface BoxTier {
   id: string;
   name: string;
-  description: string;
+  description?: string;
+  descriptionKey?: string;
   badge: string;
   accentColor: string;
   minLockedRequired: number;
