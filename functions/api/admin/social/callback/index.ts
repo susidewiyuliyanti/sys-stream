@@ -92,7 +92,7 @@ export const onRequestGet = async (context: PagesContext) => {
 
   const state = url.searchParams.get("state")?.trim() || "";
   const code = url.searchParams.get("code")?.trim() || "";
-  const platform = url.searchParams.get("platform")?.trim().toLowerCase() || "";
+  const platformFromQuery = url.searchParams.get("platform")?.trim().toLowerCase() || "";
   const providerError = url.searchParams.get("error")?.trim() || "";
 
   if (providerError) {
@@ -102,16 +102,9 @@ export const onRequestGet = async (context: PagesContext) => {
     );
   }
 
-  if (!state || !code || !platform) {
+  if (!state || !code) {
     return html(
       "Parameter OAuth tidak lengkap.",
-      400,
-    );
-  }
-
-  if (!ALLOWED_PLATFORMS.has(platform)) {
-    return html(
-      "Platform OAuth tidak didukung.",
       400,
     );
   }
@@ -149,7 +142,16 @@ export const onRequestGet = async (context: PagesContext) => {
     );
   }
 
-  if (row.platform !== platform) {
+  const platform = String(row.platform || "").trim().toLowerCase();
+
+  if (!ALLOWED_PLATFORMS.has(platform)) {
+    return html(
+      "Platform OAuth tidak didukung.",
+      400,
+    );
+  }
+
+  if (platformFromQuery && row.platform !== platformFromQuery) {
     return html(
       "OAuth platform tidak cocok.",
       400,
@@ -236,7 +238,7 @@ export const onRequestGet = async (context: PagesContext) => {
 
   const redirectUri =
     row.redirect_uri ||
-    `${url.origin}/api/admin/social/callback?platform=${encodeURIComponent(platform)}`;
+    `${url.origin}/api/admin/social/callback`;
 
   try {
     const token = await exchangeOAuthCode(
