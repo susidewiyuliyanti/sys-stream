@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Send, X, Loader2, Sparkles } from 'lucide-react';
+import { Send, X, Loader2 } from 'lucide-react';
 import { useLanguage } from '../i18n';
 import { useGame } from '../context/GameContext';
 
@@ -46,14 +46,9 @@ export default function AIChat() {
       {open && (
         <div className="fixed bottom-20 right-4 z-50 w-[min(92vw,390px)] overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl shadow-black/50">
           <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <div className="rounded-xl bg-cyan-500/10 p-2 text-cyan-300">
-                <Sparkles className="h-4 w-4" />
-              </div>
-              <div>
-                <div className="text-sm font-black text-white">{t('SYS STREAM AI')}</div>
-                <div className="text-[11px] text-slate-400">{t('Read-only account assistant')}</div>
-              </div>
+            <div>
+              <div className="text-sm font-black text-white">{t('Miss SYS')}</div>
+              <div className="text-[11px] text-slate-400">{t('Read-only account assistant')}</div>
             </div>
             <button
               type="button"
@@ -96,7 +91,7 @@ export default function AIChat() {
                 }}
                 rows={2}
                 maxLength={2000}
-                placeholder={t('Ask SYS STREAM AI...')}
+                placeholder={t('Ask Miss SYS...')}
                 className="min-w-0 flex-1 resize-none rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-400"
               />
               <button
@@ -116,12 +111,11 @@ export default function AIChat() {
       <button
         type="button"
         onClick={() => setOpen(value => !value)}
-        aria-label={t('SYS STREAM AI')}
-        title={t('SYS STREAM AI')}
+        aria-label={t('Miss SYS')}
+        title={t('Miss SYS')}
         className="fixed bottom-5 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-slate-900 px-4 py-3 text-sm font-black text-cyan-300 shadow-xl shadow-black/30 hover:border-cyan-300 hover:text-white"
       >
-        <Bot className="h-5 w-5" />
-        <span className="hidden sm:inline">{t('SYS STREAM AI')}</span>
+        <span>{t('Miss SYS')}</span>
       </button>
     </>
   );
