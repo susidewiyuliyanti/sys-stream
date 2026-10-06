@@ -108,6 +108,7 @@ export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: strin
 
 const translations: Record<LanguageCode, Record<string, string>> = {
   id: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, komunitas, dan postingan dari pengguna SYS STREAM.',
     'Production data is used for all content and activity on this page.': 'Konten dan aktivitas di halaman ini menggunakan data produksi.',
     'Every user can share posts and updates.': 'Setiap pengguna dapat membagikan tulisan dan postingan.',
     'Community Posts': 'Postingan Komunitas',
@@ -133,8 +134,10 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'No unread notifications at this time.':'Tidak ada notifikasi baru saat ini.',
     '30 DAYS':'30 HARI', '60 DAYS':'60 HARI', '90 DAYS':'90 HARI',
   },
-  en: {},
+  en: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, community, and posts from SYS STREAM users.',},
   es: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Directos, comunidad y publicaciones de usuarios de SYS STREAM.',
     Home:'Inicio', Earn:'Ganar', Board:'Clasificación', Profile:'Perfil', Language:'Idioma',
     Login:'Iniciar sesión', Register:'Registrarse', 'Welcome Back':'Bienvenido de nuevo',
     'Create SYS Account':'Crear cuenta SYS', 'Username or Email':'Usuario o correo',
@@ -147,6 +150,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Lock History':'Historial de bloqueo', 'Log Out':'Cerrar sesión', Notifications:'Notificaciones',
   },
   pt: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Lives, comunidade e publicações dos usuários do SYS STREAM.',
     Home:'Início', Earn:'Ganhar', Board:'Ranking', Profile:'Perfil', Language:'Idioma',
     Login:'Entrar', Register:'Registrar', 'Welcome Back':'Bem-vindo de volta',
     'Create SYS Account':'Criar conta SYS', 'Username or Email':'Usuário ou e-mail',
@@ -159,6 +163,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Lock History':'Histórico de bloqueios', 'Log Out':'Sair', Notifications:'Notificações',
   },
   zh: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM 用户的直播、社区和帖子。',
     Home:'首页', Earn:'赚取', Board:'排行榜', Profile:'个人资料', Language:'语言',
     Login:'登录', Register:'注册', 'Welcome Back':'欢迎回来', 'Create SYS Account':'创建 SYS 账户',
     'Username or Email':'用户名或邮箱', Email:'邮箱', Password:'密码', 'Remember me':'记住我',
@@ -169,6 +174,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Lock History':'锁定记录', 'Log Out':'退出登录', Notifications:'通知',
   },
   ja: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAMユーザーのライブ、コミュニティ、投稿。',
     Home:'ホーム', Earn:'獲得', Board:'ランキング', Profile:'プロフィール', Language:'言語',
     Login:'ログイン', Register:'登録', 'Welcome Back':'おかえりなさい', 'Create SYS Account':'SYSアカウントを作成',
     'Username or Email':'ユーザー名またはメール', Email:'メール', Password:'パスワード',
@@ -180,6 +186,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Log Out':'ログアウト', Notifications:'通知',
   },
   ko: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM 사용자의 라이브, 커뮤니티 및 게시물입니다.',
     Home:'홈', Earn:'수익', Board:'순위표', Profile:'프로필', Language:'언어',
     Login:'로그인', Register:'가입', 'Welcome Back':'다시 오신 것을 환영합니다',
     'Create SYS Account':'SYS 계정 만들기', 'Username or Email':'사용자 이름 또는 이메일',
@@ -191,6 +198,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     'Lock History':'잠금 기록', 'Log Out':'로그아웃', Notifications:'알림',
   },
   ar: {
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'البث المباشر والمجتمع والمنشورات من مستخدمي SYS STREAM.',
     Home:'الرئيسية', Earn:'اربح', Board:'المتصدرين', Profile:'الملف الشخصي', Language:'اللغة',
     Login:'تسجيل الدخول', Register:'إنشاء حساب', 'Welcome Back':'مرحباً بعودتك',
     'Create SYS Account':'إنشاء حساب SYS', 'Username or Email':'اسم المستخدم أو البريد',
