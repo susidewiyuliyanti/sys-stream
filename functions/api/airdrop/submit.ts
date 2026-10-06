@@ -67,6 +67,19 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       return response(context.request, { success: false, message: "Bukti wajib diisi untuk task ini" }, 400);
     }
 
+    // Every task stays locked until the user has connected a social account
+    // and explicitly confirmed following SYSStreamer.
+    if (!isCheckin || true) {
+      await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_gate (wallet_address TEXT PRIMARY KEY, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
+      const gate = await db.prepare("SELECT confirmed FROM airdrop_follow_gate WHERE wallet_address=?").bind(wallet).first<{confirmed:number}>();
+      if (Number(gate?.confirmed || 0) !== 1) {
+        return response(context.request, {
+          success: false,
+          message: "Hubungkan akun sosial dan follow SYSStreamer terlebih dahulu untuk membuka semua task."
+        }, 403);
+      }
+    }
+
     const socialPlatforms = new Set(["tiktok","instagram","youtube","shorts","twitter","facebook","telegram","discord","social"]);
     const normalizedCategory = String(task.category || taskKey || "").toLowerCase();
     const requiresFollow = !isCheckin && (socialPlatforms.has(normalizedCategory) || socialPlatforms.has(String(taskKey).toLowerCase()));
