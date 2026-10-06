@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pickaxe, LockKeyhole, Coins, Clock3, CheckCircle2, RefreshCw } from 'lucide-react';

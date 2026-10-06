@@ -1,4 +1,4 @@
-﻿import { requireAdmin } from "../../../../_lib/admin";
+import { requireAdmin } from "../../../../_lib/admin";
 import {
   getProviderConfig,
   getEnvString,

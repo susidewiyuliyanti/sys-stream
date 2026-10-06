@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SYS STREAMER - CLOUDFLARE WORKER
  * Real-time Durable Object for Live Stream Chat (TikTok + App), Game Widgets,
  * NOWPayments Gateway, and D1 Database (users, payments, locks, leaderboard, rooms, referral).

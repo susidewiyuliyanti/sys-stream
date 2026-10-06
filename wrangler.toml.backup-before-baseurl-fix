@@ -1,4 +1,4 @@
-﻿name = "sys-streamer"
+name = "sys-streamer"
 main = "worker/index.ts"
 compatibility_date = "2024-04-01"
 

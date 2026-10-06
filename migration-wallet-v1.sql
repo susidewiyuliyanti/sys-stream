@@ -1,4 +1,4 @@
-﻿ALTER TABLE payments ADD COLUMN nowpayments_status TEXT;
+ALTER TABLE payments ADD COLUMN nowpayments_status TEXT;
 ALTER TABLE payments ADD COLUMN pay_currency TEXT;
 ALTER TABLE payments ADD COLUMN pay_amount REAL;
 ALTER TABLE payments ADD COLUMN pay_address TEXT;

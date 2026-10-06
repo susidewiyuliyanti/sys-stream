@@ -1,4 +1,4 @@
-﻿import { encryptSocialToken } from "./crypto";
+import { encryptSocialToken } from "./crypto";
 
 export type StoreSocialTokenInput = {
   platform: string;

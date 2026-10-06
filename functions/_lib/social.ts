@@ -1,4 +1,4 @@
-﻿export type SocialPlatform =
+export type SocialPlatform =
   | "tiktok"
   | "youtube"
   | "instagram"

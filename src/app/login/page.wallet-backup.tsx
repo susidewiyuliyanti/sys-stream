@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { sound } from '../../lib/sound';
 import { TERMS_VERSION } from '../terms/page';
