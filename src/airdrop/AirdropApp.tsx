@@ -456,6 +456,8 @@ export default function AirdropApp() {
 
   const openTask=(task:Task)=>{
     if(task.type==='checkin'){
+      setSelectedTask(null);
+      setCheckinMonth(new Date().toISOString().slice(0,7));
       setCheckinCalendarOpen(true);
       return;
     }
@@ -559,7 +561,7 @@ export default function AirdropApp() {
           <div className="text-xs text-slate-400">{Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} onClick={()=>openTask(t)} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
+          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.estimated} · {tx.proof}</div>
           </button>})}
