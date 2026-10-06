@@ -485,7 +485,7 @@ Object.assign(translations.zh, {
   'Verify your email''验证您的邮箱','or Connect with Crypto Wallet''或连接加密钱包'
 });
 Object.assign(translations.ja, {
-  'Wallet Identity''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆID','CONNECTING WALLET...''ウォレット接続中…','Wallet Connected''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæŽ¥ç¶šæ¸ˆã¿',
+  'Wallet Identity''ウォレットID','CONNECTING WALLET...''ウォレット接続中…','Wallet Connected''ウォレット接続済み',
   'Connect Wallet for Registration''登録用ウォレットを接続','Register Now''今すぐ登録','Forgot Password?''パスワードを忘れましたか？',
   'Verify your email''メールを確認','or Connect with Crypto Wallet''または暗号資産ウォレットを接続'
 });
@@ -539,10 +539,10 @@ const CROSS_PAGE_UI: Record<LanguageCode, Record<string,string>> = {
   'Profile''Perfil','User ID = Wallet Address''ID do usuário = endereço da carteira','Member''Membro','USDT Account''Conta USDT','EVM Wallet''Carteira EVM','Available''Disponível','Locked''Bloqueado','Withdraw''Sacar','Registration Bonus''Bônus de registro','Claim Bonus''Resgatar bônus','Available Balance''Saldo disponível','Referral Link''Link de indicação','Transaction History''Histórico de transações','Refresh''Atualizar','Loading...''Carregando...','Live Now''Ao vivo','Upload / Create Post''Enviar / criar publicação','Community''Comunidade','Terbitkan Postingan''Publicar','Back''Voltar','Legal''Legal','Version''Versão','Important''Importante','Terms & Conditions''Termos e condições','Privacy Policy''Política de privacidade'
  },
  zh: {
-  'Profile''个人资料','User ID = Wallet Address''用户ID = 钱包地址','Member''会员','USDT Account''USDT账户','EVM Wallet''EVM钱包','Available''可用','Locked''已锁定','Withdraw''提现','Registration Bonus''注册奖励','Claim Bonus''领取奖励','Available Balance''可用余额','Referral Link''推荐链接','Transaction History''交易记录','Refresh''刷新','Loading...''加载中…','Live Now''正在直播','Upload / Create Post''上传 / 创建帖子','Community''社区','Terbitkan Postingan''å‘å¸ƒ','Back''返回','Legal''法律','Version''版本','Important''é‡è¦ï¼š','Terms & Conditions''条款与条件','Privacy Policy''隐私政策'
+  'Profile''个人资料','User ID = Wallet Address''用户ID = 钱包地址','Member''会员','USDT Account''USDT账户','EVM Wallet''EVM钱包','Available''可用','Locked''已锁定','Withdraw''提现','Registration Bonus''注册奖励','Claim Bonus''领取奖励','Available Balance''可用余额','Referral Link''推荐链接','Transaction History''交易记录','Refresh''刷新','Loading...''加载中…','Live Now''正在直播','Upload / Create Post''上传 / 创建帖子','Community''社区','Terbitkan Postingan''发布','Back''返回','Legal''法律','Version''版本','Important''重要：','Terms & Conditions''条款与条件','Privacy Policy''隐私政策'
  },
  ja: {
-  'Profile''ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','User ID = Wallet Address''ãƒ¦ãƒ¼ã‚¶ãƒ¼ID = ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Member''ãƒ¡ãƒ³ãƒãƒ¼','USDT Account''USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','EVM Wallet''EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Available''åˆ©ç”¨å¯èƒ½','Locked''ãƒ­ãƒƒã‚¯æ¸ˆã¿','Withdraw''出金','Registration Bonus''ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹','Claim Bonus''ãƒœãƒ¼ãƒŠã‚¹ã‚’å—ã‘å–ã‚‹','Available Balance''åˆ©ç”¨å¯èƒ½æ®‹é«˜','Referral Link''ç´¹ä»‹ãƒªãƒ³ã‚¯','Transaction History''取引履歴','Refresh''更新','Loading...''読み込み中…','Live Now''ãƒ©ã‚¤ãƒ–ä¸­','Upload / Create Post''æŠ•ç¨¿ã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / ä½œæˆ','Community''ã‚³ãƒŸãƒ¥ãƒ‹ãƒ†ã‚£','Terbitkan Postingan''æŠ•ç¨¿ã™ã‚‹','Back''æˆ»ã‚‹','Legal''法務','Version''ãƒãƒ¼ã‚¸ãƒ§ãƒ³','Important''é‡è¦ï¼š','Terms & Conditions''利用規約','Privacy Policy''ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼'
+  'Profile''プロフィール','User ID = Wallet Address''ユーザーID = ウォレットアドレス','Member''メンバー','USDT Account''USDTアカウント','EVM Wallet''EVMウォレット','Available''利用可能','Locked''ロック済み','Withdraw''出金','Registration Bonus''登録ボーナス','Claim Bonus''ボーナスを受け取る','Available Balance''利用可能残高','Referral Link''紹介リンク','Transaction History''取引履歴','Refresh''更新','Loading...''読み込み中…','Live Now''ライブ中','Upload / Create Post''投稿をアップロード / 作成','Community''コミュニティ','Terbitkan Postingan''投稿する','Back''戻る','Legal''法務','Version''バージョン','Important''重要：','Terms & Conditions''利用規約','Privacy Policy''プライバシーポリシー'
  },
  ko: {
   'Profile''프로필','User ID = Wallet Address''사용자 ID = 지갑 주소','Member''회원','USDT Account''USDT 계정','EVM Wallet''EVM 지갑','Available''사용 가능','Locked''잠김','Withdraw''출금','Registration Bonus''가입 보너스','Claim Bonus''보너스 받기','Available Balance''사용 가능 잔액','Referral Link''추천 링크','Transaction History''거래 내역','Refresh''새로고침','Loading...''로드 중...','Live Now''라이브','Upload / Create Post''게시물 업로드 / 만들기','Community''커뮤니티','Terbitkan Postingan''게시','Back''뒤로','Legal''법률','Version''버전','Important''중요','Terms & Conditions''이용약관','Privacy Policy''개인정보 처리방침'
@@ -614,7 +614,7 @@ const PAGE_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Live Room Aktif''Live Room Active','Live belum aktif''Live is not active','Peserta Live''Live Participants','Hanya akun yang benar-benar bergabung yang ditampilkan.''Only accounts that actually joined are displayed.','Peserta''Participants','CHAT''CHAT','Memuat peserta...''Loading participants...','Belum ada peserta lain.''No other participants yet.','Belum ada peserta.''No participants yet.','Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini.''No messages yet. Be the first user to contribute to this room.','Tulis sebagai''Write as','Anda''You','Profil akun Anda''Your account profile',
     'Cyber Daily Mystery Box''Cyber Daily Mystery Box','Apex High-Roller Crate''Apex High-Roller Crate','Reward harian diproses server dan masuk ke saldo tersedia.''Daily rewards are processed by the server and added to your available balance.','Nominal Lock (IDR)''Lock Amount (IDR)','Lock Saldo Sekarang''Lock Balance Now','Claim Blind Box Harian''Claim Daily Blind Box','Lock Aktif''Active Lock','Daily Active Reward''Daily Active Reward','Enhanced Lock Tier''Enhanced Lock Tier','Premium Lock Tier''Premium Lock Tier','Reward harian masuk ke saldo''Daily reward is added to balance','Memproses Reward Blind Box...''Processing Blind Box Reward...','Reward Blind Box Harian''Daily Blind Box Reward','Reward dikreditkan ke saldo tersedia''Reward credited to available balance','Durasi Lock''Lock Duration','30 HARI''30 DAYS','60 HARI''60 DAYS','90 HARI''90 DAYS',
     'Viewer Username Raffle Spinner''Spinner Undian Username Penonton','Live Participants Only''Hanya Peserta Live','Spinning for Winner...''Sedang memutar untuk menentukan pemenang...','Current Viewers on Wheel''Penonton saat ini di spinner','Recent Raffle Winners''Pemenang Undian Terbaru',
-    'Interaction Challenge â€” No Financial Stake''Interaction Challenge — No Financial Stake','Mode Interaksi''Interaction Mode','Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.''This challenge does not use user balance. There is no deposit, lock, balance deduction, or financial payout.','Verify Challenge''Verify Challenge','Verifying Cryptographic Seed...''Verifying Cryptographic Seed...','Provably Fair Verification''Provably Fair Verification'
+    'Interaction Challenge — No Financial Stake''Interaction Challenge — No Financial Stake','Mode Interaksi''Interaction Mode','Challenge ini tidak menggunakan saldo pengguna. Tidak ada deposit, lock, pemotongan saldo, atau payout finansial.''This challenge does not use user balance. There is no deposit, lock, balance deduction, or financial payout.','Verify Challenge''Verify Challenge','Verifying Cryptographic Seed...''Verifying Cryptographic Seed...','Provably Fair Verification''Provably Fair Verification'
   },
   es: {
     'Masuk untuk bergabung ke Live Room''Inicia sesión para unirte a la sala en vivo','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''Cada cuenta tiene su propio perfil e identidad en la sala.','Live Room Aktif''Sala en vivo activa','Live belum aktif''La sala en vivo no está activa','Peserta Live''Participantes en vivo','Hanya akun yang benar-benar bergabung yang ditampilkan.''Solo se muestran las cuentas que realmente se han unido.','Memuat peserta...''Cargando participantes...','Belum ada peserta lain.''Aún no hay otros participantes.','Belum ada peserta.''Aún no hay participantes.','CHAT''CHAT','Peserta''PARTICIPANTES','Profil akun Anda''Perfil de tu cuenta',
@@ -627,17 +627,17 @@ const PAGE_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Mode Interaksi''Modo de interação','Verify Challenge''Verificar desafio','Provably Fair Verification''Verificação comprovadamente justa'
   },
   zh: {
-    'Masuk untuk bergabung ke Live Room''登录以加入直播间','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''æ¯ä¸ªè´¦æˆ·åœ¨ç›´æ’­é—´éƒ½æœ‰ç‹¬ç«‹çš„ä¸ªäººèµ„æ–™å’Œèº«ä»½ã€‚','Live Room Aktif''直播间已开启','Live belum aktif''直播尚未开启','Peserta Live''ç›´æ’­å‚ä¸Žè€…','Hanya akun yang benar-benar bergabung yang ditampilkan.''ä»…æ˜¾ç¤ºå®žé™…åŠ å…¥çš„è´¦æˆ·ã€‚','Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.''æš‚æ— å‚ä¸Žè€…ã€‚','Peserta''å‚ä¸Žè€…','Profil akun Anda''æ‚¨çš„è´¦æˆ·èµ„æ–™',
+    'Masuk untuk bergabung ke Live Room''登录以加入直播间','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''每个账户在直播间都有独立的个人资料和身份。','Live Room Aktif''直播间已开启','Live belum aktif''直播尚未开启','Peserta Live''直播参与者','Hanya akun yang benar-benar bergabung yang ditampilkan.''仅显示实际加入的账户。','Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''暂无其他参与者。','Belum ada peserta.''暂无参与者。','Peserta''参与者','Profil akun Anda''您的账户资料',
     'Nominal Lock (IDR)''锁定金额（IDR）','Lock Saldo Sekarang''立即锁定余额','Claim Blind Box Harian''领取每日盲盒','Lock Aktif''锁定中','Reward harian masuk ke saldo''每日奖励将加入余额','Durasi Lock''锁定期限','30 HARI''30天','60 HARI''60天','90 HARI''90天',
     'Mode Interaksi''互动模式','Verify Challenge''验证挑战','Provably Fair Verification''公平验证'
   },
   ja: {
-    'Masuk untuk bergabung ke Live Room''ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''å„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ã¯ãƒ«ãƒ¼ãƒ å†…ã§å›ºæœ‰ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã¨IDãŒã‚ã‚Šã¾ã™ã€‚','Live Room Aktif''ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ãŒæœ‰åŠ¹ã§ã™','Live belum aktif''ãƒ©ã‚¤ãƒ–ã¯ã¾ã é–‹å§‹ã•ã‚Œã¦ã„ã¾ã›ã‚“','Peserta Live''ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Hanya akun yang benar-benar bergabung yang ditampilkan.''å®Ÿéš›ã«å‚åŠ ã—ãŸã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã¿è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚','Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.''å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Peserta''å‚åŠ è€…','Profil akun Anda''ã‚ãªãŸã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«',
+    'Masuk untuk bergabung ke Live Room''ログインしてライブルームに参加','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''各アカウントにはルーム内で固有のプロフィールとIDがあります。','Live Room Aktif''ライブルームが有効です','Live belum aktif''ライブはまだ開始されていません','Peserta Live''ライブ参加者','Hanya akun yang benar-benar bergabung yang ditampilkan.''実際に参加したアカウントのみ表示されます。','Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''他の参加者はいません。','Belum ada peserta.''参加者はいません。','Peserta''参加者','Profil akun Anda''あなたのアカウントプロフィール',
     'Nominal Lock (IDR)''ロック金額（IDR）','Lock Saldo Sekarang''残高をロック','Claim Blind Box Harian''毎日のブラインドボックスを受け取る','Lock Aktif''ロック中','Reward harian masuk ke saldo''毎日の報酬は残高に追加されます','Durasi Lock''ロック期間','30 HARI''30日','60 HARI''60日','90 HARI''90日',
     'Mode Interaksi''インタラクションモード','Verify Challenge''チャレンジを確認','Provably Fair Verification''公平性の検証'
   },
   ko: {
-    'Masuk untuk bergabung ke Live Room''로그인하여 라이브 룸에 참여하세요','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''각 계정은 룸에서 고유한 프로필과 신원을 가집니다.','Live Room Aktif''라이브 룸 활성','Live belum aktif''라이브가 아직 시작되지 않았습니다','Peserta Live''라이브 참가자','Hanya akun yang benar-benar bergabung yang ditampilkan.''실제로 참여한 계정만 표시됩니다.','Memuat peserta...''참가자 불러오는 중…','Belum ada peserta lain.''아직 다른 참가자가 없습니다.','Belum ada peserta.''참가자가 없습니다.','Peserta''참가자','Profil akun Anda''ë‚´ ê³„ì • í”„ë¡œí•„',
+    'Masuk untuk bergabung ke Live Room''로그인하여 라이브 룸에 참여하세요','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''각 계정은 룸에서 고유한 프로필과 신원을 가집니다.','Live Room Aktif''라이브 룸 활성','Live belum aktif''라이브가 아직 시작되지 않았습니다','Peserta Live''라이브 참가자','Hanya akun yang benar-benar bergabung yang ditampilkan.''실제로 참여한 계정만 표시됩니다.','Memuat peserta...''참가자 불러오는 중…','Belum ada peserta lain.''아직 다른 참가자가 없습니다.','Belum ada peserta.''참가자가 없습니다.','Peserta''참가자','Profil akun Anda''내 계정 프로필',
     'Nominal Lock (IDR)''잠금 금액(IDR)','Lock Saldo Sekarang''잔액 잠금','Claim Blind Box Harian''일일 블라인드 박스 받기','Lock Aktif''잠금 활성','Reward harian masuk ke saldo''일일 보상이 잔액에 추가됩니다','Durasi Lock''잠금 기간','30 HARI''30일','60 HARI''60일','90 HARI''90일',
     'Mode Interaksi''상호작용 모드','Verify Challenge''챌린지 확인','Provably Fair Verification''공정성 검증'
   },
@@ -1036,7 +1036,7 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Don't have an account?" "还没有账户？",
     "Secured with Web3" "使用 Web3 安全保护",
     "Biometric Login Available" "生物识别登录可用",
-    "Edit" "ç¼–è¾‘",
+    "Edit" "编辑",
     "Logout" "退出登录",
     "Yield" "收益：",
     "Locked Balance Policy" "锁定余额政策",
@@ -1067,7 +1067,7 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "60 Days Term" "60天期限",
     "90 Days Term" "90天期限",
     "Streamer raffle wheel containing live viewer usernames..." "包含直播观众用户名的主播抽奖转盘...",
-    "WIN" "èŽ·èƒœ",
+    "WIN" "获胜",
     "Streamer Username Manager" "主播用户名管理器",
     "Add" "添加",
     "Clear All" "全部清除",
@@ -1116,15 +1116,15 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Don't have an account?" "アカウントをお持ちではありませんか？",
     "Secured with Web3" "Web3で保護されています",
     "Biometric Login Available" "生体認証ログインを利用できます",
-    "Edit" "ç·¨é›†",
-    "Logout" "ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ",
+    "Edit" "編集",
+    "Logout" "ログアウト",
     "Yield" "利回り：",
     "Locked Balance Policy" "ロック残高ポリシー",
     "Locked USDT earns passive daily yield..." "ロックしたUSDTは毎日パッシブ利回りを獲得します...",
     "Earn Passive Crypto & Gold Coins" "暗号資産とゴールドコインをパッシブに獲得",
     "Invite fellow gamers to NEXUS..." "他のゲーマーをNEXUSに招待...",
-    "Anyone registering with your link receives..." "ã‚ãªãŸã®ãƒªãƒ³ã‚¯ã§ç™»éŒ²ã™ã‚‹ã¨...",
-    "+500 Gold Coins" "+500ã‚´ãƒ¼ãƒ«ãƒ‰ã‚³ã‚¤ãƒ³",
+    "Anyone registering with your link receives..." "あなたのリンクで登録すると...",
+    "+500 Gold Coins" "+500ゴールドコイン",
     "Unclaimed Commission Balance" "未請求コミッション残高",
     "Tier 1 (Direct)" "ティア1（直接）",
     "Tier 2 (Sub-Affiliate)" "ティア2（サブアフィリエイト）",
@@ -1134,14 +1134,14 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Belum ada data referral produksi untuk wallet ini." "このウォレットの本番リファラルデータはありません。",
     "Reward harian masuk ke saldo" "デイリー報酬が残高に追加されます",
     "Buka Blind Box harian berdasarkan saldo..." "残高に基づいて毎日のブラインドボックスを開きます...",
-    "Daily Boxes" "ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹",
+    "Daily Boxes" "デイリーボックス",
     "Durasi lock tersedia" "利用可能なロック期間",
-    "Lock Amount" "ãƒ­ãƒƒã‚¯é¡",
+    "Lock Amount" "ロック額",
     "Durasi Lock" "ロック期間",
     "Lock Aktif" "ロック中",
     "Daily Claim" "デイリー受取",
     "Reward dikreditkan ke saldo tersedia" "報酬は利用可能残高に加算されます",
-    "Power Stat" "ãƒ‘ãƒ¯ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹",
+    "Power Stat" "パワーステータス",
     "Select Mystery Crate Tier" "ミステリークレートのティアを選択",
     "30 Days Term" "30日間",
     "60 Days Term" "60日間",
@@ -1150,17 +1150,17 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "WIN" "WIN",
     "Streamer Username Manager" "ストリーマーユーザー名管理",
     "Add" "追加",
-    "Clear All" "ã™ã¹ã¦ã‚¯ãƒªã‚¢",
+    "Clear All" "すべてクリア",
     "Predict the concealed cryptographic serial digits..." "隠された暗号シリアル数字を予測...",
-    "Close" "é–‰ã˜ã‚‹",
+    "Close" "閉じる",
     "Card Digits (Exactly 4 Digits) & Conceal Toggle" "カード数字（4桁）と非表示切替",
-    "Cancel" "ã‚­ãƒ£ãƒ³ã‚»ãƒ«",
+    "Cancel" "キャンセル",
     "Save & Publish Card" "カードを保存して公開",
     "Serial No" "シリアル番号：",
     "Digital Crypto Verification Code (4 Digits)" "デジタル暗号検証コード（4桁）",
     "The 4-digit code is tied to serial number..." "4桁コードはシリアル番号に紐付いています...",
-    "LOGIN / REGISTER" "ãƒ­ã‚°ã‚¤ãƒ³ / ç™»éŒ²",
-    "CHAT" "ãƒãƒ£ãƒƒãƒˆ",
+    "LOGIN / REGISTER" "ログイン / 登録",
+    "CHAT" "チャット",
     "PESERTA" "参加者",
     "Sign in to continue streaming and gaming" "ログインして配信とゲームを続ける",
     "Remember me" "ログイン状態を保持",
@@ -1168,26 +1168,26 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "or Connect with Crypto Wallet" "または暗号資産ウォレットを接続",
     "Connect Wallet" "ウォレットを接続",
     "Register Now" "今すぐ登録",
-    "ADMIN PANEL" "ç®¡ç†è€…ãƒ‘ãƒãƒ«",
+    "ADMIN PANEL" "管理者パネル",
     "Secure administrator access" "安全な管理者アクセス",
-    "Admin Email" "ç®¡ç†è€…ãƒ¡ãƒ¼ãƒ«",
-    "Password / Owner Key" "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ / ã‚ªãƒ¼ãƒŠãƒ¼ã‚­ãƒ¼",
+    "Admin Email" "管理者メール",
+    "Password / Owner Key" "パスワード / オーナーキー",
     "Production" "本番環境",
     "Overview" "概要",
-    "Users" "ãƒ¦ãƒ¼ã‚¶ãƒ¼",
+    "Users" "ユーザー",
     "Transactions" "取引",
     "Jackpot Grants" "ジャックポット付与",
-    "Admin Accounts" "ç®¡ç†è€…ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ",
+    "Admin Accounts" "管理者アカウント",
     "Admin isolation" "管理者分離",
     "Production data only" "本番データのみ",
     "Select User" "ユーザーを選択",
     "Choose user..." "ユーザーを選択...",
     "Jackpot Value (USDT)" "ジャックポット金額（USDT）",
     "Reason / Audit Note" "理由 / 監査メモ",
-    "Task" "ã‚¿ã‚¹ã‚¯",
-    "Category" "ã‚«ãƒ†ã‚´ãƒª",
+    "Task" "タスク",
+    "Category" "カテゴリ",
     "Reward" "報酬",
-    "Status" "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹",
+    "Status" "ステータス",
     "Action" "操作",
     "Checking admin session..." "管理者セッションを確認中..."
   },
@@ -1209,7 +1209,7 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Tier 1 (Direct)" "1단계 (직접)",
     "Tier 2 (Sub-Affiliate)" "2단계 (서브 제휴)",
     "Tier 3 (Extended)" "3단계 (확장)",
-    "14 Players" "14ëª…",
+    "14 Players" "14명",
     "Slide to project your estimated monthly passive revenue..." "슬라이드하여 예상 월간 패시브 수익을 확인...",
     "Belum ada data referral produksi untuk wallet ini." "이 지갑의 프로덕션 추천 데이터가 없습니다.",
     "Reward harian masuk ke saldo" "일일 보상이 잔액에 추가됩니다",
@@ -1232,7 +1232,7 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Add" "추가",
     "Clear All" "모두 지우기",
     "Predict the concealed cryptographic serial digits..." "숨겨진 암호 시리얼 숫자를 예측...",
-    "Close" "ë‹«ê¸°",
+    "Close" "닫기",
     "Card Digits (Exactly 4 Digits) & Conceal Toggle" "카드 숫자(정확히 4자리) 및 숨김 전환",
     "Cancel" "취소",
     "Save & Publish Card" "카드 저장 및 게시",
@@ -1255,7 +1255,7 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Production" "프로덕션",
     "Overview" "개요",
     "Users" "사용자",
-    "Transactions" "ê±°ëž˜",
+    "Transactions" "거래",
     "Jackpot Grants" "잭팟 지급",
     "Admin Accounts" "관리자 계정",
     "Admin isolation" "관리자 격리",
@@ -1359,10 +1359,10 @@ const EXPANDED_LEGACY_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
 const CORE_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
   id: {
     'Profile''Profil','Kelola akun, wallet, dan aktivitas kamu.''Kelola akun, wallet, dan aktivitas kamu.','User ID = Wallet Address''ID Pengguna = Alamat Wallet','Available''Tersedia','Locked''Terkunci','Withdraw''Penarikan','Ajukan penarikan''Ajukan penarikan','Registration Bonus''Bonus Pendaftaran','Bonus tersedia dan belum diklaim.''Bonus tersedia dan belum diklaim.','Available Balance''Saldo Tersedia','Bagikan link ini untuk mengundang user baru.''Bagikan link ini untuk mengundang user baru.','Event Participation Status''Status Partisipasi Event','Belum ada event yang diikuti.''Belum ada event yang diikuti.','Deposit, withdrawal, lock, reward & bonus''Deposit, penarikan, lock, reward & bonus','Belum ada transaksi.''Belum ada transaksi.','Submit Withdrawal''Ajukan Penarikan','Upload / Create Post''Upload / Buat Post',
-    'TOP USERS RANKED''PERINGKAT PENGGUNA TERATAS','TOTAL REFERRALS''TOTAL REFERRAL','BONUS BALANCE''SALDO BONUS','INVITE FRIENDS â€” EARN NOW''UNDANG TEMAN — DAPATKAN REWARD','Privacy Policy''Kebijakan Privasi','Last updated: October 1, 2026''Terakhir diperbarui: 1 Oktober 2026','Terms & Conditions''Syarat & Ketentuan','Please read these terms before creating your SYS STREAM account.''Baca ketentuan ini sebelum membuat akun SYS STREAM.','Remember me''Ingat saya','or Connect with Crypto Wallet''atau Hubungkan dengan Crypto Wallet','Connect Wallet''Hubungkan Wallet',"Don't have an account? "'Belum punya akun? ','EVM Wallet Recovery Phrase''Recovery Phrase EVM Wallet','Wallet Address''Alamat Wallet','Recovery Phrase''Recovery Phrase','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.''Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.'
+    'TOP USERS RANKED''PERINGKAT PENGGUNA TERATAS','TOTAL REFERRALS''TOTAL REFERRAL','BONUS BALANCE''SALDO BONUS','INVITE FRIENDS — EARN NOW''UNDANG TEMAN — DAPATKAN REWARD','Privacy Policy''Kebijakan Privasi','Last updated: October 1, 2026''Terakhir diperbarui: 1 Oktober 2026','Terms & Conditions''Syarat & Ketentuan','Please read these terms before creating your SYS STREAM account.''Baca ketentuan ini sebelum membuat akun SYS STREAM.','Remember me''Ingat saya','or Connect with Crypto Wallet''atau Hubungkan dengan Crypto Wallet','Connect Wallet''Hubungkan Wallet',"Don't have an account? "'Belum punya akun? ','EVM Wallet Recovery Phrase''Recovery Phrase EVM Wallet','Wallet Address''Alamat Wallet','Recovery Phrase''Recovery Phrase','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.''Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.'
   },
   en: {
-    'Profile''Profile','Kelola akun, wallet, dan aktivitas kamu.''Manage your account, wallet, and activity.','User ID = Wallet Address''User ID = Wallet Address','Available''Available','Locked''Locked','Withdraw''Withdraw','Ajukan penarikan''Request Withdrawal','Registration Bonus''Registration Bonus','Bonus tersedia dan belum diklaim.''Bonus is available and has not been claimed.','Available Balance''Available Balance','Bagikan link ini untuk mengundang user baru.''Share this link to invite new users.','Event Participation Status''Event Participation Status','Belum ada event yang diikuti.''No events joined yet.','Deposit, withdrawal, lock, reward & bonus''Deposit, withdrawal, lock, reward & bonus','Belum ada transaksi.''No transactions yet.','Submit Withdrawal''Submit Withdrawal','Upload / Create Post''Upload / Create Post','TOP USERS RANKED''TOP USERS RANKED','TOTAL REFERRALS''TOTAL REFERRALS','BONUS BALANCE''BONUS BALANCE','INVITE FRIENDS â€” EARN NOW''INVITE FRIENDS — EARN NOW','Privacy Policy''Privacy Policy','Last updated: October 1, 2026''Last updated: October 1, 2026','Terms & Conditions''Terms & Conditions','Please read these terms before creating your SYS STREAM account.''Please read these terms before creating your SYS STREAM account.','Remember me''Remember me','or Connect with Crypto Wallet''or Connect with Crypto Wallet','Connect Wallet''Connect Wallet',"Don't have an account? ""Don't have an account? ",'EVM Wallet Recovery Phrase''EVM Wallet Recovery Phrase','Wallet Address''Wallet Address','Recovery Phrase''Recovery Phrase'
+    'Profile''Profile','Kelola akun, wallet, dan aktivitas kamu.''Manage your account, wallet, and activity.','User ID = Wallet Address''User ID = Wallet Address','Available''Available','Locked''Locked','Withdraw''Withdraw','Ajukan penarikan''Request Withdrawal','Registration Bonus''Registration Bonus','Bonus tersedia dan belum diklaim.''Bonus is available and has not been claimed.','Available Balance''Available Balance','Bagikan link ini untuk mengundang user baru.''Share this link to invite new users.','Event Participation Status''Event Participation Status','Belum ada event yang diikuti.''No events joined yet.','Deposit, withdrawal, lock, reward & bonus''Deposit, withdrawal, lock, reward & bonus','Belum ada transaksi.''No transactions yet.','Submit Withdrawal''Submit Withdrawal','Upload / Create Post''Upload / Create Post','TOP USERS RANKED''TOP USERS RANKED','TOTAL REFERRALS''TOTAL REFERRALS','BONUS BALANCE''BONUS BALANCE','INVITE FRIENDS — EARN NOW''INVITE FRIENDS — EARN NOW','Privacy Policy''Privacy Policy','Last updated: October 1, 2026''Last updated: October 1, 2026','Terms & Conditions''Terms & Conditions','Please read these terms before creating your SYS STREAM account.''Please read these terms before creating your SYS STREAM account.','Remember me''Remember me','or Connect with Crypto Wallet''or Connect with Crypto Wallet','Connect Wallet''Connect Wallet',"Don't have an account? ""Don't have an account? ",'EVM Wallet Recovery Phrase''EVM Wallet Recovery Phrase','Wallet Address''Wallet Address','Recovery Phrase''Recovery Phrase'
   },
   es: {'Profile''Perfil','Kelola akun, wallet, dan aktivitas kamu.''Administra tu cuenta, billetera y actividad.','User ID = Wallet Address''ID de usuario = dirección de billetera','Available''Disponible','Locked''Bloqueado','Withdraw''Retirar','Registration Bonus''Bono de registro','Available Balance''Saldo disponible','Event Participation Status''Estado de participación en eventos','Transaction History''Historial de transacciones','Privacy Policy''Política de privacidad','Terms & Conditions''Términos y condiciones','Remember me''Recuérdame','Connect Wallet''Conectar billetera','Wallet Address''Dirección de billetera','Recovery Phrase''Frase de recuperación'},
   pt: {'Profile''Perfil','Kelola akun, wallet, dan aktivitas kamu.''Gerencie sua conta, carteira e atividade.','User ID = Wallet Address''ID do usuário = endereço da carteira','Available''Disponível','Locked''Bloqueado','Withdraw''Saque','Registration Bonus''Bônus de registro','Available Balance''Saldo disponível','Event Participation Status''Status de participação no evento','Transaction History''Histórico de transações','Privacy Policy''Política de privacidade','Terms & Conditions''Termos e condições','Remember me''Lembrar de mim','Connect Wallet''Conectar carteira','Wallet Address''Endereço da carteira','Recovery Phrase''Frase de recuperação'},
@@ -1415,7 +1415,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'LOGIN / REGISTER''INICIAR SESIÓN / REGISTRARSE','CHAT''CHAT','PESERTA''PARTICIPANTES','Kirim''Enviar','Tulis pesan''Escribe un mensaje',
     'Like gagal dikirim.''No se pudo enviar el Me gusta.','Gagal memuat live room.''No se pudo cargar la sala en vivo.','Aksi live room gagal.''La acción de la sala en vivo falló.',
     'Masukkan alamat wallet tujuan.''Introduce la dirección de la billetera.','Saldo tersedia tidak mencukupi.''Saldo disponible insuficiente.','Penarikan gagal.''Retiro fallido.',
-    'Halo,''Hola,','Buka Live Room â†’''Abrir sala en vivo →','Bonus pendaftaran masih tersedia untuk diklaim.''El bono de registro todavía se puede reclamar.'
+    'Halo,''Hola,','Buka Live Room →''Abrir sala en vivo →','Bonus pendaftaran masih tersedia untuk diklaim.''El bono de registro todavía se puede reclamar.'
   },
   pt: {
     'SYS STREAM LOADING''CARREGANDO SYS STREAM','Initializing TikTok Live Sync + Cloudflare D1 Connection''Inicializando sincronização do TikTok Live + conexão Cloudflare D1',
@@ -1428,13 +1428,13 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'LOGIN / REGISTER''ENTRAR / REGISTRAR','CHAT''CHAT','PESERTA''PARTICIPANTES','Kirim''Enviar','Tulis pesan''Digite uma mensagem',
     'Like gagal dikirim.''Não foi possível enviar a curtida.','Gagal memuat live room.''Falha ao carregar a sala ao vivo.','Aksi live room gagal.''A ação da sala ao vivo falhou.',
     'Masukkan alamat wallet tujuan.''Informe o endereço da carteira.','Saldo tersedia tidak mencukupi.''Saldo disponível insuficiente.','Penarikan gagal.''Falha no saque.',
-    'Halo,''Olá,','Buka Live Room â†’''Abrir sala ao vivo →','Bonus pendaftaran masih tersedia untuk diklaim.''O bônus de registro ainda pode ser resgatado.'
+    'Halo,''Olá,','Buka Live Room →''Abrir sala ao vivo →','Bonus pendaftaran masih tersedia untuk diklaim.''O bônus de registro ainda pode ser resgatado.'
   },
   zh: {
     'SYS STREAM LOADING''SYS STREAM 加载中','Initializing TikTok Live Sync + Cloudflare D1 Connection''正在初始化 TikTok Live 同步 + Cloudflare D1 连接',    'Live Room''直播间','Live Room Aktif''直播间已开启','Live belum aktif''直播间尚未开启',
     'Masuk untuk bergabung ke Live Room''登录以加入直播间','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''每个账户在直播间都有独立的个人资料和身份。',
     'Peserta Live''直播参与者','Hanya akun yang benar-benar bergabung yang ditampilkan.''仅显示实际加入的账户。',
-    'Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.''æš‚æ— å‚ä¸Žè€…ã€‚',
+    'Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''暂无其他参与者。','Belum ada peserta.''暂无参与者。',
     'Profil akun Anda''您的账户资料','Belum ada deskripsi room dari pemilik room.''暂无房主提供的房间描述。',
     'Hanya data live produksi yang ditampilkan.''仅显示生产环境直播数据。','Tidak ada video atau streamer contoh.''不显示示例视频或主播。',
     'LOGIN / REGISTER''登录 / 注册','CHAT''聊天','PESERTA''参与者','Kirim''发送','Tulis pesan''输入消息',
@@ -1447,7 +1447,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'Live Room''ライブ配信ルーム','Live Room Aktif''ライブ配信ルームは有効です','Live belum aktif''ライブ配信はまだ有効ではありません',
     'Masuk untuk bergabung ke Live Room''ログインしてライブ配信ルームに参加','Setiap akun memiliki profil dan identitasnya sendiri di dalam room.''各アカウントにはルーム内で固有のプロフィールとIDがあります。',
     'Peserta Live''ライブ参加者','Hanya akun yang benar-benar bergabung yang ditampilkan.''実際に参加したアカウントのみ表示されます。',
-    'Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.''å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚',
+    'Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''他の参加者はいません。','Belum ada peserta.''参加者はいません。',
     'Profil akun Anda''あなたのアカウントプロフィール','Belum ada deskripsi room dari pemilik room.''ルーム所有者の説明はまだありません。',
     'Hanya data live produksi yang ditampilkan.''本番のライブデータのみ表示されます。','Tidak ada video atau streamer contoh.''サンプル動画や配信者は表示されません。',
     'LOGIN / REGISTER''ログイン / 登録','CHAT''チャット','PESERTA''参加者','Kirim''送信','Tulis pesan''メッセージを入力',
@@ -1479,7 +1479,7 @@ const GLOBAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'LOGIN / REGISTER''تسجيل الدخول / إنشاء حساب','CHAT''الدردشة','PESERTA''المشاركون','Kirim''إرسال','Tulis pesan''اكتب رسالة',
     'Like gagal dikirim.''تعذر إرسال الإعجاب.','Gagal memuat live room.''تعذر تحميل الغرفة المباشرة.','Aksi live room gagal.''فشل إجراء الغرفة المباشرة.',
     'Masukkan alamat wallet tujuan.''أدخل عنوان المحفظة المستهدفة.','Saldo tersedia tidak mencukupi.''الرصيد المتاح غير كافٍ.','Penarikan gagal.''فشل السحب.',
-    'Halo,''مرحباً،','Buka Live Room â†’''فتح الغرفة المباشرة →','Bonus pendaftaran masih tersedia untuk diklaim.''لا تزال مكافأة التسجيل متاحة للاستلام.'
+    'Halo,''مرحباً،','Buka Live Room →''فتح الغرفة المباشرة →','Bonus pendaftaran masih tersedia untuk diklaim.''لا تزال مكافأة التسجيل متاحة للاستلام.'
   }
 };
 
@@ -1576,10 +1576,10 @@ pt:{
 'Affiliate Partner Program''Programa de parceiros afiliados','Your Personal Affiliate Link''Seu link pessoal de afiliado','Direct Invitations''Convites diretos','Active Referees''Indicados ativos','Network Invites''Convites da rede','Deep Ecosystem''Ecossistema profundo','Affiliate Income Calculator''Calculadora de renda de afiliados','Active Friends Invited''Amigos ativos convidados','Average Weekly Wager per Friend''Aposta semanal média por amigo','Estimated Monthly Earnings''Ganhos mensais estimados','Live Referral Feed''Feed de indicações ao vivo','Referee Handle''Nome do indicado','Date Joined''Data de entrada','Commission Tier''Nível de comissão','Wager Volume''Volume de apostas','Commission Earned''Comissão recebida','Sign in to join the Live Room''Entre para participar da sala ao vivo','Your account profile''Seu perfil','Live Participants''Participantes ao vivo','Loading participants...''Carregando participantes...','No other participants yet.''Ainda não há outros participantes.','No participants yet.''Ainda não há participantes.','Viewer Username Raffle Spinner''Spinner de sorteio de nomes','Live Participants Only''Apenas participantes ao vivo','Spinning for Winner...''Girando para escolher o vencedor...','Current Viewers on Wheel''Espectadores atuais','Recent Raffle Winners''Vencedores recentes','Digital Crypto Card Number Guess''Adivinhe o número do cartão cripto','Streamer Card Settings''Configurações do cartão do streamer','Streamer Card Configurator''Configurador do cartão','Card Title''Título do cartão','Serial Number''Número de série','Streamer Clue / Note for Viewers''Dica do streamer para espectadores','Concealed''Oculto','Revealed''Revelado','Streamer Clue''Dica do streamer','Mode Interaksi''Modo de interação','Verifying Cryptographic Seed...''Verificando semente criptográfica...','Verify Challenge''Verificar desafio','Provably Fair Verification''Verificação comprovadamente justa','NOWPayments Crypto Deposit''Depósito cripto NOWPayments','Instant deposit with zero platform fees''Depósito instantâneo sem taxas da plataforma','Create NOWPayments Invoice''Criar fatura NOWPayments','Order ID''ID do pedido','Wallet Address''Endereço da carteira','Recovery Phrase''Frase de recuperação','Remember me''Lembrar de mim','Connect Wallet''Conectar carteira','Secured with Web3''Protegido com Web3','Biometric Login Available''Login biométrico disponível'
 },
 zh:{
-'Affiliate Partner Program''联盟合作伙伴计划','Your Personal Affiliate Link''æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations''ç›´æŽ¥é‚€è¯·','Active Referees''æ´»è·ƒæŽ¨èç”¨æˆ·ï¼š','Network Invites''ç½‘ç»œé‚€è¯·','Deep Ecosystem''深度生态','Affiliate Income Calculator''联盟收益计算器','Active Friends Invited''å·²é‚€è¯·æ´»è·ƒå¥½å‹ï¼š','Average Weekly Wager per Friend''æ¯ä½å¥½å‹å¹³å‡æ¯å‘¨æŠ•æ³¨ï¼š','Estimated Monthly Earnings''预计月收益','Live Referral Feed''实时推荐动态','Referee Handle''被推荐人','Date Joined''加入日期','Commission Tier''佣金等级','Wager Volume''投注量','Commission Earned''已获得佣金','Sign in to join the Live Room''登录以加入直播间','Your account profile''æ‚¨çš„è´¦æˆ·èµ„æ–™','Live Participants''ç›´æ’­å‚ä¸Žè€…','Loading participants...''正在加载参与者…','No other participants yet.''æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','No participants yet.''æš‚æ— å‚ä¸Žè€…ã€‚','Viewer Username Raffle Spinner''è§‚ä¼—ç”¨æˆ·åæŠ½å¥–è½¬ç›˜','Live Participants Only''ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...''正在抽取获胜者…','Current Viewers on Wheel''å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners''æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess''数字加密卡号码竞猜','Streamer Card Settings''主播卡片设置','Streamer Card Configurator''主播卡片配置器','Card Title''卡片标题','Serial Number''序列号','Streamer Clue / Note for Viewers''ä¸»æ’­ç»™è§‚ä¼—çš„æç¤º','Concealed''隐藏','Revealed''已揭示','Streamer Clue''ä¸»æ’­æç¤ºï¼š','Mode Interaksi''互动模式','Verifying Cryptographic Seed...''正在验证加密种子…','Verify Challenge''验证挑战','Provably Fair Verification''可验证公平性验证','NOWPayments Crypto Deposit''NOWPayments 加密货币充值','Instant deposit with zero platform fees''即时充值，平台零手续费','Create NOWPayments Invoice''创建 NOWPayments 发票','Order ID''è®¢å•IDï¼š','Wallet Address''钱包地址','Recovery Phrase''恢复短语','Remember me''记住我','Connect Wallet''连接钱包','Secured with Web3''由 Web3 保护','Biometric Login Available''支持生物识别登录'
+'Affiliate Partner Program''联盟合作伙伴计划','Your Personal Affiliate Link''您的个人推广链接','Direct Invitations''直接邀请','Active Referees''活跃推荐用户：','Network Invites''网络邀请','Deep Ecosystem''深度生态','Affiliate Income Calculator''联盟收益计算器','Active Friends Invited''已邀请活跃好友：','Average Weekly Wager per Friend''每位好友平均每周投注：','Estimated Monthly Earnings''预计月收益','Live Referral Feed''实时推荐动态','Referee Handle''被推荐人','Date Joined''加入日期','Commission Tier''佣金等级','Wager Volume''投注量','Commission Earned''已获得佣金','Sign in to join the Live Room''登录以加入直播间','Your account profile''您的账户资料','Live Participants''直播参与者','Loading participants...''正在加载参与者…','No other participants yet.''暂无其他参与者。','No participants yet.''暂无参与者。','Viewer Username Raffle Spinner''观众用户名抽奖转盘','Live Participants Only''仅限直播参与者','Spinning for Winner...''正在抽取获胜者…','Current Viewers on Wheel''当前转盘观众：','Recent Raffle Winners''最近抽奖获胜者','Digital Crypto Card Number Guess''数字加密卡号码竞猜','Streamer Card Settings''主播卡片设置','Streamer Card Configurator''主播卡片配置器','Card Title''卡片标题','Serial Number''序列号','Streamer Clue / Note for Viewers''主播给观众的提示','Concealed''隐藏','Revealed''已揭示','Streamer Clue''主播提示：','Mode Interaksi''互动模式','Verifying Cryptographic Seed...''正在验证加密种子…','Verify Challenge''验证挑战','Provably Fair Verification''可验证公平性验证','NOWPayments Crypto Deposit''NOWPayments 加密货币充值','Instant deposit with zero platform fees''即时充值，平台零手续费','Create NOWPayments Invoice''创建 NOWPayments 发票','Order ID''订单ID：','Wallet Address''钱包地址','Recovery Phrase''恢复短语','Remember me''记住我','Connect Wallet''连接钱包','Secured with Web3''由 Web3 保护','Biometric Login Available''支持生物识别登录'
 },
 ja:{
-'Affiliate Partner Program''ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link''ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations''直接招待','Active Referees''ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ç´¹ä»‹è€…ï¼š','Network Invites''ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem''æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator''ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Active Friends Invited''æ‹›å¾…ã—ãŸã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå‹é”ï¼š','Average Weekly Wager per Friend''å‹é”1äººã‚ãŸã‚Šå¹³å‡é€±é–“ãƒ™ãƒƒãƒˆï¼š','Estimated Monthly Earnings''推定月間収益','Live Referral Feed''ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle''ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined''å‚åŠ æ—¥','Commission Tier''ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume''ãƒ™ãƒƒãƒˆç·é¡','Commission Earned''ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Sign in to join the Live Room''ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Your account profile''ã‚ãªãŸã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Live Participants''ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Loading participants...''参加者を読み込み中…','No other participants yet.''ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','No participants yet.''å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Viewer Username Raffle Spinner''è¦–è´è€…ãƒ¦ãƒ¼ã‚¶ãƒ¼åæŠ½é¸ã‚¹ãƒ”ãƒŠãƒ¼','Live Participants Only''ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...''当選者を抽選中…','Current Viewers on Wheel''ç¾åœ¨ã®ã‚¹ãƒ”ãƒŠãƒ¼å‚åŠ è€…ï¼š','Recent Raffle Winners''最近の当選者','Digital Crypto Card Number Guess''ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings''ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator''ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title''ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number''ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Streamer Clue / Note for Viewers''è¦–è´è€…ã¸ã®ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆ','Concealed''非表示','Revealed''公開','Streamer Clue''ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ãƒ’ãƒ³ãƒˆï¼š','Mode Interaksi''ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰','Verifying Cryptographic Seed...''暗号シードを検証中…','Verify Challenge''ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification''æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','NOWPayments Crypto Deposit''NOWPayments暗号資産入金','Instant deposit with zero platform fees''ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ æ‰‹æ•°æ–™ãªã—ã®å³æ™‚å…¥é‡‘','Create NOWPayments Invoice''NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID''æ³¨æ–‡IDï¼š','Wallet Address''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹','Recovery Phrase''ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚º','Remember me''ãƒ­ã‚°ã‚¤ãƒ³çŠ¶æ…‹ã‚’ä¿æŒ','Connect Wallet''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’æŽ¥ç¶š','Secured with Web3''Web3で保護','Biometric Login Available''ç”Ÿä½“èªè¨¼ãƒ­ã‚°ã‚¤ãƒ³å¯¾å¿œ'
+'Affiliate Partner Program''アフィリエイトパートナープログラム','Your Personal Affiliate Link''あなたのアフィリエイトリンク','Direct Invitations''直接招待','Active Referees''アクティブ紹介者：','Network Invites''ネットワーク招待','Deep Ecosystem''深いエコシステム','Affiliate Income Calculator''アフィリエイト収益計算機','Active Friends Invited''招待したアクティブな友達：','Average Weekly Wager per Friend''友達1人あたり平均週間ベット：','Estimated Monthly Earnings''推定月間収益','Live Referral Feed''ライブ紹介フィード','Referee Handle''紹介ユーザー名','Date Joined''参加日','Commission Tier''コミッションレベル','Wager Volume''ベット総額','Commission Earned''獲得コミッション','Sign in to join the Live Room''ログインしてライブルームに参加','Your account profile''あなたのプロフィール','Live Participants''ライブ参加者','Loading participants...''参加者を読み込み中…','No other participants yet.''他の参加者はいません。','No participants yet.''参加者はいません。','Viewer Username Raffle Spinner''視聴者ユーザー名抽選スピナー','Live Participants Only''ライブ参加者のみ','Spinning for Winner...''当選者を抽選中…','Current Viewers on Wheel''現在のスピナー参加者：','Recent Raffle Winners''最近の当選者','Digital Crypto Card Number Guess''デジタル暗号カード番号当て','Streamer Card Settings''ストリーマーカード設定','Streamer Card Configurator''ストリーマーカード設定ツール','Card Title''カードタイトル','Serial Number''シリアル番号','Streamer Clue / Note for Viewers''視聴者へのストリーマーヒント','Concealed''非表示','Revealed''公開','Streamer Clue''ストリーマーヒント：','Mode Interaksi''インタラクションモード','Verifying Cryptographic Seed...''暗号シードを検証中…','Verify Challenge''チャレンジを検証','Provably Fair Verification''検証可能な公平性','NOWPayments Crypto Deposit''NOWPayments暗号資産入金','Instant deposit with zero platform fees''プラットフォーム手数料なしの即時入金','Create NOWPayments Invoice''NOWPayments請求書を作成','Order ID''注文ID：','Wallet Address''ウォレットアドレス','Recovery Phrase''リカバリーフレーズ','Remember me''ログイン状態を保持','Connect Wallet''ウォレットを接続','Secured with Web3''Web3で保護','Biometric Login Available''生体認証ログイン対応'
 },
 ko:{
 'Affiliate Partner Program''제휴 파트너 프로그램','Your Personal Affiliate Link''개인 제휴 링크','Direct Invitations''직접 초대','Active Referees''활성 추천인','Network Invites''네트워크 초대','Deep Ecosystem''심층 생태계','Affiliate Income Calculator''제휴 수익 계산기','Active Friends Invited''초대한 활성 친구','Average Weekly Wager per Friend''친구당 주간 평균 베팅','Estimated Monthly Earnings''예상 월 수익','Live Referral Feed''실시간 추천 피드','Referee Handle''추천 사용자','Date Joined''가입일','Commission Tier''커미션 등급','Wager Volume''베팅 규모','Commission Earned''획득 커미션','Sign in to join the Live Room''로그인하여 라이브룸 참여','Your account profile''내 계정 프로필','Live Participants''라이브 참가자','Loading participants...''참가자 로드 중...','No other participants yet.''아직 다른 참가자가 없습니다.','No participants yet.''참가자가 없습니다.','Viewer Username Raffle Spinner''시청자 사용자명 추첨 스피너','Live Participants Only''라이브 참가자만','Spinning for Winner...''당첨자 추첨 중...','Current Viewers on Wheel''현재 스피너 참가자','Recent Raffle Winners''최근 추첨 당첨자','Digital Crypto Card Number Guess''디지털 크립토 카드 번호 맞히기','Streamer Card Settings''스트리머 카드 설정','Streamer Card Configurator''스트리머 카드 구성기','Card Title''카드 제목','Serial Number''일련번호','Streamer Clue / Note for Viewers''시청자용 스트리머 힌트','Concealed''숨김','Revealed''공개','Streamer Clue''스트리머 힌트','Mode Interaksi''상호작용 모드','Verifying Cryptographic Seed...''암호 시드 확인 중...','Verify Challenge''챌린지 확인','Provably Fair Verification''검증 가능한 공정성','NOWPayments Crypto Deposit''NOWPayments 암호화폐 입금','Instant deposit with zero platform fees''플랫폼 수수료 없는 즉시 입금','Create NOWPayments Invoice''NOWPayments 인보이스 생성','Order ID''주문 ID','Wallet Address''지갑 주소','Recovery Phrase''복구 문구','Remember me''로그인 기억하기','Connect Wallet''지갑 연결','Secured with Web3''Web3로 보호됨','Biometric Login Available''생체 인증 로그인 지원'
@@ -1616,10 +1616,10 @@ const EXHAUSTIVE_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Live Room''Sala ao vivo','Gagal memuat live room.''Não foi possível carregar a sala ao vivo.','Pesan gagal dikirim.''Não foi possível enviar a mensagem.','Like gagal dikirim.''Não foi possível enviar a curtida.','Masuk untuk bergabung ke Live Room''Entre para participar da sala ao vivo','Peserta Live''Participantes ao vivo','Memuat peserta...''Carregando participantes...','Belum ada peserta lain.''Ainda não há outros participantes.','Belum ada peserta.''Ainda não há participantes.','Need More Viewers''Mais espectadores necessários','Add at least 2 viewer usernames to spin the raffle wheel.''Adicione pelo menos 2 nomes de espectadores para girar a roda.','Winner Picked!''Vencedor escolhido!','Congratulations''Parabéns','Selected as Lucky Viewer!''Selecionado como espectador sortudo!','Enter viewer username (e.g. TikTok_User)''Digite o usuário do espectador (ex.: TikTok_User)','Spinning for Winner...''Sorteando vencedor...','Current Viewers on Wheel''Espectadores atuais na roda','Recent Raffle Winners''Vencedores recentes','Digital Crypto Card Number Guess''Adivinhe o número do cartão cripto','Streamer Card Settings''Configurações do cartão do streamer','Streamer Card Configurator''Configurador do cartão do streamer','Card Title''Título do cartão','Serial Number''Número de série','Concealed''Oculto','Revealed''Revelado','Verify Challenge''Verificar desafio','Provably Fair Verification''Verificação de justiça comprovável','Affiliate Partner Program''Programa de afiliados','Your Personal Affiliate Link''Seu link pessoal de afiliado','Direct Invitations''Convites diretos','Network Invites''Convites de rede','Deep Ecosystem''Ecossistema profundo','Affiliate Income Calculator''Calculadora de ganhos de afiliados','Estimated Monthly Earnings''Ganhos mensais estimados','Live Referral Feed''Feed de indicações ao vivo','Referee Handle''Usuário indicado','Date Joined''Data de entrada','Commission Tier''Nível de comissão','Wager Volume''Volume de apostas','Commission Earned''Comissão recebida','Copied Link''Link copiado','Referral link copied to clipboard!''Link de indicação copiado!','No Pending Rewards''Sem recompensas pendentes','All referral commissions have already been transferred.''Todas as comissões de indicação já foram transferidas.','Minimum Deposit''Depósito mínimo','Minimum deposit is $5.00 USD''O depósito mínimo é US$ 5,00','Failed to generate invoice''Falha ao gerar a fatura','Create NOWPayments Invoice''Criar fatura NOWPayments','Order ID: ''ID do pedido: '
   },
   zh: {
-    'Live Room''直播间','Gagal memuat live room.''æ— æ³•åŠ è½½ç›´æ’­é—´ã€‚','Pesan gagal dikirim.''æ¶ˆæ¯å‘é€å¤±è´¥ã€‚','Like gagal dikirim.''ç‚¹èµžå‘é€å¤±è´¥ã€‚','Masuk untuk bergabung ke Live Room''登录后加入直播间','Peserta Live''ç›´æ’­å‚ä¸Žè€…','Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''æš‚æ— å…¶ä»–å‚ä¸Žè€…ã€‚','Belum ada peserta.''æš‚æ— å‚ä¸Žè€…ã€‚','Need More Viewers''éœ€è¦æ›´å¤šè§‚ä¼—','Add at least 2 viewer usernames to spin the raffle wheel.''è‡³å°‘æ·»åŠ 2ä¸ªè§‚ä¼—ç”¨æˆ·åæ‰èƒ½å¼€å§‹æŠ½å¥–ã€‚','Winner Picked!''å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations''恭喜','Selected as Lucky Viewer!''è¢«é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Enter viewer username (e.g. TikTok_User)''è¾“å…¥è§‚ä¼—ç”¨æˆ·åï¼ˆä¾‹å¦‚ TikTok_Userï¼‰','Spinning for Winner...''正在抽取获胜者…','Current Viewers on Wheel''å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners''æœ€è¿‘æŠ½å¥–èŽ·èƒœè€…','Digital Crypto Card Number Guess''数字加密卡号码竞猜','Streamer Card Settings''主播卡片设置','Streamer Card Configurator''主播卡片配置器','Card Title''卡片标题','Serial Number''序列号','Concealed''隐藏','Revealed''已揭示','Verify Challenge''验证挑战','Provably Fair Verification''可验证公平性','Affiliate Partner Program''联盟合作伙伴计划','Your Personal Affiliate Link''æ‚¨çš„ä¸ªäººæŽ¨å¹¿é“¾æŽ¥','Direct Invitations''ç›´æŽ¥é‚€è¯·','Network Invites''ç½‘ç»œé‚€è¯·','Deep Ecosystem''深度生态','Affiliate Income Calculator''联盟收益计算器','Estimated Monthly Earnings''预计月收益','Live Referral Feed''实时推荐动态','Referee Handle''被推荐人','Date Joined''加入日期','Commission Tier''佣金等级','Wager Volume''投注量','Commission Earned''已获得佣金','Copied Link''链接已复制','Referral link copied to clipboard!''推荐链接已复制！','No Pending Rewards''没有待处理奖励','All referral commissions have already been transferred.''æ‰€æœ‰æŽ¨èä½£é‡‘å‡å·²è½¬ç§»ã€‚','Minimum Deposit''最低充值','Minimum deposit is $5.00 USD''æœ€ä½Žå……å€¼é‡‘é¢ä¸º5.00ç¾Žå…ƒ','Failed to generate invoice''生成发票失败','Create NOWPayments Invoice''创建 NOWPayments 发票','Order ID: ''订单ID：'
+    'Live Room''直播间','Gagal memuat live room.''无法加载直播间。','Pesan gagal dikirim.''消息发送失败。','Like gagal dikirim.''点赞发送失败。','Masuk untuk bergabung ke Live Room''登录后加入直播间','Peserta Live''直播参与者','Memuat peserta...''正在加载参与者…','Belum ada peserta lain.''暂无其他参与者。','Belum ada peserta.''暂无参与者。','Need More Viewers''需要更多观众','Add at least 2 viewer usernames to spin the raffle wheel.''至少添加2个观众用户名才能开始抽奖。','Winner Picked!''已选出获胜者！','Congratulations''恭喜','Selected as Lucky Viewer!''被选为幸运观众！','Enter viewer username (e.g. TikTok_User)''输入观众用户名（例如 TikTok_User）','Spinning for Winner...''正在抽取获胜者…','Current Viewers on Wheel''当前转盘观众：','Recent Raffle Winners''最近抽奖获胜者','Digital Crypto Card Number Guess''数字加密卡号码竞猜','Streamer Card Settings''主播卡片设置','Streamer Card Configurator''主播卡片配置器','Card Title''卡片标题','Serial Number''序列号','Concealed''隐藏','Revealed''已揭示','Verify Challenge''验证挑战','Provably Fair Verification''可验证公平性','Affiliate Partner Program''联盟合作伙伴计划','Your Personal Affiliate Link''您的个人推广链接','Direct Invitations''直接邀请','Network Invites''网络邀请','Deep Ecosystem''深度生态','Affiliate Income Calculator''联盟收益计算器','Estimated Monthly Earnings''预计月收益','Live Referral Feed''实时推荐动态','Referee Handle''被推荐人','Date Joined''加入日期','Commission Tier''佣金等级','Wager Volume''投注量','Commission Earned''已获得佣金','Copied Link''链接已复制','Referral link copied to clipboard!''推荐链接已复制！','No Pending Rewards''没有待处理奖励','All referral commissions have already been transferred.''所有推荐佣金均已转移。','Minimum Deposit''最低充值','Minimum deposit is $5.00 USD''最低充值金额为5.00美元','Failed to generate invoice''生成发票失败','Create NOWPayments Invoice''创建 NOWPayments 发票','Order ID: ''订单ID：'
   },
   ja: {
-    'Live Room''ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ','Gagal memuat live room.''ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚','Pesan gagal dikirim.''ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Like gagal dikirim.''ã„ã„ã­ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚','Masuk untuk bergabung ke Live Room''ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãƒ©ã‚¤ãƒ–é…ä¿¡ãƒ«ãƒ¼ãƒ ã«å‚åŠ ','Peserta Live''ãƒ©ã‚¤ãƒ–å‚åŠ è€…','Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''ä»–ã®å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Belum ada peserta.''å‚åŠ è€…ã¯ã„ã¾ã›ã‚“ã€‚','Need More Viewers''è¦–è´è€…ãŒè¶³ã‚Šã¾ã›ã‚“','Add at least 2 viewer usernames to spin the raffle wheel.''æŠ½é¸ã‚’å›žã™ã«ã¯2äººä»¥ä¸Šã®è¦–è´è€…åã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Winner Picked!''å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations''ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™','Selected as Lucky Viewer!''ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Enter viewer username (e.g. TikTok_User)''è¦–è´è€…åã‚’å…¥åŠ›ï¼ˆä¾‹ï¼šTikTok_Userï¼‰','Spinning for Winner...''当選者を抽選中…','Current Viewers on Wheel''ç¾åœ¨ã®å‚åŠ è€…ï¼š','Recent Raffle Winners''最近の当選者','Digital Crypto Card Number Guess''ãƒ‡ã‚¸ã‚¿ãƒ«æš—å·ã‚«ãƒ¼ãƒ‰ç•ªå·å½“ã¦','Streamer Card Settings''ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®š','Streamer Card Configurator''ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ã‚«ãƒ¼ãƒ‰è¨­å®šãƒ„ãƒ¼ãƒ«','Card Title''ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒˆãƒ«','Serial Number''ã‚·ãƒªã‚¢ãƒ«ç•ªå·','Concealed''非表示','Revealed''公開','Verify Challenge''ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’æ¤œè¨¼','Provably Fair Verification''æ¤œè¨¼å¯èƒ½ãªå…¬å¹³æ€§','Affiliate Partner Program''ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ','Your Personal Affiliate Link''ã‚ãªãŸã®ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆãƒªãƒ³ã‚¯','Direct Invitations''直接招待','Network Invites''ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ‹›å¾…','Deep Ecosystem''æ·±ã„ã‚¨ã‚³ã‚·ã‚¹ãƒ†ãƒ ','Affiliate Income Calculator''ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆåŽç›Šè¨ˆç®—æ©Ÿ','Estimated Monthly Earnings''推定月間収益','Live Referral Feed''ãƒ©ã‚¤ãƒ–ç´¹ä»‹ãƒ•ã‚£ãƒ¼ãƒ‰','Referee Handle''ç´¹ä»‹ãƒ¦ãƒ¼ã‚¶ãƒ¼å','Date Joined''å‚åŠ æ—¥','Commission Tier''ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ¬ãƒ™ãƒ«','Wager Volume''ãƒ™ãƒƒãƒˆç·é¡','Commission Earned''ç²å¾—ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³','Copied Link''ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸ','Referral link copied to clipboard!''ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸï¼','No Pending Rewards''ä¿ç•™ä¸­ã®å ±é…¬ã¯ã‚ã‚Šã¾ã›ã‚“','All referral commissions have already been transferred.''ç´¹ä»‹ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³ã¯ã™ã¹ã¦ç§»è¡Œæ¸ˆã¿ã§ã™ã€‚','Minimum Deposit''最低入金額','Minimum deposit is $5.00 USD''æœ€ä½Žå…¥é‡‘é¡ã¯5.00ç±³ãƒ‰ãƒ«ã§ã™','Failed to generate invoice''è«‹æ±‚æ›¸ã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ','Create NOWPayments Invoice''NOWPaymentsè«‹æ±‚æ›¸ã‚’ä½œæˆ','Order ID: ''注文ID：'
+    'Live Room''ライブ配信ルーム','Gagal memuat live room.''ライブ配信ルームを読み込めませんでした。','Pesan gagal dikirim.''メッセージを送信できませんでした。','Like gagal dikirim.''いいねを送信できませんでした。','Masuk untuk bergabung ke Live Room''ログインしてライブ配信ルームに参加','Peserta Live''ライブ参加者','Memuat peserta...''参加者を読み込み中…','Belum ada peserta lain.''他の参加者はいません。','Belum ada peserta.''参加者はいません。','Need More Viewers''視聴者が足りません','Add at least 2 viewer usernames to spin the raffle wheel.''抽選を回すには2人以上の視聴者名を追加してください。','Winner Picked!''当選者が決まりました！','Congratulations''おめでとうございます','Selected as Lucky Viewer!''ラッキー視聴者に選ばれました！','Enter viewer username (e.g. TikTok_User)''視聴者名を入力（例：TikTok_User）','Spinning for Winner...''当選者を抽選中…','Current Viewers on Wheel''現在の参加者：','Recent Raffle Winners''最近の当選者','Digital Crypto Card Number Guess''デジタル暗号カード番号当て','Streamer Card Settings''ストリーマーカード設定','Streamer Card Configurator''ストリーマーカード設定ツール','Card Title''カードタイトル','Serial Number''シリアル番号','Concealed''非表示','Revealed''公開','Verify Challenge''チャレンジを検証','Provably Fair Verification''検証可能な公平性','Affiliate Partner Program''アフィリエイトパートナープログラム','Your Personal Affiliate Link''あなたのアフィリエイトリンク','Direct Invitations''直接招待','Network Invites''ネットワーク招待','Deep Ecosystem''深いエコシステム','Affiliate Income Calculator''アフィリエイト収益計算機','Estimated Monthly Earnings''推定月間収益','Live Referral Feed''ライブ紹介フィード','Referee Handle''紹介ユーザー名','Date Joined''参加日','Commission Tier''コミッションレベル','Wager Volume''ベット総額','Commission Earned''獲得コミッション','Copied Link''リンクをコピーしました','Referral link copied to clipboard!''紹介リンクをコピーしました！','No Pending Rewards''保留中の報酬はありません','All referral commissions have already been transferred.''紹介コミッションはすべて移行済みです。','Minimum Deposit''最低入金額','Minimum deposit is $5.00 USD''最低入金額は5.00米ドルです','Failed to generate invoice''請求書の生成に失敗しました','Create NOWPayments Invoice''NOWPayments請求書を作成','Order ID: ''注文ID：'
   },
   ko: {
     'Live Room''라이브 룸','Gagal memuat live room.''라이브 룸을 불러오지 못했습니다.','Pesan gagal dikirim.''메시지를 보내지 못했습니다.','Like gagal dikirim.''좋아요를 보내지 못했습니다.','Masuk untuk bergabung ke Live Room''로그인하여 라이브 룸에 참여','Peserta Live''라이브 참가자','Memuat peserta...''참가자 로드 중...','Belum ada peserta lain.''아직 다른 참가자가 없습니다.','Belum ada peserta.''참가자가 없습니다.','Need More Viewers''시청자가 더 필요합니다','Add at least 2 viewer usernames to spin the raffle wheel.''추첨을 돌리려면 시청자 이름을 2명 이상 추가하세요.','Winner Picked!''당첨자 선정!','Congratulations''축하합니다','Selected as Lucky Viewer!''행운의 시청자로 선정되었습니다!','Enter viewer username (e.g. TikTok_User)''시청자 사용자명 입력(예: TikTok_User)','Spinning for Winner...''당첨자 추첨 중...','Current Viewers on Wheel''현재 스피너 참가자','Recent Raffle Winners''최근 추첨 당첨자','Digital Crypto Card Number Guess''디지털 크립토 카드 번호 맞히기','Streamer Card Settings''스트리머 카드 설정','Streamer Card Configurator''스트리머 카드 구성기','Card Title''카드 제목','Serial Number''일련번호','Concealed''숨김','Revealed''공개','Verify Challenge''챌린지 확인','Provably Fair Verification''검증 가능한 공정성','Affiliate Partner Program''제휴 파트너 프로그램','Your Personal Affiliate Link''개인 제휴 링크','Direct Invitations''직접 초대','Network Invites''네트워크 초대','Deep Ecosystem''심층 생태계','Affiliate Income Calculator''제휴 수익 계산기','Estimated Monthly Earnings''예상 월 수익','Live Referral Feed''실시간 추천 피드','Referee Handle''추천 사용자','Date Joined''가입일','Commission Tier''커미션 등급','Wager Volume''베팅 규모','Commission Earned''획득 커미션','Copied Link''링크 복사됨','Referral link copied to clipboard!''추천 링크가 복사되었습니다!','No Pending Rewards''대기 중인 보상이 없습니다','All referral commissions have already been transferred.''모든 추천 커미션이 이미 이전되었습니다.','Minimum Deposit''최소 입금','Minimum deposit is $5.00 USD''최소 입금액은 5.00 USD입니다','Failed to generate invoice''인보이스 생성 실패','Create NOWPayments Invoice''NOWPayments 인보이스 생성','Order ID: ''주문 ID: '
@@ -1658,10 +1658,10 @@ const DASHBOARD_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Refresh balance''Refresh balance','Refresh posts''Refresh posts','Claim Bonus''Claim Bonus'
   },
   es: {
-    'Setiap user dapat membagikan tulisan dan postingan.''Cada usuario puede compartir publicaciones y actualizaciones.','Belum ada postingan''Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.''Sé el primero en compartir algo.','Buat Postingan''Crear publicación','Belum ada data live aktif''No hay datos de transmisiones activas','Room live akan tampil di sini setelah tersedia dari backend produksi.''Las salas en vivo aparecerán cuando estén disponibles desde el backend de producción.','Live''En vivo','Buka Live Room â†’''Abrir sala en vivo →','Tebak Nomor''Adivina el número','Ikuti permainan live.''Participa en el juego en vivo.','Spinner''Spinner','Masuk ke event spinner.''Entrar al evento spinner.','Blind Box''Blind Box','Buka Blind Box dengan saldo akun.''Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post''Subir / crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...''Escribe algo para compartir con la comunidad...','URL media (opsional)''URL multimedia (opcional)','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Refresh balance''Actualizar saldo','Refresh posts''Actualizar publicaciones','Claim Bonus''Reclamar bono'
+    'Setiap user dapat membagikan tulisan dan postingan.''Cada usuario puede compartir publicaciones y actualizaciones.','Belum ada postingan''Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.''Sé el primero en compartir algo.','Buat Postingan''Crear publicación','Belum ada data live aktif''No hay datos de transmisiones activas','Room live akan tampil di sini setelah tersedia dari backend produksi.''Las salas en vivo aparecerán cuando estén disponibles desde el backend de producción.','Live''En vivo','Buka Live Room →''Abrir sala en vivo →','Tebak Nomor''Adivina el número','Ikuti permainan live.''Participa en el juego en vivo.','Spinner''Spinner','Masuk ke event spinner.''Entrar al evento spinner.','Blind Box''Blind Box','Buka Blind Box dengan saldo akun.''Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post''Subir / crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...''Escribe algo para compartir con la comunidad...','URL media (opsional)''URL multimedia (opcional)','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Refresh balance''Actualizar saldo','Refresh posts''Actualizar publicaciones','Claim Bonus''Reclamar bono'
   },
   pt: {
-    'Setiap user dapat membagikan tulisan dan postingan.''Cada usuário pode compartilhar publicações e atualizações.','Belum ada postingan''Ainda não há publicações','Jadilah pengguna pertama yang membagikan sesuatu.''Seja o primeiro a compartilhar algo.','Buat Postingan''Criar publicação','Belum ada data live aktif''Não há dados de live ativos','Room live akan tampil di sini setelah tersedia dari backend produksi.''As salas ao vivo aparecerão quando estiverem disponíveis no backend de produção.','Live''Ao vivo','Buka Live Room â†’''Abrir sala ao vivo →','Tebak Nomor''Adivinhe o número','Ikuti permainan live.''Participe do jogo ao vivo.','Spinner''Spinner','Masuk ke event spinner.''Entrar no evento spinner.','Blind Box''Blind Box','Buka Blind Box dengan saldo akun.''Abrir Blind Box usando o saldo da conta.','Upload / Create Post''Enviar / criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...''Escreva algo para compartilhar com a comunidade...','URL media (opsional)''URL de mídia (opcional)','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Refresh balance''Atualizar saldo','Refresh posts''Atualizar publicações','Claim Bonus''Resgatar bônus'
+    'Setiap user dapat membagikan tulisan dan postingan.''Cada usuário pode compartilhar publicações e atualizações.','Belum ada postingan''Ainda não há publicações','Jadilah pengguna pertama yang membagikan sesuatu.''Seja o primeiro a compartilhar algo.','Buat Postingan''Criar publicação','Belum ada data live aktif''Não há dados de live ativos','Room live akan tampil di sini setelah tersedia dari backend produksi.''As salas ao vivo aparecerão quando estiverem disponíveis no backend de produção.','Live''Ao vivo','Buka Live Room →''Abrir sala ao vivo →','Tebak Nomor''Adivinhe o número','Ikuti permainan live.''Participe do jogo ao vivo.','Spinner''Spinner','Masuk ke event spinner.''Entrar no evento spinner.','Blind Box''Blind Box','Buka Blind Box dengan saldo akun.''Abrir Blind Box usando o saldo da conta.','Upload / Create Post''Enviar / criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...''Escreva algo para compartilhar com a comunidade...','URL media (opsional)''URL de mídia (opcional)','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Refresh balance''Atualizar saldo','Refresh posts''Atualizar publicações','Claim Bonus''Resgatar bônus'
   },
   zh: {
     'Setiap user dapat membagikan tulisan dan postingan.''每位用户都可以分享帖子和动态。','Belum ada postingan''暂无帖子','Jadilah pengguna pertama yang membagikan sesuatu.''成为第一个分享内容的用户。','Buat Postingan''创建帖子','Belum ada data live aktif''暂无活跃直播数据','Room live akan tampil di sini setelah tersedia dari backend produksi.''生产后端提供数据后，直播间会显示在这里。','Live''直播','Buka Live Room →''打开直播间 →','Tebak Nomor''猜数字','Ikuti permainan live.''参与直播游戏。','Spinner''转盘','Masuk ke event spinner.''进入转盘活动。','Blind Box''盲盒','Buka Blind Box dengan saldo akun.''使用账户余额打开盲盒。','Upload / Create Post''上传 / 创建帖子','Tulis sesuatu untuk dibagikan ke komunitas...''写下要与社区分享的内容...','URL media (opsional)''媒体链接（可选）','Menerbitkan...''发布中...','Terbitkan Postingan''发布帖子','Refresh balance''刷新余额','Refresh posts''刷新帖子','Claim Bonus''领取奖励'
@@ -1673,7 +1673,7 @@ const DASHBOARD_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Setiap user dapat membagikan tulisan dan postingan.''모든 사용자는 게시물과 업데이트를 공유할 수 있습니다.','Belum ada postingan''게시물이 없습니다','Jadilah pengguna pertama yang membagikan sesuatu.''가장 먼저 콘텐츠를 공유해 보세요.','Buat Postingan''게시물 만들기','Belum ada data live aktif''활성 라이브 데이터가 없습니다','Room live akan tampil di sini setelah tersedia dari backend produksi.''프로덕션 백엔드에서 제공되면 라이브 룸이 여기에 표시됩니다.','Live''라이브','Buka Live Room →''라이브 룸 열기 →','Tebak Nomor''숫자 맞히기','Ikuti permainan live.''라이브 게임에 참여하세요.','Spinner''스피너','Masuk ke event spinner.''스피너 이벤트 입장','Blind Box''블라인드 박스','Buka Blind Box dengan saldo akun.''계정 잔액으로 블라인드 박스 열기','Upload / Create Post''업로드 / 게시물 만들기','Tulis sesuatu untuk dibagikan ke komunitas...''커뮤니티에 공유할 내용을 작성하세요...','URL media (opsional)''미디어 URL(선택 사항)','Menerbitkan...''게시 중...','Terbitkan Postingan''게시물 게시','Refresh balance''잔액 새로고침','Refresh posts''게시물 새로고침','Claim Bonus''보너스 받기'
   },
   ar: {
-    'Setiap user dapat membagikan tulisan dan postingan.''يمكن لكل مستخدم مشاركة المنشورات والتحديثات.','Belum ada postingan''لا توجد منشورات بعد','Jadilah pengguna pertama yang membagikan sesuatu.''كن أول مستخدم يشارك شيئًا.','Buat Postingan''إنشاء منشور','Belum ada data live aktif''لا توجد بيانات بث مباشر نشطة','Room live akan tampil di sini setelah tersedia dari backend produksi.''ستظهر غرف البث المباشر هنا عند توفرها من الواجهة الخلفية للإنتاج.','Live''مباشر','Buka Live Room â†’''فتح غرفة البث المباشر →','Tebak Nomor''خمن الرقم','Ikuti permainan live.''شارك في اللعبة المباشرة.','Spinner''العجلة','Masuk ke event spinner.''الدخول إلى فعالية العجلة.','Blind Box''الصندوق الغامض','Buka Blind Box dengan saldo akun.''افتح الصندوق الغامض باستخدام رصيد حسابك.','Upload / Create Post''رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...''اكتب شيئًا لمشاركته مع المجتمع...','URL media (opsional)''رابط الوسائط (اختياري)','Menerbitkan...''جارٍ النشر...','Terbitkan Postingan''نشر المنشور','Refresh balance''تحديث الرصيد','Refresh posts''تحديث المنشورات','Claim Bonus''استلام المكافأة'
+    'Setiap user dapat membagikan tulisan dan postingan.''يمكن لكل مستخدم مشاركة المنشورات والتحديثات.','Belum ada postingan''لا توجد منشورات بعد','Jadilah pengguna pertama yang membagikan sesuatu.''كن أول مستخدم يشارك شيئًا.','Buat Postingan''إنشاء منشور','Belum ada data live aktif''لا توجد بيانات بث مباشر نشطة','Room live akan tampil di sini setelah tersedia dari backend produksi.''ستظهر غرف البث المباشر هنا عند توفرها من الواجهة الخلفية للإنتاج.','Live''مباشر','Buka Live Room →''فتح غرفة البث المباشر →','Tebak Nomor''خمن الرقم','Ikuti permainan live.''شارك في اللعبة المباشرة.','Spinner''العجلة','Masuk ke event spinner.''الدخول إلى فعالية العجلة.','Blind Box''الصندوق الغامض','Buka Blind Box dengan saldo akun.''افتح الصندوق الغامض باستخدام رصيد حسابك.','Upload / Create Post''رفع / إنشاء منشور','Tulis sesuatu untuk dibagikan ke komunitas...''اكتب شيئًا لمشاركته مع المجتمع...','URL media (opsional)''رابط الوسائط (اختياري)','Menerbitkan...''جارٍ النشر...','Terbitkan Postingan''نشر المنشور','Refresh balance''تحديث الرصيد','Refresh posts''تحديث المنشورات','Claim Bonus''استلام المكافأة'
   }
 };
 for (const lang of Object.keys(DASHBOARD_TRANSLATIONS) as LanguageCode[]) {
@@ -1886,7 +1886,7 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Wallet Address''钱包地址','Recovery Phrase''恢复短语','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.''创建账户前必须阅读并同意条款与条件。',
     'I have read and agree to the''我已阅读并同意','Terms & Conditions''条款与条件','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.''钱包在您的设备上创建。SYS STREAM 不会接收或存储此恢复短语。',
     'Simpan offline sebelum menutup halaman.''请在关闭页面前离线保存。','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.''我已将恢复短语保存在安全位置，并了解 SYS STREAM 无法恢复该短语。',
-    'Loading active tasks...''正在加载活动任务…','Submitting...''正在提交…','Open Task''打开任务','Task''任务','Save Wallet''保存钱包','Proof link is required.''å¿…é¡»æä¾›è¯æ˜Žé“¾æŽ¥ã€‚','Submission failed''提交失败','Login to continue''登录后继续'
+    'Loading active tasks...''正在加载活动任务…','Submitting...''正在提交…','Open Task''打开任务','Task''任务','Save Wallet''保存钱包','Proof link is required.''必须提供证明链接。','Submission failed''提交失败','Login to continue''登录后继续'
   },
   ja: {
     'Sign in to continue streaming and gaming''ログインして配信とゲームを続ける','Username or Email''ユーザー名またはメール','Connect Wallet''ウォレットを接続','Forgot Password?''パスワードを忘れましたか？',
@@ -1895,7 +1895,7 @@ const ADDITIONAL_UI_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = 
     'Wallet Address''ウォレットアドレス','Recovery Phrase''リカバリーフレーズ','Wajib membaca dan menyetujui Terms & Conditions sebelum membuat akun.''アカウント作成前に利用規約を読み、同意してください。',
     'I have read and agree to the''以下を読み、同意します：','Terms & Conditions''利用規約','Wallet dibuat di perangkat Anda. SYS STREAM tidak menerima atau menyimpan recovery phrase ini.''ウォレットは端末上で作成されます。SYS STREAMはこのリカバリーフレーズを受信・保存しません。',
     'Simpan offline sebelum menutup halaman.''ページを閉じる前にオフラインで保存してください。','Saya sudah menyimpan recovery phrase di tempat yang aman dan memahami bahwa phrase tidak dapat dipulihkan oleh SYS STREAM.''リカバリーフレーズを安全な場所に保存し、SYS STREAMでは復元できないことを理解しました。',
-    'Loading active tasks...''アクティブなタスクを読み込み中…','Submitting...''送信中…','Open Task''ã‚¿ã‚¹ã‚¯ã‚’é–‹ã','Task''ã‚¿ã‚¹ã‚¯','Save Wallet''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚’ä¿å­˜','Proof link is required.''è¨¼æ‹ ãƒªãƒ³ã‚¯ãŒå¿…è¦ã§ã™ã€‚','Submission failed''送信に失敗しました','Login to continue''ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ç¶šè¡Œ'
+    'Loading active tasks...''アクティブなタスクを読み込み中…','Submitting...''送信中…','Open Task''タスクを開く','Task''タスク','Save Wallet''ウォレットを保存','Proof link is required.''証拠リンクが必要です。','Submission failed''送信に失敗しました','Login to continue''ログインして続行'
   },
   ko: {
     'Sign in to continue streaming and gaming''로그인하여 스트리밍과 게임을 계속하세요','Username or Email''사용자 이름 또는 이메일','Connect Wallet''지갑 연결','Forgot Password?''비밀번호를 잊으셨나요?',
@@ -1969,11 +1969,11 @@ const DASHBOARD_FINAL_UI: Record<LanguageCode, Record<string,string>> = {
  id:{'Upload / Create''Upload / Buat','Claim Bonus''Klaim Bonus','Buka media terlampir →''Buka media terlampir →','Buka Live Room''Buka Live Room','User ID''ID Pengguna','Wallet belum terhubung''Wallet belum terhubung'},
  en:{'Upload / Create''Upload / Create','Claim Bonus''Claim Bonus','Buka media terlampir →''Open attached media →','Buka Live Room''Open Live Room','User ID''User ID','Wallet belum terhubung''Wallet not connected'},
  es:{'Upload / Create''Subir / Crear','Claim Bonus''Reclamar bono','Buka media terlampir →''Abrir medio adjunto →','Buka Live Room''Abrir sala en vivo','User ID''ID de usuario','Wallet belum terhubung''Wallet no conectado'},
- pt:{'Upload / Create''Carregar / Criar','Claim Bonus''Resgatar bônus','Buka media terlampir â†’''Abrir mídia anexada →','Buka Live Room''Abrir sala ao vivo','User ID''ID do usuário','Wallet belum terhubung''Carteira não conectada'},
+ pt:{'Upload / Create''Carregar / Criar','Claim Bonus''Resgatar bônus','Buka media terlampir →''Abrir mídia anexada →','Buka Live Room''Abrir sala ao vivo','User ID''ID do usuário','Wallet belum terhubung''Carteira não conectada'},
  zh:{'Upload / Create''上传 / 创建','Claim Bonus''领取奖励','Buka media terlampir →''打开附件媒体 →','Buka Live Room''打开直播间','User ID''用户 ID：','Wallet belum terhubung''钱包未连接'},
  ja:{'Upload / Create''アップロード / 作成','Claim Bonus''ボーナスを受け取る','Buka media terlampir →''添付メディアを開く →','Buka Live Room''ライブルームを開く','User ID''ユーザーID：','Wallet belum terhubung''ウォレット未接続'},
  ko:{'Upload / Create''업로드 / 만들기','Claim Bonus''보너스 받기','Buka media terlampir →''첨부 미디어 열기 →','Buka Live Room''라이브 룸 열기','User ID''사용자 ID','Wallet belum terhubung''지갑이 연결되지 않음'},
- ar:{'Upload / Create''رفع / إنشاء','Claim Bonus''المطالبة بالمكافأة','Buka media terlampir â†’''فتح الوسائط المرفقة →','Buka Live Room''فتح الغرفة المباشرة','User ID''معرف المستخدم','Wallet belum terhubung''المحفظة غير متصلة'}
+ ar:{'Upload / Create''رفع / إنشاء','Claim Bonus''المطالبة بالمكافأة','Buka media terlampir →''فتح الوسائط المرفقة →','Buka Live Room''فتح الغرفة المباشرة','User ID''معرف المستخدم','Wallet belum terhubung''المحفظة غير متصلة'}
 };
 for(const lang of Object.keys(DASHBOARD_FINAL_UI) as LanguageCode[])Object.assign(translations[lang],DASHBOARD_FINAL_UI[lang]);
 const EXTRA_GAME_UI: Record<LanguageCode, Record<string,string>> = {
@@ -2039,16 +2039,16 @@ const UI_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Need More Viewers''Need More Viewers','Add at least 2 viewer usernames to spin the raffle wheel.''Add at least 2 viewer usernames to spin the raffle wheel.','Winner Picked!''Winner Picked!','Congratulations''Congratulations','Selected as Lucky Viewer!''Selected as Lucky Viewer!','Tambahkan peserta yang benar-benar masuk dari live room.''Add participants who actually joined the live room.','Spinning for Winner...''Spinning for Winner...','Remove''Remove','Incomplete Prediction''Incomplete Prediction','Please enter a digit for Slot''Please enter a digit for Slot','Card Cracked!''Card Cracked!','All concealed digits matched!''All concealed digits matched!','Guess Missed''Guess Missed','Matched digits. Try another prediction!''Matched digits. Try another prediction!','Challenge berhasil. Tidak ada saldo yang dipotong atau dibayarkan.''Challenge completed. No balance was deducted or paid.','Server gagal memproses Blind Box.''The server failed to process the Blind Box.','Vault Updated''Vault Updated','Added to your Inventory!''Added to your Inventory!','Daily Limit Reached''Daily Limit Reached','Staking Required''Staking Required'
   },
   es: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.''Escribe algo o añade contenido multimedia primero.','Posting gagal dibuat.''No se pudo crear la publicación.','Koneksi gagal. Silakan coba lagi.''Error de conexión. Inténtalo de nuevo.','Konten dan aktivitas di halaman ini menggunakan data produksi.''Todo el contenido y la actividad de esta página usan datos de producción.','Wallet belum terhubung''Wallet no conectada','Refresh balance''Actualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.''Tu bono de registro sigue disponible para reclamar.','Buka Live Room â†’''Abrir Live Room →','Setiap user dapat membagikan tulisan dan postingan.''Cada usuario puede compartir publicaciones.','Memuat postingan...''Cargando publicaciones...','Belum ada postingan''Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.''Sé el primero en compartir algo.','Buka Live Room''Abrir Live Room','Ikuti permainan live.''Participa en el juego en vivo.','Masuk ke event spinner.''Entrar al evento de spinner.','Buka Blind Box dengan saldo akun.''Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post''Subir / Crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...''Escribe algo para compartir con la comunidad...','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Referral link berhasil disalin.''Enlace de referidos copiado.','Masukkan alamat wallet tujuan.''Introduce la wallet de destino.','Saldo tersedia tidak mencukupi.''El saldo disponible es insuficiente.','Belum ada event yang diikuti.''Aún no hay eventos.','Need More Viewers''Se necesitan más espectadores','Winner Picked!''¡Ganador seleccionado!','Congratulations''¡Felicidades!','Selected as Lucky Viewer!''¡Seleccionado como espectador afortunado!','Incomplete Prediction''Predicción incompleta','Please enter a digit for Slot''Introduce un dígito para la ranura','Card Cracked!''¡Tarjeta descifrada!','Guess Missed''Predicción incorrecta','Matched digits. Try another prediction!''Dígitos coincidentes. Prueba otra predicción.','Daily Limit Reached''Límite diario alcanzado','Staking Required''Se requiere bloqueo'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.''Escribe algo o añade contenido multimedia primero.','Posting gagal dibuat.''No se pudo crear la publicación.','Koneksi gagal. Silakan coba lagi.''Error de conexión. Inténtalo de nuevo.','Konten dan aktivitas di halaman ini menggunakan data produksi.''Todo el contenido y la actividad de esta página usan datos de producción.','Wallet belum terhubung''Wallet no conectada','Refresh balance''Actualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.''Tu bono de registro sigue disponible para reclamar.','Buka Live Room →''Abrir Live Room →','Setiap user dapat membagikan tulisan dan postingan.''Cada usuario puede compartir publicaciones.','Memuat postingan...''Cargando publicaciones...','Belum ada postingan''Aún no hay publicaciones','Jadilah pengguna pertama yang membagikan sesuatu.''Sé el primero en compartir algo.','Buka Live Room''Abrir Live Room','Ikuti permainan live.''Participa en el juego en vivo.','Masuk ke event spinner.''Entrar al evento de spinner.','Buka Blind Box dengan saldo akun.''Abrir Blind Box con el saldo de la cuenta.','Upload / Create Post''Subir / Crear publicación','Tulis sesuatu untuk dibagikan ke komunitas...''Escribe algo para compartir con la comunidad...','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Referral link berhasil disalin.''Enlace de referidos copiado.','Masukkan alamat wallet tujuan.''Introduce la wallet de destino.','Saldo tersedia tidak mencukupi.''El saldo disponible es insuficiente.','Belum ada event yang diikuti.''Aún no hay eventos.','Need More Viewers''Se necesitan más espectadores','Winner Picked!''¡Ganador seleccionado!','Congratulations''¡Felicidades!','Selected as Lucky Viewer!''¡Seleccionado como espectador afortunado!','Incomplete Prediction''Predicción incompleta','Please enter a digit for Slot''Introduce un dígito para la ranura','Card Cracked!''¡Tarjeta descifrada!','Guess Missed''Predicción incorrecta','Matched digits. Try another prediction!''Dígitos coincidentes. Prueba otra predicción.','Daily Limit Reached''Límite diario alcanzado','Staking Required''Se requiere bloqueo'
   },
   pt: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.''Escreva algo ou adicione mídia primeiro.','Posting gagal dibuat.''Falha ao criar a publicação.','Koneksi gagal. Silakan coba lagi.''Falha de conexão. Tente novamente.','Konten dan aktivitas di halaman ini menggunakan data de produÃ§Ã£o.''Todo o conteúdo e atividade desta página usam dados de produção.','Wallet belum terhubung''Carteira não conectada','Refresh balance''Atualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.''Seu bônus de registro ainda está disponível.','Buka Live Room''Abrir Live Room','Ikuti permainan live.''Participar do jogo ao vivo.','Masuk ke event spinner.''Entrar no evento de spinner.','Buka Blind Box dengan saldo akun.''Abrir Blind Box com o saldo da conta.','Upload / Create Post''Enviar / Criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...''Escreva algo para compartilhar com a comunidade...','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Referral link berhasil disalin.''Link de indicação copiado.','Masukkan alamat wallet tujuan.''Informe a carteira de destino.','Saldo tersedia tidak mencukupi.''O saldo disponível é insuficiente.','Belum ada event yang diikuti.''Nenhum evento participado ainda.','Need More Viewers''Mais espectadores necessários','Winner Picked!''Vencedor escolhido!','Congratulations''Parabéns!','Selected as Lucky Viewer!''Selecionado como espectador sortudo!','Incomplete Prediction''Previsão incompleta','Please enter a digit for Slot''Digite um dígito para o slot','Card Cracked!''Cartão desbloqueado!','Guess Missed''Palpite incorreto','Daily Limit Reached''Limite diário atingido','Staking Required''Bloqueio necessário'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.''Escreva algo ou adicione mídia primeiro.','Posting gagal dibuat.''Falha ao criar a publicação.','Koneksi gagal. Silakan coba lagi.''Falha de conexão. Tente novamente.','Konten dan aktivitas di halaman ini menggunakan data de produção.''Todo o conteúdo e atividade desta página usam dados de produção.','Wallet belum terhubung''Carteira não conectada','Refresh balance''Atualizar saldo','Bonus pendaftaran masih tersedia untuk diklaim.''Seu bônus de registro ainda está disponível.','Buka Live Room''Abrir Live Room','Ikuti permainan live.''Participar do jogo ao vivo.','Masuk ke event spinner.''Entrar no evento de spinner.','Buka Blind Box dengan saldo akun.''Abrir Blind Box com o saldo da conta.','Upload / Create Post''Enviar / Criar publicação','Tulis sesuatu untuk dibagikan ke komunitas...''Escreva algo para compartilhar com a comunidade...','Menerbitkan...''Publicando...','Terbitkan Postingan''Publicar','Referral link berhasil disalin.''Link de indicação copiado.','Masukkan alamat wallet tujuan.''Informe a carteira de destino.','Saldo tersedia tidak mencukupi.''O saldo disponível é insuficiente.','Belum ada event yang diikuti.''Nenhum evento participado ainda.','Need More Viewers''Mais espectadores necessários','Winner Picked!''Vencedor escolhido!','Congratulations''Parabéns!','Selected as Lucky Viewer!''Selecionado como espectador sortudo!','Incomplete Prediction''Previsão incompleta','Please enter a digit for Slot''Digite um dígito para o slot','Card Cracked!''Cartão desbloqueado!','Guess Missed''Palpite incorreto','Daily Limit Reached''Limite diário atingido','Staking Required''Bloqueio necessário'
   },
   zh: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.''è¯·å…ˆè¾“å…¥å†…å®¹æˆ–æ·»åŠ åª’ä½“ã€‚','Posting gagal dibuat.''å‘å¸ƒå¤±è´¥ã€‚','Koneksi gagal. Silakan coba lagi.''è¿žæŽ¥å¤±è´¥ï¼Œè¯·é‡è¯•ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.''æ­¤é¡µé¢çš„æ‰€æœ‰å†…å®¹å’Œæ´»åŠ¨å‡ä½¿ç”¨ç”Ÿäº§æ•°æ®ã€‚','Wallet belum terhubung''钱包未连接','Refresh balance''刷新余额','Bonus pendaftaran masih tersedia untuk diklaim.''æ‚¨çš„æ³¨å†Œå¥–åŠ±ä»å¯é¢†å–ã€‚','Buka Live Room''打开直播间','Ikuti permainan live.''å‚åŠ ç›´æ’­æ¸¸æˆã€‚','Masuk ke event spinner.''è¿›å…¥è½¬ç›˜æ´»åŠ¨ã€‚','Buka Blind Box dengan saldo akun.''ä½¿ç”¨è´¦æˆ·ä½™é¢æ‰“å¼€ç›²ç›’ã€‚','Upload / Create Post''上传 / 创建帖子','Tulis sesuatu untuk dibagikan ke komunitas...''写点内容分享给社区…','Menerbitkan...''发布中…','Terbitkan Postingan''å‘å¸ƒå¸–å­','Referral link berhasil disalin.''æŽ¨èé“¾æŽ¥å·²å¤åˆ¶ã€‚','Masukkan alamat wallet tujuan.''è¯·è¾“å…¥ç›®æ ‡é’±åŒ…åœ°å€ã€‚','Saldo tersedia tidak mencukupi.''å¯ç”¨ä½™é¢ä¸è¶³ã€‚','Belum ada event yang diikuti.''æš‚æ— å‚åŠ çš„æ´»åŠ¨ã€‚','Need More Viewers''éœ€è¦æ›´å¤šè§‚ä¼—','Winner Picked!''å·²é€‰å‡ºèŽ·èƒœè€…ï¼','Congratulations''恭喜！','Selected as Lucky Viewer!''å·²é€‰ä¸ºå¹¸è¿è§‚ä¼—ï¼','Incomplete Prediction''预测不完整','Please enter a digit for Slot''请输入该位置的数字','Card Cracked!''卡片已破解！','Guess Missed''猜测错误','Daily Limit Reached''已达到每日限制','Staking Required''需要锁定余额'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.''请先输入内容或添加媒体。','Posting gagal dibuat.''发布失败。','Koneksi gagal. Silakan coba lagi.''连接失败，请重试。','Konten dan aktivitas di halaman ini menggunakan data produksi.''此页面的所有内容和活动均使用生产数据。','Wallet belum terhubung''钱包未连接','Refresh balance''刷新余额','Bonus pendaftaran masih tersedia untuk diklaim.''您的注册奖励仍可领取。','Buka Live Room''打开直播间','Ikuti permainan live.''参加直播游戏。','Masuk ke event spinner.''进入转盘活动。','Buka Blind Box dengan saldo akun.''使用账户余额打开盲盒。','Upload / Create Post''上传 / 创建帖子','Tulis sesuatu untuk dibagikan ke komunitas...''写点内容分享给社区…','Menerbitkan...''发布中…','Terbitkan Postingan''发布帖子','Referral link berhasil disalin.''推荐链接已复制。','Masukkan alamat wallet tujuan.''请输入目标钱包地址。','Saldo tersedia tidak mencukupi.''可用余额不足。','Belum ada event yang diikuti.''暂无参加的活动。','Need More Viewers''需要更多观众','Winner Picked!''已选出获胜者！','Congratulations''恭喜！','Selected as Lucky Viewer!''已选为幸运观众！','Incomplete Prediction''预测不完整','Please enter a digit for Slot''请输入该位置的数字','Card Cracked!''卡片已破解！','Guess Missed''猜测错误','Daily Limit Reached''已达到每日限制','Staking Required''需要锁定余额'
   },
   ja: {
-    'Tulis sesuatu atau masukkan media terlebih dahulu.''ã¾ãšå†…å®¹ã‚’å…¥åŠ›ã™ã‚‹ã‹ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚','Posting gagal dibuat.''æŠ•ç¨¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚','Koneksi gagal. Silakan coba lagi.''æŽ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚ã‚‚ã†ä¸€åº¦ãŠè©¦ã—ãã ã•ã„ã€‚','Konten dan aktivitas di halaman ini menggunakan data produksi.''ã“ã®ãƒšãƒ¼ã‚¸ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã¯æœ¬ç•ªãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚','Wallet belum terhubung''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Refresh balance''æ®‹é«˜ã‚’æ›´æ–°','Bonus pendaftaran masih tersedia untuk diklaim.''ç™»éŒ²ãƒœãƒ¼ãƒŠã‚¹ã‚’ã¾ã å—ã‘å–ã‚Œã¾ã™ã€‚','Buka Live Room''ãƒ©ã‚¤ãƒ–ãƒ«ãƒ¼ãƒ ã‚’é–‹ã','Ikuti permainan live.''ãƒ©ã‚¤ãƒ–ã‚²ãƒ¼ãƒ ã«å‚åŠ ','Masuk ke event spinner.''ã‚¹ãƒ”ãƒŠãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã«å…¥ã‚‹','Buka Blind Box dengan saldo akun.''ã‚¢ã‚«ã‚¦ãƒ³ãƒˆæ®‹é«˜ã§Blind Boxã‚’é–‹ã','Upload / Create Post''ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ / æŠ•ç¨¿ä½œæˆ','Tulis sesuatu untuk dibagikan ke komunitas...''コミュニティに共有する内容を入力…','Menerbitkan...''公開中…','Terbitkan Postingan''æŠ•ç¨¿ã™ã‚‹','Referral link berhasil disalin.''ç´¹ä»‹ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸã€‚','Masukkan alamat wallet tujuan.''é€é‡‘å…ˆã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚','Saldo tersedia tidak mencukupi.''åˆ©ç”¨å¯èƒ½æ®‹é«˜ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚','Belum ada event yang diikuti.''å‚åŠ ã—ãŸã‚¤ãƒ™ãƒ³ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Need More Viewers''ã•ã‚‰ã«è¦–è´è€…ãŒå¿…è¦ã§ã™','Winner Picked!''å½“é¸è€…ãŒæ±ºã¾ã‚Šã¾ã—ãŸï¼','Congratulations''ãŠã‚ã§ã¨ã†ã”ã–ã„ã¾ã™ï¼','Selected as Lucky Viewer!''ãƒ©ãƒƒã‚­ãƒ¼è¦–è´è€…ã«é¸ã°ã‚Œã¾ã—ãŸï¼','Incomplete Prediction''予測が未入力です','Please enter a digit for Slot''ã‚¹ãƒ­ãƒƒãƒˆã®æ•°å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„','Card Cracked!''ã‚«ãƒ¼ãƒ‰ãŒè§£èª­ã•ã‚Œã¾ã—ãŸï¼','Guess Missed''äºˆæ¸¬ãŒå¤–ã‚Œã¾ã—ãŸ','Daily Limit Reached''1日の上限に達しました','Staking Required''ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™'
+    'Tulis sesuatu atau masukkan media terlebih dahulu.''まず内容を入力するかメディアを追加してください。','Posting gagal dibuat.''投稿の作成に失敗しました。','Koneksi gagal. Silakan coba lagi.''接続に失敗しました。もう一度お試しください。','Konten dan aktivitas di halaman ini menggunakan data produksi.''このページのコンテンツとアクティビティは本番データを使用します。','Wallet belum terhubung''ウォレット未接続','Refresh balance''残高を更新','Bonus pendaftaran masih tersedia untuk diklaim.''登録ボーナスをまだ受け取れます。','Buka Live Room''ライブルームを開く','Ikuti permainan live.''ライブゲームに参加','Masuk ke event spinner.''スピナーイベントに入る','Buka Blind Box dengan saldo akun.''アカウント残高でBlind Boxを開く','Upload / Create Post''アップロード / 投稿作成','Tulis sesuatu untuk dibagikan ke komunitas...''コミュニティに共有する内容を入力…','Menerbitkan...''公開中…','Terbitkan Postingan''投稿する','Referral link berhasil disalin.''紹介リンクをコピーしました。','Masukkan alamat wallet tujuan.''送金先ウォレットアドレスを入力してください。','Saldo tersedia tidak mencukupi.''利用可能残高が不足しています。','Belum ada event yang diikuti.''参加したイベントはありません。','Need More Viewers''さらに視聴者が必要です','Winner Picked!''当選者が決まりました！','Congratulations''おめでとうございます！','Selected as Lucky Viewer!''ラッキー視聴者に選ばれました！','Incomplete Prediction''予測が未入力です','Please enter a digit for Slot''スロットの数字を入力してください','Card Cracked!''カードが解読されました！','Guess Missed''予測が外れました','Daily Limit Reached''1日の上限に達しました','Staking Required''ロックが必要です'
   },
   ko: {
     'Tulis sesuatu atau masukkan media terlebih dahulu.''내용을 입력하거나 미디어를 추가하세요.','Posting gagal dibuat.''게시물 생성에 실패했습니다.','Koneksi gagal. Silakan coba lagi.''연결에 실패했습니다. 다시 시도하세요.','Konten dan aktivitas di halaman ini menggunakan data produksi.''이 페이지의 모든 콘텐츠와 활동은 운영 데이터를 사용합니다.','Wallet belum terhubung''지갑이 연결되지 않았습니다','Refresh balance''잔액 새로고침','Bonus pendaftaran masih tersedia untuk diklaim.''가입 보너스를 아직 받을 수 있습니다.','Buka Live Room''라이브 룸 열기','Ikuti permainan live.''라이브 게임 참여','Masuk ke event spinner.''스피너 이벤트 입장','Buka Blind Box dengan saldo akun.''계정 잔액으로 Blind Box 열기','Upload / Create Post''업로드 / 게시물 만들기','Tulis sesuatu untuk dibagikan ke komunitas...''커뮤니티에 공유할 내용을 입력하세요...','Menerbitkan...''게시 중...','Terbitkan Postingan''게시하기','Referral link berhasil disalin.''추천 링크가 복사되었습니다.','Masukkan alamat wallet tujuan.''대상 지갑 주소를 입력하세요.','Saldo tersedia tidak mencukupi.''사용 가능 잔액이 부족합니다.','Belum ada event yang diikuti.''참여한 이벤트가 없습니다.','Need More Viewers''더 많은 시청자가 필요합니다','Winner Picked!''당첨자가 선택되었습니다!','Congratulations''축하합니다!','Selected as Lucky Viewer!''행운의 시청자로 선정되었습니다!','Incomplete Prediction''예측이 완전하지 않습니다','Please enter a digit for Slot''슬롯의 숫자를 입력하세요','Card Cracked!''카드가 해독되었습니다!','Guess Missed''예측 실패','Daily Limit Reached''일일 한도에 도달했습니다','Staking Required''Lock이 필요합니다'
@@ -2086,7 +2086,7 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Reward dari Airdrop''Recompensa do Airdrop','SYS Mining''Mineração SYS','Mining SYS dari Blind Box Lock''Minerar SYS com Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.''Um lock ativo de pelo menos $10 ativa recompensas diárias de mineração.',
     'DAILY CHECK-IN''CHECK-IN DIÁRIO','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.''Check-in diário recorrente. As recompensas são dadas em pontos e podem ser convertidas em SYS conforme as regras do programa.',
     'Tanggal''Data','Status''Status','Points''Pontos','Aksi''Ação','TODAY''HOJE','Belum check-in''Sem check-in','Check-in''Fazer check-in',
-    'AIRDROP POINTS''PONTOS AIRDROP','Points â†’ SYS''Pontos → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.''Os pontos vêm apenas de tarefas processadas pelo servidor. As conversões são registradas no livro razão.',
+    'AIRDROP POINTS''PONTOS AIRDROP','Points → SYS''Pontos → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.''Os pontos vêm apenas de tarefas processadas pelo servidor. As conversões são registradas no livro razão.',
     'Available''Disponível','Pending''Pendente','Converted''Convertido','Jumlah points''Quantidade de pontos','Conversion gagal''Falha na conversão','Rate saat ini: 1 SYS = 1.000 points.''Taxa atual: 1 SYS = 1.000 pontos.',
     'URL media (opsional)''URL de mídia (opcional)','Memuat status Mining...''Carregando status da mineração...'
   },
@@ -2104,7 +2104,7 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Tanggal''日付','Status''ステータス','Points''ポイント','Aksi''操作','TODAY''今日','Belum check-in''未チェックイン','Check-in''チェックイン',
     'AIRDROP POINTS''エアドロップポイント','Points → SYS''ポイント → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.''ポイントはサーバーで処理されたタスクからのみ付与され、変換は台帳に記録されます。',
     'Available''利用可能','Pending''保留中','Converted''変換済み','Jumlah points''ポイント数','Conversion gagal''変換に失敗しました','Rate saat ini: 1 SYS = 1.000 points.''現在のレート：1 SYS = 1,000ポイント。',
-    'URL media (opsional)''ãƒ¡ãƒ‡ã‚£ã‚¢URLï¼ˆä»»æ„ï¼‰','Memuat status Mining...''マイニング状態を読み込み中…'
+    'URL media (opsional)''メディアURL（任意）','Memuat status Mining...''マイニング状態を読み込み中…'
   },
   ko: {
     'Reward dari Airdrop''에어드롭 보상','SYS Mining''SYS 채굴','Mining SYS dari Blind Box Lock''Blind Box Lock으로 SYS 채굴','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.''최소 $10의 활성 Lock으로 일일 채굴 보상이 활성화됩니다.',
@@ -2118,7 +2118,7 @@ const FINAL_AUDIT_TRANSLATIONS: Record<LanguageCode, Record<string,string>> = {
     'Reward dari Airdrop''مكافأة الإيردروب','SYS Mining''تعدين SYS','Mining SYS dari Blind Box Lock''تعدين SYS عبر Blind Box Lock','Lock aktif minimal $10 dapat mengaktifkan reward mining harian.''يؤدي القفل النشط بقيمة 10 دولارات على الأقل إلى تفعيل مكافآت التعدين اليومية.',
     'DAILY CHECK-IN''تسجيل الحضور اليومي','Check-in harian berulang. Reward diberikan dalam points dan dapat dikonversi ke SYS sesuai aturan program.''تسجيل حضور يومي متكرر. تُمنح المكافآت بالنقاط ويمكن تحويلها إلى SYS وفق قواعد البرنامج.',
     'Tanggal''التاريخ','Status''الحالة','Points''النقاط','Aksi''الإجراء','TODAY''اليوم','Belum check-in''لم يتم التسجيل','Check-in''تسجيل الحضور',
-    'AIRDROP POINTS''نقاط الإيردروب','Points â†’ SYS''النقاط → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.''تأتي النقاط فقط من المهام التي يعالجها الخادم، وتُسجل التحويلات في دفتر الأستاذ.',
+    'AIRDROP POINTS''نقاط الإيردروب','Points → SYS''النقاط → SYS','Points hanya berasal dari task yang diproses server. Conversion dicatat sebagai ledger.''تأتي النقاط فقط من المهام التي يعالجها الخادم، وتُسجل التحويلات في دفتر الأستاذ.',
     'Available''متاح','Pending''معلق','Converted''تم التحويل','Jumlah points''عدد النقاط','Conversion gagal''فشل التحويل','Rate saat ini: 1 SYS = 1.000 points.''المعدل الحالي: 1 SYS = 1,000 نقطة.',
     'URL media (opsional)''رابط الوسائط (اختياري)','Memuat status Mining...''جارٍ تحميل حالة التعدين…'
   }
@@ -2203,7 +2203,7 @@ const USER_PAGE_FINAL_TRANSLATIONS: Record<LanguageCode, Record<string,string>> 
     "Earns passive yield" "パッシブ利回りを獲得",
     "Wallet address belum tersedia. Hubungkan wallet terlebih dahulu." "ウォレットアドレスがありません。先にウォレットを接続してください。",
     "Copied!" "コピーしました！",
-    "Copy Link" "ãƒªãƒ³ã‚¯ã‚’ã‚³ãƒ”ãƒ¼",
+    "Copy Link" "リンクをコピー",
     "All Claimed!" "すべて請求済み！",
     "Claim Commission to Wallet" "ウォレットへコミッションを請求",
     "You have opened all" "本日のすべての",
@@ -2511,11 +2511,11 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "BUAT ROOM" "ルームを作成",
   "Streaming belum aktif" "配信はまだ開始されていません",
   "Belum ada video live produksi pada room ini." "このルームにはまだ本番ライブ映像がありません。",
-  "STREAMER CONTROL" "ã‚¹ãƒˆãƒªãƒ¼ãƒžãƒ¼ç®¡ç†",
+  "STREAMER CONTROL" "ストリーマー管理",
   "Streaming sedang berjalan" "配信中",
   "Kirim video dari OBS ke server" "OBSからサーバーへ映像を送信",
   "CHECK..." "確認中...",
-  "CHECK STATUS" "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ç¢ºèª",
+  "CHECK STATUS" "ステータスを確認",
   "Status streaming gagal." "配信ステータスの確認に失敗しました。",
   "Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas." "OBSのSettings → Stream → Service Customで、上記のRTMPSサーバーとストリームキーを入力してください。",
   "AKTIFKAN STREAMING" "配信を有効化",
@@ -2526,7 +2526,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Live Input berhasil dibuat. Gunakan kredensial OBS di bawah video." "Live Inputを作成しました。動画下のOBS認証情報を使用してください。",
   "Gagal membuat Live Input." "Live Inputの作成に失敗しました。",
   "Gagal terhubung ke streaming server." "配信サーバーへの接続に失敗しました。",
-  "Profil akun Anda" "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«",
+  "Profil akun Anda" "アカウントプロフィール",
   "Belum ada deskripsi room dari pemilik room." "所有者によるルーム説明はまだありません。",
   "Peserta Live" "ライブ参加者",
   "Hanya akun yang benar-benar bergabung yang ditampilkan." "実際に参加したアカウントのみ表示されます。",
@@ -2536,7 +2536,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini." "まだメッセージはありません。このルームで最初に参加しましょう。",
   "Tulis sebagai" "次の名前で投稿",
   "Belum ada peserta." "参加者はまだいません。",
-  "Anda" "ã‚ãªãŸ",
+  "Anda" "あなた",
   "Aksi live room gagal." "ライブ配信ルームの操作に失敗しました。",
   "Pesan gagal dikirim." "メッセージの送信に失敗しました。",
   "Like gagal dikirim." "いいねの送信に失敗しました。"
@@ -2553,7 +2553,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Judul Live Room" "라이브 룸 제목",
   "Deskripsi room (opsional)" "룸 설명(선택 사항)",
   "MEMBUAT ROOM..." "룸 생성 중...",
-  "BUAT ROOM" "ë£¸ ë§Œë“¤ê¸°",
+  "BUAT ROOM" "룸 만들기",
   "Streaming belum aktif" "스트리밍이 아직 시작되지 않았습니다",
   "Belum ada video live produksi pada room ini." "이 룸에는 아직 프로덕션 라이브 영상이 없습니다.",
   "STREAMER CONTROL" "스트리머 제어",
@@ -2581,7 +2581,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "Belum ada pesan. Jadilah pengguna pertama yang berkontribusi di room ini." "아직 메시지가 없습니다. 이 룸에 첫 번째로 참여해 보세요.",
   "Tulis sebagai" "다음 이름으로 작성",
   "Belum ada peserta." "참가자가 없습니다.",
-  "Anda" "ë‚˜",
+  "Anda" "나",
   "Aksi live room gagal." "라이브 룸 작업에 실패했습니다.",
   "Pesan gagal dikirim." "메시지 전송에 실패했습니다.",
   "Like gagal dikirim." "좋아요 전송에 실패했습니다."
@@ -2607,7 +2607,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "CHECK..." "جارٍ التحقق...",
   "CHECK STATUS" "التحقق من الحالة",
   "Status streaming gagal." "تعذر التحقق من حالة البث.",
-  "Gunakan OBS: Settings â†’ Stream â†’ Service Custom â†’ masukkan RTMPS Server dan Stream Key di atas." "في OBS اختر Settings → Stream → Service Custom وأدخل خادم RTMPS ومفتاح البث أعلاه.",
+  "Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas." "في OBS اختر Settings → Stream → Service Custom وأدخل خادم RTMPS ومفتاح البث أعلاه.",
   "AKTIFKAN STREAMING" "تفعيل البث",
   "Buat Live Input Cloudflare untuk room ini." "إنشاء Live Input من Cloudflare لهذه الغرفة.",
   "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS." "بعد إنشائه، استخدم خادم RTMPS ومفتاح البث في OBS.",
@@ -2654,7 +2654,7 @@ const LIVE_ROOM_COMMON_TRANSLATIONS: Record<LanguageCode, Record<string, string>
     "Live""直播","Chat""聊天","Aksi live room gagal.""直播间操作失败。","Status streaming gagal.""检查直播状态失败。"
   },
   ja: {
-    "LOGIN / REGISTER""ãƒ­ã‚°ã‚¤ãƒ³ / ç™»éŒ²","SYS STREAM Live""SYS STREAM Live","LIVE""ãƒ©ã‚¤ãƒ–",
+    "LOGIN / REGISTER""ログイン / 登録","SYS STREAM Live""SYS STREAM Live","LIVE""ライブ",
     "Live""ライブ","Chat""チャット","Aksi live room gagal.""ライブ配信ルームの操作に失敗しました。","Status streaming gagal.""配信ステータスの確認に失敗しました。"
   },
   ko: {
@@ -2819,7 +2819,7 @@ const TEBak_FREE_PLAY_TRANSLATIONS: Record<LanguageCode, Record<string, string>>
   },
   ja: {
     'Streamer & Viewer Interaction — Free to Play''ストリーマーと視聴者の交流 — 無料プレイ',
-    'Mode Interaksi''ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰',
+    'Mode Interaksi''インタラクションモード',
     'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.''このゲームはストリーマーと視聴者の交流専用です。プレイにコイン、残高、入金、ロック、賭け、支払いは必要ありません。',
     'Guess the 2 middle hidden digits! High payout on exact match.''中央の隠された2桁を当てよう！完全一致で高い報酬を獲得できます。'
   },
@@ -3245,23 +3245,23 @@ const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> 
   ja: {
     "SYS STREAM LOADING""SYS STREAMを読み込み中",
     "Initializing TikTok Live Sync + Cloudflare D1 Connection""TikTok Live同期とCloudflare D1接続を初期化中",
-    "Mining SYS dari Blind Box Lock""Blind Box Lockã§SYSã‚’ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
-    "Verify your email""ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„",
-    "Privacy Policy""ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼",
-    "Membuka SYS STREAM Airdrop...""SYS STREAM Airdropã‚’é–‹ã„ã¦ã„ã¾ã™...",
+    "Mining SYS dari Blind Box Lock""Blind Box LockでSYSをマイニング",
+    "Verify your email""メールアドレスを確認してください",
+    "Privacy Policy""プライバシーポリシー",
+    "Membuka SYS STREAM Airdrop...""SYS STREAM Airdropを開いています...",
     "Aplikasi gagal dimuat""アプリの読み込みに失敗しました",
     "Loading...""読み込み中...",
-    "Mining""ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
-    "Wallet""ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ",
-    "Menu""ãƒ¡ãƒ‹ãƒ¥ãƒ¼",
-    "Masuk Akun SYS Utama""SYSãƒ¡ã‚¤ãƒ³ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ãƒ­ã‚°ã‚¤ãƒ³",
-    "Menu Blind Box 3D""Blind Box 3Dãƒ¡ãƒ‹ãƒ¥ãƒ¼",
+    "Mining""マイニング",
+    "Wallet""ウォレット",
+    "Menu""メニュー",
+    "Masuk Akun SYS Utama""SYSメインアカウントにログイン",
+    "Menu Blind Box 3D""Blind Box 3Dメニュー",
     "Pengaturan Akun & Dompet Game""ゲームアカウントとウォレット設定",
-    "Keluar Akun""ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ",
+    "Keluar Akun""ログアウト",
     "Masuk untuk Mulai Main Blind Box""ログインしてBlind Boxを開始",
     "Anda Sudah Mengklaim Blind Box Hari Ini!""本日のBlind Boxはすでに受け取り済みです！",
     "Status Deposit Aktif""有効な入金ステータス",
-    "Buka Kunci""ãƒ­ãƒƒã‚¯è§£é™¤",
+    "Buka Kunci""ロック解除",
     "Masa Kunci Berjalan""ロック期間進行中",
     "Opsi Buka Kunci Saldo""残高ロック解除オプション：",
     "Min. 50 Ribu""最低5万",
@@ -3555,16 +3555,16 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "LOGIN / REGISTER""登录 / 注册",
     "CHAT""聊天",
     "PESERTA""参与者",
-    "WIN""èŽ·èƒœ",
+    "WIN""获胜",
     "Reward""奖励",
     "Status""状态",
     "Terms & Conditions""条款与条件"
   },
   ja: {
-    "Mining SYS dari Blind Box Lock""Blind Box Lockã§SYSã‚’ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
-    "Mining""ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
-    "Wallet""ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ",
-    "Menu""ãƒ¡ãƒ‹ãƒ¥ãƒ¼",
+    "Mining SYS dari Blind Box Lock""Blind Box LockでSYSをマイニング",
+    "Mining""マイニング",
+    "Wallet""ウォレット",
+    "Menu""メニュー",
     "Processing...""処理中...",
     "Claim Bonus""ボーナスを受け取る",
     "Locked Balance""ロック残高",
@@ -3585,23 +3585,23 @@ const TRANSLATION_CORRECTIONS: Record<LanguageCode, Record<string, string>> = {
     "Withdrawal""出金",
     "Minimum withdrawal is""最低出金額は",
     "Initializing TikTok Live Sync + Cloudflare D1 Connection""TikTok Live同期とCloudflare D1接続を初期化中",
-    "Verify your email""ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„",
-    "Privacy Policy""ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼",
+    "Verify your email""メールアドレスを確認してください",
+    "Privacy Policy""プライバシーポリシー",
     "Loading...""読み込み中...",
     "Aplikasi gagal dimuat""アプリの読み込みに失敗しました",
-    "Wallet Identity""ã‚¦ã‚©ãƒ¬ãƒƒãƒˆID",
+    "Wallet Identity""ウォレットID",
     "Wallet Connected""ウォレット接続済み",
     "Connect Wallet""ウォレットを接続",
     "Register Now""今すぐ登録",
     "Remember me""ログイン情報を保存",
     "Forgot Password?""パスワードをお忘れですか？",
-    "Sign in to continue streaming and gaming""ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°ã¨ã‚²ãƒ¼ãƒ ã‚’ç¶šã‘ã‚‹",
-    "LOGIN / REGISTER""ãƒ­ã‚°ã‚¤ãƒ³ / ç™»éŒ²",
-    "CHAT""ãƒãƒ£ãƒƒãƒˆ",
+    "Sign in to continue streaming and gaming""ログインしてストリーミングとゲームを続ける",
+    "LOGIN / REGISTER""ログイン / 登録",
+    "CHAT""チャット",
     "PESERTA""参加者",
     "WIN""勝利",
     "Reward""報酬",
-    "Status""ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹",
+    "Status""ステータス",
     "Terms & Conditions""利用規約"
   },
   ko: {
@@ -3731,7 +3731,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "MULAI LIVE",
     "STOP LIVE" "HENTIKAN LIVE",
     "READY" "SIAP",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latensi sangat rendah • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latensi sangat rendah • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE.",
     "Terms & Conditions" "Syarat & Ketentuan",
     "Privacy Policy" "Kebijakan Privasi"
   },
@@ -3761,7 +3761,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "START LIVE",
     "STOP LIVE" "STOP LIVE",
     "READY" "READY",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • ultra-low latency • camera and microphone activate only after you press START LIVE.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • ultra-low latency • camera and microphone activate only after you press START LIVE.",
     "Terms & Conditions" "Terms & Conditions",
     "Privacy Policy" "Privacy Policy"
   },
@@ -3791,7 +3791,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "INICIAR LIVE",
     "STOP LIVE" "DETENER LIVE",
     "READY" "LISTO",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latencia ultrabaja • la cámara y el micrófono solo se activan al pulsar INICIAR LIVE.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latencia ultrabaja • la cámara y el micrófono solo se activan al pulsar INICIAR LIVE.",
     "Terms & Conditions" "Términos y condiciones",
     "Privacy Policy" "Política de privacidad"
   },
@@ -3822,7 +3822,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "INICIAR LIVE",
     "STOP LIVE" "PARAR LIVE",
     "READY" "PRONTO",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latência ultrabaixa • câmera e microfone só ficam ativos após INICIAR LIVE.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • latência ultrabaixa • câmera e microfone só ficam ativos após INICIAR LIVE.",
     "Terms & Conditions" "Termos e condições",
     "Privacy Policy" "Política de Privacidade"
   },
@@ -3852,22 +3852,22 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "开始直播",
     "STOP LIVE" "停止直播",
     "READY" "就绪",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 超低延迟 • 只有点击开始直播后摄像头和麦克风才会启用。",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 超低延迟 • 只有点击开始直播后摄像头和麦克风才会启用。",
     "Terms & Conditions" "条款与条件",
     "Privacy Policy" "隐私政策"
   },
   "ja" {
     "Membuka SYS STREAM Airdrop..." "SYS STREAM Airdropを開いています…",
-    "Mining SYS dari Blind Box Lock" "Blind Box Lockã‹ã‚‰SYSã‚’ãƒžã‚¤ãƒ‹ãƒ³ã‚°",
+    "Mining SYS dari Blind Box Lock" "Blind Box LockからSYSをマイニング",
     "Lock aktif minimal $10 dapat mengaktifkan reward mining harian." "10ドル以上の有効なロックで毎日のマイニング報酬が有効になります。",
-    "Wallet" "ã‚¦ã‚©ãƒ¬ãƒƒãƒˆ",
+    "Wallet" "ウォレット",
     "Copy referral link" "紹介リンクをコピー",
-    "Profile preview" "ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼",
-    "Mobile Live" "ãƒ¢ãƒã‚¤ãƒ«ãƒ©ã‚¤ãƒ–",
+    "Profile preview" "プロフィールプレビュー",
+    "Mobile Live" "モバイルライブ",
     "Browser ini tidak mendukung kamera/mikrofon live. Gunakan Chrome/Safari terbaru melalui HTTPS." "このブラウザはライブカメラ/マイクに対応していません。HTTPSで最新版のChrome/Safariを使用してください。",
     "SDP kamera tidak tersedia." "カメラSDPを利用できません",
     "Cloudflare menolak koneksi live dari browser." "Cloudflareがブラウザからのライブ接続を拒否しました。",
-    "Kamera dan mikrofon sudah LIVE." "ã‚«ãƒ¡ãƒ©ã¨ãƒžã‚¤ã‚¯ãŒLIVEã«ãªã‚Šã¾ã—ãŸã€‚",
+    "Kamera dan mikrofon sudah LIVE." "カメラとマイクがLIVEになりました。",
     "Gagal memulai live dari HP." "モバイルライブを開始できませんでした。",
     "Live dari HP sudah dihentikan." "モバイルライブを停止しました。",
     "Live langsung dari kamera HP" "スマートフォンのカメラから直接ライブ配信",
@@ -3875,16 +3875,16 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "Kamera siap digunakan" "カメラの準備完了",
     "Tekan tombol mulai untuk meminta izin kamera & mikrofon." "開始を押してカメラとマイクの許可を求めます。",
     "MENGHUBUNGKAN KE CLOUDFARE..." "CLOUDFLAREに接続中…",
-    "UNMUTE" "ãƒŸãƒ¥ãƒ¼ãƒˆè§£é™¤",
-    "MIC" "ãƒžã‚¤ã‚¯",
-    "CAM OFF" "ã‚«ãƒ¡ãƒ©OFF",
-    "CAM" "ã‚«ãƒ¡ãƒ©",
+    "UNMUTE" "ミュート解除",
+    "MIC" "マイク",
+    "CAM OFF" "カメラOFF",
+    "CAM" "カメラ",
     "MULAI LIVE" "ライブ開始",
     "STOP LIVE" "ライブ停止",
     "READY" "準備完了",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 超低遅延 • 「ライブ開始」を押した後のみカメラとマイクが有効になります。",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 超低遅延 • 「ライブ開始」を押した後のみカメラとマイクが有効になります。",
     "Terms & Conditions" "利用規約",
-    "Privacy Policy" "ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒãƒªã‚·ãƒ¼"
+    "Privacy Policy" "プライバシーポリシー"
   },
   "ko" {
     "Membuka SYS STREAM Airdrop..." "SYS STREAM 에어드롭을 여는 중...",
@@ -3912,7 +3912,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "라이브 시작",
     "STOP LIVE" "라이브 중지",
     "READY" "준비",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 초저지연 • 라이브 시작을 누른 후에만 카메라와 마이크가 활성화됩니다.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • 초저지연 • 라이브 시작을 누른 후에만 카메라와 마이크가 활성화됩니다.",
     "Terms & Conditions" "이용약관",
     "Privacy Policy" "개인정보 처리방침"
   },
@@ -3942,7 +3942,7 @@ const CORE_SCREENING_TRANSLATIONS: Record<LanguageCode, Record<string,string>> =
     "MULAI LIVE" "بدء البث",
     "STOP LIVE" "إيقاف البث",
     "READY" "جاهز",
-    "WebRTC/WHIP â€¢ ultra-low latency â€¢ kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • زمن انتقال منخفض جدًا • لا يتم تفعيل الكاميرا والميكروفون إلا بعد الضغط على بدء البث.",
+    "WebRTC/WHIP • ultra-low latency • kamera dan mikrofon hanya aktif setelah Anda menekan MULAI LIVE." "WebRTC/WHIP • زمن انتقال منخفض جدًا • لا يتم تفعيل الكاميرا والميكروفون إلا بعد الضغط على بدء البث.",
     "Terms & Conditions" "الشروط والأحكام",
     "Privacy Policy" "سياسة الخصوصية"
   }
@@ -3953,7 +3953,7 @@ for (const lang of Object.keys(CORE_SCREENING_TRANSLATIONS) as LanguageCode[]) {
 }
 
 const PRODUCT_LABEL_TRANSLATIONS: Record<LanguageCode, string> = {
-  id: 'Penambangan SYS', en: 'SYS Mining', es: 'Minería SYS', pt: 'Mineração SYS', zh: 'SYS æŒ–çŸ¿', ja: 'SYS ãƒžã‚¤ãƒ‹ãƒ³ã‚°', ko: 'SYS ì±„êµ´', ar: 'تعدين SYS'
+  id: 'Penambangan SYS', en: 'SYS Mining', es: 'Minería SYS', pt: 'Mineração SYS', zh: 'SYS 挖矿', ja: 'SYS マイニング', ko: 'SYS 채굴', ar: 'تعدين SYS'
 };
 for (const lang of Object.keys(PRODUCT_LABEL_TRANSLATIONS) as LanguageCode[]) {
   translations[lang]['SYS Mining'] = PRODUCT_LABEL_TRANSLATIONS[lang];
@@ -3999,10 +3999,10 @@ const DASHBOARD_UI_LOCK: Record<LanguageCode, Record<string, string>> = {
     'SYS STREAM''SYS STREAM','Streaming Settings''Streaming Settings','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.','Open Streaming Studio''Open Streaming Studio','SYS Coin''SYS Coin','Airdrop Reward''Airdrop Reward','Create Post''Create Post','Open attached media →''Open attached media →','user''user'
   },
   es: {
-    'SYS STREAM''SYS STREAM','Streaming Settings''Configuración de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''Eres un streamer oficial. Crea o abre tu propia sala de streaming y obtén el servidor RTMPS y la Stream Key para OBS.','Open Streaming Studio''Abrir estudio de streaming','SYS Coin''Moneda SYS','Airdrop Reward''Recompensa del airdrop','Create Post''Crear publicación','Open attached media â†’''Abrir contenido multimedia adjunto →','user''usuario'
+    'SYS STREAM''SYS STREAM','Streaming Settings''Configuración de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''Eres un streamer oficial. Crea o abre tu propia sala de streaming y obtén el servidor RTMPS y la Stream Key para OBS.','Open Streaming Studio''Abrir estudio de streaming','SYS Coin''Moneda SYS','Airdrop Reward''Recompensa del airdrop','Create Post''Crear publicación','Open attached media →''Abrir contenido multimedia adjunto →','user''usuario'
   },
   pt: {
-    'SYS STREAM''SYS STREAM','Streaming Settings''Configuração de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''Você é um Official Streamer. Crie ou abra sua própria sala de streaming e obtenha o servidor RTMPS e a Stream Key para OBS.','Open Streaming Studio''Abrir estúdio de streaming','SYS Coin''Moeda SYS','Airdrop Reward''Recompensa do Airdrop','Create Post''Criar publicação','Open attached media â†’''Abrir mídia anexada →','user''usuário'
+    'SYS STREAM''SYS STREAM','Streaming Settings''Configuração de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''Você é um Official Streamer. Crie ou abra sua própria sala de streaming e obtenha o servidor RTMPS e a Stream Key para OBS.','Open Streaming Studio''Abrir estúdio de streaming','SYS Coin''Moeda SYS','Airdrop Reward''Recompensa do Airdrop','Create Post''Criar publicação','Open attached media →''Abrir mídia anexada →','user''usuário'
   },
   zh: {
     'SYS STREAM''SYS STREAM','Streaming Settings''直播设置','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''您是官方主播。创建或打开自己的直播间，并获取用于 OBS 的 RTMPS 服务器和 Stream Key。','Open Streaming Studio''打开直播工作室','SYS Coin''SYS 币','Airdrop Reward''空投奖励','Create Post''创建帖子','Open attached media →''打开附件媒体 →','user''用户'
@@ -4014,7 +4014,7 @@ const DASHBOARD_UI_LOCK: Record<LanguageCode, Record<string, string>> = {
     'SYS STREAM''SYS STREAM','Streaming Settings''스트리밍 설정','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''공식 스트리머입니다. 자신의 스트리밍 룸을 만들거나 열고 OBS용 RTMPS 서버와 Stream Key를 받을 수 있습니다.','Open Streaming Studio''스트리밍 스튜디오 열기','SYS Coin''SYS 코인','Airdrop Reward''에어드롭 보상','Create Post''게시물 작성','Open attached media →''첨부 미디어 열기 →','user''사용자'
   },
   ar: {
-    'SYS STREAM''SYS STREAM','Streaming Settings''إعدادات البث','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''أنت منشئ بث رسمي. أنشئ غرفة البث الخاصة بك أو افتحها واحصل على خادم RTMPS وStream Key لاستخدامهما مع OBS.','Open Streaming Studio''فتح استوديو البث','SYS Coin''عملة SYS','Airdrop Reward''مكافأة الإيردروب','Create Post''إنشاء منشور','Open attached media â†’''فتح الوسائط المرفقة ←','user''مستخدم'
+    'SYS STREAM''SYS STREAM','Streaming Settings''إعدادات البث','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.''أنت منشئ بث رسمي. أنشئ غرفة البث الخاصة بك أو افتحها واحصل على خادم RTMPS وStream Key لاستخدامهما مع OBS.','Open Streaming Studio''فتح استوديو البث','SYS Coin''عملة SYS','Airdrop Reward''مكافأة الإيردروب','Create Post''إنشاء منشور','Open attached media →''فتح الوسائط المرفقة ←','user''مستخدم'
   }
 };
 for (const lang of Object.keys(DASHBOARD_UI_LOCK) as LanguageCode[]) {
@@ -4202,13 +4202,13 @@ const GAMES_PROFILE_TRANSLATION_SCREENING: Record<LanguageCode, Record<string, s
     'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''Disponível com o lock ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao saldo disponível.','Daily Active Reward''Recompensa diária ativa','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''Nível de lock superior com itens raros. As recompensas financeiras são determinadas pelo servidor.','Enhanced Lock Tier''Nível de lock avançado','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''Nível de lock alto com itens raros. As recompensas financeiras são determinadas pelo servidor.','Premium Lock Tier''Nível de lock premium','Reward harian masuk ke saldo''As recompensas diárias são adicionadas ao saldo','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''Abra a Blind Box diária com base no seu saldo bloqueado. Os resgates seguem as regras do servidor e são redefinidos às 00:00 WIB.','Available''Disponível','Quota resets in''A cota será redefinida em','Lock minimal $4 equivalent untuk membuka Blind Box''Faça lock de pelo menos o equivalente a $4 para abrir a Blind Box','Daily Boxes''Caixas diárias','Lock Amount (IDR)''Valor do lock (IDR)','Claim Daily Blind Box''Resgatar Blind Box diária','Lock aktif''Lock ativo','Aturan claim tetap 1 kali per hari.''O limite de resgate continua sendo uma vez por dia.','LOCK SALDO DIBUTUHKAN''LOCK DE SALDO NECESSÁRIO','Lock saldo untuk mendapatkan hak claim Blind Box harian''Faça lock do saldo para obter o direito de resgatar a Blind Box diária','Durasi lock tersedia''Durações de lock disponíveis','30 hari''30 dias','60 hari''60 dias','90 hari''90 dias','Lock amount''Valor do lock','Nominal Lock (IDR)''Valor do lock (IDR)','Quota''Cota','1 Box/Day''1 caixa/dia','Lock Saldo Sekarang''Fazer lock do saldo agora','Total Locked''Total bloqueado','Daily Claim''Resgate diário','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''Os resgates são feitos pelo botão Blind Box abaixo. O lock termina automaticamente quando a duração acabar.','Lock minimum''Lock mínimo','to activate''para ativar','Open Daily Box''Abrir caixa diária','Available Today''Disponível hoje','Unboxing''Abrindo caixa','Server sedang menentukan reward...''O servidor está determinando a recompensa...','Reward Blind Box Harian''Recompensa da Blind Box diária','Keep in Vault''Guardar no cofre','Done''Concluído','Left''Restantes','Jadwal Durasi Lock''Cronograma de duração do lock','30 Days Term''Prazo de 30 dias','60 Days Term''Prazo de 60 dias','90 Days Term''Prazo de 90 dias','Reward harian sesuai pengaturan server''Recompensa diária conforme as configurações do servidor','Viewers on Wheel''Espectadores na roda','Clear All''Limpar tudo','Selected Winner''Vencedor selecionado','Live Participants Only''Somente participantes da live','Spinning for Winner...''Girando para escolher o vencedor...','Spin Raffle Wheel''Girar a roda do sorteio','Current Viewers on Wheel''Espectadores atuais na roda','Recent Raffle Winners''Vencedores recentes do sorteio','Edit''Editar','Logout''Sair','USDT Account''Conta USDT','Member''Membro','EVM Wallet''Carteira EVM','Wallet belum terhubung''Carteira não conectada','Alamat wallet akun. Recovery phrase tidak disimpan di server.''Endereço da carteira da conta. A frase de recuperação não é armazenada no servidor.','WALLET REQUIRED''CARTEIRA OBRIGATÓRIA','Minimum withdrawal''Saque mínimo','Minimum withdrawal is''O saque mínimo é','Started''Iniciado','Deposit, withdrawal, lock, reward & bonus''Depósito, saque, lock, recompensa e bônus','Locked Balance''Saldo bloqueado','Earns passive yield''Gera rendimento passivo','Change photo from device''Alterar foto do dispositivo','Upload photo from device''Enviar foto do dispositivo','JPG, PNG, WEBP • photo stays from your device storage''JPG, PNG, WEBP • a foto permanece no armazenamento do dispositivo','No unread notifications at this time.''Não há notificações não lidas no momento.','Guest''Convidado','Profile''Perfil','Kelola akun, wallet, dan aktivitas kamu.''Gerencie sua conta, carteira e atividade.'
   },
   zh: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''æ»¡è¶³æœ€ä½Žæœ‰æ•ˆé”å®šå³å¯ä½¿ç”¨ã€‚æ¯æ—¥å¥–åŠ±ç”±æœåŠ¡å™¨å¤„ç†å¹¶åŠ å…¥å¯ç”¨ä½™é¢ã€‚','Daily Active Reward''æ¯æ—¥æ´»è·ƒå¥–åŠ±','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''æ›´é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Enhanced Lock Tier''高级锁定等级','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚','Premium Lock Tier''高级锁定等级','Reward harian masuk ke saldo''每日奖励加入余额','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''æ ¹æ®é”å®šä½™é¢å¼€å¯æ¯æ—¥ç›²ç›’ã€‚æ¯æ—¥é¢†å–éµå¾ªæœåŠ¡å™¨è§„åˆ™ï¼Œå¹¶æŒ‰ WIB é‡ç½®ã€‚','Available''可用','Quota resets in''配额重置倒计时','Lock minimal $4 equivalent untuk membuka Blind Box''é”å®šè‡³å°‘ç­‰å€¼ $4 æ‰èƒ½å¼€å¯ç›²ç›’','Daily Boxes''每日盲盒','Lock Amount (IDR)''锁定金额（IDR）','Claim Daily Blind Box''领取每日盲盒','Lock aktif''有效锁定','Aturan claim tetap 1 kali per hari.''é¢†å–é™åˆ¶ä»ä¸ºæ¯å¤©ä¸€æ¬¡ã€‚','LOCK SALDO DIBUTUHKAN''需要锁定余额','Lock saldo untuk mendapatkan hak claim Blind Box harian''锁定余额以获得领取每日盲盒的资格','Durasi lock tersedia''å¯ç”¨é”å®šæœŸé™ï¼š','30 hari''30天','60 hari''60天','90 hari''90天','Lock amount''锁定金额','Nominal Lock (IDR)''锁定金额（IDR）','Quota''é…é¢ï¼š','1 Box/Day''每天1盒','Lock Saldo Sekarang''立即锁定余额','Total Locked''总锁定','Daily Claim''æ¯æ—¥é¢†å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''é€šè¿‡ä¸‹æ–¹ç›²ç›’æŒ‰é’®é¢†å–ã€‚é”å®šæœŸé™ç»“æŸåŽå°†è‡ªåŠ¨å®Œæˆã€‚','Lock minimum''最低锁定','to activate''以激活','Open Daily Box''开启每日盲盒','Available Today''今日可用','Unboxing''开盒中','Server sedang menentukan reward...''服务器正在确定奖励……','Reward Blind Box Harian''每日盲盒奖励','Keep in Vault''存入保险库','Done''完成','Left''剩余','Jadwal Durasi Lock''锁定期限安排','30 Days Term''30天期限','60 Days Term''60天期限','90 Days Term''90天期限','Reward harian sesuai pengaturan server''每日奖励以服务器设置为准','Viewers on Wheel''è½¬ç›˜ä¸Šçš„è§‚ä¼—','Clear All''å…¨éƒ¨æ¸…é™¤','Selected Winner''é€‰ä¸­çš„èŽ·èƒœè€…','Live Participants Only''ä»…é™ç›´æ’­å‚ä¸Žè€…','Spinning for Winner...''正在转动选择获胜者……','Spin Raffle Wheel''旋转抽奖转盘','Current Viewers on Wheel''å½“å‰è½¬ç›˜è§‚ä¼—ï¼š','Recent Raffle Winners''æœ€è¿‘çš„æŠ½å¥–èŽ·èƒœè€…','Edit''编辑','Logout''退出登录','USDT Account''USDT 账户','Member''会员','EVM Wallet''EVM 钱包','Wallet belum terhubung''钱包未连接','Alamat wallet akun. Recovery phrase tidak disimpan di server.''è´¦æˆ·é’±åŒ…åœ°å€ã€‚æ¢å¤çŸ­è¯­ä¸ä¼šå­˜å‚¨åœ¨æœåŠ¡å™¨ä¸Šã€‚','WALLET REQUIRED''需要钱包','Minimum withdrawal''最低提现','Minimum withdrawal is''最低提现金额为','Started''开始于','Deposit, withdrawal, lock, reward & bonus''充值、提现、锁定、奖励和奖金','Locked Balance''锁定余额','Earns passive yield''获得被动收益','Change photo from device''从设备更换照片','Upload photo from device''从设备上传照片','JPG, PNG, WEBP • photo stays from your device storage''JPG、PNG、WEBP • 照片保存在您的设备存储中','No unread notifications at this time.''ç›®å‰æ²¡æœ‰æœªè¯»é€šçŸ¥ã€‚','Guest''访客','Profile''个人资料','Kelola akun, wallet, dan aktivitas kamu.''ç®¡ç†æ‚¨çš„è´¦æˆ·ã€é’±åŒ…å’Œæ´»åŠ¨ã€‚'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''满足最低有效锁定即可使用。每日奖励由服务器处理并加入可用余额。','Daily Active Reward''每日活跃奖励','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''更高锁定等级，包含稀有收藏品。财务奖励由服务器决定。','Enhanced Lock Tier''高级锁定等级','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''高锁定等级，包含稀有收藏品。财务奖励由服务器决定。','Premium Lock Tier''高级锁定等级','Reward harian masuk ke saldo''每日奖励加入余额','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''根据锁定余额开启每日盲盒。每日领取遵循服务器规则，并按 WIB 重置。','Available''可用','Quota resets in''配额重置倒计时','Lock minimal $4 equivalent untuk membuka Blind Box''锁定至少等值 $4 才能开启盲盒','Daily Boxes''每日盲盒','Lock Amount (IDR)''锁定金额（IDR）','Claim Daily Blind Box''领取每日盲盒','Lock aktif''有效锁定','Aturan claim tetap 1 kali per hari.''领取限制仍为每天一次。','LOCK SALDO DIBUTUHKAN''需要锁定余额','Lock saldo untuk mendapatkan hak claim Blind Box harian''锁定余额以获得领取每日盲盒的资格','Durasi lock tersedia''可用锁定期限：','30 hari''30天','60 hari''60天','90 hari''90天','Lock amount''锁定金额','Nominal Lock (IDR)''锁定金额（IDR）','Quota''配额：','1 Box/Day''每天1盒','Lock Saldo Sekarang''立即锁定余额','Total Locked''总锁定','Daily Claim''每日领取：','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''通过下方盲盒按钮领取。锁定期限结束后将自动完成。','Lock minimum''最低锁定','to activate''以激活','Open Daily Box''开启每日盲盒','Available Today''今日可用','Unboxing''开盒中','Server sedang menentukan reward...''服务器正在确定奖励……','Reward Blind Box Harian''每日盲盒奖励','Keep in Vault''存入保险库','Done''完成','Left''剩余','Jadwal Durasi Lock''锁定期限安排','30 Days Term''30天期限','60 Days Term''60天期限','90 Days Term''90天期限','Reward harian sesuai pengaturan server''每日奖励以服务器设置为准','Viewers on Wheel''转盘上的观众','Clear All''全部清除','Selected Winner''选中的获胜者','Live Participants Only''仅限直播参与者','Spinning for Winner...''正在转动选择获胜者……','Spin Raffle Wheel''旋转抽奖转盘','Current Viewers on Wheel''当前转盘观众：','Recent Raffle Winners''最近的抽奖获胜者','Edit''编辑','Logout''退出登录','USDT Account''USDT 账户','Member''会员','EVM Wallet''EVM 钱包','Wallet belum terhubung''钱包未连接','Alamat wallet akun. Recovery phrase tidak disimpan di server.''账户钱包地址。恢复短语不会存储在服务器上。','WALLET REQUIRED''需要钱包','Minimum withdrawal''最低提现','Minimum withdrawal is''最低提现金额为','Started''开始于','Deposit, withdrawal, lock, reward & bonus''充值、提现、锁定、奖励和奖金','Locked Balance''锁定余额','Earns passive yield''获得被动收益','Change photo from device''从设备更换照片','Upload photo from device''从设备上传照片','JPG, PNG, WEBP • photo stays from your device storage''JPG、PNG、WEBP • 照片保存在您的设备存储中','No unread notifications at this time.''目前没有未读通知。','Guest''访客','Profile''个人资料','Kelola akun, wallet, dan aktivitas kamu.''管理您的账户、钱包和活动。'
   },
   ja: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''æœ€ä½Žé™ã®æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯ã§åˆ©ç”¨ã§ãã¾ã™ã€‚æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã§å‡¦ç†ã•ã‚Œã€åˆ©ç”¨å¯èƒ½æ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™ã€‚','Daily Active Reward''ãƒ‡ã‚¤ãƒªãƒ¼ã‚¢ã‚¯ãƒ†ã‚£ãƒ–å ±é…¬','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®ä¸Šä½ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Enhanced Lock Tier''å¼·åŒ–ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''å¸Œå°‘ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ä»˜ãã®é«˜ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘éŠ­çš„å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ãŒæ±ºå®šã—ã¾ã™ã€‚','Premium Lock Tier''ãƒ—ãƒ¬ãƒŸã‚¢ãƒ ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢','Reward harian masuk ke saldo''æ¯Žæ—¥ã®å ±é…¬ãŒæ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã™','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''ãƒ­ãƒƒã‚¯ä¸­ã®æ®‹é«˜ã«å¿œã˜ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã¾ã™ã€‚æ¯Žæ—¥ã®å—ã‘å–ã‚Šã¯ã‚µãƒ¼ãƒãƒ¼è¦å‰‡ã«å¾“ã„ã€WIBã§ãƒªã‚»ãƒƒãƒˆã•ã‚Œã¾ã™ã€‚','Available''åˆ©ç”¨å¯èƒ½','Quota resets in''ã‚¯ã‚©ãƒ¼ã‚¿ãƒªã‚»ãƒƒãƒˆã¾ã§','Lock minimal $4 equivalent untuk membuka Blind Box''ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ãã«ã¯å°‘ãªãã¨ã‚‚$4ç›¸å½“ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãã ã•ã„','Daily Boxes''ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹','Lock Amount (IDR)''ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Claim Daily Blind Box''ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã‚’å—ã‘å–ã‚‹','Lock aktif''æœ‰åŠ¹ãªãƒ­ãƒƒã‚¯','Aturan claim tetap 1 kali per hari.''å—ã‘å–ã‚Šã¯1æ—¥1å›žã¾ã§ã§ã™ã€‚','LOCK SALDO DIBUTUHKAN''æ®‹é«˜ã®ãƒ­ãƒƒã‚¯ãŒå¿…è¦ã§ã™','Lock saldo untuk mendapatkan hak claim Blind Box harian''æ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ã®å—ã‘å–ã‚Šæ¨©ã‚’å–å¾—ã—ã¾ã™','Durasi lock tersedia''åˆ©ç”¨å¯èƒ½ãªãƒ­ãƒƒã‚¯æœŸé–“ï¼š','30 hari''30日','60 hari''60日','90 hari''90日','Lock amount''ãƒ­ãƒƒã‚¯é‡‘é¡','Nominal Lock (IDR)''ãƒ­ãƒƒã‚¯é‡‘é¡ï¼ˆIDRï¼‰','Quota''ã‚¯ã‚©ãƒ¼ã‚¿ï¼š','1 Box/Day''1箱/日','Lock Saldo Sekarang''ä»Šã™ãæ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯','Total Locked''ãƒ­ãƒƒã‚¯åˆè¨ˆ','Daily Claim''ãƒ‡ã‚¤ãƒªãƒ¼å—å–ï¼š','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''ä¸‹ã®ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹ãƒœã‚¿ãƒ³ã‹ã‚‰å—ã‘å–ã‚Œã¾ã™ã€‚æœŸé–“çµ‚äº†å¾Œã€ãƒ­ãƒƒã‚¯ã¯è‡ªå‹•çš„ã«å®Œäº†ã—ã¾ã™ã€‚','Lock minimum''æœ€ä½Žãƒ­ãƒƒã‚¯','to activate''æœ‰åŠ¹åŒ–ã™ã‚‹ã«ã¯','Open Daily Box''ãƒ‡ã‚¤ãƒªãƒ¼ãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ã','Available Today''æœ¬æ—¥åˆ©ç”¨å¯èƒ½','Unboxing''開封中','Server sedang menentukan reward...''サーバーが報酬を決定しています…','Reward Blind Box Harian''ãƒ‡ã‚¤ãƒªãƒ¼ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ãƒœãƒƒã‚¯ã‚¹å ±é…¬','Keep in Vault''保管庫に保存','Done''完了','Left''æ®‹ã‚Š','Jadwal Durasi Lock''ãƒ­ãƒƒã‚¯æœŸé–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«','30 Days Term''30日間','60 Days Term''60日間','90 Days Term''90日間','Reward harian sesuai pengaturan server''æ¯Žæ—¥ã®å ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼è¨­å®šã«å¾“ã„ã¾ã™','Viewers on Wheel''ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…','Clear All''ã™ã¹ã¦ã‚¯ãƒªã‚¢','Selected Winner''é¸ã°ã‚ŒãŸå‹è€…','Live Participants Only''ãƒ©ã‚¤ãƒ–å‚åŠ è€…ã®ã¿','Spinning for Winner...''勝者を選出中…','Spin Raffle Wheel''æŠ½é¸ãƒ›ã‚¤ãƒ¼ãƒ«ã‚’å›žã™','Current Viewers on Wheel''ç¾åœ¨ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šã®è¦–è´è€…ï¼š','Recent Raffle Winners''最近の抽選当選者','Edit''編集','Logout''ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ','USDT Account''USDTã‚¢ã‚«ã‚¦ãƒ³ãƒˆ','Member''ãƒ¡ãƒ³ãƒãƒ¼','EVM Wallet''EVMã‚¦ã‚©ãƒ¬ãƒƒãƒˆ','Wallet belum terhubung''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆæœªæŽ¥ç¶š','Alamat wallet akun. Recovery phrase tidak disimpan di server.''ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚ãƒªã‚«ãƒãƒªãƒ¼ãƒ•ãƒ¬ãƒ¼ã‚ºã¯ã‚µãƒ¼ãƒãƒ¼ã«ä¿å­˜ã•ã‚Œã¾ã›ã‚“ã€‚','WALLET REQUIRED''ã‚¦ã‚©ãƒ¬ãƒƒãƒˆãŒå¿…è¦ã§ã™','Minimum withdrawal''最低出金額','Minimum withdrawal is''最低出金額は','Started''開始','Deposit, withdrawal, lock, reward & bonus''å…¥é‡‘ã€å‡ºé‡‘ã€ãƒ­ãƒƒã‚¯ã€å ±é…¬ã€ãƒœãƒ¼ãƒŠã‚¹','Locked Balance''ãƒ­ãƒƒã‚¯æ®‹é«˜','Earns passive yield''ãƒ‘ãƒƒã‚·ãƒ–åˆ©å›žã‚Šã‚’ç²å¾—','Change photo from device''ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’å¤‰æ›´','Upload photo from device''ç«¯æœ«ã‹ã‚‰å†™çœŸã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰','JPG, PNG, WEBP • photo stays from your device storage''JPG、PNG、WEBP • 写真は端末ストレージに保存されます','No unread notifications at this time.''ç¾åœ¨ã€æœªèª­é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚','Guest''ã‚²ã‚¹ãƒˆ','Profile''ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«','Kelola akun, wallet, dan aktivitas kamu.''ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã€ã‚¦ã‚©ãƒ¬ãƒƒãƒˆã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ç®¡ç†ã—ã¾ã™ã€‚'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''最低限の有効なロックで利用できます。毎日の報酬はサーバーで処理され、利用可能残高に加算されます。','Daily Active Reward''デイリーアクティブ報酬','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''希少コレクション付きの上位ロックティア。金銭的報酬はサーバーが決定します。','Enhanced Lock Tier''強化ロックティア','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''希少コレクション付きの高ロックティア。金銭的報酬はサーバーが決定します。','Premium Lock Tier''プレミアムロックティア','Reward harian masuk ke saldo''毎日の報酬が残高に加算されます','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''ロック中の残高に応じてデイリーブラインドボックスを開きます。毎日の受け取りはサーバー規則に従い、WIBでリセットされます。','Available''利用可能','Quota resets in''クォータリセットまで','Lock minimal $4 equivalent untuk membuka Blind Box''ブラインドボックスを開くには少なくとも$4相当をロックしてください','Daily Boxes''デイリーボックス','Lock Amount (IDR)''ロック金額（IDR）','Claim Daily Blind Box''デイリーブラインドボックスを受け取る','Lock aktif''有効なロック','Aturan claim tetap 1 kali per hari.''受け取りは1日1回までです。','LOCK SALDO DIBUTUHKAN''残高のロックが必要です','Lock saldo untuk mendapatkan hak claim Blind Box harian''残高をロックしてデイリーブラインドボックスの受け取り権を取得します','Durasi lock tersedia''利用可能なロック期間：','30 hari''30日','60 hari''60日','90 hari''90日','Lock amount''ロック金額','Nominal Lock (IDR)''ロック金額（IDR）','Quota''クォータ：','1 Box/Day''1箱/日','Lock Saldo Sekarang''今すぐ残高をロック','Total Locked''ロック合計','Daily Claim''デイリー受取：','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''下のブラインドボックスボタンから受け取れます。期間終了後、ロックは自動的に完了します。','Lock minimum''最低ロック','to activate''有効化するには','Open Daily Box''デイリーボックスを開く','Available Today''本日利用可能','Unboxing''開封中','Server sedang menentukan reward...''サーバーが報酬を決定しています…','Reward Blind Box Harian''デイリーブラインドボックス報酬','Keep in Vault''保管庫に保存','Done''完了','Left''残り','Jadwal Durasi Lock''ロック期間スケジュール','30 Days Term''30日間','60 Days Term''60日間','90 Days Term''90日間','Reward harian sesuai pengaturan server''毎日の報酬はサーバー設定に従います','Viewers on Wheel''ホイール上の視聴者','Clear All''すべてクリア','Selected Winner''選ばれた勝者','Live Participants Only''ライブ参加者のみ','Spinning for Winner...''勝者を選出中…','Spin Raffle Wheel''抽選ホイールを回す','Current Viewers on Wheel''現在ホイール上の視聴者：','Recent Raffle Winners''最近の抽選当選者','Edit''編集','Logout''ログアウト','USDT Account''USDTアカウント','Member''メンバー','EVM Wallet''EVMウォレット','Wallet belum terhubung''ウォレット未接続','Alamat wallet akun. Recovery phrase tidak disimpan di server.''アカウントのウォレットアドレス。リカバリーフレーズはサーバーに保存されません。','WALLET REQUIRED''ウォレットが必要です','Minimum withdrawal''最低出金額','Minimum withdrawal is''最低出金額は','Started''開始','Deposit, withdrawal, lock, reward & bonus''入金、出金、ロック、報酬、ボーナス','Locked Balance''ロック残高','Earns passive yield''パッシブ利回りを獲得','Change photo from device''端末から写真を変更','Upload photo from device''端末から写真をアップロード','JPG, PNG, WEBP • photo stays from your device storage''JPG、PNG、WEBP • 写真は端末ストレージに保存されます','No unread notifications at this time.''現在、未読通知はありません。','Guest''ゲスト','Profile''プロフィール','Kelola akun, wallet, dan aktivitas kamu.''アカウント、ウォレット、アクティビティを管理します。'
   },
   ko: {
-    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''ìµœì†Œ í™œì„± ë½ì—ì„œ ì´ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì¼ì¼ ë³´ìƒì€ ì„œë²„ì—ì„œ ì²˜ë¦¬ë˜ì–´ ì‚¬ìš© ê°€ëŠ¥í•œ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤.','Daily Active Reward''ì¼ì¼ í™œì„± ë³´ìƒ','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Enhanced Lock Tier''강화 락 등급','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''í¬ê·€ ì»¬ë ‰ì…˜ì´ í¬í•¨ëœ ë†’ì€ ë½ ë“±ê¸‰ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.','Premium Lock Tier''프리미엄 락 등급','Reward harian masuk ke saldo''ì¼ì¼ ë³´ìƒì´ ìž”ì•¡ì— ì¶”ê°€ë©ë‹ˆë‹¤','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''잠긴 잔액을 기준으로 일일 블라인드 박스를 엽니다. 일일 수령은 서버 규칙을 따르며 WIB 기준으로 초기화됩니다.','Available''ì‚¬ìš© ê°€ëŠ¥','Quota resets in''할당량 초기화까지','Lock minimal $4 equivalent untuk membuka Blind Box''ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ë¥¼ ì—´ë ¤ë©´ ìµœì†Œ $4 ìƒë‹¹ì„ ë½í•˜ì„¸ìš”','Daily Boxes''일일 박스','Lock Amount (IDR)''락 금액 (IDR)','Claim Daily Blind Box''일일 블라인드 박스 수령','Lock aktif''활성 락','Aturan claim tetap 1 kali per hari.''수령은 하루 한 번으로 유지됩니다.','LOCK SALDO DIBUTUHKAN''잔액 락 필요','Lock saldo untuk mendapatkan hak claim Blind Box harian''잔액을 락하여 일일 블라인드 박스 수령 권한을 얻으세요','Durasi lock tersedia''ì‚¬ìš© ê°€ëŠ¥í•œ ë½ ê¸°ê°„','30 hari''30일','60 hari''60일','90 hari''90일','Lock amount''락 금액','Nominal Lock (IDR)''락 금액 (IDR)','Quota''í• ë‹¹ëŸ‰','1 Box/Day''하루 1박스','Lock Saldo Sekarang''지금 잔액 락','Total Locked''총 락 금액','Daily Claim''ì¼ì¼ ìˆ˜ë ¹','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''ì•„ëž˜ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë²„íŠ¼ìœ¼ë¡œ ìˆ˜ë ¹í•©ë‹ˆë‹¤. ê¸°ê°„ì´ ëë‚˜ë©´ ë½ì´ ìžë™ìœ¼ë¡œ ì¢…ë£Œë©ë‹ˆë‹¤.','Lock minimum''최소 락','to activate''활성화하려면','Open Daily Box''일일 박스 열기','Available Today''ì˜¤ëŠ˜ ì‚¬ìš© ê°€ëŠ¥','Unboxing''박스 개봉 중','Server sedang menentukan reward...''서버가 보상을 결정하는 중입니다…','Reward Blind Box Harian''ì¼ì¼ ë¸”ë¼ì¸ë“œ ë°•ìŠ¤ ë³´ìƒ','Keep in Vault''보관함에 보관','Done''완료','Left''ë‚¨ìŒ','Jadwal Durasi Lock''락 기간 일정','30 Days Term''30일 기간','60 Days Term''60일 기간','90 Days Term''90일 기간','Reward harian sesuai pengaturan server''ì¼ì¼ ë³´ìƒì€ ì„œë²„ ì„¤ì •ì— ë”°ë¦…ë‹ˆë‹¤','Viewers on Wheel''휠의 시청자','Clear All''모두 지우기','Selected Winner''ì„ íƒëœ ë‹¹ì²¨ìž','Live Participants Only''라이브 참가자만','Spinning for Winner...''당첨자를 선택하는 중…','Spin Raffle Wheel''추첨 휠 돌리기','Current Viewers on Wheel''í˜„ìž¬ íœ ì˜ ì‹œì²­ìž','Recent Raffle Winners''최근 추첨 당첨자','Edit''편집','Logout''ë¡œê·¸ì•„ì›ƒ','USDT Account''USDT 계정','Member''회원','EVM Wallet''EVM 지갑','Wallet belum terhubung''지갑이 연결되지 않음','Alamat wallet akun. Recovery phrase tidak disimpan di server.''계정 지갑 주소입니다. 복구 문구는 서버에 저장되지 않습니다.','WALLET REQUIRED''지갑 필요','Minimum withdrawal''최소 출금','Minimum withdrawal is''최소 출금액은','Started''시작됨','Deposit, withdrawal, lock, reward & bonus''ìž…ê¸ˆ, ì¶œê¸ˆ, ë½, ë³´ìƒ ë° ë³´ë„ˆìŠ¤','Locked Balance''잠긴 잔액','Earns passive yield''패시브 수익을 얻습니다','Change photo from device''ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ë³€ê²½','Upload photo from device''ê¸°ê¸°ì—ì„œ ì‚¬ì§„ ì—…ë¡œë“œ','JPG, PNG, WEBP • photo stays from your device storage''JPG, PNG, WEBP • 사진은 기기 저장소에 유지됩니다','No unread notifications at this time.''현재 읽지 않은 알림이 없습니다.','Guest''게스트','Profile''프로필','Kelola akun, wallet, dan aktivitas kamu.''계정, 지갑 및 활동을 관리합니다.'
+    'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''최소 활성 락에서 이용할 수 있습니다. 일일 보상은 서버에서 처리되어 사용 가능한 잔액에 추가됩니다.','Daily Active Reward''일일 활성 보상','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''희귀 컬렉션이 포함된 높은 락 등급입니다. 금융 보상은 서버에서 결정합니다.','Enhanced Lock Tier''강화 락 등급','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''희귀 컬렉션이 포함된 높은 락 등급입니다. 금융 보상은 서버에서 결정합니다.','Premium Lock Tier''프리미엄 락 등급','Reward harian masuk ke saldo''일일 보상이 잔액에 추가됩니다','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''잠긴 잔액을 기준으로 일일 블라인드 박스를 엽니다. 일일 수령은 서버 규칙을 따르며 WIB 기준으로 초기화됩니다.','Available''사용 가능','Quota resets in''할당량 초기화까지','Lock minimal $4 equivalent untuk membuka Blind Box''블라인드 박스를 열려면 최소 $4 상당을 락하세요','Daily Boxes''일일 박스','Lock Amount (IDR)''락 금액 (IDR)','Claim Daily Blind Box''일일 블라인드 박스 수령','Lock aktif''활성 락','Aturan claim tetap 1 kali per hari.''수령은 하루 한 번으로 유지됩니다.','LOCK SALDO DIBUTUHKAN''잔액 락 필요','Lock saldo untuk mendapatkan hak claim Blind Box harian''잔액을 락하여 일일 블라인드 박스 수령 권한을 얻으세요','Durasi lock tersedia''사용 가능한 락 기간','30 hari''30일','60 hari''60일','90 hari''90일','Lock amount''락 금액','Nominal Lock (IDR)''락 금액 (IDR)','Quota''할당량','1 Box/Day''하루 1박스','Lock Saldo Sekarang''지금 잔액 락','Total Locked''총 락 금액','Daily Claim''일일 수령','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''아래 블라인드 박스 버튼으로 수령합니다. 기간이 끝나면 락이 자동으로 종료됩니다.','Lock minimum''최소 락','to activate''활성화하려면','Open Daily Box''일일 박스 열기','Available Today''오늘 사용 가능','Unboxing''박스 개봉 중','Server sedang menentukan reward...''서버가 보상을 결정하는 중입니다…','Reward Blind Box Harian''일일 블라인드 박스 보상','Keep in Vault''보관함에 보관','Done''완료','Left''남음','Jadwal Durasi Lock''락 기간 일정','30 Days Term''30일 기간','60 Days Term''60일 기간','90 Days Term''90일 기간','Reward harian sesuai pengaturan server''일일 보상은 서버 설정에 따릅니다','Viewers on Wheel''휠의 시청자','Clear All''모두 지우기','Selected Winner''선택된 당첨자','Live Participants Only''라이브 참가자만','Spinning for Winner...''당첨자를 선택하는 중…','Spin Raffle Wheel''추첨 휠 돌리기','Current Viewers on Wheel''현재 휠의 시청자','Recent Raffle Winners''최근 추첨 당첨자','Edit''편집','Logout''로그아웃','USDT Account''USDT 계정','Member''회원','EVM Wallet''EVM 지갑','Wallet belum terhubung''지갑이 연결되지 않음','Alamat wallet akun. Recovery phrase tidak disimpan di server.''계정 지갑 주소입니다. 복구 문구는 서버에 저장되지 않습니다.','WALLET REQUIRED''지갑 필요','Minimum withdrawal''최소 출금','Minimum withdrawal is''최소 출금액은','Started''시작됨','Deposit, withdrawal, lock, reward & bonus''입금, 출금, 락, 보상 및 보너스','Locked Balance''잠긴 잔액','Earns passive yield''패시브 수익을 얻습니다','Change photo from device''기기에서 사진 변경','Upload photo from device''기기에서 사진 업로드','JPG, PNG, WEBP • photo stays from your device storage''JPG, PNG, WEBP • 사진은 기기 저장소에 유지됩니다','No unread notifications at this time.''현재 읽지 않은 알림이 없습니다.','Guest''게스트','Profile''프로필','Kelola akun, wallet, dan aktivitas kamu.''계정, 지갑 및 활동을 관리합니다.'
   },
   ar: {
     'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.''متاح مع الحد الأدنى من القفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى الرصيد المتاح.','Daily Active Reward''المكافأة اليومية النشطة','Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''مستوى قفل أعلى مع مقتنيات نادرة. يحدد الخادم المكافآت المالية.','Enhanced Lock Tier''مستوى قفل متقدم','Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.''مستوى قفل مرتفع مع مقتنيات نادرة. يحدد الخادم المكافآت المالية.','Premium Lock Tier''مستوى القفل المميز','Reward harian masuk ke saldo''تُضاف المكافآت اليومية إلى الرصيد','Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.''افتح الصندوق الغامض اليومي بناءً على رصيدك المقفول. تتبع المطالبات اليومية قواعد الخادم ويتم إعادة ضبطها حسب توقيت WIB.','Available''متاح','Quota resets in''إعادة ضبط الحصة خلال','Lock minimal $4 equivalent untuk membuka Blind Box''اقفل ما لا يقل عن ما يعادل 4 دولارات لفتح الصندوق الغامض','Daily Boxes''الصناديق اليومية','Lock Amount (IDR)''مبلغ القفل (IDR)','Claim Daily Blind Box''المطالبة بالصندوق الغامض اليومي','Lock aktif''قفل نشط','Aturan claim tetap 1 kali per hari.''يبقى حد المطالبة مرة واحدة يوميًا.','LOCK SALDO DIBUTUHKAN''مطلوب قفل الرصيد','Lock saldo untuk mendapatkan hak claim Blind Box harian''اقفل رصيدك للحصول على حق المطالبة بالصندوق الغامض اليومي','Durasi lock tersedia''مدد القفل المتاحة','30 hari''30 يومًا','60 hari''60 يومًا','90 hari''90 يومًا','Lock amount''مبلغ القفل','Nominal Lock (IDR)''مبلغ القفل (IDR)','Quota''الحصة','1 Box/Day''صندوق واحد/يوم','Lock Saldo Sekarang''اقفل الرصيد الآن','Total Locked''إجمالي المقفول','Daily Claim''المطالبة اليومية','Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.''تتم المطالبة عبر زر الصندوق الغامض أدناه. ينتهي القفل تلقائيًا عند انتهاء مدته.','Lock minimum''الحد الأدنى للقفل','to activate''للتفعيل','Open Daily Box''فتح الصندوق اليومي','Available Today''متاح اليوم','Unboxing''فتح الصندوق','Server sedang menentukan reward...''الخادم يحدد المكافأة…','Reward Blind Box Harian''مكافأة الصندوق الغامض اليومية','Keep in Vault''حفظ في الخزنة','Done''تم','Left''متبقٍ','Jadwal Durasi Lock''جدول مدة القفل','30 Days Term''مدة 30 يومًا','60 Days Term''مدة 60 يومًا','90 Days Term''مدة 90 يومًا','Reward harian sesuai pengaturan server''المكافأة اليومية وفق إعدادات الخادم','Viewers on Wheel''المشاهدون على العجلة','Clear All''مسح الكل','Selected Winner''الفائز المختار','Live Participants Only''مشاركو البث المباشر فقط','Spinning for Winner...''جارٍ تدوير العجلة لاختيار الفائز…','Spin Raffle Wheel''تدوير عجلة السحب','Current Viewers on Wheel''المشاهدون الحاليون على العجلة','Recent Raffle Winners''الفائزون الأخيرون في السحب','Edit''تعديل','Logout''تسجيل الخروج','USDT Account''حساب USDT','Member''عضو','EVM Wallet''محفظة EVM','Wallet belum terhubung''المحفظة غير متصلة','Alamat wallet akun. Recovery phrase tidak disimpan di server.''عنوان محفظة الحساب. لا يتم تخزين عبارة الاسترداد على الخادم.','WALLET REQUIRED''المحفظة مطلوبة','Minimum withdrawal''الحد الأدنى للسحب','Minimum withdrawal is''الحد الأدنى للسحب هو','Started''بدأ','Deposit, withdrawal, lock, reward & bonus''الإيداع والسحب والقفل والمكافآت والمكافأة الإضافية','Locked Balance''الرصيد المقفول','Earns passive yield''يحقق عائدًا سلبيًا','Change photo from device''تغيير الصورة من الجهاز','Upload photo from device''رفع صورة من الجهاز','JPG, PNG, WEBP • photo stays from your device storage''JPG وPNG وWEBP • تبقى الصورة في مساحة تخزين جهازك','No unread notifications at this time.''لا توجد إشعارات غير مقروءة حاليًا.','Guest''زائر','Profile''الملف الشخصي','Kelola akun, wallet, dan aktivitas kamu.''إدارة حسابك ومحفظتك ونشاطك.'
