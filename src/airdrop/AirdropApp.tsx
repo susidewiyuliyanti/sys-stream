@@ -310,6 +310,7 @@ export default function AirdropApp() {
   const [tab,setTab]=useState<'tasks'|'submissions'>('tasks');
   const [taskCategory,setTaskCategory]=useState<'all'|'youtube'|'social'|'checkin'>('all');
   const [points,setPoints]=useState({approved:0,pending:0,paid:0,available:0});
+  const [conversionMessage,setConversionMessage]=useState('');
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
   const [leaderboardError,setLeaderboardError]=useState('');
