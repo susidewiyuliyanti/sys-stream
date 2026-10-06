@@ -1,3 +1,4 @@
+/// <reference path="./cf-types.d.ts" />
 /**
  * SYS STREAMER - CLOUDFLARE WORKER
  * Real-time Durable Object for Live Stream Chat (TikTok + App), Game Widgets,
