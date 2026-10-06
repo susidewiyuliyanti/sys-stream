@@ -142,7 +142,7 @@ export default function BlindboxGamePage() {
 
   useEffect(() => {
     if (user.id) void refreshFinancialState();
-  }, [user.id, refreshFinancialState]);
+  }, [user.id]);
 
 
   const startDailyUnboxing = () => {
