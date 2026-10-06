@@ -8,6 +8,25 @@ type BalanceBody = {
   note?: string;
 };
 
+async function ensureTransactions(env: Env) {
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS transactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      type TEXT NOT NULL,
+      amount REAL NOT NULL,
+      currency TEXT NOT NULL DEFAULT 'IDR',
+      status TEXT NOT NULL DEFAULT 'COMPLETED',
+      reference TEXT,
+      description TEXT,
+      metadata TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+  `).run();
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at)").run();
+}
+
 async function ensureAuditTable(env: Env) {
   await env.DB.prepare(`
     CREATE TABLE IF NOT EXISTS admin_balance_adjustments (
@@ -44,6 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (note.length > 500) return json({ success:false, error:"Catatan maksimal 500 karakter." }, 400);
 
     await ensureAuditTable(context.env);
+    await ensureTransactions(context.env);
 
     const user = await context.env.DB.prepare(
       "SELECT id,username,email,COALESCE(available_balance,0) AS availableBalance FROM users WHERE id=? LIMIT 1"
@@ -68,7 +88,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         `INSERT INTO admin_balance_adjustments
          (id,user_id,admin_user_id,before_balance,after_balance,delta,note,created_at)
          VALUES(?,?,?,?,?,?,?,?)`
-      ).bind(adjustmentId, userId, auth.identity.id, before, availableBalance, delta, note, now)
+      ).bind(adjustmentId, userId, auth.identity.id, before, availableBalance, delta, note, now),
+      context.env.DB.prepare(
+        `INSERT INTO transactions
+         (user_id,type,amount,currency,status,reference,description,metadata)
+         VALUES(?,?,?,?,?,?,?,?)`
+      ).bind(
+        userId,
+        "ADMIN_ADJUSTMENT",
+        delta,
+        "IDR",
+        "COMPLETED",
+        adjustmentId,
+        "Owner/Admin balance adjustment",
+        JSON.stringify({
+          beforeBalance: before,
+          afterBalance: availableBalance,
+          note,
+          adminUserId: auth.identity.id,
+          adminName: auth.identity.displayName || "Owner"
+        })
+      )
     ]);
 
     await notifyAdmins(context.env, {
