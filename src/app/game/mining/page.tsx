@@ -14,7 +14,7 @@ const tx = {
   lock: 'Lock', perDay: '/ day', claimed: "Today's Mining reward has been claimed", todayReward: "Today's reward:",
   nextDay: 'The next claim is available on the following day.', available: 'Mining reward available', activeReward: 'Your active lock provides:',
   claim: 'Claim Mining Reward', processing: 'Processing...', rules: 'Mining Rules',
-  rule1: 'Mining requires an active Blind Box Lock of at least $10.', rule2: 'Each $10 of lock earns 1 SYS per day.',
+  rule1: 'Mining requires an active Blind Box Lock of at least $10.', rule2: '',
   rule3: 'Claims are limited to once per user per day by the server.', rule4: 'Rewards are determined by the server and credited to the user SYS balance.',
   rule5: 'Mining stops automatically when the Lock expires.',
 };
