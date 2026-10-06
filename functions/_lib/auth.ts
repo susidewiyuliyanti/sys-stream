@@ -25,7 +25,6 @@ export interface AuthUser {
   role?: string;
   /** Canonical available balance from users.available_balance. */
   availableBalance?: number;
-  balance?: number;
   lockedBalance?: number;
   emailVerified?: boolean;
   referralCode?: string;
@@ -216,7 +215,7 @@ export async function requireAuth(request: Request, env: Env) {
             COALESCE(u.sys_balance,0) AS sysBalance,
             COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance, 0) AS availableBalance,
-            COALESCE(u.total_locked, u.locked_saldo, 0) AS lockedBalance
+            COALESCE(u.total_locked, 0) AS lockedBalance
      FROM auth_sessions s
      JOIN users u ON u.id = s.user_id
      WHERE s.token = ? AND s.expires_at > ?
@@ -232,7 +231,6 @@ export async function requireAuth(request: Request, env: Env) {
       id: String(row.id),
       emailVerified: true,
       availableBalance: Number(row.availableBalance ?? 0),
-      balance: Number(row.availableBalance ?? 0),
       lockedBalance: Number(row.lockedBalance ?? 0),
     },
     token,
@@ -249,7 +247,6 @@ export async function getUserById(env: Env, userId: string) {
             COALESCE(sys_balance,0) AS sysBalance,
             COALESCE(email_verified,0) AS emailVerified,
             COALESCE(available_balance,0) AS availableBalance,
-            COALESCE(available_balance,0) AS balance,
             COALESCE(total_locked,0) AS lockedBalance
      FROM users WHERE id = ? LIMIT 1`
   ).bind(String(userId)).first<AuthUser>();
