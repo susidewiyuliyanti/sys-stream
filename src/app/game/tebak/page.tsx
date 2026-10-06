@@ -133,7 +133,7 @@ export default function TebakGamePage() {
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Penonton mencoba menebak angka tersembunyi yang dipilih streamer. Game ini dibuat untuk interaksi live tanpa taruhan atau pembayaran.
+            {t('Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.')}
           </p>
         </div>
 
@@ -198,7 +198,7 @@ export default function TebakGamePage() {
               {/* Configure 4 Digits & Concealment */}
               <div>
                 <label className="block text-slate-400 uppercase font-bold mb-1">
-                  Card Digits (Exactly 4 Digits) & Conceal Toggle
+                  {t('Card Digits (Exactly 4 Digits) & Conceal Toggle')}
                 </label>
                 <div className="grid grid-cols-4 gap-2.5">
                   {[0, 1, 2, 3].map((idx) => (
@@ -294,7 +294,7 @@ export default function TebakGamePage() {
             {/* {t('Serial Number')} Display */}
             <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between text-xs">
               <span className="text-slate-400 flex items-center gap-1.5 font-mono">
-                <Hash className="w-3.5 h-3.5 text-cyan-400" /> Serial No:
+                <Hash className="w-3.5 h-3.5 text-cyan-400" /> {t('Serial No:')}
               </span>
               <span className="font-mono font-black text-amber-400 tracking-wider text-sm select-all">
                 {cryptoCard.serialNumber}
@@ -304,7 +304,7 @@ export default function TebakGamePage() {
             {/* 4 DIGITAL DIGIT SLOTS (MAX 4 NUMBERS) */}
             <div className="py-4">
               <div className="text-center text-xs font-semibold text-slate-400 mb-3">
-                Digital Crypto Verification Code (4 Digits)
+                {t('Digital Crypto Verification Code (4 Digits)')}
               </div>
 
               <div className="grid grid-cols-4 gap-3 max-w-sm mx-auto">
@@ -373,8 +373,8 @@ export default function TebakGamePage() {
                 }`}
               >
                 {lastOutcome.won
-                  ? `CHALLENGE BERHASIL! Kode terverifikasi: [${lastOutcome.revealedDigits.join(' ')}]. Semua angka tersembunyi cocok!`
-                  : `Prediction Missed. Secret Digits: [${lastOutcome.revealedDigits.join(' ')}]. Matched ${lastOutcome.matchedCount}/${concealedCount}.`}
+                  ? `${t('Challenge Successful! Verified code:')} [${lastOutcome.revealedDigits.join(' ')}]. ${t('All concealed digits matched!')}`
+                  : `${t('Prediction Missed. Secret Digits:')} [${lastOutcome.revealedDigits.join(' ')}]. ${t('Matched')} ${lastOutcome.matchedCount}/${concealedCount}.`}
               </div>
             )}
           </div>
@@ -422,8 +422,7 @@ export default function TebakGamePage() {
               <span>{t('Provably Fair Verification')}</span>
             </div>
             <p className="leading-relaxed">
-              The 4-digit code is tied to serial number <strong>{cryptoCard.serialNumber}</strong>. Streamer sets visible
-              and concealed digits in real-time. Penonton mencoba menebak angka yang disembunyikan. Tidak ada taruhan atau hadiah finansial dalam game ini.
+              {t('The 4-digit code is tied to serial number')} <strong>{cryptoCard.serialNumber}</strong>. {t('Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.')}
             </p>
           </div>
         </div>
