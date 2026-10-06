@@ -94,7 +94,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
         if (Number((updated as any)?.meta?.changes || 0) > 0) {
           await env.DB.prepare("UPDATE users SET available_balance=? WHERE id=?")
-            .bind(nextBalance, nextBalance, tx.user_id).run();
+            .bind(nextBalance, tx.user_id).run();
         }
       }
     } else if (failed) {
