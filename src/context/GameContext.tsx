@@ -305,8 +305,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
           registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
           lockedBalance: Number(remote.lockedBalance || 0),
-          availableBalance: Number(remote.availableBalance ?? remote.balance ?? 0),
-          coins: Math.round(Number(remote.balance || 0) * 100),
+          availableBalance: Number(remote.availableBalance ?? 0),
+          coins: Math.round(Number(remote.availableBalance ?? 0) * 100),
         }));
         setIsLoggedIn(true);
         localStorage.setItem('sys_is_logged_in', 'true');
