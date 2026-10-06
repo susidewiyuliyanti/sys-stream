@@ -27,16 +27,13 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
 
   private reloadWithFreshBundle = async () => {
     try {
-      sessionStorage.removeItem(RECOVERY_KEY);
       if ('caches' in window) {
         const keys = await caches.keys();
         await Promise.all(keys.map(key => caches.delete(key)));
       }
     } catch {}
 
-    const url = new URL(window.location.href);
-    url.searchParams.set('__sysstream_reload', String(Date.now()));
-    window.location.replace(url.toString());
+    window.location.reload();
   };
 
   render() {
