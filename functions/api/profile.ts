@@ -42,7 +42,6 @@ async function getProfile(env: Env, userId: string) {
            avatar_url AS avatarUrl,
            COALESCE(email_verified,0) AS emailVerified,
            COALESCE(available_balance,0) AS availableBalance,
-           COALESCE(available_balance,0) AS balance,
            COALESCE(total_locked,0) AS lockedBalance,
            COALESCE(referral_count,0) AS referralCount,
            COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
