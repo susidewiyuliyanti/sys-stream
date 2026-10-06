@@ -333,10 +333,10 @@ export default function BlindboxGamePage() {
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
-                  {t('Durasi lock tersedia:')} <strong>{t('30 hari')}</strong> · <strong>{t('60 hari')}</strong> · <strong>{t('90 hari')}</strong>.
+                  {t('Durasi lock tersedia:')} <strong>{t('30 hari')}</strong> Ã‚· <strong>{t('60 hari')}</strong> Ã‚· <strong>{t('90 hari')}</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
-                  {t('The lock can only be completed after the lock period ends. The system does not provide early unlock through Blind Box.')}
+                  {t('The lock can only be completed once the lock period has ended. Early unlocking is not available through Blind Box.')}
                 </p>
               </div>
             </div>
