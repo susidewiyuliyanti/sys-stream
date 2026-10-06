@@ -1,4 +1,4 @@
-﻿import type { OAuthProviderConfig, OAuthTokenResponse } from "./providers";
+import type { OAuthProviderConfig, OAuthTokenResponse } from "./providers";
 
 export type TokenExchangeInput = {
   code: string;
@@ -33,13 +33,20 @@ export async function exchangeOAuthCode(
     );
   }
 
-  const body = new URLSearchParams({
+  const params: Record<string, string> = {
     grant_type: "authorization_code",
     code: input.code,
     redirect_uri: input.redirectUri,
-    client_id: input.clientId,
     client_secret: input.clientSecret,
-  });
+  };
+
+  if (config.platform === "tiktok") {
+    params.client_key = input.clientId;
+  } else {
+    params.client_id = input.clientId;
+  }
+
+  const body = new URLSearchParams(params);
 
   const response = await fetch(tokenUrl, {
     method: "POST",
