@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, Component, type ReactNode } from 'react';
+import React, { Suspense, Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { LanguageProvider } from './i18n';
@@ -8,26 +8,7 @@ const hostname = typeof window !== 'undefined'
   ? window.location.hostname.toLowerCase()
   : '';
 
-const RECOVERY_KEY = '__sysstream_bundle_recovery';
-
-function lazyWithBundleRecovery<T extends React.ComponentType<any>>(loader: () => Promise<{ default: T }>) {
-  return lazy(async () => {
-    try {
-      return await loader();
-    } catch (error) {
-      // Recover once from a stale admin/airdrop chunk after a production deployment.
-      if (!sessionStorage.getItem(RECOVERY_KEY)) {
-        sessionStorage.setItem(RECOVERY_KEY, '1');
-        const url = new URL(window.location.href);
-        url.searchParams.set('__sysstream_reload', String(Date.now()));
-        window.location.replace(url.toString());
-      }
-      throw error;
-    }
-  });
-}
-
-const AdminApp = lazyWithBundleRecovery(() => import('./admin/AdminApp.tsx'));
+import AdminApp from './admin/AdminApp.tsx';
 
 // Airdrop runs on its own custom domain. Keep this module in the main bundle
 // so a stale/missing dynamic chunk can never blank the Airdrop host.
