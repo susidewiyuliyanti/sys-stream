@@ -45,19 +45,20 @@ Object.assign(translations.ar, {
 
 /* BLIND_BOX_8_LANGUAGE_TRANSLATIONS */
 
-// Blind Box UI â€” explicit 8-language translations.
+// Blind Box UI — explicit 8-language translations.
 // These entries intentionally use stable English keys so page.tsx
 // can call t() consistently regardless of the selected locale.
 
 Object.assign(translations.id, {
   'Daily reward credited to balance': 'Reward harian masuk ke saldo',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Tier lock lebih tinggi dengan koleksi langka. Reward finansial ditentukan oleh server.',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Tier lock tinggi dengan koleksi langka. Reward finansial ditentukan oleh server.',
-  'Daily claim limit remains 1 box per day.': 'Batas klaim harian tetap 1 box per hari.',
-  'Server is determining your reward...': 'Server sedang menentukan reward Anda...',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
+  'Daily claim limit remains 1 box per day.': 'Aturan claim tetap 1 kali per hari.',
+  'Server is determining your reward...': 'Server sedang menentukan reward...',
   'Daily Blind Box Reward': 'Reward Blind Box Harian',
   'Lock Balance Now': 'Lock Saldo Sekarang',
-  'Opening Mystery Vault!': 'Membuka Mystery Vault!'
+  'Opening Mystery Vault!': 'Membuka Mystery Vault!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.',
 });
 
 Object.assign(translations.en, {
@@ -68,73 +69,80 @@ Object.assign(translations.en, {
   'Server is determining your reward...': 'Server is determining your reward...',
   'Daily Blind Box Reward': 'Daily Blind Box Reward',
   'Lock Balance Now': 'Lock Balance Now',
-  'Opening Mystery Vault!': 'Opening Mystery Vault!'
+  'Opening Mystery Vault!': 'Opening Mystery Vault!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
 });
 
 Object.assign(translations.es, {
   'Daily reward credited to balance': 'Recompensa diaria acreditada al saldo',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo superior con coleccionables raros. Las recompensas financieras las determina el servidor.',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo alto con coleccionables raros. Las recompensas financieras las determina el servidor.',
-  'Daily claim limit remains 1 box per day.': 'El lÃ­mite de reclamaciÃ³n diaria sigue siendo 1 caja por dÃ­a.',
-  'Server is determining your reward...': 'El servidor estÃ¡ determinando tu recompensa...',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo superior con coleccionables raros. Las recompensas financieras son determinadas por el servidor.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nivel de bloqueo alto con coleccionables raros. Las recompensas financieras son determinadas por el servidor.',
+  'Daily claim limit remains 1 box per day.': 'El límite de reclamación diaria sigue siendo 1 caja por día.',
+  'Server is determining your reward...': 'El servidor está determinando tu recompensa...',
   'Daily Blind Box Reward': 'Recompensa diaria de Blind Box',
   'Lock Balance Now': 'Bloquear saldo ahora',
-  'Opening Mystery Vault!': 'Â¡Abriendo Mystery Vault!'
+  'Opening Mystery Vault!': '¡Abriendo Mystery Vault!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponible con el bloqueo activo mínimo. Las recompensas diarias son procesadas por el servidor y añadidas a tu saldo disponible.',
 });
 
 Object.assign(translations.pt, {
-  'Daily reward credited to balance': 'Recompensa diÃ¡ria creditada ao saldo',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'NÃ­vel de bloqueio superior com colecionÃ¡veis raros. As recompensas financeiras sÃ£o determinadas pelo servidor.',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'NÃ­vel de bloqueio alto com colecionÃ¡veis raros. As recompensas financeiras sÃ£o determinadas pelo servidor.',
-  'Daily claim limit remains 1 box per day.': 'O limite de resgate diÃ¡rio continua sendo 1 caixa por dia.',
-  'Server is determining your reward...': 'O servidor estÃ¡ determinando sua recompensa...',
-  'Daily Blind Box Reward': 'Recompensa diÃ¡ria da Blind Box',
+  'Daily reward credited to balance': 'Recompensa diária creditada ao saldo',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nível de bloqueio superior com colecionáveis raros. As recompensas financeiras são determinadas pelo servidor.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Nível de bloqueio alto com colecionáveis raros. As recompensas financeiras são determinadas pelo servidor.',
+  'Daily claim limit remains 1 box per day.': 'O limite de resgate diário continua sendo 1 caixa por dia.',
+  'Server is determining your reward...': 'O servidor está determinando sua recompensa...',
+  'Daily Blind Box Reward': 'Recompensa diária da Blind Box',
   'Lock Balance Now': 'Bloquear saldo agora',
-  'Opening Mystery Vault!': 'Abrindo o Mystery Vault!'
+  'Opening Mystery Vault!': 'Abrindo o Mystery Vault!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'Disponível com o bloqueio ativo mínimo. As recompensas diárias são processadas pelo servidor e adicionadas ao seu saldo disponível.',
 });
 
 Object.assign(translations.zh, {
-  'Daily reward credited to balance': 'æ¯æ—¥å¥–åŠ±å·²è®¡å…¥ä½™é¢',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'æ›´é«˜é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'é«˜çº§é”å®šç­‰çº§ï¼ŒåŒ…å«ç¨€æœ‰æ”¶è—å“ã€‚è´¢åŠ¡å¥–åŠ±ç”±æœåŠ¡å™¨å†³å®šã€‚',
-  'Daily claim limit remains 1 box per day.': 'æ¯æ—¥é¢†å–é™åˆ¶ä»ä¸ºæ¯å¤© 1 ä¸ªç›²ç›’ã€‚',
-  'Server is determining your reward...': 'æœåŠ¡å™¨æ­£åœ¨ç¡®å®šæ‚¨çš„å¥–åŠ±â€¦â€¦',
-  'Daily Blind Box Reward': 'æ¯æ—¥ Blind Box å¥–åŠ±',
-  'Lock Balance Now': 'ç«‹å³é”å®šä½™é¢',
-  'Opening Mystery Vault!': 'æ­£åœ¨æ‰“å¼€ç¥žç§˜å®åº“ï¼'
+  'Daily reward credited to balance': '每日奖励已计入余额',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': '更高锁定等级，包含稀有收藏品。财务奖励由服务器决定。',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': '高级锁定等级，包含稀有收藏品。财务奖励由服务器决定。',
+  'Daily claim limit remains 1 box per day.': '每日领取限制仍为每天 1 个盲盒。',
+  'Server is determining your reward...': '服务器正在确定您的奖励……',
+  'Daily Blind Box Reward': '每日 Blind Box 奖励',
+  'Lock Balance Now': '立即锁定余额',
+  'Opening Mystery Vault!': '正在打开神秘宝库！',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': '满足最低有效锁定即可使用。每日奖励由服务器处理并加入您的可用余额。',
 });
 
 Object.assign(translations.ja, {
-  'Daily reward credited to balance': 'ãƒ‡ã‚¤ãƒªãƒ¼å ±é…¬ãŒæ®‹é«˜ã«åŠ ç®—ã•ã‚Œã¾ã—ãŸ',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'ãƒ¬ã‚¢ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å«ã‚€ä¸Šä½ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘èžå ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã«ã‚ˆã£ã¦æ±ºå®šã•ã‚Œã¾ã™ã€‚',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'ãƒ¬ã‚¢ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å«ã‚€é«˜ãƒ­ãƒƒã‚¯ãƒ†ã‚£ã‚¢ã€‚é‡‘èžå ±é…¬ã¯ã‚µãƒ¼ãƒãƒ¼ã«ã‚ˆã£ã¦æ±ºå®šã•ã‚Œã¾ã™ã€‚',
-  'Daily claim limit remains 1 box per day.': 'ãƒ‡ã‚¤ãƒªãƒ¼å—å–ä¸Šé™ã¯1æ—¥1ãƒœãƒƒã‚¯ã‚¹ã§ã™ã€‚',
-  'Server is determining your reward...': 'ã‚µãƒ¼ãƒãƒ¼ãŒå ±é…¬ã‚’æ±ºå®šã—ã¦ã„ã¾ã™â€¦â€¦',
-  'Daily Blind Box Reward': 'ãƒ‡ã‚¤ãƒªãƒ¼Blind Boxå ±é…¬',
-  'Lock Balance Now': 'ä»Šã™ãæ®‹é«˜ã‚’ãƒ­ãƒƒã‚¯',
-  'Opening Mystery Vault!': 'ãƒŸã‚¹ãƒ†ãƒªãƒ¼ãƒ´ã‚©ãƒ«ãƒˆã‚’é–‹ã„ã¦ã„ã¾ã™ï¼'
+  'Daily reward credited to balance': 'デイリー報酬が残高に加算されました',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'レアコレクションを含む上位ロックティア。金銭的報酬はサーバーによって決定されます。',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'レアコレクションを含む高ロックティア。金銭的報酬はサーバーによって決定されます。',
+  'Daily claim limit remains 1 box per day.': 'デイリー受取上限は1日1ボックスです。',
+  'Server is determining your reward...': 'サーバーが報酬を決定しています……',
+  'Daily Blind Box Reward': 'デイリーBlind Box報酬',
+  'Lock Balance Now': '今すぐ残高をロック',
+  'Opening Mystery Vault!': 'ミステリーボルトを開いています！',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': '最低アクティブロックで利用できます。デイリー報酬はサーバーで処理され、利用可能残高に追加されます。',
 });
 
 Object.assign(translations.ko, {
-  'Daily reward credited to balance': 'ì¼ì¼ ë³´ìƒì´ ìž”ì•¡ì— ì ë¦½ë˜ì—ˆìŠµë‹ˆë‹¤',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'í¬ê·€ ìˆ˜ì§‘í’ˆì´ í¬í•¨ëœ ìƒìœ„ ë½ í‹°ì–´ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'í¬ê·€ ìˆ˜ì§‘í’ˆì´ í¬í•¨ëœ ë†’ì€ ë½ í‹°ì–´ìž…ë‹ˆë‹¤. ê¸ˆìœµ ë³´ìƒì€ ì„œë²„ì—ì„œ ê²°ì •í•©ë‹ˆë‹¤.',
-  'Daily claim limit remains 1 box per day.': 'ì¼ì¼ ìˆ˜ë ¹ í•œë„ëŠ” í•˜ë£¨ 1ë°•ìŠ¤ë¡œ ìœ ì§€ë©ë‹ˆë‹¤.',
-  'Server is determining your reward...': 'ì„œë²„ê°€ ë³´ìƒì„ ê²°ì •í•˜ê³  ìžˆìŠµë‹ˆë‹¤...',
-  'Daily Blind Box Reward': 'ì¼ì¼ Blind Box ë³´ìƒ',
-  'Lock Balance Now': 'ì§€ê¸ˆ ìž”ì•¡ ìž ê¸ˆ',
-  'Opening Mystery Vault!': 'ë¯¸ìŠ¤í„°ë¦¬ ë³¼íŠ¸ë¥¼ ì—¬ëŠ” ì¤‘!'
+  'Daily reward credited to balance': '일일 보상이 잔액에 적립되었습니다',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': '희귀 수집품이 포함된 상위 락 티어입니다. 금융 보상은 서버에서 결정합니다.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': '희귀 수집품이 포함된 높은 락 티어입니다. 금융 보상은 서버에서 결정합니다.',
+  'Daily claim limit remains 1 box per day.': '일일 수령 한도는 하루 1박스로 유지됩니다.',
+  'Server is determining your reward...': '서버가 보상을 결정하고 있습니다...',
+  'Daily Blind Box Reward': '일일 Blind Box 보상',
+  'Lock Balance Now': '지금 잔액 잠금',
+  'Opening Mystery Vault!': '미스터리 볼트를 여는 중!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': '최소 활성 락으로 이용할 수 있습니다. 일일 보상은 서버에서 처리되어 사용 가능한 잔액에 추가됩니다.',
 });
 
 Object.assign(translations.ar, {
-  'Daily reward credited to balance': 'ØªÙ…Øª Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…ÙƒØ§ÙØ£Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© Ø¥Ù„Ù‰ Ø§Ù„Ø±ØµÙŠØ¯',
-  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ø£Ø¹Ù„Ù‰ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù….',
-  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'Ù…Ø³ØªÙˆÙ‰ Ù‚ÙÙ„ Ù…Ø±ØªÙØ¹ Ù…Ø¹ Ù…Ù‚ØªÙ†ÙŠØ§Øª Ù†Ø§Ø¯Ø±Ø©. ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙƒØ§ÙØ¢Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø¨ÙˆØ§Ø³Ø·Ø© Ø§Ù„Ø®Ø§Ø¯Ù….',
-  'Daily claim limit remains 1 box per day.': 'ÙŠØ¸Ù„ Ø­Ø¯ Ø§Ù„Ù…Ø·Ø§Ù„Ø¨Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ© ØµÙ†Ø¯ÙˆÙ‚Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§ ÙÙŠ Ø§Ù„ÙŠÙˆÙ….',
-  'Server is determining your reward...': 'Ø§Ù„Ø®Ø§Ø¯Ù… ÙŠØ­Ø¯Ø¯ Ù…ÙƒØ§ÙØ£ØªÙƒ...',
-  'Daily Blind Box Reward': 'Ù…ÙƒØ§ÙØ£Ø© Blind Box Ø§Ù„ÙŠÙˆÙ…ÙŠØ©',
-  'Lock Balance Now': 'Ù‚ÙÙ„ Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø¢Ù†',
-  'Opening Mystery Vault!': 'Ø¬Ø§Ø±Ù ÙØªØ­ Ø§Ù„Ø®Ø²Ù†Ø© Ø§Ù„ØºØ§Ù…Ø¶Ø©!'
+  'Daily reward credited to balance': 'تمت إضافة المكافأة اليومية إلى الرصيد',
+  'Higher lock tier with rare collectibles. Financial rewards are determined by the server.': 'مستوى قفل أعلى مع مقتنيات نادرة. يتم تحديد المكافآت المالية بواسطة الخادم.',
+  'High lock tier with rare collectibles. Financial rewards are determined by the server.': 'مستوى قفل مرتفع مع مقتنيات نادرة. يتم تحديد المكافآت المالية بواسطة الخادم.',
+  'Daily claim limit remains 1 box per day.': 'يظل حد المطالبة اليومية صندوقًا واحدًا في اليوم.',
+  'Server is determining your reward...': 'الخادم يحدد مكافأتك...',
+  'Daily Blind Box Reward': 'مكافأة Blind Box اليومية',
+  'Lock Balance Now': 'قفل الرصيد الآن',
+  'Opening Mystery Vault!': 'جارٍ فتح الخزنة الغامضة!',
+  'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.': 'متاح مع الحد الأدنى من القفل النشط. تتم معالجة المكافآت اليومية بواسطة الخادم وإضافتها إلى رصيدك المتاح.',
 });
 
 
