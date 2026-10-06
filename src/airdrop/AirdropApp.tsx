@@ -4,6 +4,7 @@ import {
   Link2, Menu, ShieldCheck, Trophy, Upload, WalletCards, X, Youtube
 } from 'lucide-react';
 import { SysLogo } from '../components/SysLogo';
+import AirdropMissSys from './AirdropMissSys';
 
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
 type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'deposit'|'withdrawal'|'profile'|'checkin'|'mining';
