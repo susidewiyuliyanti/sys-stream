@@ -14,6 +14,7 @@ type SocialConnection = {
   updatedAt: number|null;
   oauthEnabled: boolean;
   oauthConfigured: boolean;
+  missingEnv?: string[];
 };
 
 const API='/api/admin/social';
@@ -32,19 +33,32 @@ export default function SocialMediaPanel({adminRole}:{adminRole?:string}){
   const [loading,setLoading]=useState(true);
   const [busy,setBusy]=useState<SocialPlatform|null>(null);
   const [message,setMessage]=useState('');
+  const [redirectUri,setRedirectUri]=useState('');
 
-  const load=async()=>{
-    setLoading(true);setMessage('');
+  const load=async(keepMessage=false)=>{
+    setLoading(true);if(!keepMessage)setMessage('');
     try{
       const r=await fetch(API,{credentials:'same-origin'});
       const d=await r.json().catch(()=>({}));
       if(!r.ok||!d.success)throw new Error(d.error||'Gagal memuat koneksi social media.');
       setConnections(d.connections||[]);
+      setRedirectUri(d.redirectUri||'');
     }catch(e:any){setMessage(e?.message||'Gagal memuat koneksi social media.');}
     finally{setLoading(false);}
   };
 
-  useEffect(()=>{void load();},[]);
+  useEffect(()=>{
+    /* Setelah OAuth selesai, callback mengarahkan kembali dengan ?connected=<platform>. */
+    const params=new URLSearchParams(window.location.search);
+    const connected=params.get('connected');
+    if(connected){
+      setMessage(connected.toUpperCase()+' berhasil terhubung.');
+      params.delete('connected');
+      const rest=params.toString();
+      window.history.replaceState(null,'',window.location.pathname+(rest?'?'+rest:''));
+    }
+    void load(Boolean(connected));
+  },[]);
 
   const connect=async(platform:SocialPlatform)=>{
     setBusy(platform);setMessage('');
@@ -80,7 +94,7 @@ export default function SocialMediaPanel({adminRole}:{adminRole?:string}){
       const d=await r.json().catch(()=>({}));
       if(!r.ok||!d.success)throw new Error(d.error||'Gagal memutus koneksi.');
       setMessage(platform.toUpperCase()+' berhasil diputus.');
-      await load();
+      await load(true);
     }catch(e:any){setMessage(e?.message||'Gagal memutus koneksi.');}
     finally{setBusy(null);}
   };
@@ -102,6 +116,17 @@ export default function SocialMediaPanel({adminRole}:{adminRole?:string}){
     </section>
 
     {message&&<div className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-sm text-slate-300">{message}</div>}
+
+    {redirectUri&&<section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+      <h2 className="font-bold text-sm">Redirect URI</h2>
+      <p className="text-[11px] text-slate-500 mt-1 leading-5">
+        Daftarkan alamat ini persis sama di developer console TikTok, Google (YouTube), dan Meta (Instagram) sebelum menekan Connect.
+      </p>
+      <div className="mt-3 flex items-center gap-2">
+        <code className="flex-1 min-w-0 truncate rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-xs text-amber-300">{redirectUri}</code>
+        <button onClick={()=>{void navigator.clipboard?.writeText(redirectUri);setMessage('Redirect URI disalin.');}} className="px-3 py-2 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-bold">Salin</button>
+      </div>
+    </section>}
 
     <section className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
       <div className="p-5 border-b border-slate-800 flex items-center justify-between">
@@ -133,6 +158,9 @@ export default function SocialMediaPanel({adminRole}:{adminRole?:string}){
                 Provider: {enabled?'enabled':'disabled'} · Config: {configured?'ready':'not configured'}
                 {connected&&c?.accountName?' · Account: '+c.accountName:''}
               </div>
+              {!connected&&!configured&&<div className="text-[11px] text-amber-400/80 mt-2 leading-5">
+                Isi di Cloudflare: {(c?.missingEnv?.length?c.missingEnv:[p.id.toUpperCase()+'_CLIENT_ID',p.id.toUpperCase()+'_CLIENT_SECRET']).join(', ')}
+              </div>}
             </div>
 
             <div className="flex items-center gap-2 shrink-0">

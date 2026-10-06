@@ -1,3 +1,4 @@
+import { getTokenUrl } from "./providers";
 import type { OAuthProviderConfig, OAuthTokenResponse } from "./providers";
 
 export type TokenExchangeInput = {
@@ -20,12 +21,7 @@ export async function exchangeOAuthCode(
     throw new Error("OAuth redirect URI kosong.");
   }
 
-  const tokenUrlValue = env[config.tokenUrlEnv];
-
-  const tokenUrl =
-    typeof tokenUrlValue === "string"
-      ? tokenUrlValue.trim()
-      : "";
+  const tokenUrl = getTokenUrl(env, config.platform);
 
   if (!tokenUrl) {
     throw new Error(
@@ -73,6 +69,12 @@ export async function exchangeOAuthCode(
     throw new Error(
       `OAuth token exchange gagal (${response.status}).`,
     );
+  }
+
+  /* Instagram dapat membungkus hasilnya dalam { data: [ {...} ] }. */
+  const wrapped = (data as { data?: OAuthTokenResponse[] }).data;
+  if (!data.access_token && Array.isArray(wrapped) && wrapped[0]) {
+    data = wrapped[0];
   }
 
   if (!data.access_token) {

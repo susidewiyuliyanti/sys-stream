@@ -5,6 +5,10 @@ import {
   isProviderConfigured,
 } from "../../../../_lib/social/providers";
 import { exchangeOAuthCode } from "../../../../_lib/social/token";
+import {
+  fetchSocialProfile,
+  upgradeInstagramToken,
+} from "../../../../_lib/social/profile";
 import { storeSocialToken } from "../../../../_lib/social/vault";
 
 type Env = {
@@ -241,7 +245,7 @@ export const onRequestGet = async (context: PagesContext) => {
     `${url.origin}/api/admin/social/callback`;
 
   try {
-    const token = await exchangeOAuthCode(
+    let token = await exchangeOAuthCode(
       context.env,
       provider,
       {
@@ -250,6 +254,15 @@ export const onRequestGet = async (context: PagesContext) => {
         clientId,
         clientSecret,
       },
+    );
+
+    if (platform === "instagram") {
+      token = await upgradeInstagramToken(token, clientSecret);
+    }
+
+    const profile = await fetchSocialProfile(
+      platform as any,
+      token.access_token!,
     );
 
     const expiresAt =
@@ -294,18 +307,21 @@ export const onRequestGet = async (context: PagesContext) => {
       .bind(
         platform,
         platform,
-        null,
-        platform.toUpperCase(),
+        profile.accountId,
+        profile.accountName || platform.toUpperCase(),
         token.scope ?? null,
         now,
       )
       .run();
 
-    return html(
-      `Akun ${platform.toUpperCase()} berhasil terhubung ke SYS STREAM.<br><br>
-       Token tersimpan secara terenkripsi.<br><br>
-       <a href="/?tab=social" style="color:#fbbf24">Kembali ke Admin Panel</a>`,
-    );
+    /* Kembali otomatis ke tab Social Media supaya alurnya sekali klik. */
+    return new Response(null, {
+      status: 302,
+      headers: {
+        location: `/?tab=social&connected=${encodeURIComponent(platform)}`,
+        "cache-control": "no-store",
+      },
+    });
   } catch (error) {
     const message =
       error instanceof Error
