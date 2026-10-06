@@ -251,8 +251,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       response = await openAIRequest(env, {
         model,
         instructions: instructions(language),
-        previous_response_id: String(response.id),
-        input: outputs,
+        input: [
+          ...(Array.isArray(response.output) ? response.output : []),
+          ...outputs,
+        ],
         tools,
         store: false,
       });
