@@ -15,7 +15,7 @@ export const SysLogo: React.FC<SysLogoProps> = ({
 }) => {
   const dimensions = {
     sm: { icon: 30, text: 'text-sm', sub: 'text-[8px]' },
-    md: { icon: 40, text: 'text-base', sub: 'text-[9px]' },
+    md: { icon: 40, text: 'text-sm sm:text-base', sub: 'text-[7px] sm:text-[9px]' },
     lg: { icon: 52, text: 'text-xl', sub: 'text-[10px]' },
     xl: { icon: 76, text: 'text-3xl', sub: 'text-xs' },
   }[size];
