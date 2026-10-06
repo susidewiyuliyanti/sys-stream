@@ -60,7 +60,7 @@ export default function ProfilePage() {
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
 
   const totalLockedUsdt = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
-  const availableBalance = Number(user.coins || 0) / 100;
+  const availableBalance = Number(user.availableBalance ?? 0);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const withdrawalMinIdr = 100000;
   const blindBoxMinIdr = 72000;
@@ -317,18 +317,6 @@ export default function ProfilePage() {
             </button>
           </div>
         )}
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-2xl border border-cyan-500/20 bg-slate-950 p-4">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Available Balance')}</div>
-            <div className="text-xl font-black text-cyan-300 mt-1">{availableBalance.toFixed(2)} USDT</div>
-          </div>
-          <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-amber-500/30 bg-slate-950 p-4 text-left hover:border-amber-400">
-            <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Wallet')}</div>
-            <div className="text-xl font-black text-amber-300 mt-1">{t('Withdraw')}</div>
-            <div className="text-[10px] text-slate-500 mt-1">Minimum withdrawal {formatMoney(withdrawalMinIdr)}</div>
-          </button>
-        </div>
 
         {/* REFERRAL + EVENT STATUS */}
         {isLoggedIn && (
