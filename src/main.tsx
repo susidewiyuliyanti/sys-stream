@@ -28,7 +28,10 @@ function lazyWithBundleRecovery<T extends React.ComponentType<any>>(loader: () =
 }
 
 const AdminApp = lazyWithBundleRecovery(() => import('./admin/AdminApp.tsx'));
-const AirdropApp = lazyWithBundleRecovery(() => import('./airdrop/AirdropApp.tsx'));
+
+// Airdrop runs on its own custom domain. Keep this module in the main bundle
+// so a stale/missing dynamic chunk can never blank the Airdrop host.
+import AirdropApp from './airdrop/AirdropApp.tsx';
 
 class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null as Error | null };
