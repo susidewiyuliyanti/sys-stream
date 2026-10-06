@@ -85,7 +85,7 @@ const COPY: Record<Lang, Record<string,string>> = {
     depositTitle:'Selesaikan Deposit', depositDesc:'Lakukan deposit nyata melalui halaman resmi SYS STREAM. Reward diproses jika transaksi memenuhi aturan campaign.', depositAction:'Buka Deposit',
     withdrawalTitle:'Selesaikan Withdrawal', withdrawalDesc:'Ajukan withdrawal sesuai saldo dan aturan. Periksa alamat wallet dan network sebelum konfirmasi.', withdrawalAction:'Buka Withdrawal',
     profileTitle:'Lengkapi Profil', profileDesc:'Lengkapi informasi profil dasar agar akun siap mengikuti campaign dan proses reward.', profileAction:'Buka Profil',
-    miningTitle:'Tutorial Aktifkan SYS Mining', miningDesc:'Buka SYS Mining, pastikan Anda memiliki Blind Box Lock aktif minimal $10 (≈ Rp 179.370). Setelah lock aktif, Mining akan otomatis ON dan Anda dapat claim reward SYS 1 kali setiap hari. Setiap kelipatan $10 lock menghasilkan 1 SYS per hari.', miningAction:'Aktifkan / Buka Mining'
+    miningTitle:'Tutorial Aktifkan SYS Mining', miningDesc:'Buka SYS Mining untuk melihat dan mengelola status Mining Anda.', miningAction:'Aktifkan / Buka Mining'
   },
   en:{
     tasks:'Tasks', submissions:'My Submissions', login:'Login', wallet:'Wallet Address', walletPlaceholder:'Enter wallet address', saveWallet:'Save Wallet', walletRequired:'Wallet address is required to join a task.', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
@@ -109,7 +109,7 @@ const COPY: Record<Lang, Record<string,string>> = {
     depositTitle:'Complete a Deposit', depositDesc:'Make a real deposit through the official SYS STREAM page. Rewards are processed only when campaign rules are met.', depositAction:'Open Deposit',
     withdrawalTitle:'Complete a Withdrawal', withdrawalDesc:'Request a withdrawal according to your balance and the rules. Check the wallet address and network before confirming.', withdrawalAction:'Open Withdrawal',
     profileTitle:'Complete Your Profile', profileDesc:'Complete your basic profile information so your account is ready for campaigns and rewards.', profileAction:'Open Profile',
-    miningTitle:'SYS Mining Activation Tutorial', miningDesc:'Open SYS Mining and make sure you have an active Blind Box Lock of at least $10 (≈ Rp 179,370). Once the lock is active, Mining turns ON automatically and you can claim SYS once per day. Each $10 of lock earns 1 SYS per day.', miningAction:'Open / Activate Mining'
+    miningTitle:'SYS Mining Activation Tutorial', miningDesc:'Open SYS Mining to view and manage your Mining status.', miningAction:'Open / Activate Mining'
   },
   es:{
     tasks:'Tareas', submissions:'Mis envíos', login:'Iniciar sesión', hero:'Tareas diarias. Crea contenido. Envía pruebas. Obtén recompensas de airdrop.',
