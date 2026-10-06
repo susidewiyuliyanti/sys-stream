@@ -79,10 +79,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       if (creditedIdr > 0) {
         const user = await env.DB.prepare(`
-          SELECT CASE
-            WHEN COALESCE(available_balance,0) > 0 THEN COALESCE(available_balance,0)
-            ELSE COALESCE(balance,0)
-          END AS balance
+          SELECT COALESCE(available_balance,0) AS balance
           FROM users WHERE id = ? LIMIT 1
         `).bind(tx.user_id).first<any>();
 
