@@ -32,6 +32,19 @@ const AIRDROP_ERRORS: Record<Lang, {taskNotFound:string;checkinDone:string;singl
   ar:{taskNotFound:'لم يتم العثور على المهمة أو لم يتم تفعيلها بعد.',checkinDone:'تم إكمال تسجيل حضور اليوم بالفعل.',singleSubmit:'يمكن إرسال هذه المهمة مرة واحدة فقط لكل مستخدم.',loginRequired:'يلزم تسجيل الدخول.',submissionFailed:'فشل إرسال المهمة.'}
 };
 
+
+
+const SOCIAL_GATE_COPY: Record<Lang,{title:string;desc:string;connected:string;followed:string;unlock:string;locked:string;unlocked:string;needAccount:string}> = {
+  id:{title:'Follow SYSStreamer untuk membuka semua task',desc:'Hubungkan minimal satu akun sosial, lalu ikuti akun resmi SYSStreamer. Setelah konfirmasi follow, semua task akan terbuka.',connected:'Akun terhubung',followed:'Saya sudah follow SYSStreamer',unlock:'Buka Semua Task',locked:'Semua task terkunci',unlocked:'Semua task terbuka',needAccount:'Hubungkan minimal satu akun sosial terlebih dahulu.'},
+  en:{title:'Follow SYSStreamer to unlock all tasks',desc:'Connect at least one social account, then follow the official SYSStreamer account. After confirming the follow, all tasks will unlock.',connected:'Connected account',followed:'I followed SYSStreamer',unlock:'Unlock All Tasks',locked:'All tasks are locked',unlocked:'All tasks are unlocked',needAccount:'Connect at least one social account first.'},
+  es:{title:'Sigue a SYSStreamer para desbloquear todas las tareas',desc:'Conecta al menos una cuenta social y sigue la cuenta oficial de SYSStreamer. Después de confirmar el seguimiento, se desbloquearán todas las tareas.',connected:'Cuenta conectada',followed:'Ya sigo a SYSStreamer',unlock:'Desbloquear todas las tareas',locked:'Todas las tareas están bloqueadas',unlocked:'Todas las tareas están desbloqueadas',needAccount:'Conecta primero al menos una cuenta social.'},
+  pt:{title:'Siga a SYSStreamer para desbloquear todas as tarefas',desc:'Conecte pelo menos uma conta social e siga a conta oficial SYSStreamer. Após confirmar o follow, todas as tarefas serão desbloqueadas.',connected:'Conta conectada',followed:'Já sigo a SYSStreamer',unlock:'Desbloquear todas as tarefas',locked:'Todas as tarefas estão bloqueadas',unlocked:'Todas as tarefas estão desbloqueadas',needAccount:'Conecte primeiro pelo menos uma conta social.'},
+  zh:{title:'关注 SYSStreamer 以解锁所有任务',desc:'先连接至少一个社交账号，然后关注 SYSStreamer 官方账号。确认关注后，所有任务都会解锁。',connected:'已连接账号',followed:'我已关注 SYSStreamer',unlock:'解锁所有任务',locked:'所有任务已锁定',unlocked:'所有任务已解锁',needAccount:'请先连接至少一个社交账号。'},
+  ja:{title:'SYSStreamer をフォローしてすべてのタスクを解放',desc:'少なくとも1つのSNSアカウントを接続し、公式SYSStreamerアカウントをフォローしてください。フォロー確認後、すべてのタスクが解放されます。',connected:'接続済みアカウント',followed:'SYSStreamer をフォローしました',unlock:'すべてのタスクを解放',locked:'すべてのタスクがロックされています',unlocked:'すべてのタスクが解放されています',needAccount:'まずSNSアカウントを1つ以上接続してください。'},
+  ko:{title:'SYSStreamer를 팔로우하여 모든 작업 잠금 해제',desc:'하나 이상의 소셜 계정을 연결한 다음 공식 SYSStreamer 계정을 팔로우하세요. 팔로우를 확인하면 모든 작업이 열립니다.',connected:'연결된 계정',followed:'SYSStreamer를 팔로우했습니다',unlock:'모든 작업 잠금 해제',locked:'모든 작업이 잠겨 있습니다',unlocked:'모든 작업이 열렸습니다',needAccount:'먼저 하나 이상의 소셜 계정을 연결하세요.'},
+  ar:{title:'تابع SYSStreamer لفتح جميع المهام',desc:'اربط حسابًا اجتماعيًا واحدًا على الأقل ثم تابع حساب SYSStreamer الرسمي. بعد تأكيد المتابعة ستُفتح جميع المهام.',connected:'حساب متصل',followed:'لقد تابعت SYSStreamer',unlock:'فتح جميع المهام',locked:'جميع المهام مقفلة',unlocked:'جميع المهام مفتوحة',needAccount:'اربط حسابًا اجتماعيًا واحدًا على الأقل أولاً.'}
+};
+
 const TASKS: Task[] = [
   {id:'daily-checkin',key:'checkin',type:'checkin',reward:'program',estimated:'30 seconds',daily:true},
   {id:'tiktok-upload',key:'tiktok',type:'tiktok',reward:'program',estimated:'10–20 minutes',daily:true},
@@ -306,6 +319,7 @@ export default function AirdropApp() {
   const [socialSaving,setSocialSaving]=useState(false);
   const [socialMessage,setSocialMessage]=useState('');
   const [followConfirmed,setFollowConfirmed]=useState(false);
+  const [followSaving,setFollowSaving]=useState(false);
   const [lang,setLang]=useState<Lang>(() => {
     if(typeof window==='undefined') return 'id';
     const params = new URLSearchParams(window.location.search);
@@ -330,7 +344,7 @@ export default function AirdropApp() {
 
   useEffect(() => {
     let active = true;
-    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next);} } catch {} };
+    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next); setFollowConfirmed(Boolean(data.followConfirmed));} } catch {} };
     void loadSocialAccounts();
 
     const loadAuthenticatedWallet = async () => {
@@ -391,7 +405,20 @@ export default function AirdropApp() {
   }, []);
 
 
-  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setFollowConfirmed(false); setSocialPlatform(''); },[selectedTask]);
+  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setSocialPlatform(''); },[selectedTask]);
+
+  const confirmFollow=async()=>{
+    if(Object.keys(socialAccounts).length===0){setSocialMessage(SOCIAL_GATE_COPY[lang].needAccount);return;}
+    setFollowSaving(true);setSocialMessage('');
+    try{
+      const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm_follow'})});
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||!data.success)throw new Error(data.message||'Unable to confirm follow.');
+      setFollowConfirmed(true);
+      setSocialMessage(SOCIAL_GATE_COPY[lang].unlocked);
+    }catch(e){setSocialMessage(e instanceof Error?e.message:'Unable to confirm follow.');}
+    finally{setFollowSaving(false);}
+  };
 
   const saveSocialAccount=async()=>{ const platform=socialPlatform.trim().toLowerCase(),account=socialAccount.trim(); if(!platform||!account)return; setSocialSaving(true);setSocialMessage(''); try{const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,account})}); const data=await res.json().catch(()=>({})); if(!res.ok||!data.success)throw new Error(data.message||'Gagal memasangkan akun media sosial.'); setSocialAccounts(prev=>({...prev,[platform]:account}));setSocialAccount('');setSocialMessage(lang==='id'?'Akun berhasil dipasangkan.':'Social account connected.');}catch(e){setSocialMessage(e instanceof Error?e.message:'Gagal memasangkan akun.');}finally{setSocialSaving(false);} };
 
@@ -482,6 +509,7 @@ export default function AirdropApp() {
   },[lang,tx.unavailable]);
 
   const openTask=(task:Task)=>{
+    if(!followConfirmed){setSocialMessage(SOCIAL_GATE_COPY[lang].locked);return;}
     if(task.type==='checkin'){
       setSelectedTask(null);
       setCheckinMonth(new Date().toISOString().slice(0,7));
@@ -560,6 +588,19 @@ export default function AirdropApp() {
       </section>
 
 
+      <section className="mt-8 rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 sm:p-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+          <div className="flex-1">
+            <div className="text-xs font-black tracking-wider text-amber-400">{followConfirmed?SOCIAL_GATE_COPY[lang].unlocked:SOCIAL_GATE_COPY[lang].locked}</div>
+            <h2 className="mt-1 text-xl font-black">{SOCIAL_GATE_COPY[lang].title}</h2>
+            <p className="mt-2 text-sm text-slate-400">{SOCIAL_GATE_COPY[lang].desc}</p>
+            <div className="mt-3 text-xs text-slate-500">{SOCIAL_GATE_COPY[lang].connected}: {Object.keys(socialAccounts).length}</div>
+          </div>
+          {!followConfirmed&&<button onClick={confirmFollow} disabled={followSaving||Object.keys(socialAccounts).length===0} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-30 disabled:cursor-not-allowed">{followSaving?'...':SOCIAL_GATE_COPY[lang].unlock}</button>}
+          {followConfirmed&&<div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-black text-emerald-300">{SOCIAL_GATE_COPY[lang].unlocked}</div>}
+        </div>
+      </section>
+
       <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6"><div><div className="text-xs font-black tracking-wider text-amber-400">{lang==='id'?'HUBUNGKAN AKUN MEDIA SOSIAL':'CONNECT SOCIAL ACCOUNTS'}</div><h2 className="mt-1 text-xl font-black">{lang==='id'?'Pasangkan akun untuk mengikuti task':'Connect accounts to join tasks'}</h2><p className="mt-1 text-xs text-slate-500">{lang==='id'?'Task sosial mewajibkan akun terkait sudah follow akun campaign sebelum submission dikirim.':'Social tasks require the related account to follow the campaign before submission.'}</p></div><div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">{['tiktok','instagram','youtube','twitter','facebook','telegram','discord'].map(p=><div key={p} className="rounded-2xl border border-slate-800 bg-slate-950 p-4"><div className="flex items-center justify-between"><span className="font-bold capitalize">{p==='twitter'?'X / Twitter':p}</span><span className={socialAccounts[p]?'text-emerald-400 text-xs font-black':'text-slate-500 text-xs'}>{socialAccounts[p]?(lang==='id'?'TERHUBUNG':'CONNECTED'):(lang==='id'?'BELUM':'NOT CONNECTED')}</span></div><div className="mt-3 text-xs text-slate-400 truncate">{socialAccounts[p]||(lang==='id'?'Belum ada akun':'No account connected')}</div></div>)}</div><div className="mt-5 grid sm:grid-cols-[180px_1fr_auto] gap-3"><select value={socialPlatform} onChange={e=>setSocialPlatform(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"><option value="">{lang==='id'?'Pilih platform':'Select platform'}</option>{['tiktok','instagram','youtube','twitter','facebook','telegram','discord'].map(p=><option key={p} value={p}>{p==='twitter'?'X / Twitter':p[0].toUpperCase()+p.slice(1)}</option>)}</select><input value={socialAccount} onChange={e=>setSocialAccount(e.target.value)} placeholder={lang==='id'?'Username atau link profil':'Username or profile URL'} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"/><button disabled={!socialPlatform||!socialAccount.trim()||socialSaving} onClick={saveSocialAccount} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">{socialSaving?(lang==='id'?'Menyimpan...':'Saving...'):(lang==='id'?'Pasangkan':'Connect')}</button></div>{socialMessage&&<div className="mt-3 text-xs text-amber-300">{socialMessage}</div>}</section>
 
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
@@ -589,7 +630,7 @@ export default function AirdropApp() {
           <div className="text-xs text-slate-400">{Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
+          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(!followConfirmed){setSocialMessage(SOCIAL_GATE_COPY[lang].locked);return;} if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.type==='checkin'?({id:'30 detik',en:'30 seconds',es:'30 segundos',pt:'30 segundos',zh:'30 秒',ja:'30秒',ko:'30초',ar:'30 ثانية'} as Record<Lang,string>)[lang]:t.estimated} · {tx.proof}</div>
           </button>})}
@@ -638,7 +679,7 @@ export default function AirdropApp() {
         {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>:availableTasks.filter(t=>taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','tiktok','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
-          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button></div>
+          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} disabled={!followConfirmed} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm disabled:opacity-30 disabled:cursor-not-allowed">{x.action}</button></div>
         </article>})}
         </div>
       </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-5">{submissions.length===0?<div className="p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></div>:<div className="space-y-3">{submissions.map(s=><div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div className="flex-1 min-w-0"><div className="font-bold truncate">{s.task_title||String(s.task_id)}</div><a href={s.evidence_link} target="_blank" rel="noreferrer" className="text-xs text-amber-400 break-all">{s.evidence_link}</a><div className="text-[10px] text-slate-500 mt-1">{s.created_at}</div></div><div className="text-xs font-black px-3 py-2 rounded-xl bg-slate-800 text-slate-200">{statusLabel(s.status,tx)}</div><div className="text-xs text-amber-400 font-bold">{s.reward_points} pts</div></div>)}</div>}</section>}
