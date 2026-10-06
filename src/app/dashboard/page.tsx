@@ -180,7 +180,7 @@ export default function DashboardPage({ navigate }: Props) {
                 SYS STREAM
               </div>
               <h1 className="text-2xl sm:text-3xl font-black mt-2">{t('Halo')}, {user.walletAddress || user.username || t('User')}</h1>
-              <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · {t('Live, komunitas, dan postingan dari pengguna SYS STREAM.')}</p>
+              <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · {t('Dashboard community tagline')}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
