@@ -30,7 +30,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    description: 'Tersedia untuk lock aktif minimum. Reward harian diproses server dan masuk ke saldo tersedia.',
+    description: 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: 71748,
@@ -139,7 +139,7 @@ export default function BlindboxGamePage() {
       if (!isQualified) {
         showToast(
           t('Staking Required'),
-          t('Anda harus mengunci minimal $4 equivalent untuk membuka Blind Box harian.'),
+          t('You must lock at least $4 equivalent to open the daily Blind Box.'),
           'error'
         );
         return;
@@ -259,7 +259,7 @@ export default function BlindboxGamePage() {
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.
+            {t('Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.')}
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export default function BlindboxGamePage() {
           ) : (
             <div className="px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-400 flex items-center gap-1.5 font-semibold">
               <Lock className="w-4 h-4" />
-              <span>{t('Lock minimal $4 equivalent untuk membuka Blind Box')}</span>
+              <span>{t('Lock at least $4 equivalent to open the Blind Box')}</span>
             </div>
           )}
         </div>
@@ -296,7 +296,7 @@ export default function BlindboxGamePage() {
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>{t('Lock aktif')}</span>
+            <span>{t('Active Lock')}</span>
             <span className="text-cyan-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
           <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
@@ -304,7 +304,7 @@ export default function BlindboxGamePage() {
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>{t('Lock aktif')}</span>
+            <span>{t('Active Lock')}</span>
             <span className="text-amber-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
           <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
@@ -312,7 +312,7 @@ export default function BlindboxGamePage() {
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 font-bold">
-            <span>{t('Lock aktif')}</span>
+            <span>{t('Active Lock')}</span>
             <span className="text-purple-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
           <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
@@ -326,14 +326,14 @@ export default function BlindboxGamePage() {
             <div className="space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
                 <Lock className="w-3.5 h-3.5" />
-                <span>{t('LOCK SALDO DIBUTUHKAN')}</span>
+                <span>{t('LOCK BALANCE REQUIRED')}</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white">
-                {t('Lock saldo untuk mendapatkan hak claim Blind Box harian')}
+                {t('Lock your balance to unlock the daily Blind Box claim')}
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
-                  {t('Durasi lock tersedia:')} <strong>{t('30 hari')}</strong> Ã‚· <strong>{t('60 hari')}</strong> Ã‚· <strong>{t('90 hari')}</strong>.
+                  {t('Available lock durations:')} <strong>{t('30 days')}</strong> · <strong>{t('60 days')}</strong> · <strong>{t('90 days')}</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
                   {t('The lock can only be completed once the lock period has ended. Early unlocking is not available through Blind Box.')}
@@ -384,7 +384,7 @@ export default function BlindboxGamePage() {
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
-                  Durasi Lock
+                  {t('Lock Duration')}
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
@@ -430,21 +430,21 @@ export default function BlindboxGamePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-white">
-                    Total Locked: {formatMoney(totalLocked)} ({dailyQuota} Box/Hari)
+                    {t('Total Locked')}: {formatMoney(totalLocked)} ({dailyQuota} {t('Boxes/Day')})
                   </h3>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-mono font-bold">
-                    Lock Aktif
+                    {t('Active Lock')}
                   </span>
                 </div>
                 <div className="text-xs text-slate-400 mt-0.5">
-                  Daily Claim: 
+                  {t('Daily Claim')}:
                   <strong className="text-amber-400">{primaryLock?.dailyClaims}x</strong>
                 </div>
               </div>
             </div>
 
             <div className="text-xs text-slate-400 max-w-xs text-right">
-              Claim dilakukan melalui tombol Blind Box di bawah. Lock akan selesai otomatis setelah masa durasi berakhir.
+              {t('Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.')}
             </div>
           </div>
         </div>
@@ -522,7 +522,7 @@ export default function BlindboxGamePage() {
               </div>
               <div className="text-center">
                 <div className="text-base font-bold text-emerald-400 animate-pulse">
-                  {unboxingState === 'SHAKING' ? 'Memproses Reward Blind Box...' : 'Opening Mystery Vault!'}
+                  {unboxingState === 'SHAKING' ? t('Processing Blind Box Reward...') : 'Opening Mystery Vault!'}
                 </div>
                 <div className="text-xs text-slate-400 mt-1">{t('Server sedang menentukan reward...')}</div>
               </div>
@@ -539,7 +539,7 @@ export default function BlindboxGamePage() {
               {/* USDT Cash Prize Callout Banner */}
               <div className="w-full p-4 bg-emerald-500/15 border-2 border-emerald-500/50 rounded-2xl text-center space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  Reward dikreditkan ke saldo tersedia
+                  {t('Reward credited to available balance')}
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
                   +{formatMoney(wonIdr)}
@@ -645,20 +645,20 @@ export default function BlindboxGamePage() {
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
             <div className="font-semibold text-slate-300 flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-cyan-400" />
-              <span>{t('Jadwal Durasi Lock')}</span>
+              <span>{t('Lock Duration Schedule')}</span>
             </div>
             <div className="space-y-1.5 pt-1">
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">{t('30 Days Term')}</span>
-                <span className="font-mono text-emerald-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
+                <span className="font-mono text-emerald-400 font-bold">{t('Daily reward follows server settings')}</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">{t('60 Days Term')}</span>
-                <span className="font-mono text-cyan-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
+                <span className="font-mono text-cyan-400 font-bold">{t('Daily reward follows server settings')}</span>
               </div>
               <div className="flex justify-between items-center text-[11px] p-2 bg-slate-950 rounded-lg">
                 <span className="text-slate-300 font-bold">{t('90 Days Term')}</span>
-                <span className="font-mono text-amber-400 font-bold">{t('Reward harian sesuai pengaturan server')}</span>
+                <span className="font-mono text-amber-400 font-bold">{t('Daily reward follows server settings')}</span>
               </div>
             </div>
           </div>

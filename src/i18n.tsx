@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type LanguageCode = 'id' | 'en' | 'es' | 'pt' | 'zh' | 'ja' | 'ko' | 'ar';
 export interface LocaleConfig {
@@ -3893,6 +3893,14 @@ const GAMES_PROFILE_TRANSLATION_SCREENING: Record<LanguageCode, Record<string, s
     'Lock Amount (IDR)':'Lock Amount (IDR)',
     'Claim Daily Blind Box':'Claim Daily Blind Box',
     'Lock aktif':'Active Lock',
+    'You must lock at least $4 equivalent to open the daily Blind Box.':'You must lock at least $4 equivalent to open the daily Blind Box.',
+    'Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.':'Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.',
+'Lock at least $4 equivalent to open the Blind Box':'Lock at least $4 equivalent to open the Blind Box',
+        'LOCK BALANCE REQUIRED':'LOCK BALANCE REQUIRED',
+        'Lock your balance to unlock the daily Blind Box claim':'Lock your balance to unlock the daily Blind Box claim',
+        'Boxes/Day':'Boxes/Day',
+        'Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.':'Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.',
+        'Daily reward follows server settings':'Daily reward follows server settings',
     'Aturan claim tetap 1 kali per hari.':'The claim limit remains once per day.',
     'LOCK SALDO DIBUTUHKAN':'BALANCE LOCK REQUIRED',
     'Lock saldo untuk mendapatkan hak claim Blind Box harian':'Lock your balance to receive the right to claim the daily Blind Box',
