@@ -4378,3 +4378,19 @@ const GAME_PAGE_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   }
 };
 for (const lang of Object.keys(GAME_PAGE_TRANSLATIONS) as LanguageCode[]) Object.assign(translations[lang], GAME_PAGE_TRANSLATIONS[lang]);
+
+/* Blind Box daily description — explicit locale mapping */
+const BLIND_BOX_DAILY_DESCRIPTION_TRANSLATIONS: Record<LanguageCode, string> = {
+  id: 'Buka Blind Box harian berdasarkan saldo yang sedang dikunci. Klaim harian mengikuti aturan server dan reset WIB.',
+  en: 'Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.',
+  es: 'Abre la Blind Box diaria según tu saldo actualmente bloqueado. Las reclamaciones diarias siguen las reglas del servidor y se reinician según WIB.',
+  pt: 'Abra a Blind Box diária com base no seu saldo atualmente bloqueado. Os resgates diários seguem as regras do servidor e são redefinidos de acordo com o horário WIB.',
+  zh: '根据您当前锁定的余额开启每日 Blind Box。每日领取遵循服务器规则，并按 WIB 重置。',
+  ja: '現在ロックされている残高に基づいてデイリー Blind Box を開きます。毎日の受け取りはサーバーのルールに従い、WIB に基づいてリセットされます。',
+  ko: '현재 잠긴 잔액을 기준으로 일일 Blind Box를 엽니다. 일일 수령은 서버 규칙을 따르며 WIB 기준으로 초기화됩니다.',
+  ar: 'افتح Blind Box اليومية بناءً على رصيدك المقفول حاليًا. تتبع المطالبات اليومية قواعد الخادم ويتم إعادة ضبطها وفق توقيت WIB.',
+};
+for (const lang of Object.keys(BLIND_BOX_DAILY_DESCRIPTION_TRANSLATIONS) as LanguageCode[]) {
+  translations[lang]['Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.'] =
+    BLIND_BOX_DAILY_DESCRIPTION_TRANSLATIONS[lang];
+}
