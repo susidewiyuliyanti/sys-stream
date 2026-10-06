@@ -252,6 +252,10 @@ export async function getUserById(env: Env, userId: string) {
                  THEN COALESCE(available_balance,0)
                  ELSE COALESCE(balance,0)
             END AS availableBalance,
+            CASE WHEN COALESCE(available_balance,0) > 0
+                 THEN COALESCE(available_balance,0)
+                 ELSE COALESCE(balance,0)
+            END AS balance,
             CASE WHEN COALESCE(total_locked,0) > 0
                  THEN COALESCE(total_locked,0)
                  ELSE COALESCE(locked_saldo,0)
