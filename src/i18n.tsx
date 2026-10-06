@@ -98,12 +98,12 @@ export function formatRegistrationBonus(language: LanguageCode): string {
 export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: string }> = [
   { code: 'id', label: 'Indonesian', native: 'Bahasa Indonesia' },
   { code: 'en', label: 'English', native: 'English' },
-  { code: 'es', label: 'Spanish', native: 'EspaÃ±ol' },
-  { code: 'pt', label: 'Portuguese', native: 'PortuguÃªs' },
-  { code: 'zh', label: 'Chinese', native: 'ä¸­æ–‡' },
-  { code: 'ja', label: 'Japanese', native: 'æ—¥æœ¬èªž' },
-  { code: 'ko', label: 'Korean', native: 'í•œêµ­ì–´' },
-  { code: 'ar', label: 'Arabic', native: 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©' },
+  { code: 'es', label: 'Spanish', native: 'Español' },
+  { code: 'pt', label: 'Portuguese', native: 'Português' },
+  { code: 'zh', label: 'Chinese', native: '中文' },
+  { code: 'ja', label: 'Japanese', native: '日本語' },
+  { code: 'ko', label: 'Korean', native: '한국어' },
+  { code: 'ar', label: 'Arabic', native: 'العربية' },
 ];
 
 const translations: Record<LanguageCode, Record<string, string>> = {
@@ -3583,4 +3583,37 @@ const LIVE_ROOM_NOT_AVAILABLE_CREATE: Record<LanguageCode, string> = {
 for (const lang of Object.keys(LIVE_ROOM_NOT_AVAILABLE_CREATE) as LanguageCode[]) {
   translations[lang]["LIVE_ROOM_NOT_AVAILABLE_CREATE"] = LIVE_ROOM_NOT_AVAILABLE_CREATE[lang];
   PAGE_UI_TRANSLATIONS[lang]["LIVE_ROOM_NOT_AVAILABLE_CREATE"] = LIVE_ROOM_NOT_AVAILABLE_CREATE[lang];
+}
+
+
+/* Dashboard UI lock: every visible dashboard label is translated in all supported languages. */
+const DASHBOARD_UI_LOCK: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Pengaturan Streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Anda sudah menjadi Official Streamer. Buat atau buka room streaming Anda sendiri dan dapatkan RTMPS Server + Stream Key untuk OBS.','Open Streaming Studio':'Buka Streaming Studio','SYS Coin':'SYS Coin','Airdrop Reward':'Reward Airdrop','Create Post':'Buat Postingan','Open attached media →':'Buka media terlampir →','user':'pengguna'
+  },
+  en: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Streaming Settings','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.','Open Streaming Studio':'Open Streaming Studio','SYS Coin':'SYS Coin','Airdrop Reward':'Airdrop Reward','Create Post':'Create Post','Open attached media →':'Open attached media →','user':'user'
+  },
+  es: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Configuración de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Eres un streamer oficial. Crea o abre tu propia sala de streaming y obtén el servidor RTMPS y la Stream Key para OBS.','Open Streaming Studio':'Abrir estudio de streaming','SYS Coin':'Moneda SYS','Airdrop Reward':'Recompensa del airdrop','Create Post':'Crear publicación','Open attached media →':'Abrir contenido multimedia adjunto →','user':'usuario'
+  },
+  pt: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'Configuração de streaming','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'Você é um Official Streamer. Crie ou abra sua própria sala de streaming e obtenha o servidor RTMPS e a Stream Key para OBS.','Open Streaming Studio':'Abrir estúdio de streaming','SYS Coin':'Moeda SYS','Airdrop Reward':'Recompensa do Airdrop','Create Post':'Criar publicação','Open attached media →':'Abrir mídia anexada →','user':'usuário'
+  },
+  zh: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'直播设置','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'您是官方主播。创建或打开自己的直播间，并获取用于 OBS 的 RTMPS 服务器和 Stream Key。','Open Streaming Studio':'打开直播工作室','SYS Coin':'SYS 币','Airdrop Reward':'空投奖励','Create Post':'创建帖子','Open attached media →':'打开附件媒体 →','user':'用户'
+  },
+  ja: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'配信設定','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'あなたは公式ストリーマーです。自分の配信ルームを作成または開き、OBS用のRTMPSサーバーとStream Keyを取得できます。','Open Streaming Studio':'配信スタジオを開く','SYS Coin':'SYSコイン','Airdrop Reward':'エアドロップ報酬','Create Post':'投稿を作成','Open attached media →':'添付メディアを開く →','user':'ユーザー'
+  },
+  ko: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'스트리밍 설정','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'공식 스트리머입니다. 자신의 스트리밍 룸을 만들거나 열고 OBS용 RTMPS 서버와 Stream Key를 받을 수 있습니다.','Open Streaming Studio':'스트리밍 스튜디오 열기','SYS Coin':'SYS 코인','Airdrop Reward':'에어드롭 보상','Create Post':'게시물 작성','Open attached media →':'첨부 미디어 열기 →','user':'사용자'
+  },
+  ar: {
+    'SYS STREAM':'SYS STREAM','Streaming Settings':'إعدادات البث','You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.':'أنت منشئ بث رسمي. أنشئ غرفة البث الخاصة بك أو افتحها واحصل على خادم RTMPS وStream Key لاستخدامهما مع OBS.','Open Streaming Studio':'فتح استوديو البث','SYS Coin':'عملة SYS','Airdrop Reward':'مكافأة الإيردروب','Create Post':'إنشاء منشور','Open attached media →':'فتح الوسائط المرفقة ←','user':'مستخدم'
+  }
+};
+for (const lang of Object.keys(DASHBOARD_UI_LOCK) as LanguageCode[]) {
+  Object.assign(translations[lang], DASHBOARD_UI_LOCK[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], DASHBOARD_UI_LOCK[lang]);
 }
