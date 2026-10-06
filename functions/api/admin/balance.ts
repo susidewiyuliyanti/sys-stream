@@ -68,7 +68,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         `INSERT INTO admin_balance_adjustments
          (id,user_id,admin_user_id,before_balance,after_balance,delta,note,created_at)
          VALUES(?,?,?,?,?,?,?,?)`
-      ).bind(adjustmentId, userId, auth.identity.id, before, balance, delta, note, now)
+      ).bind(adjustmentId, userId, auth.identity.id, before, availableBalance, delta, note, now)
     ]);
 
     await notifyAdmins(context.env, {
