@@ -2428,7 +2428,7 @@ const LIVE_ROOM_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   "CHECK STATUS" "VERIFICAR STATUS",
   "Status streaming gagal." "Falha ao verificar o status da transmissão.",
   "Gunakan OBS: Settings → Stream → Service Custom → masukkan RTMPS Server dan Stream Key di atas." "No OBS: Settings → Stream → Service Custom → insira o servidor RTMPS e a chave de stream acima.",
-  "AKTIFKAN STREAMING" "ATIVAR TRANSMISSÃƒO",
+  "AKTIFKAN STREAMING" "ATIVAR TRANSMISSÃO",
   "Buat Live Input Cloudflare untuk room ini." "Criar uma entrada Live da Cloudflare para esta sala.",
   "Setelah dibuat, gunakan RTMPS Server + Stream Key pada OBS." "Depois de criada, use o servidor RTMPS e a chave de stream no OBS.",
   "KHUSUS PEMILIK ROOM" "APENAS PROPRIETÁRIO DA SALA",
