@@ -70,22 +70,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       env.DB.prepare(`
         UPDATE users
-        SET available_balance = CASE
-              WHEN COALESCE(available_balance,0) >= ? THEN COALESCE(available_balance,0) - ?
-              ELSE COALESCE(balance,0) - ?
-            END,
-            balance = CASE
-              WHEN COALESCE(available_balance,0) >= ? THEN COALESCE(available_balance,0) - ?
-              ELSE COALESCE(balance,0) - ?
-            END
+        SET available_balance = COALESCE(available_balance,0) - ?,
+            balance = COALESCE(available_balance,0) - ?
         WHERE id = ?
-          AND (
-            COALESCE(available_balance,0) >= ?
-            OR (
-              COALESCE(available_balance,0) <= 0
-              AND COALESCE(balance,0) >= ?
-            )
-          )
+          AND COALESCE(available_balance,0) >= ?
       `).bind(
         amount, amount, amount,
         amount, amount, amount,
