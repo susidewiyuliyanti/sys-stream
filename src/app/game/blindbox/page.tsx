@@ -93,6 +93,8 @@ export default function BlindboxGamePage() {
   const [unboxedItem, setUnboxedItem] = useState<BlindboxItem | null>(null);
   const [wonIdr, setWonIdr] = useState<number>(0);
 
+  const { language, t } = useLanguage();
+
   // Staking lock modal/form
   const minimumLockIdr = getMinimumBlindBoxLockIdr(language);
   const minimumLockDisplay = formatMinimumBlindBoxLock(language);
@@ -102,7 +104,6 @@ export default function BlindboxGamePage() {
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
-  const { language, t } = useLanguage();
   const currencyConfig = getLocaleConfig(language);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const toIdr = (displayAmount: number) => Math.round(displayAmount * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
