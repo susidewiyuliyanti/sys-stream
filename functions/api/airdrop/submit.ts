@@ -46,8 +46,8 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     const socialAccount = String(body.socialAccount || "").trim();
     const followConfirmed = body.followConfirmed === true;
 
-    if (!wallet || (!taskKey && !rawTaskId) || !link) {
-      return response(context.request, { success: false, message: "Wallet, task, dan bukti wajib diisi" }, 400);
+    if (!wallet || (!taskKey && !rawTaskId)) {
+      return response(context.request, { success: false, message: "Wallet dan task wajib diisi" }, 400);
     }
 
     let task: any = null;
@@ -63,6 +63,10 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     if (!task) return response(context.request, { success: false, message: "Task tidak ditemukan atau belum diaktifkan" }, 404);
 
     const isCheckin = String(taskKey).toLowerCase() === "checkin" || /check.?in/i.test(String(task.title || ""));
+    if (!isCheckin && !link) {
+      return response(context.request, { success: false, message: "Bukti wajib diisi untuk task ini" }, 400);
+    }
+
     const socialPlatforms = new Set(["tiktok","instagram","youtube","shorts","twitter","facebook","telegram","discord","social"]);
     const normalizedCategory = String(task.category || taskKey || "").toLowerCase();
     const requiresFollow = !isCheckin && (socialPlatforms.has(normalizedCategory) || socialPlatforms.has(String(taskKey).toLowerCase()));
@@ -91,6 +95,34 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     } else {
       const existing = await db.prepare("SELECT id,status FROM airdrop_submissions WHERE wallet_address=? AND task_id=? AND status IN ('PENDING','APPROVED') ORDER BY id DESC LIMIT 1").bind(wallet, task.id).first<{ id: number; status: string }>();
       if (existing) return response(context.request, { success: false, message: "Task ini sudah pernah diajukan untuk wallet tersebut", status: existing.status }, 409);
+    }
+
+    if (isCheckin) {
+      const rewardPoints = Number(task.reward_points || 0);
+      const inserted = await db.prepare(
+        `INSERT INTO airdrop_submissions (wallet_address,email,task_id,evidence_link,status,reward_points)
+         SELECT ?,?,?,?,?,?
+         WHERE NOT EXISTS (
+           SELECT 1 FROM airdrop_submissions
+           WHERE wallet_address=? AND task_id=? AND date(created_at)=date('now')
+         )`
+      ).bind(wallet, wallet, task.id, link || "daily-checkin", "APPROVED", rewardPoints, wallet, task.id).run();
+
+      if (!inserted.meta?.changes) {
+        return response(context.request, { success: false, message: "Check-in hari ini sudah dilakukan.", status: "APPROVED" }, 409);
+      }
+
+      await db.prepare(
+        "INSERT INTO airdrop_points_history (wallet_address,points,reason) VALUES (?,?,?)"
+      ).bind(wallet, rewardPoints, `Daily Check-in #${task.id}`).run();
+
+      return response(context.request, {
+        success: true,
+        message: "Check-in berhasil. Reward points langsung ditambahkan.",
+        status: "APPROVED",
+        taskId: task.id,
+        rewardPoints,
+      });
     }
 
     const inserted = await db.prepare("INSERT INTO airdrop_submissions (wallet_address,email,task_id,evidence_link,status,reward_points) VALUES (?,?,?,?,?,?)").bind(wallet, wallet, task.id, link, "PENDING", Number(task.reward_points || 0)).run();
