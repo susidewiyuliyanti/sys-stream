@@ -69,7 +69,6 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
           <p className="mt-2 text-sm text-slate-400">
             Muat ulang halaman untuk mengambil bundle produksi terbaru.
           </p>
-          <pre className="mt-4 max-h-32 overflow-auto rounded-xl border border-red-500/20 bg-black/30 p-3 text-left text-[10px] leading-4 text-red-300 whitespace-pre-wrap">{this.state.error?.message || 'Unknown runtime error'}</pre>
           <button
             type="button"
             onClick={() => void this.reloadWithFreshBundle()}
