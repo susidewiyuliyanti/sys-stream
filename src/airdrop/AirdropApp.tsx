@@ -206,8 +206,8 @@ const COPY: Record<Lang, Record<string,string>> = {
 };
 
 const AIRDROP_UI: Record<Lang, Record<string,string>> = {
-  id:{dailyCheckin:'CHECK-IN HARIAN',checkinDesc:'Check-in harian berulang. Reward diberikan dalam poin dan dapat dikonversi ke SYS sesuai aturan program.',date:'Tanggal',status:'Status',points:'Poin',action:'Aksi',today:'HARI INI',notChecked:'Belum check-in',all:'Semua',youtube:'YouTube',social:'Sosial Media',checkin:'Check-in Harian',airdropPoints:'POIN AIRDROP',pointsSys:'Poin → SYS',pointsDesc:'Poin hanya berasal dari task yang diproses server. Konversi dicatat sebagai ledger.',available:'Tersedia',pending:'Menunggu',converted:'Dikonversi',pointsAmount:'Jumlah poin',convert:'Konversi ke SYS',rate:'Rate saat ini: 1 SYS = 1.000 poin.',loading:'Memuat task aktif...',proofPlaceholder:'https://...',submitting:'Mengirim...',conversionFailed:'Konversi gagal',conversionSuccess:'Berhasil dicatat'},
-  en:{dailyCheckin:'DAILY CHECK-IN',checkinDesc:'Recurring daily check-in. Rewards are issued in points and can be converted to SYS according to program rules.',date:'Date',status:'Status',points:'Points',action:'Action',today:'TODAY',notChecked:'Not checked in',all:'All',youtube:'YouTube',social:'Social Media',checkin:'Daily Check-in',airdropPoints:'AIRDROP POINTS',pointsSys:'Points → SYS',pointsDesc:'Points come only from server-processed tasks. Conversion is recorded in the ledger.',available:'Available',pending:'Pending',converted:'Converted',pointsAmount:'Points amount',convert:'Convert to SYS',rate:'Current rate: 1 SYS = 1,000 points.',loading:'Loading active tasks...',proofPlaceholder:'https://...',submitting:'Submitting...',conversionFailed:'Conversion failed',conversionSuccess:'Recorded successfully'},
+  id:{dailyCheckin:'CHECK-IN HARIAN',checkinDesc:'Check-in harian berulang. Reward diberikan dalam poin dan dapat dikonversi ke SYS sesuai aturan program.',date:'Tanggal',status:'Status',points:'Poin',action:'Aksi',today:'HARI INI',notChecked:'Belum check-in',all:'Semua',youtube:'YouTube',social:'Sosial Media',checkin:'Check-in Harian',airdropPoints:'POIN AIRDROP',pointsSys:'Poin → SYS',pointsDesc:'Poin hanya berasal dari task yang diproses server. Konversi dicatat sebagai ledger.',available:'Tersedia',pending:'Menunggu',converted:'Dikonversi',pointsAmount:'Jumlah poin',convert:'Konversi ke SYS',rate:'Rate saat ini: 1 SYS = 1.000 poin.',loading:'Memuat task aktif...',proofPlaceholder:'https://...',submitting:'Mengirim...',conversionFailed:'Konversi gagal',conversionSuccess:'Berhasil dicatat',approved:'Disetujui',rejected:'Ditolak',prevMonth:'Bulan sebelumnya',nextMonth:'Bulan berikutnya',monthSummary:'Check-in bulan ini',daysUnit:'hari',utcNote:'Hari check-in mengikuti waktu UTC (ganti hari pukul 07.00 WIB).'},
+  en:{dailyCheckin:'DAILY CHECK-IN',checkinDesc:'Recurring daily check-in. Rewards are issued in points and can be converted to SYS according to program rules.',date:'Date',status:'Status',points:'Points',action:'Action',today:'TODAY',notChecked:'Not checked in',all:'All',youtube:'YouTube',social:'Social Media',checkin:'Daily Check-in',airdropPoints:'AIRDROP POINTS',pointsSys:'Points → SYS',pointsDesc:'Points come only from server-processed tasks. Conversion is recorded in the ledger.',available:'Available',pending:'Pending',converted:'Converted',pointsAmount:'Points amount',convert:'Convert to SYS',rate:'Current rate: 1 SYS = 1,000 points.',loading:'Loading active tasks...',proofPlaceholder:'https://...',submitting:'Submitting...',conversionFailed:'Conversion failed',conversionSuccess:'Recorded successfully',approved:'Approved',rejected:'Rejected',prevMonth:'Previous month',nextMonth:'Next month',monthSummary:'Check-ins this month',daysUnit:'days',utcNote:'Check-in days follow UTC time (a new day starts at 00:00 UTC).'},
   es:{dailyCheckin:'CHECK-IN DIARIO',checkinDesc:'Check-in diario recurrente. Las recompensas se otorgan en puntos y pueden convertirse a SYS según las reglas.',date:'Fecha',status:'Estado',points:'Puntos',action:'Acción',today:'HOY',notChecked:'Sin check-in',all:'Todas',youtube:'YouTube',social:'Redes sociales',checkin:'Check-in diario',airdropPoints:'PUNTOS AIRDROP',pointsSys:'Puntos → SYS',pointsDesc:'Los puntos solo proceden de tareas procesadas por el servidor. La conversión queda registrada.',available:'Disponibles',pending:'Pendientes',converted:'Convertidos',pointsAmount:'Cantidad de puntos',convert:'Convertir a SYS',rate:'Tasa actual: 1 SYS = 1.000 puntos.',loading:'Cargando tareas activas...',proofPlaceholder:'https://...',submitting:'Enviando...',conversionFailed:'Conversión fallida',conversionSuccess:'Registrado correctamente'},
   pt:{dailyCheckin:'CHECK-IN DIÁRIO',checkinDesc:'Check-in diário recorrente. As recompensas são dadas em pontos e podem ser convertidas em SYS conforme as regras.',date:'Data',status:'Status',points:'Pontos',action:'Ação',today:'HOJE',notChecked:'Não fez check-in',all:'Todas',youtube:'YouTube',social:'Mídias sociais',checkin:'Check-in diário',airdropPoints:'PONTOS AIRDROP',pointsSys:'Pontos → SYS',pointsDesc:'Os pontos vêm apenas de tarefas processadas pelo servidor. A conversão é registrada no ledger.',available:'Disponível',pending:'Pendente',converted:'Convertido',pointsAmount:'Quantidade de pontos',convert:'Converter para SYS',rate:'Taxa atual: 1 SYS = 1.000 pontos.',loading:'Carregando tarefas ativas...',proofPlaceholder:'https://...',submitting:'Enviando...',conversionFailed:'Falha na conversão',conversionSuccess:'Registrado com sucesso'},
   zh:{dailyCheckin:'每日签到',checkinDesc:'每日重复签到。奖励以积分发放，并可根据活动规则兑换 SYS。',date:'日期',status:'状态',points:'积分',action:'操作',today:'今天',notChecked:'未签到',all:'全部',youtube:'YouTube',social:'社交媒体',checkin:'每日签到',airdropPoints:'空投积分',pointsSys:'积分 → SYS',pointsDesc:'积分仅来自服务器处理的任务，兑换记录会写入账本。',available:'可用',pending:'待处理',converted:'已兑换',pointsAmount:'积分数量',convert:'兑换为 SYS',rate:'当前比例：1 SYS = 1,000 积分。',loading:'正在加载活动任务...',proofPlaceholder:'https://...',submitting:'正在提交...',conversionFailed:'兑换失败',conversionSuccess:'记录成功'},
@@ -564,39 +564,77 @@ export default function AirdropApp() {
       {(() => {
         const checkinTask = availableTasks.find(t => t.type === 'checkin');
         if (!checkinTask) return null;
+        const ui = (k:string):string => AIRDROP_UI[lang][k] ?? AIRDROP_UI.en[k] ?? k;
+        const pad = (n:number) => String(n).padStart(2,'0');
         const [year, month] = checkinMonth.split('-').map(Number);
-        const daysInMonth = new Date(year, month, 0).getDate();
+        const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+        const firstWeekday = (new Date(Date.UTC(year, month-1, 1)).getUTCDay() + 6) % 7; // Monday first
+        const now = new Date();
+        const currentKey = `${now.getUTCFullYear()}-${pad(now.getUTCMonth()+1)}`;
+        const todayDay = now.getUTCDate();
+        const isCurrentMonth = checkinMonth === currentKey;
+        const isFutureMonth = checkinMonth > currentKey;
+        // The server allows one check-in per UTC day, so the calendar uses UTC days too.
         const checkins = new Map<number, {status:string;points:number}>();
         submissions.filter(s => String(s.task_id) === String(checkinTask.id)).forEach(s => {
-          const d = new Date(s.created_at);
-          if (d.getFullYear() === year && d.getMonth()+1 === month) checkins.set(d.getDate(), {status:s.status,points:Number(s.reward_points||0)});
+          const raw = String(s.created_at || '');
+          const d = new Date(/[zZ]$|[+-]\d\d:?\d\d$/.test(raw) ? raw : raw.replace(' ','T') + 'Z');
+          if (isNaN(d.getTime())) return;
+          if (d.getUTCFullYear() === year && d.getUTCMonth()+1 === month) checkins.set(d.getUTCDate(), {status:String(s.status||'').toUpperCase(), points:Number(s.reward_points||0)});
         });
+        const counted = Array.from(checkins.values()).filter(c => c.status !== 'REJECTED');
+        const checkedDays = counted.length;
+        const monthPoints = counted.reduce((sum,c) => sum + c.points, 0);
+        const monthLabel = new Date(Date.UTC(year, month-1, 1)).toLocaleDateString(lang, {month:'long', year:'numeric', timeZone:'UTC'});
+        const weekdays = Array.from({length:7}, (_,i) => new Date(Date.UTC(2024, 0, 1+i)).toLocaleDateString(lang, {weekday:'short', timeZone:'UTC'}));
+        const cells:(number|null)[] = [...Array(firstWeekday).fill(null), ...Array.from({length:daysInMonth}, (_,i) => i+1)];
+        const shiftMonth = (delta:number) => { const d = new Date(Date.UTC(year, month-1+delta, 1)); setCheckinMonth(`${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}`); };
+        const statusLabel = (s:string) => s === 'PENDING' ? ui('pending') : s === 'REJECTED' ? ui('rejected') : ui('approved');
+        const statusClass = (s:string) => s === 'PENDING' ? 'border-amber-500/40 bg-amber-500/10 text-amber-300' : s === 'REJECTED' ? 'border-rose-500/40 bg-rose-500/10 text-rose-300' : 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300';
         return <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <div className="text-xs font-black tracking-wider text-amber-400">{AIRDROP_UI[lang].dailyCheckin}</div>
+              <div className="text-xs font-black tracking-wider text-amber-400">{ui('dailyCheckin')}</div>
               <h2 className="mt-1 text-xl font-black">{taskText(checkinTask).title}</h2>
-              <p className="mt-1 text-xs text-slate-500">{AIRDROP_UI[lang].checkinDesc}</p>
+              <p className="mt-1 text-xs text-slate-500">{ui('checkinDesc')}</p>
             </div>
-            <input type="month" value={checkinMonth} onChange={e=>setCheckinMonth(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" />
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <button type="button" onClick={()=>shiftMonth(-1)} aria-label={ui('prevMonth')} className="h-9 w-9 rounded-xl border border-slate-700 bg-slate-950 text-lg font-black hover:border-amber-400/60">‹</button>
+              <div className="min-w-[8.5rem] text-center text-sm font-black capitalize">{monthLabel}</div>
+              <button type="button" onClick={()=>shiftMonth(1)} disabled={isCurrentMonth||isFutureMonth} aria-label={ui('nextMonth')} className="h-9 w-9 rounded-xl border border-slate-700 bg-slate-950 text-lg font-black hover:border-amber-400/60 disabled:opacity-30 disabled:hover:border-slate-700">›</button>
+            </div>
           </div>
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-800">
-            <table className="w-full min-w-[620px] text-sm">
-              <thead className="bg-slate-950 text-slate-400 text-xs uppercase">
-                <tr><th className="text-left px-4 py-3">{AIRDROP_UI[lang].date}</th><th className="text-left px-4 py-3">{AIRDROP_UI[lang].status}</th><th className="text-left px-4 py-3">{AIRDROP_UI[lang].points}</th><th className="text-right px-4 py-3">{AIRDROP_UI[lang].action}</th></tr>
-              </thead>
-              <tbody>
-                {Array.from({length:daysInMonth},(_,i)=>{
-                  const day=i+1, item=checkins.get(day), isToday=checkinMonth===new Date().toISOString().slice(0,7)&&day===new Date().getDate();
-                  return <tr key={day} className="border-t border-slate-800">
-                    <td className="px-4 py-3 font-semibold">{String(day).padStart(2,'0')}-{String(month).padStart(2,'0')}-{year}{isToday?<span className="ml-2 text-[10px] text-amber-400">{AIRDROP_UI[lang].today}</span>:null}</td>
-                    <td className="px-4 py-3">{item?<span className="text-emerald-400 font-bold">{item.status==='approved'?'Disetujui':item.status==='pending'?'Menunggu':item.status==='rejected'?'Ditolak':item.status} </span>:<span className="text-slate-500">{AIRDROP_UI[lang].notChecked}</span>}</td>
-                    <td className="px-4 py-3 text-amber-400 font-bold">{item?item.points:0} {AIRDROP_UI[lang].points}</td>
-                    <td className="px-4 py-3 text-right">{isToday&&!item?<button onClick={()=>openTask(checkinTask)} className="px-3 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs">{AIRDROP_UI[lang].checkin}</button>:<span className="text-slate-600">—</span>}</td>
-                  </tr>;
-                })}
-              </tbody>
-            </table>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3"><div className="text-[11px] text-slate-500">{ui('monthSummary')}</div><div className="mt-0.5 text-lg font-black text-emerald-400">{checkedDays} <span className="text-xs font-bold text-slate-500">{ui('daysUnit')}</span></div></div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3"><div className="text-[11px] text-slate-500">{ui('points')}</div><div className="mt-0.5 text-lg font-black text-amber-400">{monthPoints}</div></div>
+          </div>
+          <div className="mt-4 grid grid-cols-7 gap-1.5 sm:gap-2 text-center" role="grid" aria-label={monthLabel}>
+            {weekdays.map((w,i)=><div key={`w${i}`} className="py-1 text-[10px] sm:text-xs font-bold uppercase text-slate-500">{w}</div>)}
+            {cells.map((day,idx)=>{
+              if(day===null) return <div key={`b${idx}`} />;
+              const item = checkins.get(day);
+              const isToday = isCurrentMonth && day === todayDay;
+              const isFuture = isFutureMonth || (isCurrentMonth && day > todayDay);
+              const base = 'relative flex min-h-[48px] sm:min-h-[64px] flex-col items-center justify-center rounded-xl border p-1 text-xs sm:text-sm';
+              if(item) return <div key={day} role="gridcell" aria-label={`${day} ${monthLabel}: ${statusLabel(item.status)}`} className={`${base} ${statusClass(item.status)} ${isToday?'ring-2 ring-amber-400':''}`}>
+                <span className="absolute left-1.5 top-1 text-[10px] font-bold opacity-70">{day}</span>
+                <span className="text-base sm:text-lg font-black leading-none">{item.status==='PENDING'?'…':item.status==='REJECTED'?'×':'✓'}</span>
+                {item.points>0?<span className="mt-0.5 text-[10px] font-bold">+{item.points}</span>:null}
+              </div>;
+              if(isToday) return <button key={day} type="button" onClick={()=>openTask(checkinTask)} aria-label={`${ui('checkin')} ${day} ${monthLabel}`} className={`${base} border-amber-400 bg-amber-400 font-black text-slate-950 hover:bg-amber-300`}>
+                <span className="absolute left-1.5 top-1 text-[10px] font-bold">{day}</span>
+                <span className="text-[10px] sm:text-xs leading-tight">{taskText(checkinTask).action}</span>
+              </button>;
+              return <div key={day} role="gridcell" aria-label={`${day} ${monthLabel}: ${isFuture?'':ui('notChecked')}`} className={`${base} ${isFuture?'border-slate-800/60 bg-slate-950/40 text-slate-600':'border-slate-800 bg-slate-950 text-slate-500'}`}>
+                <span className="font-bold">{day}</span>
+              </div>;
+            })}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm border border-emerald-500/60 bg-emerald-500/30" />{ui('approved')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm border border-amber-500/60 bg-amber-500/30" />{ui('pending')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm border border-slate-700 bg-slate-950" />{ui('notChecked')}</span>
+            <span className="sm:ml-auto">{ui('utcNote')}</span>
           </div>
         </section>;
       })()}
