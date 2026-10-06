@@ -93,8 +93,18 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
         return response(context.request, { success: false, message: "Check-in hari ini sudah dilakukan.", status: existingToday.status }, 409);
       }
     } else {
-      const existing = await db.prepare("SELECT id,status FROM airdrop_submissions WHERE wallet_address=? AND task_id=? AND status IN ('PENDING','APPROVED') ORDER BY id DESC LIMIT 1").bind(wallet, task.id).first<{ id: number; status: string }>();
-      if (existing) return response(context.request, { success: false, message: "Task ini sudah pernah diajukan untuk wallet tersebut", status: existing.status }, 409);
+      // Every normal campaign task is single-submit per user, regardless of
+      // whether the previous submission is pending, approved, or rejected.
+      const existing = await db.prepare(
+        "SELECT id,status FROM airdrop_submissions WHERE wallet_address=? AND task_id=? ORDER BY id ASC LIMIT 1"
+      ).bind(wallet, task.id).first<{ id: number; status: string }>();
+      if (existing) {
+        return response(context.request, {
+          success: false,
+          message: "Task ini hanya dapat dikirim satu kali untuk setiap user.",
+          status: existing.status
+        }, 409);
+      }
     }
 
     if (isCheckin) {
