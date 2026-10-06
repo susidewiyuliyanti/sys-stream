@@ -3014,6 +3014,21 @@ Object.assign(translations.id, {
 
 /* Translation-only audit patch: user-facing hardcoded labels/messages.
    No application logic, routes, data, API, styling, or behavior is changed. */
+const DASHBOARD_TAGLINE_TRANSLATIONS: Record<LanguageCode, string> = {
+  id: "Siaran langsung, komunitas, dan postingan pengguna SYS STREAM.",
+  en: "Live streams, communities, and posts from SYS STREAM users.",
+  es: "Transmisiones en vivo, comunidades y publicaciones de usuarios de SYS STREAM.",
+  pt: "Transmissões ao vivo, comunidades e publicações de usuários do SYS STREAM.",
+  zh: "SYS STREAM 用户的直播、社区和帖子。",
+  ja: "SYS STREAM ユーザーのライブ配信、コミュニティ、投稿。",
+  ko: "SYS STREAM 사용자의 라이브 방송, 커뮤니티, 게시물입니다.",
+  ar: "البث المباشر والمجتمع ومنشورات مستخدمي SYS STREAM."
+};
+
+for (const lang of Object.keys(DASHBOARD_TAGLINE_TRANSLATIONS) as LanguageCode[]) {
+  translations[lang]["Dashboard community tagline"] = DASHBOARD_TAGLINE_TRANSLATIONS[lang];
+}
+
 const TRANSLATION_ONLY_USER_AUDIT: Record<LanguageCode, Record<string, string>> = {
   id: {
     "SYS STREAM LOADING": "SYS STREAM sedang dimuat",
