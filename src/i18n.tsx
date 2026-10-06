@@ -4806,6 +4806,104 @@ Object.assign(translations.ar, {
   Send: 'إرسال',
 });
 
+
+Object.assign(translations.id, {
+  'Balance History': 'Riwayat Saldo',
+  'Recent balance changes and financial activity.': 'Perubahan saldo dan aktivitas keuangan terbaru.',
+  'Refresh balance history': 'Segarkan riwayat saldo',
+  'Loading balance history...': 'Memuat riwayat saldo...',
+  'No balance history yet.': 'Belum ada riwayat saldo.',
+  'Owner/Admin Balance Adjustment': 'Perubahan Saldo oleh Owner/Admin',
+  'Transaction': 'Transaksi',
+  'Previous Balance': 'Saldo Sebelumnya',
+  'New Balance': 'Saldo Baru',
+  'Owner Note': 'Catatan Owner',
+});
+Object.assign(translations.en, {
+  'Balance History': 'Balance History',
+  'Recent balance changes and financial activity.': 'Recent balance changes and financial activity.',
+  'Refresh balance history': 'Refresh balance history',
+  'Loading balance history...': 'Loading balance history...',
+  'No balance history yet.': 'No balance history yet.',
+  'Owner/Admin Balance Adjustment': 'Owner/Admin Balance Adjustment',
+  'Transaction': 'Transaction',
+  'Previous Balance': 'Previous Balance',
+  'New Balance': 'New Balance',
+  'Owner Note': 'Owner Note',
+});
+Object.assign(translations.es, {
+  'Balance History': 'Historial de saldo',
+  'Recent balance changes and financial activity.': 'Cambios recientes de saldo y actividad financiera.',
+  'Refresh balance history': 'Actualizar historial de saldo',
+  'Loading balance history...': 'Cargando historial de saldo...',
+  'No balance history yet.': 'Aún no hay historial de saldo.',
+  'Owner/Admin Balance Adjustment': 'Ajuste de saldo por Owner/Admin',
+  'Transaction': 'Transacción',
+  'Previous Balance': 'Saldo anterior',
+  'New Balance': 'Nuevo saldo',
+  'Owner Note': 'Nota del Owner',
+});
+Object.assign(translations.pt, {
+  'Balance History': 'Histórico de saldo',
+  'Recent balance changes and financial activity.': 'Alterações recentes de saldo e atividade financeira.',
+  'Refresh balance history': 'Atualizar histórico de saldo',
+  'Loading balance history...': 'Carregando histórico de saldo...',
+  'No balance history yet.': 'Ainda não há histórico de saldo.',
+  'Owner/Admin Balance Adjustment': 'Ajuste de saldo pelo Owner/Admin',
+  'Transaction': 'Transação',
+  'Previous Balance': 'Saldo anterior',
+  'New Balance': 'Novo saldo',
+  'Owner Note': 'Nota do Owner',
+});
+Object.assign(translations.zh, {
+  'Balance History': '余额记录',
+  'Recent balance changes and financial activity.': '最近的余额变更和财务活动。',
+  'Refresh balance history': '刷新余额记录',
+  'Loading balance history...': '正在加载余额记录...',
+  'No balance history yet.': '暂无余额记录。',
+  'Owner/Admin Balance Adjustment': 'Owner/Admin 余额调整',
+  'Transaction': '交易',
+  'Previous Balance': '调整前余额',
+  'New Balance': '新余额',
+  'Owner Note': 'Owner 备注',
+});
+Object.assign(translations.ja, {
+  'Balance History': '残高履歴',
+  'Recent balance changes and financial activity.': '最近の残高変更と金融アクティビティ。',
+  'Refresh balance history': '残高履歴を更新',
+  'Loading balance history...': '残高履歴を読み込み中...',
+  'No balance history yet.': '残高履歴はまだありません。',
+  'Owner/Admin Balance Adjustment': 'Owner/Admin による残高調整',
+  'Transaction': '取引',
+  'Previous Balance': '変更前残高',
+  'New Balance': '新しい残高',
+  'Owner Note': 'Owner メモ',
+});
+Object.assign(translations.ko, {
+  'Balance History': '잔액 기록',
+  'Recent balance changes and financial activity.': '최근 잔액 변경 및 금융 활동',
+  'Refresh balance history': '잔액 기록 새로고침',
+  'Loading balance history...': '잔액 기록을 불러오는 중...',
+  'No balance history yet.': '아직 잔액 기록이 없습니다.',
+  'Owner/Admin Balance Adjustment': 'Owner/Admin 잔액 조정',
+  'Transaction': '거래',
+  'Previous Balance': '이전 잔액',
+  'New Balance': '새 잔액',
+  'Owner Note': 'Owner 메모',
+});
+Object.assign(translations.ar, {
+  'Balance History': 'سجل الرصيد',
+  'Recent balance changes and financial activity.': 'أحدث تغييرات الرصيد والأنشطة المالية.',
+  'Refresh balance history': 'تحديث سجل الرصيد',
+  'Loading balance history...': 'جارٍ تحميل سجل الرصيد...',
+  'No balance history yet.': 'لا يوجد سجل للرصيد بعد.',
+  'Owner/Admin Balance Adjustment': 'تعديل الرصيد بواسطة Owner/Admin',
+  'Transaction': 'معاملة',
+  'Previous Balance': 'الرصيد السابق',
+  'New Balance': 'الرصيد الجديد',
+  'Owner Note': 'ملاحظة Owner',
+});
+
 for (const lang of Object.keys(ALL_EXPLORER_AND_UI_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(translations[lang], ALL_EXPLORER_AND_UI_TRANSLATIONS[lang]);
   PAGE_UI_TRANSLATIONS[lang] = { ...ALL_EXPLORER_AND_UI_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
