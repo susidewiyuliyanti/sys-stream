@@ -5,6 +5,7 @@ import {
   ArrowRight,
   CircleDot,
   Gift,
+  History,
   LockKeyhole,
   Plus,
   Radio,
@@ -21,6 +22,19 @@ import { useLanguage, formatRegistrationBonus, formatIdrAsSelectedCurrency, getL
 interface Props {
   navigate?: (path: string) => void;
 }
+
+type BalanceTransaction = {
+  id: number;
+  type: string;
+  amount: number;
+  currency: string;
+  status: string;
+  reference?: string | null;
+  description?: string | null;
+  createdAt: string;
+  updatedAt?: string;
+  metadata?: string | null;
+};
 
 type Post = {
   id: number;
@@ -43,6 +57,8 @@ export default function DashboardPage({ navigate }: Props) {
   const [mediaUrl, setMediaUrl] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const [postError, setPostError] = useState('');
+  const [balanceHistory, setBalanceHistory] = useState<BalanceTransaction[]>([]);
+  const [isLoadingBalanceHistory, setIsLoadingBalanceHistory] = useState(true);
 
   // Canonical production financial source: users.available_balance.
   // Never derive dashboard balance from the legacy local coins field.
@@ -51,6 +67,28 @@ export default function DashboardPage({ navigate }: Props) {
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const isStreamer = ['streamer', 'admin', 'owner'].includes(String((user as any).role || '').toLowerCase());
   const streamerRoomId = 'streamer-' + String(user.id || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
+
+  const loadBalanceHistory = async () => {
+    setIsLoadingBalanceHistory(true);
+    try {
+      const token = localStorage.getItem('sys_stream_auth_token');
+      const response = await fetch('/api/transactions', {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        credentials: 'same-origin',
+        cache: 'no-store',
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.success) {
+        setBalanceHistory(Array.isArray(data.transactions) ? data.transactions : []);
+      } else {
+        setBalanceHistory([]);
+      }
+    } catch {
+      setBalanceHistory([]);
+    } finally {
+      setIsLoadingBalanceHistory(false);
+    }
+  };
 
   const loadPosts = async () => {
     setIsLoadingPosts(true);
@@ -247,6 +285,81 @@ export default function DashboardPage({ navigate }: Props) {
               <button onClick={() => navigate?.('/room/main')} className="text-[11px] text-rose-300 mt-1 hover:text-rose-200">{t('Buka Live Room →')}</button>
             </div>
           </div>
+
+          <section className="rounded-2xl border border-violet-500/20 bg-slate-900/70 p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <History className="w-5 h-5 text-violet-400" />
+                  <h2 className="text-xl font-black">{t('Balance History')}</h2>
+                </div>
+                <p className="text-xs text-slate-500 mt-1">{t('Recent balance changes and financial activity.')}</p>
+              </div>
+              <button
+                onClick={() => void loadBalanceHistory()}
+                className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white"
+                aria-label={t('Refresh balance history')}
+              >
+                <RefreshCw className={`w-4 h-4 ${isLoadingBalanceHistory ? 'animate-spin' : ''}`} />
+              </button>
+            </div>
+
+            <div className="mt-4">
+              {isLoadingBalanceHistory ? (
+                <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-center text-sm text-slate-500">{t('Loading balance history...')}</div>
+              ) : balanceHistory.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-slate-800 bg-slate-950 p-5 text-center text-sm text-slate-500">{t('No balance history yet.')}</div>
+              ) : (
+                <div className="space-y-2">
+                  {balanceHistory.slice(0, 20).map((item) => {
+                    const amount = Number(item.amount || 0);
+                    const isIncrease = amount >= 0;
+                    const isAdminAdjustment = item.type === 'ADMIN_ADJUSTMENT';
+                    const date = formatDate(item.createdAt);
+                    return (
+                      <div key={item.id} className="rounded-xl border border-slate-800 bg-slate-950/80 p-3 sm:p-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-bold text-sm">{isAdminAdjustment ? t('Owner/Admin Balance Adjustment') : String(item.description || item.type || t('Transaction'))}</span>
+                              <span className="text-[10px] uppercase tracking-wider rounded-full border border-slate-700 px-2 py-0.5 text-slate-500">{item.status}</span>
+                            </div>
+                            <div className="text-[10px] text-slate-500 mt-1">{date}{item.reference ? ` · ${item.reference}` : ''}</div>
+                          </div>
+                          <div className={`text-sm font-black ${isIncrease ? 'text-emerald-300' : 'text-rose-300'}`}>
+                            {isIncrease ? '+' : ''}{item.currency === 'IDR' ? formatMoney(amount) : `${amount.toLocaleString(getLocaleConfig(language).locale)} ${item.currency || ''}`}
+                          </div>
+                        </div>
+                        {isAdminAdjustment && item.metadata && (() => {
+                          try {
+                            const meta = JSON.parse(item.metadata);
+                            return (
+                              <div className="mt-3 grid sm:grid-cols-3 gap-2 text-xs">
+                                <div className="rounded-lg bg-slate-900 border border-slate-800 p-2">
+                                  <div className="text-slate-500">{t('Previous Balance')}</div>
+                                  <div className="font-bold mt-1">{formatMoney(Number(meta.beforeBalance || 0))}</div>
+                                </div>
+                                <div className="rounded-lg bg-slate-900 border border-slate-800 p-2">
+                                  <div className="text-slate-500">{t('New Balance')}</div>
+                                  <div className="font-bold mt-1">{formatMoney(Number(meta.afterBalance || 0))}</div>
+                                </div>
+                                <div className="rounded-lg bg-slate-900 border border-slate-800 p-2">
+                                  <div className="text-slate-500">{t('Owner Note')}</div>
+                                  <div className="font-bold mt-1 break-words">{String(meta.note || '-')}</div>
+                                </div>
+                              </div>
+                            );
+                          } catch {
+                            return null;
+                          }
+                        })()}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </section>
 
           {user.registrationBonusGranted && (
             <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
