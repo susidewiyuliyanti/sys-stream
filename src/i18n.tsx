@@ -69,6 +69,21 @@ export const IDR_PER_CURRENCY_UNIT: Record<LanguageCode, number> = {
   ar: 4767.08,
 };
 
+// Blind Box minimum lock is fixed at $4 USD and displayed in the user's selected global currency.
+export const MIN_BLINDBOX_LOCK_USD = 4;
+export const USD_TO_IDR = 17937;
+export const MIN_BLINDBOX_LOCK_IDR = Math.round(MIN_BLINDBOX_LOCK_USD * USD_TO_IDR);
+
+export function getMinimumBlindBoxLockIdr(language: LanguageCode): number {
+  return MIN_BLINDBOX_LOCK_IDR;
+}
+
+export function formatMinimumBlindBoxLock(language: LanguageCode): string {
+  const idrPerUnit = IDR_PER_CURRENCY_UNIT[language] ?? USD_TO_IDR;
+  const amount = MIN_BLINDBOX_LOCK_IDR / idrPerUnit;
+  return formatLocalizedCurrency(amount, language, getLocaleConfig(language).currency);
+}
+
 const REGISTRATION_BONUS_CURRENCY: Record<LanguageCode, string> = {
   id: 'IDR',
   en: 'USD',
