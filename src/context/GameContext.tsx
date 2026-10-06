@@ -67,6 +67,7 @@ const DEFAULT_USER: UserProfile = {
   referralCode: '',
   role: 'user',
   walletAddress: '',
+  availableBalance: 0,
   sysBalance: 0,
   registrationBonusIdr: 0,
   registrationBonusGranted: false,
@@ -96,6 +97,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Browser cache may contain an old account balance. Financial values
           // must be reloaded from /api/auth/me before being displayed as current.
           coins: 0,
+          availableBalance: 0,
           lockedBalance: 0,
         };
       }
@@ -180,7 +182,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const remote = data.user;
-      const balance = Number(remote.balance || 0);
+      // Canonical per-user balance: always use the authenticated server row.
+      const balance = Number(remote.availableBalance ?? remote.balance ?? 0);
       const lockedBalance = Number(remote.lockedBalance || 0);
 
       setUser(prev => ({
@@ -191,6 +194,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         avatar: remote.avatarUrl || prev.avatar || '',
         referralCode: remote.referralCode || prev.referralCode || '',
         walletAddress: remote.walletAddress || prev.walletAddress || '',
+        availableBalance: balance,
         sysBalance: Number(remote.sysBalance ?? prev.sysBalance ?? 0),
         registrationBonusIdr: Number(remote.registrationBonusIdr ?? prev.registrationBonusIdr ?? 0),
         registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
@@ -301,6 +305,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
           registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
           lockedBalance: Number(remote.lockedBalance || 0),
+          availableBalance: Number(remote.availableBalance ?? remote.balance ?? 0),
           coins: Math.round(Number(remote.balance || 0) * 100),
         }));
         setIsLoggedIn(true);
@@ -333,6 +338,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
               walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
               // Never let stale browser cache overwrite server-owned financial state.
               coins: prev.coins,
+              availableBalance: prev.availableBalance,
               lockedBalance: prev.lockedBalance,
             }));
           }
@@ -432,6 +438,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         referralCode: remote.referralCode || prev.referralCode,
         registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
         registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
+        availableBalance: Number(remote.availableBalance ?? remote.balance ?? 0),
+        coins: Math.round(Number(remote.availableBalance ?? remote.balance ?? 0) * 100),
       }));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       return true;
