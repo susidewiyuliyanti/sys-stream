@@ -20,7 +20,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const user = await env.DB.prepare(
       `SELECT id, username, email, password_hash, display_name AS displayName, role,
               COALESCE(email_verified,0) AS emailVerified,
-              COALESCE(available_balance,0) AS balance,
+              COALESCE(available_balance,0) AS availableBalance,
               COALESCE(total_locked,0) AS lockedBalance,
               wallet_address AS walletAddress,
               referral_code AS referralCode
@@ -40,7 +40,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       user:{
         id:String(user.id), username:user.username, email:user.email,
         displayName:user.displayName, role:user.role || "USER",
-        balance:Number(user.balance||0), lockedBalance:Number(user.lockedBalance||0),
+        availableBalance:Number(user.availableBalance||0), balance:Number(user.availableBalance||0), lockedBalance:Number(user.lockedBalance||0),
         walletAddress:user.walletAddress || null, referralCode:user.referralCode || null,
         emailVerified:true
       }
