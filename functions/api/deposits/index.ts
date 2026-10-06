@@ -257,8 +257,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SET
             available_balance = $1,
             total_locked = $2,
-            balance = $1,
-            locked_saldo = $2
+
           WHERE id = $3
           `,
           [remainingBalance, newLockedBalance, userId]
