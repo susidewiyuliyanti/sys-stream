@@ -6,6 +6,7 @@ import { ToastContainer } from './components/ToastContainer';
 import { MobileAuthModal } from './components/MobileAuthModal';
 import { BottomMobileNav } from './components/BottomMobileNav';
 import StreamerModule from './components/streamer/StreamerModule';
+import AIChat from './components/AIChat';
 
 // Page components
 import LoginPage from './app/login/page';
@@ -171,6 +172,8 @@ export default function App() {
 
         {/* Global Toast Alerts */}
         <ToastContainer />
+
+        <AIChat />
 
         <StreamerModule />
       </div>
