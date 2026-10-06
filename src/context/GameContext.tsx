@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, BlindboxItem, GameHistoryEntry, CryptoInvoice, LockRecord, CryptoCardConfig } from '../types';
+import { MIN_BLINDBOX_LOCK_IDR } from '../i18n';
 import { sound } from '../lib/sound';
 
 interface Toast {
@@ -771,7 +772,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   const hasActiveLock = (): boolean => {
-    return locks.some(l => l.status === 'locked' && l.amount >= 4);
+    return locks.some(l => l.status === 'locked' && Number(l.amount) >= MIN_BLINDBOX_LOCK_IDR);
   };
 
   const updateCryptoCard = (cfg: Partial<CryptoCardConfig>) => {
