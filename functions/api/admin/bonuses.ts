@@ -47,7 +47,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
          VALUES(?,?,?,'USDT',?,?,?)`
       ).bind(grantId,userId,amount,note || null,auth.identity.id,now),
       context.env.DB.prepare(
-        "UPDATE users SET available_balance = COALESCE(available_balance,0) + ?, balance = COALESCE(available_balance,0) + ? WHERE id=?"
+        "UPDATE users SET available_balance = COALESCE(available_balance,0) + ? WHERE id=?"
       ).bind(amount,userId),
     ]);
 
