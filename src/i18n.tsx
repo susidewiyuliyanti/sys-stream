@@ -114,7 +114,7 @@ export const LANGUAGES: Array<{ code: LanguageCode; label: string; native: strin
 
 const translations: Record<LanguageCode, Record<string, string>> = {
   id: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, komunitas, dan postingan dari pengguna SYS STREAM.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Siaran langsung, komunitas, dan postingan dari pengguna SYS STREAM.',
     'Production data is used for all content and activity on this page.': 'Konten dan aktivitas di halaman ini menggunakan data produksi.',
     'Every user can share posts and updates.': 'Setiap pengguna dapat membagikan postingan dan pembaruan.',
     'Community Posts': 'Postingan Komunitas',
@@ -141,7 +141,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30 HARI', '60 DAYS': '60 HARI', '90 DAYS': '90 HARI',
   },
   en: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, community, and posts from SYS STREAM users.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live streams, community, and posts from SYS STREAM users.',
     'Production data is used for all content and activity on this page.': 'Production data is used for all content and activity on this page.',
     'Every user can share posts and updates.': 'Every user can share posts and updates.',
     'Community Posts': 'Community Posts', 'Claim Bonus': 'Claim Bonus', 'Registration Bonus': 'Registration Bonus',
@@ -161,7 +161,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30 DAYS', '60 DAYS': '60 DAYS', '90 DAYS': '90 DAYS',
   },
   es: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Directos, comunidad y publicaciones de usuarios de SYS STREAM.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Transmisiones en vivo, comunidad y publicaciones de usuarios de SYS STREAM.',
     'Production data is used for all content and activity on this page.': 'Los datos de producción se utilizan para todo el contenido y la actividad de esta página.',
     'Every user can share posts and updates.': 'Cada usuario puede compartir publicaciones y actualizaciones.',
     'Community Posts': 'Publicaciones de la comunidad', 'Claim Bonus': 'Reclamar bono', 'Registration Bonus': 'Bono de registro',
@@ -181,7 +181,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30 DÍAS', '60 DAYS': '60 DÍAS', '90 DAYS': '90 DÍAS',
   },
   pt: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Lives, comunidade e publicações dos usuários do SYS STREAM.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Transmissões ao vivo, comunidade e publicações de usuários do SYS STREAM.',
     'Production data is used for all content and activity on this page.': 'Os dados de produção são usados para todo o conteúdo e atividade desta página.',
     'Every user can share posts and updates.': 'Cada usuário pode compartilhar publicações e atualizações.',
     'Community Posts': 'Publicações da comunidade', 'Claim Bonus': 'Resgatar bônus', 'Registration Bonus': 'Bônus de cadastro',
@@ -221,7 +221,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30 天', '60 DAYS': '60 天', '90 DAYS': '90 天',
   },
   ja: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAMユーザーのライブ、コミュニティ、投稿。',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM ユーザーのライブ配信、コミュニティ、投稿。',
     'Production data is used for all content and activity on this page.': 'このページのすべてのコンテンツとアクティビティには本番データが使用されます。',
     'Every user can share posts and updates.': 'すべてのユーザーが投稿や更新を共有できます。',
     'Community Posts': 'コミュニティ投稿', 'Claim Bonus': 'ボーナスを受け取る', 'Registration Bonus': '登録ボーナス',
@@ -241,7 +241,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30日', '60 DAYS': '60日', '90 DAYS': '90日',
   },
   ko: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM 사용자의 라이브, 커뮤니티 및 게시물입니다.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'SYS STREAM 사용자의 라이브 방송, 커뮤니티, 게시물입니다.',
     'Production data is used for all content and activity on this page.': '이 페이지의 모든 콘텐츠와 활동에는 운영 데이터가 사용됩니다.',
     'Every user can share posts and updates.': '모든 사용자는 게시물과 업데이트를 공유할 수 있습니다.',
     'Community Posts': '커뮤니티 게시물', 'Claim Bonus': '보너스 받기', 'Registration Bonus': '가입 보너스',
@@ -261,7 +261,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     '30 DAYS': '30일', '60 DAYS': '60일', '90 DAYS': '90일',
   },
   ar: {
-    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'البث المباشر والمجتمع والمنشورات من مستخدمي SYS STREAM.',
+    'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'البث المباشر والمجتمع ومنشورات مستخدمي SYS STREAM.',
     'Production data is used for all content and activity on this page.': 'تُستخدم بيانات الإنتاج لجميع المحتويات والأنشطة في هذه الصفحة.',
     'Every user can share posts and updates.': 'يمكن لكل مستخدم مشاركة المنشورات والتحديثات.',
     'Community Posts': 'منشورات المجتمع', 'Claim Bonus': 'استلام المكافأة', 'Registration Bonus': 'مكافأة التسجيل',
@@ -2980,7 +2980,7 @@ Object.assign(translations.id, {
   'LOCK': 'KUNCI',
   'LOCKED': 'TERKUNCI',
   'Left': 'Tersisa',
-  'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Live, komunitas, dan postingan dari pengguna SYS STREAM.',
+  'Live, komunitas, dan postingan dari pengguna SYS STREAM.': 'Siaran langsung, komunitas, dan postingan dari pengguna SYS STREAM.',
   'Lock minimum': 'Minimum Lock',
   'Lock saldo untuk mendapatkan hak claim Blind Box harian': 'Kunci saldo untuk mendapatkan hak klaim Blind Box harian',
   'Login wallet gagal.': 'Login wallet gagal.',
