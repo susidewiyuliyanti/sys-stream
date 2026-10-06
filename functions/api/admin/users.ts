@@ -6,16 +6,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   if (!auth.ok) return auth.response;
 
   try {
-    // Production D1 uses locked_saldo (legacy schema used total_locked).
-    // Keep the query aligned with the actual users table so one bad
-    // column cannot make the entire Users tab appear empty.
     const result = await context.env.DB.prepare(`
       SELECT
         CAST(id AS TEXT) AS id,
         COALESCE(username,'') AS username,
         COALESCE(email,'') AS email,
         COALESCE(wallet_address,'') AS walletAddress,
-        COALESCE(available_balance,0) AS balance,
+        COALESCE(available_balance,0) AS availableBalance,
         COALESCE(total_locked,0) AS lockedBalance,
         COALESCE(role,'USER') AS role,
         created_at AS createdAt
@@ -32,7 +29,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         username: String(u.username ?? ''),
         email: String(u.email ?? ''),
         walletAddress: String(u.walletAddress ?? ''),
-        balance: Number(u.balance ?? 0),
+        availableBalance: Number(u.availableBalance ?? 0),
         lockedBalance: Number(u.lockedBalance ?? 0),
         role: String(u.role ?? 'USER'),
         createdAt: u.createdAt ?? null
