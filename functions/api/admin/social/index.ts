@@ -1,10 +1,15 @@
-﻿import { Env, json } from "../../../_lib/db";
+import { Env, json } from "../../../_lib/db";
 import { requireAdmin } from "../../../_lib/admin";
 import {
   getSocialProviderConfig,
   SOCIAL_PLATFORMS,
   SocialPlatform,
 } from "../../../_lib/social";
+import {
+  getEnvString,
+  getProviderConfig,
+  getProviderScopes,
+} from "../../../_lib/social/providers";
 
 function validPlatform(value: string): value is SocialPlatform {
   return (SOCIAL_PLATFORMS as string[]).includes(value);
@@ -151,44 +156,84 @@ export async function onRequestPost({
       status: "NOT_CONFIGURED",
       authorizationUrl: null,
       message:
-        "OAuth provider belum dikonfigurasi. Tambahkan konfigurasi provider sebelum mengaktifkan koneksi.",
+        "OAuth provider belum dikonfigurasi. Tambahkan client ID/secret, endpoint OAuth, scope, dan aktifkan provider di Cloudflare.",
     });
+  }
+
+  const config = getProviderConfig(platform);
+  const clientId = getEnvString(
+    env as unknown as Record<string, unknown>,
+    config.clientIdEnv,
+  );
+
+  if (!clientId || !provider.authorizationEndpoint) {
+    return json(
+      {
+        success: false,
+        platform,
+        status: "NOT_CONFIGURED",
+        authorizationUrl: null,
+        message: "Credential OAuth provider belum lengkap.",
+      },
+      503,
+    );
   }
 
   const now = Math.floor(Date.now() / 1000);
   const state = crypto.randomUUID();
 
+  /*
+   * OAuth callback harus kembali ke hostname admin yang memulai proses.
+   * TikTok mensyaratkan redirect URI statis; platform lain juga biasanya
+   * mengharuskan nilai yang sama persis dengan URI yang didaftarkan.
+   */
+  const requestUrl = new URL(request.url);
+  const redirectUri =
+    `${requestUrl.origin}/api/admin/social/callback?platform=${encodeURIComponent(platform)}`;
+
   await env.DB.prepare(
     `INSERT INTO social_oauth_states
-      (state, platform, created_by, expires_at, created_at)
-     VALUES (?, ?, ?, ?, ?)`,
+      (state, platform, created_by, redirect_uri, expires_at, created_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
   )
     .bind(
       state,
       platform,
       auth.identity.id || auth.identity.email,
+      redirectUri,
       now + 600,
       now,
     )
     .run();
 
-  const authorizationEndpoint = provider.authorizationEndpoint;
-  if (!authorizationEndpoint) {
-    return json({ success: false, platform, status: "NOT_CONFIGURED", authorizationUrl: null, message: "OAuth authorization endpoint belum dikonfigurasi." }, 503);
+  const scopes = getProviderScopes(
+    env as unknown as Record<string, unknown>,
+    platform,
+  );
+
+  const authUrl = new URL(provider.authorizationEndpoint);
+
+  /*
+   * TikTok Login Kit uses client_key and comma-separated scopes.
+   * The standard OAuth providers use client_id and space-delimited scopes.
+   */
+  if (platform === "tiktok") {
+    authUrl.searchParams.set("client_key", clientId);
+    if (scopes.length) authUrl.searchParams.set("scope", scopes.join(","));
+  } else {
+    authUrl.searchParams.set("client_id", clientId);
+    if (scopes.length) authUrl.searchParams.set("scope", scopes.join(" "));
   }
 
-  const separator = authorizationEndpoint.includes("?")
-    ? "&"
-    : "?";
-
-  const authorizationUrl =
-    `${authorizationEndpoint}${separator}` +
-    `state=${encodeURIComponent(state)}`;
+  authUrl.searchParams.set("response_type", "code");
+  authUrl.searchParams.set("redirect_uri", redirectUri);
+  authUrl.searchParams.set("state", state);
 
   return json({
     success: true,
     platform,
     status: "PENDING",
-    authorizationUrl,
+    authorizationUrl: authUrl.toString(),
+    redirectUri,
   });
 }
