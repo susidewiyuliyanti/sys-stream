@@ -30,7 +30,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    description: 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
+    descriptionKey: 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: 71748,
@@ -44,7 +44,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'apex_lockbox',
     name: 'Apex High-Roller Crate',
-    description: 'Tier lock lebih tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
+    descriptionKey: 'Higher lock tier with rare collectibles. Financial rewards are determined by the server.',
     badge: 'Enhanced Lock Tier',
     accentColor: '#a855f7',
     minLockedRequired: 720000,
@@ -58,7 +58,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'dragon_vault',
     name: 'Celestial Dragon Vault',
-    description: 'Tier lock tinggi dengan koleksi langka. Reward finansial tetap ditentukan server.',
+    descriptionKey: 'High lock tier with rare collectibles. Financial rewards are determined by the server.',
     badge: 'Premium Lock Tier',
     accentColor: '#f59e0b',
     minLockedRequired: 1000000,
@@ -255,7 +255,7 @@ export default function BlindboxGamePage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <span>{t('Daily Mystery Blind Box')}</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              Reward harian masuk ke saldo
+              {t('Daily reward credited to balance')}
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
@@ -299,7 +299,7 @@ export default function BlindboxGamePage() {
             <span>{t('Active Lock')}</span>
             <span className="text-cyan-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
+          <div className="text-[11px] text-slate-400">{t('Daily claim limit remains 1 box per day.')}</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -307,7 +307,7 @@ export default function BlindboxGamePage() {
             <span>{t('Active Lock')}</span>
             <span className="text-amber-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
+          <div className="text-[11px] text-slate-400">{t('Daily claim limit remains 1 box per day.')}</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -315,7 +315,7 @@ export default function BlindboxGamePage() {
             <span>{t('Active Lock')}</span>
             <span className="text-purple-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">{t('Aturan claim tetap 1 kali per hari.')}</div>
+          <div className="text-[11px] text-slate-400">{t('Daily claim limit remains 1 box per day.')}</div>
         </div>
       </div>
 
@@ -333,7 +333,7 @@ export default function BlindboxGamePage() {
               </h2>
               <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
                 <p>
-                  {t('Available lock durations:')} <strong>{t('30 days')}</strong> · <strong>{t('60 days')}</strong> · <strong>{t('90 days')}</strong>.
+                  {t('Available lock durations:')} <strong>{t('30 days')}</strong> Ãƒâ€šÃ‚Â· <strong>{t('60 days')}</strong> Ãƒâ€šÃ‚Â· <strong>{t('90 days')}</strong>.
                 </p>
                 <p className="text-slate-400 text-[11px]">
                   {t('The lock can only be completed once the lock period has ended. Early unlocking is not available through Blind Box.')}
@@ -414,7 +414,7 @@ export default function BlindboxGamePage() {
                 className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>{t('Lock Saldo Sekarang')}</span>
+                <span>{t('Lock Balance Now')}</span>
               </button>
             </form>
           </div>
@@ -477,7 +477,7 @@ export default function BlindboxGamePage() {
 
               <div>
                 <h3 className="text-xl font-bold text-white">{selectedBox.name}</h3>
-                <p className="text-xs text-slate-400 max-w-sm mt-1">{selectedBox.description}</p>
+                <p className="text-xs text-slate-400 max-w-sm mt-1">{selectedBox.descriptionKey ? t(selectedBox.descriptionKey) : selectedBox.description}</p>
               </div>
 
               {/* Action Button */}
@@ -522,9 +522,9 @@ export default function BlindboxGamePage() {
               </div>
               <div className="text-center">
                 <div className="text-base font-bold text-emerald-400 animate-pulse">
-                  {unboxingState === 'SHAKING' ? t('Processing Blind Box Reward...') : 'Opening Mystery Vault!'}
+                  {unboxingState === 'SHAKING' ? t('Processing Blind Box Reward...') : t('Opening Mystery Vault!')}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">{t('Server sedang menentukan reward...')}</div>
+                <div className="text-xs text-slate-400 mt-1">{t('Server is determining your reward...')}</div>
               </div>
             </div>
           )}
@@ -533,7 +533,7 @@ export default function BlindboxGamePage() {
             <div className="flex flex-col items-center text-center space-y-5 z-10 py-4 w-full max-w-md animate-in zoom-in-90 duration-300">
               <div className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4" />
-                <span>{t('Reward Blind Box Harian')}</span>
+                <span>{t('Daily Blind Box Reward')}</span>
               </div>
 
               {/* USDT Cash Prize Callout Banner */}
@@ -630,7 +630,7 @@ export default function BlindboxGamePage() {
                         {isTierUnlocked ? 'Unlocked' : `Requires ${formatMoney(box.minLockedRequired)}+ Lock`}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">{box.description}</p>
+                    <p className="text-xs text-slate-400 mt-1">{box.descriptionKey ? t(box.descriptionKey) : box.description}</p>
                     <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-500">
                       <span>{box.badge}</span>
                       {isSelected && <span className="text-emerald-400 font-semibold">{t('Active Selection')}</span>}
