@@ -82,8 +82,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         id:userId, username, email:null, password_hash:null, display_name:username, role:"USER",
         available_balance:0,total_locked:0,referral_code:referralCode,referral_count:0,
         created_at:nowMs,email_verified:1,email_verified_at:nowMs,wallet_address:walletAddress,
-        registration_bonus_idr:0,registration_bonus_granted:0,avatar_url:null,balance:0,saldo:0,
-        wallet_balance:0,locked_saldo:0,has_referral_bonus:0, referred_by:null,
+        registration_bonus_idr:0,registration_bonus_granted:0,avatar_url:null, referred_by:null,
         password:null,cuid:crypto.randomUUID(),uid:crypto.randomUUID(),photo_url:""
       };
       const insertCols:string[]=[]; const insertVals:any[]=[];
@@ -104,7 +103,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
                 COALESCE(registration_bonus_idr,0) AS registrationBonusIdr,
                 COALESCE(registration_bonus_granted,0) AS registrationBonusGranted,
                 1 AS emailVerified,wallet_address AS walletAddress,
-                COALESCE(available_balance,0) AS balance,COALESCE(total_locked,0) AS lockedBalance
+                COALESCE(available_balance,0) AS availableBalance,COALESCE(total_locked,0) AS lockedBalance
          FROM users WHERE lower(wallet_address)=lower(?) LIMIT 1`
       ).bind(walletAddress).first<any>();
     }
@@ -113,7 +112,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const token = await createSession(env,String(user.id));
     return json({success:true,token,user:{
       ...user,id:String(user.id),emailVerified:true,walletAddress:String(user.walletAddress || walletAddress),
-      availableBalance:Number(user.availableBalance||0),balance:Number(user.availableBalance||0),lockedBalance:Number(user.lockedBalance||0)
+      availableBalance:Number(user.availableBalance||0),lockedBalance:Number(user.lockedBalance||0)
     }});
   } catch (error) {
     console.error("web3 login error",{requestId,error:errorText(error)});
