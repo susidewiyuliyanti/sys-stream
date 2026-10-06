@@ -70,8 +70,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       env.DB.prepare(`
         UPDATE users
-        SET available_balance = COALESCE(available_balance,0) - ?,
-            balance = COALESCE(available_balance,0) - ?
+        SET available_balance = COALESCE(available_balance,0) - ?
         WHERE id = ?
           AND COALESCE(available_balance,0) >= ?
       `).bind(
