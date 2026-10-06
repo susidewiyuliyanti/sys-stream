@@ -4,7 +4,7 @@ import { notifyAdmins } from "../../_lib/admin-notifications";
 
 type BalanceBody = {
   userId?: string;
-  balance?: number;
+  availableBalance?: number;
   note?: string;
 };
 
@@ -33,11 +33,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const body = await readJson<BalanceBody>(context.request);
     const userId = String(body.userId || "").trim();
-    const balance = Number(body.balance);
+    const availableBalance = Number(body.availableBalance);
     const note = String(body.note || "").trim();
 
     if (!userId) return json({ success:false, error:"User wajib dipilih." }, 400);
-    if (!Number.isFinite(balance) || balance < 0 || balance > 1000000000000) {
+    if (!Number.isFinite(availableBalance) || availableBalance < 0 || availableBalance > 1000000000000) {
       return json({ success:false, error:"Saldo harus berupa angka 0 sampai 1.000.000.000.000." }, 400);
     }
     if (note.length < 3) return json({ success:false, error:"Catatan perubahan saldo wajib diisi." }, 400);
@@ -46,13 +46,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await ensureAuditTable(context.env);
 
     const user = await context.env.DB.prepare(
-      "SELECT id,username,email,COALESCE(available_balance,0) AS balance FROM users WHERE id=? LIMIT 1"
+      "SELECT id,username,email,COALESCE(available_balance,0) AS availableBalance FROM users WHERE id=? LIMIT 1"
     ).bind(userId).first<any>();
 
     if (!user) return json({ success:false, error:"User tidak ditemukan." }, 404);
 
-    const before = Number(user.balance || 0);
-    const delta = balance - before;
+    const before = Number(user.availableBalance || 0);
+    const delta = availableBalance - before;
     if (delta === 0) {
       return json({ success:false, error:"Saldo baru sama dengan saldo saat ini. Tidak ada perubahan." }, 400);
     }
@@ -62,8 +62,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     await context.env.DB.batch([
       context.env.DB.prepare(
-        "UPDATE users SET available_balance=?, balance=? WHERE id=?"
-      ).bind(balance, balance, userId),
+        "UPDATE users SET available_balance=? WHERE id=?"
+      ).bind(availableBalance, userId),
       context.env.DB.prepare(
         `INSERT INTO admin_balance_adjustments
          (id,user_id,admin_user_id,before_balance,after_balance,delta,note,created_at)
@@ -74,7 +74,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await notifyAdmins(context.env, {
       type: "balance.adjustment",
       title: "User balance adjusted",
-      message: `${auth.identity.displayName || "Owner"} changed ${user.username || user.email || userId} balance from ${before} to ${balance}.`,
+      message: `${auth.identity.displayName || "Owner"} changed ${user.username || user.email || userId} available balance from ${before} to ${availableBalance}.`,
       severity: "warning",
       entityType: "balance_adjustment",
       entityId: adjustmentId,
@@ -89,7 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         username:String(user.username || ""),
         email:String(user.email || ""),
         beforeBalance:before,
-        afterBalance:balance,
+        afterBalance:availableBalance,
         delta,
         note,
         createdAt:now
