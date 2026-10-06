@@ -1,3 +1,9 @@
+import {
+  getAuthUrl,
+  getEnvString,
+  getProviderScopes,
+} from "./social/providers";
+
 export type SocialPlatform =
   | "tiktok"
   | "youtube"
@@ -20,26 +26,28 @@ export function getSocialProviderConfig(
 ): SocialProviderConfig {
   const key = platform.toUpperCase();
 
-  const authorizationEndpoint =
-    typeof env[`${key}_OAUTH_AUTH_URL`] === "string"
-      ? String(env[`${key}_OAUTH_AUTH_URL`])
-      : null;
+  const authorizationEndpoint = getAuthUrl(env, platform) || null;
 
-  const clientIdConfigured =
-    typeof env[`${key}_CLIENT_ID`] === "string" &&
-    Boolean(String(env[`${key}_CLIENT_ID`]).trim());
+  const clientIdConfigured = Boolean(
+    getEnvString(env, `${key}_CLIENT_ID`) &&
+      getEnvString(env, `${key}_CLIENT_SECRET`),
+  );
 
-  const enabled =
-    typeof env[`${key}_OAUTH_ENABLED`] === "string"
-      ? String(env[`${key}_OAUTH_ENABLED`]).toLowerCase() === "true"
-      : false;
+  const configured = Boolean(authorizationEndpoint && clientIdConfigured);
+
+  /*
+   * Provider otomatis aktif saat CLIENT_ID dan CLIENT_SECRET sudah diisi.
+   * Set `${PLATFORM}_OAUTH_ENABLED=false` untuk mematikannya secara manual.
+   */
+  const enabledRaw = getEnvString(env, `${key}_OAUTH_ENABLED`).toLowerCase();
+  const enabled = enabledRaw ? enabledRaw === "true" : configured;
 
   return {
     platform,
     enabled,
-    configured: Boolean(authorizationEndpoint && clientIdConfigured),
+    configured,
     authorizationEndpoint,
-    scopes: [],
+    scopes: getProviderScopes(env, platform),
   };
 }
 

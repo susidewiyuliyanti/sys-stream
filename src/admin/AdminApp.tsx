@@ -34,7 +34,10 @@ export default function AdminApp() {
   const [airdropTasks,setAirdropTasks]=useState<AirdropTask[]>([]);
   const [loading,setLoading]=useState(false);
   const [checkingSession,setCheckingSession]=useState(true);
-  const [tab,setTab]=useState<Tab>('overview');
+  const [tab,setTab]=useState<Tab>(()=>{
+    const wanted=new URLSearchParams(window.location.search).get('tab');
+    return wanted==='social'?'social':'overview';
+  });
   const [query,setQuery]=useState('');
 
   const request=async(path:string,options:RequestInit={})=>{

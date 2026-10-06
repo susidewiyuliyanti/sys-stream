@@ -52,7 +52,14 @@ export async function onRequestGet({
       platform,
     );
 
+    const cfg = getProviderConfig(platform);
+    const envRecord = env as unknown as Record<string, unknown>;
+    const missingEnv = [cfg.clientIdEnv, cfg.clientSecretEnv].filter(
+      (name) => !getEnvString(envRecord, name),
+    );
+
     return {
+      missingEnv,
       ...(row || {
         id: null,
         platform,
@@ -70,6 +77,7 @@ export async function onRequestGet({
 
   return json({
     success: true,
+    redirectUri: `${new URL(request.url).origin}/api/admin/social/callback`,
     connections,
   });
 }
@@ -227,6 +235,12 @@ export async function onRequestPost({
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("redirect_uri", redirectUri);
   authUrl.searchParams.set("state", state);
+
+  /* Google hanya memberi refresh token bila diminta secara eksplisit. */
+  if (platform === "youtube") {
+    authUrl.searchParams.set("access_type", "offline");
+    authUrl.searchParams.set("prompt", "consent");
+  }
 
   return json({
     success: true,

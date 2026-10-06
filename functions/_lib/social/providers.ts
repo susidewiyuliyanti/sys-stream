@@ -73,10 +73,68 @@ export const PROVIDER_CONFIGS: Record<SocialPlatform, OAuthProviderConfig> = {
   },
 };
 
+/*
+ * Default endpoint resmi untuk platform yang didukung "satu klik".
+ * Owner cukup mengisi CLIENT_ID dan CLIENT_SECRET di Cloudflare.
+ * Variabel *_OAUTH_AUTH_URL / *_OAUTH_TOKEN_URL / *_OAUTH_SCOPES
+ * tetap bisa dipakai untuk menimpa nilai default ini.
+ */
+export type ProviderDefaults = {
+  authUrl: string;
+  tokenUrl: string;
+  scopes: string[];
+};
+
+export const PROVIDER_DEFAULTS: Partial<
+  Record<SocialPlatform, ProviderDefaults>
+> = {
+  tiktok: {
+    authUrl: "https://www.tiktok.com/v2/auth/authorize/",
+    tokenUrl: "https://open.tiktokapis.com/v2/oauth/token/",
+    scopes: ["user.info.basic"],
+  },
+  youtube: {
+    authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: "https://oauth2.googleapis.com/token",
+    scopes: ["https://www.googleapis.com/auth/youtube.readonly"],
+  },
+  instagram: {
+    authUrl: "https://www.instagram.com/oauth/authorize",
+    tokenUrl: "https://api.instagram.com/oauth/access_token",
+    scopes: ["instagram_business_basic"],
+  },
+};
+
 export function getProviderConfig(
   platform: SocialPlatform,
 ): OAuthProviderConfig {
   return PROVIDER_CONFIGS[platform];
+}
+
+export function getAuthUrl(
+  env: Record<string, unknown>,
+  platform: SocialPlatform,
+): string {
+  const config = getProviderConfig(platform);
+
+  return (
+    getEnvString(env, config.authUrlEnv) ||
+    PROVIDER_DEFAULTS[platform]?.authUrl ||
+    ""
+  );
+}
+
+export function getTokenUrl(
+  env: Record<string, unknown>,
+  platform: SocialPlatform,
+): string {
+  const config = getProviderConfig(platform);
+
+  return (
+    getEnvString(env, config.tokenUrlEnv) ||
+    PROVIDER_DEFAULTS[platform]?.tokenUrl ||
+    ""
+  );
 }
 
 export function getEnvString(
@@ -96,7 +154,7 @@ export function getProviderScopes(
   const raw = getEnvString(env, config.scopesEnv);
 
   if (!raw) {
-    return [];
+    return PROVIDER_DEFAULTS[platform]?.scopes ?? [];
   }
 
   return raw
@@ -114,7 +172,7 @@ export function isProviderConfigured(
   return Boolean(
     getEnvString(env, config.clientIdEnv) &&
       getEnvString(env, config.clientSecretEnv) &&
-      getEnvString(env, config.tokenUrlEnv) &&
-      getEnvString(env, config.authUrlEnv),
+      getTokenUrl(env, platform) &&
+      getAuthUrl(env, platform),
   );
 }
