@@ -10,7 +10,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       SELECT
         COUNT(*) AS totalUsers,
         COALESCE(SUM(COALESCE(available_balance,0)),0) AS totalAvailableBalance,
-        COALESCE(SUM(COALESCE(locked_saldo,0)),0) AS totalLockedBalance,
+        COALESCE(SUM(COALESCE(total_locked,0)),0) AS totalLockedBalance,
         COALESCE(SUM(COALESCE(sys_balance,0)),0) AS totalSysBalance,
         COALESCE(SUM(CASE WHEN COALESCE(email_verified,0)=1 THEN 1 ELSE 0 END),0) AS verifiedUsers,
         COALESCE(SUM(CASE WHEN COALESCE(wallet_address,'')<>'' THEN 1 ELSE 0 END),0) AS walletUsers,
@@ -21,7 +21,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const roles = await context.env.DB.prepare(`
       SELECT COALESCE(role,'USER') AS role, COUNT(*) AS users,
              COALESCE(SUM(COALESCE(available_balance,0)),0) AS availableBalance,
-             COALESCE(SUM(COALESCE(locked_saldo,0)),0) AS lockedBalance,
+             COALESCE(SUM(COALESCE(total_locked,0)),0) AS lockedBalance,
              COALESCE(SUM(COALESCE(sys_balance,0)),0) AS sysBalance
       FROM users
       GROUP BY COALESCE(role,'USER')
@@ -35,7 +35,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         COALESCE(email,'') AS email,
         COALESCE(wallet_address,'') AS walletAddress,
         COALESCE(available_balance,0) AS availableBalance,
-        COALESCE(locked_saldo,0) AS lockedBalance,
+        COALESCE(total_locked,0) AS lockedBalance,
         COALESCE(sys_balance,0) AS sysBalance,
         COALESCE(referral_count,0) AS referralCount,
         COALESCE(role,'USER') AS role,
