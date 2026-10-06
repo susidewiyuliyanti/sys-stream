@@ -2559,6 +2559,63 @@ for (const lang of Object.keys(TEBak_GAME_TRANSLATIONS) as LanguageCode[]) {
   PAGE_UI_TRANSLATIONS[lang] = { ...TEBak_GAME_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
 }
 
+
+const TEBak_FREE_PLAY_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'Streamer & Viewer Interaction — Free to Play':'Interaksi Streamer & Penonton — Gratis untuk Dimainkan',
+    'Mode Interaksi':'Mode Interaksi',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'Tebak 2 digit tersembunyi di tengah! Hadiah tinggi untuk tebakan yang tepat.'
+  },
+  en: {
+    'Streamer & Viewer Interaction — Free to Play':'Streamer & Viewer Interaction — Free to Play',
+    'Mode Interaksi':'Interaction Mode',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'This game is exclusively for streamer and viewer interaction. No coins, balance, deposits, locks, bets, or payments are required to play.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'Guess the 2 middle hidden digits! High payout on exact match.'
+  },
+  es: {
+    'Streamer & Viewer Interaction — Free to Play':'Interacción entre Streamer y Espectadores — Gratis',
+    'Mode Interaksi':'Modo de interacción',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este juego es exclusivamente para la interacción entre el streamer y los espectadores. No requiere monedas, saldo, depósitos, bloqueos, apuestas ni pagos para jugar.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'¡Adivina los 2 dígitos ocultos del medio! Gran premio por acertar exactamente.'
+  },
+  pt: {
+    'Streamer & Viewer Interaction — Free to Play':'Interação entre Streamer e Espectadores — Grátis',
+    'Mode Interaksi':'Modo de interação',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'Este jogo é exclusivamente para interação entre streamer e espectadores. Não requer moedas, saldo, depósitos, bloqueios, apostas ou pagamentos para jogar.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'Adivinhe os 2 dígitos ocultos do meio! Grande prêmio ao acertar exatamente.'
+  },
+  zh: {
+    'Streamer & Viewer Interaction — Free to Play':'主播与观众互动 — 免费参与',
+    'Mode Interaksi':'互动模式',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'本游戏仅用于主播与观众互动。参与游戏无需金币、余额、充值、锁定、投注或付款。',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'猜出中间隐藏的2位数字！完全匹配可获得高额奖励。'
+  },
+  ja: {
+    'Streamer & Viewer Interaction — Free to Play':'ストリーマーと視聴者の交流 — 無料プレイ',
+    'Mode Interaksi':'インタラクションモード',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'このゲームはストリーマーと視聴者の交流専用です。プレイにコイン、残高、入金、ロック、賭け、支払いは必要ありません。',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'中央の隠された2桁を当てよう！完全一致で高い報酬を獲得できます。'
+  },
+  ko: {
+    'Streamer & Viewer Interaction — Free to Play':'스트리머 & 시청자 상호작용 — 무료 플레이',
+    'Mode Interaksi':'상호작용 모드',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'이 게임은 스트리머와 시청자의 상호작용을 위한 게임입니다. 플레이에 코인, 잔액, 입금, 락, 베팅 또는 결제가 필요하지 않습니다.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'가운데 숨겨진 2자리를 맞혀보세요! 정확히 맞히면 높은 보상을 받을 수 있습니다.'
+  },
+  ar: {
+    'Streamer & Viewer Interaction — Free to Play':'تفاعل مقدم البث والمشاهدين — لعب مجاني',
+    'Mode Interaksi':'وضع التفاعل',
+    'Game ini khusus untuk interaksi streamer dan penonton. Tidak membutuhkan koin, saldo, deposit, lock, taruhan, atau pembayaran untuk ikut bermain.':'هذه اللعبة مخصصة لتفاعل مقدم البث مع المشاهدين. لا تتطلب عملات أو رصيدًا أو إيداعًا أو قفلًا أو مراهنات أو مدفوعات للعب.',
+    'Guess the 2 middle hidden digits! High payout on exact match.':'خمن الرقمين المخفيين في المنتصف! مكافأة عالية عند التطابق التام.'
+  }
+};
+
+for (const lang of Object.keys(TEBak_FREE_PLAY_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], TEBak_FREE_PLAY_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...TEBak_FREE_PLAY_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
