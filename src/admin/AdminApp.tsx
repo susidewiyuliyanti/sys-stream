@@ -163,8 +163,9 @@ export default function AdminApp() {
     </div>
   );
 
-  const totalBalance=Number(analytics?.summary?.totalAvailableBalance ?? users.reduce((s,u)=>s+Number(u.availableBalance||0),0));
-  const totalLocked=Number(analytics?.summary?.totalLockedBalance ?? users.reduce((s,u)=>s+Number(u.lockedBalance||0),0));
+  const displayUsers=users.length ? users : (Array.isArray(analytics?.users) ? analytics.users : []);
+  const totalBalance=Number(analytics?.summary?.totalAvailableBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.availableBalance||0),0));
+  const totalLocked=Number(analytics?.summary?.totalLockedBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.lockedBalance||0),0));
 
   return(
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -213,7 +214,7 @@ export default function AdminApp() {
               </div>
             </div>
 
-            {tab==='overview'&&<Overview users={users} deposits={deposits} totalBalance={totalBalance} totalLocked={totalLocked} analytics={analytics}/>}
+            {tab==='overview'&&<Overview users={displayUsers} deposits={deposits} totalBalance={totalBalance} totalLocked={totalLocked} analytics={analytics}/>} 
             {tab==='users'&&<UsersTable users={filteredUsers} canEditBalance={admin?.role==='OWNER'}/>}
             {tab==='streamers'&&<StreamersPanel users={users} streamers={streamers} onRefresh={()=>void loadDashboard()}/>}
             {tab==='transactions'&&<TransactionsTable deposits={deposits}/>}
