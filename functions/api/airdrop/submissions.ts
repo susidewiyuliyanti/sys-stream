@@ -27,6 +27,15 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       return response(context.request, { success: false, message: "Action tidak valid." }, 400);
     }
 
+    // Reward conversion is intentionally unavailable until the program opens it.
+    // Keep the endpoint blocked server-side so no direct request can credit SYS.
+    return response(context.request, {
+      success: false,
+      status: "PENDING",
+      availableSoon: true,
+      message: "Reward conversion is currently pending and will be available soon."
+    }, 503);
+
     const wallet = String(auth.user.walletAddress || "").trim().toLowerCase();
     const requested = Number(body.points);
     if (!wallet || !Number.isFinite(requested) || requested <= 0 || !Number.isInteger(requested)) {
