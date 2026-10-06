@@ -44,8 +44,10 @@ export default function DashboardPage({ navigate }: Props) {
   const [isPosting, setIsPosting] = useState(false);
   const [postError, setPostError] = useState('');
 
-  const available = Number(user.coins || 0) / 100;
-  const locked = Number(user.lockedBalance || 0);
+  // Canonical production financial source: users.available_balance.
+  // Never derive dashboard balance from the legacy local coins field.
+  const available = Number(user.availableBalance ?? 0);
+  const locked = Number(user.lockedBalance ?? 0);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const isStreamer = ['streamer', 'admin', 'owner'].includes(String((user as any).role || '').toLowerCase());
   const streamerRoomId = 'streamer-' + String(user.id || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
@@ -69,7 +71,12 @@ export default function DashboardPage({ navigate }: Props) {
   };
 
   useEffect(() => {
-    if (isLoggedIn) void loadPosts();
+    if (!isLoggedIn) return;
+    // Re-read the canonical server balance whenever the dashboard is entered.
+    // This keeps the user view aligned with Owner/Admin after deposits,
+    // withdrawals, locks, bonuses, or owner balance adjustments.
+    void refreshFinancialState();
+    void loadPosts();
   }, [isLoggedIn]);
 
   if (!isLoggedIn) return null;
