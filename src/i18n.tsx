@@ -3985,3 +3985,45 @@ for (const lang of Object.keys(GAMES_PROFILE_TRANSLATION_SCREENING) as LanguageC
   Object.assign(translations[lang], GAMES_PROFILE_TRANSLATION_SCREENING[lang]);
   Object.assign(PAGE_UI_TRANSLATIONS[lang], GAMES_PROFILE_TRANSLATION_SCREENING[lang]);
 }
+
+/* Spinner raffle wheel translation completion */
+const SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "Roda undian streamer berisi nama pengguna penonton yang sedang live. Putar untuk memilih pemenang giveaway secara acak!"
+  },
+  en: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!"
+  },
+  es: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "Ruleta del streamer con los nombres de los espectadores en directo. ¡Gírala para elegir al azar al ganador del sorteo!"
+  },
+  pt: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "Roleta do streamer com os nomes de utilizadores dos espectadores ao vivo. Gire para escolher aleatoriamente o vencedor do sorteio!"
+  },
+  zh: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "主播抽奖转盘包含正在直播的观众用户名。转动转盘即可随机选出抽奖获胜者！"
+  },
+  ja: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "配信中の視聴者ユーザー名が入ったストリーマー抽選ホイールです。回してランダムにプレゼント企画の当選者を選びましょう！"
+  },
+  ko: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "라이브 시청자 사용자 이름이 포함된 스트리머 추첨 휠입니다. 돌려서 무작위로 경품 추첨 당첨자를 선택하세요!"
+  },
+  ar: {
+    "Streamer raffle wheel containing live viewer usernames. Spin to pick a random viewer giveaway winner!":
+      "عجلة سحب للستريمر تحتوي على أسماء مستخدمي المشاهدين المباشرين. أدر العجلة لاختيار فائز عشوائي بالهدية!"
+  }
+};
+
+for (const lang of Object.keys(SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], SPINNER_RAFFLE_DESCRIPTION_TRANSLATIONS[lang]);
+}
+
