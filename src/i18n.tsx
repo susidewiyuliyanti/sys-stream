@@ -2446,6 +2446,119 @@ for (const lang of Object.keys(LIVE_ROOM_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(PAGE_UI_TRANSLATIONS[lang], LIVE_ROOM_TRANSLATIONS[lang]);
 }
 
+
+const TEBak_GAME_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Penonton mencoba menebak angka tersembunyi yang dipilih streamer. Game ini dibuat untuk interaksi live tanpa taruhan atau pembayaran.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Digit Kartu (Tepat 4 Digit) & Pengaturan Sembunyikan',
+    'Serial No:':'No. Seri:',
+    'Digital Crypto Verification Code (4 Digits)':'Kode Verifikasi Kripto Digital (4 Digit)',
+    'Digit #':'Digit #',
+    'Challenge Successful! Verified code:':'Tantangan Berhasil! Kode terverifikasi:',
+    'All concealed digits matched!':'Semua digit tersembunyi cocok!',
+    'Prediction Missed. Secret Digits:':'Prediksi Tidak Cocok. Digit Rahasia:',
+    'Matched':'Cocok',
+    'The 4-digit code is tied to serial number':'Kode 4 digit terkait dengan nomor seri',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'Streamer menetapkan digit yang terlihat dan tersembunyi secara real-time. Penonton mencoba menebak digit yang disembunyikan. Tidak ada taruhan atau hadiah finansial dalam game ini.'
+  },
+  en: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Card Digits (Exactly 4 Digits) & Conceal Toggle',
+    'Serial No:':'Serial No:',
+    'Digital Crypto Verification Code (4 Digits)':'Digital Crypto Verification Code (4 Digits)',
+    'Digit #':'Digit #',
+    'Challenge Successful! Verified code:':'Challenge Successful! Verified code:',
+    'All concealed digits matched!':'All concealed digits matched!',
+    'Prediction Missed. Secret Digits:':'Prediction Missed. Secret Digits:',
+    'Matched':'Matched',
+    'The 4-digit code is tied to serial number':'The 4-digit code is tied to serial number',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.'
+  },
+  es: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Los espectadores intentan adivinar el número oculto elegido por el streamer. Este juego está diseñado para la interacción en vivo sin apuestas ni pagos.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Dígitos de la tarjeta (exactamente 4) y control de ocultación',
+    'Serial No:':'N.º de serie:',
+    'Digital Crypto Verification Code (4 Digits)':'Código de verificación criptográfico digital (4 dígitos)',
+    'Digit #':'Dígito n.º ',
+    'Challenge Successful! Verified code:':'¡Desafío completado! Código verificado:',
+    'All concealed digits matched!':'¡Todos los dígitos ocultos coinciden!',
+    'Prediction Missed. Secret Digits:':'Predicción fallida. Dígitos secretos:',
+    'Matched':'Coinciden',
+    'The 4-digit code is tied to serial number':'El código de 4 dígitos está vinculado al número de serie',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'El streamer establece los dígitos visibles y ocultos en tiempo real. Los espectadores intentan adivinar los dígitos ocultos. No hay apuestas ni premios económicos en este juego.'
+  },
+  pt: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'Os espectadores tentam adivinhar o número oculto escolhido pelo streamer. Este jogo foi criado para interação ao vivo sem apostas ou pagamentos.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'Dígitos do cartão (exatamente 4) e controle de ocultação',
+    'Serial No:':'Nº de série:',
+    'Digital Crypto Verification Code (4 Digits)':'Código de verificação criptográfica digital (4 dígitos)',
+    'Digit #':'Dígito nº ',
+    'Challenge Successful! Verified code:':'Desafio concluído! Código verificado:',
+    'All concealed digits matched!':'Todos os dígitos ocultos coincidem!',
+    'Prediction Missed. Secret Digits:':'Previsão incorreta. Dígitos secretos:',
+    'Matched':'Correspondentes',
+    'The 4-digit code is tied to serial number':'O código de 4 dígitos está vinculado ao número de série',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'O streamer define os dígitos visíveis e ocultos em tempo real. Os espectadores tentam adivinhar os dígitos ocultos. Não há apostas nem prêmios financeiros neste jogo.'
+  },
+  zh: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'观众尝试猜测主播选择的隐藏数字。本游戏仅用于直播互动，不涉及投注或付款。',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'卡片数字（恰好4位）和隐藏设置',
+    'Serial No:':'序列号：',
+    'Digital Crypto Verification Code (4 Digits)':'数字加密验证代码（4位）',
+    'Digit #':'数字 #',
+    'Challenge Successful! Verified code:':'挑战成功！验证代码：',
+    'All concealed digits matched!':'所有隐藏数字均匹配！',
+    'Prediction Missed. Secret Digits:':'预测失败。秘密数字：',
+    'Matched':'匹配',
+    'The 4-digit code is tied to serial number':'4位代码与序列号绑定',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'主播实时设置可见和隐藏数字。观众尝试猜测隐藏数字。本游戏不涉及投注或现金奖励。'
+  },
+  ja: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'視聴者はストリーマーが選んだ隠し数字を予想します。このゲームは賭けや支払いを伴わないライブ交流向けです。',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'カードの数字（4桁）と非表示設定',
+    'Serial No:':'シリアル番号：',
+    'Digital Crypto Verification Code (4 Digits)':'デジタル暗号検証コード（4桁）',
+    'Digit #':'数字 #',
+    'Challenge Successful! Verified code:':'チャレンジ成功！検証コード：',
+    'All concealed digits matched!':'すべての非表示数字が一致しました！',
+    'Prediction Missed. Secret Digits:':'予想不一致。秘密の数字：',
+    'Matched':'一致',
+    'The 4-digit code is tied to serial number':'4桁コードはシリアル番号に紐付いています',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'ストリーマーが表示・非表示の数字をリアルタイムで設定します。視聴者は非表示の数字を予想します。このゲームに賭けや金銭的な賞金はありません。'
+  },
+  ko: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'시청자는 스트리머가 선택한 숨겨진 숫자를 맞혀 봅니다. 이 게임은 베팅이나 결제 없이 라이브 상호작용을 위해 만들어졌습니다.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'카드 숫자(정확히 4자리) 및 숨김 설정',
+    'Serial No:':'일련번호:',
+    'Digital Crypto Verification Code (4 Digits)':'디지털 암호 검증 코드(4자리)',
+    'Digit #':'숫자 #',
+    'Challenge Successful! Verified code:':'챌린지 성공! 확인된 코드:',
+    'All concealed digits matched!':'모든 숨겨진 숫자가 일치합니다!',
+    'Prediction Missed. Secret Digits:':'예측 실패. 비밀 숫자:',
+    'Matched':'일치',
+    'The 4-digit code is tied to serial number':'4자리 코드는 일련번호에 연결됩니다',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'스트리머가 표시 및 숨김 숫자를 실시간으로 설정합니다. 시청자는 숨겨진 숫자를 맞힙니다. 이 게임에는 베팅이나 금전적 보상이 없습니다.'
+  },
+  ar: {
+    'Viewers try to guess the hidden number selected by the streamer. This game is designed for live interaction without betting or payment.':'يحاول المشاهدون تخمين الرقم المخفي الذي يختاره مقدم البث. صُممت هذه اللعبة للتفاعل المباشر دون مراهنات أو مدفوعات.',
+    'Card Digits (Exactly 4 Digits) & Conceal Toggle':'أرقام البطاقة (4 أرقام بالضبط) وإعداد الإخفاء',
+    'Serial No:':'الرقم التسلسلي:',
+    'Digital Crypto Verification Code (4 Digits)':'رمز التحقق الرقمي المشفر (4 أرقام)',
+    'Digit #':'الرقم #',
+    'Challenge Successful! Verified code:':'نجح التحدي! الرمز المتحقق منه:',
+    'All concealed digits matched!':'تطابقت جميع الأرقام المخفية!',
+    'Prediction Missed. Secret Digits:':'فشل التخمين. الأرقام السرية:',
+    'Matched':'المتطابق',
+    'The 4-digit code is tied to serial number':'يرتبط الرمز المكون من 4 أرقام بالرقم التسلسلي',
+    'Streamer sets visible and concealed digits in real-time. Viewers try to guess the hidden digits. There are no bets or financial prizes in this game.':'يحدد مقدم البث الأرقام الظاهرة والمخفية في الوقت الفعلي. يحاول المشاهدون تخمين الأرقام المخفية. لا توجد مراهنات أو جوائز مالية في هذه اللعبة.'
+  }
+};
+
+for (const lang of Object.keys(TEBak_GAME_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], TEBak_GAME_TRANSLATIONS[lang]);
+  PAGE_UI_TRANSLATIONS[lang] = { ...TEBak_GAME_TRANSLATIONS[lang], ...PAGE_UI_TRANSLATIONS[lang] };
+}
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
