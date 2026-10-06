@@ -89,7 +89,10 @@ export default function AdminApp() {
       else failures.push('airdrop-tasks');
       if(s.status==='fulfilled') setStreamers(s.value.streamers||[]);
       else failures.push('streamers');
-      if(an.status==='fulfilled') setAnalytics(an.value);
+      if(an.status==='fulfilled'){
+        setAnalytics(an.value);
+        if(Array.isArray(an.value.users)) setUsers(an.value.users);
+      }
       else failures.push('analytics');
 
       const unauthorized=results.some(r=>r.status==='rejected' && /session|unauthorized/i.test(String(r.reason?.message||r.reason||'')));
