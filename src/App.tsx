@@ -156,6 +156,13 @@ export default function App() {
           {renderCurrentView()}
         </main>
 
+        <footer className="border-t border-slate-800 mt-12">
+          <div className="max-w-7xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-3">
+            <span>SYS STREAM</span>
+            <a href="mailto:support@sysstreamer.asia" className="text-slate-400 hover:text-amber-400 transition-colors">support@sysstreamer.asia</a>
+          </div>
+        </footer>
+
         {/* Global Mobile Auth Modal */}
         <MobileAuthModal />
 
