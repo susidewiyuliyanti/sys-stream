@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGame } from '../../../context/GameContext';
 import { BlindboxItem, RarityTier, LockRecord } from '../../../types';
 import { sound } from '../../../lib/sound';
-import { formatIdrAsSelectedCurrency, getLocaleConfig, IDR_PER_CURRENCY_UNIT, useLanguage } from '../../../i18n';
+import { formatIdrAsSelectedCurrency, formatMinimumBlindBoxLock, getMinimumBlindBoxLockIdr, getLocaleConfig, IDR_PER_CURRENCY_UNIT, useLanguage } from '../../../i18n';
 import {
   Box,
   Sparkles,
@@ -34,7 +34,7 @@ const BOX_TIERS: BoxTier[] = [
     descriptionKey: 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
-    minLockedRequired: 71748,
+    minLockedRequired: getMinimumBlindBoxLockIdr('id'),
     lootPool: [
       { id: 'bb_1', name: 'Tactical Neon Visor', category: 'Skin', rarity: 'common', powerStat: 24, coinValue: 100, usdtReward: 0, iconName: 'Eye' },
       { id: 'bb_2', name: 'Nano-Blade Dagger', category: 'Weapon', rarity: 'common', powerStat: 30, coinValue: 120, usdtReward: 0, iconName: 'Scissors' },
@@ -94,9 +94,11 @@ export default function BlindboxGamePage() {
   const [wonIdr, setWonIdr] = useState<number>(0);
 
   // Staking lock modal/form
-  const [lockIdrAmount, setLockIdrAmount] = useState<number>(71748);
+  const minimumLockIdr = getMinimumBlindBoxLockIdr(language);
+  const minimumLockDisplay = formatMinimumBlindBoxLock(language);
   const [lockDuration, setLockDuration] = useState<30 | 60 | 90>(30);
   const availableBalance = Number(user.availableBalance ?? 0);
+  const [lockIdrAmount, setLockIdrAmount] = useState<number>(minimumLockIdr);
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
@@ -124,7 +126,7 @@ export default function BlindboxGamePage() {
   const totalLocked = getTotalLockedUsdt();
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
-  const isQualified = totalLocked >= 71748;
+  const isQualified = totalLocked >= minimumLockIdr;
 
   const activeLocks = locks.filter((l) => l.status === 'locked');
   const primaryLock: LockRecord | undefined = activeLocks[0];
@@ -302,7 +304,7 @@ export default function BlindboxGamePage() {
             <span>{t('$4 equivalent+ Lock')}</span>
             <span className="text-emerald-400 font-mono">1 {t('Daily Boxes')}</span>
           </div>
-          <div className="text-[11px] text-slate-400">{t('Lock Amount (IDR)')}: {formatMoney(71748)} ($4 USD equivalent). {t('Claim Daily Blind Box')}: 1/day.</div>
+          <div className="text-[11px] text-slate-400">{t('Lock Amount (IDR)')}: {formatMoney(minimumLockIdr)} ({minimumLockDisplay} equivalent). {t('Claim Daily Blind Box')}: 1/day.</div>
         </div>
 
         <div className="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1">
@@ -367,7 +369,7 @@ export default function BlindboxGamePage() {
                   Lock Amount
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
-                  {[71748, 720000, 1000000, 2720000].map((amt) => (
+                  {[minimumLockIdr, 720000, 1000000, 2720000].map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -384,15 +386,15 @@ export default function BlindboxGamePage() {
                 </div>
                 <input
                   type="number"
-                  min="71748"
+                  min={minimumLockIdr}
                   max={Math.max(0, availableBalance / (IDR_PER_CURRENCY_UNIT[language] ?? 1))}
                   step="0.01"
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
-                  onChange={(e) => setLockIdrAmount(Math.max(71748, toIdr(Number(e.target.value) || 0)))}
+                  onChange={(e) => setLockIdrAmount(Math.max(minimumLockIdr, toIdr(Number(e.target.value) || 0)))}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`${t('Lock amount')} (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">{t('Nominal Lock (IDR)')}. {t('Lock Amount (IDR)')}: {formatMoney(71748)}. $4 USD equivalent.</div>
+                <div className="text-[10px] text-slate-500 mt-1">{t('Nominal Lock (IDR)')}. {t('Lock Amount (IDR)')}: {formatMoney(minimumLockIdr)} ({minimumLockDisplay} equivalent).</div>
                 <div className="text-[10px] mt-1 font-semibold text-slate-400">
                   {lockIdrAmount > availableBalance ? t('Lock amount exceeds Available Balance.') : `${t('Remaining after lock')}: ${formatMoney(Math.max(0, availableBalance - lockIdrAmount))}`}
                 </div>
