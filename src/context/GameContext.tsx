@@ -183,7 +183,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const remote = data.user;
       // Canonical per-user balance: always use the authenticated server row.
-      const balance = Number(remote.availableBalance ?? remote.balance ?? 0);
+      const balance = Number(remote.availableBalance ?? 0);
       const lockedBalance = Number(remote.lockedBalance || 0);
 
       setUser(prev => ({
@@ -438,8 +438,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         referralCode: remote.referralCode || prev.referralCode,
         registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
         registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
-        availableBalance: Number(remote.availableBalance ?? remote.balance ?? 0),
-        coins: Math.round(Number(remote.availableBalance ?? remote.balance ?? 0) * 100),
+        availableBalance: Number(remote.availableBalance ?? 0),
+        coins: Math.round(Number(remote.availableBalance ?? 0) * 100),
       }));
       localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       return true;
@@ -681,7 +681,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       await refreshFinancialState();
       sound.playJackpot();
-      showToast('Lock Selesai', `Principal Rp ${Number(data.principalReturned ?? data.balance ?? 0).toLocaleString('id-ID')} telah dikembalikan ke saldo tersedia.`, 'success');
+      showToast('Lock Selesai', `Principal Rp ${Number(data.principalReturned ?? 0).toLocaleString('id-ID')} telah dikembalikan ke saldo tersedia.`, 'success');
       return true;
     } catch {
       showToast('Unlock Failed', 'Server tidak dapat memproses unlock.', 'error');
