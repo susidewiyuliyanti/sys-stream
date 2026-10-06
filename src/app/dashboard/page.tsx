@@ -16,7 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { useLanguage, formatRegistrationBonus, formatIdrAsSelectedCurrency } from '../../i18n';
+import { useLanguage, formatRegistrationBonus, formatIdrAsSelectedCurrency, getLocaleConfig } from '../../i18n';
 
 interface Props {
   navigate?: (path: string) => void;
@@ -117,7 +117,7 @@ export default function DashboardPage({ navigate }: Props) {
   const formatDate = (value: string) => {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
-    return date.toLocaleString('id-ID', {
+    return date.toLocaleString(getLocaleConfig(language).locale, {
       day: '2-digit',
       month: 'short',
       hour: '2-digit',
@@ -130,7 +130,7 @@ export default function DashboardPage({ navigate }: Props) {
       <div className="max-w-7xl mx-auto w-full lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-6">
         <aside className="hidden lg:flex lg:flex-col lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] rounded-2xl border border-slate-800 bg-slate-900/70 p-3">
           <div className="px-3 py-3 mb-2">
-            <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-black">SYS STREAM</div>
+            <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-400 font-black">{t('SYS STREAM')}</div>
             <div className="text-sm font-black mt-1 text-white">{t('Workspace')}</div>
           </div>
           <nav className="space-y-1 text-sm">
@@ -211,11 +211,11 @@ export default function DashboardPage({ navigate }: Props) {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="text-xs uppercase tracking-[0.18em] text-cyan-400 font-black">{t("STREAMER STUDIO")}</div>
-                  <h2 className="text-xl font-black mt-1">{t("Pengaturan Streaming")}</h2>
-                  <p className="text-sm text-slate-400 mt-1">{t("Anda sudah menjadi Official Streamer. Buat atau buka room streaming Anda sendiri dan dapatkan RTMPS Server + Stream Key untuk OBS.")}</p>
+                  <h2 className="text-xl font-black mt-1">{t("Streaming Settings")}</h2>
+                  <p className="text-sm text-slate-400 mt-1">{t("You are an Official Streamer. Create or open your own streaming room and get the RTMPS Server + Stream Key for OBS.")}</p>
                 </div>
                 <button onClick={() => navigate?.('/room/' + streamerRoomId)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 text-sm font-black text-slate-950 hover:bg-cyan-300 transition-colors shrink-0">
-                  <Radio className="w-4 h-4" /> {t("Buka Streaming Studio")}
+                  <Radio className="w-4 h-4" /> {t("Open Streaming Studio")}
                 </button>
               </div>
             </section>
@@ -230,9 +230,9 @@ export default function DashboardPage({ navigate }: Props) {
               <div className="text-xl font-black mt-2">{formatMoney(locked)}</div>
             </div>
             <div className="rounded-2xl border border-violet-500/20 bg-slate-900/80 p-4">
-              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-violet-400" /> SYS Coin</div>
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Wallet className="w-4 h-4 text-violet-400" /> {t('SYS Coin')}</div>
               <div className="text-xl font-black mt-2">{Number(user.sysBalance || 0).toLocaleString('en-US', { maximumFractionDigits: 8 })} SYS</div>
-              <div className="text-[10px] text-slate-500 mt-1">{t('Reward dari Airdrop')}</div>
+              <div className="text-[10px] text-slate-500 mt-1">{t('Airdrop Reward')}</div>
             </div>
             <div className="rounded-2xl border border-rose-500/20 bg-slate-900/80 p-4">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500"><Radio className="w-4 h-4 text-rose-400" /> {t('Live Now')}</div>
@@ -297,7 +297,7 @@ export default function DashboardPage({ navigate }: Props) {
                   <div className="font-bold text-slate-300">{t('Belum ada postingan')}</div>
                   <p className="text-xs text-slate-500 mt-1">{t('Jadilah pengguna pertama yang membagikan sesuatu.')}</p>
                   <button onClick={() => { setPostError(''); setIsCreateOpen(true); }} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-black text-slate-950">
-                    <Plus className="w-4 h-4" /> Buat Postingan
+                    <Plus className="w-4 h-4" /> {t('Create Post')}
                   </button>
                 </div>
               ) : (
@@ -313,14 +313,14 @@ export default function DashboardPage({ navigate }: Props) {
                           </div>
                         )}
                         <div className="min-w-0">
-                          <div className="font-bold text-sm truncate">{post.displayName || post.username || 'User'}</div>
-                          <div className="text-[10px] text-slate-500">@{post.username || 'user'} · {formatDate(post.createdAt)}</div>
+                          <div className="font-bold text-sm truncate">{post.displayName || post.username || t('User')}</div>
+                          <div className="text-[10px] text-slate-500">@{post.username || t('user')} · {formatDate(post.createdAt)}</div>
                         </div>
                       </div>
                       {post.content && <p className="mt-4 text-sm leading-6 whitespace-pre-wrap break-words text-slate-200">{post.content}</p>}
                       {post.mediaUrl && (
                         <a href={post.mediaUrl} target="_blank" rel="noreferrer" className="mt-3 block text-xs text-cyan-300 hover:text-cyan-200 break-all">
-                          {t('Buka media terlampir →')}
+                          {t('Open attached media →')}
                         </a>
                       )}
                     </article>
