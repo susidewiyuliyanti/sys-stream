@@ -40,7 +40,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       user:{
         id:String(user.id), username:user.username, email:user.email,
         displayName:user.displayName, role:user.role || "USER",
-        availableBalance:Number(user.availableBalance||0), balance:Number(user.availableBalance||0), lockedBalance:Number(user.lockedBalance||0),
+        availableBalance:Number(user.availableBalance||0), lockedBalance:Number(user.lockedBalance||0),
         walletAddress:user.walletAddress || null, referralCode:user.referralCode || null,
         emailVerified:true
       }
