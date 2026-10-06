@@ -222,12 +222,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const user = userResult.rows[0];
         // Canonical production balance is available_balance/total_locked.
         // Legacy fields are used only as a compatibility fallback for old accounts.
-        const canonicalBalance = Number(user.available_balance || 0);
-        const legacyBalance = Number(user.legacy_balance || 0);
-        const availableBalance = canonicalBalance > 0 ? canonicalBalance : legacyBalance;
-        const currentLocked = Number(user.total_locked || 0) > 0
-          ? Number(user.total_locked || 0)
-          : Number(user.legacy_locked_saldo || 0);
+        const availableBalance = Number(user.available_balance || 0);
+        const currentLocked = Number(user.total_locked || 0);
 
         if (availableBalance < amount) {
           throw new Error("INSUFFICIENT_BALANCE");
