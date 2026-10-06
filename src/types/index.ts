@@ -9,6 +9,8 @@ export interface UserProfile {
   vipTier: number;
   referralCode: string;
   walletAddress?: string;
+  /** Canonical server-owned available balance in IDR. */
+  availableBalance?: number;
   role?: string;
   sysBalance?: number;
   registrationBonusIdr?: number;
