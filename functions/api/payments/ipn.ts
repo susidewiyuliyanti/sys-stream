@@ -79,11 +79,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
       if (creditedIdr > 0) {
         const user = await env.DB.prepare(`
-          SELECT COALESCE(available_balance,0) AS balance
+          SELECT COALESCE(available_balance,0) AS available_balance
           FROM users WHERE id = ? LIMIT 1
         `).bind(tx.user_id).first<any>();
 
-        const balance = Number(user?.balance || 0);
+        const balance = Number(user?.available_balance || 0);
         const nextBalance = balance + creditedIdr;
 
         const updated = await env.DB.prepare(`
@@ -93,7 +93,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         `).bind(usdAmount, tx.id).run();
 
         if (Number((updated as any)?.meta?.changes || 0) > 0) {
-          await env.DB.prepare("UPDATE users SET available_balance=?, balance=? WHERE id=?")
+          await env.DB.prepare("UPDATE users SET available_balance=? WHERE id=?")
             .bind(nextBalance, nextBalance, tx.user_id).run();
         }
       }
