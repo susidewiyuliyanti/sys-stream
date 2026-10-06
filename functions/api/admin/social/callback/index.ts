@@ -170,7 +170,7 @@ export const onRequestGet = async (context: PagesContext) => {
     );
   }
 
-  if (Date.now() > Number(row.expires_at)) {
+  if (Math.floor(Date.now() / 1000) > Number(row.expires_at)) {
     await db
       .prepare(
         `DELETE FROM social_oauth_states WHERE state = ?1`,
@@ -302,7 +302,7 @@ export const onRequestGet = async (context: PagesContext) => {
     return html(
       `Akun ${platform.toUpperCase()} berhasil terhubung ke SYS STREAM.<br><br>
        Token tersimpan secara terenkripsi.<br><br>
-       <a href="/admin?tab=social" style="color:#fbbf24">Kembali ke Admin Panel</a>`,
+       <a href="/?tab=social" style="color:#fbbf24">Kembali ke Admin Panel</a>`,
     );
   } catch (error) {
     const message =
