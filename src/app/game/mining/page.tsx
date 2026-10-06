@@ -233,19 +233,6 @@ export default function MiningPage() {
                 {tx.inactiveDesc}
               </p>
 
-                <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$20 {tx.lock}</span>
-                  <strong>2 SYS {tx.perDay}</strong>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$50 {tx.lock}</span>
-                  <strong>5 SYS {tx.perDay}</strong>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-slate-400">$100 {tx.lock}</span>
-                  <strong>10 SYS {tx.perDay}</strong>
-                </div>
-              </div>
             </div>
           ) : claimedToday ? (
             <div className="py-8 text-center">
