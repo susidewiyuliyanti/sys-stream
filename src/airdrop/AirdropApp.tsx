@@ -35,19 +35,29 @@ const AIRDROP_ERRORS: Record<Lang, {taskNotFound:string;checkinDone:string;singl
 
 
 
+const SOCIAL_OFFICIALS: Array<{platform:string;label:string;url:string}> = [
+  {platform:'tiktok',label:'TikTok',url:'https://www.tiktok.com/@sysstreamer'},
+  {platform:'instagram',label:'Instagram',url:'https://www.instagram.com/sysstreamer/'},
+  {platform:'youtube',label:'YouTube',url:'https://www.youtube.com/@sysstreamer'},
+  {platform:'telegram',label:'Telegram',url:'https://t.me/sysstreamer'},
+  {platform:'facebook',label:'Facebook',url:'https://www.facebook.com/profile.php?id=61595261786795'},
+  {platform:'discord',label:'Discord',url:'https://discord.gg/44GFMnkp9'},
+  {platform:'twitter',label:'X',url:'https://x.com/sysstreamer'},
+];
+
 const SOCIAL_GATE_COPY: Record<Lang,{title:string;desc:string;connected:string;followed:string;unlock:string;locked:string;unlocked:string;needAccount:string}> = {
-  id:{title:'Follow SYSStreamer untuk membuka semua task',desc:'Hubungkan minimal satu akun sosial, lalu ikuti akun resmi SYSStreamer. Setelah konfirmasi follow, semua task akan terbuka.',connected:'Akun terhubung',followed:'Saya sudah follow SYSStreamer',unlock:'Buka Semua Task',locked:'Semua task terkunci',unlocked:'Semua task terbuka',needAccount:'Hubungkan minimal satu akun sosial terlebih dahulu.'},
-  en:{title:'Follow SYSStreamer to unlock all tasks',desc:'Connect at least one social account, then follow the official SYSStreamer account. After confirming the follow, all tasks will unlock.',connected:'Connected account',followed:'I followed SYSStreamer',unlock:'Unlock All Tasks',locked:'All tasks are locked',unlocked:'All tasks are unlocked',needAccount:'Connect at least one social account first.'},
-  es:{title:'Sigue a SYSStreamer para desbloquear todas las tareas',desc:'Conecta al menos una cuenta social y sigue la cuenta oficial de SYSStreamer. Después de confirmar el seguimiento, se desbloquearán todas las tareas.',connected:'Cuenta conectada',followed:'Ya sigo a SYSStreamer',unlock:'Desbloquear todas las tareas',locked:'Todas las tareas están bloqueadas',unlocked:'Todas las tareas están desbloqueadas',needAccount:'Conecta primero al menos una cuenta social.'},
-  pt:{title:'Siga a SYSStreamer para desbloquear todas as tarefas',desc:'Conecte pelo menos uma conta social e siga a conta oficial SYSStreamer. Após confirmar o follow, todas as tarefas serão desbloqueadas.',connected:'Conta conectada',followed:'Já sigo a SYSStreamer',unlock:'Desbloquear todas as tarefas',locked:'Todas as tarefas estão bloqueadas',unlocked:'Todas as tarefas estão desbloqueadas',needAccount:'Conecte primeiro pelo menos uma conta social.'},
-  zh:{title:'关注 SYSStreamer 以解锁所有任务',desc:'先连接至少一个社交账号，然后关注 SYSStreamer 官方账号。确认关注后，所有任务都会解锁。',connected:'已连接账号',followed:'我已关注 SYSStreamer',unlock:'解锁所有任务',locked:'所有任务已锁定',unlocked:'所有任务已解锁',needAccount:'请先连接至少一个社交账号。'},
-  ja:{title:'SYSStreamer をフォローしてすべてのタスクを解放',desc:'少なくとも1つのSNSアカウントを接続し、公式SYSStreamerアカウントをフォローしてください。フォロー確認後、すべてのタスクが解放されます。',connected:'接続済みアカウント',followed:'SYSStreamer をフォローしました',unlock:'すべてのタスクを解放',locked:'すべてのタスクがロックされています',unlocked:'すべてのタスクが解放されています',needAccount:'まずSNSアカウントを1つ以上接続してください。'},
-  ko:{title:'SYSStreamer를 팔로우하여 모든 작업 잠금 해제',desc:'하나 이상의 소셜 계정을 연결한 다음 공식 SYSStreamer 계정을 팔로우하세요. 팔로우를 확인하면 모든 작업이 열립니다.',connected:'연결된 계정',followed:'SYSStreamer를 팔로우했습니다',unlock:'모든 작업 잠금 해제',locked:'모든 작업이 잠겨 있습니다',unlocked:'모든 작업이 열렸습니다',needAccount:'먼저 하나 이상의 소셜 계정을 연결하세요.'},
+  id:{title:'Follow SYSStreamer untuk membuka semua task',desc:'Hubungkan minimal satu akun sosial, lalu ikuti akun resmi SYSStreamer. Setelah konfirmasi follow, semua task akan terbuka.',connected:'Akun terhubung',followed:'Saya sudah follow SYSStreamer',unlock:'Buka Semua Task',locked:'Semua task terkunci',unlocked:'Semua task terbuka',needAccount:'Hubungkan minimal satu akun sosial terlebih dahulu.',followNow:'Ikuti / Gabung',done:'Terpenuhi',remaining:'platform lagi'},
+  en:{title:'Follow SYSStreamer to unlock all tasks',desc:'Connect at least one social account, then follow the official SYSStreamer account. After confirming the follow, all tasks will unlock.',connected:'Connected account',followed:'I followed SYSStreamer',unlock:'Unlock All Tasks',locked:'All tasks are locked',unlocked:'All tasks are unlocked',needAccount:'Connect at least one social account first.',followNow:'Follow / Join',done:'Completed',remaining:'platform remaining'},
+  es:{title:'Sigue a SYSStreamer para desbloquear todas las tareas',desc:'Conecta al menos una cuenta social y sigue la cuenta oficial de SYSStreamer. Después de confirmar el seguimiento, se desbloquearán todas las tareas.',connected:'Cuenta conectada',followed:'Ya sigo a SYSStreamer',unlock:'Desbloquear todas las tareas',locked:'Todas las tareas están bloqueadas',unlocked:'Todas las tareas están desbloqueadas',needAccount:'Conecta primero al menos una cuenta social.',followNow:'Seguir / Unirse',done:'Completado',remaining:'plataformas restantes'},
+  pt:{title:'Siga a SYSStreamer para desbloquear todas as tarefas',desc:'Conecte pelo menos uma conta social e siga a conta oficial SYSStreamer. Após confirmar o follow, todas as tarefas serão desbloqueadas.',connected:'Conta conectada',followed:'Já sigo a SYSStreamer',unlock:'Desbloquear todas as tarefas',locked:'Todas as tarefas estão bloqueadas',unlocked:'Todas as tarefas estão desbloqueadas',needAccount:'Conecte primeiro pelo menos uma conta social.',followNow:'Seguir / Entrar',done:'Concluído',remaining:'plataformas restantes'},
+  zh:{title:'关注 SYSStreamer 以解锁所有任务',desc:'先连接至少一个社交账号，然后关注 SYSStreamer 官方账号。确认关注后，所有任务都会解锁。',connected:'已连接账号',followed:'我已关注 SYSStreamer',unlock:'解锁所有任务',locked:'所有任务已锁定',unlocked:'所有任务已解锁',needAccount:'请先连接至少一个社交账号。',followNow:'关注 / 加入',done:'已完成',remaining:'个平台剩余'},
+  ja:{title:'SYSStreamer をフォローしてすべてのタスクを解放',desc:'少なくとも1つのSNSアカウントを接続し、公式SYSStreamerアカウントをフォローしてください。フォロー確認後、すべてのタスクが解放されます。',connected:'接続済みアカウント',followed:'SYSStreamer をフォローしました',unlock:'すべてのタスクを解放',locked:'すべてのタスクがロックされています',unlocked:'すべてのタスクが解放されています',needAccount:'まずSNSアカウントを1つ以上接続してください。',followNow:'フォロー / 参加',done:'完了',remaining:'プラットフォーム残り'},
+  ko:{title:'SYSStreamer를 팔로우하여 모든 작업 잠금 해제',desc:'하나 이상의 소셜 계정을 연결한 다음 공식 SYSStreamer 계정을 팔로우하세요. 팔로우를 확인하면 모든 작업이 열립니다.',connected:'연결된 계정',followed:'SYSStreamer를 팔로우했습니다',unlock:'모든 작업 잠금 해제',locked:'모든 작업이 잠겨 있습니다',unlocked:'모든 작업이 열렸습니다',needAccount:'먼저 하나 이상의 소셜 계정을 연결하세요.',followNow:'팔로우 / 참여',done:'완료',remaining:'개 플랫폼 남음'},
   ar:{title:'تابع SYSStreamer لفتح جميع المهام',desc:'اربط حسابًا اجتماعيًا واحدًا على الأقل ثم تابع حساب SYSStreamer الرسمي. بعد تأكيد المتابعة ستُفتح جميع المهام.',connected:'حساب متصل',followed:'لقد تابعت SYSStreamer',unlock:'فتح جميع المهام',locked:'جميع المهام مقفلة',unlocked:'جميع المهام مفتوحة',needAccount:'اربط حسابًا اجتماعيًا واحدًا على الأقل أولاً.'}
 };
 
 const TASKS: Task[] = [
-  {id:'daily-checkin',key:'checkin',type:'checkin',reward:'program',estimated:'30 seconds',daily:true},
+  {id:'daily-checkin',key:'checkin',type:'checkin',reward:'program',estimated:'30 seconds',daily:true,followNow:'متابعة / انضمام',done:'مكتمل',remaining:'منصات متبقية'},
   {id:'tiktok-upload',key:'tiktok',type:'tiktok',reward:'program',estimated:'10–20 minutes',daily:true},
   {id:'instagram-reel',key:'instagram',type:'instagram',reward:'program',estimated:'10–20 minutes',daily:true},
   {id:'youtube-shorts',key:'shorts',type:'shorts',reward:'program',estimated:'10–20 minutes',daily:true},
@@ -322,6 +332,7 @@ export default function AirdropApp() {
   const [socialSaving,setSocialSaving]=useState(false);
   const [socialMessage,setSocialMessage]=useState('');
   const [followConfirmed,setFollowConfirmed]=useState(false);
+  const [followStatus,setFollowStatus]=useState<Record<string,boolean>>({});
   const [followSaving,setFollowSaving]=useState(false);
   const [lang,setLang]=useState<Lang>(() => {
     if(typeof window==='undefined') return 'id';
@@ -347,7 +358,7 @@ export default function AirdropApp() {
 
   useEffect(() => {
     let active = true;
-    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next); setFollowConfirmed(Boolean(data.followConfirmed));} } catch {} };
+    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next); setFollowConfirmed(Boolean(data.followConfirmed)); setFollowStatus(data.followStatus && typeof data.followStatus==='object' ? data.followStatus : {});} } catch {} };
     void loadSocialAccounts();
 
     const loadAuthenticatedWallet = async () => {
@@ -410,18 +421,26 @@ export default function AirdropApp() {
 
   useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setSocialPlatform(''); },[selectedTask]);
 
-  const confirmFollow=async()=>{
-    if(Object.keys(socialAccounts).length===0){setSocialMessage(SOCIAL_GATE_COPY[lang].needAccount);return;}
-    setFollowSaving(true);setSocialMessage('');
+  const confirmPlatform=async(platform:string)=>{
+    const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
+    if(!official) return;
+    window.open(official.url,'_blank','noopener,noreferrer');
+    setSocialMessage('');
+  };
+
+  const markPlatformFollowed=async(platform:string)=>{
+    setFollowSaving(true); setSocialMessage('');
     try{
-      const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm_follow'})});
+      const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm_platform',platform})});
       const data=await res.json().catch(()=>({}));
-      if(!res.ok||!data.success)throw new Error(data.message||'Unable to confirm follow.');
-      setFollowConfirmed(true);
-      setSocialMessage(SOCIAL_GATE_COPY[lang].unlocked);
+      if(!res.ok||!data.success) throw new Error(data.message||'Unable to confirm follow.');
+      setFollowStatus(data.followStatus||{});
+      setFollowConfirmed(Boolean(data.followConfirmed));
+      setSocialMessage(data.followConfirmed ? SOCIAL_GATE_COPY[lang].unlocked : SOCIAL_GATE_COPY[lang].locked);
     }catch(e){setSocialMessage(e instanceof Error?e.message:'Unable to confirm follow.');}
     finally{setFollowSaving(false);}
   };
+
 
   const saveSocialAccount=async()=>{ const platform=socialPlatform.trim().toLowerCase(),account=socialAccount.trim(); if(!platform||!account)return; setSocialSaving(true);setSocialMessage(''); try{const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,account})}); const data=await res.json().catch(()=>({})); if(!res.ok||!data.success)throw new Error(data.message||'Gagal memasangkan akun media sosial.'); setSocialAccounts(prev=>({...prev,[platform]:account}));setSocialAccount('');setSocialMessage(lang==='id'?'Akun berhasil dipasangkan.':'Social account connected.');}catch(e){setSocialMessage(e instanceof Error?e.message:'Gagal memasangkan akun.');}finally{setSocialSaving(false);} };
 
@@ -615,15 +634,27 @@ export default function AirdropApp() {
 
 
       <section className="mt-8 rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 sm:p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-          <div className="flex-1">
-            <div className="text-xs font-black tracking-wider text-amber-400">{followConfirmed?SOCIAL_GATE_COPY[lang].unlocked:SOCIAL_GATE_COPY[lang].locked}</div>
-            <h2 className="mt-1 text-xl font-black">{SOCIAL_GATE_COPY[lang].title}</h2>
-            <p className="mt-2 text-sm text-slate-400">{SOCIAL_GATE_COPY[lang].desc}</p>
-            <div className="mt-3 text-xs text-slate-500">{SOCIAL_GATE_COPY[lang].connected}: {Object.keys(socialAccounts).length}</div>
+        <div>
+          <div className="text-xs font-black tracking-wider text-amber-400">{followConfirmed?SOCIAL_GATE_COPY[lang].unlocked:SOCIAL_GATE_COPY[lang].locked}</div>
+          <h2 className="mt-1 text-xl font-black">{SOCIAL_GATE_COPY[lang].title}</h2>
+          <p className="mt-2 text-sm text-slate-400">{SOCIAL_GATE_COPY[lang].desc}</p>
+          <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {SOCIAL_OFFICIALS.map(item=>{
+              const done=Boolean(followStatus[item.platform]);
+              return <div key={item.platform} className={`rounded-2xl border p-4 ${done?'border-emerald-500/30 bg-emerald-500/5':'border-slate-800 bg-slate-950'}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold">{item.label}</span>
+                  {done?<CheckCircle2 className="w-4 h-4 text-emerald-400"/>:<span className="w-2 h-2 rounded-full bg-amber-400"/>}
+                </div>
+                <button onClick={()=>confirmPlatform(item.platform)} className="mt-3 w-full rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold hover:border-amber-400/50">
+                  {done?SOCIAL_GATE_COPY[lang].done:SOCIAL_GATE_COPY[lang].followNow}
+                </button>
+                {!done&&<button onClick={()=>void markPlatformFollowed(item.platform)} disabled={followSaving} className="mt-2 w-full rounded-xl bg-amber-400 px-3 py-2 text-xs font-black text-slate-950 disabled:opacity-40">{SOCIAL_GATE_COPY[lang].followed}</button>}
+              </div>;
+            })}
           </div>
-          {!followConfirmed&&<button onClick={confirmFollow} disabled={followSaving||Object.keys(socialAccounts).length===0} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-30 disabled:cursor-not-allowed">{followSaving?'...':SOCIAL_GATE_COPY[lang].unlock}</button>}
-          {followConfirmed&&<div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-black text-emerald-300">{SOCIAL_GATE_COPY[lang].unlocked}</div>}
+          <div className="mt-4 text-xs text-slate-500">{Object.values(followStatus).filter(Boolean).length}/7 {SOCIAL_GATE_COPY[lang].remaining}</div>
+          {socialMessage&&<div className="mt-3 text-xs text-amber-300">{socialMessage}</div>}
         </div>
       </section>
 
