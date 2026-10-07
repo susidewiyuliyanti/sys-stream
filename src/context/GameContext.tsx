@@ -28,7 +28,7 @@ interface GameContextType {
   requireAuth: (action: () => void) => boolean;
   updateAvatar: (avatarUrl: string) => void;
   updateUsername: (username: string) => void;
-  updateProfile: (username: string, avatarUrl: string) => Promise<boolean>;
+  updateProfile: (username: string, avatarUrl: string, walletAddress?: string) => Promise<boolean>;
   recordEventParticipation: (eventId: string, eventName: string, status?: string) => Promise<boolean>;
   toggleSound: () => void;
   updateCoins: (delta: number) => boolean;
@@ -416,7 +416,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
-  const saveRemoteProfile = async (patch: { username?: string; avatarUrl?: string }) => {
+  const saveRemoteProfile = async (patch: { username?: string; avatarUrl?: string; walletAddress?: string }) => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) return false;
     try {
@@ -436,6 +436,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: String(remote.id || prev.id),
         username: remote.username || prev.username,
         avatar: remote.avatarUrl || prev.avatar,
+        walletAddress: remote.walletAddress || prev.walletAddress,
         referralCode: remote.referralCode || prev.referralCode,
         registrationBonusIdr: Number(remote.registrationBonusIdr || prev.registrationBonusIdr || 0),
         registrationBonusGranted: Boolean(remote.registrationBonusGranted ?? prev.registrationBonusGranted),
@@ -467,7 +468,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const updateProfile = async (username: string, avatarUrl: string): Promise<boolean> => {
+  const updateProfile = async (username: string, avatarUrl: string, walletAddress?: string): Promise<boolean> => {
     const trimmedUsername = username.trim();
     const trimmedAvatar = avatarUrl.trim();
     if (!trimmedUsername) return false;
@@ -475,6 +476,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const ok = await saveRemoteProfile({
       username: trimmedUsername,
       avatarUrl: trimmedAvatar,
+      ...(walletAddress !== undefined ? { walletAddress: walletAddress.trim() } : {}),
     });
     if (!ok) return false;
 
