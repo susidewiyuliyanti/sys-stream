@@ -549,8 +549,31 @@ export default function AirdropApp() {
     const catalog=TASKS.filter(t=>!configuredTypes.has(t.type));
     return [...configured,...catalog];
   },[dbTasks]);
-  const taskText=(task:Task)=>{const x=TASK_TEXT[task.key];const fallbackTitle=typeLabel(task.type,tx);const fallbackDesc=lang==='id'?`Selesaikan tugas ${fallbackTitle} sesuai brief campaign dan kirim bukti yang valid.`:`Complete the ${fallbackTitle} task according to the campaign brief and submit valid proof.`;const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
-    if(task.title||task.desc)return {title:task.title||fallbackTitle,desc:task.desc||fallbackDesc,action:x?.action?tx[x.action]:fallbackAction};return x?{title:tx[x.title],desc:tx[x.desc],action:tx[x.action]}:{title:fallbackTitle,desc:fallbackDesc,action:fallbackAction};};
+  const socialTaskTypes: TaskType[] = ['tiktok','instagram','youtube','shorts','twitter','facebook','telegram','discord','social'];
+  const socialRequirementCopy: Record<Lang, string> = {
+    id: 'WAJIB untuk semua task sosial: sertakan hashtag #sysstreamer #streamer #game #web3 dan cantumkan link referral pribadi kamu:',
+    en: 'REQUIRED for all social tasks: include hashtags #sysstreamer #streamer #game #web3 and include your personal referral link:',
+    es: 'OBLIGATORIO para todas las tareas sociales: incluye los hashtags #sysstreamer #streamer #game #web3 y tu enlace de referido personal:',
+    pt: 'OBRIGATÓRIO para todas as tarefas sociais: inclua as hashtags #sysstreamer #streamer #game #web3 e seu link de indicação pessoal:',
+    zh: '所有社交任务均为必填：必须包含 #sysstreamer #streamer #game #web3 标签，并加入你的个人推荐链接：',
+    ja: 'すべてのSNSタスクで必須：#sysstreamer #streamer #game #web3 のハッシュタグと個人紹介リンクを必ず含めてください：',
+    ko: '모든 소셜 작업 필수: #sysstreamer #streamer #game #web3 해시태그와 개인 추천 링크를 반드시 포함하세요:',
+    ar: 'مطلوب لجميع مهام التواصل الاجتماعي: أضف الوسوم #sysstreamer #streamer #game #web3 ورابط الإحالة الشخصي الخاص بك:'
+  };
+  const taskText=(task:Task)=>{
+    const x=TASK_TEXT[task.key];
+    const fallbackTitle=typeLabel(task.type,tx);
+    const fallbackDesc=lang==='id'?`Selesaikan tugas ${fallbackTitle} sesuai brief campaign dan kirim bukti yang valid.`:`Complete the ${fallbackTitle} task according to the campaign brief and submit valid proof.`;
+    const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';
+    let desc=task.desc||fallbackDesc;
+    if(!task.title&&!task.desc&&x) desc=tx[x.desc];
+    if(socialTaskTypes.includes(task.type)){
+      desc=`${desc} ${socialRequirementCopy[lang]} ${referralLink||AIRDROP_UI[lang].availableSoon}`;
+    }
+    if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
+    if(task.title||task.desc)return {title:task.title||fallbackTitle,desc,action:x?.action?tx[x.action]:fallbackAction};
+    return x?{title:tx[x.title],desc,action:tx[x.action]}:{title:fallbackTitle,desc,action:fallbackAction};
+  };
 
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
