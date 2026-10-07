@@ -1,5 +1,6 @@
 import { Env, json } from "../../../_lib/db";
 import { requireAdmin } from "../../../_lib/admin";
+import { brandedEmailHtml } from "../../../_lib/email";
 
 function clean(v:unknown,max=200000){return String(v??"").trim().slice(0,max);}
 function emailOk(v:string){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
@@ -22,7 +23,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const recipient=clean(body?.recipient,320).toLowerCase(),subject=clean(body?.subject,998),html=clean(body?.html,500000),text=clean(body?.text,100000),fromEmail=clean(body?.fromEmail,320).toLowerCase(),fromName=clean(body?.fromName,100);
   if(!emailOk(recipient)||!emailOk(fromEmail)||!subject||!html)return json({success:false,error:"Sender, penerima, subject dan isi email wajib diisi."},400);
   if(!apiKey)return json({success:false,error:"RESEND_API_KEY belum terpasang."},503);
-  const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:fromName+" <"+fromEmail+">",to:[recipient],subject,html,text:text||undefined})});
+  const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:fromName+" <"+fromEmail+">",to:[recipient],subject,html:brandedEmailHtml(html, subject),text:text||undefined})});
   const data:any=await response.json().catch(()=>({}));if(!response.ok)return json({success:false,error:String(data?.message||"Resend menolak test email.")},502);return json({success:true,message:"Test email berhasil dikirim.",resendId:data?.id||null});
  }
  if(action!=="create"&&action!=="send")return json({success:false,error:"Action tidak valid."},400);
@@ -48,7 +49,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  await env.DB.prepare("UPDATE email_campaigns SET status='sending',updated_at=? WHERE id=?").bind(Math.floor(Date.now()/1000),id).run();
  let sent=0,failed=0;
  for(let i=0;i<rows.length;i+=100){
-  const chunk=(rows as any[]).slice(i,i+100),batch=chunk.map(r=>({from:String(campaign.from_name)+" <"+String(campaign.from_email)+">",to:[String(r.email)],subject:String(campaign.subject),html:String(campaign.html_body),text:String(campaign.text_body||"")||undefined}));
+  const chunk=(rows as any[]).slice(i,i+100),batch=chunk.map(r=>({from:String(campaign.from_name)+" <"+String(campaign.from_email)+">",to:[String(r.email)],subject:String(campaign.subject),html:brandedEmailHtml(String(campaign.html_body), String(campaign.subject)),text:String(campaign.text_body||"")||undefined}));
   try{
    const response=await fetch("https://api.resend.com/emails/batch",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify(batch)});const data:any=await response.json().catch(()=>({}));if(!response.ok)throw new Error(String(data?.message||"Resend batch gagal."));
    const ids=Array.isArray(data?.data)?data.data.map((x:any)=>String(x?.id||"")):[],now=Math.floor(Date.now()/1000);
