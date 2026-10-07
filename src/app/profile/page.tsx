@@ -75,6 +75,43 @@ export default function ProfilePage() {
     ? `https://sysstreamer.asia/login?ref=${encodeURIComponent(walletAddress)}`
     : '';
 
+  // Automatically bind the currently connected EVM wallet when the authenticated
+  // account does not have one stored yet. eth_accounts is passive and does not
+  // trigger a wallet approval popup.
+  useEffect(() => {
+    if (!isLoggedIn || walletAddress || typeof window === 'undefined') return;
+    let cancelled = false;
+
+    const syncConnectedEvmWallet = async () => {
+      const ethereum = (window as any).ethereum;
+      if (!ethereum?.request) return;
+      try {
+        const accounts = await ethereum.request({ method: 'eth_accounts' });
+        const connectedWallet = String(Array.isArray(accounts) ? accounts[0] || '' : '').trim();
+        if (cancelled || !connectedWallet || !/^0x[a-fA-F0-9]{40}$/.test(connectedWallet)) return;
+
+        const token = localStorage.getItem('sys_stream_auth_token');
+        if (!token) return;
+        const response = await fetch('/api/auth/wallet/bind', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ walletAddress: connectedWallet }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!cancelled && response.ok && data?.success) {
+          window.location.reload();
+        }
+      } catch {}
+    };
+
+    void syncConnectedEvmWallet();
+    return () => { cancelled = true; };
+  }, [isLoggedIn, walletAddress]);
+
   useEffect(() => {
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) { setEventStatuses([]); return; }
