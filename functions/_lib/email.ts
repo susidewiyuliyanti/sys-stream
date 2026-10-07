@@ -25,6 +25,19 @@ export function verificationExpiry(): number {
   return Math.floor(Date.now() / 1000) + VERIFICATION_TTL_SECONDS;
 }
 
+export const BRAND_LOGO_URL = "https://sysstreamer.asia/sys-streamer-logo.svg";
+export const BRAND_SITE_URL = "https://sysstreamer.asia";
+
+export function brandedEmailHtml(content: string, preheader = ""): string {
+  const safePreheader = String(preheader || "").trim();
+  return "<!doctype html><html><body style='margin:0;padding:0;background:#050505;font-family:Arial,Helvetica,sans-serif;color:#f5f5f5'>" +
+    "<div style='display:none;max-height:0;overflow:hidden;opacity:0'>" + safePreheader + "</div>" +
+    "<div style='width:100%;background:#050505;padding:32px 12px'><div style='max-width:620px;margin:0 auto;background:#0a0a0a;border:1px solid #8a4b00;border-radius:20px;overflow:hidden;box-shadow:0 12px 40px rgba(245,169,0,.12)'>" +
+    "<div style='padding:26px 24px 18px;text-align:center;border-bottom:1px solid #2a1a05'><img src='" + BRAND_LOGO_URL + "' width='120' height='120' alt='SYS STREAMER' style='display:block;width:120px;height:120px;margin:0 auto 10px;border:0;outline:none;text-decoration:none'><div style='font-size:12px;letter-spacing:6px;color:#f5c451'>LIVE • GAMING • CREATOR</div></div>" +
+    "<div style='padding:28px 24px 30px'>" + content + "</div>" +
+    "<div style='padding:18px 24px;text-align:center;border-top:1px solid #2a1a05;color:#9ca3af;font-size:12px;line-height:1.6'><strong style='color:#f5c451'>SYS STREAMER</strong><br><a href='" + BRAND_SITE_URL + "' style='color:#f5c451;text-decoration:none'>sysstreamer.asia</a><br>This is an automated message. Please do not reply unless this mailbox is designated for support.</div>" +
+    "</div></div></body></html>";
+}
 export function verificationUrl(origin: string, token: string): string {
   return `${origin.replace(/\/$/, "")}/#/verify-email?token=${encodeURIComponent(token)}`;
 }
@@ -55,22 +68,17 @@ export async function sendVerificationEmail(
       from: `SYS STREAM <${from}>`,
       to: [to],
       subject: "Verify your SYS STREAM email",
-      html: `
-        <div style="margin:0;padding:32px 16px;background:#060a14;font-family:Arial,sans-serif;color:#e2e8f0">
-          <div style="max-width:560px;margin:0 auto;padding:28px;background:#0b1220;border:1px solid #164e63;border-radius:18px">
-            <h1 style="margin:0 0 10px;color:#22d3ee;font-size:24px">SYS STREAM</h1>
-            <p style="line-height:1.6">Please verify your email address to activate your account.</p>
-            <p style="margin:28px 0">
-              <a href="${verifyUrl}" style="display:inline-block;padding:13px 20px;background:#06b6d4;color:#001018;text-decoration:none;font-weight:700;border-radius:10px">Verify Email</a>
-            </p>
-            <p style="font-size:13px;color:#94a3b8;line-height:1.6">
-              This verification link expires in 24 hours and can only be used once.
-              If you did not create this account, you can ignore this email.
-            </p>
-            <p style="font-size:12px;color:#64748b;margin-top:24px">SYS STREAM • sysstreamer.asia</p>
-          </div>
-        </div>
-      `,
+      html: brandedEmailHtml(`
+        <h1 style="margin:0 0 12px;color:#f5c451;font-size:26px">Verify Your Email</h1>
+        <p style="line-height:1.7;color:#e5e7eb">Please verify your email address to activate your SYS STREAMER account.</p>
+        <p style="margin:28px 0">
+          <a href="${verifyUrl}" style="display:inline-block;padding:14px 22px;background:#f5a900;color:#050505;text-decoration:none;font-weight:800;border-radius:10px">Verify Email</a>
+        </p>
+        <p style="font-size:13px;color:#9ca3af;line-height:1.7">
+          This verification link expires in 24 hours and can only be used once.
+          If you did not create this account, you can ignore this email.
+        </p>
+      `, "Verify your SYS STREAMER email address"),
     }),
   });
 
