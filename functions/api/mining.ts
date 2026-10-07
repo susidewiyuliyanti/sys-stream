@@ -28,7 +28,6 @@ export async function syncMiningForUser(env: Env, userId: string) {
   const amountIdr = Number(active?.amount || 0);
   const startAt = toEpochSeconds(active?.startDate);
   const endAt = toEpochSeconds(active?.endDate);
-  const qualifying = Boolean(active && amountIdr >= MIN_MINING_LOCK_IDR && startAt > 0);
 
   let user = await env.DB.prepare(
     `SELECT
@@ -43,6 +42,21 @@ export async function syncMiningForUser(env: Env, userId: string) {
   ).bind(id).first<any>();
 
   if (!user) throw new Error("USER_NOT_FOUND");
+
+  // A user's canonical total_locked is also a valid lock signal. This
+  // self-heals legacy/stale lock records where the financial lock was
+  // persisted but the deposit row is unavailable to the Mining page.
+  const canonicalLockedIdr = Number(user.totalLocked || 0);
+  const fallbackQualifying = canonicalLockedIdr >= MIN_MINING_LOCK_IDR;
+  const qualifying = Boolean(
+    (active && amountIdr >= MIN_MINING_LOCK_IDR && startAt > 0) ||
+    (!active && fallbackQualifying)
+  );
+  const effectiveAmountIdr = active ? amountIdr : canonicalLockedIdr;
+  const effectiveStartAt = active
+    ? startAt
+    : (Number(user.miningStartedAt || 0) > 0 ? Number(user.miningStartedAt) : now);
+  const effectiveEndAt = active ? endAt : 0;
 
   // There is only one active Blind Box lock per user. Keep the canonical
   // locked balance synchronized with that active deposit before calculating
@@ -80,16 +94,16 @@ export async function syncMiningForUser(env: Env, userId: string) {
     };
   }
 
-  const amountUsd = amountIdr / USD_TO_IDR;
+  const amountUsd = effectiveAmountIdr / USD_TO_IDR;
   const rateSysPerDay = amountUsd / 10;
   const rateSysPerSecond = rateSysPerDay / SECONDS_PER_DAY;
 
   let lastCreditedAt = Number(user.miningLastCreditedAt || 0);
-  const sameMining = Number(user.miningStartedAt || 0) === startAt &&
-    Math.abs(Number(user.miningLockedAmount || 0) - amountIdr) < 0.000001;
+  const sameMining = Number(user.miningStartedAt || 0) === effectiveStartAt &&
+    Math.abs(Number(user.miningLockedAmount || 0) - effectiveAmountIdr) < 0.000001;
 
   if (!sameMining || lastCreditedAt < startAt) {
-    lastCreditedAt = startAt;
+    lastCreditedAt = effectiveStartAt;
     await env.DB.prepare(
       `UPDATE users
        SET mining_enabled = 1,
@@ -97,18 +111,18 @@ export async function syncMiningForUser(env: Env, userId: string) {
            mining_last_credited_at = ?,
            mining_locked_amount = ?
        WHERE id = ?`
-    ).bind(startAt, startAt, amountIdr, id).run();
+    ).bind(effectiveStartAt, effectiveStartAt, effectiveAmountIdr, id).run();
 
     user = {
       ...user,
       miningEnabled: 1,
-      miningStartedAt: startAt,
-      miningLastCreditedAt: startAt,
-      miningLockedAmount: amountIdr,
+      miningStartedAt: effectiveStartAt,
+      miningLastCreditedAt: effectiveStartAt,
+      miningLockedAmount: effectiveAmountIdr,
     };
   }
 
-  const creditUntil = Math.min(now, endAt || now);
+  const creditUntil = Math.min(now, effectiveEndAt || now);
   const elapsed = Math.max(0, creditUntil - lastCreditedAt);
   const deltaSys = elapsed * rateSysPerSecond;
 
@@ -124,7 +138,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
       deltaSys,
       deltaSys,
       creditUntil,
-      creditUntil < (endAt || now) ? 1 : 0,
+      creditUntil < (effectiveEndAt || now) ? 1 : 0,
       id,
       lastCreditedAt
     ).run();
@@ -161,12 +175,12 @@ export async function syncMiningForUser(env: Env, userId: string) {
     lockedBalanceIdr: Number(user.totalLocked || amountIdr || 0),
     rateSysPerDay,
     rateSysPerSecond,
-    miningStartedAt: startAt,
+    miningStartedAt: effectiveStartAt,
     lastCreditedAt,
     accruedSys: Number(user.miningAccruedSys || 0),
     sysBalance: Number(user.sysBalance || 0),
     pendingSys,
-    endAt: endAt || 0,
+    endAt: effectiveEndAt || 0,
   };
 }
 
