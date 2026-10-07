@@ -64,7 +64,7 @@ export default function ProfilePage() {
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
   const [newWalletInput, setNewWalletInput] = useState(user.walletAddress || '');
 
-  const totalLockedUsdt = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
+  const totalLockedIdr = Number(user.lockedBalance ?? getTotalLockedUsdt() ?? 0);
   const availableBalance = Number(user.availableBalance ?? 0);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const withdrawalMinIdr = 100000;
@@ -167,6 +167,7 @@ export default function ProfilePage() {
     ? Math.max(0, Math.min(miningNow, miningEndAtMs || miningNow) - miningLastCreditedMs) / 1000 * miningRatePerSecond
     : 0;
   const miningTotalDisplay = Number(mining?.accruedSys || 0) + miningPendingLive;
+  const miningLockedIdr = Number(mining?.lockedAmountIdr ?? totalLockedIdr ?? 0);
   const miningSecondsRemaining = mining?.enabled && miningEndAtMs > miningNow
     ? Math.floor((miningEndAtMs - miningNow) / 1000)
     : 0;
@@ -356,39 +357,39 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">SYS Mining</div>
-                    <div className="text-sm font-black text-white">{mining?.enabled ? 'MINING ACTIVE' : 'MINING LOCKED'}</div>
+                    <div className="text-sm font-black text-white">{mining?.enabled ? t('Mining Active') : t('Mining Locked')}</div>
                   </div>
                 </div>
                 <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-black text-emerald-300">
-                  {mining?.enabled ? 'AUTO' : 'MIN $10 LOCK'}
+                  {mining?.enabled ? t('Automatic') : t('Minimum $10 Lock')}
                 </span>
               </div>
 
               <div className="mt-5 grid sm:grid-cols-[1fr_auto] gap-4 items-center">
                 <div>
-                  <div className="text-[10px] uppercase tracking-wider text-slate-500">Mining SYS</div>
+                  <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Mining SYS')}</div>
                   <div className="text-3xl font-black font-mono text-emerald-300 mt-1">
                     {miningTotalDisplay.toFixed(8)} SYS
                   </div>
                   <div className="text-[11px] text-slate-400 mt-1">
-                    Rate: <span className="text-cyan-300 font-bold">{Number(mining?.rateSysPerDay || 0).toFixed(4)} SYS / 24h</span>
+                    {t('Rate')}: <span className="text-cyan-300 font-bold">{Number(mining?.rateSysPerDay || 0).toFixed(4)} SYS / 24h</span>
                     {' '}•{' '}
-                    Lock: <span className="text-amber-300 font-bold">${Number(mining?.lockedAmountUsd || 0).toFixed(2)}</span>
+                    {t('Lock')}: <span className="text-amber-300 font-bold">{formatMoney(miningLockedIdr)}</span>
                   </div>
                 </div>
 
                 <div className="min-w-[190px] rounded-2xl border border-emerald-500/20 bg-slate-950/80 p-4">
                   <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500">
-                    <Timer className="w-3.5 h-3.5" /> Mining Timer
+                    <Timer className="w-3.5 h-3.5" /> {t('Mining Timer')}
                   </div>
-                  <div className="text-lg font-black font-mono text-white mt-2">{mining?.enabled ? miningCountdown : '00d 00h 00m 00s'}</div>
+                  <div className="text-lg font-black font-mono text-white mt-2">{mining?.enabled ? miningCountdown : t('Mining Inactive')}</div>
                   <div className="text-[10px] text-slate-500 mt-1">1 SYS / $10 / 24h</div>
                 </div>
               </div>
 
               {!mining?.enabled && (
                 <div className="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-[11px] text-slate-400">
-                  Lock at least <span className="font-black text-amber-300">$10 equivalent</span> to automatically activate SYS Mining.
+                  {t('Lock at least')} <span className="font-black text-amber-300">$10</span> {t('equivalent to automatically activate SYS Mining.')}
                 </div>
               )}
 
@@ -411,7 +412,7 @@ export default function ProfilePage() {
           </div>
           <div className="rounded-2xl border border-amber-500/20 bg-slate-900/70 p-4">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Locked')}</div>
-            <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(totalLockedUsdt)}</div>
+            <div className="text-lg font-black text-amber-300 mt-1">{formatMoney(totalLockedIdr)}</div>
           </div>
           <button onClick={() => setWithdrawOpen(true)} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-cyan-500/30">
             <div className="text-[10px] uppercase tracking-wider text-slate-500">{t('Wallet')}</div>
@@ -514,7 +515,7 @@ export default function ProfilePage() {
           {/* Huge Glowing Cyan Amount */}
           <div>
             <div className="text-4xl sm:text-5xl font-black font-mono text-cyan-400 tracking-tight drop-shadow-[0_0_16px_rgba(6,182,212,0.6)]">
-              {totalLockedUsdt.toFixed(2)} USDT
+              {formatMoney(totalLockedIdr)}
             </div>
             <div className="text-xs text-slate-400 mt-1">
               {t('Locked')} • {t('Earns passive yield')}
