@@ -35,6 +35,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const endDate = new Date(deposit.endDate);
         const early = Date.now() < endDate.getTime();
 
+        const claimsResult = await client.query(
+          `SELECT COALESCE(SUM(amount),0) AS "totalRewards"
+           FROM blind_box_claims
+           WHERE deposit_id = $1`,
+          [depositId]
+        );
+        const totalRewards = Math.max(0, Number(claimsResult.rows[0]?.totalRewards || 0));
+
         const userResult = await client.query(
           `SELECT
              COALESCE(available_balance,0) AS "availableBalance",
@@ -54,7 +62,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         // Blind Box rewards are history-only while the lock is active.
         // On early unlock they are forfeited without touching the user's available balance.
         // The principal is returned; SYS mined before this moment remains credited.
-        const rewardForfeit = early ? 0 : 0;
+        const rewardForfeit = early ? totalRewards : 0;
         const newAvailable = currentAvailable + principal;
         const newLocked = currentLocked - principal;
 
@@ -81,7 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         return {
           principalReturned: principal,
-          rewardForfeited: early ? 0 : 0,
+          rewardForfeited: rewardForfeit,
           miningStopped: true,
           early,
           status: "COMPLETED",
