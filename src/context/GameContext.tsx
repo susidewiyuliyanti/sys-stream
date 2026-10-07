@@ -174,6 +174,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Production source of truth: authenticated user record.
       // Do not read the legacy /api/locks endpoint or browser-only lock cache.
       const response = await fetch('/api/auth/me', {
+        credentials: 'include',
+        cache: 'no-store',
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json().catch(() => ({}));
@@ -210,7 +212,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           headers: { Authorization: `Bearer ${token}` },
         });
         const miningData = await miningResponse.json().catch(() => ({}));
-        if (miningResponse.ok && miningData?.success?.toString?.() !== 'false' && miningData?.mining) {
+        if (miningResponse.ok && miningData?.success && miningData?.mining) {
           setUser(prev => ({ ...prev, sysBalance: Number(miningData.mining.sysBalance ?? prev.sysBalance ?? 0) }));
         }
       } catch {}
@@ -248,12 +250,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch {
         setLocks([]);
       }
-      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
-        ...user,
-        availableBalance: balance,
-        lockedBalance,
-        coins: Math.round(balance * 100),
-      }));
       return true;
     } catch (error: any) {
       if (error?.status === 401 || error?.status === 403) {
