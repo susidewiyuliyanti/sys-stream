@@ -69,7 +69,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             COALESCE(available_balance, 0) AS available_balance,
             COALESCE(balance, 0) AS legacy_balance,
             COALESCE(total_locked, 0) AS total_locked,
-            COALESCE(locked_saldo, 0) AS legacy_locked_saldo
+            COALESCE(locked_saldo, 0) AS legacy_locked_saldo,
+            COALESCE((SELECT total_claimed FROM deposits WHERE id = $2), 0) AS reward_balance
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -89,7 +90,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
-        const newBalance = currentBalance + principal;
+        const rewards = Math.max(0, Number(user.reward_balance || 0));
+        const newBalance = currentBalance + principal + rewards;
         const newLockedBalance = currentLocked - principal;
 
         await client.query(
@@ -129,6 +131,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         return {
           alreadySettled: false,
           amountReturned: principal,
+          rewardsReturned: rewards,
           status: "COMPLETED",
           balance: newBalance,
           lockedBalance: newLockedBalance,
@@ -144,7 +147,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       success: true,
       message: result.alreadySettled
         ? "Lock sudah pernah diselesaikan."
-        : "Lock selesai dan principal berhasil dikembalikan ke saldo.",
+        : "Lock selesai. Principal dan seluruh reward Blind Box dari history berhasil masuk ke saldo.",
       depositId,
       ...result,
     });
