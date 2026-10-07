@@ -20,6 +20,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (context.env.ADMIN_API_KEY && password && password === context.env.ADMIN_API_KEY) {
       const session = await createAdminSession(context.env, {
         id: null,
+        salesId: "owner",
         email: "owner-api-key",
         displayName: "Owner",
         role: "OWNER",
