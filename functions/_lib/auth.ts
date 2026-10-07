@@ -145,6 +145,7 @@ export async function verifyPassword(password: string, stored: string): Promise<
     return false;
   }
 }
+
 export async function createSession(env: Env, userId: string): Promise<string> {
   const token = crypto.randomUUID() + "." + crypto.randomUUID();
   const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
