@@ -69,8 +69,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             COALESCE(available_balance, 0) AS available_balance,
             COALESCE(balance, 0) AS legacy_balance,
             COALESCE(total_locked, 0) AS total_locked,
-            COALESCE(locked_saldo, 0) AS legacy_locked_saldo,
-            COALESCE((SELECT total_claimed FROM deposits WHERE id = $2), 0) AS reward_balance
+            COALESCE(locked_saldo, 0) AS legacy_locked_saldo
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -90,7 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
-        const rewards = Math.max(0, Number(user.reward_balance || 0));
+        const rewards = Math.max(0, Number(deposit.totalClaimed || 0));
         const newBalance = currentBalance + principal + rewards;
         const newLockedBalance = currentLocked - principal;
 
