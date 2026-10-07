@@ -60,6 +60,7 @@ export default function ProfilePage() {
   const [claimingBonus, setClaimingBonus] = useState(false);
   const [mining, setMining] = useState<any | null>(null);
   const [miningNow, setMiningNow] = useState(() => Date.now());
+  const [miningSnapshotAt, setMiningSnapshotAt] = useState(() => Date.now());
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
   const [newWalletInput, setNewWalletInput] = useState(user.walletAddress || '');
@@ -146,6 +147,7 @@ export default function ProfilePage() {
         const data = await response.json().catch(() => ({}));
         if (!cancelled && response.ok && data?.success && data?.mining) {
           setMining(data.mining);
+          setMiningSnapshotAt(Date.now());
         }
       } catch {}
     };
@@ -160,18 +162,18 @@ export default function ProfilePage() {
     };
   }, [isLoggedIn, user.id]);
 
-  const miningEndAtMs = Number(mining?.endAt || 0) * 1000;
-  const miningLastCreditedMs = Number(mining?.lastCreditedAt || 0) * 1000;
   const miningRatePerSecond = Number(mining?.rateSysPerSecond || 0);
-  const miningPendingLive = mining?.enabled
-    ? Math.max(0, Math.min(miningNow, miningEndAtMs || miningNow) - miningLastCreditedMs) / 1000 * miningRatePerSecond
+  const miningClaimThreshold = Number(mining?.claimThresholdSys || 50);
+  const miningBaseClaimable = Number(mining?.claimableSys ?? mining?.accruedSys ?? 0);
+  const miningLiveElapsedSeconds = Math.max(0, (miningNow - miningSnapshotAt) / 1000);
+  const miningTotalDisplay = mining?.enabled
+    ? Math.min(miningClaimThreshold, miningBaseClaimable + miningLiveElapsedSeconds * miningRatePerSecond)
+    : Number(mining?.accruedSys || 0);
+  const miningSecondsToClaim = mining?.enabled && miningRatePerSecond > 0
+    ? Math.max(0, Math.ceil((miningClaimThreshold - miningTotalDisplay) / miningRatePerSecond))
     : 0;
-  const miningTotalDisplay = Number(mining?.accruedSys || 0) + miningPendingLive;
   const miningLockedIdr = Number(mining?.lockedAmountIdr ?? totalLockedIdr ?? 0);
-  const miningSecondsRemaining = mining?.enabled && miningEndAtMs > miningNow
-    ? Math.floor((miningEndAtMs - miningNow) / 1000)
-    : 0;
-  const miningCountdown = `${String(Math.floor(miningSecondsRemaining / 86400)).padStart(2, '0')}d ${String(Math.floor((miningSecondsRemaining % 86400) / 3600)).padStart(2, '0')}h ${String(Math.floor((miningSecondsRemaining % 3600) / 60)).padStart(2, '0')}m ${String(miningSecondsRemaining % 60).padStart(2, '0')}s`;
+  const miningClaimCountdown = String(Math.floor(miningSecondsToClaim / 86400)).padStart(2, '0') + 'd ' + String(Math.floor((miningSecondsToClaim % 86400) / 3600)).padStart(2, '0') + 'h ' + String(Math.floor((miningSecondsToClaim % 3600) / 60)).padStart(2, '0') + 'm ' + String(miningSecondsToClaim % 60).padStart(2, '0') + 's';
 
 
   const handleClaimBonus = async () => {
@@ -372,18 +374,16 @@ export default function ProfilePage() {
                     {miningTotalDisplay.toFixed(8)} SYS
                   </div>
                   <div className="text-[11px] text-slate-400 mt-1">
-                    {t('Rate')}: <span className="text-cyan-300 font-bold">{Number(mining?.rateSysPerDay || 0).toFixed(4)} SYS / 24h</span>
-                    {' '}•{' '}
                     {t('Lock')}: <span className="text-amber-300 font-bold">{formatMoney(miningLockedIdr)}</span>
                   </div>
                 </div>
 
                 <div className="min-w-[190px] rounded-2xl border border-emerald-500/20 bg-slate-950/80 p-4">
                   <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500">
-                    <Timer className="w-3.5 h-3.5" /> {t('Mining Timer')}
+                    <Timer className="w-3.5 h-3.5" /> {t('Claim Timer')}
                   </div>
-                  <div className="text-lg font-black font-mono text-white mt-2">{mining?.enabled ? miningCountdown : t('Mining Inactive')}</div>
-                  <div className="text-[10px] text-slate-500 mt-1">1 SYS / $10 / 24h</div>
+                  <div className="text-lg font-black font-mono text-white mt-2">{mining?.enabled ? (miningTotalDisplay >= miningClaimThreshold ? t('Claim Ready') : miningClaimCountdown) : t('Mining Inactive')}</div>
+                  <div className="text-[10px] text-slate-500 mt-1">{mining?.enabled ? miningTotalDisplay.toFixed(8) + " / " + miningClaimThreshold + " SYS" : t('Mining Inactive')}</div>
                 </div>
               </div>
 
