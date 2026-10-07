@@ -10,6 +10,7 @@ function getCookie(request: Request, name: string) {
 
 export type AdminIdentity = {
   id: string | null;
+  salesId: string;
   email: string;
   displayName: string;
   role: "OWNER" | "ADMIN";
@@ -33,7 +34,7 @@ export async function requireAdmin(request: Request, env: Env) {
   const now = Math.floor(Date.now()/1000);
   const row = await env.DB.prepare(
     `SELECT s.token, s.admin_user_id AS adminUserId,
-            a.email, a.display_name AS displayName, a.role
+            a.sales_id AS salesId, a.email, a.display_name AS displayName, a.role
      FROM admin_sessions s
      LEFT JOIN admin_users a ON a.id = s.admin_user_id
      WHERE s.token = ? AND s.expires_at > ? AND (a.id IS NULL OR a.active = 1)
@@ -45,6 +46,7 @@ export async function requireAdmin(request: Request, env: Env) {
   const identity: AdminIdentity = row.adminUserId
     ? {
         id: String(row.adminUserId),
+        salesId: String(row.salesId || ""),
         email: String(row.email || ""),
         displayName: String(row.displayName || ""),
         role: String(row.role || "ADMIN").toUpperCase() === "OWNER" ? "OWNER" : "ADMIN",
