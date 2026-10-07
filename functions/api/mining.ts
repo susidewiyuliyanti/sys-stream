@@ -4,6 +4,7 @@ import { requireAuth } from "../_lib/auth";
 const USD_TO_IDR = 17937;
 const MIN_MINING_LOCK_IDR = 10 * USD_TO_IDR;
 const SECONDS_PER_DAY = 86400;
+const CLAIM_MIN_SYS = 50;
 
 function toEpochSeconds(value: unknown): number {
   if (typeof value === "number" && Number.isFinite(value)) {
@@ -43,9 +44,6 @@ export async function syncMiningForUser(env: Env, userId: string) {
 
   if (!user) throw new Error("USER_NOT_FOUND");
 
-  // A user's canonical total_locked is also a valid lock signal. This
-  // self-heals legacy/stale lock records where the financial lock was
-  // persisted but the deposit row is unavailable to the Mining page.
   const canonicalLockedIdr = Number(user.totalLocked || 0);
   const fallbackQualifying = canonicalLockedIdr >= MIN_MINING_LOCK_IDR;
   const qualifying = Boolean(
@@ -58,9 +56,6 @@ export async function syncMiningForUser(env: Env, userId: string) {
     : (Number(user.miningStartedAt || 0) > 0 ? Number(user.miningStartedAt) : now);
   const effectiveEndAt = active ? endAt : 0;
 
-  // There is only one active Blind Box lock per user. Keep the canonical
-  // locked balance synchronized with that active deposit before calculating
-  // mining, so the lock and mining engines cannot drift apart.
   if (active && Math.abs(Number(user.totalLocked || 0) - amountIdr) > 0.000001) {
     await env.DB.prepare(
       `UPDATE users
@@ -88,8 +83,10 @@ export async function syncMiningForUser(env: Env, userId: string) {
       miningStartedAt: 0,
       lastCreditedAt: Number(user.miningLastCreditedAt || 0),
       accruedSys: Number(user.miningAccruedSys || 0),
-      sysBalance: Number(user.sysBalance || 0),
       pendingSys: 0,
+      claimableSys: Number(user.miningAccruedSys || 0),
+      claimThresholdSys: CLAIM_MIN_SYS,
+      claimEtaSeconds: null,
       endAt: 0,
     };
   }
@@ -99,7 +96,8 @@ export async function syncMiningForUser(env: Env, userId: string) {
   const rateSysPerSecond = rateSysPerDay / SECONDS_PER_DAY;
 
   let lastCreditedAt = Number(user.miningLastCreditedAt || 0);
-  const sameMining = Number(user.miningStartedAt || 0) === effectiveStartAt &&
+  const sameMining =
+    Number(user.miningStartedAt || 0) === effectiveStartAt &&
     Math.abs(Number(user.miningLockedAmount || 0) - effectiveAmountIdr) < 0.000001;
 
   if (!sameMining || lastCreditedAt < effectiveStartAt) {
@@ -126,16 +124,16 @@ export async function syncMiningForUser(env: Env, userId: string) {
   const elapsed = Math.max(0, creditUntil - lastCreditedAt);
   const deltaSys = elapsed * rateSysPerSecond;
 
+  // Mining accrues into mining_accrued_sys. It is deliberately NOT added
+  // to spendable SYS until the user presses Claim and reaches 50 SYS.
   if (deltaSys > 0.0000000001) {
     const update = await env.DB.prepare(
       `UPDATE users
-       SET sys_balance = COALESCE(sys_balance,0) + ?,
-           mining_accrued_sys = COALESCE(mining_accrued_sys,0) + ?,
+       SET mining_accrued_sys = COALESCE(mining_accrued_sys,0) + ?,
            mining_last_credited_at = ?,
            mining_enabled = ?
        WHERE id = ? AND mining_last_credited_at = ?`
     ).bind(
-      deltaSys,
       deltaSys,
       creditUntil,
       creditUntil < (effectiveEndAt || now) ? 1 : 0,
@@ -144,7 +142,6 @@ export async function syncMiningForUser(env: Env, userId: string) {
     ).run();
 
     if (Number((update as any).meta?.changes || 0) > 0) {
-      user.sysBalance = Number(user.sysBalance || 0) + deltaSys;
       user.miningAccruedSys = Number(user.miningAccruedSys || 0) + deltaSys;
       user.miningLastCreditedAt = creditUntil;
       user.miningEnabled = creditUntil < (effectiveEndAt || now) ? 1 : 0;
@@ -165,8 +162,13 @@ export async function syncMiningForUser(env: Env, userId: string) {
     }
   }
 
+  const accruedSys = Number(user.miningAccruedSys || 0);
   const pendingElapsed = Math.max(0, Math.min(now, effectiveEndAt || now) - lastCreditedAt);
   const pendingSys = pendingElapsed * rateSysPerSecond;
+  const claimableSys = accruedSys + pendingSys;
+  const claimEtaSeconds = rateSysPerSecond > 0 && claimableSys < CLAIM_MIN_SYS
+    ? Math.ceil((CLAIM_MIN_SYS - claimableSys) / rateSysPerSecond)
+    : 0;
 
   return {
     enabled: Boolean(Number(user.miningEnabled || 0)) || pendingSys > 0,
@@ -177,10 +179,13 @@ export async function syncMiningForUser(env: Env, userId: string) {
     rateSysPerSecond,
     miningStartedAt: effectiveStartAt,
     lastCreditedAt,
-    accruedSys: Number(user.miningAccruedSys || 0),
-    sysBalance: Number(user.sysBalance || 0),
+    accruedSys,
     pendingSys,
+    claimableSys,
+    claimThresholdSys: CLAIM_MIN_SYS,
+    claimEtaSeconds,
     endAt: effectiveEndAt || 0,
+    sysBalance: Number(user.sysBalance || 0),
   };
 }
 
