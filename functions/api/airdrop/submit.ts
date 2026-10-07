@@ -72,7 +72,7 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verification_method TEXT").run(); } catch {}
     try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verified_at TEXT").run(); } catch {}
 
-    const requiredPlatforms = ["tiktok","instagram","youtube","telegram","facebook","discord","twitter"];
+    const requiredPlatforms = ["instagram","youtube","telegram","facebook","discord","twitter"];
     const verifiedRows = await db.prepare(
       "SELECT platform,confirmed,verification_method FROM airdrop_follow_status WHERE wallet_address=?"
     ).bind(wallet).all();
