@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, BlindboxItem, GameHistoryEntry, CryptoInvoice, LockRecord, CryptoCardConfig } from '../types';
-import { MIN_BLINDBOX_LOCK_IDR, useLanguage } from '../i18n';
+import { formatIdrAsSelectedCurrency, MIN_BLINDBOX_LOCK_IDR, useLanguage } from '../i18n';
 import { sound } from '../lib/sound';
 
 interface Toast {
