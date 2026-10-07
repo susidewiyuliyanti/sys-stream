@@ -77,8 +77,7 @@ export default function AdminApp() {
       const [u,d,b,a,t,s,an]=results;
       const failures:string[]=[];
 
-      if(u.status==='fulfilled') setUsers(u.value.users||[]);
-      else failures.push('users');
+      if(u.status!=='fulfilled') failures.push('users');
       if(d.status==='fulfilled') setDeposits(d.value.deposits||[]);
       else failures.push('deposits');
       if(b.status==='fulfilled') setGrants(b.value.grants||[]);
@@ -93,9 +92,14 @@ export default function AdminApp() {
       else failures.push('streamers');
       if(an.status==='fulfilled'){
         setAnalytics(an.value);
+        // Analytics is the single authoritative snapshot for the Admin Users
+        // table and overview. The dedicated /users endpoint is only a fallback
+        // when analytics itself is unavailable.
         if(Array.isArray(an.value.users)) setUsers(an.value.users);
+      } else {
+        failures.push('analytics');
+        if(u.status==='fulfilled') setUsers(u.value.users||[]);
       }
-      else failures.push('analytics');
 
       const unauthorized=results.some(r=>r.status==='rejected' && /session|unauthorized/i.test(String(r.reason?.message||r.reason||'')));
       if(unauthorized){
