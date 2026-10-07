@@ -1,5 +1,6 @@
 import { Env, json } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { REGISTRATION_BONUS_USD_REFERENCE } from "../../_lib/bonuses";
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   const auth = await requireAuth(request, env);
@@ -25,7 +26,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       claimed_at INTEGER NOT NULL
     )`).run();
 
-    const bonusUsdt = 0.8363;
+    const bonusUsdt = REGISTRATION_BONUS_USD_REFERENCE;
     const now = Math.floor(Date.now() / 1000);
     const claimId = crypto.randomUUID();
 
