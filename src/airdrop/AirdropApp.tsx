@@ -44,18 +44,6 @@ const SOCIAL_OFFICIALS: Array<{platform:string;label:string;url:string}> = [
   {platform:'discord',label:'Discord',url:'https://discord.gg/44GFMnkp9'},
   {platform:'twitter',label:'X',url:'https://x.com/sysstreamer'},
 ];
-
-const SOCIAL_GATE_COPY: Record<Lang,{title:string;desc:string;connected:string;followed:string;unlock:string;locked:string;unlocked:string;needAccount:string;followNow:string;done:string;remaining:string}> = {
-  id:{title:'Follow SYSStreamer untuk membuka semua task',desc:'Hubungkan minimal satu akun sosial, lalu ikuti akun resmi SYSStreamer. Setelah konfirmasi follow, semua task akan terbuka.',connected:'Akun terhubung',followed:'Saya sudah follow SYSStreamer',unlock:'Buka Semua Task',locked:'Semua task terkunci',unlocked:'Semua task terbuka',needAccount:'Hubungkan minimal satu akun sosial terlebih dahulu.',followNow:'Ikuti / Gabung',done:'Terpenuhi',remaining:'platform lagi'},
-  en:{title:'Follow SYSStreamer to unlock all tasks',desc:'Connect at least one social account, then follow the official SYSStreamer account. After confirming the follow, all tasks will unlock.',connected:'Connected account',followed:'I followed SYSStreamer',unlock:'Unlock All Tasks',locked:'All tasks are locked',unlocked:'All tasks are unlocked',needAccount:'Connect at least one social account first.',followNow:'Follow / Join',done:'Completed',remaining:'platform remaining'},
-  es:{title:'Sigue a SYSStreamer para desbloquear todas las tareas',desc:'Conecta al menos una cuenta social y sigue la cuenta oficial de SYSStreamer. Después de confirmar el seguimiento, se desbloquearán todas las tareas.',connected:'Cuenta conectada',followed:'Ya sigo a SYSStreamer',unlock:'Desbloquear todas las tareas',locked:'Todas las tareas están bloqueadas',unlocked:'Todas las tareas están desbloqueadas',needAccount:'Conecta primero al menos una cuenta social.',followNow:'Seguir / Unirse',done:'Completado',remaining:'plataformas restantes'},
-  pt:{title:'Siga a SYSStreamer para desbloquear todas as tarefas',desc:'Conecte pelo menos uma conta social e siga a conta oficial SYSStreamer. Após confirmar o follow, todas as tarefas serão desbloqueadas.',connected:'Conta conectada',followed:'Já sigo a SYSStreamer',unlock:'Desbloquear todas as tarefas',locked:'Todas as tarefas estão bloqueadas',unlocked:'Todas as tarefas estão desbloqueadas',needAccount:'Conecte primeiro pelo menos uma conta social.',followNow:'Seguir / Entrar',done:'Concluído',remaining:'plataformas restantes'},
-  zh:{title:'关注 SYSStreamer 以解锁所有任务',desc:'先连接至少一个社交账号，然后关注 SYSStreamer 官方账号。确认关注后，所有任务都会解锁。',connected:'已连接账号',followed:'我已关注 SYSStreamer',unlock:'解锁所有任务',locked:'所有任务已锁定',unlocked:'所有任务已解锁',needAccount:'请先连接至少一个社交账号。',followNow:'关注 / 加入',done:'已完成',remaining:'个平台剩余'},
-  ja:{title:'SYSStreamer をフォローしてすべてのタスクを解放',desc:'少なくとも1つのSNSアカウントを接続し、公式SYSStreamerアカウントをフォローしてください。フォロー確認後、すべてのタスクが解放されます。',connected:'接続済みアカウント',followed:'SYSStreamer をフォローしました',unlock:'すべてのタスクを解放',locked:'すべてのタスクがロックされています',unlocked:'すべてのタスクが解放されています',needAccount:'まずSNSアカウントを1つ以上接続してください。',followNow:'フォロー / 参加',done:'完了',remaining:'プラットフォーム残り'},
-  ko:{title:'SYSStreamer를 팔로우하여 모든 작업 잠금 해제',desc:'하나 이상의 소셜 계정을 연결한 다음 공식 SYSStreamer 계정을 팔로우하세요. 팔로우를 확인하면 모든 작업이 열립니다.',connected:'연결된 계정',followed:'SYSStreamer를 팔로우했습니다',unlock:'모든 작업 잠금 해제',locked:'모든 작업이 잠겨 있습니다',unlocked:'모든 작업이 열렸습니다',needAccount:'먼저 하나 이상의 소셜 계정을 연결하세요.',followNow:'팔로우 / 참여',done:'완료',remaining:'개 플랫폼 남음'},
-  ar:{title:'تابع SYSStreamer لفتح جميع المهام',desc:'اربط حسابًا اجتماعيًا واحدًا على الأقل ثم تابع حساب SYSStreamer الرسمي. بعد تأكيد المتابعة ستُفتح جميع المهام.',connected:'حساب متصل',followed:'لقد تابعت SYSStreamer',unlock:'فتح جميع المهام',locked:'جميع المهام مقفلة',unlocked:'جميع المهام مفتوحة',needAccount:'اربط حسابًا اجتماعيًا واحدًا على الأقل أولاً.'}
-};
-
 const TASKS: Task[] = [
   {id:'daily-checkin',key:'checkin',type:'checkin',reward:'program',estimated:'30 seconds',daily:true},
   {id:'tiktok-upload',key:'tiktok',type:'tiktok',reward:'program',estimated:'10–20 minutes',daily:true},
@@ -75,7 +63,7 @@ const TASKS: Task[] = [
 const COPY: Record<Lang, Record<string,string>> = {
   id:{
     tasks:'Tugas', submissions:'Pengajuan Saya', login:'Masuk', wallet:'Alamat Wallet', walletPlaceholder:'Masukkan alamat wallet', saveWallet:'Simpan Wallet', walletRequired:'Alamat wallet wajib diisi untuk mengikuti task.', hero:'Tugas harian. Buat konten. Kirim bukti. Dapatkan reward airdrop.',
-    intro:'Selesaikan tugas campaign di YouTube, TikTok, dan Instagram. Kirim link bukti publik dan ikuti aturan setiap tugas.',
+    intro:'Selesaikan task campaign, buka profil media sosial dari deskripsi task, lalu kirim bukti. Semua submission diverifikasi manual oleh admin.',
     daily:'MISI HARIAN HARI INI', dailySub:'Tugas harian dapat berubah sesuai campaign aktif.', available:'Tugas Tersedia',
     empty:'Belum ada pengajuan', emptySub:'Pengajuan yang kamu kirim akan tampil di sini setelah wallet digunakan.', proofRequired:'Link bukti wajib diisi untuk task ini.',
     instructions:'Instruksi tugas', live:'LANGSUNG', leaderboard:'PAPAN PERINGKAT REFERRAL', top:'Top Referral — Live',
@@ -99,7 +87,7 @@ const COPY: Record<Lang, Record<string,string>> = {
   },
   en:{
     tasks:'Tasks', submissions:'My Submissions', login:'Login', wallet:'Wallet Address', walletPlaceholder:'Enter wallet address', saveWallet:'Save Wallet', walletRequired:'Wallet address is required to join a task.', hero:'Daily tasks. Create content. Submit proof. Earn airdrop rewards.',
-    intro:'Complete campaign tasks across YouTube, TikTok, and Instagram. Submit public proof links and follow each task rule.',
+    intro:'Complete campaign tasks, open the social profile from each task description, then submit proof. All submissions are manually reviewed by admin.',
     daily:"TODAY'S DAILY MISSIONS", dailySub:'Daily tasks may change based on the active campaign.', available:'Available Tasks',
     empty:'No submissions yet', emptySub:'Your submissions will appear here after a wallet is used.', proofRequired:'A proof link is required for this task.',
     instructions:'Task instructions', live:'LIVE', leaderboard:'REFERRAL LEADERBOARD', top:'Top Referrers — Live',
@@ -325,16 +313,7 @@ export default function AirdropApp() {
   const [conversionMessage,setConversionMessage]=useState('');
   const [leaders,setLeaders]=useState<Array<{rank:number;username:string;referrals:number}>>([]);
   const [leaderboardUpdated,setLeaderboardUpdated]=useState<number|null>(null);
-  const [leaderboardError,setLeaderboardError]=useState('');
-  const [socialAccounts,setSocialAccounts]=useState<Record<string,string>>({});
-  const [socialPlatform,setSocialPlatform]=useState('');
-  const [socialAccount,setSocialAccount]=useState('');
-  const [socialSaving,setSocialSaving]=useState(false);
-  const [socialMessage,setSocialMessage]=useState('');
-  const [followConfirmed,setFollowConfirmed]=useState(false);
-  const [followStatus,setFollowStatus]=useState<Record<string,boolean>>({});
-  const [followSaving,setFollowSaving]=useState(false);
-  const [lang,setLang]=useState<Lang>(() => {
+  const [leaderboardError,setLeaderboardError]=useState('');  const [lang,setLang]=useState<Lang>(() => {
     if(typeof window==='undefined') return 'id';
     const params = new URLSearchParams(window.location.search);
     const fromUrl = params.get('lang') as Lang|null;
@@ -355,61 +334,6 @@ export default function AirdropApp() {
     return next;
   });
   const tx=COPY[lang];
-
-  useEffect(() => {
-    let active = true;
-    const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next); setFollowConfirmed(Boolean(data.followConfirmed)); setFollowStatus(data.followStatus && typeof data.followStatus==='object' ? data.followStatus : {});} } catch {} };
-    void loadSocialAccounts();
-    const loadAuthenticatedWallet = async () => {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const handoff = String(params.get('handoff') || '').trim();
-
-        // Airdrop lives on a different origin. Exchange the short-lived
-        // handoff code first so this origin receives its own auth cookie.
-        if (handoff) {
-          const exchange = await fetch('/api/auth/airdrop-exchange', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            cache: 'no-store',
-            body: JSON.stringify({ code: handoff }),
-          });
-          const exchangeData = await exchange.json().catch(() => ({}));
-
-          // Never keep a one-time handoff code in the URL after exchange.
-          const cleanUrl = new URL(window.location.href);
-          cleanUrl.searchParams.delete('handoff');
-          window.history.replaceState({}, document.title, cleanUrl.toString());
-
-          if (!exchange.ok || !exchangeData?.success) {
-            throw new Error(exchangeData?.error || 'Airdrop handoff failed');
-          }
-        }
-
-        const res = await fetch('/api/auth/me', {
-          method: 'GET',
-          credentials: 'include',
-          cache: 'no-store',
-        });
-        const data = await res.json().catch(() => ({}));
-        const wallet = String(data?.user?.walletAddress || '').trim().toLowerCase();
-
-        if (active) {
-          setWalletAddress(data?.success && wallet ? wallet : '');
-          if (data?.success && wallet) {
-            localStorage.setItem('sys_stream_airdrop_wallet', wallet);
-          }
-        }
-      } catch {
-        if (active) setWalletAddress('');
-      }
-    };
-
-    void loadAuthenticatedWallet();
-    return () => { active = false; };
-  }, []);
-
   useEffect(()=>{ document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; },[lang]);
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -418,33 +342,6 @@ export default function AirdropApp() {
   }, []);
 
 
-  useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setSocialPlatform(''); },[selectedTask]);
-
-  const verifyPlatform=async(platform:string)=>{
-    const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
-    if(!official) return;
-    setFollowSaving(true);
-    setSocialMessage('');
-    try{
-      const res=await fetch('/api/airdrop/social-accounts',{
-        method:'POST',
-        credentials:'include',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'verify_platform',platform})
-      });
-      const data=await res.json().catch(()=>({}));
-      setFollowStatus(data.followStatus||{});
-      setFollowConfirmed(Boolean(data.followConfirmed));
-      if(!res.ok||!data.success) throw new Error(data.message||'Follow verification failed.');
-      setSocialMessage(data.followConfirmed ? SOCIAL_GATE_COPY[lang].unlocked : SOCIAL_GATE_COPY[lang].locked);
-    }catch(e){
-      setSocialMessage(e instanceof Error?e.message:'Follow verification failed.');
-    }finally{
-      setFollowSaving(false);
-    }
-  };
-
-  const saveSocialAccount=async()=>{ const platform=socialPlatform.trim().toLowerCase(),account=socialAccount.trim(); if(!platform||!account)return; setSocialSaving(true);setSocialMessage(''); try{const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,account})}); const data=await res.json().catch(()=>({})); if(!res.ok||!data.success)throw new Error(data.message||'Gagal memasangkan akun media sosial.'); setSocialAccounts(prev=>({...prev,[platform]:account}));setSocialAccount('');setSocialMessage(lang==='id'?'Akun berhasil dipasangkan.':'Social account connected.');}catch(e){setSocialMessage(e instanceof Error?e.message:'Gagal memasangkan akun.');}finally{setSocialSaving(false);} };
 
   useEffect(()=>{
     let active=true;
@@ -487,8 +384,6 @@ export default function AirdropApp() {
 
   const submitTask=async()=>{
     const wallet=walletAddress.trim(); if(!selectedTask||!wallet)return;
-    const requiredPlatform=requiredSocialPlatform(selectedTask); const selectedSocialPlatform=requiredPlatform==='social'?(socialPlatform||Object.keys(socialAccounts)[0]||''):requiredPlatform;
-    if(requiredPlatform){ if(!selectedSocialPlatform||!socialAccounts[selectedSocialPlatform]){setSubmissionMessage(lang==='id'?'Pasangkan akun media sosial terlebih dahulu.':'Connect the required social account first.');return;} if(!followConfirmed){setSubmissionMessage(lang==='id'?'Anda wajib follow akun campaign sebelum mengikuti task.':'You must follow the campaign account before submitting this task.');return;} }
     if(selectedTask.type!=='checkin'&&!proofLink.trim()){setSubmissionMessage(tx.proofRequired||COPY.en.proofRequired||'Proof link is required.');return;}
     setSubmissionLoading(true);setSubmissionMessage('');
     try{
@@ -496,7 +391,7 @@ export default function AirdropApp() {
         method:'POST',
         credentials:'include',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN',socialPlatform:selectedSocialPlatform,socialAccount:selectedSocialPlatform?socialAccounts[selectedSocialPlatform]:''})
+        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN'})
       });
       const data=await res.json().catch(()=>({}));
       if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');
@@ -533,7 +428,6 @@ export default function AirdropApp() {
   },[lang,tx.unavailable]);
 
   const openTask=(task:Task)=>{
-    if(!followConfirmed){setSocialMessage(SOCIAL_GATE_COPY[lang].locked);return;}
     if(task.type==='checkin'){
       setSelectedTask(null);
       setCheckinMonth(new Date().toISOString().slice(0,7));
@@ -571,16 +465,18 @@ export default function AirdropApp() {
     const catalog=TASKS.filter(t=>!configuredTypes.has(t.type));
     return [...configured,...catalog];
   },[dbTasks]);
-  const socialTaskTypes: TaskType[] = ['instagram','youtube','shorts','twitter','facebook','telegram','discord','social'];
-  const socialRequirementCopy: Record<Lang, string> = {
-    id: 'WAJIB untuk semua task sosial: sertakan hashtag #sysstreamer #streamer #game #web3 dan cantumkan link referral pribadi kamu:',
-    en: 'REQUIRED for all social tasks: include hashtags #sysstreamer #streamer #game #web3 and include your personal referral link:',
-    es: 'OBLIGATORIO para todas las tareas sociales: incluye los hashtags #sysstreamer #streamer #game #web3 y tu enlace de referido personal:',
-    pt: 'OBRIGATÓRIO para todas as tarefas sociais: inclua as hashtags #sysstreamer #streamer #game #web3 e seu link de indicação pessoal:',
-    zh: '所有社交任务均为必填：必须包含 #sysstreamer #streamer #game #web3 标签，并加入你的个人推荐链接：',
-    ja: 'すべてのSNSタスクで必須：#sysstreamer #streamer #game #web3 のハッシュタグと個人紹介リンクを必ず含めてください：',
-    ko: '모든 소셜 작업 필수: #sysstreamer #streamer #game #web3 해시태그와 개인 추천 링크를 반드시 포함하세요:',
-    ar: 'مطلوب لجميع مهام التواصل الاجتماعي: أضف الوسوم #sysstreamer #streamer #game #web3 ورابط الإحالة الشخصي الخاص بك:'
+  const socialTaskTypes: TaskType[] = ['tiktok','instagram','youtube','shorts','twitter','facebook','telegram','discord','social'];
+  const taskOfficialUrl=(task:Task)=>{
+    const platform=task.type==='shorts'||task.type==='youtube'?'youtube':task.type;
+    return SOCIAL_OFFICIALS.find(item=>item.platform===platform)?.url||'';
+  };
+  const socialInstruction=(task:Task)=>{
+    const platform=task.type==='shorts'||task.type==='youtube'?'youtube':task.type;
+    const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
+    if(!official) return '';
+    return lang==='id'
+      ? 'Buka profil '+official.label+' resmi di bawah, lakukan tugas sesuai instruksi, lalu kembali ke sini dan kirim bukti. Verifikasi dilakukan manual oleh admin.'
+      : 'Open the official '+official.label+' profile below, complete the task, then return here and submit your proof. Verification is performed manually by admin.';
   };
   const taskText=(task:Task)=>{
     const x=TASK_TEXT[task.key];
@@ -589,9 +485,7 @@ export default function AirdropApp() {
     const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';
     let desc=task.desc||fallbackDesc;
     if(!task.title&&!task.desc&&x) desc=tx[x.desc];
-    if(socialTaskTypes.includes(task.type)){
-      desc=`${desc} ${socialRequirementCopy[lang]} ${referralLink||AIRDROP_UI[lang].availableSoon}`;
-    }
+    if(socialTaskTypes.includes(task.type)){ const instruction=socialInstruction(task); if(instruction) desc=desc+' '+instruction; if(referralLink) desc=desc+' '+(lang==='id'?'Link referral pribadi:':'Personal referral link:')+' '+referralLink; }
     if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
     if(task.title||task.desc)return {title:task.title||fallbackTitle,desc,action:x?.action?tx[x.action]:fallbackAction};
     return x?{title:tx[x.title],desc,action:tx[x.action]}:{title:fallbackTitle,desc,action:fallbackAction};
@@ -635,35 +529,6 @@ export default function AirdropApp() {
       </section>
 
 
-      <section className="mt-8 rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 sm:p-6">
-        <div>
-          <div className="text-xs font-black tracking-wider text-amber-400">{followConfirmed?SOCIAL_GATE_COPY[lang].unlocked:SOCIAL_GATE_COPY[lang].locked}</div>
-          <h2 className="mt-1 text-xl font-black">{SOCIAL_GATE_COPY[lang].title}</h2>
-          <p className="mt-2 text-sm text-slate-400">{SOCIAL_GATE_COPY[lang].desc}</p>
-          <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {SOCIAL_OFFICIALS.map(item=>{
-              const done=Boolean(followStatus[item.platform]);
-              return <div key={item.platform} className={`rounded-2xl border p-4 ${done?'border-emerald-500/30 bg-emerald-500/5':'border-slate-800 bg-slate-950'}`}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-bold">{item.label}</span>
-                  {done?<CheckCircle2 className="w-4 h-4 text-emerald-400"/>:<span className="w-2 h-2 rounded-full bg-amber-400"/>}
-                </div>
-                <button onClick={()=>{if(!done){const official=SOCIAL_OFFICIALS.find(x=>x.platform===item.platform); if(official) window.open(official.url,'_blank','noopener,noreferrer');}}} disabled={done} className="mt-3 w-full rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold hover:border-amber-400/50 disabled:opacity-60">
-                  {done?SOCIAL_GATE_COPY[lang].done:SOCIAL_GATE_COPY[lang].followNow}
-                </button>
-                {!done&&<button onClick={()=>void verifyPlatform(item.platform)} disabled={followSaving} className="mt-2 w-full rounded-xl bg-amber-400 px-3 py-2 text-xs font-black text-slate-950 disabled:opacity-40">
-                  {followSaving?'Verifying...':(lang==='id'?'Verify Follow':'Verify Follow')}
-                </button>}
-              </div>;
-            })}
-          </div>
-          <div className="mt-4 text-xs text-slate-500">{Object.values(followStatus).filter(Boolean).length}/7 {SOCIAL_GATE_COPY[lang].remaining}</div>
-          {socialMessage&&<div className="mt-3 text-xs text-amber-300">{socialMessage}</div>}
-        </div>
-      </section>
-
-      <section className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 sm:p-6"><div><div className="text-xs font-black tracking-wider text-amber-400">{lang==='id'?'HUBUNGKAN AKUN MEDIA SOSIAL':'CONNECT SOCIAL ACCOUNTS'}</div><h2 className="mt-1 text-xl font-black">{lang==='id'?'Pasangkan akun untuk mengikuti task':'Connect accounts to join tasks'}</h2><p className="mt-1 text-xs text-slate-500">{lang==='id'?'Task sosial mewajibkan akun terkait sudah follow akun campaign sebelum submission dikirim.':'Social tasks require the related account to follow the campaign before submission.'}</p></div><div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">{['instagram','youtube','twitter','facebook','telegram','discord'].map(p=><div key={p} className="rounded-2xl border border-slate-800 bg-slate-950 p-4"><div className="flex items-center justify-between"><span className="font-bold capitalize">{p==='twitter'?'X / Twitter':p}</span><span className={socialAccounts[p]?'text-emerald-400 text-xs font-black':'text-slate-500 text-xs'}>{socialAccounts[p]?(lang==='id'?'TERHUBUNG':'CONNECTED'):(lang==='id'?'BELUM':'NOT CONNECTED')}</span></div><div className="mt-3 text-xs text-slate-400 truncate">{socialAccounts[p]||AIRDROP_UI[lang].availableSoon}</div></div>)}</div><div className="mt-5 grid sm:grid-cols-[180px_1fr_auto] gap-3"><select value={socialPlatform} onChange={e=>setSocialPlatform(e.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"><option value="">{lang==='id'?'Pilih platform':'Select platform'}</option>{['tiktok','instagram','youtube','twitter','facebook','telegram','discord'].map(p=><option key={p} value={p}>{p==='twitter'?'X / Twitter':p[0].toUpperCase()+p.slice(1)}</option>)}</select><input value={socialAccount} onChange={e=>setSocialAccount(e.target.value)} placeholder={lang==='id'?'Username atau link profil':'Username or profile URL'} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"/><button disabled={!socialPlatform||!socialAccount.trim()||socialSaving} onClick={saveSocialAccount} className="rounded-xl bg-amber-400 px-5 py-3 text-sm font-black text-slate-950 disabled:opacity-40">{socialSaving?(lang==='id'?'Menyimpan...':'Saving...'):(lang==='id'?'Pasangkan':'Connect')}</button></div>{socialMessage&&<div className="mt-3 text-xs text-amber-300">{socialMessage}</div>}</section>
-
       <section className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-5 sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -691,7 +556,7 @@ export default function AirdropApp() {
           <div className="text-xs text-slate-400">{Math.min(availableTasks.length,3)} {tx.dailyMissions}</div>
         </div>
         <div className="mt-5 grid md:grid-cols-3 gap-3">
-          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} disabled={!followConfirmed} onClick={()=>{if(!followConfirmed){setSocialMessage(SOCIAL_GATE_COPY[lang].locked);return;} if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40 disabled:opacity-40 disabled:cursor-not-allowed">
+          {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40 disabled:opacity-40 disabled:cursor-not-allowed">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
             <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.type==='checkin'?({id:'30 detik',en:'30 seconds',es:'30 segundos',pt:'30 segundos',zh:'30 秒',ja:'30秒',ko:'30초',ar:'30 ثانية'} as Record<Lang,string>)[lang]:t.estimated} · {tx.proof}</div>
           </button>})}
@@ -740,7 +605,7 @@ export default function AirdropApp() {
         {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>:availableTasks.filter(t=>(taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','tiktok','instagram','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
-          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} disabled={!followConfirmed} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm disabled:opacity-30 disabled:cursor-not-allowed">{x.action}</button></div>
+          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm disabled:opacity-30 disabled:cursor-not-allowed">{x.action}</button></div>
         </article>})}
         </div>
       </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-5">{submissions.length===0?<div className="p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></div>:<div className="space-y-3">{submissions.map(s=><div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div className="flex-1 min-w-0"><div className="font-bold truncate">{s.task_title||String(s.task_id)}</div><a href={s.evidence_link} target="_blank" rel="noreferrer" className="text-xs text-amber-400 break-all">{s.evidence_link}</a><div className="text-[10px] text-slate-500 mt-1">{s.created_at}</div></div><div className="text-xs font-black px-3 py-2 rounded-xl bg-slate-800 text-slate-200">{statusLabel(s.status,tx)}</div><div className="text-xs text-amber-400 font-bold">{s.reward_points} pts</div></div>)}</div>}</section>}
@@ -754,7 +619,7 @@ export default function AirdropApp() {
             {Array.from({length:daysInMonth},(_,i)=>{              const day=i+1; const item=checkins.get(day); const dateKey=`${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`; const isToday=dateKey===todayKey;              return <button key={day} onClick={()=>{if(isToday&&!item) {setCheckinCalendarOpen(false);setSelectedTask(checkinTask);}}} disabled={!isToday||!!item} className={`aspect-square rounded-xl border p-2 text-left transition ${item?'border-emerald-500/40 bg-emerald-500/10':isToday?'border-amber-400 bg-amber-400/10 hover:bg-amber-400/20':'border-slate-800 bg-slate-950/70'} ${!isToday||item?'cursor-default':''}`}>                <div className="flex items-start justify-between gap-1"><span className={isToday?'text-amber-300 font-black':'text-slate-300 font-bold'}>{day}</span>{item?<span className="text-emerald-400 text-xs">✓</span>:isToday?<span className="text-amber-400 text-[8px] font-black">{CALENDAR_UI[lang].today}</span>:null}</div>                <div className="mt-2 text-[9px] leading-3">{item?<><div className="text-emerald-400 font-bold">{item.status==='approved'?'✓':item.status==='pending'?'…':'×'}</div><div className="text-amber-400">{item.points} {AIRDROP_UI[lang].points}</div></>:<span className="text-slate-600">—</span>}</div>              </button>;            })}          </div>          <div className="mt-5 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">            <span><span className="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-1"/>{CALENDAR_UI[lang].checked}</span>            <span><span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1"/>{CALENDAR_UI[lang].today}</span>            <span><span className="inline-block w-2 h-2 rounded-full bg-slate-600 mr-1"/>{CALENDAR_UI[lang].notChecked}</span>          </div>        </div>      </div>;    })()}    {selectedTask&&(()=>{const x=taskText(selectedTask);return <div className="fixed inset-0 z-50 bg-black/70 p-4 flex items-center justify-center" onClick={()=>setSelectedTask(null)}>
       <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6" onClick={e=>e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label={tx.close || "Close"}><X className="w-5 h-5"/></button></div>
-        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p></div>
+        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p>{taskOfficialUrl(selectedTask)&&<a href={taskOfficialUrl(selectedTask)} target="_blank" rel="noreferrer" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm font-black text-amber-300 hover:bg-amber-400/20">{lang==='id'?'Buka Profil Resmi':'Open Official Profile'}</a>}</div>
         <div className="mt-4">
           <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
           <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
