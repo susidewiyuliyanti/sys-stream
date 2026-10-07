@@ -70,7 +70,31 @@ export async function ensureTikTokTables(env: Env) {
   )`).run();
 }
 
-export async function getTikTokAccessToken(env: Env, wallet: string): Promise<string> {\n  await ensureTikTokTables(env);\n  const row = await env.DB.prepare("SELECT access_token,refresh_token,expires_at FROM airdrop_social_connections WHERE wallet_address=? AND platform=? LIMIT 1").bind(wallet,"tiktok").first<any>();\n  if (!row) throw new Error("TIKTOK_NOT_CONNECTED");\n  const now = Math.floor(Date.now()/1000);\n  if (Number(row.expires_at || 0) > now + 120) return decryptToken(env, String(row.access_token));\n  if (!row.refresh_token) throw new Error("TIKTOK_REAUTH_REQUIRED");\n  const clientKey = String(env.TIKTOK_CLIENT_KEY || "").trim();\n  const clientSecret = String(env.TIKTOK_CLIENT_SECRET || "").trim();\n  if (!clientKey || !clientSecret) throw new Error("TIKTOK_NOT_CONFIGURED");\n  const refreshToken = await decryptToken(env, String(row.refresh_token));\n  const body = new URLSearchParams();\n  body.set("client_key", clientKey);\n  body.set("client_secret", clientSecret);\n  body.set("grant_type", "refresh_token");\n  body.set("refresh_token", refreshToken);\n  const response = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded","Cache-Control":"no-cache"},body:body.toString()});\n  const data = await response.json().catch(()=>({})) as any;\n  if (!response.ok || !data?.access_token) throw new Error("TIKTOK_REAUTH_REQUIRED");\n  const encryptedAccess = await encryptToken(env, String(data.access_token));\n  const nextRefresh = data.refresh_token ? await encryptToken(env, String(data.refresh_token)) : String(row.refresh_token);\n  await env.DB.prepare("UPDATE airdrop_social_connections SET access_token=?,refresh_token=?,expires_at=?,scope=?,updated_at=unixepoch() WHERE wallet_address=? AND platform=?").bind(encryptedAccess,nextRefresh,now+Number(data.expires_in||0),String(data.scope||""),wallet,"tiktok").run();\n  return String(data.access_token);\n}\nexport async function randomState(): Promise<string> {
+export async function getTikTokAccessToken(env: Env, wallet: string): Promise<string> {
+  await ensureTikTokTables(env);
+  const row = await env.DB.prepare("SELECT access_token,refresh_token,expires_at FROM airdrop_social_connections WHERE wallet_address=? AND platform=? LIMIT 1").bind(wallet,"tiktok").first<any>();
+  if (!row) throw new Error("TIKTOK_NOT_CONNECTED");
+  const now = Math.floor(Date.now()/1000);
+  if (Number(row.expires_at || 0) > now + 120) return decryptToken(env, String(row.access_token));
+  if (!row.refresh_token) throw new Error("TIKTOK_REAUTH_REQUIRED");
+  const clientKey = String(env.TIKTOK_CLIENT_KEY || "").trim();
+  const clientSecret = String(env.TIKTOK_CLIENT_SECRET || "").trim();
+  if (!clientKey || !clientSecret) throw new Error("TIKTOK_NOT_CONFIGURED");
+  const refreshToken = await decryptToken(env, String(row.refresh_token));
+  const body = new URLSearchParams();
+  body.set("client_key", clientKey);
+  body.set("client_secret", clientSecret);
+  body.set("grant_type", "refresh_token");
+  body.set("refresh_token", refreshToken);
+  const response = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded","Cache-Control":"no-cache"},body:body.toString()});
+  const data = await response.json().catch(()=>({})) as any;
+  if (!response.ok || !data?.access_token) throw new Error("TIKTOK_REAUTH_REQUIRED");
+  const encryptedAccess = await encryptToken(env, String(data.access_token));
+  const nextRefresh = data.refresh_token ? await encryptToken(env, String(data.refresh_token)) : String(row.refresh_token);
+  await env.DB.prepare("UPDATE airdrop_social_connections SET access_token=?,refresh_token=?,expires_at=?,scope=?,updated_at=unixepoch() WHERE wallet_address=? AND platform=?").bind(encryptedAccess,nextRefresh,now+Number(data.expires_in||0),String(data.scope||""),wallet,"tiktok").run();
+  return String(data.access_token);
+}
+export async function randomState(): Promise<string> {
   const bytes = crypto.getRandomValues(new Uint8Array(32));
   return base64Encode(bytes).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
 }
