@@ -196,7 +196,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    const userId = Number(auth.user.id);
+    const userId = String(auth.user.id);
 
     const result = await withDb(context.env, async (client) => {
       await client.query("BEGIN");
