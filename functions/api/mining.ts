@@ -1,5 +1,5 @@
-import { Env, json } from "../../_lib/db";
-import { requireAuth } from "../../_lib/auth";
+import { Env, json } from "../_lib/db";
+import { requireAuth } from "../_lib/auth";
 
 const USD_TO_IDR = 17937;
 const MIN_MINING_LOCK_IDR = 10 * USD_TO_IDR;
