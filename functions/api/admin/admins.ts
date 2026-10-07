@@ -43,9 +43,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     stage = "INSERT_ADMIN";
     const insertResult = await context.env.DB.prepare(
-      `INSERT INTO admin_users(id,email,display_name,password_hash,role,active,created_at,updated_at)
-       VALUES(?,?,?,?,?,1,?,?)`
-    ).bind(id,email,displayName,passwordHash,role,now,now).run();
+      `INSERT INTO admin_users(id,sales_id,email,display_name,password_hash,role,active,created_at,updated_at)
+       VALUES(?,?,?,?,?,?,1,?,?)`
+    ).bind(id,salesId,email,displayName,passwordHash,role,now,now).run();
 
     if (Number(insertResult.meta?.changes || 0) !== 1) {
       throw new Error("ADMIN_INSERT_NO_CHANGE");
