@@ -36,6 +36,7 @@ const AIRDROP_ERRORS: Record<Lang, {taskNotFound:string;checkinDone:string;singl
 
 
 const SOCIAL_OFFICIALS: Array<{platform:string;label:string;url:string}> = [
+  {platform:'tiktok',label:'TikTok',url:'https://www.tiktok.com/@sysstreamer'},
   {platform:'instagram',label:'Instagram',url:'https://www.instagram.com/sysstreamer/'},
   {platform:'youtube',label:'YouTube',url:'https://www.youtube.com/@sysstreamer'},
   {platform:'telegram',label:'Telegram',url:'https://t.me/sysstreamer'},
@@ -736,7 +737,7 @@ export default function AirdropApp() {
           ].map(([key,label])=><button key={key} onClick={()=>setTaskCategory(key as 'all'|'youtube'|'social'|'checkin')} className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-3 text-xs font-bold hover:border-amber-400/40">{label}</button>)}
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>:availableTasks.filter(t=>t.type!=='tiktok'&&(taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','instagram','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        {tasksLoading?<div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>:availableTasks.filter(t=>(taskCategory==='all'||(taskCategory==='youtube'?(t.type==='youtube'||t.type==='shorts'):taskCategory==='social'?(['social','tiktok','instagram','twitter','facebook','telegram','discord'].includes(t.type)):t.type==='checkin')).map(t=>{const x=taskText(t);return <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span><div className="flex gap-1">{t.daily&&<span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div></div>
           <h2 className="mt-5 text-lg font-bold">{x.title}</h2><p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
           <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3"><div><div className="text-xs text-slate-500">{tx.reward}</div><div className="font-bold text-amber-400">{t.reward==='program'?tx.configured:`${t.reward} pts`}</div></div><button onClick={()=>openTask(t)} disabled={!followConfirmed} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm disabled:opacity-30 disabled:cursor-not-allowed">{x.action}</button></div>
