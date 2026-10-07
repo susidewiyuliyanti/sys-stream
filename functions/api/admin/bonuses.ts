@@ -47,8 +47,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
          VALUES(?,?,?,'USDT',?,?,?)`
       ).bind(grantId,userId,amount,note || null,auth.identity.id,now),
       context.env.DB.prepare(
-        "UPDATE users SET available_balance = COALESCE(available_balance,0) + ? WHERE id=?"
-      ).bind(amount,userId),
+        "UPDATE users SET available_balance = COALESCE(available_balance,0) + ?, balance = COALESCE(available_balance,0) + ? WHERE id=?"
+      ).bind(amount, amount, userId),
     ]);
 
     await notifyAdmins(context.env,{type:"jackpot.grant",title:"Jackpot grant created",message:`${auth.identity.displayName || "Admin"} granted ${amount} USDT to ${user.username || user.email || userId}.`,severity:"success",entityType:"jackpot_grant",entityId:grantId,adminUserId:auth.identity.id});
