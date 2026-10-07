@@ -138,7 +138,7 @@ export default function BlindboxGamePage() {
       if (!primaryLock?.id || openingLock) return;
 
       const confirmed = window.confirm(
-        'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.'
+        t('Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.')
       );
       if (!confirmed) return;
 
@@ -163,14 +163,14 @@ export default function BlindboxGamePage() {
         showToast(
           t('Lock Opened'),
           data.early
-            ? 'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.'
-            : 'Lock selesai dan principal dikembalikan.',
+            ? t('Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.')
+            : t('Lock selesai dan principal dikembalikan.'),
           'success'
         );
       } catch (error) {
         showToast(
           t('Open Lock Failed'),
-          error instanceof Error ? error.message : 'Gagal membuka lock.',
+          error instanceof Error ? error.message : t('Gagal membuka lock.'),
           'error'
         );
       } finally {
@@ -530,10 +530,10 @@ export default function BlindboxGamePage() {
                 disabled={openingLock}
                 className="px-4 py-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-bold text-xs transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {openingLock ? 'Opening Lock...' : 'Open Lock Early'}
+                {openingLock ? t('Opening Lock...') : t('Open Lock Early')}
               </button>
               <div className="text-[10px] text-rose-300/80 max-w-xs text-right">
-                Early open: principal returned, Blind Box rewards forfeited. SYS mined until this moment remains yours.
+                {t('Early open')}: {t('principal returned')}, {t('Blind Box rewards forfeited')}. {t('SYS mined until this moment remains yours')}.
               </div>
             </div>
           </div>
