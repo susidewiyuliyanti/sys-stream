@@ -78,6 +78,7 @@ export default function AdminApp() {
       const failures:string[]=[];
 
       if(u.status!=='fulfilled') failures.push('users');
+      else setUsers(Array.isArray(u.value.users) ? u.value.users : []);
       if(d.status==='fulfilled') setDeposits(d.value.deposits||[]);
       else failures.push('deposits');
       if(b.status==='fulfilled') setGrants(b.value.grants||[]);
@@ -95,7 +96,12 @@ export default function AdminApp() {
         // Analytics is the single authoritative snapshot for the Admin Users
         // table and overview. The dedicated /users endpoint is only a fallback
         // when analytics itself is unavailable.
-        if(Array.isArray(an.value.users)) setUsers(an.value.users);
+        if(Array.isArray(an.value.users) && an.value.users.length) {
+          // Analytics enriches the dashboard summary, but the dedicated Users
+          // endpoint remains the authoritative user snapshot. Never replace a
+          // valid user snapshot with an empty analytics payload.
+          if(u.status!=='fulfilled') setUsers(an.value.users);
+        }
       } else {
         failures.push('analytics');
         if(u.status==='fulfilled') setUsers(u.value.users||[]);
@@ -176,6 +182,7 @@ export default function AdminApp() {
   const totalUsers=Number(analytics?.summary?.totalUsers ?? displayUsers.length);
   const totalBalance=Number(analytics?.summary?.totalAvailableBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.availableBalance||0),0));
   const totalLocked=Number(analytics?.summary?.totalLockedBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.lockedBalance||0),0));
+  const totalSys=Number(analytics?.summary?.totalSysBalance ?? displayUsers.reduce((sum,u)=>sum+Number((u as any).sysBalance||0),0));
 
   return(
     <div className="min-h-screen bg-slate-950 text-slate-100">
