@@ -219,7 +219,7 @@ export default function AdminApp() {
             </div>
 
             {tab==='overview'&&<Overview users={displayUsers} deposits={deposits} totalBalance={totalBalance} totalLocked={totalLocked} analytics={analytics}/>} 
-            {tab==='users'&&<UsersTable users={filteredUsers} canEditBalance={admin?.role==='OWNER'}/>}
+            {tab==='users'&&<UsersTable users={filteredUsers} canEditBalance={admin?.role==='OWNER'} onRefresh={()=>void loadDashboard()}/>}
             {tab==='streamers'&&<StreamersPanel users={users} streamers={streamers} onRefresh={()=>void loadDashboard()}/>}
             {tab==='transactions'&&<TransactionsTable deposits={deposits}/>}
             {tab==='jackpot'&&<JackpotPanel users={users} grants={grants} onRefresh={()=>void loadDashboard()}/>}
@@ -241,7 +241,7 @@ function Overview({users,deposits,totalBalance,totalLocked,analytics}:{users:Adm
  return <div className="space-y-6"><div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4"><Stat icon={<Users/>} label="Total Users" value={Number(users.length).toLocaleString()}/><Stat icon={<CircleDollarSign/>} label="Available Balance — All Users (USDT)" value={formatNumber(totalBalance)}/><Stat icon={<WalletCards/>} label="Locked Balance — All Users (USDT)" value={formatNumber(totalLocked)}/><Stat icon={<Gift/>} label="SYS Balance — All Users" value={formatNumber(Number(analytics?.summary?.totalSysBalance||0))}/></div><Panel title="Owner Analytics — User Financial Summary" meta="Live aggregation from production D1 users table"><div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">Metric</th><th className="text-right py-3">Value</th></tr></thead><tbody className="divide-y divide-slate-800"><tr><td className="py-3 pr-4">All production users</td><td className="py-3 text-right font-bold">{Number(analytics?.summary?.totalUsers||0).toLocaleString()}</td></tr><tr><td className="py-3 pr-4">Available balance accumulated — all users (USDT)</td><td className="py-3 text-right font-bold text-emerald-400">{formatNumber(totalBalance)}</td></tr><tr><td className="py-3 pr-4">Locked balance accumulated — all users (USDT)</td><td className="py-3 text-right">{formatNumber(totalLocked)}</td></tr><tr><td className="py-3 pr-4">SYS balance accumulated — all users</td><td className="py-3 text-right">{formatNumber(Number(analytics?.summary?.totalSysBalance||0))}</td></tr><tr><td className="py-3 pr-4">Users with wallet</td><td className="py-3 text-right">{Number(analytics?.summary?.walletUsers||0).toLocaleString()}</td></tr><tr><td className="py-3 pr-4">Verified users</td><td className="py-3 text-right">{Number(analytics?.summary?.verifiedUsers||0).toLocaleString()}</td></tr></tbody></table></div></Panel><div className="grid xl:grid-cols-2 gap-6"><Panel title="Users" meta={`${users.length} records`}>{users.slice(0,8).map(u=><div key={u.id} className="flex justify-between gap-4 py-2 border-b border-slate-800 last:border-0"><div className="min-w-0"><div className="font-semibold truncate">{u.username||u.id}</div><div className="text-xs text-slate-500 truncate">{u.email||'-'}</div></div><div className="text-right text-sm">{formatNumber(Number(u.availableBalance||0))} USDT<div className="text-[11px] text-slate-500">available</div></div></div>)}{!users.length&&<EmptyState text="No production users yet."/>}</Panel><Panel title="Recent Transactions" meta={`${deposits.length} records`}>{deposits.slice(0,8).map(d=><div key={d.id} className="flex justify-between gap-4 py-2 border-b border-slate-800 last:border-0"><div><div className="font-mono text-xs">{d.depositCode||d.id}</div><div className="text-xs text-slate-500">{d.username||d.userId}</div></div><div className="text-right text-sm">{formatNumber(Number(d.amount||0))} USDT<div className="text-[11px] text-slate-500">{d.status||'-'}</div></div></div>)}{!deposits.length&&<EmptyState text="No production transactions yet."/>}</Panel></div></div>;
 }
 
-function UsersTable({users,canEditBalance}:{users:AdminUser[];canEditBalance:boolean}){
+function UsersTable({users,canEditBalance,onRefresh}:{users:AdminUser[];canEditBalance:boolean;onRefresh:()=>void}){
  const [editing,setEditing]=useState<AdminUser|null>(null);
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState('');
@@ -262,7 +262,7 @@ function UsersTable({users,canEditBalance}:{users:AdminUser[];canEditBalance:boo
    if(!r.ok||!d.success)throw new Error(d.error||'Gagal mengubah saldo.');
    setMessage(`Saldo ${editing.username||editing.email||editing.id} berhasil diubah.`);
    setEditing(null);setNewBalance('');setNote('');
-   window.setTimeout(()=>window.location.reload(),250);
+   await onRefresh();
   }catch(e:any){setMessage(e?.message||'Gagal mengubah saldo.');}finally{setBusy(false);}
  };
  return <div className="space-y-6">
