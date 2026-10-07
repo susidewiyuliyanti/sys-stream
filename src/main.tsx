@@ -47,7 +47,6 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
           <p className="mt-2 text-sm text-slate-400">
             Muat ulang halaman untuk mengambil bundle produksi terbaru.
           </p>
-          <pre className="mt-4 max-h-40 overflow-auto rounded-lg bg-black/40 p-3 text-left text-[10px] text-red-300 whitespace-pre-wrap">{this.state.error.message}</pre>
           <button
             type="button"
             onClick={() => void this.reloadWithFreshBundle()}
