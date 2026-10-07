@@ -48,12 +48,15 @@ async function getStatus(env: Env, userId: string) {
     `, [userId]);
 
     const deposit = active.rows[0] ?? null;
-    const lockAmountIdr = Number(deposit?.amount ?? 0);
-    const miningActive = Boolean(
-      deposit &&
-      Number.isFinite(lockAmountIdr) &&
-      lockAmountIdr >= MINING_MIN_IDR
+    const userResult = await client.query(
+      `SELECT COALESCE(total_locked,0) AS "totalLocked",
+              COALESCE(mining_started_at,0) AS "miningStartedAt"
+       FROM users WHERE id = $1 LIMIT 1`,
+      [userId]
     );
+    const canonicalLockedIdr = Number(userResult.rows[0]?.totalLocked || 0);
+    const lockAmountIdr = Number(deposit?.amount ?? canonicalLockedIdr);
+    const miningActive = Number.isFinite(lockAmountIdr) && lockAmountIdr >= MINING_MIN_IDR;
     const dailyReward = miningActive
       ? Math.floor(lockAmountIdr / MINING_MIN_IDR)
       : 0;
@@ -71,14 +74,14 @@ async function getStatus(env: Env, userId: string) {
       dailyReward,
       claimedToday: claimResult.rows.length > 0,
       claim: claimResult.rows[0] ?? null,
-      lock: deposit ? {
-        id: Number(deposit.id),
+      lock: miningActive ? {
+        id: Number(deposit?.id ?? 0),
         amountIdr: lockAmountIdr,
         amountUsd: lockAmountIdr / IDR_PER_USD,
-        durationDays: Number(deposit.durationDays ?? 0),
-        startDate: deposit.startDate,
-        endDate: deposit.endDate,
-        status: String(deposit.status ?? ''),
+        durationDays: Number(deposit?.durationDays ?? 0),
+        startDate: deposit?.startDate ?? userResult.rows[0]?.miningStartedAt ?? 0,
+        endDate: deposit?.endDate ?? 0,
+        status: String(deposit?.status ?? 'ACTIVE'),
       } : null,
     };
   });
