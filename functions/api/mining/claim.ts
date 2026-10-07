@@ -45,7 +45,7 @@ async function getStatus(env: Env, userId: string) {
         AND status = 'ACTIVE'
       ORDER BY amount DESC, id DESC
       LIMIT 1
-    `, [Number(userId)]);
+    `, [userId]);
 
     const deposit = active.rows[0] ?? null;
     const lockAmountIdr = Number(deposit?.amount ?? 0);
@@ -122,6 +122,7 @@ export async function onRequestPost(context: any) {
 
     const userId = String(auth.user.id);
     const claimDate = wibDate();
+    await syncMiningForUser(env, userId);
 
     const status = await getStatus(env, userId);
     const lock = status.lock;
@@ -186,7 +187,7 @@ export async function onRequestPost(context: any) {
         FROM users
         WHERE id = $1
         LIMIT 1
-      `, [Number(userId)]);
+      `, [userId]);
 
       return {
         alreadyClaimed: false,
