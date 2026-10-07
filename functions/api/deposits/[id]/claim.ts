@@ -135,17 +135,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [reward, depositId]
         );
 
-        await client.query(
-          `
-          UPDATE users
-          SET
-            available_balance = COALESCE(available_balance, 0) + $1,
-            balance = COALESCE(available_balance, 0) + $1
-          WHERE id = $2
-          `,
-          [reward, userId]
-        );
-
         const updatedDeposit = await client.query(
           `
           SELECT total_claimed AS "totalClaimed"
@@ -156,16 +145,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [depositId]
         );
 
-        const updatedUser = await client.query(
-          `
-          SELECT COALESCE(available_balance, 0) AS balance
-          FROM users
-          WHERE id = $1
-          LIMIT 1
-          `,
-          [userId]
-        );
-
         await client.query("COMMIT");
 
         return {
@@ -173,7 +152,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           isJackpot,
           claimDate,
           totalClaimed: Number(updatedDeposit.rows[0]?.totalClaimed ?? reward),
-          balance: Number(updatedUser.rows[0]?.balance ?? 0),
+          balance: null,
         };
       } catch (error) {
         await client.query("ROLLBACK");
@@ -183,7 +162,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return json({
       success: true,
-      message: result.isJackpot ? "Selamat! Jackpot berhasil didapat." : "Claim berhasil.",
+      message: result.isJackpot ? "Reward dicatat di history Blind Box dan akan masuk saldo setelah lock selesai." : "Reward dicatat di history Blind Box dan akan masuk saldo setelah lock selesai.",
       ...result,
     });
   } catch (error) {
