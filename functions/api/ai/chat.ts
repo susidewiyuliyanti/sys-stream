@@ -244,6 +244,52 @@ async function callTool(name: string, env: Env, userId: string): Promise<unknown
   return { error: "Unknown tool" };
 }
 
+async function geminiFallback(env: Env, language: string, message: string, userId: string) {
+  const key = String(env.GEMINI_API_KEY || "").trim();
+  if (!key) throw new Error("GEMINI_NOT_CONFIGURED");
+
+  const account = await callTool("get_account_summary", env, userId);
+  const airdrop = await callTool("get_airdrop_status", env, userId);
+  const transactions = await callTool("get_recent_transactions", env, userId);
+
+  const prompt = [
+    instructions(language),
+    "",
+    "VERIFIED ACCOUNT CONTEXT — READ ONLY:",
+    JSON.stringify({ account, airdrop, transactions }).slice(0, 18000),
+    "",
+    "User message:",
+    message,
+  ].join("\n");
+
+  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": key,
+    },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: instructions(language) }] },
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 1200 },
+    }),
+  });
+
+  const data = await response.json().catch(() => ({})) as any;
+  if (!response.ok) {
+    console.error("Gemini fallback failed", { status: response.status, data });
+    throw new Error(`GEMINI_HTTP_${response.status}`);
+  }
+
+  const output = data?.candidates?.[0]?.content?.parts
+    ?.map((part: any) => String(part?.text || ""))
+    .join("")
+    .trim();
+
+  if (!output) throw new Error("GEMINI_EMPTY_RESPONSE");
+  return output;
+}
+
 async function openAIRequest(env: Env, body: unknown) {
   const key = String(env.OPENAI_API_KEY || "").trim();
   if (!key) throw new Error("OPENAI_NOT_CONFIGURED");
@@ -358,6 +404,21 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   } catch (error) {
     console.error("Miss SYS error", error);
     const code = String(error);
+
+    // If the primary OpenAI provider is unavailable, use the configured
+    // Gemini provider so Miss SYS can still answer authenticated account
+    // questions without exposing credentials or changing account data.
+    try {
+      const fallback = await geminiFallback(env, language, message, String(auth.user.id));
+      return corsJson(request, {
+        success: true,
+        message: fallback,
+        model: "gemini-3.6-flash",
+        provider: "gemini-fallback",
+      });
+    } catch (fallbackError) {
+      console.error("Miss SYS Gemini fallback error", String(fallbackError));
+    }
     if (code.includes("OPENAI_NOT_CONFIGURED")) {
       return corsJson(request, {
         success: false,
