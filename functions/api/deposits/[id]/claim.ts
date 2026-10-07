@@ -151,6 +151,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           reward,
           isJackpot,
           claimDate,
+          claimId: Number(
+            (
+              await client.query(
+                `SELECT id FROM blind_box_claims WHERE deposit_id = $1 AND claim_date = $2 LIMIT 1`,
+                [depositId, claimDate]
+              )
+            ).rows[0]?.id ?? 0
+          ),
           totalClaimed: Number(updatedDeposit.rows[0]?.totalClaimed ?? reward),
           balance: null,
         };
