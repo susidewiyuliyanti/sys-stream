@@ -3,17 +3,33 @@ import { createSession } from "../../../_lib/auth";
 
 function base58Decode(input: string): Uint8Array {
   const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  const bytes = [0];
+  const bytes: number[] = [];
+
   for (const ch of input) {
     const value = alphabet.indexOf(ch);
     if (value < 0) throw new Error("INVALID_BASE58");
+
     let carry = value;
-    for (let i=0;i<bytes.length;i++) { carry += bytes[i] * 58; bytes[i] = carry & 255; carry >>= 8; }
-    while (carry) { bytes.push(carry & 255); carry >>= 8; }
+    for (let i = 0; i < bytes.length; i++) {
+      carry += bytes[i] * 58;
+      bytes[i] = carry & 255;
+      carry >>= 8;
+    }
+    while (carry > 0) {
+      bytes.push(carry & 255);
+      carry >>= 8;
+    }
   }
-  let zeros = 0; while (zeros < input.length && input[zeros] === "1") zeros++;
-  const out = new Uint8Array(zeros + bytes.length);
-  for (let i=0;i<bytes.length;i++) out[out.length - 1 - i] = bytes[i];
+
+  let leadingZeros = 0;
+  while (leadingZeros < input.length && input[leadingZeros] === "1") {
+    leadingZeros++;
+  }
+
+  const out = new Uint8Array(leadingZeros + bytes.length);
+  for (let i = 0; i < bytes.length; i++) {
+    out[out.length - 1 - i] = bytes[i];
+  }
   return out;
 }
 
