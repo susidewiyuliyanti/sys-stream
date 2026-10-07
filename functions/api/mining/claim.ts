@@ -7,6 +7,14 @@ const MINING_USD = 10;
 const MINING_MIN_IDR = MINING_USD * IDR_PER_USD;
 const CLAIM_MIN_SYS = 50;
 
+function toEpochSeconds(value: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value > 2_000_000_000 ? Math.floor(value / 1000) : Math.floor(value);
+  }
+  const ms = Date.parse(String(value || ""));
+  return Number.isFinite(ms) ? Math.floor(ms / 1000) : 0;
+}
+
 async function ensureMining(env: Env) {
   await env.DB.prepare(`
     CREATE TABLE IF NOT EXISTS mining_claims (
@@ -55,15 +63,12 @@ async function getStatus(env: Env, userId: string) {
     const miningActive = Number.isFinite(lockAmountIdr) && lockAmountIdr >= MINING_MIN_IDR;
     const rateSysPerDay = miningActive ? (lockAmountIdr / IDR_PER_USD) / 10 : 0;
     const rateSysPerSecond = rateSysPerDay / 86400;
-    const miningStartedAt = Number(
-      deposit?.startDate ??
-      userResult.rows[0]?.miningStartedAt ??
-      0
-    );
+    const miningStartedAt = Number(userResult.rows[0]?.miningStartedAt || 0) ||
+      toEpochSeconds(deposit?.startDate);
     const accruedSys = Number(userResult.rows[0]?.miningAccruedSys || 0);
     const lastCreditedAt = Number(userResult.rows[0]?.miningLastCreditedAt || 0);
     const now = Math.floor(Date.now() / 1000);
-    const endAt = deposit?.endDate ? Number(deposit.endDate) : 0;
+    const endAt = toEpochSeconds(deposit?.endDate);
     const pendingElapsed = miningActive
       ? Math.max(0, Math.min(now, endAt || now) - lastCreditedAt)
       : 0;
