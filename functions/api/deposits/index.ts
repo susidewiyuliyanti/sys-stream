@@ -345,7 +345,23 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     });
 
-    await notifyAdmins(context.env,{type:"deposit.created",title:"New Blind Box lock",message:`User ${auth.user.walletAddress || auth.user.id} created a ${durationDays}-day lock worth ${amount}.`,severity:"info",entityType:"deposit",entityId:result.deposit?.id});
+    // Notification is auxiliary. A successful financial lock must never be reported
+    // as failed just because the admin notification channel is unavailable.
+    try {
+      await notifyAdmins(
+        context.env,
+        {
+          type: "deposit.created",
+          title: "New Blind Box lock",
+          message: `User ${auth.user.walletAddress || auth.user.id} created a ${durationDays}-day lock worth ${amount}.`,
+          severity: "info",
+          entityType: "deposit",
+          entityId: result.deposit?.id,
+        }
+      );
+    } catch (notificationError) {
+      console.error("Deposit created but admin notification failed:", notificationError);
+    }
 
     return json({
       success: true,
