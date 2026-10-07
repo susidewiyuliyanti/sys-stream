@@ -3,10 +3,17 @@ import { sound } from '../../lib/sound';
 import { TERMS_VERSION } from '../terms/page';
 import { useLanguage } from '../../i18n';
 import { useGame } from '../../context/GameContext';
-import { Wallet, Shield, Fingerprint } from 'lucide-react';
+import { Wallet, Shield, Fingerprint, Coins } from 'lucide-react';
 import { HDNodeWallet } from 'ethers';
 
 declare global {
+  interface Window {
+    solana?: any;
+    phantom?: { solana?: any };
+    solflare?: any;
+    okxwallet?: { solana?: any };
+  }
+
   interface Window {
     ethereum?: {
       request(args: { method: string; params?: unknown[] }): Promise<unknown>;
@@ -67,6 +74,42 @@ export default function LoginPage({ navigate }: Props) {
     } else {
       navigate?.(postLoginPath);
     }
+  };
+
+  const handleSolanaLogin = async () => {
+    if (isSubmitting) return;
+    const provider = window.phantom?.solana || window.okxwallet?.solana || window.solflare || window.solana;
+    if (!provider) {
+      window.alert(t('Install a Solana-compatible wallet such as OKX Wallet or Phantom.'));
+      return;
+    }
+    setIsSubmitting(true);
+    setNotice('');
+    try {
+      const connected = await provider.connect();
+      const walletAddress = String(connected?.publicKey?.toString?.() || provider.publicKey?.toString?.() || '').trim();
+      if (!walletAddress) throw new Error(t('Solana wallet address tidak ditemukan.'));
+      const challengeRes = await fetch('/api/auth/solana/challenge',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({walletAddress})});
+      const challengeData = await challengeRes.json().catch(()=>({}));
+      if(!challengeRes.ok || !challengeData?.success) throw new Error(challengeData?.error || t('Gagal membuat challenge Solana wallet.'));
+      const encoded = new TextEncoder().encode(String(challengeData.message));
+      const signed = await provider.signMessage(encoded,'utf8');
+      const signatureBytes = signed?.signature || signed;
+      if(!signatureBytes) throw new Error(t('Signature Solana tidak ditemukan.'));
+      const alphabet='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+      let n=0n;
+      for(const byte of new Uint8Array(signatureBytes)){ n=(n<<8n)+BigInt(byte); }
+      let signature='';
+      while(n>0n){ const rem=Number(n%58n); signature=alphabet[rem]+signature; n/=58n; }
+      for(const byte of new Uint8Array(signatureBytes)){ if(byte===0) signature='1'+signature; else break; }
+      const loginRes=await fetch('/api/auth/solana/login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({challengeId:challengeData.challengeId,walletAddress,message:challengeData.message,signature})});
+      const loginData=await loginRes.json().catch(()=>({}));
+      if(!loginRes.ok || !loginData?.success || !loginData?.token || !loginData?.user) throw new Error(loginData?.error || t('Verifikasi tanda tangan Solana gagal.'));
+      finishAuth(String(loginData.token),loginData.user);
+    } catch(error) {
+      console.error('Solana login error:',error);
+      window.alert(error instanceof Error ? error.message : t('Solana wallet login gagal.'));
+    } finally { setIsSubmitting(false); }
   };
 
   const handleWalletLogin = async () => {
@@ -253,6 +296,10 @@ export default function LoginPage({ navigate }: Props) {
               <p className="mt-1 text-[11px] leading-5 text-slate-400">
                 {t('Hubungkan MetaMask atau wallet EVM lain, lalu tanda tangani pesan login.')}
               </p>
+              <button type="button" onClick={handleSolanaLogin} disabled={isSubmitting}
+                className="mt-4 w-full py-3 rounded-xl border border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/20 disabled:opacity-40 text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <Coins className="w-4 h-4 text-purple-300" /> {t('LOGIN WITH SOLANA')}
+              </button>
             </div>
           ) : (
             <>
