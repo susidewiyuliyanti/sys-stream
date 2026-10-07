@@ -334,11 +334,15 @@ export async function onRequestOptions({ request }: { request: Request }) {
 
 export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
   let language = "en";
+  let requestMessage = "";
+  let authUserId = "";
   try {
     const auth = await requireAuth(request, env);
     if (!auth.ok) return auth.response;
     const body = await request.json().catch(() => ({}));
     const message = String(body.message || "").trim();
+    requestMessage = message;
+    authUserId = String(auth.user.id);
     language = normalizeLanguage(String(body.language || "en").trim());
 
     if (!message) return corsJson(request, { success: false, error: "Message is required." }, 400);
@@ -409,7 +413,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     // Gemini provider so Miss SYS can still answer authenticated account
     // questions without exposing credentials or changing account data.
     try {
-      const fallback = await geminiFallback(env, language, message, String(auth.user.id));
+      const fallback = await geminiFallback(env, language, requestMessage, authUserId);
       return corsJson(request, {
         success: true,
         message: fallback,
