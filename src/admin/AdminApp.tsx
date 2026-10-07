@@ -220,7 +220,7 @@ export default function AdminApp() {
               </div>
             </div>
 
-            {tab==='overview'&&<Overview users={displayUsers} deposits={deposits} totalBalance={totalBalance} totalLocked={totalLocked} analytics={analytics}/>} 
+            {tab==='overview'&&<Overview users={displayUsers} deposits={deposits} totalUsers={totalUsers} totalBalance={totalBalance} totalLocked={totalLocked} analytics={analytics}/>} 
             {tab==='users'&&<UsersTable users={filteredUsers} canEditBalance={admin?.role==='OWNER'} onRefresh={()=>void loadDashboard()}/>}
             {tab==='streamers'&&<StreamersPanel users={users} streamers={streamers} onRefresh={()=>void loadDashboard()}/>}
             {tab==='transactions'&&<TransactionsTable deposits={deposits}/>}
@@ -239,7 +239,7 @@ export default function AdminApp() {
   );
 }
 
-function Overview({users,deposits,totalBalance,totalLocked,analytics}:{users:AdminUser[];deposits:AdminDeposit[];totalBalance:number;totalLocked:number;analytics:any}){
+function Overview({users,deposits,totalUsers,totalBalance,totalLocked,analytics}:{users:AdminUser[];deposits:AdminDeposit[];totalUsers:number;totalBalance:number;totalLocked:number;analytics:any}){
  const summary=analytics?.summary||{};
  return <div className="space-y-6">
   <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4">
