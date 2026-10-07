@@ -301,6 +301,7 @@ export default function AirdropApp() {
   const [dbTasks,setDbTasks]=useState<any[]>([]);
   const [tasksLoading,setTasksLoading]=useState(true);
   const [walletAddress,setWalletAddress]=useState('');
+  const referralLink = walletAddress.trim() ? `https://sysstreamer.asia/login?ref=${encodeURIComponent(walletAddress.trim())}` : '';
   const [proofLink,setProofLink]=useState('');
   const [submissions,setSubmissions]=useState<Array<{id:number;task_id:number|string;task_title?:string;evidence_link:string;status:string;reward_points:number;created_at:string}>>([]);
   const [checkinMonth,setCheckinMonth]=useState<string>(()=>new Date().toISOString().slice(0,7));
