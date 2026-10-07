@@ -1,5 +1,6 @@
 import { requireAuth } from "../../_lib/auth";
 import { Env, json, withDb } from "../../_lib/db";
+import { syncMiningForUser } from "../mining";
 
 const IDR_PER_USD = 17937;
 const MINING_USD = 10;
@@ -91,6 +92,8 @@ export async function onRequestGet(context: any) {
     await ensureMining(env);
 
     const userId = String(auth.user.id);
+    // Reconcile the automatic mining engine before the Mining page reads status.
+    await syncMiningForUser(env, userId);
     const status = await getStatus(env, userId);
 
     return json({
