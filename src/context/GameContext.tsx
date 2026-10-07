@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, BlindboxItem, GameHistoryEntry, CryptoInvoice, LockRecord, CryptoCardConfig } from '../types';
-import { MIN_BLINDBOX_LOCK_IDR } from '../i18n';
+import { MIN_BLINDBOX_LOCK_IDR, useLanguage } from '../i18n';
 import { sound } from '../lib/sound';
 
 interface Toast {
@@ -83,6 +83,7 @@ const INITIAL_INVENTORY: BlindboxItem[] = [];
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useLanguage();
   const [user, setUser] = useState<UserProfile>(() => {
     // Never hydrate a previous account when there is no authenticated session.
     // The server session is the source of truth for the active account.
@@ -562,16 +563,49 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('nexus_history', JSON.stringify(history));
   }, [history]);
 
+  const translateToastText = (text: string): string => {
+    const exact = t(text);
+    if (exact !== text) return exact;
+
+    const patterns: Array<[RegExp, string]> = [
+      [/^Welcome back, (.+)!$/, 'Welcome back, {name}!'],
+      [/^Display name set to @(.+)$/, 'Display name set to @{name}'],
+      [/^Sold (.+) for \+(.+) coins!$/, 'Sold {item} for +{coins} coins!'],
+      [/^Saldo Rp (.+) dikunci untuk Blind Box selama (.+) hari\.$/, 'Saldo Rp {amount} dikunci untuk Blind Box selama {days} hari.'],
+      [/^\+Rp (.+) masuk ke saldo Anda\.$/, '+Rp {amount} masuk ke saldo Anda.'],
+      [/^Principal Rp (.+) telah dikembalikan ke saldo tersedia\.$/, 'Principal Rp {amount} telah dikembalikan ke saldo tersedia.'],
+      [/^(.+) is already in the spinner list\.$/, '{name} is already in the spinner list.'],
+      [/^Added @(.+) to the Spinner wheel!$/, 'Added @{name} to the Spinner wheel!'],
+      [/^Claimed \+(.+) Coins & \+(.+) Diamonds!$/, 'Claimed +{coins} Coins & +{diamonds} Diamonds!'],
+      [/^Credited \+(.+) Coins and \+(.+) Diamonds!$/, 'Credited +{coins} Coins and +{diamonds} Diamonds!'],
+    ];
+
+    for (const [pattern, key] of patterns) {
+      const match = text.match(pattern);
+      if (!match) continue;
+      let translated = t(key);
+      translated = translated.replace('{name}', match[1] ?? '');
+      translated = translated.replace('{item}', match[1] ?? '');
+      translated = translated.replace('{amount}', match[1] ?? '');
+      translated = translated.replace('{days}', match[2] ?? '');
+      translated = translated.replace('{coins}', key.includes('{item}') ? (match[2] ?? '') : (match[1] ?? ''));
+      translated = translated.replace('{diamonds}', match[2] ?? '');
+      return translated;
+    }
+    return text;
+  };
+
   const showToast = (title: string, message: string, type: Toast['type'] = 'info') => {
     const id = 't_' + Date.now() + Math.random().toString(36).substring(2, 5);
-    setToasts(prev => [...prev.slice(-3), { id, title, message, type }]);
+    setToasts(prev => [...prev.slice(-3), {
+      id,
+      title: translateToastText(title),
+      message: translateToastText(message),
+      type,
+    }]);
     setTimeout(() => {
       dismissToast(id);
     }, 4500);
-  };
-
-  const dismissToast = (id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
   };
 
   const toggleSound = () => {
