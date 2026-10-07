@@ -1,5 +1,6 @@
 import { Env, json } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
+import { idrToUsdt } from "../../_lib/bonuses";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -49,8 +50,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       success:true,
       summary:{
         totalUsers:Number(summary?.totalUsers||0),
-        totalAvailableBalance:Number(summary?.totalAvailableBalance||0),
-        totalLockedBalance:Number(summary?.totalLockedBalance||0),
+        totalAvailableBalance:idrToUsdt(Number(summary?.totalAvailableBalance||0)),
+        totalLockedBalance:idrToUsdt(Number(summary?.totalLockedBalance||0)),
         totalSysBalance:Number(summary?.totalSysBalance||0),
         verifiedUsers:Number(summary?.verifiedUsers||0),
         walletUsers:Number(summary?.walletUsers||0),
@@ -59,8 +60,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       roles:(roles.results||[]).map((r:any)=>({
         role:String(r.role||'USER'),
         users:Number(r.users||0),
-        availableBalance:Number(r.availableBalance||0),
-        lockedBalance:Number(r.lockedBalance||0),
+        availableBalance:idrToUsdt(Number(r.availableBalance||0)),
+        lockedBalance:idrToUsdt(Number(r.lockedBalance||0)),
         sysBalance:Number(r.sysBalance||0)
       })),
       users:(users.results||[]).map((u:any)=>({
@@ -69,8 +70,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         username:String(u.username||''),
         email:String(u.email||''),
         walletAddress:String(u.walletAddress||''),
-        availableBalance:Number(u.availableBalance||0),
-        lockedBalance:Number(u.lockedBalance||0),
+        availableBalance:idrToUsdt(Number(u.availableBalance||0)),
+        lockedBalance:idrToUsdt(Number(u.lockedBalance||0)),
         sysBalance:Number(u.sysBalance||0),
         referralCount:Number(u.referralCount||0),
         emailVerified:Number(u.emailVerified||0),
