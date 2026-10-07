@@ -95,7 +95,9 @@ export default function MiningPage() {
   }, []);
 
   useEffect(() => {
-    loadMining();
+    void loadMining();
+    const refresh = window.setInterval(() => { void loadMining(); }, 15000);
+    return () => window.clearInterval(refresh);
   }, [loadMining]);
 
   const claimMining = async () => {
@@ -150,7 +152,6 @@ export default function MiningPage() {
   const miningActive = Boolean(state?.miningActive);
   const claimedToday = Boolean(state?.claimedToday);
   const lockAmountIdr = Number(state?.lock?.amountIdr || 0);
-  const lockAmountUsd = Number(state?.lock?.amountUsd || 0);
   const localizedLockAmount = formatIdrAsSelectedCurrency(lockAmountIdr, language);
   const dailyReward = Number(state?.dailyReward || 0);
   const sysBalance = Number(state?.sysBalance || 0);
@@ -199,7 +200,6 @@ export default function MiningPage() {
               <span className="text-xs font-bold uppercase">{tx.activeLock}</span>
             </div>
             <div className="text-2xl font-black">{localizedLockAmount}</div>
-            <div className="mt-1 text-xs text-slate-500">≈ {'$'}{lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
