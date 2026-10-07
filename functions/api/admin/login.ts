@@ -27,7 +27,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         role: "OWNER",
         source: "api_key",
       });
-      return new Response(JSON.stringify({success:true,admin:{displayName:"Owner",role:"OWNER"}}), {
+      return new Response(JSON.stringify({success:true,admin:{salesId:"owner",displayName:"Owner",role:"OWNER"}}), {
         status:200,
         headers:{
           "Content-Type":"application/json; charset=utf-8",
