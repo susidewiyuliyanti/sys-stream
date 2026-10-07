@@ -507,7 +507,7 @@ export default function AirdropApp() {
         method:'POST',
         credentials:'include',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN',socialPlatform:selectedSocialPlatform,socialAccount:selectedSocialPlatform?socialAccounts[selectedSocialPlatform]:'',followConfirmed})
+        body:JSON.stringify({taskKey:selectedTask.key,taskId:selectedTask.id,link:proofLink.trim()||'CHECKIN',socialPlatform:selectedSocialPlatform,socialAccount:selectedSocialPlatform?socialAccounts[selectedSocialPlatform]:''})
       });
       const data=await res.json().catch(()=>({}));
       if(!res.ok||!data.success)throw new Error(data.message||data.error||'Submission failed');
