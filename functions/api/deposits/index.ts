@@ -28,7 +28,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       return auth.response;
     }
 
-    const userId = Number(auth.user.id);
+    const userId = String(auth.user.id);
 
     const data = await withDb(context.env, async (client) => {
       const depositsResult = await client.query(
