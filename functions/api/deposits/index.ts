@@ -3,6 +3,7 @@ import { requireAuth } from "../../_lib/auth";
 
 const MIN_MINING_LOCK_IDR = 10 * 17937;
 import { notifyAdmins } from "../../_lib/admin-notifications";
+import { syncMiningForUser } from "../mining";
 
 const MIN_BLINDBOX_LOCK_USD = 4;
 const USD_TO_IDR = 17937;
@@ -31,6 +32,11 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }
 
     const userId = String(auth.user.id);
+
+    // Always re-detect an existing ACTIVE Blind Box lock before returning deposits.
+    // This makes SYS mining self-healing for users whose lock was created before
+    // the mining fields were initialized or whose session was refreshed later.
+    await syncMiningForUser(context.env, userId);
 
     const data = await withDb(context.env, async (client) => {
       const depositsResult = await client.query(
