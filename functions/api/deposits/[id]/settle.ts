@@ -1,5 +1,6 @@
 import { Env, json, withDb } from "../../../_lib/db";
 import { requireAuth } from "../../../_lib/auth";
+import { syncMiningForUser } from "../../mining";
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
@@ -8,6 +9,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (auth.ok === false) return auth.response;
 
     const userId = String(auth.user.id);
+    await syncMiningForUser(context.env, userId);
     const depositId = Number(context.params.id);
 
     if (!Number.isInteger(depositId) || depositId <= 0) {
@@ -101,6 +103,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           WHERE id = $3
           `,
           [newBalance, newLockedBalance, userId]
+        );
+
+        await client.query(
+          `UPDATE users
+           SET mining_enabled = 0,
+               mining_locked_amount = 0
+           WHERE id = $1`,
+          [userId]
         );
 
         await client.query(
