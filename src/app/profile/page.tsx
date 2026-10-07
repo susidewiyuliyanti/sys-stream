@@ -58,6 +58,7 @@ export default function ProfilePage() {
   const [claimingBonus, setClaimingBonus] = useState(false);
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
+  const [newWalletInput, setNewWalletInput] = useState(user.walletAddress || '');
 
   const totalLockedUsdt = Number(user.lockedBalance || getTotalLockedUsdt() || 0);
   const availableBalance = Number(user.availableBalance ?? 0);
@@ -170,13 +171,15 @@ export default function ProfilePage() {
     e.preventDefault();
     const username = newUsernameInput.trim();
     const avatar = newAvatarInput.trim();
+    const wallet = newWalletInput.trim();
 
-    if (!username) return;
+    if (!username || !wallet) return;
 
-    const saved = await updateProfile(username, avatar);
+    const saved = await updateProfile(username, avatar, wallet);
     if (saved) {
       setNewUsernameInput(username);
       setNewAvatarInput(avatar);
+      setNewWalletInput(wallet);
       setIsEditProfileModalOpen(false);
     }
   };
@@ -520,6 +523,22 @@ export default function ProfilePage() {
                   className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold focus:outline-none focus:border-cyan-400"
                   required
                 />
+              </div>
+
+              {/* Wallet Address */}
+              <div>
+                <label className="block text-slate-400 font-bold uppercase mb-1">
+                  {t('EVM Wallet Address')}
+                </label>
+                <input
+                  type="text"
+                  value={newWalletInput}
+                  onChange={(e) => setNewWalletInput(e.target.value)}
+                  placeholder="0x..."
+                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-cyan-400"
+                  required
+                />
+                <div className="text-[10px] text-slate-500 mt-1">{t('Wallet tersimpan di profile dan digunakan oleh backend serta referral link.')}</div>
               </div>
 
               {/* User Storage Upload Only */}
