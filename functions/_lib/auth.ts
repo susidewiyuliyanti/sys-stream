@@ -34,6 +34,11 @@ export interface AuthUser {
   registrationBonusGranted?: boolean;
   walletAddress?: string;
   sysBalance?: number;
+  miningEnabled?: boolean;
+  miningStartedAt?: number;
+  miningLastCreditedAt?: number;
+  miningLockedAmount?: number;
+  miningAccruedSys?: number;
 }
 
 const textEncoder = new TextEncoder();
@@ -186,6 +191,11 @@ async function ensureAuthUserColumns(env: Env) {
     ["registration_bonus_idr", "REAL NOT NULL DEFAULT 0"],
     ["registration_bonus_granted", "INTEGER NOT NULL DEFAULT 0"],
     ["sys_balance", "REAL NOT NULL DEFAULT 0"],
+    ["mining_enabled", "INTEGER NOT NULL DEFAULT 0"],
+    ["mining_started_at", "INTEGER NOT NULL DEFAULT 0"],
+    ["mining_last_credited_at", "INTEGER NOT NULL DEFAULT 0"],
+    ["mining_locked_amount", "REAL NOT NULL DEFAULT 0"],
+    ["mining_accrued_sys", "REAL NOT NULL DEFAULT 0"],
   ];
   for (const [name, definition] of additions) {
     if (!names.has(name)) {
@@ -213,6 +223,11 @@ export async function requireAuth(request: Request, env: Env) {
             COALESCE(u.registration_bonus_idr,0) AS registrationBonusIdr,
             COALESCE(u.registration_bonus_granted,0) AS registrationBonusGranted,
             COALESCE(u.sys_balance,0) AS sysBalance,
+            COALESCE(u.mining_enabled,0) AS miningEnabled,
+            COALESCE(u.mining_started_at,0) AS miningStartedAt,
+            COALESCE(u.mining_last_credited_at,0) AS miningLastCreditedAt,
+            COALESCE(u.mining_locked_amount,0) AS miningLockedAmount,
+            COALESCE(u.mining_accrued_sys,0) AS miningAccruedSys,
             COALESCE(u.email_verified,0) AS emailVerified,
             COALESCE(u.available_balance, 0) AS availableBalance,
             COALESCE(u.total_locked, 0) AS lockedBalance
