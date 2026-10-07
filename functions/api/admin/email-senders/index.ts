@@ -1,5 +1,6 @@
 import { Env, json } from "../../../_lib/db";
 import { requireAdmin } from "../../../_lib/admin";
+import { brandedEmailHtml } from "../../../_lib/email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DOMAIN = "sysstreamer.asia";
@@ -50,7 +51,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       headers:{ "Authorization":`Bearer ${env.RESEND_API_KEY}`, "Content-Type":"application/json" },
       body:JSON.stringify({
         from, to:[recipient], subject:"SYS STREAM — Test Email",
-        html:`<div style="font-family:Arial,sans-serif"><h2>SYS STREAM</h2><p>Ini adalah test email dari <strong>${from}</strong>.</p><p>Jika email ini diterima, konfigurasi Resend dan sender SYS STREAM sudah dapat digunakan.</p></div>`
+        html:brandedEmailHtml(`<h2 style="margin:0 0 12px;color:#f5c451">SYS STREAMER Test Email</h2><p style="line-height:1.7">Ini adalah test email dari <strong>${from}</strong>.</p><p style="line-height:1.7">Jika email ini diterima, konfigurasi Resend dan sender SYS STREAMER sudah dapat digunakan.</p>`, "SYS STREAMER test email")
       })
     });
     const data = await resend.json().catch(() => ({}));
