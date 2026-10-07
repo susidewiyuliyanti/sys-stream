@@ -15,6 +15,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         COALESCE(wallet_address,'') AS walletAddress,
         COALESCE(available_balance,0) AS availableBalance,
         COALESCE(total_locked,0) AS lockedBalance,
+        COALESCE(sys_balance,0) AS sysBalance,
         COALESCE(role,'USER') AS role,
         created_at AS createdAt
       FROM users
@@ -32,6 +33,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         walletAddress: String(u.walletAddress ?? ''),
         availableBalance: idrToUsdt(Number(u.availableBalance ?? 0)),
         lockedBalance: idrToUsdt(Number(u.lockedBalance ?? 0)),
+        sysBalance: Number(u.sysBalance ?? 0),
         role: String(u.role ?? 'USER'),
         createdAt: u.createdAt ?? null
       }))
