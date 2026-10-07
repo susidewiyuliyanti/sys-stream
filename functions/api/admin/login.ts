@@ -4,13 +4,14 @@ import { adminSessionCookie, createAdminSession } from "../../_lib/admin";
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    let body: { email?: string; password?: string };
+    let body: { salesId?: string; email?: string; password?: string };
     try {
       body = await readJson(context.request);
     } catch {
       return json({success:false,error:"Invalid request body."},400);
     }
 
+    const salesId = String(body.salesId || "").trim().toLowerCase();
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
 
@@ -36,14 +37,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    if (!email || !password) return json({success:false,error:"Email and password are required."},400);
+    if (!salesId || !password) return json({success:false,error:"Sales ID and password are required."},400);
 
     const admin = await context.env.DB.prepare(
-      `SELECT id,email,display_name AS displayName,password_hash AS passwordHash,role
+      `SELECT id,sales_id AS salesId,email,display_name AS displayName,password_hash AS passwordHash,role
        FROM admin_users
-       WHERE lower(email)=lower(?) AND active=1
+       WHERE lower(sales_id)=lower(?) AND active=1
        LIMIT 1`
-    ).bind(email).first<any>();
+    ).bind(salesId).first<any>();
 
     if (!admin || !(await verifyPassword(password, String(admin.passwordHash || "")))) {
       return json({success:false,error:"Invalid admin credentials."},401);
@@ -52,7 +53,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const role = String(admin.role || "ADMIN").toUpperCase() === "OWNER" ? "OWNER" : "ADMIN";
     const session = await createAdminSession(context.env, {
       id:String(admin.id),
-      email:String(admin.email),
+      salesId:String(admin.salesId),
+      email:String(admin.email || ""),
       displayName:String(admin.displayName || admin.email),
       role,
       source:"account",
@@ -60,7 +62,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return new Response(JSON.stringify({
       success:true,
-      admin:{id:String(admin.id),email:String(admin.email),displayName:String(admin.displayName || ""),role}
+      admin:{id:String(admin.id),salesId:String(admin.salesId),email:String(admin.email || ""),displayName:String(admin.displayName || ""),role}
     }), {
       status:200,
       headers:{
