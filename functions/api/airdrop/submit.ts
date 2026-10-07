@@ -42,8 +42,6 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     const taskKey = String(body.taskKey || "").trim();
     const rawTaskId = String(body.taskId || "").trim();
     const link = String(body.link || "").trim();
-    const socialPlatform = String(body.socialPlatform || "").trim().toLowerCase();
-    const socialAccount = String(body.socialAccount || "").trim();
 
     if (!wallet || (!taskKey && !rawTaskId)) {
       return response(context.request, { success: false, message: "Wallet dan task wajib diisi" }, 400);
@@ -66,43 +64,6 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       return response(context.request, { success: false, message: "Bukti wajib diisi untuk task ini" }, 400);
     }
 
-    // Never trust a client-supplied follow flag. The gate is derived only
-    // from server-side verified platform records.
-    await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_status (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, confirmed INTEGER NOT NULL DEFAULT 0, verification_method TEXT, verified_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
-    try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verification_method TEXT").run(); } catch {}
-    try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verified_at TEXT").run(); } catch {}
-
-    const requiredPlatforms = ["instagram","youtube","telegram","facebook","discord","twitter"];
-    const verifiedRows = await db.prepare(
-      "SELECT platform,confirmed,verification_method FROM airdrop_follow_status WHERE wallet_address=?"
-    ).bind(wallet).all();
-    const verifiedStatus:Record<string,boolean> = {};
-    for (const row of (verifiedRows.results || []) as any[]) {
-      verifiedStatus[String(row.platform)] =
-        Number(row.confirmed || 0) === 1 && Boolean(String(row.verification_method || "").trim());
-    }
-    const allFollowed = requiredPlatforms.every(platform => verifiedStatus[platform] === true);
-
-    if (!allFollowed) {
-      return response(context.request, {
-        success: false,
-        message: "Hubungkan akun sosial dan selesaikan verifikasi follow resmi pada semua platform terlebih dahulu."
-      }, 403);
-    }
-
-    const socialPlatforms = new Set(["tiktok","instagram","youtube","shorts","twitter","facebook","telegram","discord","social"]);
-    const normalizedCategory = String(task.category || taskKey || "").toLowerCase();
-    const requiresFollow = !isCheckin && (socialPlatforms.has(normalizedCategory) || socialPlatforms.has(String(taskKey).toLowerCase()));
-    if (requiresFollow) {
-      if (!socialPlatform || !socialAccount || !verifiedStatus[socialPlatform]) {
-        return response(context.request, { success: false, message: "Follow untuk platform task ini belum diverifikasi oleh server." }, 400);
-      }
-      await db.prepare(`CREATE TABLE IF NOT EXISTS airdrop_social_accounts (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, account TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))`).run();
-      const connected = await db.prepare("SELECT account FROM airdrop_social_accounts WHERE wallet_address=? AND platform=?").bind(wallet, socialPlatform).first<{account:string}>();
-      if (!connected || String(connected.account || "").trim() !== socialAccount) {
-        return response(context.request, { success: false, message: "Akun media sosial belum terhubung untuk platform task ini." }, 400);
-      }
-    }
     if (isCheckin) {
       // Check-in is repeatable once per calendar day, unlike normal campaign tasks.
       const existingToday = await db.prepare(`
