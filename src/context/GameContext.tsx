@@ -83,7 +83,7 @@ const INITIAL_INVENTORY: BlindboxItem[] = [];
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [user, setUser] = useState<UserProfile>(() => {
     // Never hydrate a previous account when there is no authenticated session.
     // The server session is the source of truth for the active account.
@@ -694,12 +694,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.success) {
-        showToast('Lock Failed', data?.error || 'Gagal mengunci saldo.', 'error');
+        showToast('Lock Failed', data?.error || data?.message || 'Gagal mengunci saldo.', 'error');
         return false;
       }
       await refreshFinancialState();
       sound.playWin();
-      showToast('Blind Box Lock Aktif', `Saldo Rp ${amount.toLocaleString('id-ID')} dikunci untuk Blind Box selama ${durationDays} hari.`, 'success');
+      showToast(
+        'Blind Box Lock Aktif',
+        `Saldo ${formatIdrAsSelectedCurrency(amount, language)} dikunci untuk Blind Box selama ${durationDays} hari.`,
+        'success'
+      );
       return true;
     } catch {
       showToast('Lock Failed', 'Server tidak dapat memproses lock.', 'error');
@@ -718,12 +722,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.success) {
-        showToast('Blind Box', data?.error || 'Claim Blind Box gagal.', 'error');
+        showToast('Blind Box', data?.error || data?.message || 'Claim Blind Box gagal.', 'error');
         return false;
       }
       await refreshFinancialState();
       sound.playWin();
-      showToast('Blind Box Claimed', `+Rp ${Number(data.reward ?? data.prizeAmount ?? 0).toLocaleString('id-ID')} masuk ke saldo Anda.`, 'success');
+      showToast(
+        'Blind Box Claimed',
+        `+${formatIdrAsSelectedCurrency(Number(data.reward ?? data.prizeAmount ?? 0), language)} dicatat di history Blind Box dan akan masuk ke saldo setelah lock selesai.`,
+        'success'
+      );
       return true;
     } catch {
       showToast('Daily Yield', 'Server tidak dapat memproses claim.', 'error');
