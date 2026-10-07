@@ -57,6 +57,7 @@ export async function requireAdmin(request: Request, env: Env) {
         email: "owner-api-key",
         displayName: "Owner",
         role: "OWNER",
+        salesId: "owner",
         source: "api_key",
       };
 
