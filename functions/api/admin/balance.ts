@@ -83,7 +83,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await context.env.DB.batch([
       context.env.DB.prepare(
         "UPDATE users SET available_balance=? WHERE id=?"
-      ).bind(availableBalance, availableBalance, userId),
+      ).bind(availableBalance, userId),
       context.env.DB.prepare(
         `INSERT INTO admin_balance_adjustments
          (id,user_id,admin_user_id,before_balance,after_balance,delta,note,created_at)
