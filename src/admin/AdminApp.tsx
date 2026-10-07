@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLanguage } from '../i18n';
 import { SysLogo } from '../components/SysLogo';
 import AIAgentPanel from './AIAgentPanel';
 import SocialMediaPanel from './SocialMediaPanel';
@@ -21,6 +22,7 @@ type Streamer = { id:string; username:string; email:string; walletAddress:string
 type Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins'|'ai-agent'|'social'|'email'|'email-inbox'|'email-campaign';
 
 export default function AdminApp() {
+  const { t } = useLanguage();
   const [authenticated,setAuthenticated]=useState(false);
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
@@ -305,7 +307,7 @@ function StreamersPanel({users,streamers,onRefresh}:{users:AdminUser[];streamers
  const [userId,setUserId]=useState(''); const [busy,setBusy]=useState(false); const [message,setMessage]=useState('');
  const availableUsers=users.filter(u=>String(u.role||'user').toLowerCase()!=='streamer');
  const promote=async(e:React.FormEvent)=>{e.preventDefault();if(!userId)return;setBusy(true);setMessage('');try{const r=await fetch(API+'/streamers',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,action:'promote'})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal menambahkan streamer.');setMessage('User berhasil ditetapkan sebagai Official Streamer Partner.');setUserId('');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menambahkan streamer.')}finally{setBusy(false)}};
- const remove=async(id:string)=>{if(!confirm('Hapus status Official Streamer dari user ini?'))return;setBusy(true);setMessage('');try{const r=await fetch(API+'/streamers',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:id,action:'remove'})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal mencabut status streamer.');setMessage('Status streamer dicabut.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal mencabut status streamer.')}finally{setBusy(false)}};
+ const remove=async(id:string)=>{if(!confirm(t('Hapus status Official Streamer dari user ini?')))return;setBusy(true);setMessage('');try{const r=await fetch(API+'/streamers',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:id,action:'remove'})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal mencabut status streamer.');setMessage('Status streamer dicabut.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal mencabut status streamer.')}finally{setBusy(false)}};
  return <div className="space-y-6">
  <Panel title="Official Streamer Partner" meta="Admin/Owner dapat menunjuk user production sebagai streamer resmi SYS STREAM">
   <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-5 text-xs leading-5 text-slate-400">Streamer resmi tetap menggunakan akun dan wallet user yang sama. Status ini memberikan identitas <strong className="text-slate-200">Official Streamer Partner</strong>; hak streaming pada room tetap divalidasi oleh backend berdasarkan kepemilikan room.</div>
@@ -337,7 +339,7 @@ function AirdropTaskPanel({tasks,onRefresh}:{tasks:AirdropTask[];onRefresh:()=>v
  const save=async(e:React.FormEvent)=>{e.preventDefault();setBusy(true);setMessage('');try{const method=editing?'PATCH':'POST';const body={...form,rewardPoints:Number(form.rewardPoints),...(editing?{id:editing}:{})};const r=await fetch(API+'/airdrop-tasks',{method,credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal menyimpan task.');setMessage(editing?'Task diperbarui.':'Task berhasil dibuat.');setForm(blank);setEditing(null);onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menyimpan task.')}finally{setBusy(false)}};
  const edit=(t:AirdropTask)=>{setEditing(t.id);setForm({title:t.title,description:t.description,category:t.category,rewardPoints:String(t.rewardPoints),active:Boolean(t.active)})};
  const toggle=async(t:AirdropTask)=>{try{const r=await fetch(API+'/airdrop-tasks',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:t.id,title:t.title,description:t.description,category:t.category,rewardPoints:t.rewardPoints,active:!t.active})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal mengubah status.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal mengubah status.')}}
- const remove=async(t:AirdropTask)=>{if(!confirm('Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.'))return;try{const r=await fetch(API+'/airdrop-tasks?id='+t.id,{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal menghapus task.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menghapus task.')}}
+ const remove=async(t:AirdropTask)=>{if(!confirm(t('Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.')))return;try{const r=await fetch(API+'/airdrop-tasks?id='+t.id,{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Gagal menghapus task.');onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menghapus task.')}}
  return <div className="space-y-6">
  <Panel title={editing?'Edit Airdrop Task':'Tambah Airdrop Task'} meta="Task yang aktif langsung tersedia di halaman Airdrop user">
  <form onSubmit={save} className="grid md:grid-cols-2 gap-4">
