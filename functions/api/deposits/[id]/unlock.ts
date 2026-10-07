@@ -35,14 +35,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const endDate = new Date(deposit.endDate);
         const early = Date.now() < endDate.getTime();
 
-        const claimsResult = await client.query(
-          `SELECT COALESCE(SUM(amount),0) AS "totalRewards"
-           FROM blind_box_claims
-           WHERE deposit_id = $1`,
-          [depositId]
-        );
-        const totalRewards = Math.max(0, Number(claimsResult.rows[0]?.totalRewards || 0));
-
         const userResult = await client.query(
           `SELECT
              COALESCE(available_balance,0) AS "availableBalance",
@@ -59,10 +51,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const currentLocked = Number(user.lockedBalance || 0);
         if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
-        // Early open forfeits all Blind Box rewards already paid from this lock.
+        // Blind Box rewards are history-only while the lock is active.
+        // On early unlock they are forfeited without touching the user's available balance.
         // The principal is returned; SYS mined before this moment remains credited.
-        const rewardForfeit = early ? Math.min(totalRewards, Math.max(0, currentAvailable)) : 0;
-        const newAvailable = currentAvailable - rewardForfeit + principal;
+        const rewardForfeit = early ? 0 : 0;
+        const newAvailable = currentAvailable + principal;
         const newLocked = currentLocked - principal;
 
         await client.query(
@@ -88,7 +81,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         return {
           principalReturned: principal,
-          rewardForfeited: rewardForfeit,
+          rewardForfeited: early ? 0 : 0,
           miningStopped: true,
           early,
           status: "COMPLETED",
@@ -104,7 +97,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json({
       success: true,
       message: result.early
-        ? "Lock dibuka lebih awal. Saldo principal dikembalikan, reward Blind Box hangus, dan SYS Mining dihentikan."
+        ? "Lock dibuka lebih awal. Saldo principal dikembalikan, reward Blind Box di history hangus, dan SYS Mining dihentikan."
         : "Lock selesai. Principal dikembalikan dan SYS Mining dihentikan.",
       depositId,
       ...result,
