@@ -1,6 +1,7 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
 import { notifyAdmins } from "../../_lib/admin-notifications";
+import { idrToUsdt, usdtToIdr } from "../../_lib/bonuses";
 
 type BalanceBody = {
   userId?: string;
@@ -53,6 +54,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const body = await readJson<BalanceBody>(context.request);
     const userId = String(body.userId || "").trim();
     const availableBalance = Number(body.availableBalance);
+    const targetBalanceIdr = usdtToIdr(availableBalance);
     const note = String(body.note || "").trim();
 
     if (!userId) return json({ success:false, error:"User wajib dipilih." }, 400);
@@ -71,7 +73,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     if (!user) return json({ success:false, error:"User tidak ditemukan." }, 404);
 
-    const before = Number(user.availableBalance || 0);
+    const beforeIdr = Number(user.availableBalance || 0);
+    const before = idrToUsdt(beforeIdr);
     const delta = availableBalance - before;
     if (delta === 0) {
       return json({ success:false, error:"Saldo baru sama dengan saldo saat ini. Tidak ada perubahan." }, 400);
@@ -83,7 +86,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await context.env.DB.batch([
       context.env.DB.prepare(
         "UPDATE users SET available_balance=? WHERE id=?"
-      ).bind(availableBalance, userId),
+      ).bind(targetBalanceIdr, userId),
       context.env.DB.prepare(
         `INSERT INTO admin_balance_adjustments
          (id,user_id,admin_user_id,before_balance,after_balance,delta,note,created_at)
@@ -114,7 +117,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     await notifyAdmins(context.env, {
       type: "balance.adjustment",
       title: "User balance adjusted",
-      message: `${auth.identity.displayName || "Owner"} changed ${user.username || user.email || userId} available balance from ${before} to ${availableBalance}.`,
+      message: `${auth.identity.displayName || "Owner"} changed ${user.username || user.email || userId} available balance from ${before} to ${availableBalance} USDT.`,
       severity: "warning",
       entityType: "balance_adjustment",
       entityId: adjustmentId,
