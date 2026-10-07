@@ -180,7 +180,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return json(
         {
           success: false,
-          error: "Nominal lock minimal setara $4 USD (berbasis kurs global/server) dan tidak dibatasi kelipatan Rp 10.000.",
+          error: "Nominal lock minimal setara $4 USD. Anda dapat menentukan nominal lock sendiri selama tidak melebihi Available Balance.",
         },
         400
       );
@@ -257,8 +257,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           UPDATE users
           SET
             available_balance = $1,
-            total_locked = $2,
-
+            total_locked = $2
           WHERE id = $3
           `,
           [remainingBalance, newLockedBalance, userId]
