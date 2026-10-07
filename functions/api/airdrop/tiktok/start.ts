@@ -2,7 +2,7 @@ import { Env, json } from "../../../_lib/db";
 import { requireAuth } from "../../../_lib/auth";
 import { ensureTikTokTables, randomState, tiktokRedirectUri } from "../../../_lib/tiktok";
 
-const SCOPES = "user.info.basic,video.publish";
+const SCOPES = "user.info.basic";
 
 export async function onRequestGet(context:{request:Request;env:Env}) {
   const auth = await requireAuth(context.request, context.env);
