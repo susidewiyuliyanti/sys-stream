@@ -37,11 +37,24 @@ export async function syncMiningForUser(env: Env, userId: string) {
        COALESCE(mining_started_at,0) AS miningStartedAt,
        COALESCE(mining_last_credited_at,0) AS miningLastCreditedAt,
        COALESCE(mining_locked_amount,0) AS miningLockedAmount,
-       COALESCE(mining_accrued_sys,0) AS miningAccruedSys
+       COALESCE(mining_accrued_sys,0) AS miningAccruedSys,
+       COALESCE(total_locked,0) AS totalLocked
      FROM users WHERE id = ? LIMIT 1`
   ).bind(id).first<any>();
 
   if (!user) throw new Error("USER_NOT_FOUND");
+
+  // There is only one active Blind Box lock per user. Keep the canonical
+  // locked balance synchronized with that active deposit before calculating
+  // mining, so the lock and mining engines cannot drift apart.
+  if (active && Math.abs(Number(user.totalLocked || 0) - amountIdr) > 0.000001) {
+    await env.DB.prepare(
+      `UPDATE users
+       SET total_locked = ?, locked_saldo = ?, mining_locked_amount = CASE WHEN ? >= ? THEN ? ELSE 0 END
+       WHERE id = ?`
+    ).bind(amountIdr, amountIdr, amountIdr, MIN_MINING_LOCK_IDR, amountIdr, id).run();
+    user.totalLocked = amountIdr;
+  }
 
   if (!qualifying) {
     if (Number(user.miningEnabled) !== 0 || Number(user.miningLockedAmount) !== 0) {
@@ -55,6 +68,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
       enabled: false,
       lockedAmountIdr: 0,
       lockedAmountUsd: 0,
+      lockedBalanceIdr: Number(user.totalLocked || 0),
       rateSysPerDay: 0,
       rateSysPerSecond: 0,
       miningStartedAt: 0,
@@ -144,6 +158,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
     enabled: Boolean(Number(user.miningEnabled || 0)) || pendingSys > 0,
     lockedAmountIdr: amountIdr,
     lockedAmountUsd: amountUsd,
+    lockedBalanceIdr: Number(user.totalLocked || amountIdr || 0),
     rateSysPerDay,
     rateSysPerSecond,
     miningStartedAt: startAt,
