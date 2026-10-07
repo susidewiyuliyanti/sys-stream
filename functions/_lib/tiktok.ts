@@ -72,5 +72,5 @@ export async function ensureTikTokTables(env: Env) {
 
 export async function randomState(): Promise<string> {
   const bytes = crypto.getRandomValues(new Uint8Array(32));
-  return base64Encode(bytes).replace(/+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
+  return base64Encode(bytes).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
 }
