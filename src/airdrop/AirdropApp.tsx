@@ -431,26 +431,29 @@ export default function AirdropApp() {
 
   const connectTikTok=()=>{ window.location.href='/api/airdrop/tiktok/start'; };
 
-  const confirmPlatform=async(platform:string)=>{
+  const verifyPlatform=async(platform:string)=>{
     const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
     if(!official) return;
-    window.open(official.url,'_blank','noopener,noreferrer');
+    setFollowSaving(true);
     setSocialMessage('');
-  };
-
-  const markPlatformFollowed=async(platform:string)=>{
-    setFollowSaving(true); setSocialMessage('');
     try{
-      const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm_platform',platform})});
+      const res=await fetch('/api/airdrop/social-accounts',{
+        method:'POST',
+        credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'verify_platform',platform})
+      });
       const data=await res.json().catch(()=>({}));
-      if(!res.ok||!data.success) throw new Error(data.message||'Unable to confirm follow.');
       setFollowStatus(data.followStatus||{});
       setFollowConfirmed(Boolean(data.followConfirmed));
+      if(!res.ok||!data.success) throw new Error(data.message||'Follow verification failed.');
       setSocialMessage(data.followConfirmed ? SOCIAL_GATE_COPY[lang].unlocked : SOCIAL_GATE_COPY[lang].locked);
-    }catch(e){setSocialMessage(e instanceof Error?e.message:'Unable to confirm follow.');}
-    finally{setFollowSaving(false);}
+    }catch(e){
+      setSocialMessage(e instanceof Error?e.message:'Follow verification failed.');
+    }finally{
+      setFollowSaving(false);
+    }
   };
-
 
   const saveSocialAccount=async()=>{ const platform=socialPlatform.trim().toLowerCase(),account=socialAccount.trim(); if(!platform||!account)return; setSocialSaving(true);setSocialMessage(''); try{const res=await fetch('/api/airdrop/social-accounts',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,account})}); const data=await res.json().catch(()=>({})); if(!res.ok||!data.success)throw new Error(data.message||'Gagal memasangkan akun media sosial.'); setSocialAccounts(prev=>({...prev,[platform]:account}));setSocialAccount('');setSocialMessage(lang==='id'?'Akun berhasil dipasangkan.':'Social account connected.');}catch(e){setSocialMessage(e instanceof Error?e.message:'Gagal memasangkan akun.');}finally{setSocialSaving(false);} };
 
@@ -656,10 +659,12 @@ export default function AirdropApp() {
                   <span className="font-bold">{item.label}</span>
                   {done?<CheckCircle2 className="w-4 h-4 text-emerald-400"/>:<span className="w-2 h-2 rounded-full bg-amber-400"/>}
                 </div>
-                <button onClick={()=>confirmPlatform(item.platform)} className="mt-3 w-full rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold hover:border-amber-400/50">
+                <button onClick={()=>{if(!done){const official=SOCIAL_OFFICIALS.find(x=>x.platform===item.platform); if(official) window.open(official.url,'_blank','noopener,noreferrer');}}} disabled={done} className="mt-3 w-full rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold hover:border-amber-400/50 disabled:opacity-60">
                   {done?SOCIAL_GATE_COPY[lang].done:SOCIAL_GATE_COPY[lang].followNow}
                 </button>
-                {!done&&<button onClick={()=>void markPlatformFollowed(item.platform)} disabled={followSaving} className="mt-2 w-full rounded-xl bg-amber-400 px-3 py-2 text-xs font-black text-slate-950 disabled:opacity-40">{SOCIAL_GATE_COPY[lang].followed}</button>}
+                {!done&&<button onClick={()=>void verifyPlatform(item.platform)} disabled={followSaving} className="mt-2 w-full rounded-xl bg-amber-400 px-3 py-2 text-xs font-black text-slate-950 disabled:opacity-40">
+                  {followSaving?'Verifying...':(lang==='id'?'Verify Follow':'Verify Follow')}
+                </button>}
               </div>;
             })}
           </div>
