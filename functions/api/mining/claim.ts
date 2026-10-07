@@ -169,7 +169,7 @@ export async function onRequestPost(context: any) {
         UPDATE users
         SET sys_balance = COALESCE(sys_balance, 0) + $1
         WHERE id = $2
-      `, [reward, Number(userId)]);
+      `, [reward, userId]);
 
       if (balanceUpdate.rowCount <= 0) {
         await client.query(`
@@ -183,7 +183,7 @@ export async function onRequestPost(context: any) {
         UPDATE deposits
         SET total_claimed = COALESCE(total_claimed, 0)
         WHERE id = $1 AND user_id = $2 AND status = 'ACTIVE'
-      `, [Number(lock.id), Number(userId)]);
+      `, [Number(lock.id), userId]);
 
       const updated = await client.query(`
         SELECT COALESCE(sys_balance, 0) AS "sysBalance"
