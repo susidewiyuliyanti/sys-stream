@@ -167,9 +167,9 @@ export default function AdminApp() {
   );
 
   const displayUsers=users.length ? users : (Array.isArray(analytics?.users) ? analytics.users : []);
-  const totalUsers=displayUsers.length;
-  const totalBalance=displayUsers.reduce((sum,u)=>sum+Number(u.availableBalance||0),0);
-  const totalLocked=displayUsers.reduce((sum,u)=>sum+Number(u.lockedBalance||0),0);
+  const totalUsers=Number(analytics?.summary?.totalUsers ?? displayUsers.length);
+  const totalBalance=Number(analytics?.summary?.totalAvailableBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.availableBalance||0),0));
+  const totalLocked=Number(analytics?.summary?.totalLockedBalance ?? displayUsers.reduce((sum,u)=>sum+Number(u.lockedBalance||0),0));
 
   return(
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -241,7 +241,7 @@ function Overview({users,deposits,totalBalance,totalLocked,analytics}:{users:Adm
  const summary=analytics?.summary||{};
  return <div className="space-y-6">
   <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4">
-   <Stat icon={<Users/>} label="Total Users" value={Number(users.length).toLocaleString()}/>
+   <Stat icon={<Users/>} label="Total Users" value={Number(totalUsers).toLocaleString()}/>
    <Stat icon={<CircleDollarSign/>} label="Available Balance — All Users (USDT)" value={formatNumber(totalBalance)}/>
    <Stat icon={<WalletCards/>} label="Locked Balance — All Users (USDT)" value={formatNumber(totalLocked)}/>
    <Stat icon={<Gift/>} label="SYS Balance — All Users" value={formatNumber(Number(summary.totalSysBalance||0))}/>
@@ -249,7 +249,7 @@ function Overview({users,deposits,totalBalance,totalLocked,analytics}:{users:Adm
    <Stat icon={<ShieldCheck/>} label="Verified Users" value={Number(summary.verifiedUsers||0).toLocaleString()}/>
   </div>
   <div className="grid xl:grid-cols-2 gap-6">
-   <Panel title="Users" meta={`${users.length} records`}>
+   <Panel title="Users" meta={`${totalUsers} records`}>
     {users.slice(0,8).map(u=><div key={u.id} className="flex justify-between gap-4 py-2 border-b border-slate-800 last:border-0"><div className="min-w-0"><div className="font-semibold truncate">{u.username||u.id}</div><div className="text-xs text-slate-500 truncate">{u.email||'-'}</div></div><div className="text-right text-sm">{formatNumber(Number(u.availableBalance||0))} USDT<div className="text-[11px] text-slate-500">available</div></div></div>)}{!users.length&&<EmptyState text="No production users yet."/>}
    </Panel>
    <Panel title="Recent Transactions" meta={`${deposits.length} records`}>
@@ -289,10 +289,10 @@ function UsersTable({users,canEditBalance,onRefresh}:{users:AdminUser[];canEditB
   </Panel>
   {editing&&<div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onMouseDown={e=>{if(e.target===e.currentTarget)closeEditor();}}>
    <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-5">
-    <div className="flex items-start justify-between gap-4 mb-5"><div><div className="text-xs uppercase tracking-wider text-amber-400 font-bold">OWNER ONLY</div><h3 className="text-xl font-black mt-1">Edit User Balance</h3><p className="text-xs text-slate-500 mt-1">{editing.username||editing.email||editing.id} • Current Available: {formatNumber(Number(editing.availableBalance||0))} USDT</p></div><button type="button" onClick={closeEditor} className="text-slate-500 hover:text-slate-200 text-xl">×</button></div>
+    <div className="flex items-start justify-between gap-4 mb-5"><div><div className="text-xs uppercase tracking-wider text-amber-400 font-bold">OWNER ONLY • USDT</div><h3 className="text-xl font-black mt-1">Edit User Balance</h3><p className="text-xs text-slate-500 mt-1">{editing.username||editing.email||editing.id} • Current Available: {formatNumber(Number(editing.availableBalance||0))} USDT</p></div><button type="button" onClick={closeEditor} className="text-slate-500 hover:text-slate-200 text-xl">×</button></div>
     <form onSubmit={save} className="space-y-4">
      <div><label className="block text-xs font-semibold text-slate-400 mb-2">New Available Balance (USDT)</label><input autoFocus type="number" min="0" step="0.01" value={newBalance} onChange={e=>setNewBalance(e.target.value)} className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500"/></div>
-     <div><label className="block text-xs font-semibold text-slate-400 mb-2">Audit Note</label><textarea required maxLength={500} value={note} onChange={e=>setNote(e.target.value)} rows={3} placeholder="Contoh: koreksi saldo deposit / kompensasi / manual adjustment" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500"/></div>
+     <div><label className="block text-xs font-semibold text-slate-400 mb-2">Audit Note (USDT)</label><textarea required maxLength={500} value={note} onChange={e=>setNote(e.target.value)} rows={3} placeholder="Contoh: koreksi saldo deposit / kompensasi / manual adjustment" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm outline-none focus:border-amber-500"/></div>
      {message&&<div className="rounded-xl border border-red-500/20 bg-red-500/10 text-red-300 text-xs p-3">{message}</div>}
      <div className="flex justify-end gap-2"><button type="button" disabled={busy} onClick={closeEditor} className="px-4 py-2.5 rounded-xl border border-slate-700 text-sm">Cancel</button><button disabled={busy||!note.trim()} className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold">{busy?'Saving...':'Save Balance'}</button></div>
     </form>
