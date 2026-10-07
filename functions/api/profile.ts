@@ -1,4 +1,5 @@
 import { Env, json } from "../_lib/db";
+import { getAddress, isAddress } from "ethers";
 import { requireAuth } from "../_lib/auth";
 
 async function ensureProfileSchema(env: Env) {
@@ -86,12 +87,25 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     const hasUsername = Object.prototype.hasOwnProperty.call(body, "username");
     const hasAvatar = Object.prototype.hasOwnProperty.call(body, "avatarUrl");
     const hasDisplayName = Object.prototype.hasOwnProperty.call(body, "displayName");
+    const hasWalletAddress = Object.prototype.hasOwnProperty.call(body, "walletAddress");
 
     const username = hasUsername ? String(body.username || "").trim() : "";
     const avatarUrl = hasAvatar ? String(body.avatarUrl || "").trim() : "";
     const displayName = hasDisplayName
       ? String(body.displayName || "").trim()
       : (hasUsername ? username : "");
+    let walletAddress = "";
+    if (hasWalletAddress) {
+      const rawWallet = String(body.walletAddress || "").trim();
+      if (!rawWallet || !isAddress(rawWallet)) {
+        return json({ success: false, error: "Alamat wallet EVM tidak valid." }, 400);
+      }
+      walletAddress = getAddress(rawWallet);
+      const duplicate = await env.DB.prepare(
+        "SELECT id FROM users WHERE lower(wallet_address)=lower(?) AND id<>? LIMIT 1"
+      ).bind(walletAddress, String(auth.user.id)).first();
+      if (duplicate) return json({ success: false, error: "Wallet tersebut sudah terhubung ke akun lain." }, 409);
+    }
 
     if (hasUsername && !username) {
       return json({ success: false, error: "Username tidak boleh kosong." }, 400);
@@ -124,6 +138,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (hasAvatar) {
       sets.push("avatar_url = ?");
       values.push(avatarUrl || null);
+    }
+    if (hasWalletAddress) {
+      sets.push("wallet_address = ?");
+      values.push(walletAddress);
     }
 
     if (sets.length > 0) {
