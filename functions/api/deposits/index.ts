@@ -2,6 +2,10 @@ import { Env, json, readJson, withDb } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
 import { notifyAdmins } from "../../_lib/admin-notifications";
 
+const MIN_BLINDBOX_LOCK_USD = 4;
+const USD_TO_IDR = 17937;
+const MIN_BLINDBOX_LOCK_IDR = Math.round(MIN_BLINDBOX_LOCK_USD * USD_TO_IDR);
+
 interface DepositRequest {
   amount?: number;
   durationDays?: number;
@@ -172,11 +176,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const amount = Number(body.amount);
     const durationDays = Number(body.durationDays);
 
-    if (!Number.isInteger(amount) || amount < 71748) {
+    if (!Number.isInteger(amount) || amount < MIN_BLINDBOX_LOCK_IDR) {
       return json(
         {
           success: false,
-          error: "Nominal lock minimal setara $4 USD (berbasis kurs server) dan tidak dibatasi kelipatan Rp 10.000.",
+          error: "Nominal lock minimal setara $4 USD (berbasis kurs global/server) dan tidak dibatasi kelipatan Rp 10.000.",
         },
         400
       );
@@ -205,9 +209,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           SELECT
             id,
             COALESCE(available_balance, 0) AS available_balance,
-            COALESCE(balance, 0) AS legacy_balance,
-            COALESCE(total_locked, 0) AS total_locked,
-            COALESCE(locked_saldo, 0) AS legacy_locked_saldo
+            COALESCE(total_locked, 0) AS total_locked
           FROM users
           WHERE id = $1
           FOR UPDATE
@@ -221,7 +223,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         const user = userResult.rows[0];
         // Canonical production balance is available_balance/total_locked.
-        // Legacy fields are used only as a compatibility fallback for old accounts.
         const availableBalance = Number(user.available_balance || 0);
         const currentLocked = Number(user.total_locked || 0);
 
