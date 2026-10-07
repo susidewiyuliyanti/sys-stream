@@ -2,6 +2,7 @@ import { Env } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
 
 const ALLOWED = new Set(["tiktok","instagram","youtube","twitter","facebook","telegram","discord"]);
+const OFFICIAL_PLATFORMS = ["tiktok","instagram","youtube","telegram","facebook","discord","twitter"];
 
 function response(request: Request, body: unknown, status = 200) {
   const origin = request.headers.get("Origin") || "";
@@ -31,11 +32,16 @@ export async function onRequestGet(context:{request:Request;env:Env}) {
   if(!auth.ok) return response(context.request,{success:false,message:"Login diperlukan."},401);
   const db=context.env.DB;
   await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_gate (wallet_address TEXT PRIMARY KEY, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
+  await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_status (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_social_accounts (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, account TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
   const wallet=String(auth.user.walletAddress||"").trim().toLowerCase();
   const result=await db.prepare("SELECT platform,account,updated_at FROM airdrop_social_accounts WHERE wallet_address=? ORDER BY platform").bind(wallet).all();
   const gate=await db.prepare("SELECT confirmed FROM airdrop_follow_gate WHERE wallet_address=?").bind(wallet).first<{confirmed:number}>();
-  return response(context.request,{success:true,accounts:result.results||[],followConfirmed:Number(gate?.confirmed||0)===1});
+  const followRows=await db.prepare("SELECT platform,confirmed FROM airdrop_follow_status WHERE wallet_address=?").bind(wallet).all();
+  const followStatus:Record<string,boolean>={};
+  for(const row of (followRows.results||[]) as any[]) followStatus[String(row.platform)]=Number(row.confirmed||0)===1;
+  const allFollowed=OFFICIAL_PLATFORMS.every(platform=>followStatus[platform]===true);
+  return response(context.request,{success:true,accounts:result.results||[],followConfirmed:allFollowed,followStatus});
 }
 
 export async function onRequestPost(context:{request:Request;env:Env}) {
@@ -44,6 +50,21 @@ export async function onRequestPost(context:{request:Request;env:Env}) {
   const body=await context.request.json().catch(()=>({}));
   const db=context.env.DB;
   const wallet=String(auth.user.walletAddress||"").trim().toLowerCase();
+
+  if (body.action === "confirm_platform") {
+    const platform=String(body.platform||"").trim().toLowerCase();
+    if(!OFFICIAL_PLATFORMS.includes(platform)) return response(context.request,{success:false,message:"Platform media sosial tidak didukung."},400);
+    if(!wallet) return response(context.request,{success:false,message:"Wallet tidak ditemukan."},400);
+    await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_status (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
+    await db.prepare("INSERT INTO airdrop_follow_status(wallet_address,platform,confirmed,updated_at) VALUES(?,?,1,CURRENT_TIMESTAMP) ON CONFLICT(wallet_address,platform) DO UPDATE SET confirmed=1,updated_at=CURRENT_TIMESTAMP").bind(wallet,platform).run();
+    const rows=await db.prepare("SELECT platform,confirmed FROM airdrop_follow_status WHERE wallet_address=?").bind(wallet).all();
+    const status:Record<string,boolean>={};
+    for(const row of (rows.results||[]) as any[]) status[String(row.platform)]=Number(row.confirmed||0)===1;
+    const allFollowed=OFFICIAL_PLATFORMS.every(p=>status[p]===true);
+    await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_gate (wallet_address TEXT PRIMARY KEY, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
+    await db.prepare("INSERT INTO airdrop_follow_gate(wallet_address,confirmed,updated_at) VALUES(?,?,CURRENT_TIMESTAMP) ON CONFLICT(wallet_address) DO UPDATE SET confirmed=excluded.confirmed,updated_at=CURRENT_TIMESTAMP").bind(wallet,allFollowed?1:0).run();
+    return response(context.request,{success:true,platform,followConfirmed:allFollowed,followStatus:status});
+  }
 
   if (body.action === "confirm_follow") {
     if (!wallet) return response(context.request,{success:false,message:"Wallet tidak ditemukan."},400);
