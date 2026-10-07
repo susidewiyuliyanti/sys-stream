@@ -22,7 +22,7 @@ CREATE INDEX idx_admin_users_email ON admin_users(email);
 
 INSERT INTO admin_users(id,sales_id,email,display_name,password_hash,role,active,created_at,updated_at)
 SELECT id,
-       'legacy_' || lower(substr(replace(id,'-',''),1,12)),
+       CASE WHEN lower(display_name) LIKE '%sarah%' THEN 'sarah' ELSE 'legacy_' || lower(substr(replace(id,'-',''),1,12)) END,
        email,display_name,password_hash,role,active,created_at,updated_at
 FROM admin_users_legacy;
 
