@@ -61,31 +61,90 @@ export async function hashPassword(password: string): Promise<string> {
     baseKey,
     256
   );
-  return `pbkdf2$10000${bytesToHex(salt)}${bytesToHex(new Uint8Array(bits))}`;
+  return `pbkdf2$10000$${bytesToHex(salt)}$${bytesToHex(new Uint8Array(bits))}`;
 }
 
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   try {
-    const [scheme, iterationsText, saltHex, hashHex] = stored.split("$");
-    if (scheme !== "pbkdf2") return false;
+    const parts = String(stored || "").split("$");
+
+    if (parts[0] !== "pbkdf2") {
+      return false;
+    }
+
+    let iterationsText: string | undefined;
+    let saltHex: string | undefined;
+    let hashHex: string | undefined;
+
+    // Canonical:
+    // pbkdf2$10000$SALT$HASH
+    if (parts.length === 4) {
+      iterationsText = parts[1];
+      saltHex = parts[2];
+      hashHex = parts[3];
+    }
+
+    // Legacy production format:
+    // pbkdf2$10000SALTHASH
+    else if (parts.length === 2) {
+      const legacy = String(parts[1] || "");
+
+      if (!/^\d{5}[0-9a-f]{96}$/i.test(legacy)) {
+        return false;
+      }
+
+      iterationsText = legacy.slice(0, 5);
+      saltHex = legacy.slice(5, 37);
+      hashHex = legacy.slice(37);
+    }
+
+    if (!iterationsText || !saltHex || !hashHex) {
+      return false;
+    }
+
     const iterations = Number(iterationsText);
-    const baseKey = await crypto.subtle.importKey("raw", textEncoder.encode(password), "PBKDF2", false, ["deriveBits"]);
+
+    if (!Number.isFinite(iterations) || iterations <= 0) {
+      return false;
+    }
+
+    const baseKey = await crypto.subtle.importKey(
+      "raw",
+      textEncoder.encode(password),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
+
     const bits = await crypto.subtle.deriveBits(
-      { name: "PBKDF2", salt: hexToBytes(saltHex), iterations, hash: "SHA-256" },
+      {
+        name: "PBKDF2",
+        salt: hexToBytes(saltHex),
+        iterations,
+        hash: "SHA-256"
+      },
       baseKey,
       256
     );
+
     const actual = new Uint8Array(bits);
     const expected = hexToBytes(hashHex);
-    if (actual.length !== expected.length) return false;
+
+    if (actual.length !== expected.length) {
+      return false;
+    }
+
     let diff = 0;
-    for (let i = 0; i < actual.length; i++) diff |= actual[i] ^ expected[i];
+
+    for (let i = 0; i < actual.length; i++) {
+      diff |= actual[i] ^ expected[i];
+    }
+
     return diff === 0;
   } catch {
     return false;
   }
 }
-
 export async function createSession(env: Env, userId: string): Promise<string> {
   const token = crypto.randomUUID() + "." + crypto.randomUUID();
   const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
