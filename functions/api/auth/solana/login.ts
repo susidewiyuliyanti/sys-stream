@@ -112,7 +112,7 @@ export async function onRequestPost({request,env}:{request:Request,env:Env}){
         available_balance:0,total_locked:0,referral_code:referralCode,referral_count:0,created_at:nowMs,
         terms_version:"2026-10-01",terms_accepted_at:nowMs,email_verified:1,email_verified_at:nowMs,
         wallet_address:"",referred_by:null,locked_saldo:0,has_referral_bonus:0,avatar_url:null,
-        registration_bonus_idr:0,registration_bonus_granted:0,cuid:crypto.randomUUID(),uid:crypto.randomUUID(),
+        registration_bonus_idr:REGISTRATION_BONUS_IDR,registration_bonus_granted:1,cuid:crypto.randomUUID(),uid:crypto.randomUUID(),
         password:"",photo_url:"",balance:0,saldo:0,wallet_balance:0,affiliate_earnings:0,affiliate_withdrawn:0,
         is_subscribed:0,subscription_plan:"free",is_lifetime:0,is_blacklisted:0,is_banned:0,
         force_jackpot_next:0,updated_at:nowMs
