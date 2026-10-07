@@ -221,53 +221,64 @@ export default function BlindboxGamePage() {
         setUnboxingState('SHAKING');
         sound.playUnboxShake();
 
-        setTimeout(() => {
-          sound.playUnboxShake();
-        }, 450);
+        await new Promise<void>(resolve => {
+          window.setTimeout(() => {
+            sound.playUnboxShake();
+            resolve();
+          }, 450);
+        });
 
-        setTimeout(async () => {
-          setUnboxingState('REVEALING');
+        await new Promise<void>(resolve => {
+          window.setTimeout(resolve, 750);
+        });
 
-          const result = await claimBlindBox(selectedBox.id);
-          const rewardIdr = Number(result.reward ?? result.prizeAmount ?? 0);
+        setUnboxingState('REVEALING');
 
-          const baseItem = selectedBox.lootPool.find(item => item.id === result.item?.id) || selectedBox.lootPool[0];
-          const uniqueItem: BlindboxItem = {
-            ...baseItem,
-            id: 'pull_' + result.claimId,
-            name: result.item?.name || baseItem.name,
-            rarity: result.item?.rarity || baseItem.rarity,
-            usdtReward: 0,
-            coinValue: 0,
-          };
+        // The claim request is awaited inside this try/catch. The previous
+        // setTimeout(async () => ...) allowed claim failures to escape the
+        // component error handler and could leave the UI stuck on REVEALING.
+        const result = await claimBlindBox(selectedBox.id);
+        const rewardIdr = Number(result.reward ?? result.prizeAmount ?? 0);
+        const claimId = String(result.claimId ?? result.id ?? Date.now());
 
-          setUnboxedItem(uniqueItem);
-          setWonIdr(rewardIdr);
+        const baseItem = selectedBox.lootPool.find(item => item.id === result.item?.id) || selectedBox.lootPool[0];
+        const uniqueItem: BlindboxItem = {
+          ...baseItem,
+          id: 'pull_' + claimId,
+          name: result.item?.name || baseItem.name,
+          rarity: result.item?.rarity || baseItem.rarity,
+          usdtReward: 0,
+          coinValue: 0,
+        };
 
-          setTimeout(() => {
-            setUnboxingState('REVEALED');
-            sound.playUnboxReveal(uniqueItem.rarity);
+        setUnboxedItem(uniqueItem);
+        setWonIdr(rewardIdr);
 
-            if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || rewardIdr >= 100000) {
-              sound.playJackpot();
-              confetti({
-                particleCount: 130,
-                spread: 90,
-                origin: { y: 0.5 },
-              });
-            }
+        await new Promise<void>(resolve => {
+          window.setTimeout(resolve, 700);
+        });
 
-            addGameHistory({
-              gameType: 'blindbox',
-              gameName: selectedBox.name,
-              betAmount: 0,
-              payoutAmount: rewardIdr,
-              multiplier: 1.0,
-              isWin: true,
-              details: `Daily Box: +${formatMoney(rewardIdr)} & ${uniqueItem.name}`,
-            });
-          }, 700);
-        }, 1200);
+        setUnboxingState('REVEALED');
+        sound.playUnboxReveal(uniqueItem.rarity);
+
+        if (uniqueItem.rarity === 'mythic' || uniqueItem.rarity === 'legendary' || rewardIdr >= 100000) {
+          sound.playJackpot();
+          confetti({
+            particleCount: 130,
+            spread: 90,
+            origin: { y: 0.5 },
+          });
+        }
+
+        addGameHistory({
+          gameType: 'blindbox',
+          gameName: selectedBox.name,
+          betAmount: 0,
+          payoutAmount: rewardIdr,
+          multiplier: 1.0,
+          isWin: true,
+          details: `Daily Box: +${formatMoney(rewardIdr)} & ${uniqueItem.name}`,
+        });
       } catch (error) {
         setUnboxingState('IDLE');
         showToast(
