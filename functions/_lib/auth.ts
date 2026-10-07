@@ -57,11 +57,11 @@ export async function hashPassword(password: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const baseKey = await crypto.subtle.importKey("raw", textEncoder.encode(password), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" },
+    { name: "PBKDF2", salt, iterations: 10000, hash: "SHA-256" },
     baseKey,
     256
   );
-  return `pbkdf2$120000$${bytesToHex(salt)}$${bytesToHex(new Uint8Array(bits))}`;
+  return `pbkdf2$10000${bytesToHex(salt)}${bytesToHex(new Uint8Array(bits))}`;
 }
 
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
