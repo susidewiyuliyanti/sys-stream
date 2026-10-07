@@ -95,11 +95,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return {
           ...DEFAULT_USER,
           ...cached,
-          // Browser cache may contain an old account balance. Financial values
-          // must be reloaded from /api/auth/me before being displayed as current.
-          coins: 0,
-          availableBalance: 0,
-          lockedBalance: 0,
+          // Keep the last-known financial snapshot visible while the server
+          // refresh runs. Server responses remain the authoritative source.
+          coins: Number(cached.coins ?? 0),
+          availableBalance: Number(cached.availableBalance ?? 0),
+          lockedBalance: Number(cached.lockedBalance ?? 0),
         };
       }
     } catch {}
@@ -203,6 +203,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lockedBalance,
       }));
 
+      try {
+        const miningResponse = await fetch('/api/mining', {
+          credentials: 'include',
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const miningData = await miningResponse.json().catch(() => ({}));
+        if (miningResponse.ok && miningData?.success?.toString?.() !== 'false' && miningData?.mining) {
+          setUser(prev => ({ ...prev, sysBalance: Number(miningData.mining.sysBalance ?? prev.sysBalance ?? 0) }));
+        }
+      } catch {}
+
       // Production lock source of truth is /api/deposits.
       // Do not call the legacy /api/locks endpoint: it belongs to the old lock schema.
       try {
@@ -236,6 +248,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch {
         setLocks([]);
       }
+      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
+        ...user,
+        availableBalance: balance,
+        lockedBalance,
+        coins: Math.round(balance * 100),
+      }));
       return true;
     } catch (error: any) {
       if (error?.status === 401 || error?.status === 403) {
@@ -287,6 +305,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     fetch('/api/auth/me', {
       credentials: 'include',
+      cache: 'no-store',
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async response => {
@@ -345,7 +364,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         } catch {}
       });
-    return () => { cancelled = true; };
+    const refreshOnFocus = () => { void refreshFinancialState(); };
+    const refreshOnVisible = () => { if (document.visibilityState === 'visible') void refreshFinancialState(); };
+    window.addEventListener('focus', refreshOnFocus);
+    document.addEventListener('visibilitychange', refreshOnVisible);
+    const financialTimer = window.setInterval(() => { void refreshFinancialState(); }, 15000);
+    return () => {
+      cancelled = true;
+      window.removeEventListener('focus', refreshOnFocus);
+      document.removeEventListener('visibilitychange', refreshOnVisible);
+      window.clearInterval(financialTimer);
+    };
   }, []);
 
   const login = (customName?: string) => {
