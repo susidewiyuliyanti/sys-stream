@@ -7,7 +7,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     if (auth.ok === false) return auth.response;
 
-    const userId = Number(auth.user.id);
+    const userId = String(auth.user.id);
     const depositId = Number(context.params.id);
 
     if (!Number.isInteger(depositId) || depositId <= 0) {
