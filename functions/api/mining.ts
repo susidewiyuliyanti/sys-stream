@@ -102,7 +102,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
   const sameMining = Number(user.miningStartedAt || 0) === effectiveStartAt &&
     Math.abs(Number(user.miningLockedAmount || 0) - effectiveAmountIdr) < 0.000001;
 
-  if (!sameMining || lastCreditedAt < startAt) {
+  if (!sameMining || lastCreditedAt < effectiveStartAt) {
     lastCreditedAt = effectiveStartAt;
     await env.DB.prepare(
       `UPDATE users
@@ -147,7 +147,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
       user.sysBalance = Number(user.sysBalance || 0) + deltaSys;
       user.miningAccruedSys = Number(user.miningAccruedSys || 0) + deltaSys;
       user.miningLastCreditedAt = creditUntil;
-      user.miningEnabled = creditUntil < (endAt || now) ? 1 : 0;
+      user.miningEnabled = creditUntil < (effectiveEndAt || now) ? 1 : 0;
       lastCreditedAt = creditUntil;
     } else {
       const refreshed = await env.DB.prepare(
@@ -165,14 +165,14 @@ export async function syncMiningForUser(env: Env, userId: string) {
     }
   }
 
-  const pendingElapsed = Math.max(0, Math.min(now, endAt || now) - lastCreditedAt);
+  const pendingElapsed = Math.max(0, Math.min(now, effectiveEndAt || now) - lastCreditedAt);
   const pendingSys = pendingElapsed * rateSysPerSecond;
 
   return {
     enabled: Boolean(Number(user.miningEnabled || 0)) || pendingSys > 0,
-    lockedAmountIdr: amountIdr,
+    lockedAmountIdr: effectiveAmountIdr,
     lockedAmountUsd: amountUsd,
-    lockedBalanceIdr: Number(user.totalLocked || amountIdr || 0),
+    lockedBalanceIdr: Number(user.totalLocked || effectiveAmountIdr || 0),
     rateSysPerDay,
     rateSysPerSecond,
     miningStartedAt: effectiveStartAt,
