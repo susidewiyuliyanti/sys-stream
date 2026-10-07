@@ -11,9 +11,6 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     if (!isAddress(raw)) return json({success:false,error:"Alamat wallet EVM tidak valid."},400);
     const walletAddress = getAddress(raw);
     const current = await env.DB.prepare("SELECT wallet_address FROM users WHERE id=? LIMIT 1").bind(String(auth.user.id)).first<any>();
-    if (current?.wallet_address && getAddress(String(current.wallet_address)) !== walletAddress) {
-      return json({success:false,error:"Wallet akun sudah ditetapkan dan tidak dapat diganti melalui endpoint ini."},409);
-    }
     const other = await env.DB.prepare("SELECT id FROM users WHERE lower(wallet_address)=lower(?) AND id<>? LIMIT 1").bind(walletAddress,String(auth.user.id)).first<any>();
     if (other) return json({success:false,error:"Wallet tersebut sudah terhubung ke akun lain."},409);
     await env.DB.prepare("UPDATE users SET wallet_address=? WHERE id=?").bind(walletAddress,String(auth.user.id)).run();
