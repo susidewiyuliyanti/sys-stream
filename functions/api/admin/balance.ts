@@ -15,7 +15,7 @@ async function ensureTransactions(env: Env) {
       user_id TEXT NOT NULL,
       type TEXT NOT NULL,
       amount REAL NOT NULL,
-      currency TEXT NOT NULL DEFAULT 'IDR',
+      currency TEXT NOT NULL DEFAULT 'USDT',
       status TEXT NOT NULL DEFAULT 'COMPLETED',
       reference TEXT,
       description TEXT,
@@ -57,7 +57,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     if (!userId) return json({ success:false, error:"User wajib dipilih." }, 400);
     if (!Number.isFinite(availableBalance) || availableBalance < 0 || availableBalance > 1000000000000) {
-      return json({ success:false, error:"Saldo harus berupa angka 0 sampai 1.000.000.000.000." }, 400);
+      return json({ success:false, error:"Saldo USDT harus berupa angka 0 sampai 1.000.000.000.000." }, 400);
     }
     if (note.length < 3) return json({ success:false, error:"Catatan perubahan saldo wajib diisi." }, 400);
     if (note.length > 500) return json({ success:false, error:"Catatan maksimal 500 karakter." }, 400);
@@ -97,7 +97,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         userId,
         "ADMIN_ADJUSTMENT",
         delta,
-        "IDR",
+        "USDT",
         "COMPLETED",
         adjustmentId,
         "Owner/Admin balance adjustment",
