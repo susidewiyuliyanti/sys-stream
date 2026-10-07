@@ -25,6 +25,8 @@ import {
   Copy,
   ExternalLink,
   CalendarDays,
+  Cpu,
+  Timer,
 } from 'lucide-react';
 
 
@@ -56,6 +58,8 @@ export default function ProfilePage() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loadingTransactions, setLoadingTransactions] = useState(false);
   const [claimingBonus, setClaimingBonus] = useState(false);
+  const [mining, setMining] = useState<any | null>(null);
+  const [miningNow, setMiningNow] = useState(() => Date.now());
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
   const [newWalletInput, setNewWalletInput] = useState(user.walletAddress || '');
@@ -122,6 +126,52 @@ export default function ProfilePage() {
   useEffect(() => {
     if (isLoggedIn) void loadTransactions();
   }, [isLoggedIn, user.id]);
+
+  useEffect(() => {
+    if (!isLoggedIn || !user.id) {
+      setMining(null);
+      return;
+    }
+
+    let cancelled = false;
+    const loadMining = async () => {
+      const token = localStorage.getItem('sys_stream_auth_token');
+      if (!token) return;
+      try {
+        const response = await fetch('/api/mining', {
+          credentials: 'include',
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!cancelled && response.ok && data?.success && data?.mining) {
+          setMining(data.mining);
+        }
+      } catch {}
+    };
+
+    void loadMining();
+    const poll = window.setInterval(() => { void loadMining(); }, 15000);
+    const ticker = window.setInterval(() => setMiningNow(Date.now()), 1000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(poll);
+      window.clearInterval(ticker);
+    };
+  }, [isLoggedIn, user.id]);
+
+  const miningEndAtMs = Number(mining?.endAt || 0) * 1000;
+  const miningLastCreditedMs = Number(mining?.lastCreditedAt || 0) * 1000;
+  const miningRatePerSecond = Number(mining?.rateSysPerSecond || 0);
+  const miningPendingLive = mining?.enabled
+    ? Math.max(0, Math.min(miningNow, miningEndAtMs || miningNow) - miningLastCreditedMs) / 1000 * miningRatePerSecond
+    : 0;
+  const miningTotalDisplay = Number(mining?.accruedSys || 0) + miningPendingLive;
+  const miningSecondsRemaining = mining?.enabled && miningEndAtMs > miningNow
+    ? Math.floor((miningEndAtMs - miningNow) / 1000)
+    : 0;
+  const miningCountdown = `${String(Math.floor(miningSecondsRemaining / 86400)).padStart(2, '0')}d ${String(Math.floor((miningSecondsRemaining % 86400) / 3600)).padStart(2, '0')}h ${String(Math.floor((miningSecondsRemaining % 3600) / 60)).padStart(2, '0')}m ${String(miningSecondsRemaining % 60).padStart(2, '0')}s`;
+
 
   const handleClaimBonus = async () => {
     setClaimingBonus(true);
@@ -287,6 +337,68 @@ export default function ProfilePage() {
                 >
                   <Copy className="w-4 h-4" />
                 </button>
+              )}
+            </div>
+          </section>
+        )}
+
+        {isLoggedIn && (
+          <section className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-950 via-emerald-950/20 to-cyan-950/20 p-5 shadow-[0_0_30px_rgba(16,185,129,0.10)]">
+            <div className="absolute inset-0 pointer-events-none opacity-20">
+              <div className="absolute -top-16 -right-10 h-40 w-40 rounded-full bg-emerald-400 blur-3xl" />
+              <div className="absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-cyan-400 blur-3xl" />
+            </div>
+            <div className="relative">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center ${mining?.enabled ? 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300' : 'border-slate-700 bg-slate-900 text-slate-500'}`}>
+                    <Cpu className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">SYS Mining</div>
+                    <div className="text-sm font-black text-white">{mining?.enabled ? 'MINING ACTIVE' : 'MINING LOCKED'}</div>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-black text-emerald-300">
+                  {mining?.enabled ? 'AUTO' : 'MIN $10 LOCK'}
+                </span>
+              </div>
+
+              <div className="mt-5 grid sm:grid-cols-[1fr_auto] gap-4 items-center">
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-slate-500">Mining SYS</div>
+                  <div className="text-3xl font-black font-mono text-emerald-300 mt-1">
+                    {miningTotalDisplay.toFixed(8)} SYS
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Rate: <span className="text-cyan-300 font-bold">{Number(mining?.rateSysPerDay || 0).toFixed(4)} SYS / 24h</span>
+                    {' '}•{' '}
+                    Lock: <span className="text-amber-300 font-bold">${Number(mining?.lockedAmountUsd || 0).toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="min-w-[190px] rounded-2xl border border-emerald-500/20 bg-slate-950/80 p-4">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500">
+                    <Timer className="w-3.5 h-3.5" /> Mining Timer
+                  </div>
+                  <div className="text-lg font-black font-mono text-white mt-2">{mining?.enabled ? miningCountdown : '00d 00h 00m 00s'}</div>
+                  <div className="text-[10px] text-slate-500 mt-1">1 SYS / $10 / 24h</div>
+                </div>
+              </div>
+
+              {!mining?.enabled && (
+                <div className="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-[11px] text-slate-400">
+                  Lock at least <span className="font-black text-amber-300">$10 equivalent</span> to automatically activate SYS Mining.
+                </div>
+              )}
+
+              {mining?.enabled && (
+                <div className="mt-4 h-2 rounded-full bg-slate-900 overflow-hidden border border-emerald-500/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-emerald-300 transition-all duration-1000"
+                    style={{ width: `${Math.min(100, Math.max(0, miningSecondsRemaining / 86400 * 100))}%` }}
+                  />
+                </div>
               )}
             </div>
           </section>
