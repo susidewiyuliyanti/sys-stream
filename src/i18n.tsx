@@ -3983,6 +3983,103 @@ for (const lang of Object.keys(PRODUCT_LABEL_TRANSLATIONS) as LanguageCode[]) {
   PAGE_UI_TRANSLATIONS[lang]['SYS Mining'] = PRODUCT_LABEL_TRANSLATIONS[lang];
 }
 
+const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {
+    'Mining Active': 'Mining Aktif', 'Mining Locked': 'Mining Terkunci', 'Automatic': 'Otomatis',
+    'Minimum $10 Lock': 'Lock Minimum $10', 'Mining SYS': 'Penambangan SYS', 'Rate': 'Laju',
+    'Mining Timer': 'Timer Mining', 'Mining Inactive': 'Mining Tidak Aktif', 'Lock at least': 'Lock minimal',
+    'equivalent to automatically activate SYS Mining.': 'setara untuk mengaktifkan SYS Mining otomatis.',
+    'Opening Lock...': 'Membuka Lock...', 'Open Lock Early': 'Buka Lock Lebih Awal',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Buka lock sebelum tanggal berakhir? Saldo principal lock akan dikembalikan, semua reward Blind Box dari lock ini hangus, dan SYS Mining yang sudah diperoleh sampai saat ini tetap menjadi milik Anda. Mining akan langsung berhenti.',
+    'Lock Opened': 'Lock Dibuka', 'Open Lock Failed': 'Gagal Membuka Lock',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': 'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.',
+    'Lock selesai dan principal dikembalikan.': 'Lock selesai dan principal dikembalikan.',
+    'Gagal membuka lock.': 'Gagal membuka lock.'
+  },
+  en: {
+    'Mining Active': 'MINING ACTIVE', 'Mining Locked': 'MINING LOCKED', 'Automatic': 'AUTO',
+    'Minimum $10 Lock': 'MIN $10 LOCK', 'Mining SYS': 'Mining SYS', 'Rate': 'Rate',
+    'Mining Timer': 'Mining Timer', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Lock at least',
+    'equivalent to automatically activate SYS Mining.': 'equivalent to automatically activate SYS Mining.',
+    'Opening Lock...': 'Opening Lock...', 'Open Lock Early': 'Open Lock Early',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.',
+    'Lock Opened': 'Lock Opened', 'Open Lock Failed': 'Open Lock Failed',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': 'Principal returned. Blind Box rewards are forfeited and SYS Mining stops.',
+    'Lock selesai dan principal dikembalikan.': 'Lock completed and principal returned.',
+    'Gagal membuka lock.': 'Failed to open lock.'
+  },
+  es: {
+    'Mining Active': 'MINERÍA ACTIVA', 'Mining Locked': 'MINERÍA BLOQUEADA', 'Automatic': 'AUTOMÁTICO',
+    'Minimum $10 Lock': 'BLOQUEO MÍNIMO DE $10', 'Mining SYS': 'Minería SYS', 'Rate': 'Tasa',
+    'Mining Timer': 'Temporizador de minería', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Bloquea al menos',
+    'equivalent to automatically activate SYS Mining.': 'equivalentes para activar la minería SYS automáticamente.',
+    'Opening Lock...': 'Abriendo bloqueo...', 'Open Lock Early': 'Abrir bloqueo antes de tiempo',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '¿Abrir este bloqueo antes de la fecha acordada? Se devolverá el saldo principal, se perderán las recompensas Blind Box y conservarás la minería SYS obtenida hasta este momento. La minería se detendrá inmediatamente.',
+    'Lock Opened': 'Bloqueo abierto', 'Open Lock Failed': 'No se pudo abrir el bloqueo',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': 'Principal devuelto. Las recompensas Blind Box se pierden y la minería SYS se detiene.',
+    'Lock selesai dan principal dikembalikan.': 'Bloqueo completado y principal devuelto.', 'Gagal membuka lock.': 'No se pudo abrir el bloqueo.'
+  },
+  pt: {
+    'Mining Active': 'MINERAÇÃO ATIVA', 'Mining Locked': 'MINERAÇÃO BLOQUEADA', 'Automatic': 'AUTOMÁTICO',
+    'Minimum $10 Lock': 'LOCK MÍNIMO DE $10', 'Mining SYS': 'Mineração SYS', 'Rate': 'Taxa',
+    'Mining Timer': 'Temporizador de mineração', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Faça lock de pelo menos',
+    'equivalent to automatically activate SYS Mining.': 'equivalentes para ativar a mineração SYS automaticamente.',
+    'Opening Lock...': 'Abrindo lock...', 'Open Lock Early': 'Abrir lock antecipadamente',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Abrir este lock antes da data acordada? O principal será devolvido, as recompensas Blind Box serão perdidas e a mineração SYS obtida até este momento permanecerá sua. A mineração será interrompida imediatamente.',
+    'Lock Opened': 'Lock aberto', 'Open Lock Failed': 'Falha ao abrir o lock',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': 'Principal devolvido. As recompensas Blind Box são perdidas e a mineração SYS é interrompida.',
+    'Lock selesai dan principal dikembalikan.': 'Lock concluído e principal devolvido.', 'Gagal membuka lock.': 'Falha ao abrir o lock.'
+  },
+  zh: {
+    'Mining Active': '挖矿进行中', 'Mining Locked': '挖矿已锁定', 'Automatic': '自动',
+    'Minimum $10 Lock': '最低 $10 锁定', 'Mining SYS': 'SYS 挖矿', 'Rate': '速率',
+    'Mining Timer': '挖矿计时器', 'Mining Inactive': '00天 00时 00分 00秒', 'Lock at least': '至少锁定',
+    'equivalent to automatically activate SYS Mining.': '等值金额即可自动启用 SYS 挖矿。',
+    'Opening Lock...': '正在打开锁定...', 'Open Lock Early': '提前打开锁定',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '在约定结束日期前打开此锁定？原始锁定本金将返还，此锁定产生的盲盒奖励将失效，截至此刻获得的 SYS 挖矿奖励仍归您所有。挖矿将立即停止。',
+    'Lock Opened': '锁定已打开', 'Open Lock Failed': '打开锁定失败',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': '本金已返还。盲盒奖励失效，SYS 挖矿已停止。',
+    'Lock selesai dan principal dikembalikan.': '锁定完成，本金已返还。', 'Gagal membuka lock.': '打开锁定失败。'
+  },
+  ja: {
+    'Mining Active': 'マイニング中', 'Mining Locked': 'マイニングロック中', 'Automatic': '自動',
+    'Minimum $10 Lock': '最低$10ロック', 'Mining SYS': 'SYSマイニング', 'Rate': 'レート',
+    'Mining Timer': 'マイニングタイマー', 'Mining Inactive': '00日 00時 00分 00秒', 'Lock at least': '最低',
+    'equivalent to automatically activate SYS Mining.': '相当をロックするとSYSマイニングが自動的に有効になります。',
+    'Opening Lock...': 'ロックを開いています...', 'Open Lock Early': 'ロックを早期解除',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '合意した終了日より前にこのロックを開きますか？元本は返還され、このロックのBlind Box報酬は失効します。この時点までに獲得したSYSマイニングは保持され、マイニングは直ちに停止します。',
+    'Lock Opened': 'ロックを解除しました', 'Open Lock Failed': 'ロック解除に失敗しました',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': '元本が返還され、Blind Box報酬は失効し、SYSマイニングは停止しました。',
+    'Lock selesai dan principal dikembalikan.': 'ロックが完了し、元本が返還されました。', 'Gagal membuka lock.': 'ロック解除に失敗しました。'
+  },
+  ko: {
+    'Mining Active': '채굴 활성', 'Mining Locked': '채굴 잠김', 'Automatic': '자동',
+    'Minimum $10 Lock': '최소 $10 락', 'Mining SYS': 'SYS 채굴', 'Rate': '속도',
+    'Mining Timer': '채굴 타이머', 'Mining Inactive': '00일 00시간 00분 00초', 'Lock at least': '최소',
+    'equivalent to automatically activate SYS Mining.': '상당액을 락하면 SYS 채굴이 자동 활성화됩니다.',
+    'Opening Lock...': '락을 여는 중...', 'Open Lock Early': '락 조기 해제',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '약정 종료일 전에 이 락을 여시겠습니까? 원금은 반환되고 이 락의 Blind Box 보상은 소멸하며 현재까지 획득한 SYS 채굴은 유지됩니다. 채굴은 즉시 중지됩니다.',
+    'Lock Opened': '락 해제됨', 'Open Lock Failed': '락 해제 실패',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': '원금이 반환되었습니다. Blind Box 보상은 소멸되고 SYS 채굴이 중지됩니다.',
+    'Lock selesai dan principal dikembalikan.': '락이 완료되고 원금이 반환되었습니다.', 'Gagal membuka lock.': '락 해제에 실패했습니다.'
+  },
+  ar: {
+    'Mining Active': 'التعدين نشط', 'Mining Locked': 'التعدين مقفل', 'Automatic': 'تلقائي',
+    'Minimum $10 Lock': 'قفل بحد أدنى 10 دولارات', 'Mining SYS': 'تعدين SYS', 'Rate': 'المعدل',
+    'Mining Timer': 'مؤقت التعدين', 'Mining Inactive': '00ي 00س 00د 00ث', 'Lock at least': 'اقفل ما لا يقل عن',
+    'equivalent to automatically activate SYS Mining.': 'ما يعادلها لتفعيل تعدين SYS تلقائيًا.',
+    'Opening Lock...': 'جارٍ فتح القفل...', 'Open Lock Early': 'فتح القفل مبكرًا',
+    'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'هل تريد فتح هذا القفل قبل تاريخ الانتهاء المتفق عليه؟ سيُعاد أصل الرصيد، وستُلغى مكافآت Blind Box لهذا القفل، بينما تبقى مكافآت تعدين SYS المكتسبة حتى هذه اللحظة لك. سيتوقف التعدين فورًا.',
+    'Lock Opened': 'تم فتح القفل', 'Open Lock Failed': 'فشل فتح القفل',
+    'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.': 'تم إرجاع الأصل. أُلغيت مكافآت Blind Box وتوقف تعدين SYS.',
+    'Lock selesai dan principal dikembalikan.': 'اكتمل القفل وأُعيد الأصل.', 'Gagal membuka lock.': 'تعذر فتح القفل.'
+  }
+};
+for (const lang of Object.keys(MINING_UI_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], MINING_UI_TRANSLATIONS[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], MINING_UI_TRANSLATIONS[lang]);
+}
+
 /*
  * Final UI synchronization:
  * the page fallback dictionary is assembled in several stages. Merge the
