@@ -44,7 +44,7 @@ export default function AdminApp() {
   const [query,setQuery]=useState('');
 
   const request=async(path:string,options:RequestInit={})=>{
-    const response=await fetch(API+path,{...options,credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})}});
+    const response=await fetch(API+path,{...options,cache:'no-store',credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})}});
     const data=await response.json().catch(()=>({}));
     if(!response.ok||!data.success) throw new Error(data.error||'Request gagal.');
     return data;
@@ -121,7 +121,12 @@ export default function AdminApp() {
   };
 
   useEffect(()=>{void checkSession();},[]);
-  useEffect(()=>{if(authenticated)void loadDashboard();},[authenticated]);
+  useEffect(()=>{
+    if(!authenticated)return;
+    void loadDashboard();
+    const timer=window.setInterval(()=>void loadDashboard(),15000);
+    return()=>window.clearInterval(timer);
+  },[authenticated]);
 
   const login=async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();setError('');setLoading(true);
