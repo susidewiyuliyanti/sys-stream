@@ -490,6 +490,37 @@ export default function AirdropApp() {
     return x?{title:tx[x.title],desc,action:tx[x.action]}:{title:fallbackTitle,desc,action:fallbackAction};
   };
 
+  const filteredTasks = useMemo(() => {
+    if (taskCategory === 'all') return availableTasks;
+    if (taskCategory === 'youtube') return availableTasks.filter(t => t.type === 'youtube' || t.type === 'shorts');
+    if (taskCategory === 'social') return availableTasks.filter(t => ['social','tiktok','instagram','twitter','facebook','telegram','discord'].includes(t.type));
+    return availableTasks.filter(t => t.type === 'checkin');
+  }, [availableTasks, taskCategory]);
+
+  const renderTaskCard = (t:Task) => {
+    const x = taskText(t);
+    return (
+      <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
+        <div className="flex items-center justify-between">
+          <span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span>
+          <div className="flex gap-1">
+            {t.daily && <span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}
+            {t.priority && <span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}
+          </div>
+        </div>
+        <h2 className="mt-5 text-lg font-bold">{x.title}</h2>
+        <p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
+        <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+          <div>
+            <div className="text-xs text-slate-500">{tx.reward}</div>
+            <div className="font-bold text-amber-400">{t.reward === 'program' ? tx.configured : t.reward + ' pts'}</div>
+          </div>
+          <button onClick={() => openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button>
+        </div>
+      </article>
+    );
+  };
+
   return <div className="min-h-screen bg-slate-950 text-slate-100">
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
       <div className="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between gap-3">
@@ -602,43 +633,8 @@ export default function AirdropApp() {
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {tasksLoading ? (
-            <div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">
-              {tx.loadingTasks || AIRDROP_UI[lang].loading}
-            </div>
-          ) : (
-            availableTasks
-              .filter(t => {
-                if (taskCategory === 'all') return true;
-                if (taskCategory === 'youtube') return t.type === 'youtube' || t.type === 'shorts';
-                if (taskCategory === 'social') return ['social','tiktok','instagram','twitter','facebook','telegram','discord'].includes(t.type);
-                return t.type === 'checkin';
-              })
-              .map(t => {
-                const x = taskText(t);
-                return (
-                  <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-2 text-xs font-bold text-slate-300">{typeIcon(t.type)} {typeLabel(t.type,tx)}</span>
-                      <div className="flex gap-1">
-                        {t.daily && <span className="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">{tx.daily}</span>}
-                        {t.priority && <span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}
-                      </div>
-                    </div>
-                    <h2 className="mt-5 text-lg font-bold">{x.title}</h2>
-                    <p className="mt-2 text-sm leading-6 text-slate-400 flex-1">{x.desc}</p>
-                    <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs text-slate-500">{tx.reward}</div>
-                        <div className="font-bold text-amber-400">{t.reward==='program' ? tx.configured : t.reward + ' pts'}</div>
-                      </div>
-                      <button onClick={() => openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">
-                        {x.action}
-                      </button>
-                    </div>
-                  </article>
-                );
-              })
-          )}
+            <div className="md:col-span-2 xl:col-span-3 rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center text-sm text-slate-500">{tx.loadingTasks || AIRDROP_UI[lang].loading}</div>
+          ) : filteredTasks.map(renderTaskCard)}
         </div>
       </section>:<section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-5">{submissions.length===0?<div className="p-8 text-center"><FileVideo className="w-10 h-10 mx-auto text-slate-600"/><h2 className="mt-4 font-bold">{tx.empty}</h2><p className="mt-2 text-sm text-slate-500">{tx.emptySub}</p></div>:<div className="space-y-3">{submissions.map(s=><div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col sm:flex-row sm:items-center gap-3"><div className="flex-1 min-w-0"><div className="font-bold truncate">{s.task_title||String(s.task_id)}</div><a href={s.evidence_link} target="_blank" rel="noreferrer" className="text-xs text-amber-400 break-all">{s.evidence_link}</a><div className="text-[10px] text-slate-500 mt-1">{s.created_at}</div></div><div className="text-xs font-black px-3 py-2 rounded-xl bg-slate-800 text-slate-200">{statusLabel(s.status,tx)}</div><div className="text-xs text-amber-400 font-bold">{s.reward_points} pts</div></div>)}</div>}</section>}
     </main>
