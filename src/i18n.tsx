@@ -4069,7 +4069,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   id: {
     'Mining Active': 'Mining Aktif', 'Mining Locked': 'Mining Terkunci', 'Automatic': 'Otomatis',
     'Minimum $10 Lock': 'Lock Minimum $10', 'Mining SYS': 'Penambangan SYS', 'Rate': 'Laju',
-    'Mining Timer': 'Timer Mining', 'Mining Inactive': 'Mining Tidak Aktif', 'Lock at least': 'Lock minimal',
+    'Mining Timer': 'Timer Mining', 'Claim Timer': 'Timer Klaim', 'Claim Ready': 'Klaim Siap', 'Mining Inactive': 'Mining Tidak Aktif', 'Lock at least': 'Lock minimal',
     'equivalent to automatically activate SYS Mining.': 'setara untuk mengaktifkan SYS Mining otomatis.',
     'Opening Lock...': 'Membuka Lock...', 'Open Lock Early': 'Buka Lock Lebih Awal',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Buka lock sebelum tanggal berakhir? Saldo principal lock akan dikembalikan, semua reward Blind Box dari lock ini hangus, dan SYS Mining yang sudah diperoleh sampai saat ini tetap menjadi milik Anda. Mining akan langsung berhenti.',
@@ -4081,7 +4081,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   en: {
     'Mining Active': 'MINING ACTIVE', 'Mining Locked': 'MINING LOCKED', 'Automatic': 'AUTO',
     'Minimum $10 Lock': 'MIN $10 LOCK', 'Mining SYS': 'Mining SYS', 'Rate': 'Rate',
-    'Mining Timer': 'Mining Timer', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Lock at least',
+    'Mining Timer': 'Mining Timer', 'Claim Timer': 'Claim Timer', 'Claim Ready': 'Claim Ready', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Lock at least',
     'equivalent to automatically activate SYS Mining.': 'equivalent to automatically activate SYS Mining.',
     'Opening Lock...': 'Opening Lock...', 'Open Lock Early': 'Open Lock Early',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.',
@@ -4093,7 +4093,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   es: {
     'Mining Active': 'MINERÍA ACTIVA', 'Mining Locked': 'MINERÍA BLOQUEADA', 'Automatic': 'AUTOMÁTICO',
     'Minimum $10 Lock': 'BLOQUEO MÍNIMO DE $10', 'Mining SYS': 'Minería SYS', 'Rate': 'Tasa',
-    'Mining Timer': 'Temporizador de minería', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Bloquea al menos',
+    'Mining Timer': 'Temporizador de minería', 'Claim Timer': 'Tiempo para reclamar', 'Claim Ready': 'Listo para reclamar', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Bloquea al menos',
     'equivalent to automatically activate SYS Mining.': 'equivalentes para activar la minería SYS automáticamente.',
     'Opening Lock...': 'Abriendo bloqueo...', 'Open Lock Early': 'Abrir bloqueo antes de tiempo',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '¿Abrir este bloqueo antes de la fecha acordada? Se devolverá el saldo principal, se perderán las recompensas Blind Box y conservarás la minería SYS obtenida hasta este momento. La minería se detendrá inmediatamente.',
@@ -4104,7 +4104,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   pt: {
     'Mining Active': 'MINERAÇÃO ATIVA', 'Mining Locked': 'MINERAÇÃO BLOQUEADA', 'Automatic': 'AUTOMÁTICO',
     'Minimum $10 Lock': 'LOCK MÍNIMO DE $10', 'Mining SYS': 'Mineração SYS', 'Rate': 'Taxa',
-    'Mining Timer': 'Temporizador de mineração', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Faça lock de pelo menos',
+    'Mining Timer': 'Temporizador de mineração', 'Claim Timer': 'Tempo para claim', 'Claim Ready': 'Claim pronto', 'Mining Inactive': '00d 00h 00m 00s', 'Lock at least': 'Faça lock de pelo menos',
     'equivalent to automatically activate SYS Mining.': 'equivalentes para ativar a mineração SYS automaticamente.',
     'Opening Lock...': 'Abrindo lock...', 'Open Lock Early': 'Abrir lock antecipadamente',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'Abrir este lock antes da data acordada? O principal será devolvido, as recompensas Blind Box serão perdidas e a mineração SYS obtida até este momento permanecerá sua. A mineração será interrompida imediatamente.',
@@ -4115,7 +4115,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   zh: {
     'Mining Active': '挖矿进行中', 'Mining Locked': '挖矿已锁定', 'Automatic': '自动',
     'Minimum $10 Lock': '最低 $10 锁定', 'Mining SYS': 'SYS 挖矿', 'Rate': '速率',
-    'Mining Timer': '挖矿计时器', 'Mining Inactive': '00天 00时 00分 00秒', 'Lock at least': '至少锁定',
+    'Mining Timer': '挖矿计时器', 'Claim Timer': '领取倒计时', 'Claim Ready': '可以领取', 'Mining Inactive': '00天 00时 00分 00秒', 'Lock at least': '至少锁定',
     'equivalent to automatically activate SYS Mining.': '等值金额即可自动启用 SYS 挖矿。',
     'Opening Lock...': '正在打开锁定...', 'Open Lock Early': '提前打开锁定',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '在约定结束日期前打开此锁定？原始锁定本金将返还，此锁定产生的盲盒奖励将失效，截至此刻获得的 SYS 挖矿奖励仍归您所有。挖矿将立即停止。',
@@ -4126,7 +4126,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   ja: {
     'Mining Active': 'マイニング中', 'Mining Locked': 'マイニングロック中', 'Automatic': '自動',
     'Minimum $10 Lock': '最低$10ロック', 'Mining SYS': 'SYSマイニング', 'Rate': 'レート',
-    'Mining Timer': 'マイニングタイマー', 'Mining Inactive': '00日 00時 00分 00秒', 'Lock at least': '最低',
+    'Mining Timer': 'マイニングタイマー', 'Claim Timer': '受け取りまで', 'Claim Ready': '受け取り可能', 'Mining Inactive': '00日 00時 00分 00秒', 'Lock at least': '最低',
     'equivalent to automatically activate SYS Mining.': '相当をロックするとSYSマイニングが自動的に有効になります。',
     'Opening Lock...': 'ロックを開いています...', 'Open Lock Early': 'ロックを早期解除',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '合意した終了日より前にこのロックを開きますか？元本は返還され、このロックのBlind Box報酬は失効します。この時点までに獲得したSYSマイニングは保持され、マイニングは直ちに停止します。',
@@ -4137,7 +4137,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   ko: {
     'Mining Active': '채굴 활성', 'Mining Locked': '채굴 잠김', 'Automatic': '자동',
     'Minimum $10 Lock': '최소 $10 락', 'Mining SYS': 'SYS 채굴', 'Rate': '속도',
-    'Mining Timer': '채굴 타이머', 'Mining Inactive': '00일 00시간 00분 00초', 'Lock at least': '최소',
+    'Mining Timer': '채굴 타이머', 'Claim Timer': '수령까지 남은 시간', 'Claim Ready': '수령 가능', 'Mining Inactive': '00일 00시간 00분 00초', 'Lock at least': '최소',
     'equivalent to automatically activate SYS Mining.': '상당액을 락하면 SYS 채굴이 자동 활성화됩니다.',
     'Opening Lock...': '락을 여는 중...', 'Open Lock Early': '락 조기 해제',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': '약정 종료일 전에 이 락을 여시겠습니까? 원금은 반환되고 이 락의 Blind Box 보상은 소멸하며 현재까지 획득한 SYS 채굴은 유지됩니다. 채굴은 즉시 중지됩니다.',
@@ -4148,7 +4148,7 @@ const MINING_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   ar: {
     'Mining Active': 'التعدين نشط', 'Mining Locked': 'التعدين مقفل', 'Automatic': 'تلقائي',
     'Minimum $10 Lock': 'قفل بحد أدنى 10 دولارات', 'Mining SYS': 'تعدين SYS', 'Rate': 'المعدل',
-    'Mining Timer': 'مؤقت التعدين', 'Mining Inactive': '00ي 00س 00د 00ث', 'Lock at least': 'اقفل ما لا يقل عن',
+    'Mining Timer': 'مؤقت الاستلام', 'Claim Timer': 'الوقت حتى الاستلام', 'Claim Ready': 'الاستلام متاح', 'Mining Inactive': '00ي 00س 00د 00ث', 'Lock at least': 'اقفل ما لا يقل عن',
     'equivalent to automatically activate SYS Mining.': 'ما يعادلها لتفعيل تعدين SYS تلقائيًا.',
     'Opening Lock...': 'جارٍ فتح القفل...', 'Open Lock Early': 'فتح القفل مبكرًا',
     'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.': 'هل تريد فتح هذا القفل قبل تاريخ الانتهاء المتفق عليه؟ سيُعاد أصل الرصيد، وستُلغى مكافآت Blind Box لهذا القفل، بينما تبقى مكافآت تعدين SYS المكتسبة حتى هذه اللحظة لك. سيتوقف التعدين فورًا.',
