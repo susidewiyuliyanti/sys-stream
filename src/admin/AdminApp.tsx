@@ -18,6 +18,7 @@ type AdminDeposit = { id:string; depositCode:string; userId:string; username:str
 type AdminAccount = { id:string; email:string; displayName:string; role:string; active:number; createdAt:number };
 type JackpotGrant = { id:string; userId:string; username:string; email:string; amount:number; currency:string; note:string; adminName:string; createdAt:number };
 type AirdropTask = { id:number; title:string; description:string; category:string; rewardPoints:number; active:number; createdAt:string };
+type AirdropSubmission = { id:number; walletAddress:string; taskId:number; taskTitle:string; category:string; evidenceLink:string; status:string; rewardPoints:number; createdAt:string };
 type Streamer = { id:string; username:string; email:string; walletAddress:string; role:string; createdAt?:string };
 type Tab = 'overview'|'users'|'streamers'|'transactions'|'jackpot'|'airdrop'|'admins'|'ai-agent'|'social'|'email'|'email-inbox'|'email-campaign';
 
@@ -34,6 +35,7 @@ export default function AdminApp() {
   const [streamers,setStreamers]=useState<Streamer[]>([]);
   const [grants,setGrants]=useState<JackpotGrant[]>([]);
   const [airdropTasks,setAirdropTasks]=useState<AirdropTask[]>([]);
+  const [airdropSubmissions,setAirdropSubmissions]=useState<AirdropSubmission[]>([]);
   const [analytics,setAnalytics]=useState<any>(null);
   const [loading,setLoading]=useState(false);
   const [checkingSession,setCheckingSession]=useState(true);
@@ -70,11 +72,12 @@ export default function AdminApp() {
         request('/bonuses'),
         request('/admins'),
         request('/airdrop-tasks'),
+        request('/airdrop-submissions'),
         request('/streamers'),
         request('/analytics')
       ]);
 
-      const [u,d,b,a,t,s,an]=results;
+      const [u,d,b,a,t,sub,s,an]=results;
       const failures:string[]=[];
 
       if(u.status!=='fulfilled') failures.push('users');
@@ -89,6 +92,8 @@ export default function AdminApp() {
       }else failures.push('admins');
       if(t.status==='fulfilled') setAirdropTasks(t.value.tasks||[]);
       else failures.push('airdrop-tasks');
+      if(sub.status==='fulfilled') setAirdropSubmissions(sub.value.submissions||[]);
+      else failures.push('airdrop-submissions');
       if(s.status==='fulfilled') setStreamers(s.value.streamers||[]);
       else failures.push('streamers');
       if(an.status==='fulfilled'){
@@ -148,7 +153,7 @@ export default function AdminApp() {
 
   const logout=async()=>{
     try{await request('/logout',{method:'POST'});}catch{}
-    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setAirdropTasks([]);setStreamers([]);setTab('overview');
+    setAuthenticated(false);setAdmin(null);setUsers([]);setDeposits([]);setAdmins([]);setGrants([]);setAirdropTasks([]);setAirdropSubmissions([]);setStreamers([]);setTab('overview');
   };
 
   const filteredUsers=useMemo(()=>{
@@ -349,7 +354,7 @@ function JackpotPanel({users,grants,onRefresh}:{users:AdminUser[];grants:Jackpot
  return <div className="space-y-6"><Panel title="Promotional Jackpot Grant" meta="Manual reward credit with audit trail"><div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-5 text-xs text-slate-400">Gunakan fitur ini untuk <strong className="text-slate-200">bonus/promotional jackpot</strong> yang diberikan secara eksplisit kepada user. Grant ini tidak mengubah hasil random Blind Box.</div><form onSubmit={submit} className="grid md:grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-slate-400 mb-2">Select User</label><select value={userId} onChange={e=>setUserId(e.target.value)} className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"><option value="">Choose user...</option>{users.map(u=><option key={u.id} value={u.id}>{u.username} â€” {u.email}</option>)}</select></div><div><label className="block text-xs font-semibold text-slate-400 mb-2">Jackpot Value (USDT)</label><input type="number" min="0.01" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="e.g. 100" className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/></div><div className="md:col-span-2"><label className="block text-xs font-semibold text-slate-400 mb-2">Reason / Audit Note</label><input value={note} onChange={e=>setNote(e.target.value)} placeholder="Campaign, promotion, correction, etc." className="w-full rounded-xl bg-slate-950 border border-slate-700 px-4 py-3 text-sm"/></div><div className="md:col-span-2 flex items-center gap-3"><button disabled={busy||!userId||!amount} className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-extrabold flex items-center gap-2"><Gift className="w-4 h-4"/>{busy?'Processing...':'Grant Jackpot'}</button>{message&&<span className="text-xs text-slate-300">{message}</span>}</div></form></Panel><Panel title="Grant History" meta={`${grants.length} audited records`}><div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">User</th><th className="text-right py-3 pr-4">Amount</th><th className="text-left py-3 pr-4">Note</th><th className="text-left py-3 pr-4">Admin</th><th className="text-left py-3">Date</th></tr></thead><tbody className="divide-y divide-slate-800">{grants.map(g=><tr key={g.id}><td className="py-3 pr-4">{g.username||g.email||g.userId}</td><td className="py-3 pr-4 text-right font-semibold">{formatNumber(Number(g.amount))} {g.currency}</td><td className="py-3 pr-4 text-slate-400">{g.note||'-'}</td><td className="py-3 pr-4 text-slate-400">{g.adminName}</td><td className="py-3 text-slate-500">{new Date(Number(g.createdAt)*1000).toLocaleString()}</td></tr>)}</tbody></table>{!grants.length&&<EmptyState text="No jackpot grants yet."/>}</div></Panel></div>;
 }
 
-function AirdropTaskPanel({tasks,onRefresh}:{tasks:AirdropTask[];onRefresh:()=>void}){
+function AirdropTaskPanel({tasks,submissions,onRefresh}:{tasks:AirdropTask[];submissions:AirdropSubmission[];onRefresh:()=>void}){
  const blank={title:'',description:'',category:'social',rewardPoints:'0',active:true};
  const [form,setForm]=useState(blank); const [editing,setEditing]=useState<number|null>(null); const [busy,setBusy]=useState(false); const [message,setMessage]=useState('');
  const save=async(e:React.FormEvent)=>{e.preventDefault();setBusy(true);setMessage('');try{const method=editing?'PATCH':'POST';const body={...form,rewardPoints:Number(form.rewardPoints),...(editing?{id:editing}:{})};const r=await fetch(API+'/airdrop-tasks',{method,credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok||!d.success)throw new Error(d.error||'Gagal menyimpan task.');setMessage(editing?'Task diperbarui.':'Task berhasil dibuat.');setForm(blank);setEditing(null);onRefresh();}catch(e:any){setMessage(e?.message||'Gagal menyimpan task.')}finally{setBusy(false)}};
@@ -368,6 +373,33 @@ function AirdropTaskPanel({tasks,onRefresh}:{tasks:AirdropTask[];onRefresh:()=>v
  </form></Panel>
  <Panel title="Airdrop Tasks" meta={tasks.length+' task records'}>
  <div className="overflow-x-auto"><table className="w-full text-sm"><thead className="text-[11px] uppercase text-slate-500 border-b border-slate-800"><tr><th className="text-left py-3 pr-4">Task</th><th className="text-left py-3 pr-4">Category</th><th className="text-right py-3 pr-4">Reward</th><th className="text-left py-3 pr-4">Status</th><th className="text-right py-3">Action</th></tr></thead><tbody className="divide-y divide-slate-800">{tasks.map(t=><tr key={t.id}><td className="py-3 pr-4"><div className="font-semibold">{t.title}</div><div className="text-xs text-slate-500 max-w-xl">{t.description}</div></td><td className="py-3 pr-4">{t.category}</td><td className="py-3 pr-4 text-right text-amber-400 font-bold">{Number(t.rewardPoints||0).toLocaleString()} pts</td><td className="py-3 pr-4"><button onClick={()=>void toggle(t)} className={`text-xs rounded-full px-2 py-1 ${t.active?'bg-emerald-500/10 text-emerald-400':'bg-slate-800 text-slate-500'}`}>{t.active?'Active':'Inactive'}</button></td><td className="py-3 text-right"><div className="flex justify-end gap-2"><button onClick={()=>edit(t)} className="p-2 rounded-lg border border-slate-700 hover:border-amber-500"><Pencil className="w-4 h-4"/></button><button onClick={()=>void remove(t)} className="p-2 rounded-lg border border-slate-700 hover:border-red-500 text-red-400"><Trash2 className="w-4 h-4"/></button></div></td></tr>)}</tbody></table>{!tasks.length&&<EmptyState text="Belum ada Airdrop Task production."/>}</div></Panel>
+ <Panel title="Review Airdrop Submissions" meta={submissions.filter(s=>String(s.status).toUpperCase()==='PENDING').length+' pending submissions'}>
+ <div className="space-y-3">
+ {submissions.length===0&&<EmptyState text="Belum ada submission Airdrop."/>}
+ {submissions.map(s=>{
+   const pending=String(s.status).toUpperCase()==='PENDING';
+   return <div key={s.id} className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+       <div className="min-w-0 flex-1">
+         <div className="flex items-center gap-2 flex-wrap">
+           <span className="font-bold">{s.taskTitle||('Task #'+s.taskId)}</span>
+           <span className="text-[10px] rounded-full px-2 py-1 bg-slate-800 text-slate-400">{s.category||'social'}</span>
+           <span className={`text-[10px] rounded-full px-2 py-1 ${pending?'bg-amber-500/10 text-amber-300':String(s.status).toUpperCase()==='APPROVED'?'bg-emerald-500/10 text-emerald-400':'bg-red-500/10 text-red-400'}`}>{s.status}</span>
+         </div>
+         <div className="mt-2 text-xs text-slate-500 break-all">Wallet: {s.walletAddress}</div>
+         <div className="mt-1 text-xs text-amber-400 font-bold">Reward: {Number(s.rewardPoints||0).toLocaleString()} pts</div>
+         {s.evidenceLink&&<a href={s.evidenceLink} target="_blank" rel="noreferrer" className="mt-3 inline-flex max-w-full text-xs text-slate-300 hover:text-amber-300 break-all underline">Buka bukti: {s.evidenceLink}</a>}
+         <div className="mt-1 text-[10px] text-slate-600">{s.createdAt}</div>
+       </div>
+       {pending&&<div className="flex shrink-0 gap-2">
+         <button onClick={async()=>{try{const r=await fetch(API+'/airdrop-submissions',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:s.id,action:'APPROVED'})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Approval gagal.');onRefresh();}catch(e:any){setError(e?.message||'Approval gagal.');}}} className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 text-xs font-black">Approve + Reward</button>
+         <button onClick={async()=>{const note=window.prompt('Alasan reject (opsional):')||'';try{const r=await fetch(API+'/airdrop-submissions',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:s.id,action:'REJECTED',note})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Reject gagal.');onRefresh();}catch(e:any){setError(e?.message||'Reject gagal.');}}} className="px-4 py-2 rounded-xl border border-red-500/30 text-red-400 text-xs font-black hover:bg-red-500/10">Reject</button>
+       </div>}
+     </div>
+   </div>;
+ })}
+ </div>
+ </Panel>
  </div>;
 }
 
