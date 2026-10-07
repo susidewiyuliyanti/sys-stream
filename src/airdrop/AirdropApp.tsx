@@ -626,7 +626,7 @@ export default function AirdropApp() {
           {!walletAddress.trim()&&<div className="mt-2 text-xs text-amber-300">{tx.walletRequired || COPY.en.walletRequired}</div>}
           {selectedTask.type!=='checkin'&&<><label className="block text-xs font-bold text-slate-400 mt-4 mb-2">{tx.proofSubmission}</label><input value={proofLink} onChange={e=>setProofLink(e.target.value)} placeholder={tx.proofPlaceholder || AIRDROP_UI[lang].proofPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" /></>}
           {submissionMessage&&<div className="mt-3 text-xs text-amber-300">{submissionMessage}</div>}
-          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())||(!!requiredSocialPlatform(selectedTask)&&(!followConfirmed||!(requiredSocialPlatform(selectedTask)==='social'?(socialPlatform&&socialAccounts[socialPlatform]):socialAccounts[requiredSocialPlatform(selectedTask)])))} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || AIRDROP_UI[lang].submitting):(tx.saveWallet || COPY.en.saveWallet)}</button>
+          <button disabled={!walletAddress.trim()||submissionLoading||(selectedTask.type!=='checkin'&&!proofLink.trim())} onClick={submitTask} className="mt-3 w-full py-3 rounded-xl bg-amber-400 text-slate-950 font-bold disabled:opacity-40 disabled:cursor-not-allowed">{submissionLoading?(tx.submitting || AIRDROP_UI[lang].submitting):(tx.saveWallet || COPY.en.saveWallet)}</button>
         </div>
       </div>
     </div>})()}
