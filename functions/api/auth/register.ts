@@ -2,6 +2,7 @@ import { Env, json, readJson } from "../../_lib/db";
 import { getAddress, isAddress } from "ethers";
 import { createSession } from "../../_lib/auth";
 import { notifyAdmins } from "../../_lib/admin-notifications";
+import { REGISTRATION_BONUS_IDR, REGISTRATION_BONUS_USD_REFERENCE } from "../../_lib/bonuses";
 
 const TERMS_VERSION = "2026-10-01";
 async function ensureRegistrationSchema(env: Env) {
@@ -358,7 +359,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       wallet_address: walletAddress,
       has_referral_bonus: 0,
       avatar_url: null,
-      registration_bonus_idr: 15000,
+      registration_bonus_idr: REGISTRATION_BONUS_IDR,
       registration_bonus_granted: 1,
       cuid: crypto.randomUUID(),
       uid: crypto.randomUUID(),
@@ -524,11 +525,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         walletAddress,
         referralCode: userReferralCode,
         emailVerified: true,
-        registrationBonusIdr: 15000,
+        registrationBonusIdr: REGISTRATION_BONUS_IDR,
         registrationBonusGranted: true,
       },
-      registrationBonusIdr: 15000,
-      registrationBonusUsdt: 0.8363,
+      registrationBonusIdr: REGISTRATION_BONUS_IDR,
+      registrationBonusUsdt: REGISTRATION_BONUS_USD_REFERENCE,
       message: "Akun berhasil dibuat dan langsung login. Tidak diperlukan email.",
     });
   } catch (error) {
