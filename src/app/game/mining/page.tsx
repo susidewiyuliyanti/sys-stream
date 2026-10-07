@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pickaxe, LockKeyhole, Coins, Clock3, CheckCircle2, RefreshCw } from 'lucide-react';
-import { useLanguage } from '../../../i18n';
+import { useLanguage, formatIdrAsSelectedCurrency } from '../../../i18n';
 
 // Fallback values referenced by locale entries below.
 // Keep this outside the component so MINING_COPY is safe during module initialization.
@@ -57,6 +57,7 @@ interface MiningState {
 export default function MiningPage() {
   const { language } = useLanguage();
   const tx = MINING_COPY[language] || MINING_COPY.en;
+  const localizedMinMining = formatIdrAsSelectedCurrency(10 * 17937, language);
   const [state, setState] = useState<MiningState | null>(null);
   const [loading, setLoading] = useState(true);
   const [claiming, setClaiming] = useState(false);
@@ -150,6 +151,7 @@ export default function MiningPage() {
   const claimedToday = Boolean(state?.claimedToday);
   const lockAmountIdr = Number(state?.lock?.amountIdr || 0);
   const lockAmountUsd = Number(state?.lock?.amountUsd || 0);
+  const localizedLockAmount = formatIdrAsSelectedCurrency(lockAmountIdr, language);
   const dailyReward = Number(state?.dailyReward || 0);
   const sysBalance = Number(state?.sysBalance || 0);
 
@@ -196,7 +198,7 @@ export default function MiningPage() {
               <LockKeyhole className="h-4 w-4" />
               <span className="text-xs font-bold uppercase">{tx.activeLock}</span>
             </div>
-            <div className="text-2xl font-black">Rp {lockAmountIdr.toLocaleString('id-ID')}</div>
+            <div className="text-2xl font-black">{localizedLockAmount}</div>
             <div className="mt-1 text-xs text-slate-500">≈ {'$'}{lockAmountUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </div>
 
@@ -230,7 +232,7 @@ export default function MiningPage() {
               <LockKeyhole className="mx-auto mb-4 h-10 w-10 text-slate-600" />
               <h2 className="text-xl font-black">{tx.inactive}</h2>
               <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-400">
-                {tx.inactiveDesc}
+                {tx.inactiveDesc.replace(/\$10/g, localizedMinMining)}
               </p>
 
             </div>
@@ -292,7 +294,7 @@ export default function MiningPage() {
             <div>
               <h3 className="font-bold">{tx.rules}</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
-                <li>• {tx.rule1}</li>
+                <li>• {tx.rule1.replace(/\$10/g, localizedMinMining)}</li>
                 <li>• {tx.rule3}</li>
                 <li>• {tx.rule4}</li>
                 <li>• {tx.rule5}</li>
