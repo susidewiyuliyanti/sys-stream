@@ -8,8 +8,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!auth.ok) return auth.response;
 
     const userId = String(auth.user.id);
-    const depositId = Number(context.params.id);
-    if (!Number.isInteger(depositId) || depositId <= 0) {
+    const depositId = String(context.params.id || "").trim();
+    if (!depositId) {
       return json({ success: false, error: "ID lock tidak valid." }, 400);
     }
 
