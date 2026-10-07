@@ -1,5 +1,6 @@
 import { Env, json } from "../../../_lib/db";
 import { requireAdmin } from "../../../_lib/admin";
+import { brandedEmailHtml } from "../../../_lib/email";
 
 function clean(v:unknown,max=100000){return String(v??"").trim().slice(0,max);}
 function mapRow(r:any){return {id:String(r.id),resendEmailId:r.resend_email_id?String(r.resend_email_id):null,messageId:r.message_id?String(r.message_id):null,threadId:String(r.thread_id),direction:String(r.direction),mailbox:String(r.mailbox),fromEmail:String(r.from_email),fromName:r.from_name?String(r.from_name):"",toEmail:String(r.to_email),subject:String(r.subject||""),textBody:String(r.text_body||""),htmlBody:String(r.html_body||""),status:String(r.status||"unread"),inReplyTo:r.in_reply_to?String(r.in_reply_to):null,receivedAt:Number(r.received_at),createdAt:Number(r.created_at),attachments:(()=>{try{return JSON.parse(r.attachments_json||"[]")}catch{return[]}})()};}
@@ -39,7 +40,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  const apiKey=String(env.RESEND_API_KEY||"").trim();if(!apiKey)return json({success:false,error:"RESEND_API_KEY belum terpasang."},503);
  const subjectRaw=String(target.subject||""),subject=/^\s*re:/i.test(subjectRaw)?subjectRaw:"Re: "+subjectRaw;
  const headers:any={};if(target.message_id){headers["In-Reply-To"]=String(target.message_id);headers["References"]=String(target.references_header||target.message_id);}
- const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:String(sender.display_name||"SYS STREAM")+" <"+String(sender.email)+">",to:[String(target.from_email)],subject,text,html:"<div style=\"font-family:Arial,sans-serif;line-height:1.6\">"+escapeHtml(text)+"</div>",headers})});
+ const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:String(sender.display_name||"SYS STREAM")+" <"+String(sender.email)+">",to:[String(target.from_email)],subject,text,html:brandedEmailHtml("<div style=\"font-family:Arial,sans-serif;line-height:1.7;color:#e5e7eb\">"+escapeHtml(text)+"</div>", subject),headers})});
  const data:any=await response.json().catch(()=>({}));if(!response.ok)return json({success:false,error:String(data?.message||"Resend menolak balasan.")},502);
  const now=Math.floor(Date.now()/1000),replyId=crypto.randomUUID(),resendId=String(data?.id||"");
  await env.DB.prepare("UPDATE email_inbox_messages SET status='replied',updated_at=? WHERE id=?").bind(now,id).run();
