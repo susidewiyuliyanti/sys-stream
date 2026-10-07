@@ -370,7 +370,10 @@ export default function BlindboxGamePage() {
                   Lock Amount
                 </label>
                 <div className="grid grid-cols-4 gap-1.5 mb-2">
-                  {[minimumLockIdr, 720000, 1000000, 2720000].map((amt) => (
+                  {[minimumLockIdr, 720000, 1000000, 2720000]
+                  .filter((amt, index, arr) => arr.indexOf(amt) === index)
+                  .filter((amt) => amt <= availableBalance || amt === minimumLockIdr)
+                  .map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -387,15 +390,19 @@ export default function BlindboxGamePage() {
                 </div>
                 <input
                   type="number"
-                  min={minimumLockIdr}
-                  max={Math.max(0, availableBalance / (IDR_PER_CURRENCY_UNIT[language] ?? 1))}
+                  min={minimumLockIdr / (IDR_PER_CURRENCY_UNIT[language] ?? 1)}
+                  max={Math.max(minimumLockIdr / (IDR_PER_CURRENCY_UNIT[language] ?? 1), availableBalance / (IDR_PER_CURRENCY_UNIT[language] ?? 1))}
                   step="0.01"
                   value={Math.round(lockIdrAmount / (IDR_PER_CURRENCY_UNIT[language] ?? 1) * 100) / 100}
-                  onChange={(e) => setLockIdrAmount(Math.max(minimumLockIdr, toIdr(Number(e.target.value) || 0)))}
+                  onChange={(e) => {
+                    const displayAmount = Number(e.target.value);
+                    if (!Number.isFinite(displayAmount)) return;
+                    setLockIdrAmount(Math.max(minimumLockIdr, toIdr(displayAmount)));
+                  }}
                   className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono text-sm outline-none focus:border-amber-400"
                   placeholder={`${t('Lock amount')} (${currencyConfig.currency})`}
                 />
-                <div className="text-[10px] text-slate-500 mt-1">{t('Nominal Lock (IDR)')}. {t('Lock Amount (IDR)')}: {formatMoney(minimumLockIdr)} ({minimumLockDisplay} equivalent).</div>
+                <div className="text-[10px] text-slate-500 mt-1">{t('Minimum lock')}: {minimumLockDisplay} ({t('selected currency')}). {t('You can enter any amount above the minimum, up to your Available Balance.')}</div>
                 <div className="text-[10px] mt-1 font-semibold text-slate-400">
                   {lockIdrAmount > availableBalance ? t('Lock amount exceeds Available Balance.') : `${t('Remaining after lock')}: ${formatMoney(Math.max(0, availableBalance - lockIdrAmount))}`}
                 </div>
