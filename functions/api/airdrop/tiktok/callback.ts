@@ -56,7 +56,7 @@ export async function onRequestGet(context:{request:Request;env:Env}) {
 
   const accessToken = String(tokenData.access_token);
   const profileRes = await fetch(
-    "https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name",
+    "https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username",
     {headers:{Authorization:"Bearer "+accessToken}}
   );
   const profileData = await profileRes.json().catch(()=>({})) as any;
