@@ -4080,6 +4080,21 @@ for (const lang of Object.keys(MINING_UI_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(PAGE_UI_TRANSLATIONS[lang], MINING_UI_TRANSLATIONS[lang]);
 }
 
+const EARLY_UNLOCK_UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  id: {'Early open':'Buka lebih awal','principal returned':'principal dikembalikan','Blind Box rewards forfeited':'reward Blind Box hangus','SYS mined until this moment remains yours':'SYS yang ditambang sampai saat ini tetap menjadi milik Anda'},
+  en: {'Early open':'Early open','principal returned':'principal returned','Blind Box rewards forfeited':'Blind Box rewards forfeited','SYS mined until this moment remains yours':'SYS mined until this moment remains yours'},
+  es: {'Early open':'Apertura anticipada','principal returned':'principal devuelto','Blind Box rewards forfeited':'recompensas Blind Box perdidas','SYS mined until this moment remains yours':'SYS minado hasta este momento sigue siendo tuyo'},
+  pt: {'Early open':'Abertura antecipada','principal returned':'principal devolvido','Blind Box rewards forfeited':'recompensas Blind Box perdidas','SYS mined until this moment remains yours':'SYS minerado até este momento permanece seu'},
+  zh: {'Early open':'提前打开','principal returned':'本金已返还','Blind Box rewards forfeited':'盲盒奖励失效','SYS mined until this moment remains yours':'截至此刻获得的 SYS 挖矿奖励仍归您所有'},
+  ja: {'Early open':'早期解除','principal returned':'元本が返還されます','Blind Box rewards forfeited':'Blind Box報酬は失効します','SYS mined until this moment remains yours':'この時点までのSYSマイニングは保持されます'},
+  ko: {'Early open':'조기 해제','principal returned':'원금이 반환됩니다','Blind Box rewards forfeited':'Blind Box 보상은 소멸됩니다','SYS mined until this moment remains yours':'현재까지 채굴한 SYS는 유지됩니다'},
+  ar: {'Early open':'فتح مبكر','principal returned':'تم إرجاع الأصل','Blind Box rewards forfeited':'أُلغيت مكافآت Blind Box','SYS mined until this moment remains yours':'تبقى عملات SYS التي تم تعدينها حتى هذه اللحظة لك'}
+};
+for (const lang of Object.keys(EARLY_UNLOCK_UI_TRANSLATIONS) as LanguageCode[]) {
+  Object.assign(translations[lang], EARLY_UNLOCK_UI_TRANSLATIONS[lang]);
+  Object.assign(PAGE_UI_TRANSLATIONS[lang], EARLY_UNLOCK_UI_TRANSLATIONS[lang]);
+}
+
 /*
  * Final UI synchronization:
  * the page fallback dictionary is assembled in several stages. Merge the
