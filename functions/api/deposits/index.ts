@@ -1,5 +1,7 @@
 import { Env, json, readJson, withDb } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+
+const MIN_MINING_LOCK_IDR = 10 * 17937;
 import { notifyAdmins } from "../../_lib/admin-notifications";
 
 const MIN_BLINDBOX_LOCK_USD = 4;
@@ -301,6 +303,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             endDate,
           ]
         );
+
+        if (amount >= MIN_MINING_LOCK_IDR) {
+          const miningStart = Math.floor(startDate.getTime() / 1000);
+          await client.query(
+            `UPDATE users
+             SET mining_enabled = 1,
+                 mining_started_at = $1,
+                 mining_last_credited_at = $1,
+                 mining_locked_amount = $2
+             WHERE id = $3`,
+            [miningStart, amount, userId]
+          );
+        } else {
+          await client.query(
+            `UPDATE users
+             SET mining_enabled = 0,
+                 mining_locked_amount = 0
+             WHERE id = $1`,
+            [userId]
+          );
+        }
 
         await client.query("COMMIT");
 
