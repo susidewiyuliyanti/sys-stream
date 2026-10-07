@@ -1,4 +1,4 @@
-export interface Env { DB: D1Database; OPENAI_API_KEY?: string; OPENAI_MODEL?: string; GEMINI_API_KEY?: string; AI_MODEL?: string; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; RESEND_API_KEY?: string; RESEND_WEBHOOK_SECRET?: string; EMAIL_FROM?: string; NOWPAYMENTS_API_KEY?: string; NOWPAYMENTS_IPN_SECRET?: string; CLOUDFLARE_ACCOUNT_ID?: string; CLOUDFLARE_STREAM_API_TOKEN?: string; }
+export interface Env { DB: D1Database; OPENAI_API_KEY?: string; OPENAI_MODEL?: string; GEMINI_API_KEY?: string; AI_MODEL?: string; AUTH_JWT_SECRET?: string; ADMIN_API_KEY?: string; RESEND_API_KEY?: string; RESEND_WEBHOOK_SECRET?: string; EMAIL_FROM?: string; NOWPAYMENTS_API_KEY?: string; NOWPAYMENTS_IPN_SECRET?: string; CLOUDFLARE_ACCOUNT_ID?: string; CLOUDFLARE_STREAM_API_TOKEN?: string; TIKTOK_CLIENT_KEY?: string; TIKTOK_CLIENT_SECRET?: string; TIKTOK_TOKEN_ENCRYPTION_KEY?: string; }
 export interface DbRow { [key:string]: any }
 export interface DbResult { rows: DbRow[]; rowCount:number }
 export interface DbClient { query(sql:string, params?:any[]):Promise<DbResult> }
