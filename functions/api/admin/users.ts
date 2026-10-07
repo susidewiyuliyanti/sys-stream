@@ -1,5 +1,6 @@
 import { Env, json } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
+import { idrToUsdt } from "../../_lib/bonuses";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -29,8 +30,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         username: String(u.username ?? ''),
         email: String(u.email ?? ''),
         walletAddress: String(u.walletAddress ?? ''),
-        availableBalance: Number(u.availableBalance ?? 0),
-        lockedBalance: Number(u.lockedBalance ?? 0),
+        availableBalance: idrToUsdt(Number(u.availableBalance ?? 0)),
+        lockedBalance: idrToUsdt(Number(u.lockedBalance ?? 0)),
         role: String(u.role ?? 'USER'),
         createdAt: u.createdAt ?? null
       }))
