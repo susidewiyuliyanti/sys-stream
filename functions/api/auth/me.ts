@@ -1,5 +1,6 @@
 import { Env, json } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
+import { syncMiningForUser } from "../mining";
 
 function authResponse(request: Request, body: unknown, status = 200) {
   const origin = request.headers.get("Origin") || "";
@@ -37,5 +38,13 @@ export async function onRequestOptions({ request }: { request: Request }) {
 export async function onRequestGet({ request, env }: { request: Request; env: Env }) {
   const auth = await requireAuth(request, env);
   if (!auth.ok) return authResponse(request, { success: false, error: "Unauthorized" }, 401);
-  return authResponse(request, { success: true, user: auth.user });
+  try {
+    const mining = await syncMiningForUser(env, String(auth.user.id));
+    return authResponse(request, {
+      success: true,
+      user: { ...auth.user, sysBalance: mining.sysBalance, miningEnabled: mining.enabled, miningStartedAt: mining.miningStartedAt, miningLastCreditedAt: mining.lastCreditedAt, miningLockedAmount: mining.lockedAmountIdr, miningAccruedSys: mining.accruedSys },
+    });
+  } catch {
+    return authResponse(request, { success: true, user: auth.user });
+  }
 }
