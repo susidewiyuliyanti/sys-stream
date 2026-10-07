@@ -2898,6 +2898,40 @@ for (const lang of Object.keys(TOAST_UI_TRANSLATIONS) as LanguageCode[]) {
   Object.assign(translations[lang], TOAST_UI_TRANSLATIONS[lang]);
 }
 
+
+Object.assign(translations.id, {
+  'Hapus status Official Streamer dari user ini?': 'Hapus status Official Streamer dari user ini?',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': 'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.',
+});
+Object.assign(translations.en, {
+  'Hapus status Official Streamer dari user ini?': 'Remove Official Streamer status from this user?',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': 'Delete this task? If it already has submissions, the task will be rejected to preserve production history.',
+});
+Object.assign(translations.es, {
+  'Hapus status Official Streamer dari user ini?': '¿Eliminar el estado de Official Streamer de este usuario?',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': '¿Eliminar esta tarea? Si ya tiene envíos, la tarea será rechazada para conservar el historial de producción.',
+});
+Object.assign(translations.pt, {
+  'Hapus status Official Streamer dari user ini?': 'Remover o status de Official Streamer deste usuário?',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': 'Excluir esta tarefa? Se já houver envios, a tarefa será rejeitada para preservar o histórico de produção.',
+});
+Object.assign(translations.zh, {
+  'Hapus status Official Streamer dari user ini?': '要移除此用户的 Official Streamer 状态吗？',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': '删除此任务？如果已有提交，为保留生产历史记录，该任务将被拒绝。',
+});
+Object.assign(translations.ja, {
+  'Hapus status Official Streamer dari user ini?': 'このユーザーの Official Streamer ステータスを削除しますか？',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': 'このタスクを削除しますか？提出済みの場合、運用履歴を保持するためタスクは拒否されます。',
+});
+Object.assign(translations.ko, {
+  'Hapus status Official Streamer dari user ini?': '이 사용자의 Official Streamer 상태를 제거하시겠습니까?',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': '이 작업을 삭제하시겠습니까? 이미 제출된 항목이 있으면 운영 기록 보존을 위해 작업이 거부됩니다.',
+});
+Object.assign(translations.ar, {
+  'Hapus status Official Streamer dari user ini?': 'هل تريد إزالة حالة Official Streamer من هذا المستخدم؟',
+  'Hapus task ini? Jika sudah memiliki submission, task akan ditolak untuk menjaga riwayat produksi.': 'هل تريد حذف هذه المهمة؟ إذا كانت لها عمليات إرسال، فسيتم رفض المهمة للحفاظ على سجل الإنتاج.',
+});
+
 interface LanguageContextValue {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
