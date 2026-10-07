@@ -595,6 +595,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return text;
   };
 
+  const dismissToast = (id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  };
+
   const showToast = (title: string, message: string, type: Toast['type'] = 'info') => {
     const id = 't_' + Date.now() + Math.random().toString(36).substring(2, 5);
     setToasts(prev => [...prev.slice(-3), {
