@@ -9,7 +9,12 @@ CREATE TABLE IF NOT EXISTS users (
     total_locked REAL DEFAULT 0,
     referral_code TEXT,
     referred_by TEXT,
-    created_at INTEGER
+    created_at INTEGER,
+    mining_enabled INTEGER DEFAULT 0,
+    mining_started_at INTEGER DEFAULT 0,
+    mining_last_credited_at INTEGER DEFAULT 0,
+    mining_locked_amount REAL DEFAULT 0,
+    mining_accrued_sys REAL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS payments (
