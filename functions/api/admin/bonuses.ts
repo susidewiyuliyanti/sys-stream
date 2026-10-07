@@ -1,6 +1,7 @@
 import { Env, json, readJson } from "../../_lib/db";
 import { requireAdmin } from "../../_lib/admin";
 import { notifyAdmins } from "../../_lib/admin-notifications";
+import { usdtToIdr } from "../../_lib/bonuses";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const auth = await requireAdmin(context.request, context.env);
@@ -40,6 +41,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const now = Math.floor(Date.now()/1000);
     const grantId = crypto.randomUUID();
+    const amountIdr = usdtToIdr(amount);
 
     await context.env.DB.batch([
       context.env.DB.prepare(
@@ -48,7 +50,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       ).bind(grantId,userId,amount,note || null,auth.identity.id,now),
       context.env.DB.prepare(
         "UPDATE users SET available_balance = COALESCE(available_balance,0) + ?, balance = COALESCE(available_balance,0) + ? WHERE id=?"
-      ).bind(amount, amount, userId),
+      ).bind(amountIdr, amountIdr, userId),
     ]);
 
     await notifyAdmins(context.env,{type:"jackpot.grant",title:"Jackpot grant created",message:`${auth.identity.displayName || "Admin"} granted ${amount} USDT to ${user.username || user.email || userId}.`,severity:"success",entityType:"jackpot_grant",entityId:grantId,adminUserId:auth.identity.id});
