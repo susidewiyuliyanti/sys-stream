@@ -380,7 +380,6 @@ export default function AirdropApp() {
     loadSubmissions(); return()=>{active=false;};
   },[walletAddress]);
 
-  const requiredSocialPlatform=(task:Task|null)=>{ if(!task)return ''; if(task.type==='shorts'||task.type==='youtube')return 'youtube'; if(['tiktok','instagram','twitter','facebook','telegram','discord'].includes(task.type))return task.type; if(task.type==='social')return 'social'; return ''; };
 
   const submitTask=async()=>{
     const wallet=walletAddress.trim(); if(!selectedTask||!wallet)return;
