@@ -92,6 +92,7 @@ export default function BlindboxGamePage() {
   const [unboxingState, setUnboxingState] = useState<'IDLE' | 'SHAKING' | 'REVEALING' | 'REVEALED'>('IDLE');
   const [unboxedItem, setUnboxedItem] = useState<BlindboxItem | null>(null);
   const [wonIdr, setWonIdr] = useState<number>(0);
+  const [openingLock, setOpeningLock] = useState(false);
 
   const { language, t } = useLanguage();
 
@@ -131,6 +132,52 @@ export default function BlindboxGamePage() {
 
   const activeLocks = locks.filter((l) => l.status === 'locked');
   const primaryLock: LockRecord | undefined = activeLocks[0];
+
+  const handleOpenLock = async () => {
+    requireAuth(async () => {
+      if (!primaryLock?.id || openingLock) return;
+
+      const confirmed = window.confirm(
+        'Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.'
+      );
+      if (!confirmed) return;
+
+      try {
+        setOpeningLock(true);
+        const token = localStorage.getItem('sys_stream_auth_token');
+        const response = await fetch(`/api/deposits/${primaryLock.id}/unlock`, {
+          method: 'POST',
+          credentials: 'include',
+          cache: 'no-store',
+          headers: {
+            Authorization: `Bearer ${token || ''}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.success) {
+          throw new Error(data?.error || data?.message || 'Gagal membuka lock.');
+        }
+
+        await refreshFinancialState();
+        showToast(
+          t('Lock Opened'),
+          data.early
+            ? 'Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.'
+            : 'Lock selesai dan principal dikembalikan.',
+          'success'
+        );
+      } catch (error) {
+        showToast(
+          t('Open Lock Failed'),
+          error instanceof Error ? error.message : 'Gagal membuka lock.',
+          'error'
+        );
+      } finally {
+        setOpeningLock(false);
+      }
+    });
+  };
 
   const handleCreateStakingLock = (e: React.FormEvent) => {
     e.preventDefault();
@@ -473,8 +520,21 @@ export default function BlindboxGamePage() {
               </div>
             </div>
 
-            <div className="text-xs text-slate-400 max-w-xs text-right">
-              {t('Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.')}
+            <div className="flex flex-col items-stretch sm:items-end gap-2">
+              <div className="text-xs text-slate-400 max-w-xs text-right">
+                {t('Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.')}
+              </div>
+              <button
+                type="button"
+                onClick={handleOpenLock}
+                disabled={openingLock}
+                className="px-4 py-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-bold text-xs transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {openingLock ? 'Opening Lock...' : 'Open Lock Early'}
+              </button>
+              <div className="text-[10px] text-rose-300/80 max-w-xs text-right">
+                Early open: principal returned, Blind Box rewards forfeited. SYS mined until this moment remains yours.
+              </div>
             </div>
           </div>
         </div>
