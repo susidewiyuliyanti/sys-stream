@@ -359,7 +359,15 @@ export default function AirdropApp() {
   useEffect(() => {
     let active = true;
     const loadSocialAccounts = async () => { try { const res=await fetch('/api/airdrop/social-accounts',{credentials:'include',cache:'no-store'}); const data=await res.json().catch(()=>({})); if(active&&data.success){const next:Record<string,string>={}; (Array.isArray(data.accounts)?data.accounts:[]).forEach((a:any)=>{if(a?.platform&&a?.account)next[String(a.platform).toLowerCase()]=String(a.account)}); setSocialAccounts(next); setFollowConfirmed(Boolean(data.followConfirmed)); setFollowStatus(data.followStatus && typeof data.followStatus==='object' ? data.followStatus : {});} } catch {} };
-    void loadSocialAccounts();\n    const social=new URLSearchParams(window.location.search);\n    if(social.get('social')==='tiktok'){\n      const status=social.get('status');\n      setSocialMessage(status==='connected'?SOCIAL_GATE_COPY[lang].tiktokConnected:SOCIAL_GATE_COPY[lang].tiktokError);\n      const clean=new URL(window.location.href);\n      clean.searchParams.delete('social'); clean.searchParams.delete('status'); clean.searchParams.delete('reason');\n      window.history.replaceState({},document.title,clean.toString());\n    }
+    void loadSocialAccounts();
+    const social=new URLSearchParams(window.location.search);
+    if(social.get('social')==='tiktok'){
+      const status=social.get('status');
+      setSocialMessage(status==='connected'?SOCIAL_GATE_COPY[lang].tiktokConnected:SOCIAL_GATE_COPY[lang].tiktokError);
+      const clean=new URL(window.location.href);
+      clean.searchParams.delete('social'); clean.searchParams.delete('status'); clean.searchParams.delete('reason');
+      window.history.replaceState({},document.title,clean.toString());
+    }
 
     const loadAuthenticatedWallet = async () => {
       try {
@@ -421,7 +429,9 @@ export default function AirdropApp() {
 
   useEffect(()=>{ setProofLink(''); setSubmissionMessage(''); setSocialPlatform(''); },[selectedTask]);
 
-  const connectTikTok=()=>{ window.location.href='/api/airdrop/tiktok/start'; };\n\n  const confirmPlatform=async(platform:string)=>{
+  const connectTikTok=()=>{ window.location.href='/api/airdrop/tiktok/start'; };
+
+  const confirmPlatform=async(platform:string)=>{
     const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
     if(!official) return;
     window.open(official.url,'_blank','noopener,noreferrer');
