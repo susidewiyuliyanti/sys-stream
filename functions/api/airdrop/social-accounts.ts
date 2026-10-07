@@ -18,6 +18,8 @@ function response(request: Request, body: unknown, status = 200) {
 async function ensureTables(db: D1Database) {
   await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_gate (wallet_address TEXT PRIMARY KEY, confirmed INTEGER NOT NULL DEFAULT 0, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_follow_status (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, confirmed INTEGER NOT NULL DEFAULT 0, verification_method TEXT, verified_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
+  try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verification_method TEXT").run(); } catch {}
+  try { await db.prepare("ALTER TABLE airdrop_follow_status ADD COLUMN verified_at TEXT").run(); } catch {}
   await db.prepare("CREATE TABLE IF NOT EXISTS airdrop_social_accounts (wallet_address TEXT NOT NULL, platform TEXT NOT NULL, account TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(wallet_address, platform))").run();
 }
 
