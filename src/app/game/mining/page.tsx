@@ -247,16 +247,6 @@ export default function MiningPage() {
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <div className="mb-2 flex items-center gap-2 text-slate-400">
               <Coins className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase">{tx.dailySys}</span>
-            </div>
-            <div className="text-2xl font-black text-emerald-400">
-              {dailyReward.toLocaleString('en-US')} SYS
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <div className="mb-2 flex items-center gap-2 text-slate-400">
-              <Coins className="h-4 w-4" />
               <span className="text-xs font-bold uppercase">{tx.sysBalance}</span>
             </div>
             <div className="text-2xl font-black">
