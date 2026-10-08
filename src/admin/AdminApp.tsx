@@ -98,16 +98,32 @@ export default function AdminApp() {
       if(s.status==='fulfilled') setStreamers(s.value.streamers||[]);
       else failures.push('streamers');
       if(an.status==='fulfilled'){
-        setAnalytics(an.value);
-        // Analytics is the single authoritative snapshot for the Admin Users
-        // table and overview. The dedicated /users endpoint is only a fallback
-        // when analytics itself is unavailable.
-        if(Array.isArray(an.value.users) && an.value.users.length) {
-          // Analytics enriches the dashboard summary, but the dedicated Users
-          // endpoint remains the authoritative user snapshot. Never replace a
-          // valid user snapshot with an empty analytics payload.
-          if(u.status!=='fulfilled') setUsers(an.value.users);
-        }
+        const analyticsPayload=an.value||{};
+        const analyticsUsers=Array.isArray(analyticsPayload.users)?analyticsPayload.users:[];
+        const fallbackUsers=u.status==='fulfilled' && Array.isArray(u.value.users)?u.value.users:[];
+        const snapshotUsers=analyticsUsers.length?analyticsUsers:fallbackUsers;
+
+        // Control Center and Users must come from the same production snapshot.
+        // If analytics ever returns an empty/zero summary while a valid user
+        // snapshot exists, derive the summary from that snapshot instead of
+        // displaying false zeros.
+        if(snapshotUsers.length) setUsers(snapshotUsers);
+        const sourceSummary=analyticsPayload.summary&&typeof analyticsPayload.summary==='object'
+          ? analyticsPayload.summary : {};
+        const derivedSummary={
+          totalUsers:snapshotUsers.length,
+          totalAvailableBalance:snapshotUsers.reduce((sum:any,user:any)=>sum+Number(user.availableBalance||0),0),
+          totalLockedBalance:snapshotUsers.reduce((sum:any,user:any)=>sum+Number(user.lockedBalance||0),0),
+          totalSysBalance:snapshotUsers.reduce((sum:any,user:any)=>sum+Number(user.sysBalance||0),0),
+          walletUsers:snapshotUsers.reduce((count:any,user:any)=>count+(String(user.walletAddress||'').trim()?1:0),0),
+          verifiedUsers:snapshotUsers.reduce((count:any,user:any)=>count+(Number(user.emailVerified||0)===1?1:0),0),
+          streamerUsers:snapshotUsers.reduce((count:any,user:any)=>count+(String(user.role||'').toLowerCase()==='streamer'?1:0),0)
+        };
+        const analyticsLooksEmpty=snapshotUsers.length>0 && Number(sourceSummary.totalUsers||0)===0;
+        setAnalytics({
+          ...analyticsPayload,
+          summary:analyticsLooksEmpty?{...sourceSummary,...derivedSummary}:sourceSummary
+        });
       } else {
         failures.push('analytics');
         if(u.status==='fulfilled') setUsers(u.value.users||[]);
