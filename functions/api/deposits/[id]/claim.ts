@@ -99,6 +99,32 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [depositId, userId, claimDate, reward, isJackpot]
         );
 
+        const userResult = await client.query(
+          `
+          SELECT COALESCE(available_balance, 0) AS "availableBalance"
+          FROM users
+          WHERE id = $1
+          FOR UPDATE
+          `,
+          [userId]
+        );
+        if (userResult.rows.length === 0) throw new Error("USER_NOT_FOUND");
+
+        const currentAvailable = Number(userResult.rows[0]?.availableBalance || 0);
+        const newAvailableBalance = currentAvailable + reward;
+
+        // A successful daily claim is immediately earned and spendable.
+        // Early unlock never reverses a reward that has already been claimed.
+        await client.query(
+          `
+          UPDATE users
+          SET available_balance = $1,
+              balance = $1
+          WHERE id = $2
+          `,
+          [newAvailableBalance, userId]
+        );
+
         await client.query(
           `
           UPDATE deposits
