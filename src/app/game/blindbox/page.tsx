@@ -135,7 +135,7 @@ export default function BlindboxGamePage() {
 
   const handleOpenLock = async () => {
     requireAuth(async () => {
-      if (!primaryLock?.id || openingLock) return;
+      if (openingLock) return;
 
       const confirmed = window.confirm(
         t('Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.')
@@ -145,18 +145,43 @@ export default function BlindboxGamePage() {
       try {
         setOpeningLock(true);
         const token = localStorage.getItem('sys_stream_auth_token');
-        const response = await fetch(`/api/deposits/${primaryLock.id}/unlock`, {
+        if (!token) throw new Error(t('Silakan login terlebih dahulu.'));
+
+        // Always read the authenticated deposit list before unlocking.
+        // This prevents a stale/empty React locks state from making the button silently do nothing.
+        const depositsResponse = await fetch('/api/deposits', {
+          credentials: 'include',
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const depositsData = await depositsResponse.json().catch(() => ({}));
+        if (!depositsResponse.ok || !depositsData?.success) {
+          throw new Error(depositsData?.error || depositsData?.message || t('Gagal memeriksa lock.'));
+        }
+
+        const activeDeposit =
+          depositsData?.activeDeposit ||
+          (Array.isArray(depositsData?.deposits)
+            ? depositsData.deposits.find((deposit: any) => String(deposit.status).toUpperCase() === 'ACTIVE')
+            : null);
+
+        if (!activeDeposit?.id) {
+          await refreshFinancialState();
+          throw new Error(t('Tidak ada lock Blind Box yang aktif.'));
+        }
+
+        const response = await fetch(`/api/deposits/${encodeURIComponent(String(activeDeposit.id))}/unlock`, {
           method: 'POST',
           credentials: 'include',
           cache: 'no-store',
           headers: {
-            Authorization: `Bearer ${token || ''}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data?.success) {
-          throw new Error(data?.error || data?.message || 'Gagal membuka lock.');
+          throw new Error(data?.error || data?.message || t('Gagal membuka lock.'));
         }
 
         await refreshFinancialState();
@@ -178,7 +203,6 @@ export default function BlindboxGamePage() {
       }
     });
   };
-
   const handleCreateStakingLock = (e: React.FormEvent) => {
     e.preventDefault();
     requireAuth(() => {
