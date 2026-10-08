@@ -16,6 +16,15 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+interface ClaimHistoryItem {
+  id: number;
+  depositId: number;
+  claimDate: string;
+  amount: number;
+  isJackpot: boolean;
+  claimedAt: string;
+}
+
 interface BoxTier {
   id: string;
   name: string;
@@ -93,6 +102,8 @@ export default function BlindboxGamePage() {
   const [unboxedItem, setUnboxedItem] = useState<BlindboxItem | null>(null);
   const [wonIdr, setWonIdr] = useState<number>(0);
   const [openingLock, setOpeningLock] = useState(false);
+  const [claimHistory, setClaimHistory] = useState<ClaimHistoryItem[]>([]);
+  const [claimHistoryLoading, setClaimHistoryLoading] = useState(false);
 
   const { language, t } = useLanguage();
 
@@ -185,6 +196,7 @@ export default function BlindboxGamePage() {
         }
 
         await refreshFinancialState();
+        await refreshClaimHistory();
         showToast(
           t('Lock Opened'),
           data.early
@@ -214,8 +226,36 @@ export default function BlindboxGamePage() {
     });
   };
 
+  const refreshClaimHistory = async () => {
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) {
+      setClaimHistory([]);
+      return;
+    }
+    try {
+      setClaimHistoryLoading(true);
+      const response = await fetch('/api/deposits', {
+        credentials: 'include',
+        cache: 'no-store',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.success) throw new Error('Claim history unavailable');
+      setClaimHistory(Array.isArray(data.recentClaims) ? data.recentClaims : []);
+    } catch {
+      setClaimHistory([]);
+    } finally {
+      setClaimHistoryLoading(false);
+    }
+  };
+
   useEffect(() => {
-    if (user.id) void refreshFinancialState();
+    if (user.id) {
+      void refreshFinancialState();
+      void refreshClaimHistory();
+    } else {
+      setClaimHistory([]);
+    }
   }, [user.id]);
 
 
@@ -557,7 +597,7 @@ export default function BlindboxGamePage() {
 
             <div className="flex flex-col items-stretch sm:items-end gap-2">
               <div className="text-xs text-slate-400 max-w-xs text-right">
-                {t('Claim using the Blind Box button below. The lock will complete automatically when the lock period ends.')}
+                {t('Daily claims are recorded in history only. They are not added to Available Balance while the lock is active.')}
               </div>
               <button
                 type="button"
@@ -568,7 +608,7 @@ export default function BlindboxGamePage() {
                 {openingLock ? t('Opening Lock...') : t('Open Lock Early')}
               </button>
               <div className="text-[10px] text-rose-300/80 max-w-xs text-right">
-                {t('Early open')}: {t('principal returned')}, {t('Blind Box rewards forfeited')}. {t('SYS mined until this moment remains yours')}.
+                {t('Early open')}: {t('only the locked principal is returned')}. {t('Blind Box claim history remains visible, but all uncredited rewards are forfeited')}. {t('SYS mined until this moment remains yours')}.
               </div>
             </div>
           </div>
@@ -664,13 +704,13 @@ export default function BlindboxGamePage() {
               {/* USDT Cash Prize Callout Banner */}
               <div className="w-full p-4 bg-emerald-500/15 border-2 border-emerald-500/50 rounded-2xl text-center space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  {t('Reward credited to available balance')}
+                  {t('Reward recorded in Blind Box history')}
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
                   +{formatMoney(wonIdr)}
                 </div>
                 <div className="text-xs text-slate-400">
-                  Reward is credited to the account balance in the selected currency display
+                  {t('This amount is history only while the lock is active and is not added to Available Balance.')}
                 </div>
               </div>
 
@@ -725,6 +765,42 @@ export default function BlindboxGamePage() {
               )}
             </div>
           )}
+        </div>
+
+        {/* Claim History */}
+        <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div>
+              <h2 className="text-sm font-bold text-white">{t('Blind Box Claim History')}</h2>
+              <p className="text-[10px] text-slate-500 mt-1">{t('History display only. Claims do not increase Available Balance while locked.')}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => { void refreshClaimHistory(); }}
+              className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition-colors"
+              aria-label={t('Refresh claim history')}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${claimHistoryLoading ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
+          <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+            {claimHistory.length === 0 ? (
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 text-center text-xs text-slate-500">
+                {claimHistoryLoading ? t('Loading claim history...') : t('No Blind Box claims yet.')}
+              </div>
+            ) : claimHistory.map((claim) => (
+              <div key={claim.id} className="rounded-xl border border-slate-800 bg-slate-950 p-3 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-white">{t('Daily Blind Box Claim')}</div>
+                  <div className="text-[10px] text-slate-500 mt-0.5">{claim.claimDate} · {new Date(claim.claimedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="text-sm font-mono font-bold text-emerald-400">+{formatMoney(Number(claim.amount || 0))}</div>
+                  <div className="text-[9px] text-amber-400">{t('History only')}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Right: Box Selection & Drop Rates */}
