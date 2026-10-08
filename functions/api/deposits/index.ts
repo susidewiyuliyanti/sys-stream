@@ -39,6 +39,26 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     await syncMiningForUser(context.env, userId);
 
     const data = await withDb(context.env, async (client) => {
+      // Recover legacy locks whose principal is still in users.total_locked but whose deposits row is missing.
+      const existingCount = await client.query(`SELECT COUNT(*) AS count FROM deposits WHERE user_id = $1`, [userId]);
+      const existingDepositCount = Number(existingCount.rows[0]?.count ?? 0);
+
+      if (existingDepositCount === 0) {
+        const lockedResult = await client.query(`SELECT COALESCE(total_locked, 0) AS "totalLocked" FROM users WHERE id = $1 LIMIT 1`, [userId]);
+        const totalLocked = Number(lockedResult.rows[0]?.totalLocked ?? 0);
+        if (totalLocked >= MIN_BLINDBOX_LOCK_IDR) {
+          const recoveryStart = new Date();
+          const recoveryEnd = new Date(recoveryStart);
+          recoveryEnd.setDate(recoveryEnd.getDate() + 30);
+          await client.query(`
+            INSERT INTO deposits (
+              deposit_code, user_id, amount, duration_days, start_date, end_date,
+              status, total_claimed, force_jackpot, created_at
+            ) VALUES ($1, $2, $3, 30, $4, $5, 'ACTIVE', 0, false, NOW())
+          `, [generateDepositCode(), userId, totalLocked, recoveryStart, recoveryEnd]);
+        }
+      }
+
       const depositsResult = await client.query(
         `
         SELECT
