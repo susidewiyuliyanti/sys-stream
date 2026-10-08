@@ -23,6 +23,7 @@ interface ClaimHistoryItem {
   amount: number;
   isJackpot: boolean;
   claimedAt: string;
+  paidAt?: string | null;
 }
 
 interface BoxTier {
@@ -40,7 +41,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    descriptionKey: 'Available with the minimum active lock. Daily claims are credited to Available Balance when claimed and remain yours if the lock is opened early.',
+    descriptionKey: 'Available with the minimum active lock. Daily rewards are recorded in history and can be claimed after the lock period ends.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: getMinimumBlindBoxLockIdr('id'),
@@ -104,6 +105,9 @@ export default function BlindboxGamePage() {
   const [openingLock, setOpeningLock] = useState(false);
   const [claimHistory, setClaimHistory] = useState<ClaimHistoryItem[]>([]);
   const [claimHistoryLoading, setClaimHistoryLoading] = useState(false);
+  const [pendingReward, setPendingReward] = useState(0);
+  const [rewardClaimAvailableAt, setRewardClaimAvailableAt] = useState<string | null>(null);
+  const [claimingRewards, setClaimingRewards] = useState(false);
 
   const { language, t } = useLanguage();
 
@@ -137,6 +141,7 @@ export default function BlindboxGamePage() {
   }, []);
 
   const totalLocked = getTotalLockedUsdt();
+  const rewardClaimUnlocked = Boolean(rewardClaimAvailableAt && Date.now() >= new Date(rewardClaimAvailableAt).getTime());
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
   const isQualified = totalLocked >= minimumLockIdr;
@@ -215,6 +220,37 @@ export default function BlindboxGamePage() {
       }
     });
   };
+  const handleClaimRewards = async () => {
+    requireAuth(async () => {
+      if (claimingRewards) return;
+      const token = localStorage.getItem('sys_stream_auth_token');
+      if (!token) {
+        showToast(t('Claim Failed'), t('Silakan login terlebih dahulu.'), 'error');
+        return;
+      }
+      setClaimingRewards(true);
+      try {
+        const response = await fetch('/api/deposits/claim-rewards', {
+          method: 'POST',
+          credentials: 'include',
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.success) {
+          throw new Error(data?.error || data?.message || t('Gagal melakukan claim reward.'));
+        }
+        await refreshFinancialState();
+        await refreshClaimHistory();
+        showToast(t('Reward Claimed'), t('All earned Blind Box rewards have been added to Available Balance.'), 'success');
+      } catch (error) {
+        showToast(t('Claim Failed'), error instanceof Error ? error.message : t('Gagal melakukan claim reward.'), 'error');
+      } finally {
+        setClaimingRewards(false);
+      }
+    });
+  };
+
   const handleCreateStakingLock = (e: React.FormEvent) => {
     e.preventDefault();
     requireAuth(() => {
@@ -597,7 +633,7 @@ export default function BlindboxGamePage() {
 
             <div className="flex flex-col items-stretch sm:items-end gap-2">
               <div className="text-xs text-slate-400 max-w-xs text-right">
-                {t('Daily claims are credited to Available Balance immediately and remain yours if the lock is opened early.')}
+                {t('Daily rewards are recorded in history and can be claimed after the lock period ends.')}
               </div>
               <button
                 type="button"
@@ -704,13 +740,13 @@ export default function BlindboxGamePage() {
               {/* USDT Cash Prize Callout Banner */}
               <div className="w-full p-4 bg-emerald-500/15 border-2 border-emerald-500/50 rounded-2xl text-center space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  {t('Reward credited to Available Balance')}
+                  {t('Reward Pending')}
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
                   +{formatMoney(wonIdr)}
                 </div>
                 <div className="text-xs text-slate-400">
-                  {t('This claimed reward has been credited to Available Balance and remains yours if the lock is opened early.')}
+                  {t('This reward is recorded in history. It can be claimed after the original lock period ends.')}
                 </div>
               </div>
 
@@ -772,16 +808,26 @@ export default function BlindboxGamePage() {
           <div className="flex items-center justify-between gap-3 mb-3">
             <div>
               <h2 className="text-sm font-bold text-white">{t('Blind Box Claim History')}</h2>
-              <p className="text-[10px] text-slate-500 mt-1">{t('History of daily claims. Claimed rewards are already included in Available Balance.')}</p>
+              <p className="text-[10px] text-slate-500 mt-1">{t('History of daily rewards. Rewards remain pending until the original lock period ends.')}</p>
             </div>
-            <button
-              type="button"
-              onClick={() => { void refreshClaimHistory(); }}
-              className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition-colors"
-              aria-label={t('Refresh claim history')}
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${claimHistoryLoading ? 'animate-spin' : ''}`} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => { void refreshClaimHistory(); }}
+                className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition-colors"
+                aria-label={t('Refresh claim history')}
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${claimHistoryLoading ? 'animate-spin' : ''}`} />
+              </button>
+              <button
+                type="button"
+                onClick={() => { void handleClaimRewards(); }}
+                disabled={claimingRewards || pendingReward <= 0 || !rewardClaimUnlocked}
+                className="px-3 py-2 rounded-lg bg-emerald-500 text-slate-950 text-[10px] font-bold transition-all disabled:bg-slate-800 disabled:text-slate-500 disabled:border disabled:border-slate-700 disabled:cursor-not-allowed hover:bg-emerald-400"
+              >
+                {claimingRewards ? t('Claiming...') : rewardClaimUnlocked ? t('Claim Rewards') : t('Claim Locked')}
+              </button>
+            </div>
           </div>
           <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
             {claimHistory.length === 0 ? (
@@ -796,7 +842,7 @@ export default function BlindboxGamePage() {
                 </div>
                 <div className="text-right shrink-0">
                   <div className="text-sm font-mono font-bold text-emerald-400">+{formatMoney(Number(claim.amount || 0))}</div>
-                  <div className="text-[9px] text-amber-400">{t('Credited')}</div>
+                  <div className={`text-[9px] ${claim.paidAt ? 'text-emerald-400' : 'text-amber-400'}`}>{claim.paidAt ? t('Claimed') : t('Pending')}</div>
                 </div>
               </div>
             ))}
