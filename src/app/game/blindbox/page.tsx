@@ -40,7 +40,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    descriptionKey: 'Available with the minimum active lock. Daily rewards are processed by the server and added to your available balance.',
+    descriptionKey: 'Available with the minimum active lock. Daily claims are recorded in Blind Box history only while the lock is active.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: getMinimumBlindBoxLockIdr('id'),
@@ -391,11 +391,11 @@ export default function BlindboxGamePage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <span>{t('Daily Mystery Blind Box')}</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              {t('Daily reward credited to balance')}
+              {t('Daily claim recorded in history')}
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            {t('Open the daily Blind Box based on your currently locked balance. Daily claims follow server rules and reset at WIB.')}
+            {t('Open the daily Blind Box based on your currently locked balance. Claims are recorded in history only and are not added to Available Balance while the lock is active.')}
           </p>
         </div>
 
@@ -698,7 +698,7 @@ export default function BlindboxGamePage() {
             <div className="flex flex-col items-center text-center space-y-5 z-10 py-4 w-full max-w-md animate-in zoom-in-90 duration-300">
               <div className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4" />
-                <span>{t('Daily Blind Box Reward')}</span>
+                <span>{t('Daily Blind Box Claim')}</span>
               </div>
 
               {/* USDT Cash Prize Callout Banner */}
@@ -768,7 +768,7 @@ export default function BlindboxGamePage() {
         </div>
 
         {/* Claim History */}
-        <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <div className="lg:col-span-12 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
           <div className="flex items-center justify-between gap-3 mb-3">
             <div>
               <h2 className="text-sm font-bold text-white">{t('Blind Box Claim History')}</h2>
