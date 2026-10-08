@@ -74,42 +74,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (existingClaim.rows.length > 0) throw new Error("ALREADY_CLAIMED");
 
-        const settingsResult = await client.query(
-          `
-          SELECT
-            "minBox",
-            "maxBox",
-            "jackpotAmount",
-            "jackpotChance"
-          FROM game_settings
-          ORDER BY id DESC
-          LIMIT 1
-          `
-        );
-
-        let minBox = 100;
-        let maxBox = 1000;
-        let jackpotAmount = 50000000;
-        let jackpotChance = 0;
-
-        if (settingsResult.rows.length > 0) {
-          const settings = settingsResult.rows[0];
-          minBox = Number(settings.minBox ?? minBox);
-          maxBox = Number(settings.maxBox ?? maxBox);
-          jackpotAmount = Number(settings.jackpotAmount ?? jackpotAmount);
-          jackpotChance = Number(settings.jackpotChance ?? jackpotChance);
-        }
-
-        let isJackpot = false;
-        let reward = 0;
-        const random = Math.random() * 100;
-
-        if (random < jackpotChance) {
-          isJackpot = true;
-          reward = jackpotAmount;
-        } else {
-          reward = Math.floor(Math.random() * (maxBox - minBox + 1)) + minBox;
-        }
+        // Blind Box reward is deterministic and based on the locked principal:
+        // 20% per 30-day month, paid once per WIB day.
+        // Daily rate = 20% / 30 = 0.666666...% of the locked amount.
+        // This applies to every valid lock amount, starting from the $4 minimum.
+        const MONTHLY_RATE = 0.20;
+        const DAYS_PER_MONTH = 30;
+        const dailyRate = MONTHLY_RATE / DAYS_PER_MONTH;
+        const reward = Number((Number(deposit.amount) * dailyRate).toFixed(2));
+        const isJackpot = false;
 
         await client.query(
           `
