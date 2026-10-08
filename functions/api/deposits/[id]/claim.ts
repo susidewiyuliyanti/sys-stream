@@ -99,6 +99,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [depositId, userId, claimDate, reward, isJackpot]
         );
 
+        await client.query(
+          `
+          UPDATE deposits
+          SET total_claimed = total_claimed + $1
+          WHERE id = $2
+          `,
+          [reward, depositId]
+        );
+
         // The daily box records an earned reward in history only.
         // It is intentionally NOT added to Available Balance until the lock period ends.
 
