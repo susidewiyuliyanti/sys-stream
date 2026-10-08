@@ -40,7 +40,7 @@ const BOX_TIERS: BoxTier[] = [
   {
     id: 'cyber_daily',
     name: 'Cyber Daily Mystery Box',
-    descriptionKey: 'Available with the minimum active lock. Daily claims are recorded in Blind Box history only while the lock is active.',
+    descriptionKey: 'Available with the minimum active lock. Daily claims are credited to Available Balance when claimed and remain yours if the lock is opened early.',
     badge: 'Daily Active Reward',
     accentColor: '#38bdf8',
     minLockedRequired: getMinimumBlindBoxLockIdr('id'),
@@ -149,7 +149,7 @@ export default function BlindboxGamePage() {
       if (openingLock) return;
 
       const confirmed = window.confirm(
-        t('Open this lock before the agreed end date? The original lock balance will be returned, all Blind Box rewards from this lock will be forfeited, and SYS Mining earned up to this moment will remain yours. Mining will stop immediately.')
+        t('Open this lock before the agreed end date? The locked principal will be returned. Any Blind Box rewards already claimed remain yours and are not reversed. SYS Mining earned up to this moment will remain yours. Mining will stop immediately.')
       );
       if (!confirmed) return;
 
@@ -200,7 +200,7 @@ export default function BlindboxGamePage() {
         showToast(
           t('Lock Opened'),
           data.early
-            ? t('Principal dikembalikan. Reward Blind Box hangus dan SYS Mining berhenti.')
+            ? t('Principal dikembalikan. Reward Blind Box yang sudah di-claim tetap menjadi hak Anda dan SYS Mining berhenti.')
             : t('Lock selesai dan principal dikembalikan.'),
           'success'
         );
@@ -391,11 +391,11 @@ export default function BlindboxGamePage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
             <span>{t('Daily Mystery Blind Box')}</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              {t('Daily claim recorded in history')}
+              {t('Daily claim credited to balance')}
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            {t('Open the daily Blind Box based on your currently locked balance. Claims are recorded in history only and are not added to Available Balance while the lock is active.')}
+            {t('Open the daily Blind Box based on your currently locked balance. Each successful daily claim is credited to Available Balance immediately.')}
           </p>
         </div>
 
@@ -597,7 +597,7 @@ export default function BlindboxGamePage() {
 
             <div className="flex flex-col items-stretch sm:items-end gap-2">
               <div className="text-xs text-slate-400 max-w-xs text-right">
-                {t('Daily claims are recorded in history only. They are not added to Available Balance while the lock is active.')}
+                {t('Daily claims are credited to Available Balance immediately and remain yours if the lock is opened early.')}
               </div>
               <button
                 type="button"
@@ -608,7 +608,7 @@ export default function BlindboxGamePage() {
                 {openingLock ? t('Opening Lock...') : t('Open Lock Early')}
               </button>
               <div className="text-[10px] text-rose-300/80 max-w-xs text-right">
-                {t('Early open')}: {t('only the locked principal is returned')}. {t('Blind Box claim history remains visible, but all uncredited rewards are forfeited')}. {t('SYS mined until this moment remains yours')}.
+                {t('Early open')}: {t('only the locked principal is returned')}. {t('Already claimed Blind Box rewards remain yours and are not reversed')}. {t('SYS mined until this moment remains yours')}.
               </div>
             </div>
           </div>
@@ -704,13 +704,13 @@ export default function BlindboxGamePage() {
               {/* USDT Cash Prize Callout Banner */}
               <div className="w-full p-4 bg-emerald-500/15 border-2 border-emerald-500/50 rounded-2xl text-center space-y-1">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  {t('Reward recorded in Blind Box history')}
+                  {t('Reward credited to Available Balance')}
                 </div>
                 <div className="text-3xl font-mono font-black text-emerald-400">
                   +{formatMoney(wonIdr)}
                 </div>
                 <div className="text-xs text-slate-400">
-                  {t('This amount is history only while the lock is active and is not added to Available Balance.')}
+                  {t('This claimed reward has been credited to Available Balance and remains yours if the lock is opened early.')}
                 </div>
               </div>
 
@@ -772,7 +772,7 @@ export default function BlindboxGamePage() {
           <div className="flex items-center justify-between gap-3 mb-3">
             <div>
               <h2 className="text-sm font-bold text-white">{t('Blind Box Claim History')}</h2>
-              <p className="text-[10px] text-slate-500 mt-1">{t('History display only. Claims do not increase Available Balance while locked.')}</p>
+              <p className="text-[10px] text-slate-500 mt-1">{t('History of daily claims. Claimed rewards are already included in Available Balance.')}</p>
             </div>
             <button
               type="button"
@@ -796,7 +796,7 @@ export default function BlindboxGamePage() {
                 </div>
                 <div className="text-right shrink-0">
                   <div className="text-sm font-mono font-bold text-emerald-400">+{formatMoney(Number(claim.amount || 0))}</div>
-                  <div className="text-[9px] text-amber-400">{t('History only')}</div>
+                  <div className="text-[9px] text-amber-400">{t('Credited')}</div>
                 </div>
               </div>
             ))}
