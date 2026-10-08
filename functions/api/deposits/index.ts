@@ -119,7 +119,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
           c.claim_date AS "claimDate",
           c.amount,
           c.is_jackpot AS "isJackpot",
-          c.claimed_at AS "claimedAt"
+          c.claimed_at AS "claimedAt",
+          c.paid_at AS "paidAt"
         FROM blind_box_claims c
         INNER JOIN deposits d ON d.id = c.deposit_id
         WHERE d.user_id = $1
@@ -129,6 +130,17 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         [userId]
       );
 
+      const pendingRewardResult = await client.query(
+        `
+        SELECT
+          COALESCE(SUM(CASE WHEN c.paid_at IS NULL THEN c.amount ELSE 0 END), 0) AS "pendingReward",
+          MAX(CASE WHEN c.paid_at IS NULL THEN d.end_date ELSE NULL END) AS "rewardClaimAvailableAt"
+        FROM blind_box_claims c
+        INNER JOIN deposits d ON d.id = c.deposit_id
+        WHERE c.user_id = $1
+        `,
+        [userId]
+      );
       const settingsResult = await client.query(
         `
         SELECT
@@ -149,6 +161,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         hasClaimedToday,
         todayClaimData,
         recentClaims: claimsResult.rows,
+        pendingReward: Number(pendingRewardResult.rows[0]?.pendingReward ?? 0),
+        rewardClaimAvailableAt: pendingRewardResult.rows[0]?.rewardClaimAvailableAt ?? null,
         settings: settingsResult.rows[0] ?? null,
       };
     });
