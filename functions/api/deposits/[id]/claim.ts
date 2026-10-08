@@ -99,40 +99,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           [depositId, userId, claimDate, reward, isJackpot]
         );
 
-        const userResult = await client.query(
-          `
-          SELECT COALESCE(available_balance, 0) AS "availableBalance"
-          FROM users
-          WHERE id = $1
-          FOR UPDATE
-          `,
-          [userId]
-        );
-        if (userResult.rows.length === 0) throw new Error("USER_NOT_FOUND");
-
-        const currentAvailable = Number(userResult.rows[0]?.availableBalance || 0);
-        const newAvailableBalance = currentAvailable + reward;
-
-        // A successful daily claim is immediately earned and spendable.
-        // Early unlock never reverses a reward that has already been claimed.
-        await client.query(
-          `
-          UPDATE users
-          SET available_balance = $1,
-              balance = $1
-          WHERE id = $2
-          `,
-          [newAvailableBalance, userId]
-        );
-
-        await client.query(
-          `
-          UPDATE deposits
-          SET total_claimed = total_claimed + $1
-          WHERE id = $2
-          `,
-          [reward, depositId]
-        );
+        // The daily box records an earned reward in history only.
+        // It is intentionally NOT added to Available Balance until the lock period ends.
 
         const updatedDeposit = await client.query(
           `
@@ -159,7 +127,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             ).rows[0]?.id ?? 0
           ),
           totalClaimed: Number(updatedDeposit.rows[0]?.totalClaimed ?? reward),
-          balance: newAvailableBalance,
+          balance: null,
         };
       } catch (error) {
         await client.query("ROLLBACK");
@@ -169,7 +137,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return json({
       success: true,
-      message: result.isJackpot ? "Reward Blind Box berhasil di-claim dan langsung masuk Available Balance. Reward ini tetap menjadi hak Anda jika lock dibuka lebih awal." : "Reward Blind Box berhasil di-claim dan langsung masuk Available Balance. Reward ini tetap menjadi hak Anda jika lock dibuka lebih awal.",
+      message: result.isJackpot ? "Reward Blind Box tercatat di history dan dapat di-claim setelah masa lock selesai." : "Reward Blind Box tercatat di history dan dapat di-claim setelah masa lock selesai.",
       ...result,
     });
   } catch (error) {
@@ -182,7 +150,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       DEPOSIT_NOT_STARTED: ["Deposit belum dimulai.", 400],
       DEPOSIT_EXPIRED: ["Deposit sudah berakhir.", 400],
       ALREADY_CLAIMED: ["Deposit sudah di-claim hari ini.", 400],
-      USER_NOT_FOUND: ["User tidak ditemukan.", 404],
     };
 
     if (errors[message]) {
