@@ -803,11 +803,34 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) throw new Error('Silakan login terlebih dahulu.');
 
-    const activeLock = locks.find((lock) => lock.status === 'locked');
-    if (!activeLock) throw new Error('Tidak ada lock Blind Box yang aktif.');
+    // Production source of truth is /api/deposits, not the legacy/local locks state.
+    // Always re-read the authenticated user's active deposit before claiming so a
+    // newly-created lock cannot be missed because React state has not refreshed yet.
+    const depositsResponse = await fetch('/api/deposits', {
+      credentials: 'include',
+      cache: 'no-store',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const depositsData = await depositsResponse.json().catch(() => ({}));
 
-    const response = await fetch(`/api/deposits/${encodeURIComponent(activeLock.id)}/claim`, {
+    if (!depositsResponse.ok || !depositsData?.success) {
+      throw new Error(depositsData?.error || depositsData?.message || 'Gagal memeriksa lock Blind Box.');
+    }
+
+    const activeDeposit =
+      depositsData?.activeDeposit ||
+      (Array.isArray(depositsData?.deposits)
+        ? depositsData.deposits.find((deposit: any) => String(deposit.status).toUpperCase() === 'ACTIVE')
+        : null);
+
+    if (!activeDeposit?.id) {
+      throw new Error('Tidak ada lock Blind Box yang aktif.');
+    }
+
+    const response = await fetch(`/api/deposits/${encodeURIComponent(activeDeposit.id)}/claim`, {
       method: 'POST',
+      credentials: 'include',
+      cache: 'no-store',
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json().catch(() => ({}));
@@ -828,7 +851,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Production deposits currently allow one Blind Box claim per active lock per WIB day.
   // Keep the frontend quota aligned with the server-side claim rule.
   const getDailyBoxQuota = (): number => {
-    return getTotalLockedUsdt() >= 71748 ? 1 : 0;
+    return getTotalLockedUsdt() >= MIN_BLINDBOX_LOCK_IDR ? 1 : 0;
   };
 
   const getRemainingDailyBoxes = (): number => {
