@@ -133,7 +133,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             ).rows[0]?.id ?? 0
           ),
           totalClaimed: Number(updatedDeposit.rows[0]?.totalClaimed ?? reward),
-          balance: null,
+          balance: newAvailableBalance,
         };
       } catch (error) {
         await client.query("ROLLBACK");
@@ -143,7 +143,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return json({
       success: true,
-      message: result.isJackpot ? "Reward dicatat di history Blind Box dan akan masuk saldo setelah lock selesai." : "Reward dicatat di history Blind Box dan akan masuk saldo setelah lock selesai.",
+      message: result.isJackpot ? "Reward Blind Box berhasil di-claim dan langsung masuk Available Balance. Reward ini tetap menjadi hak Anda jika lock dibuka lebih awal." : "Reward Blind Box berhasil di-claim dan langsung masuk Available Balance. Reward ini tetap menjadi hak Anda jika lock dibuka lebih awal.",
       ...result,
     });
   } catch (error) {
@@ -156,6 +156,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       DEPOSIT_NOT_STARTED: ["Deposit belum dimulai.", 400],
       DEPOSIT_EXPIRED: ["Deposit sudah berakhir.", 400],
       ALREADY_CLAIMED: ["Deposit sudah di-claim hari ini.", 400],
+      USER_NOT_FOUND: ["User tidak ditemukan.", 404],
     };
 
     if (errors[message]) {
