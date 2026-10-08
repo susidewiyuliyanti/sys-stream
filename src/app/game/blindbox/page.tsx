@@ -120,6 +120,7 @@ export default function BlindboxGamePage() {
 
   // Time until midnight reset
   const [timeToReset, setTimeToReset] = useState<string>('');
+  const [nowMs, setNowMs] = useState(() => Date.now());
   const currencyConfig = getLocaleConfig(language);
   const formatMoney = (idr: number) => formatIdrAsSelectedCurrency(idr, language);
   const toIdr = (displayAmount: number) => Math.round(displayAmount * (IDR_PER_CURRENCY_UNIT[language] ?? 1));
@@ -134,6 +135,7 @@ export default function BlindboxGamePage() {
       const minutes = Math.floor((diff % 3600000) / 60000);
       const seconds = Math.floor((diff % 60000) / 1000);
       setTimeToReset(`${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`);
+      setNowMs(Date.now());
     };
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
@@ -141,7 +143,7 @@ export default function BlindboxGamePage() {
   }, []);
 
   const totalLocked = getTotalLockedUsdt();
-  const rewardClaimUnlocked = Boolean(rewardClaimAvailableAt && Date.now() >= new Date(rewardClaimAvailableAt).getTime());
+  const rewardClaimUnlocked = Boolean(rewardClaimAvailableAt && nowMs >= new Date(rewardClaimAvailableAt).getTime());
   const dailyQuota = getDailyBoxQuota();
   const remainingBoxes = getRemainingDailyBoxes();
   const isQualified = totalLocked >= minimumLockIdr;
@@ -644,7 +646,7 @@ export default function BlindboxGamePage() {
                 {openingLock ? t('Opening Lock...') : t('Open Lock Early')}
               </button>
               <div className="text-[10px] text-rose-300/80 max-w-xs text-right">
-                {t('Early open')}: {t('only the locked principal is returned')}. {t('Already claimed Blind Box rewards remain yours and are not reversed')}. {t('SYS mined until this moment remains yours')}.
+                {t('Early open')}: {t('only the locked principal is returned')}. {t('Earned Blind Box rewards remain pending until the original lock period ends')}. {t('SYS mined until this moment remains yours')}.
               </div>
             </div>
           </div>
