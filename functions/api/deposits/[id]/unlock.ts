@@ -35,14 +35,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const endDate = new Date(deposit.endDate);
         const early = Date.now() < endDate.getTime();
 
-        const claimsResult = await client.query(
-          `SELECT COALESCE(SUM(amount),0) AS "totalRewards"
-           FROM blind_box_claims
-           WHERE deposit_id = $1`,
-          [depositId]
-        );
-        const totalRewards = Math.max(0, Number(claimsResult.rows[0]?.totalRewards || 0));
-
         const userResult = await client.query(
           `SELECT
              COALESCE(available_balance,0) AS "availableBalance",
@@ -59,10 +51,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const currentLocked = Number(user.lockedBalance || 0);
         if (currentLocked < principal) throw new Error("LOCKED_BALANCE_INCONSISTENT");
 
-        // Blind Box rewards are history-only while the lock is active.
-        // On early unlock they are forfeited without touching the user's available balance.
-        // The principal is returned; SYS mined before this moment remains credited.
-        const rewardForfeit = early ? totalRewards : 0;
+        // Daily Blind Box claims are credited immediately when claimed.
+        // Opening the lock early never claws back an earned/claimed reward.
+        // Only the locked principal is released here; SYS mined before this moment remains credited.
         const newAvailable = currentAvailable + principal;
         const newLocked = currentLocked - principal;
 
@@ -89,7 +80,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         return {
           principalReturned: principal,
-          rewardForfeited: rewardForfeit,
+          rewardForfeited: 0,
           miningStopped: true,
           early,
           status: "COMPLETED",
@@ -105,7 +96,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json({
       success: true,
       message: result.early
-        ? "Lock dibuka lebih awal. Saldo principal dikembalikan, reward Blind Box di history hangus, dan SYS Mining dihentikan."
+        ? "Lock dibuka lebih awal. Principal dikembalikan, reward Blind Box yang sudah di-claim tetap menjadi hak Anda, dan SYS Mining dihentikan."
         : "Lock selesai. Principal dikembalikan dan SYS Mining dihentikan.",
       depositId,
       ...result,
