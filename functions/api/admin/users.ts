@@ -16,6 +16,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         COALESCE(available_balance,0) AS availableBalance,
         COALESCE(total_locked,0) AS lockedBalance,
         COALESCE(sys_balance,0) AS sysBalance,
+        COALESCE(email_verified,0) AS emailVerified,
         COALESCE(role,'USER') AS role,
         created_at AS createdAt
       FROM users
@@ -34,6 +35,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         availableBalance: idrToUsdt(Number(u.availableBalance ?? 0)),
         lockedBalance: idrToUsdt(Number(u.lockedBalance ?? 0)),
         sysBalance: Number(u.sysBalance ?? 0),
+        emailVerified: Number(u.emailVerified ?? 0),
         role: String(u.role ?? 'USER'),
         createdAt: u.createdAt ?? null
       }))
