@@ -65,7 +65,7 @@ const MobileLanguagePicker: React.FC<MobileLanguagePickerProps> = ({ language, s
         style={{ fontSize: '16px' }}
       >
         {languages.map(item => (
-          <option key={item.code} value={item.code}>{item.native}</option>
+          <option key={item.code} value={item.code} style={{ backgroundColor: "#0f172a", color: "#ffffff" }}>{item.native}</option>
         ))}
       </select>
     </label>
