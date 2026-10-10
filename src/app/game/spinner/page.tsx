@@ -43,9 +43,12 @@ export default function SpinnerGamePage() {
   ]);
 
   const currentAngleRef = useRef(0);
-  const viewers = viewerList;
+  // Guard against stale/corrupt browser state so the game still renders safely.
+  const viewers = Array.isArray(viewerList)
+    ? viewerList.filter((name): name is string => typeof name === 'string' && name.trim().length > 0)
+    : [];
   const segmentCount = viewers.length;
-  const segmentAngle = 360 / segmentCount;
+  const segmentAngle = segmentCount > 0 ? 360 / segmentCount : 0;
 
   const handleAddViewer = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +118,7 @@ export default function SpinnerGamePage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 font-sans">
+    <div className="w-full min-w-0 max-w-6xl mx-auto px-3 sm:px-4 py-5 sm:py-8 font-sans overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
@@ -135,9 +138,9 @@ export default function SpinnerGamePage() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-8 items-center">
+      <div className="grid min-w-0 grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-start lg:items-center">
         {/* Left: Dynamic Viewer Username Wheel */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl relative overflow-hidden">
+        <div className="w-full min-w-0 lg:col-span-7 flex flex-col items-center justify-center p-3 sm:p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl relative overflow-hidden">
           {/* Subtle Ambient Radial Glow */}
           <div className="absolute w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -148,7 +151,7 @@ export default function SpinnerGamePage() {
           </div>
 
           {/* SVG Viewer Wheel */}
-          <div className="relative z-10 w-72 h-72 sm:w-96 sm:h-96">
+          <div className="relative z-10 w-[min(78vw,18rem)] h-[min(78vw,18rem)] sm:w-96 sm:h-96 shrink-0">
             <svg
               viewBox="0 0 400 400"
               className="w-full h-full drop-shadow-2xl"
@@ -234,7 +237,7 @@ export default function SpinnerGamePage() {
         </div>
 
         {/* Right: Streamer Viewer Management Panel */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="w-full min-w-0 lg:col-span-5 space-y-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
