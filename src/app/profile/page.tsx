@@ -60,7 +60,6 @@ export default function ProfilePage() {
   const [claimingBonus, setClaimingBonus] = useState(false);
   const [mining, setMining] = useState<any | null>(null);
   const [miningNow, setMiningNow] = useState(() => Date.now());
-  const [miningSnapshotAt, setMiningSnapshotAt] = useState(() => Date.now());
   const [newAvatarInput, setNewAvatarInput] = useState(user.avatar || '');
   const [newUsernameInput, setNewUsernameInput] = useState(user.username);
   const [newWalletInput, setNewWalletInput] = useState(user.walletAddress || '');
@@ -184,16 +183,22 @@ export default function ProfilePage() {
         const data = await response.json().catch(() => ({}));
         if (!cancelled && response.ok && data?.success && data?.mining) {
           setMining(data.mining);
-          setMiningSnapshotAt(Date.now());
         }
       } catch {}
     };
 
     void loadMining();
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') void loadMining();
+    };
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    window.addEventListener('focus', refreshWhenVisible);
     const poll = window.setInterval(() => { void loadMining(); }, 15000);
     const ticker = window.setInterval(() => setMiningNow(Date.now()), 1000);
     return () => {
       cancelled = true;
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+      window.removeEventListener('focus', refreshWhenVisible);
       window.clearInterval(poll);
       window.clearInterval(ticker);
     };
@@ -201,11 +206,21 @@ export default function ProfilePage() {
 
   const miningRatePerSecond = Number(mining?.rateSysPerSecond || 0);
   const miningClaimThreshold = Number(mining?.claimThresholdSys || 50);
-  const miningBaseClaimable = Number(mining?.claimableSys ?? mining?.accruedSys ?? 0);
-  const miningLiveElapsedSeconds = Math.max(0, (miningNow - miningSnapshotAt) / 1000);
+  // Use server-credited mining plus elapsed time since the server's last credited
+  // timestamp. claimableSys already includes pendingSys, so adding a fresh local
+  // timer to it would double-count the same mining interval.
+  const miningAccruedSys = Number(mining?.accruedSys || 0);
+  const miningLastCreditedAt = Number(mining?.lastCreditedAt || 0);
+  const miningNowSeconds = Math.floor(miningNow / 1000);
+  const miningCreditUntil = Number(mining?.endAt || 0) > 0
+    ? Math.min(miningNowSeconds, Number(mining.endAt))
+    : miningNowSeconds;
+  const miningLiveElapsedSeconds = miningLastCreditedAt > 0
+    ? Math.max(0, miningCreditUntil - miningLastCreditedAt)
+    : 0;
   const miningTotalDisplay = mining?.enabled
-    ? Math.min(miningClaimThreshold, miningBaseClaimable + miningLiveElapsedSeconds * miningRatePerSecond)
-    : Number(mining?.accruedSys || 0);
+    ? Math.min(miningClaimThreshold, miningAccruedSys + miningLiveElapsedSeconds * miningRatePerSecond)
+    : miningAccruedSys;
   const miningSecondsToClaim = mining?.enabled && miningRatePerSecond > 0
     ? Math.max(0, Math.ceil((miningClaimThreshold - miningTotalDisplay) / miningRatePerSecond))
     : 0;
@@ -434,7 +449,7 @@ export default function ProfilePage() {
                 <div className="mt-4 h-2 rounded-full bg-slate-900 overflow-hidden border border-emerald-500/10">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-emerald-300 transition-all duration-1000"
-                    style={{ width: `${Math.min(100, Math.max(0, miningSecondsRemaining / 86400 * 100))}%` }}
+                    style={{ width: `${Math.min(100, Math.max(0, miningTotalDisplay / miningClaimThreshold * 100))}%` }}
                   />
                 </div>
               )}
