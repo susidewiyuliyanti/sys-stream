@@ -193,7 +193,7 @@ export default function ProfilePage() {
     };
     document.addEventListener('visibilitychange', refreshWhenVisible);
     window.addEventListener('focus', refreshWhenVisible);
-    const poll = window.setInterval(() => { void loadMining(); }, 15000);
+    const poll = window.setInterval(() => { void loadMining(); }, 5000);
     const ticker = window.setInterval(() => setMiningNow(Date.now()), 1000);
     return () => {
       cancelled = true;
