@@ -136,7 +136,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
     ).bind(
       deltaSys,
       creditUntil,
-      creditUntil < (effectiveEndAt || now) ? 1 : 0,
+      (!effectiveEndAt || creditUntil < effectiveEndAt) ? 1 : 0,
       id,
       lastCreditedAt
     ).run();
@@ -144,7 +144,7 @@ export async function syncMiningForUser(env: Env, userId: string) {
     if (Number((update as any).meta?.changes || 0) > 0) {
       user.miningAccruedSys = Number(user.miningAccruedSys || 0) + deltaSys;
       user.miningLastCreditedAt = creditUntil;
-      user.miningEnabled = creditUntil < (effectiveEndAt || now) ? 1 : 0;
+      user.miningEnabled = (!effectiveEndAt || creditUntil < effectiveEndAt) ? 1 : 0;
       lastCreditedAt = creditUntil;
     } else {
       const refreshed = await env.DB.prepare(
