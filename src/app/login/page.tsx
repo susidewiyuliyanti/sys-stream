@@ -261,11 +261,11 @@ export default function LoginPage({ navigate }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#060a14] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-dvh bg-[#060a14] flex items-center justify-center p-3 py-5 sm:p-4 relative overflow-x-hidden font-sans selection:bg-cyan-500 selection:text-black">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="relative w-full max-w-sm sm:max-w-md bg-[#080d1a]/90 backdrop-blur-2xl border-2 border-cyan-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.25)] text-white">
+      <div className="relative w-full min-w-0 max-w-sm sm:max-w-md bg-[#080d1a]/90 backdrop-blur-2xl border-2 border-cyan-500/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.25)] text-white">
         <div className="grid grid-cols-2 p-1 bg-slate-950/80 rounded-2xl border border-cyan-500/30 mb-6">
           <button type="button" onClick={() => switchMode('login')}
             className={`py-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all ${authMode === 'login' ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' : 'text-slate-400 hover:text-white'}`}>
@@ -290,7 +290,7 @@ export default function LoginPage({ navigate }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {authMode === 'login' ? (
-            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-5 text-center">
+            <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-4 sm:p-5 text-center">
               <Wallet className="w-9 h-9 mx-auto text-cyan-300 mb-2" />
               <div className="text-sm font-black text-white">{t('Login dengan Wallet')}</div>
               <p className="mt-1 text-[11px] leading-5 text-slate-400">
@@ -303,7 +303,7 @@ export default function LoginPage({ navigate }: Props) {
             </div>
           ) : (
             <>
-              <div className="rounded-2xl border border-purple-500/25 bg-purple-500/5 p-5 text-center">
+              <div className="rounded-2xl border border-purple-500/25 bg-purple-500/5 p-4 sm:p-5 text-center">
                 <Wallet className="w-9 h-9 mx-auto text-purple-300 mb-2" />
                 <div className="text-sm font-black text-white">{t('Buat Wallet Baru')}</div>
                 <p className="mt-1 text-[11px] leading-5 text-slate-400">
