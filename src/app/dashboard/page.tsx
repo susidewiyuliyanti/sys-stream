@@ -224,7 +224,7 @@ export default function DashboardPage({ navigate }: Props) {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 SYS STREAM
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black mt-2">{t('Halo')}, {user.walletAddress || user.username || t('User')}</h1>
+              <h1 className="mt-2 flex min-w-0 max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 text-xl font-black sm:text-3xl"><span className="shrink-0">{t('Halo')},</span><span className="min-w-0 max-w-full break-all text-sm font-bold leading-snug text-cyan-200 sm:text-base sm:break-all">{user.walletAddress || user.username || t('User')}</span></h1>
               <p className="text-sm text-slate-400 mt-1">{t('User ID:')} {user.walletAddress || t('Wallet belum terhubung')} · {t('Dashboard community tagline')}</p>
             </div>
 
