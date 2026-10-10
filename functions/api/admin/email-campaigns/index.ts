@@ -29,14 +29,15 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  if(action!=="create"&&action!=="send")return json({success:false,error:"Action tidak valid."},400);
  if(action==="create"){
   const name=clean(body?.name,160),subject=clean(body?.subject,998),html=clean(body?.html,500000),text=clean(body?.text,100000),fromEmail=clean(body?.fromEmail,320).toLowerCase(),fromName=clean(body?.fromName,100),audienceType=clean(body?.audienceType,20).toLowerCase();
-  if(!name||!subject||!html||!emailOk(fromEmail)||!fromName)return json({success:false,error:"Nama campaign, sender, subject dan isi email wajib diisi."},400);
+  const effectiveHtml=html||(text?text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\r?\n/g,"<br/>"):"");
+  if(!name||!subject||!effectiveHtml||!emailOk(fromEmail)||!fromName)return json({success:false,error:"Nama campaign, sender, subject dan isi email wajib diisi."},400);
   if(!["manual","users"].includes(audienceType))return json({success:false,error:"Audience tidak valid."},400);
   let recipients:{email:string;name:string|null}[]=[];
   if(audienceType==="users"){const rows=await env.DB.prepare("SELECT email,display_name FROM users WHERE email IS NOT NULL AND TRIM(email)<>''").all<any>();const seen=new Set<string>();for(const r of rows.results||[]){const email=String(r.email||"").trim().toLowerCase();if(emailOk(email)&&!seen.has(email)){seen.add(email);recipients.push({email,name:r.display_name?String(r.display_name):null});}}}else recipients=parseRecipients(clean(body?.recipients,300000));
   if(!recipients.length)return json({success:false,error:"Belum ada penerima email yang valid."},400);
   if(recipients.length>500)return json({success:false,error:"Maksimal 500 penerima per campaign."},400);
   const sender=await env.DB.prepare("SELECT email,display_name,active FROM email_senders WHERE email=? LIMIT 1").bind(fromEmail).first<any>();if(!sender||Number(sender.active)!==1)return json({success:false,error:"Sender tidak ditemukan atau sedang nonaktif."},400);
-  const now=Math.floor(Date.now()/1000),id=crypto.randomUUID();await env.DB.prepare("INSERT INTO email_campaigns (id,name,subject,from_email,from_name,html_body,text_body,audience_type,status,total_recipients,created_by,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)").bind(id,name,subject,fromEmail,fromName,html,text||"",audienceType,"draft",recipients.length,auth.identity.id||auth.identity.email,now,now).run();
+  const now=Math.floor(Date.now()/1000),id=crypto.randomUUID();await env.DB.prepare("INSERT INTO email_campaigns (id,name,subject,from_email,from_name,html_body,text_body,audience_type,status,total_recipients,created_by,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)").bind(id,name,subject,fromEmail,fromName,effectiveHtml,text||"",audienceType,"draft",recipients.length,auth.identity.id||auth.identity.email,now,now).run();
   for(let i=0;i<recipients.length;i+=100){
    const statements=recipients.slice(i,i+100).map(r=>env.DB.prepare("INSERT INTO email_campaign_recipients (id,campaign_id,email,name,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?)").bind(crypto.randomUUID(),id,r.email,r.name,"pending",now,now));
    await env.DB.batch(statements);
