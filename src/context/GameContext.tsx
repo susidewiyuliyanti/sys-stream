@@ -385,7 +385,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         availableBalance: Number(remote.availableBalance ?? 0),
         coins: Math.round(Number(remote.availableBalance ?? 0) * 100),
       }));
-      localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       return true;
     } catch {
       showToast('Profile Update Failed', 'Server tidak dapat menyimpan profile.', 'error');
@@ -512,8 +511,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
         body: JSON.stringify({ inventory, history, cryptoCard, viewerList }),
       }).then(async response => {
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.success) {
           console.error('D1 game state save failed:', data?.error || response.status);
         }
       }).catch(error => console.error('D1 game state save failed:', error));
@@ -748,7 +747,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         registrationBonusGranted: Boolean(Number(remote.registration_bonus_granted || 0)),
         lockedBalance: Number(remote.locked_balance ?? remote.lockedBalance ?? prev.lockedBalance ?? 0),
       }));
-      localStorage.setItem('sys_stream_auth_user', JSON.stringify(remote));
       await refreshFinancialState();
       sound.playWin();
       showToast('Bonus Claimed', 'Bonus registrasi berhasil masuk ke saldo Anda.', 'success');
