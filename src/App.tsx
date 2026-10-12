@@ -6,7 +6,6 @@ import { ToastContainer } from './components/ToastContainer';
 import { MobileAuthModal } from './components/MobileAuthModal';
 import { BottomMobileNav } from './components/BottomMobileNav';
 import StreamerModule from './components/streamer/StreamerModule';
-import AIChat from './components/AIChat';
 
 // Keep the initial mobile bundle small. Route-specific pages are loaded only
 // when the user opens that route instead of shipping every game/dashboard
@@ -144,7 +143,6 @@ export default function App() {
         <MobileAuthModal />
         <BottomMobileNav currentPath={currentPath} navigate={navigate} />
         <ToastContainer />
-        <AIChat />
         <StreamerModule />
       </div>
     </GameProvider>
