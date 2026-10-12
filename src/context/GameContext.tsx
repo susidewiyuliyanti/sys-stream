@@ -778,11 +778,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const activeDeposit =
       depositsData?.activeDeposit ||
       (Array.isArray(depositsData?.deposits)
-        ? depositsData.deposits.find((deposit: any) => String(deposit.status).toUpperCase() === 'ACTIVE')
+        ? depositsData.deposits.find((deposit: any) => String(deposit.status ?? '').trim().toUpperCase() === 'ACTIVE')
         : null);
 
     if (!activeDeposit?.id) {
-      throw new Error('Tidak ada lock Blind Box yang aktif.');
+      const lockedBalance = Number(depositsData?.totalLocked ?? depositsData?.total_locked ?? user.lockedBalance ?? 0);
+      if (lockedBalance >= 4 * 17937) {
+        throw new Error('Data lock Anda belum sinkron dengan daftar deposit. Muat ulang halaman atau hubungi support agar lock diperiksa; jangan membuat lock baru dulu.');
+      }
+      throw new Error('Tidak ada lock Blind Box yang aktif. Pastikan lock sudah berhasil dibuat dan berstatus aktif.');
     }
 
     const response = await fetch(`/api/deposits/${encodeURIComponent(activeDeposit.id)}/claim`, {
