@@ -49,7 +49,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         if (depositResult.rows.length === 0) throw new Error("DEPOSIT_NOT_FOUND");
         const deposit = depositResult.rows[0];
 
-        if (String(deposit.status ?? "").trim().toUpperCase() !== "ACTIVE") throw new Error("DEPOSIT_NOT_ACTIVE");
+        if (!["ACTIVE", "LOCKED"].includes(String(deposit.status ?? "").trim().toUpperCase())) throw new Error("DEPOSIT_NOT_ACTIVE");
 
         const now = new Date();
         const startDate = new Date(deposit.startDate);
