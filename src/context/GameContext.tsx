@@ -88,57 +88,26 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // authenticated API. Browser storage must never act as a second user database.
   const [user, setUser] = useState<UserProfile>(DEFAULT_USER);
 
-  const [inventory, setInventory] = useState<BlindboxItem[]>(() => {
-    const saved = localStorage.getItem('nexus_inventory');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return INITIAL_INVENTORY;
-  });
-
-  const [history, setHistory] = useState<GameHistoryEntry[]>(() => {
-    const saved = localStorage.getItem('nexus_history');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return [];
-  });
+  const [inventory, setInventory] = useState<BlindboxItem[]>(INITIAL_INVENTORY);
+  const [history, setHistory] = useState<GameHistoryEntry[]>([]);
 
   // Legacy browser-only locks are intentionally not loaded.
   // Production Locked Balance comes only from the authenticated server user.
   const [locks, setLocks] = useState<LockRecord[]>([]);
 
-  const [cryptoCard, setCryptoCard] = useState<CryptoCardConfig>(() => {
-    const saved = localStorage.getItem('nexus_cryptocard');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return {
-      cardTitle: 'CYBER SOLANA VAULT CARD',
-      serialNumber: 'SN-SOL-2026-8941',
-      network: 'Solana Virtual Machine L1',
-      rarity: 'Legendary',
-      digits: [7, 4, 2, 9],
-      concealed: [false, true, true, false], // 4 numbers, 2 concealed
-      streamerNote: 'Guess the 2 middle hidden digits! High payout on exact match.',
-    };
-  });
-
-  const [viewerList, setViewerList] = useState<string[]>(() => {
-    const saved = localStorage.getItem('nexus_viewers');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return [];
-  });
+  const DEFAULT_CRYPTO_CARD: CryptoCardConfig = {
+    cardTitle: 'CYBER SOLANA VAULT CARD',
+    serialNumber: 'SN-SOL-2026-8941',
+    network: 'Solana Virtual Machine L1',
+    rarity: 'Legendary',
+    digits: [7, 4, 2, 9],
+    concealed: [false, true, true, false],
+    streamerNote: 'Guess the 2 middle hidden digits! High payout on exact match.',
+  };
+  const [cryptoCard, setCryptoCard] = useState<CryptoCardConfig>(DEFAULT_CRYPTO_CARD);
+  const [viewerList, setViewerList] = useState<string[]>([]);
+  const [gameStateReady, setGameStateReady] = useState(false);
+  const [gameStateOwnerId, setGameStateOwnerId] = useState('');
 
   const [soundEnabled, setSoundEnabled] = useState(sound.enabled);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -476,24 +445,83 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     showToast('Username Updated', `Display name set to @${trimmed}`, 'success');
   };
 
+  // Load per-user game state from D1 only after the authenticated identity is known.
+  // Never display or save another account's in-memory game state during account switches.
   useEffect(() => {
-    localStorage.setItem('nexus_cryptocard', JSON.stringify(cryptoCard));
-  }, [cryptoCard]);
+    if (!isLoggedIn || !user.id) {
+      setGameStateReady(false);
+      setGameStateOwnerId('');
+      setInventory([]);
+      setHistory([]);
+      setViewerList([]);
+      setCryptoCard(DEFAULT_CRYPTO_CARD);
+      return;
+    }
 
+    let cancelled = false;
+    const ownerId = String(user.id);
+    setGameStateReady(false);
+    setGameStateOwnerId('');
+    setInventory([]);
+    setHistory([]);
+    setViewerList([]);
+    setCryptoCard(DEFAULT_CRYPTO_CARD);
+
+    const load = async () => {
+      const token = localStorage.getItem('sys_stream_auth_token');
+      if (!token) return;
+      try {
+        const response = await fetch('/api/game-state', {
+          credentials: 'include',
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json().catch(() => ({}));
+        if (cancelled || !response.ok || !data?.success) return;
+        const state = data.state;
+        if (state) {
+          setInventory(Array.isArray(state.inventory) ? state.inventory : []);
+          setHistory(Array.isArray(state.history) ? state.history : []);
+          setViewerList(Array.isArray(state.viewerList) ? state.viewerList : []);
+          if (state.cryptoCard && typeof state.cryptoCard === 'object') {
+            setCryptoCard({ ...DEFAULT_CRYPTO_CARD, ...state.cryptoCard } as CryptoCardConfig);
+          }
+        }
+        setGameStateOwnerId(ownerId);
+        setGameStateReady(true);
+      } catch (error) {
+        console.error('Unable to load D1 game state; local fallback is disabled.', error);
+      }
+    };
+    void load();
+    return () => { cancelled = true; };
+  }, [isLoggedIn, user.id]);
+
+  // Persist game inventory/history/configuration to D1, scoped to the authenticated user.
   useEffect(() => {
-    localStorage.setItem('nexus_viewers', JSON.stringify(viewerList));
-  }, [viewerList]);
+    if (!isLoggedIn || !user.id || !gameStateReady || gameStateOwnerId !== String(user.id)) return;
+    const token = localStorage.getItem('sys_stream_auth_token');
+    if (!token) return;
+    const timer = window.setTimeout(() => {
+      void fetch('/api/game-state', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ inventory, history, cryptoCard, viewerList }),
+      }).then(async response => {
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          console.error('D1 game state save failed:', data?.error || response.status);
+        }
+      }).catch(error => console.error('D1 game state save failed:', error));
+    }, 500);
+    return () => window.clearTimeout(timer);
+  }, [inventory, history, cryptoCard, viewerList, isLoggedIn, user.id, gameStateReady, gameStateOwnerId]);
 
-  // Do not persist account profile snapshots in browser storage. The D1-backed
-  // /api/auth/me and /api/profile endpoints are the only source of account data.
-
-  useEffect(() => {
-    localStorage.setItem('nexus_inventory', JSON.stringify(inventory));
-  }, [inventory]);
-
-  useEffect(() => {
-    localStorage.setItem('nexus_history', JSON.stringify(history));
-  }, [history]);
+  // Account profile snapshots are never persisted in browser storage.
 
   const translateToastText = (text: string): string => {
     const exact = t(text);
