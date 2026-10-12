@@ -84,28 +84,9 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { language, t } = useLanguage();
-  const [user, setUser] = useState<UserProfile>(() => {
-    // Never hydrate a previous account when there is no authenticated session.
-    // The server session is the source of truth for the active account.
-    const token = localStorage.getItem('sys_stream_auth_token');
-    if (!token) return DEFAULT_USER;
-
-    try {
-      const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
-      if (cached && (cached.id || cached.walletAddress || cached.username)) {
-        return {
-          ...DEFAULT_USER,
-          ...cached,
-          // Keep the last-known financial snapshot visible while the server
-          // refresh runs. Server responses remain the authoritative source.
-          coins: Number(cached.coins ?? 0),
-          availableBalance: Number(cached.availableBalance ?? 0),
-          lockedBalance: Number(cached.lockedBalance ?? 0),
-        };
-      }
-    } catch {}
-    return DEFAULT_USER;
-  });
+  // Account identity and profile data are always hydrated from the D1-backed
+  // authenticated API. Browser storage must never act as a second user database.
+  const [user, setUser] = useState<UserProfile>(DEFAULT_USER);
 
   const [inventory, setInventory] = useState<BlindboxItem[]>(() => {
     const saved = localStorage.getItem('nexus_inventory');
@@ -268,26 +249,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) {
       setIsLoggedIn(false);
-      try {
-        const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
-        if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
-          setUser(prev => ({
-            ...DEFAULT_USER,
-            ...prev,
-            id: String(cached.id || prev.id || ''),
-            username: String(cached.username || prev.username || ''),
-            avatar: String(cached.avatar || prev.avatar || ''),
-            referralCode: String(cached.referralCode || prev.referralCode || ''),
-          walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
-            lockedBalance: Number(cached.lockedBalance ?? prev.lockedBalance ?? 0),
-            vipTier: Number(cached.vipTier ?? prev.vipTier ?? 0),
-          }));
-        } else {
-          setUser(DEFAULT_USER);
-        }
-      } catch {
-        setUser(DEFAULT_USER);
-      }
+      setUser(DEFAULT_USER);
       setLocks([]);
       return;
     }
@@ -341,25 +303,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setLocks([]);
           return;
         }
+        // A temporary API failure must not hydrate identity/profile fields from
+        // localStorage. Keep the current in-memory state and retry against D1. 
         setIsLoggedIn(true);
         localStorage.setItem('sys_is_logged_in', 'true');
-        try {
-          const cached = JSON.parse(localStorage.getItem('sys_stream_profile_cache') || 'null');
-          if (cached && (cached.id || cached.username || cached.avatar || cached.referralCode)) {
-            setUser(prev => ({
-              ...prev,
-              id: String(cached.id || prev.id || ''),
-              username: String(cached.username || prev.username || ''),
-              avatar: String(cached.avatar || prev.avatar || ''),
-              referralCode: String(cached.referralCode || prev.referralCode || ''),
-              walletAddress: String(cached.walletAddress || prev.walletAddress || ''),
-              // Never let stale browser cache overwrite server-owned financial state.
-              coins: prev.coins,
-              availableBalance: prev.availableBalance,
-              lockedBalance: prev.lockedBalance,
-            }));
-          }
-        } catch {}
       });
     const refreshOnFocus = () => { void refreshFinancialState(); };
     const refreshOnVisible = () => { if (document.visibilityState === 'visible') void refreshFinancialState(); };
@@ -537,23 +484,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('nexus_viewers', JSON.stringify(viewerList));
   }, [viewerList]);
 
-  useEffect(() => {
-    localStorage.setItem('nexus_user', JSON.stringify(user));
-    if (user.id || user.username || user.avatar || user.referralCode) {
-      localStorage.setItem('sys_stream_profile_cache', JSON.stringify({
-        id: user.id,
-        username: user.username,
-        avatar: user.avatar,
-        referralCode: user.referralCode,
-        role: user.role,
-        walletAddress: user.walletAddress,
-        sysBalance: user.sysBalance,
-        registrationBonusIdr: user.registrationBonusIdr,
-        registrationBonusGranted: user.registrationBonusGranted,
-        vipTier: user.vipTier,
-      }));
-    }
-  }, [user]);
+  // Do not persist account profile snapshots in browser storage. The D1-backed
+  // /api/auth/me and /api/profile endpoints are the only source of account data.
 
   useEffect(() => {
     localStorage.setItem('nexus_inventory', JSON.stringify(inventory));
