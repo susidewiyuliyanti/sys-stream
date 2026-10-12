@@ -80,7 +80,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       );
 
       const deposits = depositsResult.rows;
-      const activeDeposit = deposits.find((deposit) => deposit.status === "ACTIVE") ?? null;
+      const activeDeposit = deposits.find((deposit) => String(deposit.status ?? "").trim().toUpperCase() === "ACTIVE") ?? null;
       const wibNow = new Date(Date.now() + 7 * 60 * 60 * 1000);
       const today = wibNow.toISOString().slice(0, 10);
 
