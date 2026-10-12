@@ -43,9 +43,12 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       const existingCount = await client.query(`SELECT COUNT(*) AS count FROM deposits WHERE user_id = $1`, [userId]);
       const existingDepositCount = Number(existingCount.rows[0]?.count ?? 0);
 
+      const lockedResult = await client.query(`SELECT COALESCE(total_locked, 0) AS "totalLocked" FROM users WHERE id = $1 LIMIT 1`, [userId]);
+      const totalLocked = Number(lockedResult.rows[0]?.totalLocked ?? 0);
+
       if (existingDepositCount === 0) {
-        const lockedResult = await client.query(`SELECT COALESCE(total_locked, 0) AS "totalLocked" FROM users WHERE id = $1 LIMIT 1`, [userId]);
-        const totalLocked = Number(lockedResult.rows[0]?.totalLocked ?? 0);
+        // Legacy recovery: only create a row when no deposit history exists at all.
+        // This preserves the existing principal instead of asking the user to lock again.
         if (totalLocked >= MIN_BLINDBOX_LOCK_IDR) {
           const recoveryStart = new Date();
           const recoveryEnd = new Date(recoveryStart);
@@ -56,6 +59,33 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
               status, total_claimed, force_jackpot, created_at
             ) VALUES ($1, $2, $3, 30, $4, $5, 'ACTIVE', 0, false, NOW())
           `, [generateDepositCode(), userId, totalLocked, recoveryStart, recoveryEnd]);
+        }
+      } else {
+        // Repair the specific legacy inconsistency found in production: a deposit is
+        // marked COMPLETED even though its recorded lock period has not ended and
+        // the user's canonical total_locked still covers that deposit principal.
+        // Never modify balances or create a second deposit in this branch.
+        const activeCount = await client.query(
+          `SELECT COUNT(*) AS count FROM deposits
+           WHERE user_id = $1 AND UPPER(TRIM(COALESCE(status, ''))) IN ('ACTIVE', 'LOCKED')`,
+          [userId]
+        );
+        if (Number(activeCount.rows[0]?.count ?? 0) === 0 && totalLocked >= MIN_BLINDBOX_LOCK_IDR) {
+          await client.query(
+            `UPDATE deposits
+             SET status = 'ACTIVE'
+             WHERE id = (
+               SELECT id FROM deposits
+               WHERE user_id = $1
+                 AND UPPER(TRIM(COALESCE(status, ''))) = 'COMPLETED'
+                 AND amount >= $2
+                 AND amount <= $3
+                 AND datetime(end_date) > datetime('now')
+               ORDER BY created_at DESC
+               LIMIT 1
+             )`,
+            [userId, MIN_BLINDBOX_LOCK_IDR, totalLocked]
+          );
         }
       }
 
