@@ -49,20 +49,10 @@ export default function LoginPage({ navigate }: Props) {
   const postLoginPath = returnParam.startsWith('/') ? returnParam : '/dashboard';
 
   const finishAuth = (token: string, user: AuthUser) => {
+    // Keep only the session token in browser storage. User profile data is loaded from D1.
     localStorage.setItem('sys_stream_auth_token', token);
-    localStorage.setItem('sys_stream_auth_user', JSON.stringify(user));
-    localStorage.setItem(
-      'sys_stream_profile_cache',
-      JSON.stringify({
-        id: user.id,
-        username: user.username || user.displayName || user.display_name || '',
-        avatar: user.avatarUrl || user.avatar_url || '',
-        referralCode: user.referralCode || user.referral_code || '',
-        walletAddress: user.walletAddress || user.wallet_address || '',
-        registrationBonusIdr: Number(user.registrationBonusIdr ?? user.registration_bonus_idr ?? 0),
-        registrationBonusGranted: Boolean(user.registrationBonusGranted ?? user.registration_bonus_granted),
-      }),
-    );
+    localStorage.removeItem('sys_stream_auth_user');
+    localStorage.removeItem('sys_stream_profile_cache');
     localStorage.setItem('sys_is_logged_in', 'true');
 
     // Synchronize the shared GameProvider immediately. Without this, the
