@@ -306,7 +306,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           `
           SELECT id
           FROM deposits
-          WHERE user_id = $1 AND status = 'ACTIVE'
+          WHERE user_id = $1
+            AND UPPER(TRIM(COALESCE(status, ''))) IN ('ACTIVE', 'LOCKED')
           LIMIT 1
           `,
           [userId]
