@@ -8,7 +8,7 @@ import EmailInboxPanel from './EmailInboxPanel';
 import EmailCampaignPanel from './EmailCampaignPanel';
 import InfluencerContactsPanel from './InfluencerContactsPanel';
 import {
-  Activity, Bot, CircleDollarSign, Gift, LayoutDashboard, LogOut, RefreshCw,
+  Activity, Megaphone, CircleDollarSign, Gift, LayoutDashboard, LogOut, RefreshCw,
   Search, ShieldCheck, UserPlus, Users, WalletCards, ListChecks, Pencil, Trash2, Link2, Mail, Inbox, Send as SendIcon, Bell, CheckCheck
 } from 'lucide-react';
 
@@ -237,7 +237,7 @@ export default function AdminApp() {
               <NavButton active={tab==='jackpot'} onClick={()=>setTab('jackpot')} icon={<Gift/>} label="Jackpot Grants"/>
               <NavButton active={tab==='airdrop'} onClick={()=>setTab('airdrop')} icon={<ListChecks/>} label="User Tasks / Airdrop Task"/>
               <NavButton active={tab==='influencers'} onClick={()=>setTab('influencers')} icon={<Mail/>} label="Airdrop Influencers"/>
-              <NavButton active={tab==='ai-agent'} onClick={()=>setTab('ai-agent')} icon={<Bot/>} label="AI Agent"/>
+              <NavButton active={tab==='ai-agent'} onClick={()=>setTab('ai-agent')} icon={<Megaphone/>} label="AI Agent"/>
               <NavButton active={tab==='social'} onClick={()=>setTab('social')} icon={<Link2/>} label="Social Media"/>
               <NavButton active={tab==='email'} onClick={()=>setTab('email')} icon={<Mail/>} label="Email Senders"/>
               <NavButton active={tab==='email-campaign'} onClick={()=>setTab('email-campaign')} icon={<SendIcon/>} label="Email Campaign"/>
