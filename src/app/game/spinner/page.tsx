@@ -34,6 +34,8 @@ export default function SpinnerGamePage() {
 
   const [newViewerInput, setNewViewerInput] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
+  // Streamer-controlled raffle duration; never allow less than 20 seconds.
+  const [spinDurationSeconds, setSpinDurationSeconds] = useState(20);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [winnerName, setWinnerName] = useState<string | null>(null);
   const [winnerHistory, setWinnerHistory] = useState<string[]>([
@@ -86,10 +88,11 @@ export default function SpinnerGamePage() {
       currentAngleRef.current = finalAngle;
       setRotationAngle(finalAngle);
 
-      // Mechanical tick sounds
+      // Mechanical tick sounds follow the selected raffle duration.
+      const durationMs = Math.max(20, spinDurationSeconds) * 1000;
       let tickCount = 0;
-      const totalTicks = 32;
-      const tickInterval = 4000 / totalTicks;
+      const totalTicks = Math.max(32, Math.round(durationMs / 250));
+      const tickInterval = durationMs / totalTicks;
 
       const playTicks = () => {
         if (tickCount < totalTicks) {
@@ -101,7 +104,7 @@ export default function SpinnerGamePage() {
       };
       playTicks();
 
-      // Settle after 4.2 seconds
+      // Settle only after the configured minimum/selected duration.
       setTimeout(() => {
         setIsSpinning(false);
         setWinnerName(selectedWinner);
@@ -113,7 +116,7 @@ export default function SpinnerGamePage() {
           origin: { y: 0.5 },
         });
         showToast(t('Winner Picked!'), `${t('Congratulations')} @${selectedWinner}! ${t('Selected as Lucky Viewer!')}`, 'jackpot');
-      }, 4200);
+      }, durationMs);
     });
   };
 
@@ -157,7 +160,7 @@ export default function SpinnerGamePage() {
               className="w-full h-full drop-shadow-2xl"
               style={{
                 transform: `rotate(${rotationAngle}deg)`,
-                transition: isSpinning ? 'transform 4.2s cubic-bezier(0.12, 0.9, 0.2, 1)' : 'none',
+                transition: isSpinning ? `transform ${Math.max(20, spinDurationSeconds)}s cubic-bezier(0.12, 0.9, 0.2, 1)` : 'none',
               }}
             >
               {/* Outer Metallic Rim */}
@@ -268,6 +271,30 @@ export default function SpinnerGamePage() {
                 Add
               </button>
             </form>
+
+            {/* Streamer-configurable raffle duration (minimum 20 seconds). */}
+            <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-2">
+              <label htmlFor="raffle-duration" className="block text-xs font-bold text-slate-300">
+                {t('Spin duration (seconds)')} — {t('minimum 20 seconds')}
+              </label>
+              <input
+                id="raffle-duration"
+                type="number"
+                min={20}
+                max={300}
+                step={1}
+                value={spinDurationSeconds}
+                disabled={isSpinning}
+                onChange={(e) => {
+                  const parsed = Number.parseInt(e.target.value, 10);
+                  if (Number.isFinite(parsed)) setSpinDurationSeconds(Math.min(300, Math.max(20, parsed)));
+                  else setSpinDurationSeconds(20);
+                }}
+                onBlur={() => setSpinDurationSeconds((value) => Math.min(300, Math.max(20, value || 20)))}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 disabled:opacity-60"
+              />
+              <p className="text-[11px] text-slate-500">{t('Set how long the raffle wheel spins. Allowed range: 20–300 seconds.')}</p>
+            </div>
 
             {/* Spin CTA Button */}
             <button
