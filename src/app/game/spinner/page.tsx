@@ -92,7 +92,8 @@ export default function SpinnerGamePage() {
       const durationMs = Math.max(20, spinDurationSeconds) * 1000;
       let tickCount = 0;
       const totalTicks = Math.max(32, Math.round(durationMs / 250));
-      const tickInterval = durationMs / totalTicks;
+      // Keep the easing tick schedule within the configured spin duration.
+      const tickInterval = durationMs / (totalTicks * 1.75);
 
       const playTicks = () => {
         if (tickCount < totalTicks) {
