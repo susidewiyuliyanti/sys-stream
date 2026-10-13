@@ -33,10 +33,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     const userId = String(auth.user.id);
 
-    // Always re-detect an existing ACTIVE Blind Box lock before returning deposits.
-    // This makes SYS mining self-healing for users whose lock was created before
-    // the mining fields were initialized or whose session was refreshed later.
-    await syncMiningForUser(context.env, userId);
+    // Mining reconciliation is auxiliary to deposit reads. If its schema or
+    // accounting path temporarily fails, do not block Daily Box claims on mobile
+    // (or desktop) from loading the user's authoritative deposit rows.
+    try {
+      await syncMiningForUser(context.env, userId);
+    } catch (miningError) {
+      console.error("Deposit read: mining reconciliation failed; continuing:", miningError);
+    }
 
     const data = await withDb(context.env, async (client) => {
       // Recover legacy locks whose principal is still in users.total_locked but whose deposits row is missing.
@@ -171,19 +175,27 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         `,
         [userId]
       );
-      const settingsResult = await client.query(
-        `
-        SELECT
-          id,
-          "minBox",
-          "maxBox",
-          "jackpotAmount",
-          "jackpotChance"
-        FROM game_settings
-        ORDER BY id DESC
-        LIMIT 1
-        `
-      );
+      // Game settings are optional for the deposit/claim flow. A missing or
+      // older game_settings schema must not turn a valid deposit read into HTTP 500.
+      let settings: Record<string, unknown> | null = null;
+      try {
+        const settingsResult = await client.query(
+          `
+          SELECT
+            id,
+            "minBox",
+            "maxBox",
+            "jackpotAmount",
+            "jackpotChance"
+          FROM game_settings
+          ORDER BY id DESC
+          LIMIT 1
+          `
+        );
+        settings = settingsResult.rows[0] ?? null;
+      } catch (settingsError) {
+        console.error("Deposit read: optional game_settings query failed:", settingsError);
+      }
 
       return {
         deposits,
@@ -193,7 +205,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         recentClaims: claimsResult.rows,
         pendingReward: Number(pendingRewardResult.rows[0]?.pendingReward ?? 0),
         rewardClaimAvailableAt: pendingRewardResult.rows[0]?.rewardClaimAvailableAt ?? null,
-        settings: settingsResult.rows[0] ?? null,
+        settings,
       };
     });
 
