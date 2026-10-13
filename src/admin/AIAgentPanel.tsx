@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Bot,
-  Sparkles,
   Send,
   Copy,
   Check,
@@ -127,13 +125,8 @@ export default function AIAgentPanel() {
       <div className="rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-violet-300 text-xs font-black uppercase">
-              <Bot className="w-4 h-4" />
-              SYS STREAM AI AGENT
-            </div>
-
-            <h2 className="text-2xl font-black mt-2">
-              AI Marketing & Community Center
+            <h2 className="text-2xl font-black">
+              Marketing & Community Center
             </h2>
 
             <p className="text-sm text-slate-400 mt-2 max-w-3xl">
@@ -142,12 +135,6 @@ export default function AIAgentPanel() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-xs font-bold text-emerald-300">
-              AI CORE
-            </span>
-          </div>
         </div>
       </div>
 
@@ -250,8 +237,7 @@ export default function AIAgentPanel() {
                   {selected.description}
                 </div>
               </div>
-
-              <Sparkles className="w-5 h-5 text-violet-300" />
+ 
             </div>
 
             <textarea
@@ -329,8 +315,7 @@ export default function AIAgentPanel() {
                 </pre>
               ) : (
                 <div className="min-h-[260px] flex items-center justify-center text-center">
-                  <div>
-                    <Bot className="w-10 h-10 mx-auto text-slate-700 mb-3" />
+                  <div> 
                     <div className="text-sm font-bold text-slate-500">
                       Belum ada output
                     </div>
