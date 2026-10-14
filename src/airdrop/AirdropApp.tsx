@@ -6,8 +6,8 @@ import {
 import { SysLogo } from '../components/SysLogo';
 
 type Lang = 'id'|'en'|'es'|'pt'|'zh'|'ja'|'ko'|'ar';
-type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'deposit'|'withdrawal'|'profile'|'checkin'|'mining';
-type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'social'|'deposit'|'withdrawal'|'profile'|'mining';
+type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'social'|'review'|'paid_review'|'deposit'|'withdrawal'|'profile'|'checkin'|'mining';
+type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'paid_review'|'social'|'deposit'|'withdrawal'|'profile'|'mining';
 type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
 const CALENDAR_UI: Record<Lang, {sun:string;mon:string;tue:string;wed:string;thu:string;fri:string;sat:string;previous:string;next:string;checked:string;today:string;notChecked:string}> = {
@@ -49,6 +49,7 @@ const TASKS: Task[] = [
   {id:'instagram-reel',key:'instagram',type:'instagram',reward:'program',estimated:'10–20 minutes',daily:true},
   {id:'youtube-shorts',key:'shorts',type:'shorts',reward:'program',estimated:'10–20 minutes',daily:true},
   {id:'youtube-upload',key:'youtube',type:'youtube',reward:'program',estimated:'15–30 minutes',daily:true,priority:true},
+  {id:'paid-youtube-review',key:'paid_review',type:'paid_review',reward:'$2 / 1,000 views (USDT)',estimated:'15+ minute video',priority:true,title:'Priority USDT Task: YouTube Review Video',desc:'Create and publish an original YouTube video that is at least 15 minutes long reviewing the SysStreamer platform and/or explaining how to complete tasks on SysStreamer. Eligibility: your YouTube channel must have at least 1,000 subscribers. Apply only after your public video reaches at least 1,000 views. Submit the public YouTube video URL as proof; include your channel link and current view count in the submission description if possible. Reward: $2 in USDT per 1,000 verified views, subject to manual review and verification. Each video must be original, public, and compliant with YouTube policies. No reused, private, misleading, or artificially boosted views.'},
   {id:'youtube-review',key:'review',type:'youtube',reward:'program',estimated:'5–10 minutes',daily:true},
   {id:'social-daily',key:'social',type:'social',reward:'program',estimated:'2–5 minutes',daily:true},
   {id:'twitter-post',key:'twitter',type:'twitter',reward:'program',estimated:'5–10 minutes',daily:true},
@@ -268,7 +269,7 @@ const TASK_TEXT: Record<TaskKey,{title:string;desc:string;action:string}> = {
 };
 
 function typeIcon(type:TaskType) {
-  if(type==='youtube'||type==='shorts') return <Youtube className="w-5 h-5"/>;
+  if(type==='youtube'||type==='shorts'||type==='paid_review') return <Youtube className="w-5 h-5"/>;
   if(type==='tiktok') return <span className="text-sm font-black">♪</span>;
   if(type==='instagram') return <span className="text-sm font-black">◎</span>;
   if(type==='twitter') return <span className="text-sm font-black">𝕏</span>;
@@ -283,7 +284,7 @@ function typeIcon(type:TaskType) {
   return <Link2 className="w-5 h-5"/>;
 }
 function typeLabel(type:TaskType,tx:Record<string,string>) {
-  const map:Record<TaskType,string>={review:'REVIEW',youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE',mining:'SYS MINING'};
+  const map:Record<TaskType,string>={review:'REVIEW',paid_review:'PAID YOUTUBE REVIEW',youtube:'YOUTUBE',shorts:'YOUTUBE SHORTS',tiktok:'TIKTOK',instagram:'INSTAGRAM',twitter:'X / TWITTER',facebook:'FACEBOOK',telegram:'TELEGRAM',discord:'DISCORD',checkin:'CHECK-IN',social:'SOCIAL',deposit:'DEPOSIT',withdrawal:'WITHDRAWAL',profile:'PROFILE',mining:'SYS MINING'};
   return map[type]||'SOCIAL';
 }
 
@@ -441,7 +442,7 @@ export default function AirdropApp() {
   const availableTasks=useMemo<Task[]>(()=>{
     const configured=dbTasks.filter((raw:any)=>{const t=String(raw.type??raw.task_type??raw.category??raw.key??'').toLowerCase();const k=String(raw.key??'').toLowerCase();return t!=='withdrawal'&&t!=='profile'&&k!=='withdrawal'&&k!=='profile';}).map((raw:any,index:number)=>{
       const category=String(raw.category||raw.type||'social').toLowerCase();
-      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','deposit','withdrawal','profile','checkin','mining'] as string[]).includes(category)?category as TaskType:'social';
+      const type:TaskType=(['youtube','tiktok','instagram','twitter','facebook','telegram','discord','shorts','social','review','paid_review','deposit','withdrawal','profile','checkin','mining'] as string[]).includes(category)?category as TaskType:'social';
       const key:TaskKey=type==='youtube'?'youtube':type as TaskKey;
       return {
         id:String(raw.id??`db-${index}`),
@@ -450,7 +451,7 @@ export default function AirdropApp() {
         reward:raw.reward_points!==undefined?String(raw.reward_points):raw.reward!==undefined?String(raw.reward):'0',
         estimated:String(raw.estimated||''),
         daily:Boolean(raw.daily),
-        priority:Boolean(raw.priority),
+        priority:type==='paid_review'?true:Boolean(raw.priority),
         title:String(raw.title||'').trim(),
         desc:String(raw.description||raw.desc||'').trim()
       };
@@ -465,11 +466,11 @@ export default function AirdropApp() {
   },[dbTasks]);
   const socialTaskTypes: TaskType[] = ['tiktok','instagram','youtube','shorts','twitter','facebook','telegram','discord','social'];
   const taskOfficialUrl=(task:Task)=>{
-    const platform=task.type==='shorts'||task.type==='youtube'?'youtube':task.type;
+    const platform=task.type==='shorts'||task.type==='youtube'||task.type==='paid_review'?'youtube':task.type;
     return SOCIAL_OFFICIALS.find(item=>item.platform===platform)?.url||'';
   };
   const socialInstruction=(task:Task)=>{
-    const platform=task.type==='shorts'||task.type==='youtube'?'youtube':task.type;
+    const platform=task.type==='shorts'||task.type==='youtube'||task.type==='paid_review'?'youtube':task.type;
     const official=SOCIAL_OFFICIALS.find(item=>item.platform===platform);
     if(!official) return '';
     return lang==='id'
@@ -483,7 +484,7 @@ export default function AirdropApp() {
     const fallbackAction=lang==='id'?'Mulai Tugas':'Start Task';
     let desc=task.desc||fallbackDesc;
     if(!task.title&&!task.desc&&x) desc=tx[x.desc];
-    if(socialTaskTypes.includes(task.type)){ const instruction=socialInstruction(task); if(instruction) desc=desc+' '+instruction; if(referralLink) desc=desc+' '+(lang==='id'?'Link referral pribadi:':'Personal referral link:')+' '+referralLink; }
+    if(socialTaskTypes.includes(task.type)&&task.type!=='paid_review'){ const instruction=socialInstruction(task); if(instruction) desc=desc+' '+instruction; if(referralLink) desc=desc+' '+(lang==='id'?'Link referral pribadi:':'Personal referral link:')+' '+referralLink; }
     if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
     if(task.title||task.desc)return {title:task.title||fallbackTitle,desc,action:x?.action?tx[x.action]:fallbackAction};
     return x?{title:tx[x.title],desc,action:tx[x.action]}:{title:fallbackTitle,desc,action:fallbackAction};
@@ -512,7 +513,7 @@ export default function AirdropApp() {
         <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
           <div>
             <div className="text-xs text-slate-500">{tx.reward}</div>
-            <div className="font-bold text-amber-400">{t.reward === 'program' ? tx.configured : t.reward + ' pts'}</div>
+            <div className="font-bold text-amber-400">{t.reward === 'program' ? tx.configured : t.type==='paid_review' ? t.reward : t.reward + ' pts'}</div>
           </div>
           <button onClick={() => openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button>
         </div>
