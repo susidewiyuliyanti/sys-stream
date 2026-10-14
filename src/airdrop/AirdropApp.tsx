@@ -13,7 +13,7 @@ type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:st
 const VIDEO_REWARD = '$2 / 1,000 views (USDT)';
 function isVideoUploadTask(task: Task): boolean {
   const text = `${task.id} ${task.title || ''} ${task.desc || ''}`.toLowerCase();
-  const videoPlatform = ['youtube','shorts','tiktok','instagram','facebook','twitter'].includes(task.type);
+  const videoPlatform = ['youtube','shorts','tiktok','instagram','facebook','twitter','telegram','discord','social'].includes(task.type);
   const uploadTerms = /upload|video|reel|shorts|short video|publish.*video|post.*video|buat konten video|unggah|video original/.test(text);
   return task.type === 'paid_review' || (videoPlatform && uploadTerms);
 }
