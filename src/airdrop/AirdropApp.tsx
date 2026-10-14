@@ -10,6 +10,22 @@ type TaskType = 'youtube'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'
 type TaskKey = 'checkin'|'tiktok'|'instagram'|'twitter'|'facebook'|'telegram'|'discord'|'shorts'|'youtube'|'review'|'paid_review'|'social'|'deposit'|'withdrawal'|'profile'|'mining';
 type Task = { id:string; key:TaskKey; type:TaskType; reward:string; estimated:string; daily?:boolean; priority?:boolean; title?:string; desc?:string };
 
+const VIDEO_REWARD = '$2 / 1,000 views (USDT)';
+function isVideoUploadTask(task: Task): boolean {
+  const text = `${task.id} ${task.title || ''} ${task.desc || ''}`.toLowerCase();
+  const videoPlatform = ['youtube','shorts','tiktok','instagram','facebook','twitter'].includes(task.type);
+  const uploadTerms = /upload|video|reel|shorts|short video|publish.*video|post.*video|buat konten video|unggah|video original/.test(text);
+  return task.type === 'paid_review' || (videoPlatform && uploadTerms);
+}
+function videoTaskDescription(task: Task, lang: Lang): string {
+  const rule = lang === 'id'
+    ? 'Reward: $2 USDT per 1.000 tayangan yang terverifikasi. Video harus publik dan original; kirim URL video publik. Admin akan memeriksa platform, tayangan, dan kepatuhan sebelum reward disetujui. Tayangan palsu atau berbayar tidak dihitung.'
+    : 'Reward: $2 USDT per 1,000 verified views. The video must be public and original; submit its public URL. Admin will verify the platform, views, and compliance before approving the reward. Fake or purchased views do not count.';
+  const desc = task.desc || '';
+  if (/\$2\s*\/\s*1,000 views|1,000 verified views|1\.000 tayangan/i.test(desc)) return desc;
+  return desc ? `${desc} ${rule}` : rule;
+}
+
 const CALENDAR_UI: Record<Lang, {sun:string;mon:string;tue:string;wed:string;thu:string;fri:string;sat:string;previous:string;next:string;checked:string;today:string;notChecked:string}> = {
   id:{sun:'Min',mon:'Sen',tue:'Sel',wed:'Rab',thu:'Kam',fri:'Jum',sat:'Sab',previous:'Bulan sebelumnya',next:'Bulan berikutnya',checked:'Sudah check-in',today:'Hari ini',notChecked:'Belum check-in'},
   en:{sun:'Sun',mon:'Mon',tue:'Tue',wed:'Wed',thu:'Thu',fri:'Fri',sat:'Sat',previous:'Previous month',next:'Next month',checked:'Checked in',today:'Today',notChecked:'Not checked in'},
@@ -481,6 +497,7 @@ export default function AirdropApp() {
     let desc=task.desc||fallbackDesc;
     if(!task.title&&!task.desc&&x) desc=tx[x.desc];
     if(socialTaskTypes.includes(task.type)&&task.type!=='paid_review'){ const instruction=socialInstruction(task); if(instruction) desc=desc+' '+instruction; if(referralLink) desc=desc+' '+(lang==='id'?'Link referral pribadi:':'Personal referral link:')+' '+referralLink; }
+    if(isVideoUploadTask(task)) desc=videoTaskDescription(task,lang);
     if(task.type==='checkin'&&x)return {title:tx[x.title],desc:tx[x.desc],action:tx[x.action]};
     if(task.title||task.desc)return {title:task.title||fallbackTitle,desc,action:x?.action?tx[x.action]:fallbackAction};
     return x?{title:tx[x.title],desc,action:tx[x.action]}:{title:fallbackTitle,desc,action:fallbackAction};
@@ -495,6 +512,7 @@ export default function AirdropApp() {
 
   const renderTaskCard = (t:Task) => {
     const x = taskText(t);
+    const videoReward = isVideoUploadTask(t);
     return (
       <article key={t.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex flex-col">
         <div className="flex items-center justify-between">
@@ -509,7 +527,7 @@ export default function AirdropApp() {
         <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
           <div>
             <div className="text-xs text-slate-500">{tx.reward}</div>
-            <div className="font-bold text-amber-400">{t.reward === 'program' ? tx.configured : (t.type==='paid_review'||t.type==='mining') ? t.reward : t.reward + ' pts'}</div>
+            <div className="font-bold text-amber-400">{videoReward ? VIDEO_REWARD : t.reward === 'program' ? tx.configured : t.type==='mining' ? t.reward : t.reward + ' pts'}</div>
           </div>
           <button onClick={() => openTask(t)} className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-sm">{x.action}</button>
         </div>
@@ -584,7 +602,7 @@ export default function AirdropApp() {
         <div className="mt-5 grid md:grid-cols-3 gap-3">
           {availableTasks.slice(0,3).map(t=>{const x=taskText(t);return <button key={t.id} data-task-type={t.type} onClick={()=>{if(t.type==='checkin'){setSelectedTask(null);setCheckinMonth(new Date().toISOString().slice(0,7));setCheckinCalendarOpen(true);}else{openTask(t);}}} className="text-left rounded-2xl border border-slate-800 bg-slate-950/70 p-4 hover:border-amber-500/40 disabled:opacity-40 disabled:cursor-not-allowed">
             <div className="flex items-center justify-between"><span className="text-amber-400">{typeIcon(t.type)}</span>{t.priority&&<span className="text-[9px] font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-full">{tx.priority}</span>}</div>
-            <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.type==='checkin'?({id:'30 detik',en:'30 seconds',es:'30 segundos',pt:'30 segundos',zh:'30 秒',ja:'30秒',ko:'30초',ar:'30 ثانية'} as Record<Lang,string>)[lang]:t.estimated} · {tx.proof}</div><div className="mt-2 text-xs font-black text-amber-400">{(t.type==='paid_review'||t.type==='mining')?t.reward:`${t.reward} pts`}</div>
+            <div className="mt-3 font-bold text-sm">{x.title}</div><div className="mt-1 text-xs text-slate-500">{t.type==='checkin'?({id:'30 detik',en:'30 seconds',es:'30 segundos',pt:'30 segundos',zh:'30 秒',ja:'30秒',ko:'30초',ar:'30 ثانية'} as Record<Lang,string>)[lang]:t.estimated} · {tx.proof}</div><div className="mt-2 text-xs font-black text-amber-400">{isVideoUploadTask(t)?VIDEO_REWARD:(t.type==='mining')?t.reward:`${t.reward} pts`}</div>
           </button>})}
         </div>
       </section>
@@ -642,7 +660,7 @@ export default function AirdropApp() {
             {Array.from({length:daysInMonth},(_,i)=>{              const day=i+1; const item=checkins.get(day); const dateKey=`${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`; const isToday=dateKey===todayKey;              return <button key={day} onClick={()=>{if(isToday&&!item) {setCheckinCalendarOpen(false);setSelectedTask(checkinTask);}}} disabled={!isToday||!!item} className={`aspect-square rounded-xl border p-2 text-left transition ${item?'border-emerald-500/40 bg-emerald-500/10':isToday?'border-amber-400 bg-amber-400/10 hover:bg-amber-400/20':'border-slate-800 bg-slate-950/70'} ${!isToday||item?'cursor-default':''}`}>                <div className="flex items-start justify-between gap-1"><span className={isToday?'text-amber-300 font-black':'text-slate-300 font-bold'}>{day}</span>{item?<span className="text-emerald-400 text-xs">✓</span>:isToday?<span className="text-amber-400 text-[8px] font-black">{CALENDAR_UI[lang].today}</span>:null}</div>                <div className="mt-2 text-[9px] leading-3">{item?<><div className="text-emerald-400 font-bold">{item.status==='approved'?'✓':item.status==='pending'?'…':'×'}</div><div className="text-amber-400">{item.points} {AIRDROP_UI[lang].points}</div></>:<span className="text-slate-600">—</span>}</div>              </button>;            })}          </div>          <div className="mt-5 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">            <span><span className="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-1"/>{CALENDAR_UI[lang].checked}</span>            <span><span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1"/>{CALENDAR_UI[lang].today}</span>            <span><span className="inline-block w-2 h-2 rounded-full bg-slate-600 mr-1"/>{CALENDAR_UI[lang].notChecked}</span>          </div>        </div>      </div>;    })()}    {selectedTask&&(()=>{const x=taskText(selectedTask);return <div className="fixed inset-0 z-50 bg-black/70 p-4 flex items-center justify-center" onClick={()=>setSelectedTask(null)}>
       <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6" onClick={e=>e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold text-amber-400">{typeLabel(selectedTask.type,tx)}</div><h2 className="mt-1 text-xl font-black">{x.title}</h2></div><button onClick={()=>setSelectedTask(null)} className="p-2 rounded-lg hover:bg-slate-800" aria-label={tx.close || "Close"}><X className="w-5 h-5"/></button></div>
-        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.reward}</div><div className="mt-1 text-sm font-black text-amber-400">{(selectedTask.type==='paid_review'||selectedTask.type==='mining')?selectedTask.reward:`${selectedTask.reward} pts`}</div><div className="mt-4 text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p>{taskOfficialUrl(selectedTask)&&<a href={taskOfficialUrl(selectedTask)} target="_blank" rel="noreferrer" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm font-black text-amber-300 hover:bg-amber-400/20">{lang==='id'?'Buka Profil Resmi':'Open Official Profile'}</a>}{selectedTask.type==='mining'&&<a href="https://sysstreamer.asia/#/game/mining" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm font-black text-amber-300 hover:bg-amber-400/20">{lang==='id'?'Buka Blind Box Mining':'Open Blind Box Mining'}</a>}</div>
+        <div className="mt-6 rounded-xl bg-slate-950 border border-slate-800 p-4"><div className="text-xs text-slate-500">{tx.reward}</div><div className="mt-1 text-sm font-black text-amber-400">{isVideoUploadTask(selectedTask)?VIDEO_REWARD:(selectedTask.type==='mining')?selectedTask.reward:`${selectedTask.reward} pts`}</div><div className="mt-4 text-xs text-slate-500">{tx.instructions}</div><p className="mt-2 text-sm text-slate-300">{x.desc}</p>{taskOfficialUrl(selectedTask)&&<a href={taskOfficialUrl(selectedTask)} target="_blank" rel="noreferrer" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm font-black text-amber-300 hover:bg-amber-400/20">{lang==='id'?'Buka Profil Resmi':'Open Official Profile'}</a>}{selectedTask.type==='mining'&&<a href="https://sysstreamer.asia/#/game/mining" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm font-black text-amber-300 hover:bg-amber-400/20">{lang==='id'?'Buka Blind Box Mining':'Open Blind Box Mining'}</a>}</div>
         <div className="mt-4">
           <label className="block text-xs font-bold text-slate-400 mb-2">{tx.wallet || COPY.en.wallet}</label>
           <input value={walletAddress} onChange={e=>setWalletAddress(e.target.value)} placeholder={tx.walletPlaceholder || COPY.en.walletPlaceholder} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-amber-400" />
