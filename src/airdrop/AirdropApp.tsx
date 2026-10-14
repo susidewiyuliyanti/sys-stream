@@ -448,7 +448,7 @@ export default function AirdropApp() {
         id:String(raw.id??`db-${index}`),
         key,
         type,
-        reward:raw.reward_points!==undefined?String(raw.reward_points):raw.reward!==undefined?String(raw.reward):'0',
+        reward:type==='paid_review'?'$2 / 1,000 views (USDT)':raw.reward_points!==undefined?String(raw.reward_points):raw.reward!==undefined?String(raw.reward):'0',
         estimated:String(raw.estimated||''),
         daily:Boolean(raw.daily),
         priority:type==='paid_review'?true:Boolean(raw.priority),
@@ -492,7 +492,7 @@ export default function AirdropApp() {
 
   const filteredTasks = useMemo(() => {
     if (taskCategory === 'all') return availableTasks;
-    if (taskCategory === 'youtube') return availableTasks.filter(t => t.type === 'youtube' || t.type === 'shorts');
+    if (taskCategory === 'youtube') return availableTasks.filter(t => t.type === 'youtube' || t.type === 'shorts' || t.type === 'paid_review');
     if (taskCategory === 'social') return availableTasks.filter(t => ['social','tiktok','instagram','twitter','facebook','telegram','discord'].includes(t.type));
     return availableTasks.filter(t => t.type === 'checkin');
   }, [availableTasks, taskCategory]);
