@@ -1,4 +1,4 @@
-import { Env } from "../../_lib/db";
+import { Env, withDb } from "../../_lib/db";
 import { requireAuth } from "../../_lib/auth";
 import { notifyAdmins } from "../../_lib/admin-notifications";
 
@@ -58,6 +58,33 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       task = await db.prepare("SELECT id,title,reward_points FROM airdrop_tasks WHERE active=1 AND lower(title) LIKE ? LIMIT 1").bind("%" + taskKey.toLowerCase() + "%").first();
     }
     if (!task) return response(context.request, { success: false, message: "Task tidak ditemukan atau belum diaktifkan" }, 404);
+
+    // $20 mining task eligibility: any lock amount qualifies, but the lock must
+    // have a duration of at least 30 days and have completed 30 full days.
+    const isMiningTask = /mining/i.test(String(task.title || "")) || /mining/i.test(taskKey);
+    if (isMiningTask) {
+      const lockRows = await withDb(context.env, client => client.query(
+        "SELECT id, duration_days AS durationDays, start_date AS startDate, status FROM deposits WHERE user_id = $1 AND COALESCE(duration_days,0) >= 30",
+        [String(auth.user.id)]
+      ));
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      const eligibleLock = lockRows.rows.some((lock: any) => {
+        const status = String(lock.status || "").toUpperCase();
+        if (["CANCELLED", "CANCELED", "REJECTED", "FAILED", "PENDING"].includes(status)) return false;
+        const raw = lock.startDate;
+        const startSeconds = typeof raw === "number"
+          ? (raw > 2_000_000_000 ? Math.floor(raw / 1000) : Math.floor(raw))
+          : Math.floor(Date.parse(String(raw || "")) / 1000);
+        return Number.isFinite(startSeconds) && startSeconds > 0 && nowSeconds - startSeconds >= 30 * 86400;
+      });
+      if (!eligibleLock) {
+        return response(context.request, {
+          success: false,
+          message: "Task Mining $20 USDT dapat diklaim setelah Blind Box Lock berdurasi minimal 30 hari telah berjalan penuh selama 30 hari. Jumlah lock bebas.",
+          eligibleAfterDays: 30,
+        }, 403);
+      }
+    }
 
     const isCheckin = String(taskKey).toLowerCase() === "checkin" || /check.?in/i.test(String(task.title || ""));
     if (!isCheckin && !link) {
