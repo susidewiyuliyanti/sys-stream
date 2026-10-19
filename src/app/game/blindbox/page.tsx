@@ -664,7 +664,7 @@ export default function BlindboxGamePage() {
 
           {unboxingState === 'IDLE' && (
             <div className="flex flex-col items-center text-center space-y-6 z-10 py-6">
-              <div className="relative group cursor-pointer" onClick={startDailyUnboxing}>
+              <button type="button" aria-label={t('Open Daily Box')} className="relative group cursor-pointer touch-manipulation select-none" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={startDailyUnboxing}>
                 <div className="w-56 h-56 rounded-2xl bg-slate-950/80 border border-slate-700/80 p-2 shadow-2xl transition-transform duration-300 group-hover:scale-105 overflow-hidden flex items-center justify-center">
                   <img
                     src="/src/assets/images/blindbox_mystery_chest_1790831279493.jpg"
@@ -676,7 +676,7 @@ export default function BlindboxGamePage() {
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-amber-500 text-slate-950 font-bold text-xs rounded-full shadow-lg whitespace-nowrap">
                   {selectedBox.badge}
                 </div>
-              </div>
+              </button>
 
               <div>
                 <h3 className="text-xl font-bold text-white">{selectedBox.name}</h3>
@@ -687,13 +687,12 @@ export default function BlindboxGamePage() {
               <div className="w-full max-w-xs space-y-2">
                 <button
                   onClick={startDailyUnboxing}
-                  disabled={!isQualified || remainingBoxes <= 0}
                   className={`w-full py-3.5 font-extrabold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer ${
                     !isQualified
-                      ? 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
+                      ? 'bg-slate-800 text-slate-400 border border-slate-700 cursor-pointer hover:border-emerald-500/50'
                       : remainingBoxes > 0
-                      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20'
-                      : 'bg-slate-800 text-slate-400 border border-slate-700 cursor-not-allowed'
+                      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20 cursor-pointer active:scale-[0.99]'
+                      : 'bg-slate-800 text-slate-400 border border-slate-700 cursor-pointer hover:border-emerald-500/50'
                   }`}
                 >
                   <Box className="w-4 h-4 fill-current" />
