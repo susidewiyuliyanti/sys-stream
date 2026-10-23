@@ -44,8 +44,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
               `DEP-${crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()}`,
               userId,
               totalLocked,
-              recoveryStart,
-              recoveryEnd,
+              recoveryStart.toISOString(),
+              recoveryEnd.toISOString(),
             ]
           );
         }
