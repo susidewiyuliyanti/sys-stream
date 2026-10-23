@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" fill="none">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="320" gradientUnits="userSpaceOnUse"><stop stop-color="#07152E"/><stop offset=".58" stop-color="#102B55"/><stop offset="1" stop-color="#07111F"/></linearGradient>
+  <linearGradient id="gold" x1="80" y1="40" x2="270" y2="270" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF1A6"/><stop offset=".45" stop-color="#FBBF24"/><stop offset="1" stop-color="#D97706"/></linearGradient>
+  <linearGradient id="blue" x1="780" y1="30" x2="1120" y2="290" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8" stop-opacity=".8"/><stop offset="1" stop-color="#2563EB" stop-opacity=".05"/></linearGradient>
+  <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="1200" height="320" rx="30" fill="url(#bg)"/>
+<circle cx="1020" cy="155" r="150" fill="url(#blue)" opacity=".28"/>
+<circle cx="1020" cy="155" r="100" stroke="#38BDF8" stroke-opacity=".22" stroke-width="1.5"/>
+<circle cx="1020" cy="155" r="72" stroke="#38BDF8" stroke-opacity=".3" stroke-width="1.5" stroke-dasharray="5 10"/>
+<path d="M900 0L1200 320M1030 0L1200 180M780 320L1120 0" stroke="#60A5FA" stroke-opacity=".09" stroke-width="2"/>
+<rect x="44" y="44" width="232" height="232" rx="52" fill="#FBBF24" opacity=".12" filter="url(#glow)"/>
+<rect x="56" y="56" width="208" height="208" rx="46" fill="#0B1B35" stroke="#FBBF24" stroke-opacity=".8" stroke-width="2"/>
+<path d="M160 91L211 120V178L160 207L109 178V120L160 91Z" stroke="url(#gold)" stroke-width="7" stroke-linejoin="round"/>
+<path d="M135 137L160 123L185 137V161L160 175L135 161V137Z" fill="url(#gold)"/>
+<path d="M160 123V175M135 137L160 151L185 137M160 151V207" stroke="#FFF7D6" stroke-opacity=".9" stroke-width="3" stroke-linejoin="round"/>
+<text x="310" y="112" fill="#FBBF24" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700" letter-spacing="5">OFFICIAL CAMPAIGN</text>
+<text x="306" y="174" fill="#FFFFFF" font-family="Arial,Helvetica,sans-serif" font-size="54" font-weight="800" letter-spacing="-1">SYSSTREAMER</text>
+<text x="310" y="226" fill="#7DD3FC" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="700" letter-spacing="8">A I R D R O P</text>
+<rect x="310" y="250" width="310" height="3" rx="1.5" fill="url(#gold)"/>
+<text x="650" y="271" fill="#CBD5E1" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="600" letter-spacing="2">TASKS • COMMUNITY • REWARDS</text>
+<circle cx="1092" cy="68" r="5" fill="#FBBF24"/><circle cx="1124" cy="92" r="3" fill="#7DD3FC"/><circle cx="1090" cy="242" r="4" fill="#7DD3FC"/><circle cx="950" cy="256" r="3" fill="#FBBF24"/>
+</svg>
