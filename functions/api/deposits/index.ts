@@ -144,6 +144,20 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         todayClaimData = todayClaim.rows[0] ?? null;
       }
 
+      // Some production D1 databases were created before paid_at was added to
+      // blind_box_claims. Detect the column instead of failing the entire deposit
+      // endpoint (which also feeds the mobile Blind Box screen).
+      const claimColumnsResult = await client.query(`PRAGMA table_info(blind_box_claims)`);
+      const claimColumnNames = new Set(claimColumnsResult.rows.map((column) => String(column.name)));
+      const hasPaidAt = claimColumnNames.has("paid_at");
+      const paidAtSelect = hasPaidAt ? 'c.paid_at AS "paidAt"' : 'NULL AS "paidAt"';
+      const pendingRewardExpression = hasPaidAt
+        ? 'COALESCE(SUM(CASE WHEN c.paid_at IS NULL THEN c.amount ELSE 0 END), 0)'
+        : 'COALESCE(SUM(c.amount), 0)';
+      const rewardAvailableExpression = hasPaidAt
+        ? 'MAX(CASE WHEN c.paid_at IS NULL THEN d.end_date ELSE NULL END)'
+        : 'MAX(d.end_date)';
+
       const claimsResult = await client.query(
         `
         SELECT
@@ -154,7 +168,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
           c.amount,
           c.is_jackpot AS "isJackpot",
           c.claimed_at AS "claimedAt",
-          c.paid_at AS "paidAt"
+          ${paidAtSelect}
         FROM blind_box_claims c
         INNER JOIN deposits d ON d.id = c.deposit_id
         WHERE d.user_id = $1
@@ -167,8 +181,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       const pendingRewardResult = await client.query(
         `
         SELECT
-          COALESCE(SUM(CASE WHEN c.paid_at IS NULL THEN c.amount ELSE 0 END), 0) AS "pendingReward",
-          MAX(CASE WHEN c.paid_at IS NULL THEN d.end_date ELSE NULL END) AS "rewardClaimAvailableAt"
+          ${pendingRewardExpression} AS "pendingReward",
+          ${rewardAvailableExpression} AS "rewardClaimAvailableAt"
         FROM blind_box_claims c
         INNER JOIN deposits d ON d.id = c.deposit_id
         WHERE c.user_id = $1
