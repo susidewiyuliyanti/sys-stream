@@ -62,7 +62,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
               deposit_code, user_id, amount, duration_days, start_date, end_date,
               status, total_claimed, force_jackpot, created_at
             ) VALUES ($1, $2, $3, 30, $4, $5, 'ACTIVE', 0, false, NOW())
-          `, [generateDepositCode(), userId, totalLocked, recoveryStart, recoveryEnd]);
+          `, [generateDepositCode(), userId, totalLocked, recoveryStart.toISOString(), recoveryEnd.toISOString()]);
         }
       } else {
         // Repair the specific legacy inconsistency found in production: a deposit is
