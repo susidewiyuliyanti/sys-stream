@@ -761,45 +761,22 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('sys_stream_auth_token');
     if (!token) throw new Error('Silakan login terlebih dahulu.');
 
-    // Production source of truth is /api/deposits, not the legacy/local locks state.
-    // Always re-read the authenticated user's active deposit before claiming so a
-    // newly-created lock cannot be missed because React state has not refreshed yet.
-    const depositsResponse = await fetch('/api/deposits', {
-      credentials: 'include',
-      cache: 'no-store',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const depositsData = await depositsResponse.json().catch(() => ({}));
-
-    if (!depositsResponse.ok || !depositsData?.success) {
-      throw new Error(depositsData?.error || depositsData?.message || 'Gagal memeriksa lock Blind Box.');
-    }
-
-    const activeDeposit =
-      depositsData?.activeDeposit ||
-      (Array.isArray(depositsData?.deposits)
-        ? depositsData.deposits.find((deposit: any) => String(deposit.status ?? '').trim().toUpperCase() === 'ACTIVE')
-        : null);
-
-    if (!activeDeposit?.id) {
-      const lockedBalance = Number(depositsData?.totalLocked ?? depositsData?.total_locked ?? user.lockedBalance ?? 0);
-      if (lockedBalance >= 4 * 17937) {
-        throw new Error('Data lock Anda belum sinkron dengan daftar deposit. Muat ulang halaman atau hubungi support agar lock diperiksa; jangan membuat lock baru dulu.');
-      }
-      throw new Error('Tidak ada lock Blind Box yang aktif. Pastikan lock sudah berhasil dibuat dan berstatus aktif.');
-    }
-
-    const response = await fetch(`/api/deposits/${encodeURIComponent(activeDeposit.id)}/claim`, {
+    // Do not gate a claim on GET /api/deposits. That endpoint also reconciles
+    // mining and reads optional history/settings tables, and a failure in any
+    // of those reads was blocking claims in some mobile wallet browsers.
+    // The dedicated endpoint finds the authenticated user's active lock server-side.
+    const response = await fetch('/api/deposits/claim', {
       method: 'POST',
       credentials: 'include',
       cache: 'no-store',
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || !data?.success) {
-      // The Pages claim endpoint returns validation failures in `message`.
-      // Preserve the server's actual reason instead of hiding it behind a generic error,
-      // especially in mobile wallet browsers where debugging tools are limited.
       throw new Error(data?.error || data?.message || `Blind Box claim gagal (HTTP ${response.status}).`);
     }
 
@@ -807,7 +784,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await refreshFinancialState();
     return data;
   };
-
 
   const getTotalLockedUsdt = (): number => {
     // Kept for compatibility with existing consumers; the production
