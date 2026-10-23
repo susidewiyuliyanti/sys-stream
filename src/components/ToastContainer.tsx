@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGame } from '../context/GameContext';
-import { CheckCircle2, AlertCircle, Info, Sparkles, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info, Trophy, X } from 'lucide-react';
 
 export const ToastContainer: React.FC = () => {
   const { toasts, dismissToast } = useGame();
@@ -29,7 +29,7 @@ export const ToastContainer: React.FC = () => {
           >
             <div className="shrink-0 mt-0.5">
               {isJackpot ? (
-                <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
+                <Trophy className="w-5 h-5 text-amber-400" />
               ) : isSuccess ? (
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
               ) : isError ? (
