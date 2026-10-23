@@ -558,8 +558,11 @@ export default function AirdropApp() {
     </header>
 
     <main className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-      <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 sm:p-10 overflow-hidden relative">
+      <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-4 sm:p-6 overflow-hidden relative">
         <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl"/>
+        <div className="relative mb-6 overflow-hidden rounded-2xl border border-sky-400/20 bg-slate-950/60 shadow-lg shadow-sky-950/20">
+          <img src="/airdrop-logo.svg" alt="SYSStreamer official airdrop campaign" className="block h-auto w-full" width="1200" height="320" fetchPriority="high" />
+        </div>
         <div className="relative max-w-3xl">
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-amber-400"><ShieldCheck className="w-4 h-4"/> SYS STREAM TASK CENTER</div>
           <h1 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight">{tx.hero}</h1>
