@@ -15,7 +15,42 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const result = await withDb(context.env, async (client) => {
       await client.query("BEGIN");
       try {
-        const activeResult = await client.query(
+        // Match the legacy-lock reconciliation performed by GET /api/deposits.
+        // Claim must not reject a valid locked principal merely because its
+        // deposit row was left COMPLETED by an older schema/workflow.
+        const minBlindBoxLockIdr = Math.round(4 * 17937);
+        const lockedResult = await client.query(
+          `SELECT COALESCE(total_locked, 0) AS "totalLocked"
+           FROM users WHERE id = $1 LIMIT 1`,
+          [userId]
+        );
+        const totalLocked = Number(lockedResult.rows[0]?.totalLocked ?? 0);
+        const countResult = await client.query(
+          `SELECT COUNT(*) AS count FROM deposits WHERE user_id = $1`,
+          [userId]
+        );
+        const depositCount = Number(countResult.rows[0]?.count ?? 0);
+
+        if (depositCount === 0 && totalLocked >= minBlindBoxLockIdr) {
+          const recoveryStart = new Date();
+          const recoveryEnd = new Date(recoveryStart);
+          recoveryEnd.setDate(recoveryEnd.getDate() + 30);
+          await client.query(
+            `INSERT INTO deposits (
+               deposit_code, user_id, amount, duration_days, start_date, end_date,
+               status, total_claimed, force_jackpot, created_at
+             ) VALUES ($1, $2, $3, 30, $4, $5, 'ACTIVE', 0, false, NOW())`,
+            [
+              `DEP-${crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()}`,
+              userId,
+              totalLocked,
+              recoveryStart,
+              recoveryEnd,
+            ]
+          );
+        }
+
+        let activeResult = await client.query(
           `SELECT id, user_id, amount, duration_days,
                   start_date AS "startDate", end_date AS "endDate",
                   status, total_claimed AS "totalClaimed"
@@ -26,6 +61,36 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
            LIMIT 1`,
           [userId]
         );
+
+        if (!activeResult.rows.length && totalLocked >= minBlindBoxLockIdr) {
+          await client.query(
+            `UPDATE deposits
+             SET status = 'ACTIVE'
+             WHERE id = (
+               SELECT id FROM deposits
+               WHERE user_id = $1
+                 AND UPPER(TRIM(COALESCE(status, ''))) = 'COMPLETED'
+                 AND amount >= $2
+                 AND amount <= $3
+                 AND datetime(end_date) > datetime('now')
+               ORDER BY created_at DESC
+               LIMIT 1
+             )`,
+            [userId, minBlindBoxLockIdr, totalLocked]
+          );
+          activeResult = await client.query(
+            `SELECT id, user_id, amount, duration_days,
+                    start_date AS "startDate", end_date AS "endDate",
+                    status, total_claimed AS "totalClaimed"
+             FROM deposits
+             WHERE user_id = $1
+               AND UPPER(TRIM(COALESCE(status, ''))) IN ('ACTIVE', 'LOCKED')
+             ORDER BY created_at DESC
+             LIMIT 1`,
+            [userId]
+          );
+        }
+
         if (!activeResult.rows.length) throw new Error("ACTIVE_DEPOSIT_NOT_FOUND");
         const deposit = activeResult.rows[0];
         const depositId = Number(deposit.id);
