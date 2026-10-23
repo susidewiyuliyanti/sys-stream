@@ -147,7 +147,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username: remote.username || remote.displayName || prev.username,
         avatar: remote.avatarUrl || prev.avatar || '',
         referralCode: remote.referralCode || prev.referralCode || '',
-        walletAddress: remote.walletAddress || prev.walletAddress || '',
+        walletAddress: String(remote.walletAddress || ''),
         availableBalance: balance,
         sysBalance: Number(remote.sysBalance ?? prev.sysBalance ?? 0),
         registrationBonusIdr: Number(remote.registrationBonusIdr ?? prev.registrationBonusIdr ?? 0),
@@ -190,7 +190,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
               multiplier: 1,
               startDate: Number.isFinite(start) ? start : 0,
               endDate: Number.isFinite(end) ? end : 0,
-              status: String(d.status || 'locked') === 'ACTIVE' ? 'locked' : 'unlocked',
+              status: ['ACTIVE', 'LOCKED'].includes(String(d.status || '').trim().toUpperCase()) ? 'locked' : 'unlocked',
               dailyClaims: Number(d.totalClaimed || 0),
               accumulatedYieldCoins: Number(d.totalClaimed || 0),
             };
