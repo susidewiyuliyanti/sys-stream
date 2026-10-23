@@ -5,7 +5,6 @@ import { sound } from '../../../lib/sound';
 import { formatIdrAsSelectedCurrency, formatMinimumBlindBoxLock, getMinimumBlindBoxLockIdr, getLocaleConfig, IDR_PER_CURRENCY_UNIT, useLanguage } from '../../../i18n';
 import {
   Box,
-  Sparkles,
   Shield,
   Coins,
   Package,
@@ -734,7 +733,6 @@ export default function BlindboxGamePage() {
           {unboxingState === 'REVEALED' && unboxedItem && (
             <div className="flex flex-col items-center text-center space-y-5 z-10 py-4 w-full max-w-md animate-in zoom-in-90 duration-300">
               <div className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4" />
                 <span>{t('Daily Blind Box Claim')}</span>
               </div>
 
