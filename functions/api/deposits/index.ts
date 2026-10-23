@@ -122,26 +122,32 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       let todayClaimData = null;
 
       if (activeDeposit) {
-        const todayClaim = await client.query(
-          `
-          SELECT
-            id,
-            deposit_id AS "depositId",
-            user_id AS "userId",
-            claim_date AS "claimDate",
-            amount,
-            is_jackpot AS "isJackpot",
-            claimed_at AS "claimedAt"
-          FROM blind_box_claims
-          WHERE deposit_id = $1
-            AND claim_date = $2
-          LIMIT 1
-          `,
-          [activeDeposit.id, today]
-        );
+        try {
+          const todayClaim = await client.query(
+            `
+            SELECT
+              id,
+              deposit_id AS "depositId",
+              user_id AS "userId",
+              claim_date AS "claimDate",
+              amount,
+              is_jackpot AS "isJackpot",
+              claimed_at AS "claimedAt"
+            FROM blind_box_claims
+            WHERE deposit_id = $1
+              AND claim_date = $2
+            LIMIT 1
+            `,
+            [activeDeposit.id, today]
+          );
 
-        hasClaimedToday = todayClaim.rows.length > 0;
-        todayClaimData = todayClaim.rows[0] ?? null;
+          hasClaimedToday = todayClaim.rows.length > 0;
+          todayClaimData = todayClaim.rows[0] ?? null;
+        } catch (claimStatusError) {
+          // Claim-status metadata must not block the authoritative deposit list.
+          // The claim POST endpoint still enforces one claim per WIB day.
+          console.error("Deposit read: today's claim metadata unavailable:", claimStatusError);
+        }
       }
 
       // Some production D1 databases were created before paid_at was added to
@@ -158,37 +164,54 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         ? 'MAX(CASE WHEN c.paid_at IS NULL THEN d.end_date ELSE NULL END)'
         : 'MAX(d.end_date)';
 
-      const claimsResult = await client.query(
-        `
-        SELECT
-          c.id,
-          c.deposit_id AS "depositId",
-          c.user_id AS "userId",
-          c.claim_date AS "claimDate",
-          c.amount,
-          c.is_jackpot AS "isJackpot",
-          c.claimed_at AS "claimedAt",
-          ${paidAtSelect}
-        FROM blind_box_claims c
-        INNER JOIN deposits d ON d.id = c.deposit_id
-        WHERE d.user_id = $1
-        ORDER BY c.claimed_at DESC
-        LIMIT 20
-        `,
-        [userId]
-      );
+      let recentClaims: any[] = [];
+      let pendingReward = 0;
+      let rewardClaimAvailableAt: unknown = null;
 
-      const pendingRewardResult = await client.query(
-        `
-        SELECT
-          ${pendingRewardExpression} AS "pendingReward",
-          ${rewardAvailableExpression} AS "rewardClaimAvailableAt"
-        FROM blind_box_claims c
-        INNER JOIN deposits d ON d.id = c.deposit_id
-        WHERE c.user_id = $1
-        `,
-        [userId]
-      );
+      try {
+        const claimsResult = await client.query(
+          `
+          SELECT
+            c.id,
+            c.deposit_id AS "depositId",
+            c.user_id AS "userId",
+            c.claim_date AS "claimDate",
+            c.amount,
+            c.is_jackpot AS "isJackpot",
+            c.claimed_at AS "claimedAt",
+            ${paidAtSelect}
+          FROM blind_box_claims c
+          INNER JOIN deposits d ON d.id = c.deposit_id
+          WHERE d.user_id = $1
+          ORDER BY c.claimed_at DESC
+          LIMIT 20
+          `,
+          [userId]
+        );
+        recentClaims = claimsResult.rows;
+      } catch (claimsError) {
+        // Historical claim rows are supplementary UI data, not a prerequisite
+        // for loading the user's current lock.
+        console.error("Deposit read: recent claim history unavailable:", claimsError);
+      }
+
+      try {
+        const pendingRewardResult = await client.query(
+          `
+          SELECT
+            ${pendingRewardExpression} AS "pendingReward",
+            ${rewardAvailableExpression} AS "rewardClaimAvailableAt"
+          FROM blind_box_claims c
+          INNER JOIN deposits d ON d.id = c.deposit_id
+          WHERE c.user_id = $1
+          `,
+          [userId]
+        );
+        pendingReward = Number(pendingRewardResult.rows[0]?.pendingReward ?? 0);
+        rewardClaimAvailableAt = pendingRewardResult.rows[0]?.rewardClaimAvailableAt ?? null;
+      } catch (pendingRewardError) {
+        console.error("Deposit read: pending reward summary unavailable:", pendingRewardError);
+      }
       // Game settings are optional for the deposit/claim flow. A missing or
       // older game_settings schema must not turn a valid deposit read into HTTP 500.
       let settings: Record<string, unknown> | null = null;
@@ -216,9 +239,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         activeDeposit,
         hasClaimedToday,
         todayClaimData,
-        recentClaims: claimsResult.rows,
-        pendingReward: Number(pendingRewardResult.rows[0]?.pendingReward ?? 0),
-        rewardClaimAvailableAt: pendingRewardResult.rows[0]?.rewardClaimAvailableAt ?? null,
+        recentClaims,
+        pendingReward,
+        rewardClaimAvailableAt,
         settings,
       };
     });
