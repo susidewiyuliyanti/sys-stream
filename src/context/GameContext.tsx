@@ -796,7 +796,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data?.success) throw new Error(data?.error || 'Blind Box claim gagal.');
+    if (!response.ok || !data?.success) {
+      // The Pages claim endpoint returns validation failures in `message`.
+      // Preserve the server's actual reason instead of hiding it behind a generic error,
+      // especially in mobile wallet browsers where debugging tools are limited.
+      throw new Error(data?.error || data?.message || `Blind Box claim gagal (HTTP ${response.status}).`);
+    }
 
     setDailyBoxesClaimed(1);
     await refreshFinancialState();
